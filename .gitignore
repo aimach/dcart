@@ -1,0 +1,32 @@
+# Node.js (frontend/backend common)
+node_modules/
+
+# Logs
+logs/
+*.log
+
+# Environment variables
+.env
+.env.local
+.env.*
+
+# Docker
+docker-compose.override.yml
+.dockerignore
+postgres-data/
+
+# Build artifacts
+dist/
+build/
+
+# Editor and OS settings
+.idea/
+.vscode/
+.DS_Store
+*.swp
+Thumbs.db
+
+# Global Yarn/PNPM/Lock files
+yarn.lock
+pnpm-lock.yaml
+
