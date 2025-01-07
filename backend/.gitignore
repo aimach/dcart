@@ -27,6 +27,5 @@ dist/
 *.swp
 
 # Docker
-Dockerfile
 docker-compose.override.yml
 script/initDbUser.sql
