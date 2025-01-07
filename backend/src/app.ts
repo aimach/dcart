@@ -5,7 +5,7 @@ import express, {
 	type Response,
 } from "express";
 import dotenv from "dotenv";
-// import cors from "cors";
+import cors from "cors";
 // import des modules
 import { AppDataSource } from "./dataSource";
 // import des entités
@@ -19,12 +19,12 @@ const PORT = process.env.APP_PORT;
 
 // Middleware
 app.use(express.json());
-// app.use(
-// 	cors({
-// 		origin: [`http://localhost:${process.env.FRONTEND_PORT}`, "test"],
-// 		credentials: true,
-// 	}),
-// );
+app.use(
+	cors({
+		origin: [`http://localhost:${process.env.FRONTEND_PORT}`],
+		credentials: true,
+	}),
+);
 
 // Connect to the database
 AppDataSource.initialize()
