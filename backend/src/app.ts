@@ -38,7 +38,6 @@ app.get("/", (req: Request, res: Response) => {
 
 app.get("/users", async (req: Request, res: Response) => {
 	const users = await AppDataSource.getRepository(User).find();
-	console.log(users);
 	res.json(users);
 });
 
