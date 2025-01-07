@@ -29,4 +29,4 @@ dist/
 # Docker
 Dockerfile
 docker-compose.override.yml
-script/init.sql
+script/initDbUser.sql
