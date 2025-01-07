@@ -1,0 +1,4 @@
+/* cette classe est INDISPENSABLE pour afficher la carte (avoir au minmum la height de défini) */
+.leaflet-container {
+	height: 80vh;
+}
