@@ -13,6 +13,6 @@ export const AppDataSource = new DataSource({
 	password: process.env.DB_PASSWORD,
 	database: process.env.DB_NAME,
 	synchronize: true, // Crée automatiquement les tables (pratique en dev)
-	logging: true, // Active les logs pour le debug
+	logging: false, // Active les logs pour le debug
 	entities: [`${__dirname}/entities/*.ts`],
 });

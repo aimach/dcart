@@ -9,6 +9,10 @@ import "./index.css";
 import NavigationLayout from "./layouts/NavigationLayout.tsx";
 import MapComponent from "./components/mapComponent/MapComponent.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
+import AuthentificationPage from "./pages/AuthentificationPage.tsx";
+import ProtectedLayout from "./layouts/ProtectedLayout.tsx";
+import BOHomePage from "./pages/BOHomePage.tsx";
+import { AuthProvider } from "./context/AuthContext.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -16,14 +20,23 @@ if (rootElement) {
 	createRoot(rootElement).render(
 		<BrowserRouter>
 			<TranslationProvider>
-				<StrictMode>
-					<Routes>
-						<Route element={<NavigationLayout />}>
-							<Route index element={<App />} />
-							<Route path="map" element={<MapComponent />} />
-						</Route>
-					</Routes>
-				</StrictMode>
+				<AuthProvider>
+					<StrictMode>
+						<Routes>
+							<Route element={<NavigationLayout />}>
+								<Route index element={<App />} />
+								<Route path="map" element={<MapComponent />} />
+							</Route>
+							<Route
+								path="authentification"
+								element={<AuthentificationPage />}
+							/>
+							<Route path="backoffice" element={<ProtectedLayout />}>
+								<Route index element={<BOHomePage />} />
+							</Route>
+						</Routes>
+					</StrictMode>
+				</AuthProvider>
 			</TranslationProvider>
 		</BrowserRouter>,
 	);
