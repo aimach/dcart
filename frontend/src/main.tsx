@@ -7,21 +7,24 @@ import App from "./App.tsx";
 // import du style
 import "./index.css";
 import NavigationLayout from "./layouts/NavigationLayout.tsx";
-import MapComponent from "./components/MapComponent.tsx";
+import MapComponent from "./components/mapComponent/MapComponent.tsx";
+import { TranslationProvider } from "./context/TranslationContext.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
 	// l'ajout d'un if/else permet de résoudre une erreur relevée par le linter
 	createRoot(rootElement).render(
 		<BrowserRouter>
-			<StrictMode>
-				<Routes>
-					<Route element={<NavigationLayout />}>
-						<Route index element={<App />} />
-						<Route path="map" element={<MapComponent />} />
-					</Route>
-				</Routes>
-			</StrictMode>
+			<TranslationProvider>
+				<StrictMode>
+					<Routes>
+						<Route element={<NavigationLayout />}>
+							<Route index element={<App />} />
+							<Route path="map" element={<MapComponent />} />
+						</Route>
+					</Routes>
+				</StrictMode>
+			</TranslationProvider>
 		</BrowserRouter>,
 	);
 } else {

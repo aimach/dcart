@@ -1,0 +1,11 @@
+header {
+  nav {
+    ul {
+      display: flex;
+      flex-direction: row;
+      justify-content: flex-end;
+      gap: 1rem;
+      list-style-type: none;
+    }
+  }
+}
