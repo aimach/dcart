@@ -1,5 +1,5 @@
 // import du style
-import "./App.css";
+import "./App.scss";
 // import des composants
 import MapComponent from "./components/MapComponent";
 
