@@ -1,0 +1,127 @@
+// SOURCES
+//
+
+// COLORS
+$color-grullo: #AD9A85;
+$color-umber: #6E5C49;
+$color-dark-lava: #4A3E31;
+$color-black-chocolate: #251F18;
+$color-old-gold: #CCB400;
+$color-yellow-pantone: #FADF0F;
+$color-middle-yellow: #FFE733;
+$color-yellow-crayola: #FAEB75;
+
+$color-neutral-0: #14181f;
+$color-neutral-60: #a1afc4;
+$color-neutral-80: #e0e4eb;
+$color-neutral-100: #ffffff;
+
+// BACKGROUNDS
+$background-color-base: #ffffff;
+$background-color-soft: #f9fafb;
+$background-color-inverse: #14181f;
+$background-color-inverse-soft: #1f2732;
+
+// BORDER SIZE
+$border-width-m: 1px;
+$border-width-l: 2px;
+$border-width-xl: 3px;
+
+// BORDER RADIUS
+$border-radius-base: 2px;
+$border-radius-rounded: 10px;
+$border-radius-circle: 50%;
+
+// FONT SIZE
+$font-size-xxxxxl: 3rem;
+$font-size-xxxxl: 2rem;
+$font-size-xxxl: 1.625rem;
+$font-size-xxl: 1.5rem;
+$font-size-xl: 1.4rem;
+$font-size-l: 1.2rem;
+$font-size-m: 1rem;
+$font-size-s: 0.875rem;
+$font-size-xs: 0.75rem;
+
+// SPACING
+$font-space-xxxxl: 2rem;
+$font-space-xxxl: 1.5em;
+$font-space-xxl: 1.2em;
+$font-space-xl: 1em;
+$font-space-l: 0.6em;
+$font-space-m: 0.5em;
+$font-space-s: 0.4em;
+
+// FONT
+// $font-heading: Raleway, Helvetica, Arial, sans-serif;
+// $font-text: Raleway, Helvetica, Arial, sans-serif;
+// $font-code: inconsolata, monospace;
+
+// FONT WEIGHT
+$font-weight-extrablack: 900;
+$font-weight-black: 800;
+$font-weight-extrabold: 700;
+$font-weight-semi-bold: 600;
+$font-weight-bold: 500;
+$font-weight-normal: 400;
+$font-weight-light: 300;
+
+// OPACITY
+$opacity-hover: 0.8;
+$opacity-soft: 0.65;
+$opacity-disabled: 0.5;
+
+// SPACE
+$space-xxxl: 100px;
+$space-xxl: 60px;
+$space-xl: 40px;
+$space-l: 30px;
+$space-m: 20px;
+$space-s: 15px;
+$space-xs: 10px;
+$space-xxs: 5px;
+$space-xxxs: 2px;
+$space-0: 0;
+
+// SPACE
+$size-height-base: 42px;
+$size-height-large: 50px;
+$size-height-xlarge: 60px;
+$size-tappable-square: 44px;
+$size-height-footer: 64px;
+$container-size: 1100px;
+
+// BOX SHADOW
+$box-shadow-s: 0 0 0 1px rgba(92, 106, 196, 0.1);
+$box-shadow-m: 1px 1px 4px 0 rgba(0, 0, 0, 0.1);
+$box-shadow-l: 2px 4px 10px 0 rgba(0, 0, 0, 0.1);
+$box-shadow-elevated: 0 0 0 1px rgba(31, 45, 61, 0.08);
+$box-shadow-elevated-l: 0 2px 4px 0 rgba(0, 0, 0, 0.15);
+$box-shadow-large: 0 20px 60px 0 rgba(0, 0, 0, 0.15);
+$box-shadow-base: 0px 12px 26px -4px rgba(0, 0, 0, 0.1);
+$box-shadow-small: 0px 8px 18px -2px rgba(0, 0, 0, 0.1);
+$box-shadow-x-small: 0px 0px 3px 0px rgba(0, 0, 0, 0.1);
+$box-shadow-active: 0 0 6px 1px rgba(20, 100, 160, 0.5);
+$box-shadow-inset: inset 0 0 20px 1px rgba(0, 0, 0, 0.15);
+$box-shadow-small-inset: inset 0 0 0 1px rgba(0, 0, 0, 0.05);
+
+// TRANSITION TIME
+$duration-short: 0.08s;
+$duration-base: 0.5s;
+$duration-long: 0.75s;
+$duration-x-long: 1s;
+$duration-xx-long: 2s;
+
+// TRANSITION EASE
+$ease-out: cubic-bezier(0.25, 0.46, 0.45, 0.94);
+$ease-out-sharp: cubic-bezier(0.165, 0.84, 0.44, 1);
+$ease-out-bounce: cubic-bezier(0.87, -0.41, 0.19, 1.44);
+$ease-in: cubic-bezier(0.55, 0.085, 0.68, 0.53);
+$ease-in-sharp: cubic-bezier(0.895, 0.03, 0.685, 0.22);
+
+// MEDIA SIZE
+$xs: 480px;
+$sm: 600px;
+$md: 768px;
+$lg: 1024px;
+$xl: 1200px;

@@ -4,5 +4,6 @@ export const apiClient = axios.create({
 	baseURL: `http://localhost:${import.meta.env.VITE_BACKEND_PORT}`,
 	headers: {
 		"Content-Type": "application/json",
+		Accept: "application/json",
 	},
 });

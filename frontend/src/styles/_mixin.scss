@@ -1,0 +1,126 @@
+@use "./variable" as v;
+
+// SOURCES
+// https://dev.to/alemesa/10-awesome-sass-scss-mixins-5ci2
+// https://www.barrage.net/blog/technology/top-8-sass-mixins
+
+// SIZE
+
+@mixin box($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+// FLEXBOX
+
+@mixin flexbox(
+  $display: flex,
+  $direction: row,
+  $placeContent: null,
+  $placeItems: null,
+  $wrap: nowrap,
+  $shrink: 0,
+  $grow: 0,
+  $alignContent: null,
+  $justifyContent: null,
+  $alignItems: null,
+  $justifyItems: null) {
+    display: $display;
+    flex-direction: $direction;
+    @if $placeContent == null {
+      @if $alignContent   { align-content: $alignContent; }
+      @if $justifyContent { justify-content: $justifyContent; }
+    } @else {
+      place-content: $placeContent;
+    }
+    @if $placeItems == null {
+      @if $alignItems   { align-items: $alignItems; }
+      @if $justifyItems { justify-items: $justifyItems; }
+    } @else {
+      place-items: $placeItems;
+    }
+    flex-wrap: $wrap;
+    flex-shrink: $shrink;
+    flex-grow: $grow;
+}
+
+
+// POSITION
+
+@mixin position(
+  $position: absolute,
+  $top: null,
+  $right: null,
+  $bottom: null,
+  $left: null,
+  $z-index: initial
+) {
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  z-index: $z-index;
+}
+
+// BACKGROUND
+
+@mixin cover-background {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+// MEDIA QUERIES
+
+$tablet: 768;
+$large: 1024;
+$desktop: 1280;
+
+@mixin tablet {
+  @media only screen and (min-width: ($tablet * 1px)) {
+    @content;
+  }
+}
+
+@mixin large {
+  @media only screen and (min-width: ($large * 1px)) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media only screen and (min-width: ($desktop * 1px)) {
+    @content;
+  }
+}
+
+// VISIBILITY
+
+@mixin fade($type) {
+  @if $type== "hide" {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1s, opacity 1s;
+  } @else if $type== "show" {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 1s, opacity 1s;
+  }
+}
+
+// ELEMENTS
+
+@mixin buttonStyle($bg-color, $text-color, $padding: 10px, $radius: 5px) {
+  background-color: $bg-color;
+  color: $text-color;
+  padding: $padding;
+  border: none;
+  border-radius: $radius;
+  cursor: pointer;
+  transition: background-color 0.3s ease;
+
+  &:hover {
+    background-color: darken($bg-color, 10%);
+  }
+}

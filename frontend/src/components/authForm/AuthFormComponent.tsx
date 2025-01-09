@@ -1,0 +1,65 @@
+// import des bibliothèques
+import { useState } from "react";
+// import des types
+import type { User } from "../../types/userTypes";
+import { loginUser } from "../../utils/api/authAPI";
+import { useNavigate } from "react-router";
+
+const AuthFormComponent = () => {
+	// définition du state pour les données du formulaire
+	const [userAuthInformations, setUserAuthInformations] = useState<User>({
+		username: "",
+		password: "",
+	});
+
+	// fonction de gestion du changement dans l'input
+	const handleUserAuthInformationsChange = (id: string, value: string) => {
+		const newUser = { ...userAuthInformations, [id]: value };
+		setUserAuthInformations(newUser);
+	};
+
+	// fonction de gestion du bouton "Se connecter"
+	const navigate = useNavigate();
+	const handleConnectionButtonClick = async () => {
+		const isLogged = await loginUser(userAuthInformations);
+		if (isLogged) navigate("/backoffice");
+	};
+
+	return (
+		<>
+			<form>
+				<div>
+					<label htmlFor="username">Nom d'utilisateur : </label>
+					<input
+						type="text"
+						name="username"
+						id="username"
+						value={userAuthInformations.username}
+						onChange={(event) =>
+							handleUserAuthInformationsChange("username", event.target.value)
+						}
+						required
+					/>
+				</div>
+				<div>
+					<label htmlFor="password">Mot de passe : </label>
+					<input
+						type="password"
+						name="password"
+						id="password"
+						value={userAuthInformations.password}
+						onChange={(event) =>
+							handleUserAuthInformationsChange("password", event.target.value)
+						}
+						required
+					/>
+				</div>
+			</form>
+			<button type="button" onClick={handleConnectionButtonClick}>
+				Se connecter
+			</button>
+		</>
+	);
+};
+
+export default AuthFormComponent;

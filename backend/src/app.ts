@@ -1,15 +1,12 @@
 // import des bibliothèques
-import express, {
-	type Application,
-	type Request,
-	type Response,
-} from "express";
+import express, { type Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
+import passport from "passport";
+import cookieParser from "cookie-parser";
 // import des modules
 import { AppDataSource } from "./dataSource";
-// import des entités
-import { User } from "./entities/User";
+import { authRouter } from "./routes/authRoute";
 
 // on charge les variables d'environnement
 dotenv.config();
@@ -19,6 +16,8 @@ const PORT = process.env.APP_PORT;
 
 // Middleware
 app.use(express.json());
+app.use(passport.initialize());
+app.use(cookieParser());
 app.use(
 	cors({
 		origin: [`http://localhost:${process.env.FRONTEND_PORT}`],
@@ -32,14 +31,7 @@ AppDataSource.initialize()
 	.catch((err) => console.error("Database connection error:", err));
 
 // Routes
-app.get("/", (req: Request, res: Response) => {
-	res.status(200).send("Backend in development!");
-});
-
-app.get("/users", async (req: Request, res: Response) => {
-	const users = await AppDataSource.getRepository(User).find();
-	res.json(users);
-});
+app.use("/auth", authRouter);
 
 // Start the server
 app.listen(PORT, () =>
