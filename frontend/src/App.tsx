@@ -11,7 +11,7 @@ function App() {
 	return (
 		<div className="app">
 			<h1>{translation[language].title}</h1>
-			<MapComponent />
+			{/* <MapComponent /> */}
 		</div>
 	);
 }

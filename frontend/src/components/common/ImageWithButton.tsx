@@ -1,4 +1,4 @@
-interface ButtonWithLinkProps {
+interface ImageWithButtonProps {
 	link: string;
 	ariaLabel: string;
 	buttonClassName: string;
@@ -7,14 +7,14 @@ interface ButtonWithLinkProps {
 	imgWidth: number;
 }
 
-const ButtonWithLink = ({
+const ImageWithButton = ({
 	link,
 	ariaLabel,
 	buttonClassName,
 	imgSrc,
 	imgAlt,
 	imgWidth,
-}: ButtonWithLinkProps) => {
+}: ImageWithButtonProps) => {
 	return (
 		<a href={link}>
 			<button type="button" aria-label={ariaLabel} className={buttonClassName}>
@@ -24,4 +24,4 @@ const ButtonWithLink = ({
 	);
 };
 
-export default ButtonWithLink;
+export default ImageWithButton;

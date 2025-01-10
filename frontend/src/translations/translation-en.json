@@ -1,5 +1,9 @@
 {
 	"title": "My Map",
 	"en": "English",
-	"fr": "French"
+	"fr": "French",
+	"navigation": {
+		"home": "Home",
+		"map": "Map"
+	}
 }

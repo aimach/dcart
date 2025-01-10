@@ -2,11 +2,11 @@
 import { useContext } from "react";
 // import des composants
 import NavComponent from "../common/NavComponent";
-import ButtonWithLink from "../common/ButtonWithLink";
+import ImageWithLink from "../common/ImageWithLink";
 // import du context
 import { TranslationContext } from "../../context/TranslationContext";
 // import des types
-import type { Language } from "../../types/languageTypes";
+import type { Language, TranslationObject } from "../../types/languageTypes";
 import type { NavList } from "../../types/commonTypes";
 // import du style
 import style from "./header.module.scss";
@@ -22,33 +22,45 @@ const HeaderComponent = () => {
 
 	const pageNavigationList: NavList = [
 		{
-			title: "Page 1",
+			title: (
+				(translation[language] as TranslationObject)
+					.navigation as TranslationObject
+			).home,
 			onClickFunction: undefined,
+			route: "/",
 		},
 		{
-			title: "Page 2",
+			title: (
+				(translation[language] as TranslationObject)
+					.navigation as TranslationObject
+			).map,
 			onClickFunction: undefined,
+			route: "/map",
 		},
 		{
 			title: "Page 3",
 			onClickFunction: undefined,
+			route: "/",
 		},
 	];
 
 	const translationNavigationList: NavList = [
 		{
-			title: translation[language].fr,
+			title: (translation[language] as TranslationObject).fr,
 			onClickFunction: () => switchLanguage("fr"),
+			route: undefined,
 		},
 		{
-			title: translation[language].en,
+			title: (translation[language] as TranslationObject).en,
 			onClickFunction: () => switchLanguage("en"),
+			route: undefined,
 		},
 	];
 
 	return (
 		<header className={style.header}>
-			<ButtonWithLink
+			<ImageWithLink
+				type="link"
 				link={"https://map-polytheisms.huma-num.fr/"}
 				ariaLabel={"Visiter le site MAP"}
 				buttonClassName={style.headerLogo}
@@ -57,13 +69,26 @@ const HeaderComponent = () => {
 				imgWidth={100}
 			/>
 			<NavComponent
+				type="route"
 				navClassName={style.headerNavMenu}
 				list={pageNavigationList}
 			/>
-			<NavComponent
-				navClassName={style.headerTranslationMenu}
-				list={translationNavigationList}
-			/>
+			<div className={style.headerLastSection}>
+				<NavComponent
+					type="list"
+					navClassName={style.headerTranslationMenu}
+					list={translationNavigationList}
+				/>
+				<ImageWithLink
+					type="route"
+					link={"/menu"}
+					ariaLabel={undefined}
+					buttonClassName={undefined}
+					imgSrc={""}
+					imgAlt={"Menu"}
+					imgWidth={100}
+				/>
+			</div>
 		</header>
 	);
 };

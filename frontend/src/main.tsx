@@ -13,6 +13,7 @@ import AuthentificationPage from "./pages/AuthentificationPage.tsx";
 import ProtectedLayout from "./layouts/ProtectedLayout.tsx";
 import BOHomePage from "./pages/BOHomePage.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
+import MenuPage from "./pages/MenuPage/MenuPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -27,6 +28,7 @@ if (rootElement) {
 								<Route index element={<App />} />
 								<Route path="map" element={<MapComponent />} />
 							</Route>
+							<Route path="menu" element={<MenuPage />} />
 							<Route
 								path="authentification"
 								element={<AuthentificationPage />}
