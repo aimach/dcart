@@ -1,11 +1,22 @@
-header {
-  nav {
-    ul {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      gap: 1rem;
-      list-style-type: none;
-    }
+@use '../../styles/mixin' as m;
+@use '../../styles/variable' as v;
+
+.header {
+  height: v.$space-xxxl;
+  padding: 0 v.$font-space-xl;
+  @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
+  &Logo {
+    cursor:pointer;
+  }
+  ul {
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-end);
+    gap: v.$font-space-xl;
+    list-style-type: none;
+  }
+  &NavMenu {
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
+  }
+  li {
+    cursor:pointer;
   }
 }
