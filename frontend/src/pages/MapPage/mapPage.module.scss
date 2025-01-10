@@ -17,11 +17,17 @@
     flex-grow: 1;
     border: 1px solid blue;
 
-    aside {
-      flex: 1;
+    .aside {
       border: 1px solid black;
       height: 100%;
 
+      &Opened {
+        flex: 1;
+      }
+
+      &Closed {
+        flex: 0;
+      }
     }
 
     section {
@@ -34,4 +40,27 @@
   &Loaded {
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
   }
+}
+
+.toggleButtonContainer {
+  position: relative;
+  height: 90%;
+}
+
+.toggleButton {
+  position: absolute;
+  top: 50%;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+
+  &Left {
+    right: 0;
+  }
+
+  &Right {
+    left: 0;
+  }
+
+
 }
