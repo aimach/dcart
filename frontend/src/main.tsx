@@ -5,13 +5,14 @@ import { BrowserRouter, Routes, Route } from "react-router";
 // import des composants
 import App from "./App.tsx";
 import NavigationLayout from "./layouts/NavigationLayout.tsx";
-import { TranslationProvider } from "./context/TranslationContext.tsx";
-import AuthentificationPage from "./pages/AuthentificationPage.tsx";
 import ProtectedLayout from "./layouts/ProtectedLayout.tsx";
+import AuthentificationPage from "./pages/AuthentificationPage.tsx";
 import BOHomePage from "./pages/BOHomePage.tsx";
-import { AuthProvider } from "./context/AuthContext.tsx";
 import MenuPage from "./pages/MenuPage/MenuPage.tsx";
 import MapPage from "./pages/MapPage/MapPage.tsx";
+// import du contexte
+import { AuthProvider } from "./context/AuthContext.tsx";
+import { TranslationProvider } from "./context/TranslationContext.tsx";
 // import du style
 import "./index.css";
 

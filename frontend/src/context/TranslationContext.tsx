@@ -1,7 +1,7 @@
 // import des bibliothèques
 import { createContext, useState } from "react";
-import type { ReactNode } from "react";
 // import des types
+import type { ReactNode } from "react";
 import type { Language, TranslationObject } from "../types/languageTypes";
 // import des fichiers
 import translationFr from "../translations/translation-fr.json";

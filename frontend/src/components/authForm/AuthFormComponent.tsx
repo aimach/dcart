@@ -1,9 +1,10 @@
 // import des bibliothèques
 import { useState } from "react";
+import { useNavigate } from "react-router";
 // import des types
 import type { User } from "../../types/userTypes";
+// import des services
 import { loginUser } from "../../utils/api/authAPI";
-import { useNavigate } from "react-router";
 
 const AuthFormComponent = () => {
 	// définition du state pour les données du formulaire

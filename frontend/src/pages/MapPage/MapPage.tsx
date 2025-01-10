@@ -1,10 +1,10 @@
 // import des bibliothèques
-import { useState, useEffect, useRef } from "react";
+import { useState, useEffect } from "react";
 // import des composants
 import MapComponent from "../../components/mapComponent/MapComponent";
+import LoaderComponent from "../../components/common/loader/LoaderComponent";
 // import du style
 import style from "./mapPage.module.scss";
-import LoaderComponent from "../../components/common/loader/LoaderComponent";
 
 const MapPage = () => {
 	const [mapReady, setMapReady] = useState<boolean>(false);
