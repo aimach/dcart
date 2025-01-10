@@ -5,22 +5,27 @@
   height: v.$space-xxxl;
   padding: 0 v.$font-space-xl;
   @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
+
   &Logo {
-    cursor:pointer;
+    cursor: pointer;
   }
+
   &NavMenu {
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
   }
+
   &LastSection {
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
     gap: 1rem;
   }
+
   ul {
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-end);
     gap: v.$font-space-xl;
     list-style-type: none;
   }
+
   li {
-    cursor:pointer;
+    cursor: pointer;
   }
 }

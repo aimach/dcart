@@ -4,16 +4,16 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 // import des composants
 import App from "./App.tsx";
-// import du style
-import "./index.css";
 import NavigationLayout from "./layouts/NavigationLayout.tsx";
-import MapComponent from "./components/mapComponent/MapComponent.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
 import AuthentificationPage from "./pages/AuthentificationPage.tsx";
 import ProtectedLayout from "./layouts/ProtectedLayout.tsx";
 import BOHomePage from "./pages/BOHomePage.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import MenuPage from "./pages/MenuPage/MenuPage.tsx";
+import MapPage from "./pages/MapPage/MapPage.tsx";
+// import du style
+import "./index.css";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -26,7 +26,7 @@ if (rootElement) {
 						<Routes>
 							<Route element={<NavigationLayout />}>
 								<Route index element={<App />} />
-								<Route path="map" element={<MapComponent />} />
+								<Route path="map" element={<MapPage />} />
 							</Route>
 							<Route path="menu" element={<MenuPage />} />
 							<Route
