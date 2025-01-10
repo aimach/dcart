@@ -1,6 +1,7 @@
 // import des bibliothèques
 import { useState, createContext, useEffect } from "react";
 import { useNavigate } from "react-router";
+// import des services
 import { verifyAuthentification } from "../utils/api/authAPI";
 
 type AuthContextType = {

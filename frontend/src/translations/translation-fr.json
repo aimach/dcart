@@ -1,5 +1,9 @@
 {
-	"title": "Ma carte",
+	"title": "Atlas numérique des noms divins en Méditerranée",
 	"en": "Anglais",
-	"fr": "Français"
+	"fr": "Français",
+	"navigation": {
+		"home": "Accueil",
+		"map": "Carte"
+	}
 }

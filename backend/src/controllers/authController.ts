@@ -1,6 +1,6 @@
 // import des bibliothèques
 import argon2 from "argon2";
-// import des modèles
+// import des entités
 import { User } from "../entities/User";
 // import des services
 import { jwtService } from "../utils/jwt";

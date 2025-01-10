@@ -1,6 +1,7 @@
+// import des services
+import { apiClient } from "./apiClient";
 // import des types
 import type { User } from "../../types/userTypes";
-import { apiClient } from "./apiClient";
 
 export const loginUser = async (body: User) => {
 	try {
