@@ -1,3 +1,4 @@
+// import des bibliothèques
 import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 
 @Entity()
