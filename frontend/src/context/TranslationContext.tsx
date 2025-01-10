@@ -2,7 +2,7 @@
 import { createContext, useState } from "react";
 import type { ReactNode } from "react";
 // import des types
-import type { Language } from "../types/languageTypes";
+import type { Language, TranslationObject } from "../types/languageTypes";
 // import des fichiers
 import translationFr from "../translations/translation-fr.json";
 import translationEn from "../translations/translation-en.json";
@@ -10,9 +10,7 @@ import translationEn from "../translations/translation-en.json";
 export interface I18nContextType {
 	language: Language;
 	setLanguage: (language: Language) => void;
-	translation: {
-		[key: string]: { [key: string]: string };
-	};
+	translation: TranslationObject;
 }
 
 const translation = {

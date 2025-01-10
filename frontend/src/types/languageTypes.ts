@@ -1,3 +1,7 @@
 type Language = "en" | "fr";
 
-export type { Language };
+type TranslationObject = {
+	[key: string]: string | TranslationObject;
+};
+
+export type { Language, TranslationObject };
