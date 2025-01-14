@@ -5,8 +5,9 @@ import cors from "cors";
 import passport from "passport";
 import cookieParser from "cookie-parser";
 // import des modules
-import { AppDataSource } from "./dataSource";
+import { dcartDataSource, MapDataSource } from "./dataSource/dataSource";
 import { authRouter } from "./routes/authRoute";
+import { mapRouter } from "./routes/mapRoute";
 
 // on charge les variables d'environnement
 dotenv.config();
@@ -25,13 +26,18 @@ app.use(
 	}),
 );
 
-// Connect to the database
-AppDataSource.initialize()
-	.then(() => console.log("Database connected"))
-	.catch((err) => console.error("Database connection error:", err));
+// Connect to the databases
+dcartDataSource
+	.initialize()
+	.then(() => console.log("Database DCART connected"))
+	.catch((err) => console.error("Database DCART connection error:", err));
+MapDataSource.initialize()
+	.then(() => console.log("Database MAP connected"))
+	.catch((err) => console.error("Database MAP connection error:", err));
 
 // Routes
 app.use("/auth", authRouter);
+app.use("/map", mapRouter);
 
 // Start the server
 app.listen(PORT, () =>
