@@ -33,7 +33,7 @@ const HeaderComponent = () => {
 			title: (
 				(translation[language] as TranslationObject)
 					.navigation as TranslationObject
-			).map,
+			).maps,
 			onClickFunction: undefined,
 			route: "/map",
 		},

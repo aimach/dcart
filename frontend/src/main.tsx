@@ -15,6 +15,7 @@ import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
 // import du style
 import "./index.css";
+import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -27,7 +28,10 @@ if (rootElement) {
 						<Routes>
 							<Route element={<NavigationLayout />}>
 								<Route index element={<App />} />
-								<Route path="map" element={<MapPage />} />
+								<Route path="map">
+									<Route index element={<MapMenuPage />} />
+									<Route path="exploration" element={<MapPage />} />
+								</Route>
 							</Route>
 							<Route path="menu" element={<MenuPage />} />
 							<Route

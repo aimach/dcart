@@ -1,0 +1,31 @@
+@use '../../styles/mixin' as m;
+@use '../../styles/variable' as v;
+
+.mapMenu {
+  border: 1px solid black;
+  width: 100vw;
+  height: calc(100vh - 100px);
+  /* hauteur totale - 100px de mainHeader */
+  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-end, center);
+
+  &ButtonContainer {
+    height: 70%;
+    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+  }
+
+  &NavContainer {
+    height: 30%;
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-end);
+  }
+
+  &NavContainer {
+    height: 30%;
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-end);
+    margin-bottom: v.$font-space-xxxl
+  }
+
+  &Nav {
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-end);
+    gap: v.$font-space-xxxxl * 2;
+  }
+}
