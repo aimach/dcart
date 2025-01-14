@@ -80,7 +80,7 @@ sources_with_attestations AS (
   ${
 		type === "agent"
 			? "AND activite_agent.id = $2"
-			: "AND formule.formule LIKE $2"
+			: "AND formule.formule LIKE '%' || $2 || '%'"
 		// filtrer ici le dieu ou l'épithète`
 	} 
   ${queryElements}
