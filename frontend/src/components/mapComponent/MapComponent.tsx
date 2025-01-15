@@ -38,11 +38,7 @@ const MapComponent = ({ toggleButtons, points }: MapComponentProps) => {
 							<Marker
 								key={keyPoint}
 								position={[point.latitude, point.longitude]}
-							>
-								<Popup>
-									A pretty CSS3 popup. <br /> Easily customizable.
-								</Popup>
-							</Marker>
+							/>
 						);
 					})}
 				</MapContainer>
