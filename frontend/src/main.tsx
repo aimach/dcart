@@ -10,12 +10,12 @@ import AuthentificationPage from "./pages/AuthentificationPage.tsx";
 import BOHomePage from "./pages/BOHomePage.tsx";
 import MenuPage from "./pages/MenuPage/MenuPage.tsx";
 import MapPage from "./pages/MapPage/MapPage.tsx";
+import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
 // import du style
 import "./index.css";
-import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -30,7 +30,7 @@ if (rootElement) {
 								<Route index element={<App />} />
 								<Route path="map">
 									<Route index element={<MapMenuPage />} />
-									<Route path="exploration" element={<MapPage />} />
+									<Route path=":mapId" element={<MapPage />} />
 								</Route>
 							</Route>
 							<Route path="menu" element={<MenuPage />} />
