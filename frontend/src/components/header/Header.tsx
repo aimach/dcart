@@ -66,7 +66,7 @@ const HeaderComponent = () => {
 				buttonClassName={style.headerLogo}
 				imgSrc={MAPLogo}
 				imgAlt={"MAP logo"}
-				imgWidth={100}
+				imgWidth={50}
 			/>
 			<NavComponent
 				type="route"

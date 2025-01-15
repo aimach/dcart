@@ -3,7 +3,7 @@
 
 .mapSection {
   @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
-  height: calc(100vh - 100px);
+  height: calc(100vh - 60px);
 
   &Header {
     border: 1px solid black;
