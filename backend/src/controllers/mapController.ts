@@ -19,8 +19,11 @@ export const mapController = {
 		try {
 			const { mapId } = req.params;
 			if (mapId === "all") {
-				const MapInfos = await dcartDataSource.getRepository(MapContent).find();
+				const MapInfos = await dcartDataSource
+					.getRepository(MapContent)
+					.find({ where: { isActive: true } });
 				res.status(200).send(MapInfos);
+				return;
 			}
 
 			const mapInfos = await dcartDataSource
