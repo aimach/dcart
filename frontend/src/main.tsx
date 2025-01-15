@@ -10,6 +10,7 @@ import AuthentificationPage from "./pages/AuthentificationPage.tsx";
 import BOHomePage from "./pages/BOHomePage.tsx";
 import MenuPage from "./pages/MenuPage/MenuPage.tsx";
 import MapPage from "./pages/MapPage/MapPage.tsx";
+import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -27,7 +28,10 @@ if (rootElement) {
 						<Routes>
 							<Route element={<NavigationLayout />}>
 								<Route index element={<App />} />
-								<Route path="map" element={<MapPage />} />
+								<Route path="map">
+									<Route index element={<MapMenuPage />} />
+									<Route path=":mapId" element={<MapPage />} />
+								</Route>
 							</Route>
 							<Route path="menu" element={<MenuPage />} />
 							<Route

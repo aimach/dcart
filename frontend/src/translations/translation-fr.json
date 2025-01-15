@@ -4,6 +4,9 @@
 	"fr": "Français",
 	"navigation": {
 		"home": "Accueil",
-		"map": "Carte"
+		"maps": "Cartes"
+	},
+	"button": {
+		"freeExploration": "Exploration libre"
 	}
 }

@@ -1,84 +1,152 @@
-// import des bibliothèques
-import type { Request, Response } from "express";
 // import des entités
+import { MapContent } from "../entities/MapContent";
 // import des services
-import { MapDataSource } from "../dataSource/dataSource";
+import { dcartDataSource, MapDataSource } from "../dataSource/dataSource";
 import { getSourcesQuery } from "../utils/query/sourceQueryString";
 import {
-	getQueryStringForGodsFilter,
 	getQueryStringForLocalisationFilter,
-	getQueryStringForLanguageFilter,
 	getQueryStringForDateFilter,
 } from "../utils/functions/functions";
+import { handleError } from "../utils/errorHandler/errorHandler";
 // import des types
+import type { Request, Response } from "express";
 
 export const mapController = {
-	// récupérer toutes les sources
-	getSourcesByElementId: async (req: Request, res: Response): Promise<void> => {
+	getMapInformationsById: async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
 		try {
-			// on récupère les paramètres
-			const { elementId } = req.params;
+			const { mapId } = req.params;
+			if (mapId === "all") {
+				const MapInfos = await dcartDataSource
+					.getRepository(MapContent)
+					.find({ where: { isActive: true } });
+				res.status(200).send(MapInfos);
+				return;
+			}
+
+			const mapInfos = await dcartDataSource
+				.getRepository(MapContent)
+				.findOneBy({ id: mapId });
+			if (!mapInfos) {
+				res.status(404).send({ Erreur: "Carte non trouvée" });
+			} else {
+				res.status(200).send(mapInfos);
+			}
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	// récupérer toutes les sources
+	getSourcesByMapId: async (req: Request, res: Response): Promise<void> => {
+		try {
+			// on récupère params et query
+			const { mapId } = req.params;
+
+			// on récupère les informations de la carte
+			const mapInfos = await dcartDataSource
+				.getRepository(MapContent)
+				.findOneBy({ id: mapId });
+			if (!mapInfos) {
+				res.status(404).send({ Erreur: "Carte non trouvée" });
+			}
+
 			const {
-				elementNbByAttestation,
-				divinityPowerNb,
-				gods,
-				localisation,
-				languages,
+				name,
+				description,
+				elementNb,
+				elementOperator,
+				divinityNb,
+				divinityOperator,
+				locationType,
+				locationId,
 				ante,
 				post,
-			} = req.query;
+			} = mapInfos as MapContent;
 
-			// on prépare les réglages par défaut s'ils ne sont pas indiqués
-			elementNbByAttestation ? elementNbByAttestation : 3;
-			divinityPowerNb ? divinityPowerNb : 1;
 			// on prépare les query des filtres
-			const queryElements = gods
-				? getQueryStringForGodsFilter(gods as string)
-				: "";
-			const queryLocalisation = localisation
-				? getQueryStringForLocalisationFilter(localisation as string)
-				: "";
-			const queryLanguage = languages
-				? getQueryStringForLanguageFilter(languages as string)
-				: "";
-			const queryAnte = ante
-				? getQueryStringForDateFilter("ante", ante as string)
-				: "";
-			const queryPost = post
-				? getQueryStringForDateFilter("post", post as string)
-				: "";
+			const queryLocalisation = getQueryStringForLocalisationFilter(
+				locationType,
+				locationId,
+			);
+			const queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
+			const queryPost = post ? getQueryStringForDateFilter("post", post) : "";
 
 			// on récupère le texte de la requête SQL
 			const sqlQuery = getSourcesQuery(
-				"element",
-				queryElements,
 				queryLocalisation,
-				queryLanguage as string,
+				elementOperator, // obligé d'intégrer les opérateurs ici, sinon ça plante
+				divinityOperator,
 				queryAnte as string,
 				queryPost as string,
 			);
 
 			// légende des paramètres : nombre d'éléments par attestation, id du théonyme/épithète, nombre de puissances divines
 			const results = await MapDataSource.query(sqlQuery, [
-				elementNbByAttestation ? elementNbByAttestation : 3,
-				`{${elementId}}`,
-				divinityPowerNb ? divinityPowerNb : 1,
+				elementNb,
+				divinityNb,
 			]);
 
 			res.status(200).json(results);
 		} catch (error) {
-			if (error instanceof Error) {
-				res.status(500).json({
-					message: error.message,
-					stack: error.stack,
-					error: error,
-				});
-				return;
-			}
-			res.status(500).json({
-				message: "Erreur inattendue",
-				error: error,
-			});
+			handleError(res, error as Error);
 		}
 	},
+
+	// récupérer toutes les sources avec un élément donné
+	// getSourcesByElementId: async (req: Request, res: Response): Promise<void> => {
+	// 	try {
+	// 		// on récupère les paramètres
+	// 		const { elementId } = req.params;
+	// 		const {
+	// 			elementNbByAttestation,
+	// 			divinityPowerNb,
+	// 			gods,
+	// 			localisation,
+	// 			languages,
+	// 			ante,
+	// 			post,
+	// 		} = req.query;
+
+	// 		// on prépare les query des filtres
+	// 		const queryElements = gods
+	// 			? getQueryStringForGodsFilter(gods as string)
+	// 			: "";
+	// 		const queryLocalisation = localisation
+	// 			? getQueryStringForLocalisationFilter(localisation as string)
+	// 			: "";
+	// 		const queryLanguage = languages
+	// 			? getQueryStringForLanguageFilter(languages as string)
+	// 			: "";
+	// 		const queryAnte = ante
+	// 			? getQueryStringForDateFilter("ante", ante as string)
+	// 			: "";
+	// 		const queryPost = post
+	// 			? getQueryStringForDateFilter("post", post as string)
+	// 			: "";
+
+	// 		// on récupère le texte de la requête SQL
+	// 		const sqlQuery = getSourcesQuery(
+	// 			"element",
+	// 			queryElements,
+	// 			queryLocalisation,
+	// 			queryLanguage as string,
+	// 			queryAnte as string,
+	// 			queryPost as string,
+	// 		);
+
+	// 		// légende des paramètres : nombre d'éléments par attestation, id du théonyme/épithète, nombre de puissances divines
+	// 		const results = await MapDataSource.query(sqlQuery, [
+	// 			elementNbByAttestation ? elementNbByAttestation : 3,
+	// 			`{${elementId}}`,
+	// 			divinityPowerNb ? divinityPowerNb : 1,
+	// 		]);
+
+	// 		res.status(200).json(results);
+	// 	} catch (error) {
+	// 		handleError(res, error as Error);
+	// 	}
+	// },
 };

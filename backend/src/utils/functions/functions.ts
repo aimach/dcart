@@ -4,8 +4,24 @@ const getQueryStringForGodsFilter = (gods: string) => {
 	return ` AND formule.formule NOT LIKE ALL(ARRAY[${arrayElements}]) `;
 };
 
-const getQueryStringForLocalisationFilter = (localisation: string) => {
-	return `WHERE grande_region.id = ${localisation}`;
+const getQueryStringForLocalisationFilter = (
+	locationType: string,
+	locationId: number,
+) => {
+	let locationTypeField = "";
+	switch (locationType) {
+		case "subRegion":
+			locationTypeField = "sous_region";
+			break;
+		case "greatRegion":
+			locationTypeField = "grande_region";
+			break;
+
+		default:
+			locationTypeField = "grande_region";
+			break;
+	}
+	return `WHERE ${locationTypeField}.id = ${locationId}`;
 };
 
 const getQueryStringForLanguageFilter = (languages: string) => {
@@ -27,7 +43,7 @@ const getQueryStringForLanguageFilter = (languages: string) => {
 	}
 };
 
-const getQueryStringForDateFilter = (type: string, date: string) => {
+const getQueryStringForDateFilter = (type: string, date: number) => {
 	if (type === "ante") {
 		return ` AND DATATION.ANTE_QUEM <= ${date} `;
 	}
