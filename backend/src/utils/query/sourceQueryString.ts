@@ -1,13 +1,11 @@
 // LEGENDE des paramètres
-// $1 = nombre d'éléments dans l'attestation
-// $2 = activite_agent.id, pour les requêtes via l'activité de l'agent OU id de l'élément, pour les requêtes via théonyme ou épithète
-// $3 = nombre de puissances divines
+// $1 = opérateur et nombre d'éléments dans l'attestation
+// $2 = opérateur et nombre de puissances divines
 
 export const getSourcesQuery = (
-	type: string,
-	queryElements: string,
 	queryLocalisation: string,
-	queryLanguage: string,
+	elementOperator: string,
+	divinityOperator: string,
 	queryAnte: string,
 	queryPost: string,
 ) => {
@@ -76,14 +74,7 @@ sources_with_attestations AS (
   JOIN attestation_with_elements ON attestation.id = attestation_with_elements.id_attestation
   JOIN formule ON formule.attestation_id = attestation.id
   JOIN agent ON agent.id_attestation = attestation.id
-  WHERE attestation_with_elements.nb_element <= $1 
-  ${
-		type === "agent"
-			? "AND activite_agent.id = $2"
-			: "AND formule.formule LIKE '%' || $2 || '%'"
-		// filtrer ici le dieu ou l'épithète`
-	} 
-  ${queryElements}
+  WHERE attestation_with_elements.nb_element ${elementOperator} $1 
 ),
 
 -- on enlève les doublons des sources
@@ -127,11 +118,10 @@ INNER JOIN datation ON datation.ID = source.datation_ID
 LEFT JOIN type_support ON type_support.id = source.type_support_id
 LEFT JOIN materiau ON materiau.id = source.materiau_id 
 ${queryLocalisation} 
-AND formule.puissances_divines = $3
+AND formule.puissances_divines ${divinityOperator} $2
 AND attestation.id_etat_fiche = 4 
 AND localisation_source.latitude IS NOT NULL
 AND localisation_source.longitude IS NOT NULL 
-${queryLanguage}-- ajouter ici le filtre des langues 
 ${queryAnte} ${queryPost} -- ajouter ici le filtre des dates
 GROUP BY 
   localisation_source.latitude,
