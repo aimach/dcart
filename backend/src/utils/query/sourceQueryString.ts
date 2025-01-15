@@ -117,11 +117,11 @@ INNER JOIN source_langue ON source_langue.ID_source = attestation.ID_source
 INNER JOIN datation ON datation.ID = source.datation_ID
 LEFT JOIN type_support ON type_support.id = source.type_support_id
 LEFT JOIN materiau ON materiau.id = source.materiau_id 
-${queryLocalisation} 
+WHERE localisation_source.latitude IS NOT NULL
+AND localisation_source.longitude IS NOT NULL 
 AND formule.puissances_divines ${divinityOperator} $2
 AND attestation.id_etat_fiche = 4 
-AND localisation_source.latitude IS NOT NULL
-AND localisation_source.longitude IS NOT NULL 
+${queryLocalisation} 
 ${queryAnte} ${queryPost} -- ajouter ici le filtre des dates
 GROUP BY 
   localisation_source.latitude,
