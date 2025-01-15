@@ -18,6 +18,10 @@ export const mapController = {
 	): Promise<void> => {
 		try {
 			const { mapId } = req.params;
+			if (mapId === "all") {
+				const MapInfos = await dcartDataSource.getRepository(MapContent).find();
+				res.status(200).send(MapInfos);
+			}
 
 			const mapInfos = await dcartDataSource
 				.getRepository(MapContent)
