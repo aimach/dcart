@@ -1,21 +1,40 @@
 // import des bibliothèques
 import { useState, useEffect } from "react";
+import { useParams } from "react-router";
 // import des composants
 import MapComponent from "../../components/mapComponent/MapComponent";
 import LoaderComponent from "../../components/common/loader/LoaderComponent";
+// import des services
+import { getAllPointsByMapId } from "../../utils/loaders/loaders";
 // import du style
 import style from "./mapPage.module.scss";
 
 const MapPage = () => {
+	// on récupère les params
+	const { mapId } = useParams();
+
+	// on définit les states nécessaires
 	const [mapReady, setMapReady] = useState<boolean>(false);
 	const [toggleButtons, setToggleButtons] = useState({
 		right: true,
 		left: true,
 	});
+	const [allPoints, setAllPoints] = useState([]);
 
+	// on charge les points de la carte
+	const fetchAllPoints = async () => {
+		try {
+			const points = await getAllPointsByMapId(mapId as string);
+			setAllPoints(points);
+			setMapReady(true);
+		} catch (error) {
+			console.error("Erreur lors du chargement des points:", error);
+		}
+	};
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		// on attend que les tuiles soient chargées
-		setTimeout(() => setMapReady(true), 800);
+		fetchAllPoints();
 	}, []);
 
 	return (
@@ -45,7 +64,7 @@ const MapPage = () => {
 				</aside>
 				<section className={mapReady ? undefined : style.mapSectionLoaded}>
 					{mapReady ? (
-						<MapComponent toggleButtons={toggleButtons} />
+						<MapComponent toggleButtons={toggleButtons} points={allPoints} />
 					) : (
 						<LoaderComponent />
 					)}
