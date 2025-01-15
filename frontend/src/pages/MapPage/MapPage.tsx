@@ -16,8 +16,8 @@ const MapPage = () => {
 	// on définit les states nécessaires
 	const [mapReady, setMapReady] = useState<boolean>(false);
 	const [toggleButtons, setToggleButtons] = useState({
-		right: true,
-		left: true,
+		right: false,
+		left: false,
 	});
 	const [allPoints, setAllPoints] = useState([]);
 

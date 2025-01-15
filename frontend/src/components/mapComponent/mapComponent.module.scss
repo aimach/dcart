@@ -1,0 +1,27 @@
+@use '../../styles/mixin' as m;
+@use '../../styles/variable' as v;
+
+.customCircleIcon {
+  width: 10px;
+  height: 10px;
+  color: v.$color-black-chocolate;
+  display: flex;
+  justify-content: center;
+  align-items: center;
+  text-align: center;
+  border-radius: 50%;
+  border: 2px solid v.$color-umber;
+  font-size: 12px;
+}
+
+.lightBackgroundColor {
+  background-color: v.$color-grullo;
+}
+
+.mediumBackgroundColor {
+  background-color: v.$color-umber;
+}
+
+.darkBackgroundColor {
+  background-color: v.$color-dark-lava;
+}
