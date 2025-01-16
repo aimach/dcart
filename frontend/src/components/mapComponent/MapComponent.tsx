@@ -1,6 +1,12 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker, ScaleControl } from "react-leaflet";
+import {
+	MapContainer,
+	TileLayer,
+	Marker,
+	ScaleControl,
+	Tooltip,
+} from "react-leaflet";
 import L, { icon } from "leaflet";
 // import des services
 import {
@@ -17,10 +23,15 @@ import style from "./mapComponent.module.scss";
 
 interface MapComponentProps {
 	toggleButtons: { [key: string]: boolean };
+	setToggleButtons: (toggleButtons: { [key: string]: boolean }) => void;
 	points: PointType[];
 }
 
-const MapComponent = ({ toggleButtons, points }: MapComponentProps) => {
+const MapComponent = ({
+	toggleButtons,
+	setToggleButtons,
+	points,
+}: MapComponentProps) => {
 	const [map, setMap] = useState<LeafletMap | null>(null);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -77,7 +88,15 @@ const MapComponent = ({ toggleButtons, points }: MapComponentProps) => {
 								key={keyPoint}
 								position={[point.latitude, point.longitude]}
 								icon={circleBrownIcon}
-							/>
+								eventHandlers={{
+									click: () =>
+										setToggleButtons({ ...toggleButtons, left: true }),
+								}}
+							>
+								<Tooltip direction="top" offset={[0, -10]}>
+									{point.nom_ville}
+								</Tooltip>
+							</Marker>
 						);
 					})}
 					<ScaleControl />

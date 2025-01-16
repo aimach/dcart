@@ -64,7 +64,11 @@ const MapPage = () => {
 				</aside>
 				<section className={mapReady ? undefined : style.mapSectionLoaded}>
 					{mapReady ? (
-						<MapComponent toggleButtons={toggleButtons} points={allPoints} />
+						<MapComponent
+							toggleButtons={toggleButtons}
+							setToggleButtons={setToggleButtons}
+							points={allPoints}
+						/>
 					) : (
 						<LoaderComponent />
 					)}
