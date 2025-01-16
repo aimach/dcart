@@ -7,6 +7,8 @@ import LoaderComponent from "../../components/common/loader/LoaderComponent";
 import AsideComponent from "../../components/asideComponent.tsx/AsideComponent";
 // import des services
 import { getAllPointsByMapId } from "../../utils/loaders/loaders";
+// import des types
+import type { PointType } from "../../types/mapTypes";
 // import du style
 import style from "./mapPage.module.scss";
 
@@ -22,7 +24,8 @@ const MapPage = () => {
 		right: false,
 		left: false,
 	});
-	const [allPoints, setAllPoints] = useState([]);
+	const [allPoints, setAllPoints] = useState<PointType[]>([]);
+	const [selectedPoint, setSelectedPoint] = useState<PointType | null>(null);
 
 	// on charge les points de la carte
 	const fetchAllPoints = async () => {
@@ -48,6 +51,7 @@ const MapPage = () => {
 					side="left"
 					toggleButtons={toggleButtons}
 					setToggleButtons={setToggleButtons}
+					selectedPoint={selectedPoint}
 				/>
 				<section className={mapReady ? undefined : style.mapSectionLoaded}>
 					{mapReady ? (
@@ -55,6 +59,7 @@ const MapPage = () => {
 							toggleButtons={toggleButtons}
 							setToggleButtons={setToggleButtons}
 							points={allPoints}
+							setSelectedPoint={setSelectedPoint}
 						/>
 					) : (
 						<LoaderComponent />

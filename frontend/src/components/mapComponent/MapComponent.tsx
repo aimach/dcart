@@ -28,12 +28,14 @@ interface MapComponentProps {
 		SetStateAction<Partial<{ right: boolean; left: boolean }>>
 	>;
 	points: PointType[];
+	setSelectedPoint: Dispatch<SetStateAction<PointType | null>>;
 }
 
 const MapComponent = ({
 	toggleButtons,
 	setToggleButtons,
 	points,
+	setSelectedPoint,
 }: MapComponentProps) => {
 	const [map, setMap] = useState<LeafletMap | null>(null);
 
@@ -92,8 +94,10 @@ const MapComponent = ({
 								position={[point.latitude, point.longitude]}
 								icon={circleBrownIcon}
 								eventHandlers={{
-									click: () =>
-										setToggleButtons({ ...toggleButtons, left: true }),
+									click: () => {
+										setToggleButtons({ ...toggleButtons, left: true });
+										setSelectedPoint(point);
+									},
 								}}
 							>
 								<Tooltip direction="top" offset={[0, -10]}>

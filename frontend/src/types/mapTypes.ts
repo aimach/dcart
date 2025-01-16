@@ -65,4 +65,11 @@ type PointType = {
 	sources: SourceType[];
 };
 
-export type { MapType, PointType };
+export type {
+	MapType,
+	PointType,
+	SourceType,
+	AttestationType,
+	AgentType,
+	ElementType,
+};
