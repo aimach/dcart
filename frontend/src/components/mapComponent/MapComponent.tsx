@@ -66,7 +66,7 @@ const MapComponent = ({
 			<section className="leaflet-container">
 				<MapContainer
 					center={[40.43, 16.52]}
-					zoom={5}
+					// zoom={5}
 					minZoom={4}
 					maxZoom={11}
 					ref={setMap}
