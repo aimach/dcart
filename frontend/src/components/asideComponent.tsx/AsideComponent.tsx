@@ -1,6 +1,10 @@
+// import des services
+import { zoomOnMarkerOnClick } from "../../utils/functions/functions";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { PointType } from "../../types/mapTypes";
+import type { Map as LeafletMap } from "leaflet";
+
 // import du style
 import style from "./asideComponent.module.scss";
 import ResultComponent from "../resultComponent/ResultComponent";

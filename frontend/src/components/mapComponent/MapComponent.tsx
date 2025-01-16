@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useEffect } from "react";
 import {
 	MapContainer,
 	TileLayer,
@@ -12,6 +12,7 @@ import L from "leaflet";
 import {
 	getBackGroundColorClassName,
 	getIconSize,
+	zoomOnMarkerOnClick,
 } from "../../utils/functions/functions";
 // import des types
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
@@ -28,7 +29,10 @@ interface MapComponentProps {
 		SetStateAction<Partial<{ right: boolean; left: boolean }>>
 	>;
 	points: PointType[];
+	selectedPoint: PointType;
 	setSelectedPoint: Dispatch<SetStateAction<PointType | null>>;
+	map: LeafletMap;
+	setMap: Dispatch<SetStateAction<LeafletMap | null>>;
 }
 
 const MapComponent = ({
@@ -36,16 +40,9 @@ const MapComponent = ({
 	setToggleButtons,
 	points,
 	setSelectedPoint,
+	map,
+	setMap,
 }: MapComponentProps) => {
-	const [map, setMap] = useState<LeafletMap | null>(null);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
-		if (map) {
-			(map as LeafletMap).invalidateSize();
-		}
-	}, [toggleButtons]);
-
 	const bounds: LatLngTuple[] = [];
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
@@ -53,11 +50,16 @@ const MapComponent = ({
 		for (const point of points) {
 			bounds.push([point.latitude, point.longitude]);
 		}
-		// si la map est initialisée, on
 		if (map) {
 			map.fitBounds(bounds);
 		}
-	}, [bounds, points]);
+	}, [points]);
+
+	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
+		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
+		setToggleButtons({ ...toggleButtons, left: true });
+		setSelectedPoint(point);
+	};
 
 	return (
 		<div className="map" id="map">
@@ -95,8 +97,7 @@ const MapComponent = ({
 								icon={circleBrownIcon}
 								eventHandlers={{
 									click: () => {
-										setToggleButtons({ ...toggleButtons, left: true });
-										setSelectedPoint(point);
+										handleMarkerOnClick(map, point);
 									},
 								}}
 							>

@@ -1,6 +1,7 @@
 // import des types
-import { TranslationObject } from "../../types/languageTypes";
-import type { SourceType } from "../../types/mapTypes";
+import type { TranslationObject } from "../../types/languageTypes";
+import type { SourceType, PointType } from "../../types/mapTypes";
+import type { Map as LeafletMap } from "leaflet";
 
 // utilisée pour définir la couleur du background pour les markers en fonction du nombre de sources
 const getBackGroundColorClassName = (sourcesNb: number) => {
@@ -65,9 +66,15 @@ const getDatationSentence = (
 		: `(${translation[language].common.between} ${source.post_quem} ${translation[language].common.and} ${source.ante_quem})`;
 };
 
+// utilisée pour zoomer sur un marker au click
+const zoomOnMarkerOnClick = (map: LeafletMap, point: PointType) => {
+	map.flyTo([point.latitude, point.longitude], 10);
+};
+
 export {
 	getBackGroundColorClassName,
 	getIconSize,
 	getSupportAndMaterialSentence,
 	getDatationSentence,
+	zoomOnMarkerOnClick,
 };

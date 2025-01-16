@@ -9,6 +9,7 @@ import AsideComponent from "../../components/asideComponent.tsx/AsideComponent";
 import { getAllPointsByMapId } from "../../utils/loaders/loaders";
 // import des types
 import type { PointType } from "../../types/mapTypes";
+import type { Map as LeafletMap } from "leaflet";
 // import du style
 import style from "./mapPage.module.scss";
 
@@ -17,6 +18,8 @@ const MapPage = () => {
 	const { mapId } = useParams();
 
 	// on définit les states nécessaires
+	const [map, setMap] = useState<LeafletMap | null>(null);
+
 	const [mapReady, setMapReady] = useState<boolean>(false);
 	const [toggleButtons, setToggleButtons] = useState<
 		Partial<{ right: boolean; left: boolean }>
@@ -59,7 +62,10 @@ const MapPage = () => {
 							toggleButtons={toggleButtons}
 							setToggleButtons={setToggleButtons}
 							points={allPoints}
+							selectedPoint={selectedPoint as PointType}
 							setSelectedPoint={setSelectedPoint}
+							map={map as LeafletMap}
+							setMap={setMap}
 						/>
 					) : (
 						<LoaderComponent />
