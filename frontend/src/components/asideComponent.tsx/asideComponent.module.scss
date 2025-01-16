@@ -1,19 +1,21 @@
-.aside {
-  border: 1px solid black;
-  height: 100%;
+@use '../../styles/variable' as v;
 
+.aside {
   &Opened {
     flex: 1;
   }
 
   &Closed {
-    flex: 0;
+    flex: 1;
+    display: none;
   }
 }
 
 .toggleButtonContainer {
   position: relative;
-  height: 90%;
+  height: calc(100vh - v.$main-header-height - v.$map-header-height);
+  overflow-x: hidden;
+  overflow-y: scroll;
 }
 
 .toggleButton {
