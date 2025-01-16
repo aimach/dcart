@@ -17,19 +17,6 @@
     flex-grow: 1;
     border: 1px solid blue;
 
-    .aside {
-      border: 1px solid black;
-      height: 100%;
-
-      &Opened {
-        flex: 1;
-      }
-
-      &Closed {
-        flex: 0;
-      }
-    }
-
     section {
       flex: 3;
       border: 1px solid black;

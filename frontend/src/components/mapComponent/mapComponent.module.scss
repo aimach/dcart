@@ -5,7 +5,6 @@
   width: 10px;
   height: 10px;
   color: v.$color-neutral-100;
-  font-weight: v.$font-weight-extrabold;
   display: flex;
   justify-content: center;
   align-items: center;
@@ -14,7 +13,7 @@
   border: 2px solid v.$color-grullo;
   font-size: 12px;
   opacity: 0.9;
-  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
 }
 
 .lightBackgroundColor {

@@ -7,7 +7,7 @@ import {
 	ScaleControl,
 	Tooltip,
 } from "react-leaflet";
-import L, { icon } from "leaflet";
+import L from "leaflet";
 // import des services
 import {
 	getBackGroundColorClassName,
@@ -16,6 +16,7 @@ import {
 // import des types
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
 import type { PointType } from "../../types/mapTypes";
+import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import "./mapComponent.css";
@@ -23,7 +24,9 @@ import style from "./mapComponent.module.scss";
 
 interface MapComponentProps {
 	toggleButtons: { [key: string]: boolean };
-	setToggleButtons: (toggleButtons: { [key: string]: boolean }) => void;
+	setToggleButtons: Dispatch<
+		SetStateAction<Partial<{ right: boolean; left: boolean }>>
+	>;
 	points: PointType[];
 }
 
