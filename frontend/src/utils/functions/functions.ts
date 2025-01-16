@@ -12,4 +12,17 @@ const getBackGroundColorClassName = (sourcesNb: number) => {
 	return "lightBackgroundColor";
 };
 
-export { getBackGroundColorClassName };
+const getIconSize = (sourcesNb: number) => {
+	if (sourcesNb < 10) {
+		return 20;
+	}
+	if (sourcesNb >= 10 && sourcesNb < 50) {
+		return 30;
+	}
+	if (sourcesNb >= 50) {
+		return 40;
+	}
+	return 20;
+};
+
+export { getBackGroundColorClassName, getIconSize };

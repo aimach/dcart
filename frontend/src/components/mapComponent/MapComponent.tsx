@@ -1,9 +1,12 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, Marker } from "react-leaflet";
-import L from "leaflet";
+import { MapContainer, TileLayer, Marker, ScaleControl } from "react-leaflet";
+import L, { icon } from "leaflet";
 // import des services
-import { getBackGroundColorClassName } from "../../utils/functions/functions";
+import {
+	getBackGroundColorClassName,
+	getIconSize,
+} from "../../utils/functions/functions";
 // import des types
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
 import type { PointType } from "../../types/mapTypes";
@@ -43,7 +46,13 @@ const MapComponent = ({ toggleButtons, points }: MapComponentProps) => {
 	return (
 		<div className="map" id="map">
 			<section className="leaflet-container">
-				<MapContainer center={[40.43, 16.52]} zoom={5} ref={setMap}>
+				<MapContainer
+					center={[40.43, 16.52]}
+					zoom={5}
+					minZoom={4}
+					maxZoom={11}
+					ref={setMap}
+				>
 					<TileLayer
 						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 						url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
@@ -55,21 +64,23 @@ const MapComponent = ({ toggleButtons, points }: MapComponentProps) => {
 						const backgroundColorClassName = getBackGroundColorClassName(
 							point.sources.length,
 						);
+						const iconSize = getIconSize(point.sources.length);
 						// Création d'un DivIcon avec du texte et un style circulaire
-						const customIcon = L.divIcon({
-							className: `${style.customCircleIcon} ${style[backgroundColorClassName]}`,
+						const circleBrownIcon = L.divIcon({
+							className: `${style.circleBrownIcon} ${style[backgroundColorClassName]}`,
 							html: `<div>${point.sources.length}</div>`, // si j'ajoute une class sur cette div, je peux modifier également le style du tooltip
-							iconSize: [30, 30], // Dimensions du conteneur
-							iconAnchor: [20, 20], // Centre du marqueur
+							iconSize: [iconSize, iconSize], // Dimensions du conteneur
+							iconAnchor: [iconSize / 2, iconSize / 2], // Centre du marqueur
 						});
 						return (
 							<Marker
 								key={keyPoint}
 								position={[point.latitude, point.longitude]}
-								icon={customIcon}
+								icon={circleBrownIcon}
 							/>
 						);
 					})}
+					<ScaleControl />
 				</MapContainer>
 			</section>
 		</div>

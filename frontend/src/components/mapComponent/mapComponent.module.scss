@@ -1,27 +1,38 @@
 @use '../../styles/mixin' as m;
 @use '../../styles/variable' as v;
 
-.customCircleIcon {
+.circleBrownIcon {
   width: 10px;
   height: 10px;
-  color: v.$color-black-chocolate;
+  color: v.$color-neutral-100;
+  font-weight: v.$font-weight-extrabold;
   display: flex;
   justify-content: center;
   align-items: center;
   text-align: center;
   border-radius: 50%;
-  border: 2px solid v.$color-umber;
+  border: 2px solid v.$color-grullo;
   font-size: 12px;
+  opacity: 0.9;
+  box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
 }
 
 .lightBackgroundColor {
-  background-color: v.$color-grullo;
-}
-
-.mediumBackgroundColor {
   background-color: v.$color-umber;
 }
 
-.darkBackgroundColor {
+.mediumBackgroundColor {
   background-color: v.$color-dark-lava;
+}
+
+.darkBackgroundColor {
+  background-color: v.$color-black-chocolate;
+}
+
+.red {
+  background-color: red;
+}
+
+.invisibleIcon {
+  display: none;
 }
