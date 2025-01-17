@@ -1,0 +1,15 @@
+@use '../../../styles/variable' as v;
+@use '../../../styles/mixin' as m;
+
+.asideHeader {
+  ul {
+    height: v.$space-xl;
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-around, center);
+
+    li {
+      width: 33%;
+      cursor: pointer;
+      text-align: center;
+    }
+  }
+}

@@ -1,4 +1,4 @@
-@use '../../styles/variable' as v;
+@use '../../../styles/variable' as v;
 
 .aside {
   &Opened {
@@ -13,7 +13,7 @@
 
 .toggleButtonContainer {
   position: relative;
-  height: calc(100vh - v.$main-header-height - v.$map-header-height);
+  height: calc(100vh - v.$main-header-height - v.$map-header-height - v.$aside-header-height);
   overflow-x: hidden;
   overflow-y: scroll;
 }

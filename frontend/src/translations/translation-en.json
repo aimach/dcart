@@ -7,7 +7,10 @@
 		"maps": "Maps"
 	},
 	"button": {
-		"freeExploration": "Free exploration"
+		"freeExploration": "Free exploration",
+		"results": "Results",
+		"filters": "Filters",
+		"infos": "Infos"
 	},
 	"common": {
 		"between": "between",

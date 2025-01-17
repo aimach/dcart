@@ -1,13 +1,14 @@
 // import des services
-import { zoomOnMarkerOnClick } from "../../utils/functions/functions";
+import { zoomOnMarkerOnClick } from "../../../utils/functions/functions";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
-import type { PointType } from "../../types/mapTypes";
+import type { PointType } from "../../../types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 
 // import du style
 import style from "./asideComponent.module.scss";
-import ResultComponent from "../resultComponent/ResultComponent";
+import ResultComponent from "../../resultComponent/ResultComponent";
+import AsideHeader from "../asideHeader/AsideHeader";
 
 interface AsideComponentProps {
 	side: "left" | "right";
@@ -30,6 +31,7 @@ const AsideComponent = ({
 				toggleButtons[side] ? `${style.asideOpened}` : `${style.asideClosed}`
 			}
 		>
+			<AsideHeader />
 			<div className={style.toggleButtonContainer}>
 				{side === "left" ? (
 					<ResultComponent point={selectedPoint as PointType} />
