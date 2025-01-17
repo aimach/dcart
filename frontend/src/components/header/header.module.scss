@@ -12,6 +12,16 @@
 
   &NavMenu {
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
+
+    ul {
+      a {
+        text-decoration: none;
+      }
+    }
+
+    &Active {
+      border-bottom: 1px solid black;
+    }
   }
 
   &LastSection {
@@ -28,4 +38,8 @@
   li {
     cursor: pointer;
   }
+}
+
+.languageSelected {
+  border-bottom: 1px solid black;
 }

@@ -12,4 +12,10 @@
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
     gap: v.$space-xxl
   }
+
+  &Active {
+    text-decoration: none;
+    background-color: v.$color-black-chocolate;
+    color: white;
+  }
 }

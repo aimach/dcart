@@ -22,7 +22,8 @@ const AsideReducedMenuComponent = ({
 	// on importe les données de language
 	const { language, translation } = useContext(TranslationContext);
 	// on importe l'onglet par défaut
-	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
+	const { selectedTabMenu, setSelectedTabMenu } =
+		useContext(MapAsideMenuContext);
 
 	const openMenuOnSelectedTab = (tab: MenuTabType) => {
 		setSelectedTabMenu(tab);
@@ -31,16 +32,19 @@ const AsideReducedMenuComponent = ({
 
 	const reducedAsideNavList: NavList = [
 		{
+			id: "results",
 			title: translation[language].button.results,
 			onClickFunction: () => openMenuOnSelectedTab("results"),
 			route: undefined,
 		},
 		{
+			id: "filters",
 			title: translation[language].button.filters,
 			onClickFunction: () => openMenuOnSelectedTab("filters"),
 			route: undefined,
 		},
 		{
+			id: "infos",
 			title: translation[language].button.infos,
 			onClickFunction: () => openMenuOnSelectedTab("infos"),
 			route: undefined,

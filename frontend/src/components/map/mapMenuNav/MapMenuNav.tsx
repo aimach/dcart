@@ -28,6 +28,7 @@ const MapMenuNav = () => {
 	useEffect(() => {
 		if (allMapsInfos.length > 0) {
 			const mappedList = allMapsInfos.map((map) => ({
+				id: map.id,
 				title: map.name,
 				onClickFunction: undefined, // Ajoutez une fonction ici si nécessaire
 				route: `/map/${map.id}`,
@@ -46,6 +47,7 @@ const MapMenuNav = () => {
 			type="route"
 			navClassName={style.mapMenuNav}
 			list={thematicMapsList}
+			activeLinkClassName={style.mapMenuNavActive}
 		/>
 	);
 };
