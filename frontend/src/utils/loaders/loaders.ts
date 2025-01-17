@@ -7,4 +7,10 @@ const getAllMapsInfos = async () => {
 	return allMapsInfos;
 };
 
-export { getAllMapsInfos };
+const getAllPointsByMapId = async (id: string) => {
+	const response = await apiClient.get(`/map/${id}/sources`);
+	const allPoints = await response.data;
+	return allPoints;
+};
+
+export { getAllMapsInfos, getAllPointsByMapId };

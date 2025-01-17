@@ -8,5 +8,9 @@
 	},
 	"button": {
 		"freeExploration": "Free exploration"
+	},
+	"common": {
+		"between": "between",
+		"and": "and"
 	}
 }

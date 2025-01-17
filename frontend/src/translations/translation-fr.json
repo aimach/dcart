@@ -8,5 +8,9 @@
 	},
 	"button": {
 		"freeExploration": "Exploration libre"
+	},
+	"common": {
+		"between": "entre",
+		"and": "et"
 	}
 }

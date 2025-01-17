@@ -2,7 +2,7 @@
 @use '../../styles/variable' as v;
 
 .header {
-  height: v.$space-xxxl;
+  height: v.$space-xxl;
   padding: 0 v.$font-space-xl;
   @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
 

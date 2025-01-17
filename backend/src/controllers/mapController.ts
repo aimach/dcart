@@ -45,49 +45,61 @@ export const mapController = {
 			// on récupère params et query
 			const { mapId } = req.params;
 
-			// on récupère les informations de la carte
-			const mapInfos = await dcartDataSource
-				.getRepository(MapContent)
-				.findOneBy({ id: mapId });
-			if (!mapInfos) {
-				res.status(404).send({ Erreur: "Carte non trouvée" });
+			// on prépare la variable à renvoyer
+			let results = null;
+
+			if (mapId === "exploration") {
+				// on récupère le texte de la requête SQL
+				const sqlQuery = getSourcesQuery(
+					"",
+					"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
+					"=",
+					"",
+					"",
+				);
+				results = await MapDataSource.query(sqlQuery, [3, 1]);
+			} else {
+				// on récupère les informations de la carte
+				const mapInfos = await dcartDataSource
+					.getRepository(MapContent)
+					.findOneBy({ id: mapId });
+				if (!mapInfos) {
+					res.status(404).send({ Erreur: "Carte non trouvée" });
+				}
+
+				const {
+					name,
+					description,
+					elementNb,
+					elementOperator,
+					divinityNb,
+					divinityOperator,
+					locationType,
+					locationId,
+					ante,
+					post,
+				} = mapInfos as MapContent;
+
+				// on prépare les query des filtres
+				const queryLocalisation = getQueryStringForLocalisationFilter(
+					locationType,
+					locationId,
+				);
+				const queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
+				const queryPost = post ? getQueryStringForDateFilter("post", post) : "";
+
+				// on récupère le texte de la requête SQL
+				const sqlQuery = getSourcesQuery(
+					queryLocalisation,
+					elementOperator, // obligé d'intégrer les opérateurs ici, sinon ça plante
+					divinityOperator,
+					queryAnte,
+					queryPost as string,
+				);
+
+				// légende des paramètres : nombre d'éléments par attestation, id du théonyme/épithète, nombre de puissances divines
+				results = await MapDataSource.query(sqlQuery, [elementNb, divinityNb]);
 			}
-
-			const {
-				name,
-				description,
-				elementNb,
-				elementOperator,
-				divinityNb,
-				divinityOperator,
-				locationType,
-				locationId,
-				ante,
-				post,
-			} = mapInfos as MapContent;
-
-			// on prépare les query des filtres
-			const queryLocalisation = getQueryStringForLocalisationFilter(
-				locationType,
-				locationId,
-			);
-			const queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
-			const queryPost = post ? getQueryStringForDateFilter("post", post) : "";
-
-			// on récupère le texte de la requête SQL
-			const sqlQuery = getSourcesQuery(
-				queryLocalisation,
-				elementOperator, // obligé d'intégrer les opérateurs ici, sinon ça plante
-				divinityOperator,
-				queryAnte as string,
-				queryPost as string,
-			);
-
-			// légende des paramètres : nombre d'éléments par attestation, id du théonyme/épithète, nombre de puissances divines
-			const results = await MapDataSource.query(sqlQuery, [
-				elementNb,
-				divinityNb,
-			]);
 
 			res.status(200).json(results);
 		} catch (error) {

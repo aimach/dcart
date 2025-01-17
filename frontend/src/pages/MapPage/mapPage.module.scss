@@ -3,7 +3,7 @@
 
 .mapSection {
   @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
-  height: calc(100vh - 100px);
+  height: calc(100vh - v.$main-header-height);
 
   &Header {
     border: 1px solid black;
@@ -15,24 +15,9 @@
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, flex-start);
     width: 100%;
     flex-grow: 1;
-    border: 1px solid blue;
-
-    .aside {
-      border: 1px solid black;
-      height: 100%;
-
-      &Opened {
-        flex: 1;
-      }
-
-      &Closed {
-        flex: 0;
-      }
-    }
 
     section {
       flex: 3;
-      border: 1px solid black;
       height: 100%;
     }
   }

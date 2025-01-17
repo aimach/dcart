@@ -1,78 +1,81 @@
 // import des bibliothèques
 import { useState, useEffect } from "react";
+import { useParams } from "react-router";
 // import des composants
 import MapComponent from "../../components/mapComponent/MapComponent";
 import LoaderComponent from "../../components/common/loader/LoaderComponent";
+import AsideComponent from "../../components/asideComponent/AsideComponent";
+// import des services
+import { getAllPointsByMapId } from "../../utils/loaders/loaders";
+// import des types
+import type { PointType } from "../../types/mapTypes";
+import type { Map as LeafletMap } from "leaflet";
 // import du style
 import style from "./mapPage.module.scss";
 
 const MapPage = () => {
-	const [mapReady, setMapReady] = useState<boolean>(false);
-	const [toggleButtons, setToggleButtons] = useState({
-		right: true,
-		left: true,
-	});
+	// on récupère les params
+	const { mapId } = useParams();
 
+	// on définit les states nécessaires
+	const [map, setMap] = useState<LeafletMap | null>(null);
+
+	const [mapReady, setMapReady] = useState<boolean>(false);
+	const [toggleButtons, setToggleButtons] = useState<
+		Partial<{ right: boolean; left: boolean }>
+	>({
+		right: false,
+		left: false,
+	});
+	const [allPoints, setAllPoints] = useState<PointType[]>([]);
+	const [selectedPoint, setSelectedPoint] = useState<PointType | null>(null);
+
+	// on charge les points de la carte
+	const fetchAllPoints = async () => {
+		try {
+			const points = await getAllPointsByMapId(mapId as string);
+			setAllPoints(points);
+			setMapReady(true);
+		} catch (error) {
+			console.error("Erreur lors du chargement des points:", error);
+		}
+	};
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		// on attend que les tuiles soient chargées
-		setTimeout(() => setMapReady(true), 800);
+		fetchAllPoints();
 	}, []);
 
 	return (
 		<section className={style.mapSection}>
 			<header className={style.mapSectionHeader}>Menu</header>
 			<section className={style.mapSectionMain}>
-				<aside
-					className={
-						toggleButtons.left ? `${style.asideOpened}` : `${style.asideClosed}`
-					}
-				>
-					Résultats
-					<div className={style.toggleButtonContainer}>
-						<button
-							type="button"
-							className={`${style.toggleButtonLeft} ${style.toggleButton}`}
-							onClick={() =>
-								setToggleButtons({
-									...toggleButtons,
-									left: !toggleButtons.left,
-								})
-							}
-						>
-							{toggleButtons.left ? "<" : ">"}
-						</button>
-					</div>
-				</aside>
+				<AsideComponent
+					side="left"
+					toggleButtons={toggleButtons}
+					setToggleButtons={setToggleButtons}
+					selectedPoint={selectedPoint}
+				/>
 				<section className={mapReady ? undefined : style.mapSectionLoaded}>
 					{mapReady ? (
-						<MapComponent toggleButtons={toggleButtons} />
+						<MapComponent
+							toggleButtons={toggleButtons}
+							setToggleButtons={setToggleButtons}
+							points={allPoints}
+							selectedPoint={selectedPoint as PointType}
+							setSelectedPoint={setSelectedPoint}
+							map={map as LeafletMap}
+							setMap={setMap}
+						/>
 					) : (
 						<LoaderComponent />
 					)}
 				</section>
-				<aside
-					className={
-						toggleButtons.right
-							? `${style.asideOpened}`
-							: `${style.asideClosed}`
-					}
-				>
-					Filtres
-					<div className={style.toggleButtonContainer}>
-						<button
-							type="button"
-							className={`${style.toggleButtonRight} ${style.toggleButton}`}
-							onClick={() =>
-								setToggleButtons({
-									...toggleButtons,
-									right: !toggleButtons.right,
-								})
-							}
-						>
-							{toggleButtons.right ? ">" : "<"}
-						</button>
-					</div>
-				</aside>
+				<AsideComponent
+					side="right"
+					toggleButtons={toggleButtons}
+					setToggleButtons={setToggleButtons}
+				/>
 			</section>
 		</section>
 	);

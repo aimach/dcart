@@ -1,0 +1,35 @@
+@use '../../styles/variable' as v;
+
+.aside {
+  &Opened {
+    flex: 1;
+  }
+
+  &Closed {
+    flex: 1;
+    display: none;
+  }
+}
+
+.toggleButtonContainer {
+  position: relative;
+  height: calc(100vh - v.$main-header-height - v.$map-header-height);
+  overflow-x: hidden;
+  overflow-y: scroll;
+}
+
+.toggleButton {
+  position: absolute;
+  top: 0;
+  width: 40px;
+  height: 40px;
+  cursor: pointer;
+
+  &left {
+    right: 0;
+  }
+
+  &right {
+    left: 0;
+  }
+}

@@ -2,10 +2,8 @@
 @use '../../styles/variable' as v;
 
 .mapMenu {
-  border: 1px solid black;
   width: 100vw;
-  height: calc(100vh - 100px);
-  /* hauteur totale - 100px de mainHeader */
+  height: calc(100vh - v.$main-header-height);
   @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-end, center);
 
   &ButtonContainer {

@@ -21,7 +21,7 @@ const getQueryStringForLocalisationFilter = (
 			locationTypeField = "grande_region";
 			break;
 	}
-	return `WHERE ${locationTypeField}.id = ${locationId}`;
+	return `AND ${locationTypeField}.id = ${locationId}`;
 };
 
 const getQueryStringForLanguageFilter = (languages: string) => {
