@@ -2,8 +2,10 @@
 import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 // import des composants
-import MapComponent from "../../components/mapComponent/MapComponent";
+import MapComponent from "../../components/map/mapComponent/MapComponent";
 import AsideContainer from "../../components/aside/asideContainer/AsideContainer";
+import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/AsideReducedMenuComponent";
+import MapMenuNav from "../../components/map/mapMenuNav/MapMenuNav";
 // import des services
 import { getAllPointsByMapId } from "../../utils/loaders/loaders";
 // import des types
@@ -11,11 +13,11 @@ import type { PointType } from "../../types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 // import du style
 import style from "./mapPage.module.scss";
-import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/AsideReducedMenuComponent";
 
 const MapPage = () => {
 	// on récupère les params
 	const { mapId } = useParams();
+	console.log(mapId);
 
 	// on définit les states nécessaires
 	const [map, setMap] = useState<LeafletMap | null>(null);
@@ -38,12 +40,14 @@ const MapPage = () => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
+		setMapReady(false);
+		setPanelDisplayed(false);
 		fetchAllPoints();
-	}, []);
+	}, [mapId]);
 
 	return (
 		<section className={style.mapSection}>
-			<header className={style.mapSectionHeader}>Menu</header>
+			<MapMenuNav />
 			<section className={style.mapSectionMain}>
 				{panelDisplayed ? (
 					<AsideContainer

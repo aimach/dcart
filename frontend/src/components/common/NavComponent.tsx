@@ -4,7 +4,7 @@ import { Link } from "react-router";
 import type { NavList } from "../../types/commonTypes";
 
 interface NavComponentProps {
-	type: string;
+	type: "route" | "list";
 	navClassName: string;
 	list: NavList;
 }

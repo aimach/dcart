@@ -10,18 +10,18 @@ import {
 } from "react-leaflet";
 import L from "leaflet";
 // import des composants
-import LoaderComponent from "../common/loader/LoaderComponent";
+import LoaderComponent from "../../common/loader/LoaderComponent";
 // import du context
-import { MapAsideMenuContext } from "../../context/MapAsideMenuContext";
+import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 // import des services
 import {
 	getBackGroundColorClassName,
 	getIconSize,
 	zoomOnMarkerOnClick,
-} from "../../utils/functions/functions";
+} from "../../../utils/functions/functions";
 // import des types
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
-import type { PointType } from "../../types/mapTypes";
+import type { PointType } from "../../../types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";

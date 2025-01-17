@@ -9,7 +9,12 @@ const ResultComponent = ({ results }: ResultComponentProps) => {
 	return (
 		<div>
 			{results.map((result: PointType) => {
-				return <InfoComponent key={result.nom_ville} point={result} />;
+				return (
+					<InfoComponent
+						key={`${result.latitude}-${result.longitude}`}
+						point={result}
+					/>
+				);
 			})}
 		</div>
 	);

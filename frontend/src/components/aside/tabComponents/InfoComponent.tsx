@@ -71,7 +71,7 @@ const InfoComponent = ({ point }: InfoComponentProps) => {
 											}
 											return (
 												<p
-													key={agent}
+													key={`${agentElement.designation} -${agentElement.activite_fr}`}
 													// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
 													dangerouslySetInnerHTML={{
 														__html: agent,
