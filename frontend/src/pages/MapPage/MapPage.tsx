@@ -11,6 +11,7 @@ import type { PointType } from "../../types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 // import du style
 import style from "./mapPage.module.scss";
+import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/AsideReducedMenuComponent";
 
 const MapPage = () => {
 	// on récupère les params
@@ -44,13 +45,17 @@ const MapPage = () => {
 		<section className={style.mapSection}>
 			<header className={style.mapSectionHeader}>Menu</header>
 			<section className={style.mapSectionMain}>
-				{}
-				<AsideContainer
-					panelDisplayed={panelDisplayed}
-					setPanelDisplayed={setPanelDisplayed}
-					selectedPoint={selectedPoint}
-					allPoints={allPoints}
-				/>
+				{panelDisplayed ? (
+					<AsideContainer
+						panelDisplayed={panelDisplayed}
+						setPanelDisplayed={setPanelDisplayed}
+						selectedPoint={selectedPoint}
+						allPoints={allPoints}
+					/>
+				) : (
+					<AsideReducedMenuComponent setPanelDisplayed={setPanelDisplayed} />
+				)}
+
 				<section className={mapReady ? undefined : style.mapSectionLoaded}>
 					<MapComponent
 						panelDisplayed={panelDisplayed}

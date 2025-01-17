@@ -1,0 +1,17 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.reducedAsideNav {
+  width: v.$space-xxl;
+  height: 100%;
+
+  ul {
+    height: 100%;
+    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
+    gap: v.$font-space-xxxl;
+
+    li {
+      cursor: pointer
+    }
+  }
+}
