@@ -6,6 +6,7 @@ import {
 	Marker,
 	ScaleControl,
 	Tooltip,
+	ZoomControl,
 } from "react-leaflet";
 import L from "leaflet";
 // import des services
@@ -66,7 +67,7 @@ const MapComponent = ({
 			<section className="leaflet-container">
 				<MapContainer
 					center={[40.43, 16.52]}
-					// zoom={5}
+					zoomControl={false}
 					minZoom={4}
 					maxZoom={11}
 					ref={setMap}
@@ -107,7 +108,8 @@ const MapComponent = ({
 							</Marker>
 						);
 					})}
-					<ScaleControl />
+					<ZoomControl position="topright" />
+					<ScaleControl position="bottomright" />
 				</MapContainer>
 			</section>
 		</div>
