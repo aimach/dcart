@@ -17,7 +17,6 @@ import style from "./mapPage.module.scss";
 const MapPage = () => {
 	// on récupère les params
 	const { mapId } = useParams();
-	console.log(mapId);
 
 	// on définit les states nécessaires
 	const [map, setMap] = useState<LeafletMap | null>(null);

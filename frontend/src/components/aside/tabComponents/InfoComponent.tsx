@@ -1,6 +1,7 @@
 // import des bibliothèques
 import { useContext } from "react";
 import DOMPurify from "dompurify";
+import { v4 as uuidv4 } from "uuid";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des types
@@ -71,7 +72,7 @@ const InfoComponent = ({ point }: InfoComponentProps) => {
 											}
 											return (
 												<p
-													key={`${agentElement.designation} -${agentElement.activite_fr}`}
+													key={uuidv4()}
 													// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
 													dangerouslySetInnerHTML={{
 														__html: agent,
@@ -83,10 +84,7 @@ const InfoComponent = ({ point }: InfoComponentProps) => {
 								}
 
 								return (
-									<div
-										key={attestation.attestation_id}
-										style={{ marginLeft: "10px" }}
-									>
+									<div key={uuidv4()} style={{ marginLeft: "10px" }}>
 										<p>Attestation #{attestation.attestation_id}</p>
 										<div style={{ marginLeft: "10px" }}>
 											<p>{attestation[attestationNameLanguageKey]}</p>
