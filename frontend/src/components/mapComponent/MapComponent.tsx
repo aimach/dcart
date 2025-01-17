@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect } from "react";
+import { useContext, useEffect } from "react";
 import {
 	MapContainer,
 	TileLayer,
@@ -11,6 +11,8 @@ import {
 import L from "leaflet";
 // import des composants
 import LoaderComponent from "../common/loader/LoaderComponent";
+// import du context
+import { MapAsideMenuContext } from "../../context/MapAsideMenuContext";
 // import des services
 import {
 	getBackGroundColorClassName,
@@ -48,11 +50,21 @@ const MapComponent = ({
 	setMap,
 	mapReady,
 }: MapComponentProps) => {
+	// on récupère l'onglet en cours dans le panel
+	const { selectedTabMenu, setSelectedTabMenu } =
+		useContext(MapAsideMenuContext);
+
 	const bounds: LatLngTuple[] = [];
 
+	// on s'assure que c'est l'onglet "Résultats" qui est affiché
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		// on prépare le tableau des bounds
+		setSelectedTabMenu("results");
+	}, []);
+
+	// on met à jour les limites de la carte
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
 		for (const point of points) {
 			bounds.push([point.latitude, point.longitude]);
 		}
@@ -62,6 +74,7 @@ const MapComponent = ({
 	}, [points]);
 
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
+		setSelectedTabMenu("infos");
 		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
 		setToggleButtons({ ...toggleButtons, left: true });
 		setSelectedPoint(point);

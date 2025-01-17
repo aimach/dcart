@@ -3,12 +3,11 @@ import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 // import des composants
 import MapComponent from "../../components/mapComponent/MapComponent";
-import LoaderComponent from "../../components/common/loader/LoaderComponent";
-import AsideComponent from "../../components/aside/asideComponent/AsideComponent";
+import AsideContainer from "../../components/aside/asideContainer/AsideContainer";
 // import des services
 import { getAllPointsByMapId } from "../../utils/loaders/loaders";
 // import des types
-import type { MenuTabType, PointType } from "../../types/mapTypes";
+import type { PointType } from "../../types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 // import du style
 import style from "./mapPage.module.scss";
@@ -50,11 +49,12 @@ const MapPage = () => {
 		<section className={style.mapSection}>
 			<header className={style.mapSectionHeader}>Menu</header>
 			<section className={style.mapSectionMain}>
-				<AsideComponent
+				<AsideContainer
 					side="left"
 					toggleButtons={toggleButtons}
 					setToggleButtons={setToggleButtons}
 					selectedPoint={selectedPoint}
+					allPoints={allPoints}
 				/>
 				<section className={mapReady ? undefined : style.mapSectionLoaded}>
 					<MapComponent
@@ -68,7 +68,7 @@ const MapPage = () => {
 						mapReady={mapReady}
 					/>
 				</section>
-				<AsideComponent
+				<AsideContainer
 					side="right"
 					toggleButtons={toggleButtons}
 					setToggleButtons={setToggleButtons}

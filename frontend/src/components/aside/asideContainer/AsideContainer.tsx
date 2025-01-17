@@ -3,25 +3,27 @@ import type { Dispatch, SetStateAction } from "react";
 import type { PointType } from "../../../types/mapTypes";
 
 // import du style
-import style from "./asideComponent.module.scss";
-import ResultComponent from "../../resultComponent/ResultComponent";
+import style from "./asideContainer.module.scss";
+import AsideMainComponent from "../asideMain/AsideMainComponent";
 import AsideHeader from "../asideHeader/AsideHeader";
 
-interface AsideComponentProps {
+interface AsideContainerProps {
 	side: "left" | "right";
 	toggleButtons: { [key: string]: boolean };
 	setToggleButtons: Dispatch<
 		SetStateAction<Partial<{ right: boolean; left: boolean }>>
 	>;
 	selectedPoint?: PointType | null | undefined;
+	allPoints?: PointType[];
 }
 
-const AsideComponent = ({
+const AsideContainer = ({
 	side,
 	toggleButtons,
 	setToggleButtons,
 	selectedPoint,
-}: AsideComponentProps) => {
+	allPoints,
+}: AsideContainerProps) => {
 	return (
 		<aside
 			className={
@@ -31,7 +33,10 @@ const AsideComponent = ({
 			<AsideHeader />
 			<div className={style.toggleButtonContainer}>
 				{side === "left" ? (
-					<ResultComponent point={selectedPoint as PointType} />
+					<AsideMainComponent
+						point={selectedPoint as PointType}
+						results={allPoints as PointType[]}
+					/>
 				) : null}
 				{toggleButtons[side] ? (
 					<button
@@ -52,4 +57,4 @@ const AsideComponent = ({
 	);
 };
 
-export default AsideComponent;
+export default AsideContainer;

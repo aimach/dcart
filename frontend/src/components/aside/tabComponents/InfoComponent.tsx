@@ -2,19 +2,25 @@
 import { useContext } from "react";
 import DOMPurify from "dompurify";
 // import du context
-import { TranslationContext } from "../../context/TranslationContext";
+import { TranslationContext } from "../../../context/TranslationContext";
 // import des types
 import type {
 	AgentType,
 	AttestationType,
 	PointType,
-} from "../../types/mapTypes";
+} from "../../../types/mapTypes";
 // import des services
-import { getDatationSentence } from "../../utils/functions/functions";
+import { getDatationSentence } from "../../../utils/functions/functions";
 
-const ResultComponent = ({ point }: { point: PointType }) => {
+interface InfoComponentProps {
+	point: PointType;
+}
+
+const InfoComponent = ({ point }: InfoComponentProps) => {
 	// on récupère le language
 	const { language, translation } = useContext(TranslationContext);
+
+	// on prépare les clés pour l'objet de traduction
 	const subRegionLanguageKey: keyof PointType =
 		language === "fr" ? "sous_region_fr" : "sous_region_en";
 	const attestationNameLanguageKey: keyof AttestationType =
@@ -103,4 +109,4 @@ const ResultComponent = ({ point }: { point: PointType }) => {
 	);
 };
 
-export default ResultComponent;
+export default InfoComponent;
