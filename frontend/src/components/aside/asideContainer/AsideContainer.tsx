@@ -8,48 +8,37 @@ import AsideMainComponent from "../asideMain/AsideMainComponent";
 import AsideHeader from "../asideHeader/AsideHeader";
 
 interface AsideContainerProps {
-	side: "left" | "right";
-	toggleButtons: { [key: string]: boolean };
-	setToggleButtons: Dispatch<
-		SetStateAction<Partial<{ right: boolean; left: boolean }>>
-	>;
+	panelDisplayed: boolean;
+	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 	selectedPoint?: PointType | null | undefined;
 	allPoints?: PointType[];
 }
 
 const AsideContainer = ({
-	side,
-	toggleButtons,
-	setToggleButtons,
+	panelDisplayed,
+	setPanelDisplayed,
 	selectedPoint,
 	allPoints,
 }: AsideContainerProps) => {
 	return (
 		<aside
 			className={
-				toggleButtons[side] ? `${style.asideOpened}` : `${style.asideClosed}`
+				panelDisplayed ? `${style.asideOpened}` : `${style.asideClosed}`
 			}
 		>
 			<AsideHeader />
 			<div className={style.toggleButtonContainer}>
-				{side === "left" ? (
-					<AsideMainComponent
-						point={selectedPoint as PointType}
-						results={allPoints as PointType[]}
-					/>
-				) : null}
-				{toggleButtons[side] ? (
+				<AsideMainComponent
+					point={selectedPoint as PointType}
+					results={allPoints as PointType[]}
+				/>
+				{panelDisplayed ? (
 					<button
 						type="button"
-						className={`${style[`toggleButton${side}`]} ${style.toggleButton}`}
-						onClick={() =>
-							setToggleButtons({
-								...toggleButtons,
-								[side]: !toggleButtons[side],
-							})
-						}
+						className={style.toggleButton}
+						onClick={() => setPanelDisplayed(false)}
 					>
-						{toggleButtons[side] ? "<" : ">"}
+						{panelDisplayed ? "<" : ">"}
 					</button>
 				) : null}
 			</div>

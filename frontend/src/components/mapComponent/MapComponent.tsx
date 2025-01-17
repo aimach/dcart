@@ -29,10 +29,8 @@ import "./mapComponent.css";
 import style from "./mapComponent.module.scss";
 
 interface MapComponentProps {
-	toggleButtons: { [key: string]: boolean };
-	setToggleButtons: Dispatch<
-		SetStateAction<Partial<{ right: boolean; left: boolean }>>
-	>;
+	panelDisplayed: boolean;
+	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 	points: PointType[];
 	selectedPoint: PointType;
 	setSelectedPoint: Dispatch<SetStateAction<PointType | null>>;
@@ -42,8 +40,8 @@ interface MapComponentProps {
 }
 
 const MapComponent = ({
-	toggleButtons,
-	setToggleButtons,
+	panelDisplayed,
+	setPanelDisplayed,
 	points,
 	setSelectedPoint,
 	map,
@@ -76,7 +74,7 @@ const MapComponent = ({
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
 		setSelectedTabMenu("infos");
 		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
-		setToggleButtons({ ...toggleButtons, left: true });
+		setPanelDisplayed(true);
 		setSelectedPoint(point);
 	};
 

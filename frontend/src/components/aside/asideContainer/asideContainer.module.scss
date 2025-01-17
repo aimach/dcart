@@ -6,8 +6,7 @@
   }
 
   &Closed {
-    flex: 1;
-    display: none;
+    flex: 0.1;
   }
 }
 
@@ -24,12 +23,6 @@
   width: 40px;
   height: 40px;
   cursor: pointer;
+  right: 0;
 
-  &left {
-    right: 0;
-  }
-
-  &right {
-    left: 0;
-  }
 }

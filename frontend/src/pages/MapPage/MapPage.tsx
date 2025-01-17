@@ -20,12 +20,7 @@ const MapPage = () => {
 	const [map, setMap] = useState<LeafletMap | null>(null);
 
 	const [mapReady, setMapReady] = useState<boolean>(false);
-	const [toggleButtons, setToggleButtons] = useState<
-		Partial<{ right: boolean; left: boolean }>
-	>({
-		right: false,
-		left: true,
-	});
+	const [panelDisplayed, setPanelDisplayed] = useState<boolean>(true);
 	const [allPoints, setAllPoints] = useState<PointType[]>([]);
 	const [selectedPoint, setSelectedPoint] = useState<PointType | null>(null);
 
@@ -49,17 +44,17 @@ const MapPage = () => {
 		<section className={style.mapSection}>
 			<header className={style.mapSectionHeader}>Menu</header>
 			<section className={style.mapSectionMain}>
+				{}
 				<AsideContainer
-					side="left"
-					toggleButtons={toggleButtons}
-					setToggleButtons={setToggleButtons}
+					panelDisplayed={panelDisplayed}
+					setPanelDisplayed={setPanelDisplayed}
 					selectedPoint={selectedPoint}
 					allPoints={allPoints}
 				/>
 				<section className={mapReady ? undefined : style.mapSectionLoaded}>
 					<MapComponent
-						toggleButtons={toggleButtons}
-						setToggleButtons={setToggleButtons}
+						panelDisplayed={panelDisplayed}
+						setPanelDisplayed={setPanelDisplayed}
 						points={allPoints}
 						selectedPoint={selectedPoint as PointType}
 						setSelectedPoint={setSelectedPoint}
@@ -68,11 +63,6 @@ const MapPage = () => {
 						mapReady={mapReady}
 					/>
 				</section>
-				<AsideContainer
-					side="right"
-					toggleButtons={toggleButtons}
-					setToggleButtons={setToggleButtons}
-				/>
 			</section>
 		</section>
 	);

@@ -14,8 +14,7 @@ const AsideHeader = () => {
 	// on importe les données de language
 	const { language, translation } = useContext(TranslationContext);
 	// on importe l'onglet par défaut
-	const { selectedTabMenu, setSelectedTabMenu } =
-		useContext(MapAsideMenuContext);
+	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
 
 	const asideNavList: NavList = [
 		{
