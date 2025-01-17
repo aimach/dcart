@@ -6,7 +6,7 @@ import ImageWithLink from "../common/ImageWithLink";
 // import du context
 import { TranslationContext } from "../../context/TranslationContext";
 // import des types
-import type { Language, TranslationObject } from "../../types/languageTypes";
+import type { Language } from "../../types/languageTypes";
 import type { NavList } from "../../types/commonTypes";
 // import du style
 import style from "./header.module.scss";
@@ -22,18 +22,12 @@ const HeaderComponent = () => {
 
 	const pageNavigationList: NavList = [
 		{
-			title: (
-				(translation[language] as TranslationObject)
-					.navigation as TranslationObject
-			).home,
+			title: translation[language].navigation.home,
 			onClickFunction: undefined,
 			route: "/",
 		},
 		{
-			title: (
-				(translation[language] as TranslationObject)
-					.navigation as TranslationObject
-			).maps,
+			title: translation[language].navigation.maps,
 			onClickFunction: undefined,
 			route: "/map",
 		},
@@ -46,12 +40,12 @@ const HeaderComponent = () => {
 
 	const translationNavigationList: NavList = [
 		{
-			title: (translation[language] as TranslationObject).fr,
+			title: translation[language].fr,
 			onClickFunction: () => switchLanguage("fr"),
 			route: undefined,
 		},
 		{
-			title: (translation[language] as TranslationObject).en,
+			title: translation[language].en,
 			onClickFunction: () => switchLanguage("en"),
 			route: undefined,
 		},

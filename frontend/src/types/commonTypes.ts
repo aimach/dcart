@@ -1,8 +1,5 @@
-// import des types
-import type { TranslationObject } from "./languageTypes";
-
 type NavList = {
-	title: string | TranslationObject;
+	title: string;
 	onClickFunction: undefined | (() => void);
 	route: undefined | string;
 }[];

@@ -10,7 +10,6 @@ import { getAllMapsInfos } from "../../utils/loaders/loaders";
 // import des types
 import type { NavList } from "../../types/commonTypes";
 import type { MapType } from "../../types/mapTypes";
-import type { TranslationObject } from "../../types/languageTypes";
 // import du style
 import style from "./mapMenuPage.module.scss";
 
@@ -53,12 +52,7 @@ const MapMenuPage = () => {
 		<section className={style.mapMenu}>
 			<div className={style.mapMenuButtonContainer}>
 				<Link to="exploration" className={style.mapMenuActionButton}>
-					{
-						(
-							(translation[language] as TranslationObject)
-								.button as TranslationObject
-						).freeExploration as string
-					}
+					{translation[language].button.freeExploration as string}
 				</Link>
 			</div>
 			<div className={style.mapMenuNavContainer}>

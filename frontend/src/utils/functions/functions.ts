@@ -1,5 +1,5 @@
 // import des types
-import type { TranslationObject } from "../../types/languageTypes";
+import type { Language, TranslationType } from "../../types/languageTypes";
 import type { SourceType, PointType } from "../../types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 
@@ -34,7 +34,7 @@ const getIconSize = (sourcesNb: number) => {
 // utilisée pour définir le couple support/matériau dans la langue choisie
 const getSupportAndMaterialSentence = (
 	source: SourceType,
-	language: string,
+	language: Language,
 ) => {
 	let bracketSentence = "";
 	const supportKey = `support_${language}` as keyof SourceType;
@@ -58,8 +58,8 @@ const getSupportAndMaterialSentence = (
 // utilisée pour rédiger la phrase de la date
 const getDatationSentence = (
 	source: SourceType,
-	translation: TranslationObject,
-	language: string,
+	translation: TranslationType,
+	language: Language,
 ) => {
 	return source.post_quem === source.ante_quem
 		? `(${source.post_quem})`

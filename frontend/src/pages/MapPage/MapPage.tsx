@@ -4,7 +4,7 @@ import { useParams } from "react-router";
 // import des composants
 import MapComponent from "../../components/mapComponent/MapComponent";
 import LoaderComponent from "../../components/common/loader/LoaderComponent";
-import AsideComponent from "../../components/asideComponent.tsx/AsideComponent";
+import AsideComponent from "../../components/asideComponent/AsideComponent";
 // import des services
 import { getAllPointsByMapId } from "../../utils/loaders/loaders";
 // import des types
