@@ -14,6 +14,7 @@ import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
+import { MapAsideMenuProvider } from "./context/MapAsideMenuContext.tsx";
 // import du style
 import "./index.css";
 
@@ -24,7 +25,8 @@ if (rootElement) {
 		<BrowserRouter>
 			<TranslationProvider>
 				<AuthProvider>
-					<StrictMode>
+					<MapAsideMenuProvider>
+						{/* <StrictMode> */}
 						<Routes>
 							<Route element={<NavigationLayout />}>
 								<Route index element={<App />} />
@@ -42,7 +44,8 @@ if (rootElement) {
 								<Route index element={<BOHomePage />} />
 							</Route>
 						</Routes>
-					</StrictMode>
+						{/* </StrictMode> */}
+					</MapAsideMenuProvider>
 				</AuthProvider>
 			</TranslationProvider>
 		</BrowserRouter>,

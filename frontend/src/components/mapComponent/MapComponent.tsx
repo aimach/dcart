@@ -9,6 +9,8 @@ import {
 	ZoomControl,
 } from "react-leaflet";
 import L from "leaflet";
+// import des composants
+import LoaderComponent from "../common/loader/LoaderComponent";
 // import des services
 import {
 	getBackGroundColorClassName,
@@ -34,6 +36,7 @@ interface MapComponentProps {
 	setSelectedPoint: Dispatch<SetStateAction<PointType | null>>;
 	map: LeafletMap;
 	setMap: Dispatch<SetStateAction<LeafletMap | null>>;
+	mapReady: boolean;
 }
 
 const MapComponent = ({
@@ -43,8 +46,10 @@ const MapComponent = ({
 	setSelectedPoint,
 	map,
 	setMap,
+	mapReady,
 }: MapComponentProps) => {
 	const bounds: LatLngTuple[] = [];
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		// on prépare le tableau des bounds
@@ -63,56 +68,63 @@ const MapComponent = ({
 	};
 
 	return (
-		<div className="map" id="map">
-			<section className="leaflet-container">
-				<MapContainer
-					center={[40.43, 16.52]}
-					zoomControl={false}
-					minZoom={4}
-					maxZoom={11}
-					ref={setMap}
-				>
-					<TileLayer
-						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-						url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
-					/>
-					{points.map((point: PointType) => {
-						// on créé une clé pour chaque point
-						const keyPoint = `${point.latitude}-${point.longitude}`;
-						// on génère un nom de classe à partir du nombre de sources
-						const backgroundColorClassName = getBackGroundColorClassName(
-							point.sources.length,
-						);
-						const iconSize = getIconSize(point.sources.length);
-						// Création d'un DivIcon avec du texte et un style circulaire
-						const circleBrownIcon = L.divIcon({
-							className: `${style.circleBrownIcon} ${style[backgroundColorClassName]}`,
-							html: `<div>${point.sources.length}</div>`, // si j'ajoute une class sur cette div, je peux modifier également le style du tooltip
-							iconSize: [iconSize, iconSize], // Dimensions du conteneur
-							iconAnchor: [iconSize / 2, iconSize / 2], // Centre du marqueur
-						});
-						return (
-							<Marker
-								key={keyPoint}
-								position={[point.latitude, point.longitude]}
-								icon={circleBrownIcon}
-								eventHandlers={{
-									click: () => {
-										handleMarkerOnClick(map, point);
-									},
-								}}
-							>
-								<Tooltip direction="top" offset={[0, -10]}>
-									{point.nom_ville}
-								</Tooltip>
-							</Marker>
-						);
-					})}
-					<ZoomControl position="topright" />
-					<ScaleControl position="bottomright" />
-				</MapContainer>
-			</section>
-		</div>
+		<>
+			{!mapReady && <LoaderComponent />}
+			<div className="map" id="map">
+				<section className="leaflet-container">
+					<MapContainer
+						center={[40.43, 16.52]}
+						zoomControl={false}
+						minZoom={4}
+						maxZoom={11}
+						ref={setMap}
+					>
+						{mapReady && (
+							<>
+								<TileLayer
+									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+									url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
+								/>
+								{points.map((point: PointType) => {
+									// on créé une clé pour chaque point
+									const keyPoint = `${point.latitude}-${point.longitude}`;
+									// on génère un nom de classe à partir du nombre de sources
+									const backgroundColorClassName = getBackGroundColorClassName(
+										point.sources.length,
+									);
+									const iconSize = getIconSize(point.sources.length);
+									// Création d'un DivIcon avec du texte et un style circulaire
+									const circleBrownIcon = L.divIcon({
+										className: `${style.circleBrownIcon} ${style[backgroundColorClassName]}`,
+										html: `<div>${point.sources.length}</div>`, // si j'ajoute une class sur cette div, je peux modifier également le style du tooltip
+										iconSize: [iconSize, iconSize], // Dimensions du conteneur
+										iconAnchor: [iconSize / 2, iconSize / 2], // Centre du marqueur
+									});
+									return (
+										<Marker
+											key={keyPoint}
+											position={[point.latitude, point.longitude]}
+											icon={circleBrownIcon}
+											eventHandlers={{
+												click: () => {
+													handleMarkerOnClick(map, point);
+												},
+											}}
+										>
+											<Tooltip direction="top" offset={[0, -10]}>
+												{point.nom_ville}
+											</Tooltip>
+										</Marker>
+									);
+								})}
+								<ZoomControl position="topright" />
+								<ScaleControl position="bottomright" />
+							</>
+						)}
+					</MapContainer>
+				</section>
+			</div>
+		</>
 	);
 };
 

@@ -65,6 +65,8 @@ type PointType = {
 	sources: SourceType[];
 };
 
+type MenuTabType = "results" | "filters" | "infos";
+
 export type {
 	MapType,
 	PointType,
@@ -72,4 +74,5 @@ export type {
 	AttestationType,
 	AgentType,
 	ElementType,
+	MenuTabType,
 };
