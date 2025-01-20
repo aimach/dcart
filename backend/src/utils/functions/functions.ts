@@ -53,9 +53,27 @@ const getQueryStringForDateFilter = (type: string, date: number) => {
 	return "";
 };
 
+const getQueryStringForIncludedElements = (includedElements: string) => {
+	const includedElementsArray = includedElements.split(",");
+	const includedElementsArrayWithBrackets = includedElementsArray.map(
+		(element) => `'%{${element}}%'`,
+	);
+	return ` AND formule.formule LIKE ANY(ARRAY[${includedElementsArrayWithBrackets}]) `;
+};
+
+const getQueryStringForExcludedElements = (excludedElements: string) => {
+	const excludedElementsArray = excludedElements.split(",");
+	const excludedElementsArrayWithBrackets = excludedElementsArray.map(
+		(element) => `'%{${element}}%'`,
+	);
+	return ` AND NOT (formule.formule LIKE ANY(ARRAY[${excludedElementsArrayWithBrackets}])) `;
+};
+
 export {
 	getQueryStringForGodsFilter,
 	getQueryStringForLocalisationFilter,
 	getQueryStringForLanguageFilter,
 	getQueryStringForDateFilter,
+	getQueryStringForIncludedElements,
+	getQueryStringForExcludedElements,
 };

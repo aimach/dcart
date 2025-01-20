@@ -6,6 +6,8 @@ import { getSourcesQuery } from "../utils/query/sourceQueryString";
 import {
 	getQueryStringForLocalisationFilter,
 	getQueryStringForDateFilter,
+	getQueryStringForIncludedElements,
+	getQueryStringForExcludedElements,
 } from "../utils/functions/functions";
 import { handleError } from "../utils/errorHandler/errorHandler";
 // import des types
@@ -56,6 +58,8 @@ export const mapController = {
 					"=",
 					"",
 					"",
+					"",
+					"",
 				);
 				results = await MapDataSource.query(sqlQuery, [3, 1]);
 			} else {
@@ -68,8 +72,6 @@ export const mapController = {
 				}
 
 				const {
-					name,
-					description,
 					elementNb,
 					elementOperator,
 					divinityNb,
@@ -78,6 +80,8 @@ export const mapController = {
 					locationId,
 					ante,
 					post,
+					includedElements,
+					excludedElements,
 				} = mapInfos as MapContent;
 
 				// on prépare les query des filtres
@@ -87,6 +91,12 @@ export const mapController = {
 				);
 				const queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
 				const queryPost = post ? getQueryStringForDateFilter("post", post) : "";
+				const queryIncludedElements = includedElements
+					? getQueryStringForIncludedElements(includedElements)
+					: "";
+				const queryExcludedElements = excludedElements
+					? getQueryStringForExcludedElements(excludedElements)
+					: "";
 
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQuery(
@@ -95,6 +105,8 @@ export const mapController = {
 					divinityOperator,
 					queryAnte,
 					queryPost as string,
+					queryIncludedElements,
+					queryExcludedElements,
 				);
 
 				// légende des paramètres : nombre d'éléments par attestation, id du théonyme/épithète, nombre de puissances divines
