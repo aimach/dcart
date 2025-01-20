@@ -5,37 +5,27 @@ import {
 	TileLayer,
 	Marker,
 	ScaleControl,
-	Tooltip,
 	ZoomControl,
 } from "react-leaflet";
-import L from "leaflet";
+import { v4 as uuidv4 } from "uuid";
 // import des composants
 import LoaderComponent from "../../common/loader/LoaderComponent";
+import ModalComponent from "../../modal/ModalComponent";
+import MarkerComponent from "../MarkerComponent.tsx/MarkerComponent";
 // import du context
-import { MapContext } from "../../../context/MapContext";
 import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
-// import des services
-import {
-	getBackGroundColorClassName,
-	getIconSize,
-	isSelectedMarker,
-	zoomOnMarkerOnClick,
-} from "../../../utils/functions/functions";
+import { MapContext } from "../../../context/MapContext";
 // import des types
-import type { LatLngTuple, Map as LeafletMap } from "leaflet";
+import type { LatLngTuple } from "leaflet";
 import type { PointType } from "../../../types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import "./mapComponent.css";
-import style from "./mapComponent.module.scss";
-import ModalComponent from "../../modal/ModalComponent";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 	points: PointType[];
-	map: LeafletMap;
-	setMap: Dispatch<SetStateAction<LeafletMap | null>>;
 	mapReady: boolean;
 	mapInfos: { [key: string]: string } | null;
 }
@@ -43,19 +33,15 @@ interface MapComponentProps {
 const MapComponent = ({
 	setPanelDisplayed,
 	points,
-	map,
-	setMap,
 	mapReady,
 	mapInfos,
 }: MapComponentProps) => {
 	// on gère l'affichage de la modale
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
-	// on récupère le point sélectionné
-	const { selectedMarker, setSelectedMarker } = useContext(MapContext);
-
-	// on récupère l'onglet en cours dans le panel
+	// on récupère les informations du context
 	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
+	const { map, setMap } = useContext(MapContext);
 
 	// à l'arrivée sur la page, on remet les states à 0
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -78,15 +64,6 @@ const MapComponent = ({
 			}
 		}
 	}, [points]);
-
-	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
-		// on passe dans l'onglet "infos"
-		setSelectedTabMenu("infos");
-		setPanelDisplayed(true);
-		// on zoom sur le marker
-		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
-		setSelectedMarker(point);
-	};
 
 	return (
 		<>
@@ -114,43 +91,12 @@ const MapComponent = ({
 								/>
 								{points.length ? (
 									points.map((point: PointType) => {
-										// on créé une clé pour chaque point
-										const keyPoint = `${point.latitude}-${point.longitude}`;
-										// on génère un nom de classe à partir du nombre de sources
-										let backgroundColorClassName = null;
-										if (
-											selectedMarker &&
-											isSelectedMarker(selectedMarker, point)
-										) {
-											backgroundColorClassName = "selectedBackgroundColor";
-										} else {
-											backgroundColorClassName = getBackGroundColorClassName(
-												point.sources.length,
-											);
-										}
-										// on génère
-
-										const iconSize = getIconSize(point.sources.length);
-										// Création d'un DivIcon avec du texte et un style circulaire
-										const circleBrownIcon = L.divIcon({
-											className: `${style.circleBrownIcon} ${style[backgroundColorClassName]}`,
-											html: `<div>${point.sources.length}</div>`, // si j'ajoute une class sur cette div, je peux modifier également le style du tooltip
-											iconSize: [iconSize, iconSize], // Dimensions du conteneur
-											iconAnchor: [iconSize / 2, iconSize / 2], // Centre du marqueur
-										});
 										return (
-											<Marker
-												key={keyPoint}
-												position={[point.latitude, point.longitude]}
-												icon={circleBrownIcon}
-												eventHandlers={{
-													click: () => handleMarkerOnClick(map, point),
-												}}
-											>
-												<Tooltip direction="top" offset={[0, -10]}>
-													{point.nom_ville}
-												</Tooltip>
-											</Marker>
+											<MarkerComponent
+												key={uuidv4()}
+												point={point}
+												setPanelDisplayed={setPanelDisplayed}
+											/>
 										);
 									})
 								) : (
