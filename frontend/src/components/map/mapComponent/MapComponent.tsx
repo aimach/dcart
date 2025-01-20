@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import {
 	MapContainer,
 	TileLayer,
@@ -29,6 +29,7 @@ import type { Dispatch, SetStateAction } from "react";
 import "leaflet/dist/leaflet.css";
 import "./mapComponent.css";
 import style from "./mapComponent.module.scss";
+import ModalComponent from "../../modal/ModalComponent";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -36,6 +37,7 @@ interface MapComponentProps {
 	map: LeafletMap;
 	setMap: Dispatch<SetStateAction<LeafletMap | null>>;
 	mapReady: boolean;
+	mapInfos: { [key: string]: string } | null;
 }
 
 const MapComponent = ({
@@ -44,24 +46,29 @@ const MapComponent = ({
 	map,
 	setMap,
 	mapReady,
+	mapInfos,
 }: MapComponentProps) => {
-	// on récupère l'onglet en cours dans le panel
-	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
+	// on gère l'affichage de la modale
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
 	// on récupère le point sélectionné
 	const { selectedMarker, setSelectedMarker } = useContext(MapContext);
 
-	const bounds: LatLngTuple[] = [];
+	// on récupère l'onglet en cours dans le panel
+	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
 
-	// on s'assure que c'est l'onglet "Résultats" qui est affiché
+	// à l'arrivée sur la page, on remet les states à 0
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setSelectedTabMenu("results");
+		setIsModalOpen(true);
 	}, []);
 
 	// on met à jour les limites de la carte
+	const bounds: LatLngTuple[] = [];
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
+		setIsModalOpen(true);
 		if (points.length) {
 			for (const point of points) {
 				bounds.push([point.latitude, point.longitude]);
@@ -86,6 +93,12 @@ const MapComponent = ({
 			{!mapReady && <LoaderComponent />}
 			<div className="map" id="map">
 				<section className="leaflet-container">
+					{isModalOpen && mapInfos && (
+						<ModalComponent onClose={() => setIsModalOpen(false)}>
+							<h3>{mapInfos.name}</h3>
+							<p>{mapInfos.description}</p>
+						</ModalComponent>
+					)}
 					<MapContainer
 						center={[40.43, 16.52]}
 						zoomControl={false}
