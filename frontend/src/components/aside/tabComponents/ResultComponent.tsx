@@ -5,7 +5,10 @@ import InfoComponent from "./InfoComponent";
 // import du context
 import { MapContext } from "../../../context/MapContext";
 // import des services
-import { zoomOnMarkerOnClick } from "../../../utils/functions/functions";
+import {
+	isSelectedMarker,
+	zoomOnMarkerOnClick,
+} from "../../../utils/functions/functions";
 // import des types
 import type { PointType } from "../../../types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
@@ -25,9 +28,10 @@ const ResultComponent = ({ results }: ResultComponentProps) => {
 	return (
 		<div>
 			{results.map((result: PointType) => {
-				const isSelected =
-					`${result.latitude}-${result.longitude}` ===
-					`${(selectedMarker as PointType).latitude}-${(selectedMarker as PointType).longitude}`;
+				const isSelected = isSelectedMarker(
+					selectedMarker as PointType,
+					result,
+				);
 				return (
 					<div
 						key={`${result.latitude}-${result.longitude}`}

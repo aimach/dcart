@@ -71,10 +71,25 @@ const zoomOnMarkerOnClick = (map: LeafletMap, point: PointType) => {
 	map.flyTo([point.latitude, point.longitude], 10);
 };
 
+// utilisée pour définir si c'est le marker sélectionné
+const isSelectedMarker = (
+	selectedMarker: PointType,
+	point: PointType,
+): boolean => {
+	if (selectedMarker) {
+		return (
+			`${point.latitude}-${point.longitude}` ===
+			`${(selectedMarker as PointType).latitude}-${(selectedMarker as PointType).longitude}`
+		);
+	}
+	return false;
+};
+
 export {
 	getBackGroundColorClassName,
 	getIconSize,
 	getSupportAndMaterialSentence,
 	getDatationSentence,
 	zoomOnMarkerOnClick,
+	isSelectedMarker,
 };

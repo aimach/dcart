@@ -17,6 +17,7 @@ import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 import {
 	getBackGroundColorClassName,
 	getIconSize,
+	isSelectedMarker,
 	zoomOnMarkerOnClick,
 } from "../../../utils/functions/functions";
 // import des types
@@ -46,7 +47,7 @@ const MapComponent = ({
 }: MapComponentProps) => {
 	// on récupère l'onglet en cours dans le panel
 	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
-	const { setSelectedMarker } = useContext(MapContext);
+	const { selectedMarker, setSelectedMarker } = useContext(MapContext);
 
 	const bounds: LatLngTuple[] = [];
 
@@ -98,9 +99,19 @@ const MapComponent = ({
 									// on créé une clé pour chaque point
 									const keyPoint = `${point.latitude}-${point.longitude}`;
 									// on génère un nom de classe à partir du nombre de sources
-									const backgroundColorClassName = getBackGroundColorClassName(
-										point.sources.length,
-									);
+									let backgroundColorClassName = null;
+									if (
+										selectedMarker &&
+										isSelectedMarker(selectedMarker, point)
+									) {
+										backgroundColorClassName = "selectedBackgroundColor";
+									} else {
+										backgroundColorClassName = getBackGroundColorClassName(
+											point.sources.length,
+										);
+									}
+									// on génère
+
 									const iconSize = getIconSize(point.sources.length);
 									// Création d'un DivIcon avec du texte et un style circulaire
 									const circleBrownIcon = L.divIcon({
