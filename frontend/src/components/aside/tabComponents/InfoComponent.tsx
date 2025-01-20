@@ -12,12 +12,15 @@ import type {
 } from "../../../types/mapTypes";
 // import des services
 import { getDatationSentence } from "../../../utils/functions/functions";
+// import du style
+import style from "./tabComponent.module.scss";
 
 interface InfoComponentProps {
 	point: PointType;
+	isSelected?: boolean;
 }
 
-const InfoComponent = ({ point }: InfoComponentProps) => {
+const InfoComponent = ({ point, isSelected }: InfoComponentProps) => {
 	// on récupère le language
 	const { language, translation } = useContext(TranslationContext);
 
@@ -27,9 +30,12 @@ const InfoComponent = ({ point }: InfoComponentProps) => {
 	const attestationNameLanguageKey: keyof AttestationType =
 		language === "fr" ? "nom_fr" : "nom_en";
 
+	// on créé une classe spéciale si le point est sélectionné
+	const selectedClassName = isSelected ? style.isSelected : undefined;
+
 	return (
 		point && (
-			<details>
+			<details className={selectedClassName}>
 				<summary>
 					{point.nom_ville} ({point[subRegionLanguageKey]})
 				</summary>

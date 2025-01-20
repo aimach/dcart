@@ -27,30 +27,26 @@ import type { Dispatch, SetStateAction } from "react";
 import "leaflet/dist/leaflet.css";
 import "./mapComponent.css";
 import style from "./mapComponent.module.scss";
+import { MapContext } from "../../../context/MapContext";
 
 interface MapComponentProps {
-	panelDisplayed: boolean;
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 	points: PointType[];
-	selectedPoint: PointType;
-	setSelectedPoint: Dispatch<SetStateAction<PointType | null>>;
 	map: LeafletMap;
 	setMap: Dispatch<SetStateAction<LeafletMap | null>>;
 	mapReady: boolean;
 }
 
 const MapComponent = ({
-	panelDisplayed,
 	setPanelDisplayed,
 	points,
-	setSelectedPoint,
 	map,
 	setMap,
 	mapReady,
 }: MapComponentProps) => {
 	// on récupère l'onglet en cours dans le panel
-	const { selectedTabMenu, setSelectedTabMenu } =
-		useContext(MapAsideMenuContext);
+	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
+	const { setSelectedMarker } = useContext(MapContext);
 
 	const bounds: LatLngTuple[] = [];
 
@@ -72,10 +68,12 @@ const MapComponent = ({
 	}, [points]);
 
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
+		// on passe dans l'onglet "infos"
 		setSelectedTabMenu("infos");
-		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
 		setPanelDisplayed(true);
-		setSelectedPoint(point);
+		// on zoom sur le marker
+		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
+		setSelectedMarker(point);
 	};
 
 	return (
@@ -117,9 +115,7 @@ const MapComponent = ({
 											position={[point.latitude, point.longitude]}
 											icon={circleBrownIcon}
 											eventHandlers={{
-												click: () => {
-													handleMarkerOnClick(map, point);
-												},
+												click: () => handleMarkerOnClick(map, point),
 											}}
 										>
 											<Tooltip direction="top" offset={[0, -10]}>

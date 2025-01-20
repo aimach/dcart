@@ -10,14 +10,12 @@ import AsideHeader from "../asideHeader/AsideHeader";
 interface AsideContainerProps {
 	panelDisplayed: boolean;
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
-	selectedPoint?: PointType | null | undefined;
 	allPoints?: PointType[];
 }
 
 const AsideContainer = ({
 	panelDisplayed,
 	setPanelDisplayed,
-	selectedPoint,
 	allPoints,
 }: AsideContainerProps) => {
 	return (
@@ -28,10 +26,7 @@ const AsideContainer = ({
 		>
 			<AsideHeader />
 			<div className={style.toggleButtonContainer}>
-				<AsideMainComponent
-					point={selectedPoint as PointType}
-					results={allPoints as PointType[]}
-				/>
+				<AsideMainComponent results={allPoints as PointType[]} />
 				{panelDisplayed ? (
 					<button
 						type="button"

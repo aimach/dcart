@@ -4,19 +4,21 @@ import { useContext } from "react";
 import ResultComponent from "../tabComponents/ResultComponent";
 import FilterComponent from "../tabComponents/FilterComponent";
 import InfoComponent from "../tabComponents/InfoComponent";
+// import du contexte
+import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
+import { MapContext } from "../../../context/MapContext";
 // import des types
 import type { PointType } from "../../../types/mapTypes";
-// import des services
-import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 
 interface AsideMainComponentProps {
-	point: PointType;
 	results: PointType[];
 }
 
-const AsideMainComponent = ({ point, results }: AsideMainComponentProps) => {
+const AsideMainComponent = ({ results }: AsideMainComponentProps) => {
 	// on récupère l'onglet en cours
 	const { selectedTabMenu } = useContext(MapAsideMenuContext);
+	// on récupère le point en cours
+	const { selectedMarker } = useContext(MapContext);
 
 	// on définit le composant à rendre
 	switch (selectedTabMenu) {
@@ -25,7 +27,7 @@ const AsideMainComponent = ({ point, results }: AsideMainComponentProps) => {
 		case "filters":
 			return <FilterComponent />;
 		case "infos":
-			return <InfoComponent point={point} />;
+			return <InfoComponent point={selectedMarker as PointType} />;
 		default:
 			return <ResultComponent results={results} />;
 	}
