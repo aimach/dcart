@@ -22,7 +22,7 @@ export class MapContent extends BaseEntity {
 	@Column({ type: "varchar" })
 	name!: string;
 
-	@Column({ type: "text" })
+	@Column({ type: "text", nullable: true })
 	description?: string | null;
 
 	// nombre d'éléments pour chaque attestation
@@ -41,6 +41,14 @@ export class MapContent extends BaseEntity {
 	@Column({ type: "varchar" })
 	divinityOperator!: string;
 
+	//  liste des éléments à inclure
+	@Column({ type: "text", nullable: true })
+	includedElements?: string | null;
+
+	//  liste des éléments à exclure
+	@Column({ type: "text", nullable: true })
+	excludedElements?: string | null;
+
 	// type de localité : cf. enum ci-dessus
 	@Column({ type: "enum", enum: location, default: location.GREATREGION })
 	locationType: string = location.GREATREGION;
@@ -50,12 +58,12 @@ export class MapContent extends BaseEntity {
 	locationId!: number;
 
 	// repère chronologique ante
-	@Column({ type: "int", default: null })
-	ante?: number;
+	@Column({ type: "int", nullable: true, default: null })
+	ante?: number | null;
 
 	// repère chronologique post
-	@Column({ type: "int", default: null })
-	post?: number;
+	@Column({ type: "int", nullable: true, default: null })
+	post?: number | null;
 
 	// booléen si la carte est active ou non (càd, publiée)
 	@Column({ type: "boolean", default: false })
