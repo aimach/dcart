@@ -1,28 +1,41 @@
 // import des bibliothèques
 import { useContext } from "react";
 import DOMPurify from "dompurify";
+import { v4 as uuidv4 } from "uuid";
 // import du context
-import { TranslationContext } from "../../context/TranslationContext";
+import { TranslationContext } from "../../../context/TranslationContext";
 // import des types
 import type {
 	AgentType,
 	AttestationType,
 	PointType,
-} from "../../types/mapTypes";
+} from "../../../types/mapTypes";
 // import des services
-import { getDatationSentence } from "../../utils/functions/functions";
+import { getDatationSentence } from "../../../utils/functions/functions";
+// import du style
+import style from "./tabComponent.module.scss";
 
-const ResultComponent = ({ point }: { point: PointType }) => {
+interface InfoComponentProps {
+	point: PointType;
+	isSelected?: boolean;
+}
+
+const InfoComponent = ({ point, isSelected }: InfoComponentProps) => {
 	// on récupère le language
 	const { language, translation } = useContext(TranslationContext);
+
+	// on prépare les clés pour l'objet de traduction
 	const subRegionLanguageKey: keyof PointType =
 		language === "fr" ? "sous_region_fr" : "sous_region_en";
 	const attestationNameLanguageKey: keyof AttestationType =
 		language === "fr" ? "nom_fr" : "nom_en";
 
+	// on créé une classe spéciale si le point est sélectionné
+	const selectedClassName = isSelected ? style.isSelected : undefined;
+
 	return (
 		point && (
-			<details>
+			<details className={selectedClassName}>
 				<summary>
 					{point.nom_ville} ({point[subRegionLanguageKey]})
 				</summary>
@@ -65,7 +78,7 @@ const ResultComponent = ({ point }: { point: PointType }) => {
 											}
 											return (
 												<p
-													key={agent}
+													key={uuidv4()}
 													// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
 													dangerouslySetInnerHTML={{
 														__html: agent,
@@ -77,10 +90,7 @@ const ResultComponent = ({ point }: { point: PointType }) => {
 								}
 
 								return (
-									<div
-										key={attestation.attestation_id}
-										style={{ marginLeft: "10px" }}
-									>
+									<div key={uuidv4()} style={{ marginLeft: "10px" }}>
 										<p>Attestation #{attestation.attestation_id}</p>
 										<div style={{ marginLeft: "10px" }}>
 											<p>{attestation[attestationNameLanguageKey]}</p>
@@ -103,4 +113,4 @@ const ResultComponent = ({ point }: { point: PointType }) => {
 	);
 };
 
-export default ResultComponent;
+export default InfoComponent;

@@ -1,0 +1,21 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.mapMenuNav {
+  height: v.$map-header-height;
+  width: 100%;
+  border: 1px solid black;
+  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+
+  ul {
+    width: 100%;
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
+    gap: v.$space-xxl
+  }
+
+  &Active {
+    text-decoration: none;
+    background-color: v.$color-black-chocolate;
+    color: white;
+  }
+}

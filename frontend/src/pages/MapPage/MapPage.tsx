@@ -1,10 +1,13 @@
 // import des bibliothèques
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 // import des composants
-import MapComponent from "../../components/mapComponent/MapComponent";
-import LoaderComponent from "../../components/common/loader/LoaderComponent";
-import AsideComponent from "../../components/asideComponent/AsideComponent";
+import MapComponent from "../../components/map/mapComponent/MapComponent";
+import AsideContainer from "../../components/aside/asideContainer/AsideContainer";
+import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/AsideReducedMenuComponent";
+import MapMenuNav from "../../components/map/mapMenuNav/MapMenuNav";
+// import du context
+import { MapContext } from "../../context/MapContext";
 // import des services
 import { getAllPointsByMapId } from "../../utils/loaders/loaders";
 // import des types
@@ -17,18 +20,14 @@ const MapPage = () => {
 	// on récupère les params
 	const { mapId } = useParams();
 
-	// on définit les states nécessaires
-	const [map, setMap] = useState<LeafletMap | null>(null);
+	// on récupère le context
+	const { map, setMap, selectedMarker, setSelectedMarker } =
+		useContext(MapContext);
 
+	// on définit les states nécessaires
 	const [mapReady, setMapReady] = useState<boolean>(false);
-	const [toggleButtons, setToggleButtons] = useState<
-		Partial<{ right: boolean; left: boolean }>
-	>({
-		right: false,
-		left: false,
-	});
+	const [panelDisplayed, setPanelDisplayed] = useState<boolean>(true);
 	const [allPoints, setAllPoints] = useState<PointType[]>([]);
-	const [selectedPoint, setSelectedPoint] = useState<PointType | null>(null);
 
 	// on charge les points de la carte
 	const fetchAllPoints = async () => {
@@ -43,39 +42,34 @@ const MapPage = () => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
+		setMapReady(false);
+		setPanelDisplayed(false);
 		fetchAllPoints();
-	}, []);
+	}, [mapId]);
 
 	return (
 		<section className={style.mapSection}>
-			<header className={style.mapSectionHeader}>Menu</header>
+			<MapMenuNav />
 			<section className={style.mapSectionMain}>
-				<AsideComponent
-					side="left"
-					toggleButtons={toggleButtons}
-					setToggleButtons={setToggleButtons}
-					selectedPoint={selectedPoint}
-				/>
+				{panelDisplayed ? (
+					<AsideContainer
+						panelDisplayed={panelDisplayed}
+						setPanelDisplayed={setPanelDisplayed}
+						allPoints={allPoints}
+					/>
+				) : (
+					<AsideReducedMenuComponent setPanelDisplayed={setPanelDisplayed} />
+				)}
+
 				<section className={mapReady ? undefined : style.mapSectionLoaded}>
-					{mapReady ? (
-						<MapComponent
-							toggleButtons={toggleButtons}
-							setToggleButtons={setToggleButtons}
-							points={allPoints}
-							selectedPoint={selectedPoint as PointType}
-							setSelectedPoint={setSelectedPoint}
-							map={map as LeafletMap}
-							setMap={setMap}
-						/>
-					) : (
-						<LoaderComponent />
-					)}
+					<MapComponent
+						setPanelDisplayed={setPanelDisplayed}
+						points={allPoints}
+						map={map as LeafletMap}
+						setMap={setMap}
+						mapReady={mapReady}
+					/>
 				</section>
-				<AsideComponent
-					side="right"
-					toggleButtons={toggleButtons}
-					setToggleButtons={setToggleButtons}
-				/>
 			</section>
 		</section>
 	);

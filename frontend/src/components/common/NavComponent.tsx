@@ -1,28 +1,47 @@
 // import des bibliothèques
-import { Link } from "react-router";
+import { NavLink } from "react-router";
 // import des types
 import type { NavList } from "../../types/commonTypes";
 
 interface NavComponentProps {
-	type: string;
+	type: "route" | "list";
 	navClassName: string;
 	list: NavList;
+	selectedElement?: string;
+	liClasseName?: string;
+	activeLinkClassName?: string;
 }
 
-const NavComponent = ({ type, navClassName, list }: NavComponentProps) => {
+const NavComponent = ({
+	type,
+	navClassName,
+	list,
+	selectedElement,
+	liClasseName,
+	activeLinkClassName,
+}: NavComponentProps) => {
 	return (
 		<nav className={navClassName}>
 			<ul>
 				{list.map((element) =>
 					type === "route" ? (
-						<Link key={element.title as string} to={element.route as string}>
+						<NavLink
+							key={element.title as string}
+							to={element.route as string}
+							className={({ isActive }) =>
+								isActive ? activeLinkClassName : undefined
+							}
+						>
 							{element.title as string}
-						</Link>
+						</NavLink>
 					) : (
 						<li
-							key={element.title as string}
+							key={element.id as string}
 							onClick={element.onClickFunction}
 							onKeyUp={element.onClickFunction}
+							className={
+								selectedElement === element.id ? liClasseName : undefined
+							}
 						>
 							{element.title as string}
 						</li>

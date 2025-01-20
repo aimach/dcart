@@ -22,16 +22,19 @@ const HeaderComponent = () => {
 
 	const pageNavigationList: NavList = [
 		{
+			id: "home",
 			title: translation[language].navigation.home,
 			onClickFunction: undefined,
 			route: "/",
 		},
 		{
+			id: "maps",
 			title: translation[language].navigation.maps,
 			onClickFunction: undefined,
 			route: "/map",
 		},
 		{
+			id: "undefined",
 			title: "Page 3",
 			onClickFunction: undefined,
 			route: "/",
@@ -40,11 +43,13 @@ const HeaderComponent = () => {
 
 	const translationNavigationList: NavList = [
 		{
+			id: "fr",
 			title: translation[language].fr,
 			onClickFunction: () => switchLanguage("fr"),
 			route: undefined,
 		},
 		{
+			id: "en",
 			title: translation[language].en,
 			onClickFunction: () => switchLanguage("en"),
 			route: undefined,
@@ -66,12 +71,15 @@ const HeaderComponent = () => {
 				type="route"
 				navClassName={style.headerNavMenu}
 				list={pageNavigationList}
+				activeLinkClassName={style.headerNavMenuActive}
 			/>
 			<div className={style.headerLastSection}>
 				<NavComponent
 					type="list"
 					navClassName={style.headerTranslationMenu}
 					list={translationNavigationList}
+					selectedElement={language}
+					liClasseName={style.languageSelected}
 				/>
 				<ImageWithLink
 					type="route"

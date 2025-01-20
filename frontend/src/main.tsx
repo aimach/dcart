@@ -1,5 +1,4 @@
 // import des bibliothèques
-import { StrictMode } from "react";
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 // import des composants
@@ -14,6 +13,8 @@ import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
+import { MapAsideMenuProvider } from "./context/MapAsideMenuContext.tsx";
+import { MapProvider } from "./context/MapContext.tsx";
 // import du style
 import "./index.css";
 
@@ -24,25 +25,29 @@ if (rootElement) {
 		<BrowserRouter>
 			<TranslationProvider>
 				<AuthProvider>
-					<StrictMode>
-						<Routes>
-							<Route element={<NavigationLayout />}>
-								<Route index element={<App />} />
-								<Route path="map">
-									<Route index element={<MapMenuPage />} />
-									<Route path=":mapId" element={<MapPage />} />
+					<MapAsideMenuProvider>
+						<MapProvider>
+							{/* <StrictMode> */}
+							<Routes>
+								<Route element={<NavigationLayout />}>
+									<Route index element={<App />} />
+									<Route path="map">
+										<Route index element={<MapMenuPage />} />
+										<Route path=":mapId" element={<MapPage />} />
+									</Route>
 								</Route>
-							</Route>
-							<Route path="menu" element={<MenuPage />} />
-							<Route
-								path="authentification"
-								element={<AuthentificationPage />}
-							/>
-							<Route path="backoffice" element={<ProtectedLayout />}>
-								<Route index element={<BOHomePage />} />
-							</Route>
-						</Routes>
-					</StrictMode>
+								<Route path="menu" element={<MenuPage />} />
+								<Route
+									path="authentification"
+									element={<AuthentificationPage />}
+								/>
+								<Route path="backoffice" element={<ProtectedLayout />}>
+									<Route index element={<BOHomePage />} />
+								</Route>
+							</Routes>
+							{/* </StrictMode> */}
+						</MapProvider>
+					</MapAsideMenuProvider>
 				</AuthProvider>
 			</TranslationProvider>
 		</BrowserRouter>,

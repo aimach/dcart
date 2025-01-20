@@ -10,6 +10,9 @@ type TranslationObject = {
 	};
 	button: {
 		freeExploration: string;
+		results: string;
+		filters: string;
+		infos: string;
 	};
 	common: {
 		between: string;
