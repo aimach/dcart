@@ -20,15 +20,15 @@ const getBackGroundColorClassName = (sourcesNb: number) => {
 // utilisée pour définir la taille de l'icone en fonction du nombre de sources
 const getIconSize = (sourcesNb: number) => {
 	if (sourcesNb < 10) {
-		return 20;
-	}
-	if (sourcesNb >= 10 && sourcesNb < 50) {
 		return 30;
 	}
-	if (sourcesNb >= 50) {
+	if (sourcesNb >= 10 && sourcesNb < 50) {
 		return 40;
 	}
-	return 20;
+	if (sourcesNb >= 50) {
+		return 50;
+	}
+	return 30;
 };
 
 // utilisée pour définir le couple support/matériau dans la langue choisie
