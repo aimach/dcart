@@ -2,12 +2,16 @@
 // $1 = opérateur et nombre d'éléments dans l'attestation
 // $2 = opérateur et nombre de puissances divines
 
+import { string } from "joi";
+
 export const getSourcesQuery = (
 	queryLocalisation: string,
 	elementOperator: string,
 	divinityOperator: string,
 	queryAnte: string,
 	queryPost: string,
+	queryIncludedElements: string,
+	queryExcludedElements: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -74,7 +78,9 @@ sources_with_attestations AS (
   JOIN attestation_with_elements ON attestation.id = attestation_with_elements.id_attestation
   JOIN formule ON formule.attestation_id = attestation.id
   JOIN agent ON agent.id_attestation = attestation.id
-  WHERE attestation_with_elements.nb_element ${elementOperator} $1 
+  WHERE attestation_with_elements.nb_element ${elementOperator} $1
+  ${queryIncludedElements} 
+  ${queryExcludedElements} 
 ),
 
 -- on enlève les doublons des sources
