@@ -17,20 +17,6 @@ const getBackGroundColorClassName = (sourcesNb: number) => {
 	return "lightBackgroundColor";
 };
 
-// utilisée pour définir la taille de l'icone en fonction du nombre de sources
-const getIconSize = (sourcesNb: number) => {
-	if (sourcesNb < 10) {
-		return 20;
-	}
-	if (sourcesNb >= 10 && sourcesNb < 50) {
-		return 30;
-	}
-	if (sourcesNb >= 50) {
-		return 40;
-	}
-	return 20;
-};
-
 // utilisée pour définir le couple support/matériau dans la langue choisie
 const getSupportAndMaterialSentence = (
 	source: SourceType,
@@ -87,7 +73,6 @@ const isSelectedMarker = (
 
 export {
 	getBackGroundColorClassName,
-	getIconSize,
 	getSupportAndMaterialSentence,
 	getDatationSentence,
 	zoomOnMarkerOnClick,
