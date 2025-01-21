@@ -4,7 +4,9 @@
 	"fr": "Français",
 	"navigation": {
 		"home": "Accueil",
-		"maps": "Cartes"
+		"maps": "Cartes",
+		"storymaps": "Storymaps",
+		"backoffice": "Tableau de bord"
 	},
 	"button": {
 		"freeExploration": "Exploration libre",

@@ -13,14 +13,18 @@ import style from "./header.module.scss";
 // import des images
 import MAPLogo from "../../../public/map_logo.png";
 
-const HeaderComponent = () => {
+interface HeaderComponentProps {
+	type: "visitor" | "backoffice";
+}
+
+const HeaderComponent = ({ type }: HeaderComponentProps) => {
 	// on récupère le contexte qui gère le language et on crée la fonction pour switcher
 	const { language, translation, setLanguage } = useContext(TranslationContext);
 	const switchLanguage = (newLanguage: Language) => {
 		setLanguage(newLanguage);
 	};
 
-	const pageNavigationList: NavList = [
+	const visitorNavigationList: NavList = [
 		{
 			id: "home",
 			title: translation[language].navigation.home,
@@ -38,6 +42,27 @@ const HeaderComponent = () => {
 			title: "Page 3",
 			onClickFunction: undefined,
 			route: "/",
+		},
+	];
+
+	const backofficeNavigationList: NavList = [
+		{
+			id: "home",
+			title: translation[language].navigation.backoffice,
+			onClickFunction: undefined,
+			route: "/backoffice",
+		},
+		{
+			id: "maps",
+			title: translation[language].navigation.maps,
+			onClickFunction: undefined,
+			route: "/backoffice/maps",
+		},
+		{
+			id: "storymaps",
+			title: translation[language].navigation.storymaps,
+			onClickFunction: undefined,
+			route: "/backoffice/storymaps",
 		},
 	];
 
@@ -70,26 +95,32 @@ const HeaderComponent = () => {
 			<NavComponent
 				type="route"
 				navClassName={style.headerNavMenu}
-				list={pageNavigationList}
+				list={
+					type === "visitor" ? visitorNavigationList : backofficeNavigationList
+				}
 				activeLinkClassName={style.headerNavMenuActive}
 			/>
 			<div className={style.headerLastSection}>
-				<NavComponent
-					type="list"
-					navClassName={style.headerTranslationMenu}
-					list={translationNavigationList}
-					selectedElement={language}
-					liClasseName={style.languageSelected}
-				/>
-				<ImageWithLink
-					type="route"
-					link={"/menu"}
-					ariaLabel={undefined}
-					buttonClassName={undefined}
-					imgSrc={""}
-					imgAlt={"Menu"}
-					imgWidth={100}
-				/>
+				{type === "visitor" && (
+					<>
+						<NavComponent
+							type="list"
+							navClassName={style.headerTranslationMenu}
+							list={translationNavigationList}
+							selectedElement={language}
+							liClasseName={style.languageSelected}
+						/>
+						<ImageWithLink
+							type="route"
+							link={"/menu"}
+							ariaLabel={undefined}
+							buttonClassName={undefined}
+							imgSrc={""}
+							imgAlt={"Menu"}
+							imgWidth={100}
+						/>
+					</>
+				)}
 			</div>
 		</header>
 	);

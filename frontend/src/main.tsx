@@ -5,11 +5,13 @@ import { BrowserRouter, Routes, Route } from "react-router";
 import App from "./App.tsx";
 import NavigationLayout from "./layouts/NavigationLayout.tsx";
 import ProtectedLayout from "./layouts/ProtectedLayout.tsx";
-import AuthentificationPage from "./pages/AuthentificationPage.tsx";
-import BOHomePage from "./pages/BOHomePage.tsx";
+import AuthentificationPage from "./pages/BackOffice/AuthentificationPage/AuthentificationPage.tsx";
+import BOHomePage from "./pages/BackOffice/BOHomePage/BOHomePage.tsx";
 import MenuPage from "./pages/MenuPage/MenuPage.tsx";
 import MapPage from "./pages/MapPage/MapPage.tsx";
 import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
+import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.tsx";
+import BackofficeStorymapPage from "./pages/BackOffice/BOStorymapPage/BackofficeStorymapPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -43,6 +45,11 @@ if (rootElement) {
 								/>
 								<Route path="backoffice" element={<ProtectedLayout />}>
 									<Route index element={<BOHomePage />} />
+									<Route path="maps" element={<BackofficeMapPage />} />
+									<Route
+										path="storymaps"
+										element={<BackofficeStorymapPage />}
+									/>
 								</Route>
 							</Routes>
 							{/* </StrictMode> */}
