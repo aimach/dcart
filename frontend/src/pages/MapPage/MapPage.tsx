@@ -43,7 +43,7 @@ const MapPage = () => {
 			const mapInfos = await getOneMapInfos(mapId as string);
 			setMapInfos(mapInfos);
 		} catch (error) {
-			console.error("Erreur lors du chargement des points:", error);
+			console.error("Erreur lors du chargement des infos de la carte:", error);
 		}
 	};
 

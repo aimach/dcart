@@ -11,7 +11,7 @@ import { v4 as uuidv4 } from "uuid";
 // import des composants
 import LoaderComponent from "../../common/loader/LoaderComponent";
 import ModalComponent from "../../modal/ModalComponent";
-import MarkerComponent from "../MarkerComponent.tsx/MarkerComponent";
+import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import du context
 import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 import { MapContext } from "../../../context/MapContext";
@@ -22,6 +22,7 @@ import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import "./mapComponent.css";
+import ResetControl from "../controls/ResetControlComponent";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -36,6 +37,8 @@ const MapComponent = ({
 	mapReady,
 	mapInfos,
 }: MapComponentProps) => {
+	const mapCenter: LatLngTuple = [40.43, 16.52];
+
 	// on gère l'affichage de la modale
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
@@ -77,7 +80,7 @@ const MapComponent = ({
 						</ModalComponent>
 					)}
 					<MapContainer
-						center={[40.43, 16.52]}
+						center={mapCenter}
 						zoomControl={false}
 						minZoom={4}
 						maxZoom={11}
@@ -104,6 +107,7 @@ const MapComponent = ({
 								)}
 								<ZoomControl position="topright" />
 								<ScaleControl position="bottomright" />
+								<ResetControl mapBounds={bounds} />
 							</>
 						)}
 					</MapContainer>
