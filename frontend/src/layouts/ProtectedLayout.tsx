@@ -10,12 +10,13 @@ const ProtectedLayout = () => {
 	const { isAuthenticated } = useContext(AuthContext);
 	const navigate = useNavigate();
 
+	// commenté le temps du développement du backoffice
 	// biome-ignore lint/correctness/useExhaustiveDependencies: ignore "navigate" dans le tableau de dépendances
-	useEffect(() => {
-		if (!isAuthenticated) {
-			navigate("/");
-		}
-	}, [isAuthenticated]);
+	// useEffect(() => {
+	// 	if (!isAuthenticated) {
+	// 		navigate("/");
+	// 	}
+	// }, [isAuthenticated]);
 	return (
 		<div>
 			<HeaderComponent type={"backoffice"} />

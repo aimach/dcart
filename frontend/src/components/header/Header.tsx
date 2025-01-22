@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { useContext } from "react";
+import { Link } from "react-router";
 // import des composants
 import NavComponent from "../common/NavComponent";
 import ImageWithLink from "../common/ImageWithLink";
@@ -89,15 +90,20 @@ const HeaderComponent = ({ type }: HeaderComponentProps) => {
 
 	return (
 		<header className={style.header}>
-			<ImageWithLink
-				type="link"
-				link={"https://map-polytheisms.huma-num.fr/"}
-				ariaLabel={"Visiter le site MAP"}
-				buttonClassName={style.headerLogo}
-				imgSrc={MAPLogo}
-				imgAlt={"MAP logo"}
-				imgWidth={50}
-			/>
+			{type === "visitor" ? (
+				<ImageWithLink
+					type="link"
+					link={"https://map-polytheisms.huma-num.fr/"}
+					ariaLabel={"Visiter le site MAP"}
+					buttonClassName={style.headerLogo}
+					imgSrc={MAPLogo}
+					imgAlt={"MAP logo"}
+					imgWidth={50}
+				/>
+			) : (
+				<Link to="/">{translation[language].navigation.back}</Link>
+			)}
+
 			<NavComponent
 				type="route"
 				navClassName={style.headerNavMenu}

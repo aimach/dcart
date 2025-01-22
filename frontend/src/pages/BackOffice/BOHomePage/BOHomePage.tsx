@@ -5,7 +5,7 @@ import { TranslationContext } from "../../../context/TranslationContext";
 // import du style
 import style from "./BOHomePage.module.scss";
 import { Link } from "react-router";
-console.log(style);
+
 const BOHomePage = () => {
 	// on récupère le language
 	const { language, translation } = useContext(TranslationContext);

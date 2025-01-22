@@ -7,7 +7,8 @@
 		"maps": "Cartes",
 		"storymaps": "Storymaps",
 		"backoffice": "Tableau de bord",
-		"translation": "Traduction"
+		"translation": "Traduction",
+		"back": "Retour"
 	},
 	"button": {
 		"freeExploration": "Exploration libre",
