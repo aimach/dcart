@@ -12,6 +12,7 @@ import MapPage from "./pages/MapPage/MapPage.tsx";
 import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
 import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.tsx";
 import BackofficeStorymapPage from "./pages/BackOffice/BOStorymapPage/BackofficeStorymapPage.tsx";
+import BackofficeTranslationPage from "./pages/BackOffice/BOTranslationPage/BackofficeTranslationPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -49,6 +50,10 @@ if (rootElement) {
 									<Route
 										path="storymaps"
 										element={<BackofficeStorymapPage />}
+									/>
+									<Route
+										path="translation"
+										element={<BackofficeTranslationPage />}
 									/>
 								</Route>
 							</Routes>

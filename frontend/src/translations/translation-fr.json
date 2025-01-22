@@ -6,7 +6,8 @@
 		"home": "Accueil",
 		"maps": "Cartes",
 		"storymaps": "Storymaps",
-		"backoffice": "Tableau de bord"
+		"backoffice": "Tableau de bord",
+		"translation": "Traduction"
 	},
 	"button": {
 		"freeExploration": "Exploration libre",

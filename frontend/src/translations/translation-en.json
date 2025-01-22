@@ -6,7 +6,8 @@
 		"home": "Home",
 		"maps": "Maps",
 		"storymaps": "Storymaps",
-		"backoffice": "Backoffice"
+		"backoffice": "Backoffice",
+		"translation": "Translation"
 	},
 	"button": {
 		"freeExploration": "Free exploration",

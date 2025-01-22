@@ -64,6 +64,12 @@ const HeaderComponent = ({ type }: HeaderComponentProps) => {
 			onClickFunction: undefined,
 			route: "/backoffice/storymaps",
 		},
+		{
+			id: "translation",
+			title: translation[language].navigation.translation,
+			onClickFunction: undefined,
+			route: "/backoffice/translation",
+		},
 	];
 
 	const translationNavigationList: NavList = [

@@ -1,5 +1,5 @@
 const BackofficeStorymapPage = () => {
-	return <div>Page des cartes</div>;
+	return <div>Page des storymaps</div>;
 };
 
 export default BackofficeStorymapPage;

@@ -9,6 +9,7 @@ type TranslationObject = {
 		maps: string;
 		storymaps: string;
 		backoffice: string;
+		translation: string;
 	};
 	button: {
 		freeExploration: string;
