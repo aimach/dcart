@@ -4,7 +4,11 @@
 	"fr": "Français",
 	"navigation": {
 		"home": "Accueil",
-		"maps": "Cartes"
+		"maps": "Cartes",
+		"storymaps": "Storymaps",
+		"backoffice": "Tableau de bord",
+		"translation": "Traduction",
+		"back": "Retour"
 	},
 	"button": {
 		"freeExploration": "Exploration libre",

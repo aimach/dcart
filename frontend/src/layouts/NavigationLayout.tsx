@@ -8,7 +8,7 @@ import style from "./layout.module.scss";
 const NavigationLayout = () => {
 	return (
 		<div className={style.layout}>
-			<HeaderComponent />
+			<HeaderComponent type={"visitor"} />
 			<main>
 				<Outlet />
 			</main>

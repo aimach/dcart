@@ -3,7 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import {
 	MapContainer,
 	TileLayer,
-	Marker,
 	ScaleControl,
 	ZoomControl,
 } from "react-leaflet";

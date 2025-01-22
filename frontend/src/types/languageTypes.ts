@@ -7,6 +7,10 @@ type TranslationObject = {
 	navigation: {
 		home: string;
 		maps: string;
+		storymaps: string;
+		backoffice: string;
+		translation: string;
+		back: string;
 	};
 	button: {
 		freeExploration: string;
