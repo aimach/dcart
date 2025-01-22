@@ -72,35 +72,45 @@ const SearchFormComponent = ({
 
 	return (
 		dataLoaded && (
-			<form method="post" onSubmit={handleSubmit}>
-				<p>
-					J'aimerais voir les sources de la région de{" "}
-					<SelectOptionsComponent
-						selectId="location"
-						basicOptionContent="Choisissez une région"
-						options={greatRegions}
-					/>{" "}
-					sur la divinité{" "}
-					<SelectOptionsComponent
-						selectId="element"
-						basicOptionContent="Choisissez une divinité"
-						options={divinities}
-					/>{" "}
-					entre{" "}
-					<SelectOptionsComponent
-						selectId="post"
-						basicOptionContent="date début"
-						options={timeOptions}
-					/>{" "}
-					et{" "}
-					<SelectOptionsComponent
-						selectId="ante"
-						basicOptionContent="date fin"
-						options={timeOptions}
-					/>{" "}
-				</p>
-				<button type="submit">Voir les sources</button>
-			</form>
+			<>
+				<form method="post" onSubmit={handleSubmit}>
+					<p>
+						J'aimerais voir les sources de la région de{" "}
+						<SelectOptionsComponent
+							selectId="location"
+							basicOptionContent="Choisissez une région"
+							options={greatRegions}
+						/>{" "}
+						sur la divinité{" "}
+						<SelectOptionsComponent
+							selectId="element"
+							basicOptionContent="Choisissez une divinité"
+							options={divinities}
+						/>{" "}
+						entre{" "}
+						<SelectOptionsComponent
+							selectId="post"
+							basicOptionContent="date début"
+							options={timeOptions}
+						/>{" "}
+						et{" "}
+						<SelectOptionsComponent
+							selectId="ante"
+							basicOptionContent="date fin"
+							options={timeOptions}
+						/>{" "}
+					</p>
+					<button type="submit">Voir les sources</button>
+				</form>
+				<div>-- OU --</div>
+				<button
+					type="button"
+					onClick={() => setIsModalOpen(false)}
+					onKeyUp={() => setIsModalOpen(false)}
+				>
+					Tout voir
+				</button>
+			</>
 		)
 	);
 };
