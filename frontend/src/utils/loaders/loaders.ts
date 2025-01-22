@@ -10,7 +10,7 @@ const getAllMapsInfos = async () => {
 
 // récupérer toutes les informations d'une carte (titre, description, critères...)
 const getOneMapInfos = async (mapId: string) => {
-	if (mapId !== "all") {
+	if (mapId !== "exploration") {
 		const response = await apiClient.get(`/map/${mapId}`);
 		const mapInfos = await response.data;
 		return mapInfos;
@@ -19,8 +19,16 @@ const getOneMapInfos = async (mapId: string) => {
 };
 
 // récupérer toutes les sources d'une carte
-const getAllPointsByMapId = async (id: string) => {
-	const response = await apiClient.get(`/map/${id}/sources`);
+const getAllPointsByMapId = async (id: string, params: FormData | null) => {
+	const queryArray = [];
+	let query = "";
+	if (params !== null) {
+		for (const param of params) {
+			queryArray.push(`${param[0]}=${param[1]}`);
+		}
+		query = queryArray.length ? `?${queryArray.join("&")}` : "";
+	}
+	const response = await apiClient.get(`/map/${id}/sources${query}`);
 	const allPoints = await response.data;
 	return allPoints;
 };

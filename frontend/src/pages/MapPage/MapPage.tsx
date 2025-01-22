@@ -29,7 +29,7 @@ const MapPage = () => {
 	// on charge les points de la carte
 	const fetchAllPoints = async () => {
 		try {
-			const points = await getAllPointsByMapId(mapId as string);
+			const points = await getAllPointsByMapId(mapId as string, null);
 			setAllPoints(points);
 			setMapReady(true);
 		} catch (error) {
@@ -73,8 +73,10 @@ const MapPage = () => {
 					<MapComponent
 						setPanelDisplayed={setPanelDisplayed}
 						points={allPoints}
+						setAllPoints={setAllPoints}
 						mapReady={mapReady}
 						mapInfos={mapInfos}
+						mapId={mapId as string}
 					/>
 				</section>
 			</section>

@@ -1,27 +1,41 @@
+// import des types
+import { useContext } from "react";
+import type { DivinityType, GreatRegionType } from "../../../types/mapTypes";
+import { TranslationContext } from "../../../context/TranslationContext";
+
 interface SelectOptionsComponentProps {
 	selectId: string;
-	label: string;
 	basicOptionContent: string;
-	options: string;
+	options: GreatRegionType[] | DivinityType[] | number[];
 }
 
 const SelectOptionsComponent = ({
 	selectId,
-	label,
 	basicOptionContent,
 	options,
 }: SelectOptionsComponentProps) => {
+	// import du language
+	const { language } = useContext(TranslationContext);
+	const nameKey: "nom_fr" | "nom_en" = `nom_${language}`;
+
 	return (
 		<>
-			<label htmlFor={selectId}>{label}</label>
-
-			<select name="pets" id={selectId}>
+			<select name={selectId} id={selectId}>
 				<option value="">{basicOptionContent}</option>
-				{options.map((option) => (
-					<option key={option.id} value={option.id}>
-						{option.name}
-					</option>
-				))}
+				{options.map((option) => {
+					if (option instanceof Object) {
+						return (
+							<option key={option.id} value={option.id}>
+								{option[nameKey]}
+							</option>
+						);
+					}
+					return (
+						<option key={option as number} value={option as number}>
+							{option as number}
+						</option>
+					);
+				})}
 			</select>
 		</>
 	);
