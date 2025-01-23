@@ -1,7 +1,9 @@
 type MapType = {
 	id: string;
-	name: string;
-	description: string;
+	name_fr: string;
+	name_en: string;
+	description_fr: string;
+	description_en: string;
 	elementNb: number;
 	elementOperator: string;
 	divinityNb: number;
