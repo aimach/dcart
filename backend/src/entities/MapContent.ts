@@ -20,10 +20,16 @@ export class MapContent extends BaseEntity {
 	id!: string;
 
 	@Column({ type: "varchar" })
-	name!: string;
+	name_fr!: string;
+
+	@Column({ type: "varchar" })
+	name_en!: string;
 
 	@Column({ type: "text", nullable: true })
-	description?: string | null;
+	description_fr?: string | null;
+
+	@Column({ type: "text", nullable: true })
+	description_en?: string | null;
 
 	// nombre d'éléments pour chaque attestation
 	@Column({ type: "int" })
