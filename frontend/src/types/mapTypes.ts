@@ -67,6 +67,25 @@ type PointType = {
 
 type MenuTabType = "results" | "filters" | "infos";
 
+type MapInfoType = { [key: string]: string };
+
+type GreatRegionType = {
+	id: number;
+	nom_fr: string;
+	nom_en: string;
+};
+
+type DivinityType = {
+	id: number;
+	nom_fr: string;
+	nom_en: string;
+};
+
+type TimeMarkersType = {
+	post_quem: number;
+	ante_quem: number;
+};
+
 export type {
 	MapType,
 	PointType,
@@ -75,4 +94,8 @@ export type {
 	AgentType,
 	ElementType,
 	MenuTabType,
+	MapInfoType,
+	GreatRegionType,
+	DivinityType,
+	TimeMarkersType,
 };

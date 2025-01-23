@@ -51,14 +51,38 @@ export const mapController = {
 			let results = null;
 
 			if (mapId === "exploration") {
+				const { location, element, ante, post } = req.query;
+				// on prépare les query des filtres
+				const queryLocalisation = location
+					? getQueryStringForLocalisationFilter(
+							"greatRegion",
+							Number.parseInt(location as string, 10),
+						)
+					: "";
+				const queryAnte = ante
+					? getQueryStringForDateFilter(
+							"ante",
+							Number.parseInt(ante as string, 10),
+						)
+					: "";
+				const queryPost = post
+					? getQueryStringForDateFilter(
+							"post",
+							Number.parseInt(post as string, 10),
+						)
+					: "";
+				const queryIncludedElements = element
+					? getQueryStringForIncludedElements(element as string)
+					: "";
+
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQuery(
-					"",
+					queryLocalisation,
 					"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
 					"=",
-					"",
-					"",
-					"",
+					queryAnte,
+					queryPost,
+					queryIncludedElements,
 					"",
 				);
 				results = await MapDataSource.query(sqlQuery, [3, 1]);
@@ -114,6 +138,56 @@ export const mapController = {
 			}
 
 			res.status(200).json(results);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	getAllGreatRegions: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const results = await MapDataSource.query(
+				"SELECT id, nom_fr, nom_en FROM grande_region",
+			);
+
+			res.status(200).json(results);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	getAllDivinities: async (req: Request, res: Response): Promise<void> => {
+		// récupérer la liste d'alaya
+		try {
+			const query = `SELECT
+			element.id AS id,
+			traduction.nom_fr AS nom_fr,
+			traduction.nom_en AS nom_en
+			FROM element
+			LEFT JOIN
+			(SELECT id_element, MIN(nom_fr) AS nom_fr, MIN(nom_en) AS nom_en FROM traduction_element GROUP BY id_element) 
+			traduction ON element.id = traduction.id_element
+			JOIN nature_element ON element.id_nature_element = nature_element.id
+			WHERE nature_element.nom_fr LIKE $1
+			ORDER BY element.id
+			`;
+			const results = await MapDataSource.query(query, ["%Substantif%"]);
+
+			res.status(200).json(results);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	getTimeMarkers: async (req: Request, res: Response): Promise<void> => {
+		// récupérer dans la table datation le post_quem le plus bas et ante_quem le plus haut
+		try {
+			const query = `SELECT 
+			MIN(post_quem) AS post_quem, 
+			MAX(ante_quem) AS ante_quem 
+			FROM datation`;
+			const results = await MapDataSource.query(query);
+
+			res.status(200).json(results[0]);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

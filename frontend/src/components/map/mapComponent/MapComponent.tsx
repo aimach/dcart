@@ -16,25 +16,30 @@ import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 import { MapContext } from "../../../context/MapContext";
 // import des types
 import type { LatLngTuple } from "leaflet";
-import type { PointType } from "../../../types/mapTypes";
+import type { MapInfoType, PointType } from "../../../types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import "./mapComponent.css";
 import ResetControl from "../controls/ResetControlComponent";
+import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 	points: PointType[];
+	setAllPoints: Dispatch<SetStateAction<PointType[]>>;
 	mapReady: boolean;
-	mapInfos: { [key: string]: string } | null;
+	mapInfos: MapInfoType | null;
+	mapId: string;
 }
 
 const MapComponent = ({
 	setPanelDisplayed,
 	points,
+	setAllPoints,
 	mapReady,
 	mapInfos,
+	mapId,
 }: MapComponentProps) => {
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
@@ -56,7 +61,10 @@ const MapComponent = ({
 	const bounds: LatLngTuple[] = [];
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		setIsModalOpen(true);
+		// mettre à jour la modale uniquement si on change de carte thématique
+		if (mapId !== "exploration") {
+			setIsModalOpen(true);
+		}
 		if (points.length) {
 			for (const point of points) {
 				bounds.push([point.latitude, point.longitude]);
@@ -72,10 +80,20 @@ const MapComponent = ({
 			{!mapReady && <LoaderComponent />}
 			<div className="map" id="map">
 				<section className="leaflet-container">
-					{isModalOpen && mapInfos && (
+					{isModalOpen && (
 						<ModalComponent onClose={() => setIsModalOpen(false)}>
-							<h3>{mapInfos.name}</h3>
-							<p>{mapInfos.description}</p>
+							{mapId === "exploration" && (
+								<SearchFormComponent
+									setAllPoints={setAllPoints}
+									setIsModalOpen={setIsModalOpen}
+								/>
+							)}
+							{mapInfos && (
+								<>
+									<h3>{(mapInfos as MapInfoType).name}</h3>
+									<p>{(mapInfos as MapInfoType).description}</p>
+								</>
+							)}
 						</ModalComponent>
 					)}
 					<MapContainer
