@@ -23,6 +23,7 @@ import "leaflet/dist/leaflet.css";
 import "./mapComponent.css";
 import ResetControl from "../controls/ResetControlComponent";
 import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
+import { TranslationContext } from "../../../context/TranslationContext";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -47,6 +48,7 @@ const MapComponent = ({
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
 	// on récupère les informations du context
+	const { language } = useContext(TranslationContext);
 	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
 	const { map, setMap } = useContext(MapContext);
 
@@ -90,8 +92,8 @@ const MapComponent = ({
 							)}
 							{mapInfos && (
 								<>
-									<h3>{(mapInfos as MapInfoType).name}</h3>
-									<p>{(mapInfos as MapInfoType).description}</p>
+									<h3>{(mapInfos as MapInfoType)[`name_${language}`]}</h3>
+									<p>{(mapInfos as MapInfoType)[`description_${language}`]}</p>
 								</>
 							)}
 						</ModalComponent>

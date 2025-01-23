@@ -1,11 +1,15 @@
 // import des bibliothèques
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 // import des services
 import { getAllMapsInfos } from "../../../utils/loaders/loaders";
 // import des types
 import type { MapType } from "../../../types/mapTypes";
+import { TranslationContext } from "../../../context/TranslationContext";
 
 const BackofficeMapPage = () => {
+	// on récupère la langue
+	const { language } = useContext(TranslationContext);
+
 	// on récupère les données des cartes dans la BDD
 	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
 
@@ -30,7 +34,7 @@ const BackofficeMapPage = () => {
 			<section>
 				<ul>
 					{allMapsInfos.map((map) => (
-						<li key={map.id}>{map.name}</li>
+						<li key={map.id}>{`name_${language}`}</li>
 					))}
 				</ul>
 			</section>
