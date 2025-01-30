@@ -1,9 +1,10 @@
 // import des bibliothèques
-import { createContext, useState } from "react";
+import { createContext, useEffect, useState } from "react";
 // import des types
 import type { ReactNode, Dispatch, SetStateAction } from "react";
 import type { Map as LeafletMap } from "leaflet";
 import type { PointType } from "../types/mapTypes";
+import { useNavigate } from "react-router";
 
 export type MapContextType = {
 	map: LeafletMap | null;
@@ -28,6 +29,12 @@ export const MapProvider = ({ children }: MapProviderProps) => {
 		undefined,
 	);
 	const [map, setMap] = useState<LeafletMap | null>(null);
+	const navigate = useNavigate();
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: il est nécessaire de reset le marker entre chaque carte
+	useEffect(() => {
+		setSelectedMarker(undefined);
+	}, [navigate]);
 
 	return (
 		<MapContext.Provider
