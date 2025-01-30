@@ -60,10 +60,10 @@ sources_with_attestations AS (
                       WHERE agent_genre.id_agent = agent.id
                     ) AS genres -- Tableaux des genres pour l'agent
                     FROM agent 
-                    JOIN agent_activite ON agent_activite.id_agent = agent.id
-                    JOIN activite_agent ON activite_agent.id = agent_activite.id_activite
-                    JOIN agent_genre ON agent_genre.id_agent = agent.id 
-                    JOIN genre on genre.id = agent_genre.id_genre 
+                    LEFT JOIN agent_activite ON agent_activite.id_agent = agent.id
+                    LEFT JOIN activite_agent ON activite_agent.id = agent_activite.id_activite
+                    LEFT JOIN agent_genre ON agent_genre.id_agent = agent.id 
+                    LEFT JOIN genre on genre.id = agent_genre.id_genre 
                     WHERE agent.id_attestation = attestation.id 
                     GROUP BY 
                       agent.designation, 
@@ -77,7 +77,7 @@ sources_with_attestations AS (
   FROM attestation
   JOIN attestation_with_elements ON attestation.id = attestation_with_elements.id_attestation
   JOIN formule ON formule.attestation_id = attestation.id
-  JOIN agent ON agent.id_attestation = attestation.id
+  LEFT JOIN agent ON agent.id_attestation = attestation.id
   WHERE attestation_with_elements.nb_element ${elementOperator} $1
   ${queryIncludedElements} 
   ${queryExcludedElements} 
@@ -119,8 +119,8 @@ LEFT JOIN localisation AS localisation_source ON source.localisation_DECOUVERTE_
 INNER JOIN sous_region ON sous_region.ID = localisation_source.sous_region_ID
 INNER JOIN grande_region ON grande_region.ID = localisation_source.grande_region_ID
 INNER JOIN formule ON formule.attestation_ID = attestation.ID
-INNER JOIN source_langue ON source_langue.ID_source = attestation.ID_source
-INNER JOIN datation ON datation.ID = source.datation_ID
+LEFT JOIN source_langue ON source_langue.ID_source = attestation.ID_source
+LEFT JOIN datation ON datation.ID = source.datation_ID
 LEFT JOIN type_support ON type_support.id = source.type_support_id
 LEFT JOIN materiau ON materiau.id = source.materiau_id 
 WHERE localisation_source.latitude IS NOT NULL
