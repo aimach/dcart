@@ -17,10 +17,21 @@ type TranslationObject = {
 		results: string;
 		filters: string;
 		infos: string;
+		seeSources: string;
+		seeAll: string;
 	};
 	common: {
 		between: string;
 		and: string;
+		or: string;
+	};
+	modal: {
+		firstContent: string;
+		secondContent: string;
+		chooseRegion: string;
+		chooseDivinity: string;
+		postDate: string;
+		anteDate: string;
 	};
 };
 

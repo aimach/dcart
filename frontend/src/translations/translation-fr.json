@@ -14,10 +14,21 @@
 		"freeExploration": "Exploration libre",
 		"results": "Résultats",
 		"filters": "Filtres",
-		"infos": "Infos"
+		"infos": "Infos",
+		"seeSources": "Voir les sources",
+		"seeAll": "Tout voir"
 	},
 	"common": {
 		"between": "entre",
-		"and": "et"
+		"and": "et",
+		"or": "OU"
+	},
+	"modal": {
+		"firstContent": "J'aimerais voir les sources de la région de",
+		"secondContent": "sur la divinité",
+		"chooseRegion": "Choisissez une région",
+		"chooseDivinity": "Choisissez une divinité",
+		"postDate": "date début",
+		"anteDate": "date fin"
 	}
 }
