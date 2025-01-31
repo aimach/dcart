@@ -35,9 +35,11 @@ const InfoComponent = ({ point, isSelected }: InfoComponentProps) => {
 
 	return (
 		point && (
-			<details className={selectedClassName}>
+			<details className={`${selectedClassName} ${style.resultContainer}`}>
 				<summary>
-					{point.nom_ville} ({point[subRegionLanguageKey]})
+					{point.nom_ville} ({point[subRegionLanguageKey]}) -{" "}
+					{point.sources.length}{" "}
+					{point.sources.length > 1 ? "sources" : "source"}
 				</summary>
 				{point.sources.map((source) => {
 					const dataSentence = getDatationSentence(
@@ -57,7 +59,8 @@ const InfoComponent = ({ point, isSelected }: InfoComponentProps) => {
 									attestation.extrait_avec_restitution,
 								);
 								let agentsArray: JSX.Element[] = [];
-								if (attestation.agents) {
+								console.log(attestation.agents);
+								if (attestation.agents?.length) {
 									agentsArray = attestation.agents.map(
 										(agentElement: AgentType) => {
 											// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
@@ -67,14 +70,14 @@ const InfoComponent = ({ point, isSelected }: InfoComponentProps) => {
 											);
 											const sanitizedAgentInSelectedLanguage =
 												sanitizedAgent.split("<br>");
-											let agent = `${agentElement[`activite_${language}`]} : `;
+											let agent = "";
 											if (sanitizedAgentInSelectedLanguage.length > 1) {
-												agent +=
+												agent =
 													sanitizedAgentInSelectedLanguage[
 														language === "fr" ? 0 : 1
 													];
 											} else {
-												agent += sanitizedAgentInSelectedLanguage[0];
+												agent = sanitizedAgentInSelectedLanguage[0];
 											}
 											return (
 												<p
@@ -90,7 +93,7 @@ const InfoComponent = ({ point, isSelected }: InfoComponentProps) => {
 								}
 
 								return (
-									<div key={uuidv4()} style={{ marginLeft: "10px" }}>
+									<div key={uuidv4()} className={style.testimoniesInfo}>
 										<p>Attestation #{attestation.attestation_id}</p>
 										<div style={{ marginLeft: "10px" }}>
 											<p>{attestation[attestationNameLanguageKey]}</p>
