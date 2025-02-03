@@ -15,7 +15,10 @@ const CategoryMenuPage = () => {
 	return (
 		<section className={style.categoryMenu}>
 			<div className={style.categoryMenuButtonContainer}>
-				<Link to="exploration" className={style.categoryMenuActionButton}>
+				<Link
+					to="all/map/exploration"
+					className={style.categoryMenuActionButton}
+				>
 					{translation[language].button.freeExploration as string}
 				</Link>
 			</div>
