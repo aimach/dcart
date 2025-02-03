@@ -1,0 +1,11 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.infoContainer {
+    height: 100%;
+    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, space-between, flex-start);
+
+    details {
+        flex: 1;
+    }
+}

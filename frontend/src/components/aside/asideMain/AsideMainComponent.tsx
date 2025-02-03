@@ -9,6 +9,9 @@ import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 import { MapContext } from "../../../context/MapContext";
 // import des types
 import type { PointType } from "../../../types/mapTypes";
+import ChartComponent from "../tabComponents/ChartComponent";
+// import du style
+import style from "./asideMainComponent.module.scss";
 
 interface AsideMainComponentProps {
 	results: PointType[];
@@ -27,7 +30,14 @@ const AsideMainComponent = ({ results }: AsideMainComponentProps) => {
 		case "filters":
 			return <FilterComponent />;
 		case "infos":
-			return <InfoComponent point={selectedMarker as PointType} />;
+			return (
+				selectedMarker && (
+					<div className={style.infoContainer}>
+						<InfoComponent point={selectedMarker as PointType} />
+						<ChartComponent point={selectedMarker as PointType} />
+					</div>
+				)
+			);
 		default:
 			return <ResultComponent results={results} />;
 	}

@@ -7,6 +7,7 @@
   summary {
     cursor: pointer;
   }
+
 }
 
 .testimoniesInfo {
@@ -20,4 +21,10 @@
 
 .isSelected {
   background-color: #5fa052;
+}
+
+.chartContainer {
+  flex: 1;
+  border: 1px solid black;
+  width: 100%;
 }

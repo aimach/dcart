@@ -14,10 +14,11 @@ import {
 import type { PointType } from "../../types/mapTypes";
 // import du style
 import style from "./mapPage.module.scss";
+import MapMenuNav from "../../components/map/mapMenuNav/MapMenuNav";
 
 const MapPage = () => {
 	// on récupère les params
-	const { mapId } = useParams();
+	const { categoryId, mapId } = useParams();
 
 	// on définit les states nécessaires
 	const [mapReady, setMapReady] = useState<boolean>(false);
@@ -56,7 +57,7 @@ const MapPage = () => {
 
 	return (
 		<section className={style.mapSection}>
-			{/* <MapMenuNav /> */}
+			<MapMenuNav categoryId={categoryId as string} />
 			<section className={style.mapSectionMain}>
 				{panelDisplayed ? (
 					<AsideContainer
