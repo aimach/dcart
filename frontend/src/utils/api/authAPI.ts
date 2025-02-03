@@ -5,7 +5,7 @@ import type { User } from "../../types/userTypes";
 
 export const loginUser = async (body: User) => {
 	try {
-		const loginUserResponse = await apiClient.post("/auth/login", body, {
+		const loginUserResponse = await apiClient.post("/dcart/auth/login", body, {
 			withCredentials: true,
 		});
 		if (loginUserResponse.status === 200) {
@@ -20,7 +20,7 @@ export const loginUser = async (body: User) => {
 export const verifyAuthentification = async () => {
 	try {
 		const verifyAuthenticiationResponse = await apiClient.get(
-			"/auth/verification",
+			"/dcart/auth/verification",
 			{
 				withCredentials: true,
 			},

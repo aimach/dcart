@@ -8,6 +8,7 @@ import cookieParser from "cookie-parser";
 import { dcartDataSource, MapDataSource } from "./dataSource/dataSource";
 import { dcartRoutes } from "./routes/dcartRoutes";
 import { mapRoutes } from "./routes/mapRoutes";
+import { authRoutes } from "./routes/authRoutes";
 
 // on charge les variables d'environnement
 dotenv.config();
@@ -39,6 +40,7 @@ MapDataSource.initialize()
 // Routes
 app.use("/dcart", dcartRoutes);
 app.use("/map", mapRoutes);
+app.use("/auth", authRoutes);
 
 // Start the server
 app.listen(PORT, () =>

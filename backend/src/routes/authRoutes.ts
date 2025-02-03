@@ -4,13 +4,13 @@ import express from "express";
 import { dcartControllers } from "../controllers/dcartControllers";
 import { validateLoginBody } from "../utils/validator/login";
 
-export const authRouter = express.Router();
+export const authRoutes = express.Router();
 
 // inscription
-authRouter.post("/register", dcartControllers.register);
+authRoutes.post("/register", dcartControllers.register);
 
 // connexion
-authRouter.post("/login", validateLoginBody, dcartControllers.login);
+authRoutes.post("/login", validateLoginBody, dcartControllers.login);
 
 // vérification que l'utilisation est connecté
-authRouter.get("/verification", dcartControllers.isAuthenticated);
+authRoutes.get("/verification", dcartControllers.isAuthenticated);
