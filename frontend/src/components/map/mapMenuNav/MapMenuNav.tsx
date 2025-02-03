@@ -1,28 +1,37 @@
 import { useState, useEffect, useContext } from "react";
 // import des composants
 import NavComponent from "../../common/NavComponent";
+// import du context
+import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
-import { getAllMapsInfos } from "../../../utils/loaders/loaders";
+import { getAllMapsInfosFromCategoryId } from "../../../utils/loaders/loaders";
 // import des types
 import type { MapType } from "../../../types/mapTypes";
 import type { NavList } from "../../../types/commonTypes";
 // import du style
 import style from "./mapMenuNav.module.scss";
-import { TranslationContext } from "../../../context/TranslationContext";
 
-const MapMenuNav = () => {
-	// on récupère la langue
+interface MapMenuNavProps {
+	categoryId: string;
+}
+
+const MapMenuNav = ({ categoryId }: MapMenuNavProps) => {
+	// on récupère les données de language
 	const { language } = useContext(TranslationContext);
 
 	// on récupère les données des cartes dans la BDD
-	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
-	const [thematicMapsList, setThematicMapsList] = useState<NavList>([]);
+	const [allMapsFromCategoryId, setAllMapsFromCategoryId] = useState<MapType[]>(
+		[],
+	);
+	const [mapList, setMapList] = useState<NavList>([]);
 
 	// Fonction pour charger les informations des cartes
-	const fetchAllMapsInfos = async () => {
+	const fetchAllMapsInfosFromCategory = async () => {
 		try {
-			const maps = await getAllMapsInfos();
-			setAllMapsInfos(maps);
+			const categoryWithMaps = await getAllMapsInfosFromCategoryId(
+				categoryId as string,
+			);
+			setAllMapsFromCategoryId(categoryWithMaps.maps);
 		} catch (error) {
 			console.error("Erreur lors du chargement des cartes:", error);
 		}
@@ -30,27 +39,27 @@ const MapMenuNav = () => {
 
 	// Met à jour la liste des cartes dès que allMapsInfos change
 	useEffect(() => {
-		if (allMapsInfos.length > 0) {
-			const mappedList = allMapsInfos.map((map) => ({
+		if (allMapsFromCategoryId.length > 0) {
+			const mapList = allMapsFromCategoryId.map((map) => ({
 				id: map.id,
 				title: map[`name_${language}`],
 				onClickFunction: undefined, // Ajoutez une fonction ici si nécessaire
-				route: `/map/${map.id}`,
+				route: `map/${map.id}`,
 			}));
-			setThematicMapsList(mappedList);
+			setMapList(mapList);
 		}
-	}, [allMapsInfos, language]);
+	}, [allMapsFromCategoryId, language]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		fetchAllMapsInfos();
+		fetchAllMapsInfosFromCategory();
 	}, []);
 
 	return (
 		<NavComponent
 			type="route"
 			navClassName={style.mapMenuNav}
-			list={thematicMapsList}
+			list={mapList}
 			activeLinkClassName={style.mapMenuNavActive}
 		/>
 	);

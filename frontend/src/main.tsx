@@ -13,6 +13,7 @@ import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
 import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.tsx";
 import BackofficeStorymapPage from "./pages/BackOffice/BOStorymapPage/BackofficeStorymapPage.tsx";
 import BackofficeTranslationPage from "./pages/BackOffice/BOTranslationPage/BackofficeTranslationPage.tsx";
+import CategoryMenuPage from "./pages/CategoryMenuPage/CategoryMenuPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -34,9 +35,12 @@ if (rootElement) {
 							<Routes>
 								<Route element={<NavigationLayout />}>
 									<Route index element={<App />} />
-									<Route path="map">
-										<Route index element={<MapMenuPage />} />
-										<Route path=":mapId" element={<MapPage />} />
+									<Route path="maps/categories">
+										<Route index element={<CategoryMenuPage />} />
+										<Route path=":categoryId">
+											<Route index element={<MapMenuPage />} />
+											<Route path="map/:mapId" element={<MapPage />} />
+										</Route>
 									</Route>
 								</Route>
 								<Route path="menu" element={<MenuPage />} />

@@ -88,6 +88,20 @@ type TimeMarkersType = {
 	ante_quem: number;
 };
 
+type CategoryType = {
+	id: string;
+	name_fr: string;
+	name_en: string;
+	description_fr?: string;
+	description_en?: string;
+	maps: {
+		id: string;
+		name_fr: string;
+		name_en: string;
+		locationType: string;
+	}[];
+};
+
 export type {
 	MapType,
 	PointType,
@@ -100,4 +114,5 @@ export type {
 	GreatRegionType,
 	DivinityType,
 	TimeMarkersType,
+	CategoryType,
 };

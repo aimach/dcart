@@ -6,8 +6,9 @@ import passport from "passport";
 import cookieParser from "cookie-parser";
 // import des modules
 import { dcartDataSource, MapDataSource } from "./dataSource/dataSource";
-import { authRouter } from "./routes/authRoute";
-import { mapRouter } from "./routes/mapRoute";
+import { dcartRoutes } from "./routes/dcartRoutes";
+import { mapRoutes } from "./routes/mapRoutes";
+import { authRoutes } from "./routes/authRoutes";
 
 // on charge les variables d'environnement
 dotenv.config();
@@ -37,8 +38,9 @@ MapDataSource.initialize()
 	.catch((err) => console.error("Database MAP connection error:", err));
 
 // Routes
-app.use("/auth", authRouter);
-app.use("/map", mapRouter);
+app.use("/dcart", dcartRoutes);
+app.use("/map", mapRoutes);
+app.use("/auth", authRoutes);
 
 // Start the server
 app.listen(PORT, () =>

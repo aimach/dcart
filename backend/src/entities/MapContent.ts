@@ -6,7 +6,9 @@ import {
 	UpdateDateColumn,
 	Column,
 	BaseEntity,
+	ManyToOne,
 } from "typeorm";
+import { Category } from "./Category";
 
 enum location {
 	SUBREGION = "subRegion",
@@ -80,4 +82,10 @@ export class MapContent extends BaseEntity {
 
 	@UpdateDateColumn({ type: "timestamptz" })
 	updatedAt!: Date;
+
+	@ManyToOne(
+		() => Category,
+		(category) => category.maps,
+	)
+	category!: Category;
 }

@@ -36,7 +36,7 @@ const HeaderComponent = ({ type }: HeaderComponentProps) => {
 			id: "maps",
 			title: translation[language].navigation.maps,
 			onClickFunction: undefined,
-			route: "/map",
+			route: "maps/categories",
 		},
 		{
 			id: "undefined",
