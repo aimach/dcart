@@ -1,12 +1,13 @@
 // import des bibliothèques
 import express from "express";
 // import des modules
-import { mapController } from "../controllers/mapController";
+import { mapController } from "../controllers/mapControllers";
+import { dcartControllers } from "../controllers/dcartControllers";
 
 export const mapRouter = express.Router();
 
 // récupérer les données d'une carte
-mapRouter.get("/:mapId", mapController.getMapInformationsById);
+mapRouter.get("/:mapId", dcartControllers.getMapInformationsById);
 
 // récupérer les sources par l'id de la map
 mapRouter.get("/:mapId/sources", mapController.getSourcesByMapId);
