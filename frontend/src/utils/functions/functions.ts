@@ -47,6 +47,9 @@ const getDatationSentence = (
 	translation: TranslationType,
 	language: Language,
 ) => {
+	if (!source.post_quem && !source.ante_quem) {
+		return "";
+	}
 	return source.post_quem === source.ante_quem
 		? `(${source.post_quem})`
 		: `(${translation[language].common.between} ${source.post_quem} ${translation[language].common.and} ${source.ante_quem})`;

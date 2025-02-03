@@ -14,10 +14,21 @@
 		"freeExploration": "Free exploration",
 		"results": "Results",
 		"filters": "Filters",
-		"infos": "Infos"
+		"infos": "Infos",
+		"seeSources": "Explore sources",
+		"seeAll": "Explore all"
 	},
 	"common": {
 		"between": "between",
-		"and": "and"
+		"and": "and",
+		"or": "OR"
+	},
+	"modal": {
+		"firstContent": "I would like to see sources from",
+		"secondContent": "on divinity",
+		"chooseRegion": "Choose a region",
+		"chooseDivinity": "Choose a divinity",
+		"postDate": "start date",
+		"anteDate": "end date"
 	}
 }

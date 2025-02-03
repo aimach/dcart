@@ -1,7 +1,9 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 // import des composants
 import SelectOptionsComponent from "../../common/input/SelectOptionsComponent";
+// import du context
+import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import {
 	getAllGreatRegions,
@@ -27,6 +29,9 @@ const SearchFormComponent = ({
 	setAllPoints,
 	setIsModalOpen,
 }: SearchFormComponentProps) => {
+	// on récupère le langage
+	const { language, translation } = useContext(TranslationContext);
+
 	const [dataLoaded, setDataLoaded] = useState<boolean>(false);
 	const [greatRegions, setGreatRegions] = useState<GreatRegionType[]>([]);
 	const [divinities, setDivinities] = useState<DivinityType[]>([]);
@@ -75,40 +80,42 @@ const SearchFormComponent = ({
 			<>
 				<form method="post" onSubmit={handleSubmit}>
 					<p>
-						J'aimerais voir les sources de la région de{" "}
+						{translation[language].modal.firstContent}{" "}
 						<SelectOptionsComponent
 							selectId="location"
-							basicOptionContent="Choisissez une région"
+							basicOptionContent={translation[language].modal.chooseRegion}
 							options={greatRegions}
 						/>{" "}
-						sur la divinité{" "}
+						{translation[language].modal.secondContent}{" "}
 						<SelectOptionsComponent
 							selectId="element"
-							basicOptionContent="Choisissez une divinité"
+							basicOptionContent={translation[language].modal.chooseDivinity}
 							options={divinities}
 						/>{" "}
-						entre{" "}
+						{translation[language].common.between}{" "}
 						<SelectOptionsComponent
 							selectId="post"
-							basicOptionContent="date début"
+							basicOptionContent={translation[language].modal.postDate}
 							options={timeOptions}
 						/>{" "}
-						et{" "}
+						{translation[language].common.between}{" "}
 						<SelectOptionsComponent
 							selectId="ante"
-							basicOptionContent="date fin"
+							basicOptionContent={translation[language].modal.anteDate}
 							options={timeOptions}
 						/>{" "}
 					</p>
-					<button type="submit">Voir les sources</button>
+					<button type="submit">
+						{translation[language].button.seeSources}
+					</button>
 				</form>
-				<div>-- OU --</div>
+				<div>-- {translation[language].common.or} --</div>
 				<button
 					type="button"
 					onClick={() => setIsModalOpen(false)}
 					onKeyUp={() => setIsModalOpen(false)}
 				>
-					Tout voir
+					{translation[language].button.seeAll}
 				</button>
 			</>
 		)
