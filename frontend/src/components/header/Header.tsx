@@ -40,9 +40,9 @@ const HeaderComponent = ({ type }: HeaderComponentProps) => {
 		},
 		{
 			id: "undefined",
-			title: "Page 3",
+			title: translation[language].navigation.storymaps,
 			onClickFunction: undefined,
-			route: "/",
+			route: "/storymaps",
 		},
 	];
 
