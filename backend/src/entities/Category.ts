@@ -6,18 +6,25 @@ import {
 	BaseEntity,
 	OneToMany,
 } from "typeorm";
+// import des entités
 import { MapContent } from "./MapContent";
 
 @Entity()
 export class Category extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
-	id!: number;
+	id!: string;
 
 	@Column({ type: "varchar" })
-	name!: string;
+	name_fr!: string;
 
-	@Column({ type: "text" })
-	description: string | undefined;
+	@Column({ type: "varchar" })
+	name_en!: string;
+
+	@Column({ type: "text", nullable: true })
+	description_fr: string | undefined | null;
+
+	@Column({ type: "text", nullable: true })
+	description_en: string | undefined | null;
 
 	@OneToMany(
 		() => MapContent,

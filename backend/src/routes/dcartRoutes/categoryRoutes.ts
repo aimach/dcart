@@ -1,7 +1,8 @@
 // import des bibiliothèques
 import express from "express";
+// import des controllers
 import { dcartControllers } from "../../controllers/dcartControllers";
 
 export const categoryRoutes = express.Router();
 
-categoryRoutes.get("/all", dcartControllers.getAllCategoriesWithMaps);
+categoryRoutes.get("/:categoryId", dcartControllers.getAllCategoriesWithMaps);

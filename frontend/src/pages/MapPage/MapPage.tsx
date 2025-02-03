@@ -1,11 +1,10 @@
 // import des bibliothèques
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 // import des composants
 import MapComponent from "../../components/map/mapComponent/MapComponent";
 import AsideContainer from "../../components/aside/asideContainer/AsideContainer";
 import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/AsideReducedMenuComponent";
-import MapMenuNav from "../../components/map/mapMenuNav/MapMenuNav";
 // import des services
 import {
 	getAllPointsByMapId,
@@ -57,7 +56,7 @@ const MapPage = () => {
 
 	return (
 		<section className={style.mapSection}>
-			<MapMenuNav />
+			{/* <MapMenuNav /> */}
 			<section className={style.mapSectionMain}>
 				{panelDisplayed ? (
 					<AsideContainer
