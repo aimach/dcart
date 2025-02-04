@@ -7,8 +7,8 @@ import ImageWithLink from "../common/ImageWithLink";
 // import du context
 import { TranslationContext } from "../../context/TranslationContext";
 // import des types
-import type { Language } from "../../types/languageTypes";
-import type { NavList } from "../../types/commonTypes";
+import type { Language } from "../../utils/types/languageTypes";
+import type { NavList } from "../../utils/types/commonTypes";
 // import du style
 import style from "./header.module.scss";
 // import des images

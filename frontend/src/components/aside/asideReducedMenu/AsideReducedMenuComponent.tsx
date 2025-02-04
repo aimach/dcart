@@ -7,8 +7,8 @@ import { TranslationContext } from "../../../context/TranslationContext";
 import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
-import type { NavList } from "../../../types/commonTypes";
-import type { MenuTabType } from "../../../types/mapTypes";
+import type { NavList } from "../../../utils/types/commonTypes";
+import type { MenuTabType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./asideReducedMenuComponent.module.scss";
 

@@ -1,24 +1,29 @@
 // import des bibliothèques
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 import { useParams } from "react-router";
 // import des composants
 import MapComponent from "../../components/map/mapComponent/MapComponent";
 import AsideContainer from "../../components/aside/asideContainer/AsideContainer";
 import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/AsideReducedMenuComponent";
+import MapMenuNav from "../../components/map/mapMenuNav/MapMenuNav";
+// import du context
+import { MapContext } from "../../context/MapContext";
 // import des services
 import {
 	getAllPointsByMapId,
 	getOneMapInfos,
 } from "../../utils/loaders/loaders";
 // import des types
-import type { PointType } from "../../types/mapTypes";
+import type { PointType } from "../../utils/types/mapTypes";
 // import du style
 import style from "./mapPage.module.scss";
-import MapMenuNav from "../../components/map/mapMenuNav/MapMenuNav";
 
 const MapPage = () => {
 	// on récupère les params
 	const { categoryId, mapId } = useParams();
+
+	// on récupère le state pour l'includedElement
+	const { setIncludedElementId } = useContext(MapContext);
 
 	// on définit les states nécessaires
 	const [mapReady, setMapReady] = useState<boolean>(false);
@@ -41,6 +46,7 @@ const MapPage = () => {
 	const fetchMapInfos = async (mapId: string) => {
 		try {
 			const mapInfos = await getOneMapInfos(mapId as string);
+			setIncludedElementId(mapInfos.includedElements);
 			setMapInfos(mapInfos);
 		} catch (error) {
 			console.error("Erreur lors du chargement des infos de la carte:", error);
@@ -57,7 +63,7 @@ const MapPage = () => {
 
 	return (
 		<section className={style.mapSection}>
-			<MapMenuNav categoryId={categoryId as string} />
+			{/* <MapMenuNav categoryId={categoryId as string} /> */}
 			<section className={style.mapSectionMain}>
 				{panelDisplayed ? (
 					<AsideContainer

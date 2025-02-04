@@ -3,7 +3,7 @@ import { createContext, useEffect, useState } from "react";
 // import des types
 import type { ReactNode, Dispatch, SetStateAction } from "react";
 import type { Map as LeafletMap } from "leaflet";
-import type { PointType } from "../types/mapTypes";
+import type { PointType } from "../utils/types/mapTypes";
 import { useNavigate } from "react-router";
 
 export type MapContextType = {
@@ -11,6 +11,8 @@ export type MapContextType = {
 	setMap: Dispatch<SetStateAction<LeafletMap | null>>;
 	selectedMarker: PointType | undefined;
 	setSelectedMarker: Dispatch<SetStateAction<PointType | undefined>>;
+	includedElementId: string | undefined;
+	setIncludedElementId: Dispatch<SetStateAction<string | undefined>>;
 };
 
 export const MapContext = createContext<MapContextType>({
@@ -18,6 +20,8 @@ export const MapContext = createContext<MapContextType>({
 	setMap: () => {},
 	selectedMarker: undefined,
 	setSelectedMarker: () => {},
+	includedElementId: undefined,
+	setIncludedElementId: () => {},
 });
 
 interface MapProviderProps {
@@ -25,10 +29,17 @@ interface MapProviderProps {
 }
 
 export const MapProvider = ({ children }: MapProviderProps) => {
+	// on stocke dans ce state la carte en cours
+	const [map, setMap] = useState<LeafletMap | null>(null);
+	// on stocke dans ce state l'includedElement de la carte
+	const [includedElementId, setIncludedElementId] = useState<
+		string | undefined
+	>(undefined);
+
+	// on stocke dans ce state le point sélectionné
 	const [selectedMarker, setSelectedMarker] = useState<PointType | undefined>(
 		undefined,
 	);
-	const [map, setMap] = useState<LeafletMap | null>(null);
 	const navigate = useNavigate();
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: il est nécessaire de reset le marker entre chaque carte
@@ -38,7 +49,14 @@ export const MapProvider = ({ children }: MapProviderProps) => {
 
 	return (
 		<MapContext.Provider
-			value={{ selectedMarker, setSelectedMarker, map, setMap }}
+			value={{
+				selectedMarker,
+				setSelectedMarker,
+				map,
+				setMap,
+				includedElementId,
+				setIncludedElementId,
+			}}
 		>
 			{children}
 		</MapContext.Provider>

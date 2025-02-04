@@ -10,7 +10,7 @@ import {
 	zoomOnMarkerOnClick,
 } from "../../../utils/functions/functions";
 // import des types
-import type { PointType } from "../../../types/mapTypes";
+import type { PointType } from "../../../utils/types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 
 interface ResultComponentProps {

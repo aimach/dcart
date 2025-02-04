@@ -8,7 +8,7 @@ import InfoComponent from "../tabComponents/InfoComponent";
 import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 import { MapContext } from "../../../context/MapContext";
 // import des types
-import type { PointType } from "../../../types/mapTypes";
+import type { PointType } from "../../../utils/types/mapTypes";
 import ChartComponent from "../tabComponents/ChartComponent";
 // import du style
 import style from "./asideMainComponent.module.scss";

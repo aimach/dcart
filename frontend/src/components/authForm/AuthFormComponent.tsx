@@ -2,7 +2,7 @@
 import { useState } from "react";
 import { useNavigate } from "react-router";
 // import des types
-import type { User } from "../../types/userTypes";
+import type { User } from "../../utils/types/userTypes";
 // import des services
 import { loginUser } from "../../utils/api/authAPI";
 

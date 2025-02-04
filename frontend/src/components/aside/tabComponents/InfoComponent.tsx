@@ -9,7 +9,7 @@ import type {
 	AgentType,
 	AttestationType,
 	PointType,
-} from "../../../types/mapTypes";
+} from "../../../utils/types/mapTypes";
 // import des services
 import { getDatationSentence } from "../../../utils/functions/functions";
 // import du style

@@ -6,8 +6,8 @@ import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { getAllCategoriesWithMapsInfos } from "../../../utils/loaders/loaders";
 // import des types
-import type { CategoryType } from "../../../types/mapTypes";
-import type { NavList } from "../../../types/commonTypes";
+import type { CategoryType } from "../../../utils/types/mapTypes";
+import type { NavList } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./mapCategoryNav.module.scss";
 

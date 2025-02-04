@@ -3,6 +3,8 @@
 
 .resultContainer {
   padding: v.$space-s 0;
+  flex: 1;
+  overflow: scroll;
 
   summary {
     cursor: pointer;
@@ -25,6 +27,6 @@
 
 .chartContainer {
   flex: 1;
-  border: 1px solid black;
+  border-top: 1px solid black;
   width: 100%;
 }

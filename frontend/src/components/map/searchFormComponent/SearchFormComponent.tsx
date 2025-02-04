@@ -17,7 +17,7 @@ import type {
 	GreatRegionType,
 	TimeMarkersType,
 	PointType,
-} from "../../../types/mapTypes";
+} from "../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 
 interface SearchFormComponentProps {
