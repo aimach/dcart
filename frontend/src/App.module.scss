@@ -151,3 +151,29 @@ table {
 button {
 	@include m.unbuttonize;
 }
+
+.mainPage {
+	width: 100vw;
+	height: calc(100vh - v.$main-header-height);
+
+	@include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, center);
+	gap: v.$space-xxl;
+	padding-top: v.$space-xxxl;
+
+	>h1 {
+		font-size: v.$font-size-xxxxxl;
+	}
+
+	>p {
+		width: 50vw;
+		font-size: v.$font-size-l;
+		text-align: justify;
+		line-height: v.$font-space-xxxl;
+	}
+}
+
+.verticalSeparator {
+	width: 1.5px;
+	height: 15vh;
+	background-color: $color-black-chocolate;
+}
