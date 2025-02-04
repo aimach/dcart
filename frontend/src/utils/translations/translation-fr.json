@@ -1,14 +1,14 @@
 {
 	"title": "Atlas numérique des noms divins en Méditerranée",
-	"en": "Anglais",
-	"fr": "Français",
+	"en": "EN",
+	"fr": "FR",
 	"navigation": {
-		"home": "Accueil",
-		"maps": "Cartes",
-		"storymaps": "Storymaps",
-		"backoffice": "Tableau de bord",
-		"translation": "Traduction",
-		"back": "Retour"
+		"home": "ACCUEIL",
+		"maps": "CARTES",
+		"storymaps": "STORYMAPS",
+		"backoffice": "TABLEAU DE BORD",
+		"translation": "TRADUCTION",
+		"back": "RETOUR"
 	},
 	"button": {
 		"freeExploration": "Exploration libre",

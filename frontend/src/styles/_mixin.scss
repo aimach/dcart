@@ -13,8 +13,7 @@
 
 // FLEXBOX
 
-@mixin flexbox(
-  $display: flex,
+@mixin flexbox($display: flex,
   $direction: row,
   $placeContent: null,
   $placeItems: null,
@@ -25,36 +24,51 @@
   $justifyContent: null,
   $alignItems: null,
   $justifyItems: null) {
-    display: $display;
-    flex-direction: $direction;
-    @if $placeContent == null {
-      @if $alignContent   { align-content: $alignContent; }
-      @if $justifyContent { justify-content: $justifyContent; }
-    } @else {
-      place-content: $placeContent;
+  display: $display;
+  flex-direction: $direction;
+
+  @if $placeContent ==null {
+    @if $alignContent {
+      align-content: $alignContent;
     }
-    @if $placeItems == null {
-      @if $alignItems   { align-items: $alignItems; }
-      @if $justifyItems { justify-items: $justifyItems; }
-    } @else {
-      place-items: $placeItems;
+
+    @if $justifyContent {
+      justify-content: $justifyContent;
     }
-    flex-wrap: $wrap;
-    flex-shrink: $shrink;
-    flex-grow: $grow;
+  }
+
+  @else {
+    place-content: $placeContent;
+  }
+
+  @if $placeItems ==null {
+    @if $alignItems {
+      align-items: $alignItems;
+    }
+
+    @if $justifyItems {
+      justify-items: $justifyItems;
+    }
+  }
+
+  @else {
+    place-items: $placeItems;
+  }
+
+  flex-wrap: $wrap;
+  flex-shrink: $shrink;
+  flex-grow: $grow;
 }
 
 
 // POSITION
 
-@mixin position(
-  $position: absolute,
+@mixin position($position: absolute,
   $top: null,
   $right: null,
   $bottom: null,
   $left: null,
-  $z-index: initial
-) {
+  $z-index: initial) {
   position: $position;
   top: $top;
   right: $right;
@@ -98,15 +112,30 @@ $desktop: 1280;
 // VISIBILITY
 
 @mixin fade($type) {
-  @if $type== "hide" {
+  @if $type=="hide" {
     visibility: hidden;
     opacity: 0;
     transition: visibility 1s, opacity 1s;
-  } @else if $type== "show" {
+  }
+
+  @else if $type=="show" {
     visibility: visible;
     opacity: 1;
     transition: visibility 1s, opacity 1s;
   }
+}
+
+// RESET
+// supprimer le style par défaut des boutons
+@mixin unbuttonize {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  text-align: inherit;
+  font: inherit;
+  border-radius: 0;
+  appearance: none;
 }
 
 // ELEMENTS
