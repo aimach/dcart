@@ -16,7 +16,10 @@
 		"filters": "Filtres",
 		"infos": "Infos",
 		"seeSources": "Voir les sources",
-		"seeAll": "Tout voir"
+		"seeAll": "Tout voir",
+		"epithet": "Epithète",
+		"gender": "Genre",
+		"activity": "Activité"
 	},
 	"common": {
 		"between": "entre",
