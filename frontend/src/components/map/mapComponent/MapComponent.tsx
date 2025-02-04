@@ -16,7 +16,7 @@ import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 import { MapContext } from "../../../context/MapContext";
 // import des types
 import type { LatLngTuple } from "leaflet";
-import type { MapInfoType, PointType } from "../../../types/mapTypes";
+import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";

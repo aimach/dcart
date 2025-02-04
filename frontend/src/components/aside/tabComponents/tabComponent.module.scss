@@ -3,10 +3,12 @@
 
 .resultContainer {
   padding: v.$space-s 0;
+  overflow: scroll;
 
   summary {
     cursor: pointer;
   }
+
 }
 
 .testimoniesInfo {
@@ -20,4 +22,22 @@
 
 .isSelected {
   background-color: #5fa052;
+}
+
+.chartContainer {
+  height: 300px;
+  width: 100%;
+  border-top: 1px solid black;
+  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, space-between, center);
+
+  >div {
+    width: 70%;
+    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+  }
+
+  .chartRadio {
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
+    gap: v.$space-s;
+    margin-top: v.$space-s;
+  }
 }

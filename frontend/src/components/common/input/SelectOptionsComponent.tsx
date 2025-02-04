@@ -1,6 +1,9 @@
 // import des types
 import { useContext } from "react";
-import type { DivinityType, GreatRegionType } from "../../../types/mapTypes";
+import type {
+	DivinityType,
+	GreatRegionType,
+} from "../../../utils/types/mapTypes";
 import { TranslationContext } from "../../../context/TranslationContext";
 
 interface SelectOptionsComponentProps {

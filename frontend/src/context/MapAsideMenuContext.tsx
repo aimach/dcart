@@ -3,7 +3,7 @@ import { createContext, useState } from "react";
 // import des types
 import type { ReactNode } from "react";
 import type { Dispatch, SetStateAction } from "react";
-import type { MenuTabType } from "../types/mapTypes";
+import type { MenuTabType } from "../utils/types/mapTypes";
 
 export type MapAsideMenuContextType = {
 	selectedTabMenu: MenuTabType;

@@ -20,14 +20,14 @@ export const categoryController = {
 					relations: { maps: true },
 				});
 				res.status(200).json(results);
-			} else {
-				results = await dcartDataSource.getRepository(Category).find({
-					select: { maps: { id: true, name_fr: true, name_en: true } },
-					relations: { maps: true },
-					where: { id: categoryId },
-				});
-				res.status(200).json(results[0]);
+				return;
 			}
+			results = await dcartDataSource.getRepository(Category).find({
+				select: { maps: { id: true, name_fr: true, name_en: true } },
+				relations: { maps: true },
+				where: { id: categoryId },
+			});
+			res.status(200).json(results[0]);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

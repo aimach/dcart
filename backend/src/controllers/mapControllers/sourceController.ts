@@ -106,7 +106,6 @@ export const sourceController = {
 					queryExcludedElements,
 				);
 
-				// légende des paramètres : nombre d'éléments par attestation, id du théonyme/épithète, nombre de puissances divines
 				results = await MapDataSource.query(sqlQuery, [elementNb, divinityNb]);
 			}
 

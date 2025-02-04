@@ -16,7 +16,12 @@
 		"filters": "Filters",
 		"infos": "Infos",
 		"seeSources": "Explore sources",
-		"seeAll": "Explore all"
+		"seeAll": "Explore all",
+		"epithet": "Epithet",
+		"gender": "Gender",
+		"activity": "Activity",
+		"doughnut": "Doughnut",
+		"bar": "Bar"
 	},
 	"common": {
 		"between": "between",

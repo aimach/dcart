@@ -1,6 +1,6 @@
 // import des types
 import type { Dispatch, SetStateAction } from "react";
-import type { PointType } from "../../../types/mapTypes";
+import type { PointType } from "../../../utils/types/mapTypes";
 
 // import du style
 import style from "./asideContainer.module.scss";

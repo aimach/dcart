@@ -2,10 +2,10 @@
 import { createContext, useState } from "react";
 // import des types
 import type { ReactNode } from "react";
-import type { Language, TranslationType } from "../types/languageTypes";
+import type { Language, TranslationType } from "../utils/types/languageTypes";
 // import des fichiers
-import translationFr from "../translations/translation-fr.json";
-import translationEn from "../translations/translation-en.json";
+import translationFr from "../utils/translations/translation-fr.json";
+import translationEn from "../utils/translations/translation-en.json";
 
 export interface I18nContextType {
 	language: Language;

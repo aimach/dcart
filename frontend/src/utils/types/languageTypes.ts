@@ -19,6 +19,11 @@ type TranslationObject = {
 		infos: string;
 		seeSources: string;
 		seeAll: string;
+		epithet: string;
+		gender: string;
+		activity: string;
+		doughnut: string;
+		bar: string;
 	};
 	common: {
 		between: string;

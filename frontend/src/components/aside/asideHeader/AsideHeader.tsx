@@ -6,7 +6,7 @@ import NavComponent from "../../common/NavComponent";
 import { TranslationContext } from "../../../context/TranslationContext";
 import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 // import des types
-import type { NavList } from "../../../types/commonTypes";
+import type { NavList } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./asideHeader.module.scss";
 

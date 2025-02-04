@@ -12,7 +12,7 @@ import {
 import { zoomOnMarkerOnClick } from "../../../utils/functions/functions";
 import { getIcon } from "../icons";
 // import des types
-import type { PointType } from "../../../types/mapTypes";
+import type { PointType } from "../../../utils/types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 import type { Dispatch, SetStateAction } from "react";
 // import du style

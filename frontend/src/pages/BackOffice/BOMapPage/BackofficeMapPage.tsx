@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 // import des services
 import { getAllMapsInfos } from "../../../utils/loaders/loaders";
 // import des types
-import type { MapType } from "../../../types/mapTypes";
+import type { MapType } from "../../../utils/types/mapTypes";
 import { TranslationContext } from "../../../context/TranslationContext";
 
 const BackofficeMapPage = () => {
