@@ -3,7 +3,6 @@
 
 .resultContainer {
   padding: v.$space-s 0;
-  flex: 2;
   overflow: scroll;
 
   summary {
@@ -26,10 +25,15 @@
 }
 
 .chartContainer {
-  flex: 1;
+  height: 300px;
   width: 100%;
   border-top: 1px solid black;
-  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, space-between, center);
+
+  >div {
+    width: 70%;
+    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+  }
 
   .chartRadio {
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);

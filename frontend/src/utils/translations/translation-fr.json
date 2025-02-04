@@ -19,7 +19,9 @@
 		"seeAll": "Tout voir",
 		"epithet": "Epithète",
 		"gender": "Genre",
-		"activity": "Activité"
+		"activity": "Activité",
+		"doughnut": "Donut",
+		"bar": "Barre"
 	},
 	"common": {
 		"between": "entre",
