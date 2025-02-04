@@ -8,7 +8,9 @@
 		"storymaps": "STORYMAPS",
 		"backoffice": "BACKOFFICE",
 		"translation": "TRANSLATION",
-		"back": "BACK"
+		"back": "BACK",
+		"discover": "DISCOVER",
+		"explore": "EXPLORE"
 	},
 	"button": {
 		"freeExploration": "Free exploration",

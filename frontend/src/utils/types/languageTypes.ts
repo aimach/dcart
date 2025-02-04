@@ -11,6 +11,8 @@ type TranslationObject = {
 		backoffice: string;
 		translation: string;
 		back: string;
+		explore: string;
+		discover: string;
 	};
 	button: {
 		freeExploration: string;

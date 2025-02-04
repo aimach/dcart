@@ -170,10 +170,26 @@ button {
 		text-align: justify;
 		line-height: v.$font-space-xxxl;
 	}
-}
 
-.verticalSeparator {
-	width: 1.5px;
-	height: 15vh;
-	background-color: $color-black-chocolate;
+	.verticalSeparator {
+		width: v.$border-width-m;
+		height: 15vh;
+		background-color: $color-black-chocolate;
+	}
+
+	.homeMenu {
+		>ul {
+			@include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-start, center);
+			gap: v.$space-xxl;
+
+			>a {
+				font-size: v.$font-size-xxl;
+
+				&:hover {
+					border-bottom: 1px solid v.$color-yellow-pantone;
+				}
+			}
+		}
+	}
+
 }

@@ -9,6 +9,21 @@ import NavComponent from "./components/common/NavComponent";
 function App() {
 	const { language, translation } = useContext(TranslationContext);
 
+	const menuList = [
+		{
+			id: "maps",
+			title: translation[language].navigation.explore,
+			onClickFunction: undefined,
+			route: "maps/categories",
+		},
+		{
+			id: "storymaps",
+			title: translation[language].navigation.discover,
+			onClickFunction: undefined,
+			route: "/storymaps",
+		},
+	];
+
 	return (
 		<section className={style.mainPage}>
 			<h1>{translation[language].title as string}</h1>
@@ -22,6 +37,11 @@ function App() {
 				reiciendis quis, voluptatum quia, a aperiam velit nam! Dicta saepe
 				fugiat ad delectus sunt.
 			</p>
+			<NavComponent
+				type="route"
+				navClassName={style.homeMenu}
+				list={menuList}
+			/>
 		</section>
 	);
 }
