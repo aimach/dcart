@@ -11,16 +11,22 @@
   }
 
   &NavMenu {
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
+    >ul {
 
-    ul {
-      a {
-        text-decoration: none;
+      @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
+      gap: v.$space-xxl;
+
+      >a {
+        font-size: v.$font-size-l;
       }
     }
 
+    &NotActive {
+      opacity: 0.4;
+    }
+
     &Active {
-      border-bottom: 1px solid black;
+      opacity: 1;
     }
   }
 
@@ -29,10 +35,13 @@
     gap: 1rem;
   }
 
-  ul {
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-end);
-    gap: v.$font-space-xl;
-    list-style-type: none;
+
+  &TranslationMenu {
+    ul {
+      @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-end);
+      gap: v.$font-space-l;
+      list-style-type: none;
+    }
   }
 
   li {
@@ -40,6 +49,7 @@
   }
 }
 
+
 .languageSelected {
-  border-bottom: 1px solid black;
+  font-weight: v.$font-weight-extrabold;
 }

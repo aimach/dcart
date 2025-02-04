@@ -98,9 +98,15 @@ video {
 	vertical-align: baseline;
 	box-sizing: border-box;
 	font-family: "Vollkorn";
+	color: $color-black-chocolate;
 }
 
 /* HTML5 display-role reset for older browsers */
+a {
+	text-decoration: none;
+	color: inherit;
+}
+
 article,
 aside,
 details,

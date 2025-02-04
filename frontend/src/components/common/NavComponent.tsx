@@ -10,6 +10,7 @@ interface NavComponentProps {
 	selectedElement?: string;
 	liClasseName?: string;
 	activeLinkClassName?: string;
+	notActiveLinkClassName?: string;
 }
 
 const NavComponent = ({
@@ -19,6 +20,7 @@ const NavComponent = ({
 	selectedElement,
 	liClasseName,
 	activeLinkClassName,
+	notActiveLinkClassName,
 }: NavComponentProps) => {
 	return (
 		<nav className={navClassName}>
@@ -29,7 +31,7 @@ const NavComponent = ({
 							key={element.title as string}
 							to={element.route as string}
 							className={({ isActive }) =>
-								isActive ? activeLinkClassName : undefined
+								isActive ? activeLinkClassName : notActiveLinkClassName
 							}
 						>
 							{element.title as string}
@@ -40,7 +42,9 @@ const NavComponent = ({
 							onClick={element.onClickFunction}
 							onKeyUp={element.onClickFunction}
 							className={
-								selectedElement === element.id ? liClasseName : undefined
+								selectedElement === element.id
+									? liClasseName
+									: notActiveLinkClassName
 							}
 						>
 							{element.title as string}

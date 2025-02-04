@@ -1,14 +1,14 @@
 {
 	"title": "My Map",
-	"en": "English",
-	"fr": "French",
+	"en": "EN",
+	"fr": "FR",
 	"navigation": {
-		"home": "Home",
-		"maps": "Maps",
-		"storymaps": "Storymaps",
-		"backoffice": "Backoffice",
-		"translation": "Translation",
-		"back": "Back"
+		"home": "HOME",
+		"maps": "MAPS",
+		"storymaps": "STORYMAPS",
+		"backoffice": "BACKOFFICE",
+		"translation": "TRANSLATION",
+		"back": "BACK"
 	},
 	"button": {
 		"freeExploration": "Free exploration",

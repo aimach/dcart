@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useContext } from "react";
-import { Link } from "react-router";
+import { Link, useLocation } from "react-router";
 // import des composants
 import NavComponent from "../common/NavComponent";
 import ImageWithLink from "../common/ImageWithLink";
@@ -13,6 +13,7 @@ import type { NavList } from "../../utils/types/commonTypes";
 import style from "./header.module.scss";
 // import des images
 import MAPLogo from "../../../public/map_logo.png";
+import { MenuIcon } from "lucide-react";
 
 interface HeaderComponentProps {
 	type: "visitor" | "backoffice";
@@ -24,6 +25,9 @@ const HeaderComponent = ({ type }: HeaderComponentProps) => {
 	const switchLanguage = (newLanguage: Language) => {
 		setLanguage(newLanguage);
 	};
+
+	// on récupère l'url en cours pour savoir si on est sur la page d'accueil
+	const { pathname } = useLocation();
 
 	const visitorNavigationList: NavList = [
 		{
@@ -39,7 +43,7 @@ const HeaderComponent = ({ type }: HeaderComponentProps) => {
 			route: "maps/categories",
 		},
 		{
-			id: "undefined",
+			id: "storymaps",
 			title: translation[language].navigation.storymaps,
 			onClickFunction: undefined,
 			route: "/storymaps",
@@ -103,15 +107,20 @@ const HeaderComponent = ({ type }: HeaderComponentProps) => {
 			) : (
 				<Link to="/">{translation[language].navigation.back}</Link>
 			)}
+			{pathname !== "/" && (
+				<NavComponent
+					type="route"
+					navClassName={style.headerNavMenu}
+					list={
+						type === "visitor"
+							? visitorNavigationList
+							: backofficeNavigationList
+					}
+					activeLinkClassName={style.headerNavMenuActive}
+					notActiveLinkClassName={style.headerNavMenuNotActive}
+				/>
+			)}
 
-			<NavComponent
-				type="route"
-				navClassName={style.headerNavMenu}
-				list={
-					type === "visitor" ? visitorNavigationList : backofficeNavigationList
-				}
-				activeLinkClassName={style.headerNavMenuActive}
-			/>
 			<div className={style.headerLastSection}>
 				{type === "visitor" && (
 					<>
@@ -122,15 +131,9 @@ const HeaderComponent = ({ type }: HeaderComponentProps) => {
 							selectedElement={language}
 							liClasseName={style.languageSelected}
 						/>
-						<ImageWithLink
-							type="route"
-							link={"/menu"}
-							ariaLabel={undefined}
-							buttonClassName={undefined}
-							imgSrc={""}
-							imgAlt={"Menu"}
-							imgWidth={100}
-						/>
+						{/* <Link to="/menu">
+							<MenuIcon />
+						</Link> */}
 					</>
 				)}
 			</div>
