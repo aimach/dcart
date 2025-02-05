@@ -33,6 +33,10 @@
   &LastSection {
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
     gap: 1rem;
+
+    >svg {
+      cursor: pointer;
+    }
   }
 
 
