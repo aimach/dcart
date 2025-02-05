@@ -37,6 +37,7 @@ const MapCategoryNav = () => {
 			const categoryList = allCategoriesWithMaps.map((category) => ({
 				id: category.id,
 				title: category[`name_${language}`],
+				description: category[`description_${language}`],
 				onClickFunction: undefined, // Ajoutez une fonction ici si nécessaire
 				route: `${category.id}`,
 			}));
@@ -51,7 +52,7 @@ const MapCategoryNav = () => {
 
 	return (
 		<NavComponent
-			type="route"
+			type="augmented"
 			navClassName={style.mapCategoryNav}
 			list={categoryMapList}
 			activeLinkClassName={style.mapCategoryNavActive}
