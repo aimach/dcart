@@ -3,12 +3,12 @@ import { useContext } from "react";
 import { Link } from "react-router";
 // import des composants
 import MapCategoryNav from "../../components/map/mapCategoryNav/MapCategoryNav";
+import TitleAndTextComponent from "../../components/common/titleAndText/TitleAndTextComponent";
+import ButtonComponent from "../../components/common/button/ButtonComponent";
 // import du context
 import { TranslationContext } from "../../context/TranslationContext";
 // import du style
 import style from "./categoryMenuPage.module.scss";
-import TitleAndTextComponent from "../../components/common/titleAndText/TitleAndTextComponent";
-import ButtonComponent from "../../components/common/button/ButtonComponent";
 
 const CategoryMenuPage = () => {
 	// on récupère le language

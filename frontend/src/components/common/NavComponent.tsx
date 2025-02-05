@@ -23,6 +23,7 @@ const NavComponent = ({
 	activeLinkClassName,
 	notActiveLinkClassName,
 }: NavComponentProps) => {
+	console.log(list);
 	if (type === "route") {
 		return (
 			<nav className={navClassName}>

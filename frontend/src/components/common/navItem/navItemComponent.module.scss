@@ -2,8 +2,7 @@
 @use '../../../styles/variable' as v;
 
 .navItem {
-    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, space-between, flex-start);
-    gap: v.$font-space-xl;
+    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
     position: absolute;
     bottom: v.$font-space-xxxl * 2;
     transition: height 0.5s ease;
@@ -11,7 +10,7 @@
     width: 200px;
 
     &:hover {
-        height: 150px;
+        height: 200px;
     }
 
     >h4 {

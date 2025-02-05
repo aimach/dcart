@@ -25,25 +25,28 @@ const NavItemComponent = ({
 
 	const shortDescription = `${description.slice(0, 50)}...`;
 
-	return displayDescription ? (
-		<div
-			className={style.navItem}
-			onMouseEnter={() => setDisplayDescription(false)}
-			onMouseLeave={() => setDisplayDescription(false)}
-		>
-			<h4>{title.toUpperCase()}</h4>
-			<p>{description}</p>
-			<Link to={link}>{translation[language].navigation.explore}</Link>
-		</div>
-	) : (
-		<div
-			className={style.navItem}
-			onMouseEnter={() => setDisplayDescription(true)}
-		>
-			<h4>{title.toUpperCase()}</h4>
-			<p>{shortDescription}</p>
-			<Link to={link}>{translation[language].navigation.explore}</Link>
-		</div>
+	return (
+		<Link to={link}>
+			{displayDescription ? (
+				<div
+					className={style.navItem}
+					onMouseEnter={() => setDisplayDescription(false)}
+					onMouseLeave={() => setDisplayDescription(false)}
+				>
+					<h4>{title.toUpperCase()}</h4>
+					<p>{description}</p>
+				</div>
+			) : (
+				<div
+					className={style.navItem}
+					onMouseEnter={() => setDisplayDescription(true)}
+				>
+					<h4>{title.toUpperCase()}</h4>
+					<p>{shortDescription}</p>
+				</div>
+			)}
+			{translation[language].navigation.explore}
+		</Link>
 	);
 };
 

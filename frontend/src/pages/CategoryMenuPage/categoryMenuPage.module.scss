@@ -19,11 +19,6 @@
   &NavContainer {
     height: 30%;
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-end);
-  }
-
-  &NavContainer {
-    height: 30%;
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-end);
     margin-bottom: v.$font-space-xxxl * 2;
   }
 
@@ -31,6 +26,8 @@
     ul {
       @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-end);
       gap: v.$font-space-xxxxl * 2;
+
+
     }
   }
 }
