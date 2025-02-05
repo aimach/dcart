@@ -1,10 +1,11 @@
 // import des bibliothèques
 import { useContext } from "react";
+// import des composants
+import NavComponent from "./components/common/NavComponent";
 // import du context
 import { TranslationContext } from "./context/TranslationContext";
 // import du style
 import style from "./App.module.scss";
-import NavComponent from "./components/common/NavComponent";
 
 function App() {
 	const { language, translation } = useContext(TranslationContext);
