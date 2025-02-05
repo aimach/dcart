@@ -1,6 +1,8 @@
 // import des bibliothèques
 import { useContext, useState } from "react";
 import { Link } from "react-router";
+// import des composants
+import ImageWithLink from "../common/ImageWithLink";
 // import du context
 import { TranslationContext } from "../../context/TranslationContext";
 // import des types
@@ -8,8 +10,11 @@ import type { Dispatch, SetStateAction } from "react";
 import type { NavList } from "../../utils/types/commonTypes";
 // import du style
 import style from "./appMenuComponent.module.scss";
-// import des icones
+// import des icones et images
 import { X } from "lucide-react";
+import labexLogo from "../../assets/logo_SMS.png";
+import HNLogo from "../../assets/huma_num_logo.png";
+import mapLogo from "../../assets/map_logo.png";
 
 interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -26,7 +31,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 		storymaps: false,
 	});
 
-	const handleLine = (id: string, boolean) => {
+	const handleLine = (id: string, boolean: boolean) => {
 		const newObject = { ...isLongLine, [id]: boolean };
 		setIsLongLine(newObject);
 	};
@@ -88,7 +93,34 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 					consectetur, adipisicing elit. Asperiores cupiditate distinctio
 					adipisci quod amet, deleniti maxime dolorum suscipit vel voluptatibus.
 					Dolorem eaque est quam atque eligendi error. Excepturi, nemo fugit.
+					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel,
+					dignissimos rem. Odit, odio possimus illum nobis cum ex id porro atque
+					fugiat recusandae magni voluptates debitis, perspiciatis autem quaerat
+					voluptatum?
 				</p>
+				<section className={style.menuPageLogoSection}>
+					<ImageWithLink
+						type="link"
+						link="https://sms.univ-tlse2.fr/"
+						imgSrc={labexLogo}
+						imgAlt="labex logo"
+						imgWidth={100}
+					/>
+					<ImageWithLink
+						type="link"
+						link="https://www.huma-num.fr/"
+						imgSrc={HNLogo}
+						imgAlt="huma-num logo"
+						imgWidth={100}
+					/>
+					<ImageWithLink
+						type="link"
+						link="https://map-polytheisms.huma-num.fr/"
+						imgSrc={mapLogo}
+						imgAlt="erc map logo"
+						imgWidth={100}
+					/>
+				</section>
 			</section>
 			<section className={style.menuPageImageSection}>
 				<X onClick={() => setMenuIsOpen(false)} />

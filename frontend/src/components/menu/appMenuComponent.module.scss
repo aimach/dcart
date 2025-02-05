@@ -27,6 +27,8 @@
 
         }
 
+
+
         .goldenLineLong {
             width: v.$space-xxl* 5;
             height: v.$border-width-l;
@@ -46,6 +48,12 @@
             height: 100%;
             width: 60%;
             z-index: 11;
+
+            >p {
+                font-size: v.$font-size-l;
+                margin: v.$font-space-xxxxl * 2;
+                text-align: justify;
+            }
 
             &Background {
                 height: 100vh;
@@ -70,6 +78,16 @@
             position: absolute;
             right: 15px;
             top: 15px;
+            cursor: pointer;
+        }
+    }
+
+    &LogoSection {
+        margin-left: v.$font-space-xxxxl * 2;
+        @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-end);
+        gap: v.$space-xxl;
+
+        >a {
             cursor: pointer;
         }
     }
