@@ -12,7 +12,8 @@ import type { NavList } from "../../utils/types/commonTypes";
 // import du style
 import style from "./header.module.scss";
 // import des images
-import MAPLogo from "../../../public/map_logo.png";
+import MAPLogo from "../../assets/map_logo.png";
+// import des icônes
 import { MenuIcon } from "lucide-react";
 
 interface HeaderComponentProps {

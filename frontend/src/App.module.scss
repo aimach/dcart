@@ -9,6 +9,7 @@
 // import de la police Vollkorn
 @import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap');
 
+
 html,
 body,
 div,
@@ -158,7 +159,12 @@ button {
 
 	@include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, center);
 	gap: v.$space-xxl;
-	padding-top: v.$space-xxxl;
+	padding-top: 10vh;
+
+	background-image: url('./assets/home_bg.png');
+	background-position-y: 43%;
+	background-repeat: no-repeat;
+	background-size: cover;
 
 	>h1 {
 		font-size: v.$font-size-xxxxxl;
