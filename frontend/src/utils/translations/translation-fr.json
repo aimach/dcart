@@ -8,7 +8,9 @@
 		"storymaps": "STORYMAPS",
 		"backoffice": "TABLEAU DE BORD",
 		"translation": "TRADUCTION",
-		"back": "RETOUR"
+		"back": "RETOUR",
+		"discover": "DECOUVRIR",
+		"explore": "EXPLORER"
 	},
 	"button": {
 		"freeExploration": "Exploration libre",
