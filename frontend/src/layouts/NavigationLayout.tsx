@@ -10,7 +10,7 @@ import AppMenuComponent from "../components/menu/AppMenuComponent";
 const NavigationLayout = () => {
 	// on initie le state pour l'affichage du menu
 	const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
-	console.log(menuIsOpen);
+
 	return menuIsOpen ? (
 		<AppMenuComponent setMenuIsOpen={setMenuIsOpen} />
 	) : (
