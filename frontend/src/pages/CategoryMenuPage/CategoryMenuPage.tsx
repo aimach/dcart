@@ -8,6 +8,7 @@ import { TranslationContext } from "../../context/TranslationContext";
 // import du style
 import style from "./categoryMenuPage.module.scss";
 import TitleAndTextComponent from "../../components/common/titleAndText/TitleAndTextComponent";
+import ButtonComponent from "../../components/common/button/ButtonComponent";
 
 const CategoryMenuPage = () => {
 	// on récupère le language
@@ -20,12 +21,12 @@ const CategoryMenuPage = () => {
 					title={translation[language].navigation.explore as string}
 					text={translation[language].mapPage.introduction as string}
 				/>
-				<Link
-					to="all/map/exploration"
-					className={style.categoryMenuActionButton}
-				>
-					{translation[language].button.freeExploration as string}
-				</Link>
+				<ButtonComponent
+					type="route"
+					color="gold"
+					textContent={translation[language].button.freeExploration as string}
+					link="all/map/exploration"
+				/>
 			</div>
 			<div className={style.categoryMenuNavContainer}>
 				<MapCategoryNav />
