@@ -40,6 +40,9 @@ type TranslationObject = {
 		postDate: string;
 		anteDate: string;
 	};
+	mapPage: {
+		introduction: string;
+	};
 };
 
 type TranslationType = {
