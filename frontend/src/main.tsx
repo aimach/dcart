@@ -7,7 +7,6 @@ import NavigationLayout from "./layouts/NavigationLayout.tsx";
 import ProtectedLayout from "./layouts/ProtectedLayout.tsx";
 import AuthentificationPage from "./pages/BackOffice/AuthentificationPage/AuthentificationPage.tsx";
 import BOHomePage from "./pages/BackOffice/BOHomePage/BOHomePage.tsx";
-import MenuPage from "./pages/MenuPage/MenuPage.tsx";
 import MapPage from "./pages/MapPage/MapPage.tsx";
 import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
 import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.tsx";
@@ -43,7 +42,6 @@ if (rootElement) {
 										</Route>
 									</Route>
 								</Route>
-								<Route path="menu" element={<MenuPage />} />
 								<Route
 									path="authentification"
 									element={<AuthentificationPage />}
