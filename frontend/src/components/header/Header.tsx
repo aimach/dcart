@@ -9,6 +9,7 @@ import { TranslationContext } from "../../context/TranslationContext";
 // import des types
 import type { Language } from "../../utils/types/languageTypes";
 import type { NavList } from "../../utils/types/commonTypes";
+import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./header.module.scss";
 // import des images
@@ -18,9 +19,10 @@ import { MenuIcon } from "lucide-react";
 
 interface HeaderComponentProps {
 	type: "visitor" | "backoffice";
+	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const HeaderComponent = ({ type }: HeaderComponentProps) => {
+const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	// on récupère le contexte qui gère le language et on crée la fonction pour switcher
 	const { language, translation, setLanguage } = useContext(TranslationContext);
 	const switchLanguage = (newLanguage: Language) => {
@@ -132,9 +134,7 @@ const HeaderComponent = ({ type }: HeaderComponentProps) => {
 							selectedElement={language}
 							liClasseName={style.languageSelected}
 						/>
-						{/* <Link to="/menu">
-							<MenuIcon />
-						</Link> */}
+						<MenuIcon onClick={() => setMenuIsOpen(true)} />
 					</>
 				)}
 			</div>

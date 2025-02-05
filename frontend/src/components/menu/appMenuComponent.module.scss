@@ -1,0 +1,94 @@
+@use '../../styles/mixin' as m;
+@use '../../styles/variable' as v;
+
+.menuPage {
+    &Container {
+        @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-start, flex-start);
+        height: 100vh;
+    }
+
+    &Menu {
+        margin-top: v.$space-xxxl;
+
+
+        >ul {
+            @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
+            gap: v.$space-xxxl;
+
+            >li {
+                @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-start, center);
+                gap: v.$space-m;
+                cursor: pointer;
+
+                >a {
+                    font-size: v.$font-size-xxxxl * 1.5;
+                }
+            }
+
+        }
+
+
+
+        .goldenLineLong {
+            width: v.$space-xxl* 5;
+            height: v.$border-width-l;
+            background-color: v.$color-old-gold;
+            transition: width 0.5s ease-in-out;
+        }
+
+        .goldenLineShort {
+            width: v.$space-xxl;
+            height: v.$border-width-l;
+            background-color: v.$color-old-gold;
+            transition: width 0.5s ease-in-out;
+        }
+
+
+        &Section {
+            height: 100%;
+            width: 60%;
+            z-index: 11;
+
+            >p {
+                font-size: v.$font-size-l;
+                margin: v.$font-space-xxxxl * 2;
+                text-align: justify;
+            }
+
+            &Background {
+                height: 100vh;
+                width: 60%;
+                position: absolute;
+                top: 0;
+                background-color: v.$color-grullo;
+                opacity: 0.2;
+                z-index: 10;
+            }
+        }
+    }
+
+    &ImageSection {
+        height: 100%;
+        width: 40%;
+        background-image: url('../../assets/menu_bg.png');
+        background-repeat: no-repeat;
+        background-size: cover;
+
+        >svg {
+            position: absolute;
+            right: 15px;
+            top: 15px;
+            cursor: pointer;
+        }
+    }
+
+    &LogoSection {
+        margin-left: v.$font-space-xxxxl * 2;
+        @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-end);
+        gap: v.$space-xxl;
+
+        >a {
+            cursor: pointer;
+        }
+    }
+}

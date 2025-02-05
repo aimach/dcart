@@ -4,8 +4,8 @@ import { Link } from "react-router";
 interface ImageWithLinkProps {
 	type: "link" | "route";
 	link: string;
-	ariaLabel: string | undefined;
-	buttonClassName: string | undefined;
+	ariaLabel?: string;
+	buttonClassName?: string;
 	imgSrc: string;
 	imgAlt: string;
 	imgWidth: number;
