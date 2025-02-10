@@ -12,8 +12,10 @@ import LoaderComponent from "../../common/loader/LoaderComponent";
 import ModalComponent from "../../modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import du context
-import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
-import { MapContext } from "../../../context/MapContext";
+import { TranslationContext } from "../../../context/TranslationContext";
+// import des services
+import { useMapStore } from "../../../utils/stores/mapStore";
+import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 // import des types
 import type { LatLngTuple } from "leaflet";
 import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
@@ -23,7 +25,7 @@ import "leaflet/dist/leaflet.css";
 import "./mapComponent.css";
 import ResetControl from "../controls/ResetControlComponent";
 import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
-import { TranslationContext } from "../../../context/TranslationContext";
+import { useShallow } from "zustand/shallow";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -49,14 +51,23 @@ const MapComponent = ({
 
 	// on récupère les informations du context
 	const { language } = useContext(TranslationContext);
-	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
-	const { map, setMap } = useContext(MapContext);
+	const setSelectedTabMenu = useMapAsideMenuStore(
+		(state) => state.setSelectedTabMenu,
+	);
+	const { map, setMap, setSelectedMarker } = useMapStore(
+		useShallow((state) => ({
+			map: state.map,
+			setMap: state.setMap,
+			setSelectedMarker: state.setSelectedMarker,
+		})),
+	);
 
 	// à l'arrivée sur la page, on remet les states à 0
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setSelectedTabMenu("results");
 		setIsModalOpen(true);
+		setSelectedMarker(undefined);
 	}, []);
 
 	// on met à jour les limites de la carte

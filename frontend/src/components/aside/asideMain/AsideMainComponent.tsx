@@ -1,12 +1,10 @@
-// import des bibliothèques
-import { useContext } from "react";
 // import des composants
 import ResultComponent from "../tabComponents/ResultComponent";
 import FilterComponent from "../tabComponents/FilterComponent";
 import InfoComponent from "../tabComponents/InfoComponent";
-// import du contexte
-import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
-import { MapContext } from "../../../context/MapContext";
+// import des services
+import { useMapStore } from "../../../utils/stores/mapStore";
+import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
 import ChartComponent from "../tabComponents/ChartComponent";
@@ -20,9 +18,12 @@ interface AsideMainComponentProps {
 
 const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// on récupère l'onglet en cours
-	const { selectedTabMenu } = useContext(MapAsideMenuContext);
+	const selectedTabMenu = useMapAsideMenuStore(
+		(state) => state.selectedTabMenu,
+	);
+
 	// on récupère le point en cours
-	const { selectedMarker } = useContext(MapContext);
+	const selectedMarker = useMapStore((state) => state.selectedMarker);
 
 	// on définit le composant à rendre
 	switch (selectedTabMenu) {

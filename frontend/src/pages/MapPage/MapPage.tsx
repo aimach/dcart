@@ -1,18 +1,17 @@
 // import des bibliothèques
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 import { useParams } from "react-router";
 // import des composants
 import MapComponent from "../../components/map/mapComponent/MapComponent";
 import AsideContainer from "../../components/aside/asideContainer/AsideContainer";
 import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/AsideReducedMenuComponent";
 import MapMenuNav from "../../components/map/mapMenuNav/MapMenuNav";
-// import du context
-import { MapContext } from "../../context/MapContext";
 // import des services
 import {
 	getAllPointsByMapId,
 	getOneMapInfos,
 } from "../../utils/loaders/loaders";
+import { useMapStore } from "../../utils/stores/mapStore";
 // import des types
 import type { PointType } from "../../utils/types/mapTypes";
 // import du style
@@ -23,7 +22,9 @@ const MapPage = () => {
 	const { categoryId, mapId } = useParams();
 
 	// on récupère le state pour l'includedElement
-	const { setIncludedElementId } = useContext(MapContext);
+	const setIncludedElementId = useMapStore(
+		(state) => state.setIncludedElementId,
+	);
 
 	// on définit les states nécessaires
 	const [mapReady, setMapReady] = useState<boolean>(false);

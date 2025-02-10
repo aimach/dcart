@@ -1,8 +1,8 @@
 // import des bibliothèques
-import { useContext, useEffect } from "react";
+import { useEffect } from "react";
 import L from "leaflet";
-// import du context
-import { MapContext } from "../../../context/MapContext";
+// import des services
+import { useMapStore } from "../../../utils/stores/mapStore";
 // import du type
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
 
@@ -12,7 +12,7 @@ interface ResetControlProps {
 
 // Composant pour ajouter un contrôle personnalisé
 const ResetControl = ({ mapBounds }: ResetControlProps) => {
-	const { map } = useContext(MapContext);
+	const map = useMapStore((state) => state.map);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {

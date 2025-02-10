@@ -1,14 +1,13 @@
-// import des bibliothèques
-import { useContext } from "react";
 // import des composants
 import InfoComponent from "./InfoComponent";
-// import du context
-import { MapContext } from "../../../context/MapContext";
+
 // import des services
 import {
 	isSelectedMarker,
 	zoomOnMarkerOnClick,
 } from "../../../utils/functions/functions";
+import { useMapStore } from "../../../utils/stores/mapStore";
+import { useShallow } from "zustand/shallow";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
@@ -19,7 +18,13 @@ interface ResultComponentProps {
 }
 const ResultComponent = ({ results, mapId }: ResultComponentProps) => {
 	// on récupère la carte depuis le context
-	const { map, selectedMarker, setSelectedMarker } = useContext(MapContext);
+	const { map, selectedMarker, setSelectedMarker } = useMapStore(
+		useShallow((state) => ({
+			map: state.map,
+			selectedMarker: state.selectedMarker,
+			setSelectedMarker: state.setSelectedMarker,
+		})),
+	);
 
 	// on définit un style différent pour le point sélectionné
 	const handleResultClick = (result: PointType) => {

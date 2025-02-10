@@ -1,9 +1,5 @@
 // import des bibliothèques
-import { useContext } from "react";
 import { Marker, Tooltip } from "react-leaflet";
-// import du context
-import { MapContext } from "../../../context/MapContext";
-import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 // import des services
 import {
 	getBackGroundColorClassName,
@@ -11,6 +7,9 @@ import {
 } from "../../../utils/functions/functions";
 import { zoomOnMarkerOnClick } from "../../../utils/functions/functions";
 import { getIcon } from "../icons";
+import { useMapStore } from "../../../utils/stores/mapStore";
+import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
+import { useShallow } from "zustand/shallow";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
@@ -28,10 +27,18 @@ const MarkerComponent = ({
 	setPanelDisplayed,
 }: MarkerComponentProps) => {
 	// on récupère le context (point sélectionné, map)
-	const { selectedMarker, setSelectedMarker, map } = useContext(MapContext);
+	const { selectedMarker, setSelectedMarker, map } = useMapStore(
+		useShallow((state) => ({
+			selectedMarker: state.selectedMarker,
+			setSelectedMarker: state.setSelectedMarker,
+			map: state.map,
+		})),
+	);
 
 	// on récupère l'onglet en cours dans le panel
-	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
+	const setSelectedTabMenu = useMapAsideMenuStore(
+		(state) => state.setSelectedTabMenu,
+	);
 
 	// on créé une clé pour chaque point
 	const keyPoint = `${point.latitude}-${point.longitude}`;

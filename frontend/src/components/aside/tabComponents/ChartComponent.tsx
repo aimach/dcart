@@ -14,13 +14,13 @@ import {
 import { Doughnut, Bar } from "react-chartjs-2";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
-import { MapContext } from "../../../context/MapContext";
 // import des services
 import {
 	getAgentGenderLabelsAndNb,
 	getEpithetLabelsAndNb,
 	getAgentActivityLabelsAndNb,
 } from "../../../utils/functions/functions";
+import { useMapStore } from "../../../utils/stores/mapStore";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
 // import du style
@@ -47,7 +47,7 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 	const { translation, language } = useContext(TranslationContext);
 
 	// on récupère l'includedElement en cours
-	const { includedElementId } = useContext(MapContext);
+	const includedElementId = useMapStore((state) => state.includedElementId);
 
 	// on initie le state pour le type de données à afficher
 	const [dataType, setDataType] = useState<string>("epithet");
