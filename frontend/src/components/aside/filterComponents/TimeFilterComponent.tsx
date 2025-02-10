@@ -7,7 +7,7 @@ import { getTimeMarkers } from "../../../utils/loaders/loaders";
 // import des types
 import type { ChangeEvent } from "react";
 // import du style
-import style from "./timeFilterComponent.module.scss";
+import style from "./filtersComponent.module.scss";
 
 const TimeFilterComponent = () => {
 	const [timeMarkers, setTimeMarkers] = useState<{
@@ -54,39 +54,90 @@ const TimeFilterComponent = () => {
 		setUserTimeFilters(newUserTimeFilters);
 	};
 
-	console.log(userTimeFilters);
+	const list = [
+		-1000, -500, -100, -50, -10, -5, -1, 0, 1, 5, 10, 50, 100, 500, 1000,
+	];
 
 	return (
 		timeMarkers.ante_quem && (
 			<div>
 				TimeFilterComponent
-				<div>
-					<input
-						id="post_quem"
-						type="range"
-						defaultValue={
-							userTimeFilters.post_quem === null
-								? timeMarkers.post_quem
-								: userTimeFilters.post_quem
-						}
-						min={timeMarkers.post_quem}
-						max={timeMarkers.ante_quem}
-						step={100}
-						onChange={(e) => handleTimeFilter(e)}
-					/>
-					<input
-						id="ante_quem"
-						type="range"
-						defaultValue={
-							userTimeFilters.ante_quem === null
-								? timeMarkers.ante_quem
-								: userTimeFilters.ante_quem
-						}
-						min={timeMarkers.post_quem}
-						max={timeMarkers.ante_quem}
-						step={100}
-						onChange={(e) => handleTimeFilter(e)}
-					/>
+				<div className={style.rangeContainer}>
+					<fieldset className={style.slidersControl}>
+						<input
+							id="post_quem"
+							type="range"
+							defaultValue={
+								userTimeFilters.post_quem === null
+									? timeMarkers.post_quem
+									: userTimeFilters.post_quem
+							}
+							min={timeMarkers.post_quem}
+							max={timeMarkers.ante_quem}
+							step={100}
+							onChange={(e) => handleTimeFilter(e)}
+						/>
+						<input
+							id="ante_quem"
+							type="range"
+							defaultValue={
+								userTimeFilters.ante_quem === null
+									? timeMarkers.ante_quem
+									: userTimeFilters.ante_quem
+							}
+							min={timeMarkers.post_quem}
+							max={timeMarkers.ante_quem}
+							step={100}
+							readOnly={
+								(userTimeFilters.ante_quem as number) < timeMarkers.post_quem
+							}
+							onChange={(e) => handleTimeFilter(e)}
+						/>
+					</fieldset>
+					<div className={style.formControl}>
+						<fieldset className="form_control_container">
+							<label
+								htmlFor="post_quem"
+								className="form_control_container__time"
+							>
+								Min
+							</label>
+							<input
+								className="form_control_container__time__input"
+								type="number"
+								id="post_quem"
+								value={
+									userTimeFilters.post_quem === null
+										? timeMarkers.post_quem
+										: userTimeFilters.post_quem
+								}
+								readOnly
+								min={timeMarkers.post_quem}
+								max={timeMarkers.ante_quem}
+							/>
+						</fieldset>
+						<fieldset className="form_control_container">
+							<label
+								htmlFor="ante_quem"
+								className="form_control_container__time"
+							>
+								Max
+							</label>
+							<input
+								className="form_control_container__time__input"
+								type="number"
+								id="ante_quem"
+								value={
+									userTimeFilters.ante_quem === null
+										? timeMarkers.ante_quem
+										: userTimeFilters.ante_quem
+								}
+								readOnly
+								min={timeMarkers.post_quem}
+								max={timeMarkers.ante_quem}
+							/>
+						</fieldset>
+					</div>
 				</div>
 			</div>
 		)
