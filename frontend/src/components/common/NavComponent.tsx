@@ -2,9 +2,10 @@
 import { NavLink } from "react-router";
 // import des types
 import type { NavList } from "../../utils/types/commonTypes";
+import NavItemComponent from "./navItem/NavItemComponent";
 
 interface NavComponentProps {
-	type: "route" | "list";
+	type: "route" | "list" | "augmented";
 	navClassName: string;
 	list: NavList;
 	selectedElement?: string;
@@ -22,11 +23,12 @@ const NavComponent = ({
 	activeLinkClassName,
 	notActiveLinkClassName,
 }: NavComponentProps) => {
-	return (
-		<nav className={navClassName}>
-			<ul>
-				{list.map((element) =>
-					type === "route" ? (
+	console.log(list);
+	if (type === "route") {
+		return (
+			<nav className={navClassName}>
+				<ul>
+					{list.map((element) => (
 						<NavLink
 							key={element.title as string}
 							to={element.route as string}
@@ -36,7 +38,17 @@ const NavComponent = ({
 						>
 							{element.title as string}
 						</NavLink>
-					) : (
+					))}
+				</ul>
+			</nav>
+		);
+	}
+
+	if (type === "list") {
+		return (
+			<nav className={navClassName}>
+				<ul>
+					{list.map((element) => (
 						<li
 							key={element.id as string}
 							onClick={element.onClickFunction}
@@ -49,11 +61,38 @@ const NavComponent = ({
 						>
 							{element.title as string}
 						</li>
-					),
-				)}
-			</ul>
-		</nav>
-	);
+					))}
+				</ul>
+			</nav>
+		);
+	}
+
+	if (type === "augmented") {
+		return (
+			<nav className={navClassName}>
+				<ul>
+					{list.map((element) => (
+						<li
+							key={element.id as string}
+							onClick={element.onClickFunction}
+							onKeyUp={element.onClickFunction}
+							className={
+								selectedElement === element.id
+									? liClasseName
+									: notActiveLinkClassName
+							}
+						>
+							<NavItemComponent
+								title={element.title as string}
+								description={element.description as string}
+								link={element.route as string}
+							/>
+						</li>
+					))}
+				</ul>
+			</nav>
+		);
+	}
 };
 
 export default NavComponent;

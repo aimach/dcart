@@ -16,14 +16,30 @@ export const categoryController = {
 			let results = null;
 			if (categoryId === "all") {
 				results = await dcartDataSource.getRepository(Category).find({
-					select: { maps: { id: true, name_fr: true, name_en: true } },
+					select: {
+						maps: {
+							id: true,
+							name_fr: true,
+							name_en: true,
+							description_en: true,
+							description_fr: true,
+						},
+					},
 					relations: { maps: true },
 				});
 				res.status(200).json(results);
 				return;
 			}
 			results = await dcartDataSource.getRepository(Category).find({
-				select: { maps: { id: true, name_fr: true, name_en: true } },
+				select: {
+					maps: {
+						id: true,
+						name_fr: true,
+						name_en: true,
+						description_en: true,
+						description_fr: true,
+					},
+				},
 				relations: { maps: true },
 				where: { id: categoryId },
 			});

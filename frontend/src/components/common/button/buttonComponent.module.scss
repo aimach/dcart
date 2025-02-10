@@ -1,0 +1,28 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.simpleButton {
+    @include m.unbuttonize;
+    cursor: pointer;
+    color: v.$color-neutral-100;
+    padding: v.$space-s v.$space-m;
+    margin: v.$space-m;
+    border-radius: v.$border-radius-rounded;
+    box-shadow: rgba(155, 155, 155) 0px 2px 4px 0px;
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}
+
+.gold {
+    background-color: v.$color-old-gold;
+    border: 1px solid v.$color-old-gold;
+
+}
+
+.brown {
+    background-color: v.$color-dark-lava;
+    border: 1px solid v.$color-black-chocolate;
+}

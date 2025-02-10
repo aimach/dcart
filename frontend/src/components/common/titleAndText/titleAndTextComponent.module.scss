@@ -1,0 +1,26 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.titleAndText {
+    &Container {
+        @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+        gap: v.$font-space-xxxxl * 2;
+
+        >h3 {
+            font-size: v.$font-size-xxxxxl;
+        }
+
+        >p {
+            width: 50vw;
+            font-size: v.$font-size-l;
+            text-align: justify;
+            line-height: v.$font-space-xxxl;
+        }
+
+        .verticalSeparator {
+            width: v.$border-width-m;
+            height: 10vh;
+            background-color: $color-black-chocolate;
+        }
+    }
+}

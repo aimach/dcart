@@ -1,0 +1,29 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.navItem {
+    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
+    position: absolute;
+    bottom: v.$font-space-xxxl * 2;
+    transition: height 0.5s ease;
+    height: 100px;
+    width: 200px;
+
+    &:hover {
+        height: 200px;
+    }
+
+    >h4 {
+        font-size: v.$font-size-l;
+        padding-bottom: v.$space-xs;
+    }
+
+    >p {
+        font-style: italic;
+    }
+
+    >a {
+
+        cursor: pointer;
+    }
+}

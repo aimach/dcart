@@ -37,5 +37,8 @@
 		"chooseDivinity": "Choisissez une divinité",
 		"postDate": "date début",
 		"anteDate": "date fin"
+	},
+	"mapPage": {
+		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?"
 	}
 }

@@ -3,6 +3,8 @@ import { useContext } from "react";
 import { Link } from "react-router";
 // import des composants
 import MapCategoryNav from "../../components/map/mapCategoryNav/MapCategoryNav";
+import TitleAndTextComponent from "../../components/common/titleAndText/TitleAndTextComponent";
+import ButtonComponent from "../../components/common/button/ButtonComponent";
 // import du context
 import { TranslationContext } from "../../context/TranslationContext";
 // import du style
@@ -15,12 +17,16 @@ const CategoryMenuPage = () => {
 	return (
 		<section className={style.categoryMenu}>
 			<div className={style.categoryMenuButtonContainer}>
-				<Link
-					to="all/map/exploration"
-					className={style.categoryMenuActionButton}
-				>
-					{translation[language].button.freeExploration as string}
-				</Link>
+				<TitleAndTextComponent
+					title={translation[language].navigation.explore as string}
+					text={translation[language].mapPage.introduction as string}
+				/>
+				<ButtonComponent
+					type="route"
+					color="gold"
+					textContent={translation[language].button.freeExploration as string}
+					link="all/map/exploration"
+				/>
 			</div>
 			<div className={style.categoryMenuNavContainer}>
 				<MapCategoryNav />
