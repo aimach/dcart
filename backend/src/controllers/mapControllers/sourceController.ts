@@ -2,7 +2,11 @@
 import { MapContent } from "../../entities/MapContent";
 // import des services
 import { dcartDataSource, MapDataSource } from "../../dataSource/dataSource";
-import { getSourcesQuery } from "../../utils/query/sourceQueryString";
+import {
+	getAttestationsBySourceId,
+	getSourcesQueryWithDetails,
+	getSourcesQueryWithoutDetails,
+} from "../../utils/query/sourceQueryString";
 import {
 	getQueryStringForLocalisationFilter,
 	getQueryStringForDateFilter,
@@ -49,7 +53,7 @@ export const sourceController = {
 					: "";
 
 				// on récupère le texte de la requête SQL
-				const sqlQuery = getSourcesQuery(
+				const sqlQuery = getSourcesQueryWithoutDetails(
 					queryLocalisation,
 					"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
 					"=",
@@ -96,7 +100,7 @@ export const sourceController = {
 					: "";
 
 				// on récupère le texte de la requête SQL
-				const sqlQuery = getSourcesQuery(
+				const sqlQuery = getSourcesQueryWithDetails(
 					queryLocalisation,
 					elementOperator, // obligé d'intégrer les opérateurs ici, sinon ça plante
 					divinityOperator,
@@ -110,6 +114,29 @@ export const sourceController = {
 			}
 
 			res.status(200).json(results);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	getAttestationsBySourceId: async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		try {
+			// on récupère params et query
+			const { sourceId } = req.params;
+
+			// on récupère le texte de la requête SQL
+			const sqlQuery = getAttestationsBySourceId(
+				"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
+			);
+			const sourceWithAttestations = await MapDataSource.query(sqlQuery, [
+				sourceId,
+				3,
+			]);
+
+			res.status(200).json(sourceWithAttestations[0].attestations);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

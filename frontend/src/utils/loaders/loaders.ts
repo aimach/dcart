@@ -68,6 +68,12 @@ const getAllMapsInfosFromCategoryId = async (categoryId: string) => {
 	return allMaps;
 };
 
+const getAllAttestationsFromSourceId = async (sourceId: string) => {
+	const response = await apiClient.get(`/map/sources/${sourceId}/attestations`);
+	const allAttestations = await response.data;
+	return allAttestations;
+};
+
 export {
 	getAllMapsInfos,
 	getOneMapInfos,
@@ -77,4 +83,5 @@ export {
 	getTimeMarkers,
 	getAllCategoriesWithMapsInfos,
 	getAllMapsInfosFromCategoryId,
+	getAllAttestationsFromSourceId,
 };

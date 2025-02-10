@@ -3,13 +3,20 @@
 // SOURCE : https: //css-loaders.com/spinner/
 
 .loader {
-  width: 50px;
   aspect-ratio: 1;
   display: grid;
   border: 4px solid #0000;
   border-radius: 50%;
   border-right-color: v.$color-umber;
   animation: l15 1s infinite linear;
+}
+
+.loader-50 {
+  width: 50px;
+}
+
+.loader-40 {
+  width: 40px;
 }
 
 .loader::before,

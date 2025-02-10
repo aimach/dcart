@@ -79,7 +79,7 @@ const MapComponent = ({
 
 	return (
 		<>
-			{!mapReady && <LoaderComponent />}
+			{!mapReady && <LoaderComponent size={50} />}
 			<div className="map" id="map">
 				<section className="leaflet-container">
 					{isModalOpen && (

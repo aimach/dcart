@@ -15,8 +15,9 @@ import type { Map as LeafletMap } from "leaflet";
 
 interface ResultComponentProps {
 	results: PointType[];
+	mapId: string;
 }
-const ResultComponent = ({ results }: ResultComponentProps) => {
+const ResultComponent = ({ results, mapId }: ResultComponentProps) => {
 	// on récupère la carte depuis le context
 	const { map, selectedMarker, setSelectedMarker } = useContext(MapContext);
 
@@ -38,7 +39,11 @@ const ResultComponent = ({ results }: ResultComponentProps) => {
 						onClick={() => handleResultClick(result)}
 						onKeyUp={() => handleResultClick(result)}
 					>
-						<InfoComponent point={result} isSelected={isSelected} />
+						<InfoComponent
+							point={result}
+							isSelected={isSelected}
+							mapId={mapId}
+						/>
 					</div>
 				);
 			})}

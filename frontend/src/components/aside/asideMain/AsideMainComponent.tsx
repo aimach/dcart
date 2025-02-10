@@ -15,9 +15,10 @@ import style from "./asideMainComponent.module.scss";
 
 interface AsideMainComponentProps {
 	results: PointType[];
+	mapId: string;
 }
 
-const AsideMainComponent = ({ results }: AsideMainComponentProps) => {
+const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// on récupère l'onglet en cours
 	const { selectedTabMenu } = useContext(MapAsideMenuContext);
 	// on récupère le point en cours
@@ -26,20 +27,26 @@ const AsideMainComponent = ({ results }: AsideMainComponentProps) => {
 	// on définit le composant à rendre
 	switch (selectedTabMenu) {
 		case "results":
-			return <ResultComponent results={results} />;
+			return <ResultComponent results={results} mapId={mapId} />;
 		case "filters":
 			return <FilterComponent />;
 		case "infos":
 			return (
 				selectedMarker && (
 					<div className={style.infoContainer}>
-						<InfoComponent point={selectedMarker as PointType} />
-						<ChartComponent point={selectedMarker as PointType} />
+						<InfoComponent
+							point={selectedMarker as PointType}
+							isSelected={true}
+							mapId={mapId}
+						/>
+						{mapId !== "exploration" && (
+							<ChartComponent point={selectedMarker as PointType} />
+						)}
 					</div>
 				)
 			);
 		default:
-			return <ResultComponent results={results} />;
+			return <ResultComponent results={results} mapId={mapId} />;
 	}
 };
 

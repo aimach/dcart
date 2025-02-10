@@ -1,8 +1,13 @@
 // import du style
 import style from "./loaderComponent.module.scss";
 
-const LoaderComponent = () => {
-	return <div className={style.loader} />;
+interface LoaderComponentProps {
+	size: number;
+}
+
+const LoaderComponent = ({ size }: LoaderComponentProps) => {
+	const classNames = `${style.loader} ${style[`loader-${size}`]}`;
+	return <div className={classNames} />;
 };
 
 export default LoaderComponent;
