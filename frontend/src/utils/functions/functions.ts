@@ -55,9 +55,13 @@ const getDatationSentence = (
 	if (!source.post_quem && !source.ante_quem) {
 		return "";
 	}
+	const postQuemWithOperator =
+		source.post_quem > 0 ? `+${source.post_quem}` : source.post_quem;
+	const anteQuemWithOperator =
+		source.ante_quem > 0 ? `+${source.ante_quem}` : source.ante_quem;
 	return source.post_quem === source.ante_quem
-		? `(${source.post_quem})`
-		: `(${translation[language].common.between} ${source.post_quem} ${translation[language].common.and} ${source.ante_quem})`;
+		? `(${postQuemWithOperator})`
+		: `(${translation[language].common.between} ${postQuemWithOperator} ${translation[language].common.and} ${anteQuemWithOperator})`;
 };
 
 // utilisée pour zoomer sur un marker au click
