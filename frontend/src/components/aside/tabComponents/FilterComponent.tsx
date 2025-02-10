@@ -1,5 +1,6 @@
 // import des services
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
+import TimeFilterComponent from "../filterComponents/TimeFilterComponent";
 
 const FilterComponent = () => {
 	const mapFilters = useMapAsideMenuStore((state) => state.mapFilters);
@@ -7,9 +8,11 @@ const FilterComponent = () => {
 		<div>
 			Filtres
 			<div>
-				{mapFilters.map((filter) => (
-					<p key={filter.id}>{filter.type}</p>
-				))}
+				{mapFilters.map((filter) => {
+					if (filter.type === "time") {
+						return <TimeFilterComponent key={filter.id} />;
+					}
+				})}
 			</div>
 		</div>
 	) : (
