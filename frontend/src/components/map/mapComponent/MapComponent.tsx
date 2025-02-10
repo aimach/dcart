@@ -52,10 +52,11 @@ const MapComponent = ({
 	// on récupère les informations du context
 	const { language } = useContext(TranslationContext);
 	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
-	const { map, setMap } = useMapStore(
+	const { map, setMap, setSelectedMarker } = useMapStore(
 		useShallow((state) => ({
 			map: state.map,
 			setMap: state.setMap,
+			setSelectedMarker: state.setSelectedMarker,
 		})),
 	);
 
@@ -64,6 +65,7 @@ const MapComponent = ({
 	useEffect(() => {
 		setSelectedTabMenu("results");
 		setIsModalOpen(true);
+		setSelectedMarker(undefined);
 	}, []);
 
 	// on met à jour les limites de la carte
