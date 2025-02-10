@@ -17,7 +17,6 @@ import CategoryMenuPage from "./pages/CategoryMenuPage/CategoryMenuPage.tsx";
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
 import { MapAsideMenuProvider } from "./context/MapAsideMenuContext.tsx";
-import { MapProvider } from "./context/MapContext.tsx";
 // import du style
 import "./index.css";
 
@@ -29,38 +28,33 @@ if (rootElement) {
 			<TranslationProvider>
 				<AuthProvider>
 					<MapAsideMenuProvider>
-						<MapProvider>
-							{/* <StrictMode> */}
-							<Routes>
-								<Route element={<NavigationLayout />}>
-									<Route index element={<App />} />
-									<Route path="maps/categories">
-										<Route index element={<CategoryMenuPage />} />
-										<Route path=":categoryId">
-											<Route index element={<MapMenuPage />} />
-											<Route path="map/:mapId" element={<MapPage />} />
-										</Route>
+						{/* <StrictMode> */}
+						<Routes>
+							<Route element={<NavigationLayout />}>
+								<Route index element={<App />} />
+								<Route path="maps/categories">
+									<Route index element={<CategoryMenuPage />} />
+									<Route path=":categoryId">
+										<Route index element={<MapMenuPage />} />
+										<Route path="map/:mapId" element={<MapPage />} />
 									</Route>
 								</Route>
+							</Route>
+							<Route
+								path="authentification"
+								element={<AuthentificationPage />}
+							/>
+							<Route path="backoffice" element={<ProtectedLayout />}>
+								<Route index element={<BOHomePage />} />
+								<Route path="maps" element={<BackofficeMapPage />} />
+								<Route path="storymaps" element={<BackofficeStorymapPage />} />
 								<Route
-									path="authentification"
-									element={<AuthentificationPage />}
+									path="translation"
+									element={<BackofficeTranslationPage />}
 								/>
-								<Route path="backoffice" element={<ProtectedLayout />}>
-									<Route index element={<BOHomePage />} />
-									<Route path="maps" element={<BackofficeMapPage />} />
-									<Route
-										path="storymaps"
-										element={<BackofficeStorymapPage />}
-									/>
-									<Route
-										path="translation"
-										element={<BackofficeTranslationPage />}
-									/>
-								</Route>
-							</Routes>
-							{/* </StrictMode> */}
-						</MapProvider>
+							</Route>
+						</Routes>
+						{/* </StrictMode> */}
 					</MapAsideMenuProvider>
 				</AuthProvider>
 			</TranslationProvider>

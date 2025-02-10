@@ -2,7 +2,6 @@
 import { useContext } from "react";
 import { Marker, Tooltip } from "react-leaflet";
 // import du context
-import { MapContext } from "../../../context/MapContext";
 import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 // import des services
 import {
@@ -11,6 +10,8 @@ import {
 } from "../../../utils/functions/functions";
 import { zoomOnMarkerOnClick } from "../../../utils/functions/functions";
 import { getIcon } from "../icons";
+import { useMapStore } from "../../../utils/stores/mapStore";
+import { useShallow } from "zustand/shallow";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
@@ -28,7 +29,13 @@ const MarkerComponent = ({
 	setPanelDisplayed,
 }: MarkerComponentProps) => {
 	// on récupère le context (point sélectionné, map)
-	const { selectedMarker, setSelectedMarker, map } = useContext(MapContext);
+	const { selectedMarker, setSelectedMarker, map } = useMapStore(
+		useShallow((state) => ({
+			selectedMarker: state.selectedMarker,
+			setSelectedMarker: state.setSelectedMarker,
+			map: state.map,
+		})),
+	);
 
 	// on récupère l'onglet en cours dans le panel
 	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
