@@ -2,12 +2,12 @@
 import ResultComponent from "../tabComponents/ResultComponent";
 import FilterComponent from "../tabComponents/FilterComponent";
 import InfoComponent from "../tabComponents/InfoComponent";
+import ChartComponent from "../tabComponents/ChartComponent";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
-import ChartComponent from "../tabComponents/ChartComponent";
 // import du style
 import style from "./asideMainComponent.module.scss";
 

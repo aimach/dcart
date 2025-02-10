@@ -12,6 +12,7 @@ import {
 	getOneMapInfos,
 } from "../../utils/loaders/loaders";
 import { useMapStore } from "../../utils/stores/mapStore";
+import { useMapAsideMenuStore } from "../../utils/stores/mapAsideMenuStore";
 // import des types
 import type { PointType } from "../../utils/types/mapTypes";
 // import du style
@@ -25,6 +26,8 @@ const MapPage = () => {
 	const setIncludedElementId = useMapStore(
 		(state) => state.setIncludedElementId,
 	);
+	// on récupère le state pour les filtres
+	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
 
 	// on définit les states nécessaires
 	const [mapReady, setMapReady] = useState<boolean>(false);
@@ -49,6 +52,7 @@ const MapPage = () => {
 			const mapInfos = await getOneMapInfos(mapId as string);
 			setIncludedElementId(mapInfos.includedElements);
 			setMapInfos(mapInfos);
+			setMapFilters(mapInfos.filters);
 		} catch (error) {
 			console.error("Erreur lors du chargement des infos de la carte:", error);
 		}

@@ -1,3 +1,6 @@
+// import des types
+import type { FilterType } from "./filterTypes";
+
 type MapType = {
 	id: string;
 	name_fr: string;
@@ -15,6 +18,7 @@ type MapType = {
 	isActive: true;
 	createdAt: string;
 	updatedAt: string;
+	filters: FilterType[];
 };
 
 type ElementType = {

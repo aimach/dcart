@@ -13,6 +13,7 @@ type State = {
 type Action = {
 	setMap: (map: LeafletMap | null) => void;
 	setSelectedMarker: (selectedMarker: PointType | undefined) => void;
+	resetSelectedMarker: () => void;
 	setIncludedElementId: (includedElementId: string | undefined) => void;
 };
 
@@ -21,6 +22,7 @@ export const useMapStore = create<State & Action>((set) => ({
 	setMap: (map) => set(() => ({ map })),
 	selectedMarker: undefined,
 	setSelectedMarker: (selectedMarker) => set(() => ({ selectedMarker })),
+	resetSelectedMarker: () => set(() => ({ selectedMarker: undefined })),
 	includedElementId: undefined,
 	setIncludedElementId: (includedElementId) =>
 		set(() => ({ includedElementId })),
