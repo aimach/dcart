@@ -2,7 +2,10 @@
 import { MapContent } from "../../entities/MapContent";
 // import des services
 import { dcartDataSource, MapDataSource } from "../../dataSource/dataSource";
-import { getSourcesQuery } from "../../utils/query/sourceQueryString";
+import {
+	getSourcesQueryWithDetails,
+	getSourcesQueryWithoutDetails,
+} from "../../utils/query/sourceQueryString";
 import {
 	getQueryStringForLocalisationFilter,
 	getQueryStringForDateFilter,
@@ -49,7 +52,7 @@ export const sourceController = {
 					: "";
 
 				// on récupère le texte de la requête SQL
-				const sqlQuery = getSourcesQuery(
+				const sqlQuery = getSourcesQueryWithoutDetails(
 					queryLocalisation,
 					"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
 					"=",
@@ -96,7 +99,7 @@ export const sourceController = {
 					: "";
 
 				// on récupère le texte de la requête SQL
-				const sqlQuery = getSourcesQuery(
+				const sqlQuery = getSourcesQueryWithDetails(
 					queryLocalisation,
 					elementOperator, // obligé d'intégrer les opérateurs ici, sinon ça plante
 					divinityOperator,
