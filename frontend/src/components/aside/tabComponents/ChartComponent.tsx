@@ -25,7 +25,6 @@ import {
 import type { PointType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./tabComponent.module.scss";
-import { tooltip } from "leaflet";
 
 // import des éléments de chart.js
 ChartJS.register(

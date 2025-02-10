@@ -131,9 +131,12 @@ export const sourceController = {
 			const sqlQuery = getAttestationsBySourceId(
 				"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
 			);
-			const attestations = await MapDataSource.query(sqlQuery, [sourceId, 3]);
+			const sourceWithAttestations = await MapDataSource.query(sqlQuery, [
+				sourceId,
+				3,
+			]);
 
-			res.status(200).json(attestations);
+			res.status(200).json(sourceWithAttestations[0].attestations);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

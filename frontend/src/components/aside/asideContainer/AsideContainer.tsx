@@ -11,12 +11,14 @@ interface AsideContainerProps {
 	panelDisplayed: boolean;
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 	allPoints?: PointType[];
+	mapId: string;
 }
 
 const AsideContainer = ({
 	panelDisplayed,
 	setPanelDisplayed,
 	allPoints,
+	mapId,
 }: AsideContainerProps) => {
 	return (
 		<aside
@@ -26,7 +28,7 @@ const AsideContainer = ({
 		>
 			<AsideHeader />
 			<div className={style.toggleButtonContainer}>
-				<AsideMainComponent results={allPoints as PointType[]} />
+				<AsideMainComponent results={allPoints as PointType[]} mapId={mapId} />
 				{panelDisplayed ? (
 					<button
 						type="button"

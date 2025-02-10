@@ -5,7 +5,6 @@ import type {
 	PointType,
 	AttestationType,
 	ElementType,
-	AgentType,
 } from "../types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 

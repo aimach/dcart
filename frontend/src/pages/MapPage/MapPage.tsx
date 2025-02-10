@@ -70,6 +70,7 @@ const MapPage = () => {
 						panelDisplayed={panelDisplayed}
 						setPanelDisplayed={setPanelDisplayed}
 						allPoints={allPoints}
+						mapId={mapId as string}
 					/>
 				) : (
 					<AsideReducedMenuComponent setPanelDisplayed={setPanelDisplayed} />

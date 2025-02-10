@@ -339,7 +339,7 @@ sources_with_attestations AS (
 
 SELECT 
   source.id as source_id,
-  json_agg(DISTINCT sources_with_attestations.attestations) as sources
+  json_agg(DISTINCT sources_with_attestations.attestations) as attestations
   FROM source
 JOIN sources_with_attestations ON source.id = sources_with_attestations.source_id 
 WHERE source.id = $2
