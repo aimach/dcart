@@ -3,6 +3,7 @@ import { MapContent } from "../../entities/MapContent";
 // import des services
 import { dcartDataSource, MapDataSource } from "../../dataSource/dataSource";
 import {
+	getAttestationsBySourceId,
 	getSourcesQueryWithDetails,
 	getSourcesQueryWithoutDetails,
 } from "../../utils/query/sourceQueryString";
@@ -113,6 +114,26 @@ export const sourceController = {
 			}
 
 			res.status(200).json(results);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	getAttestationsBySourceId: async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		try {
+			// on récupère params et query
+			const { sourceId } = req.params;
+
+			// on récupère le texte de la requête SQL
+			const sqlQuery = getAttestationsBySourceId(
+				"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
+			);
+			const attestations = await MapDataSource.query(sqlQuery, [sourceId, 3]);
+
+			res.status(200).json(attestations);
 		} catch (error) {
 			handleError(res, error as Error);
 		}
