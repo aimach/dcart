@@ -2,6 +2,8 @@
 import { useContext, useEffect, useState } from "react";
 import DOMPurify from "dompurify";
 import { v4 as uuidv4 } from "uuid";
+// import des composants
+import LoaderComponent from "../../common/loader/LoaderComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des types
@@ -70,54 +72,60 @@ const SourceDetailsComponent = ({
 			<summary>
 				Source #{source.source_id} {datationSentence}
 			</summary>
-			{attestations.map((attestation: AttestationType) => {
-				// on prépare l'extrait avec restitution en vérifiant qu'il ne contient que du code validé
-				const sanitizedRestitution = DOMPurify.sanitize(
-					attestation.extrait_avec_restitution,
-				);
-				let agentsArray: JSX.Element[] = [];
-				if (attestation.agents?.length) {
-					agentsArray = attestation.agents.map((agentElement: AgentType) => {
-						// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
-						// qu'il correspond au langage choisi
-						const sanitizedAgent = DOMPurify.sanitize(agentElement.designation);
-						const sanitizedAgentInSelectedLanguage =
-							sanitizedAgent.split("<br>");
-						let agent = "";
-						if (sanitizedAgentInSelectedLanguage.length > 1) {
-							agent =
-								sanitizedAgentInSelectedLanguage[language === "fr" ? 0 : 1];
-						} else {
-							agent = sanitizedAgentInSelectedLanguage[0];
-						}
-						return (
-							<p
-								key={uuidv4()}
-								// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-								dangerouslySetInnerHTML={{
-									__html: agent,
-								}}
-							/>
-						);
-					});
-				}
+			{attestations.length ? (
+				attestations.map((attestation: AttestationType) => {
+					// on prépare l'extrait avec restitution en vérifiant qu'il ne contient que du code validé
+					const sanitizedRestitution = DOMPurify.sanitize(
+						attestation.extrait_avec_restitution,
+					);
+					let agentsArray: JSX.Element[] = [];
+					if (attestation.agents?.length) {
+						agentsArray = attestation.agents.map((agentElement: AgentType) => {
+							// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
+							// qu'il correspond au langage choisi
+							const sanitizedAgent = DOMPurify.sanitize(
+								agentElement.designation,
+							);
+							const sanitizedAgentInSelectedLanguage =
+								sanitizedAgent.split("<br>");
+							let agent = "";
+							if (sanitizedAgentInSelectedLanguage.length > 1) {
+								agent =
+									sanitizedAgentInSelectedLanguage[language === "fr" ? 0 : 1];
+							} else {
+								agent = sanitizedAgentInSelectedLanguage[0];
+							}
+							return (
+								<p
+									key={uuidv4()}
+									// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+									dangerouslySetInnerHTML={{
+										__html: agent,
+									}}
+								/>
+							);
+						});
+					}
 
-				return (
-					<div key={uuidv4()} className={style.testimoniesInfo}>
-						<p>Attestation #{attestation.attestation_id}</p>
-						<div style={{ marginLeft: "10px" }}>
-							<p>{attestation[attestationNameLanguageKey]}</p>
-							<p
-								// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-								dangerouslySetInnerHTML={{
-									__html: sanitizedRestitution,
-								}}
-							/>
-							{agentsArray}
+					return (
+						<div key={uuidv4()} className={style.testimoniesInfo}>
+							<p>Attestation #{attestation.attestation_id}</p>
+							<div style={{ marginLeft: "10px" }}>
+								<p>{attestation[attestationNameLanguageKey]}</p>
+								<p
+									// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+									dangerouslySetInnerHTML={{
+										__html: sanitizedRestitution,
+									}}
+								/>
+								{agentsArray}
+							</div>
 						</div>
-					</div>
-				);
-			})}
+					);
+				})
+			) : (
+				<LoaderComponent size={40} />
+			)}
 		</details>
 	);
 };
