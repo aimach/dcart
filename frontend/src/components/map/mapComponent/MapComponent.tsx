@@ -12,10 +12,10 @@ import LoaderComponent from "../../common/loader/LoaderComponent";
 import ModalComponent from "../../modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import du context
-import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
+import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 // import des types
 import type { LatLngTuple } from "leaflet";
 import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
@@ -51,7 +51,9 @@ const MapComponent = ({
 
 	// on récupère les informations du context
 	const { language } = useContext(TranslationContext);
-	const { setSelectedTabMenu } = useContext(MapAsideMenuContext);
+	const setSelectedTabMenu = useMapAsideMenuStore(
+		(state) => state.setSelectedTabMenu,
+	);
 	const { map, setMap, setSelectedMarker } = useMapStore(
 		useShallow((state) => ({
 			map: state.map,

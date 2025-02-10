@@ -4,7 +4,9 @@ import { useContext, useState } from "react";
 import NavComponent from "../../common/NavComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
-import { MapAsideMenuContext } from "../../../context/MapAsideMenuContext";
+// import des services
+import { useShallow } from "zustand/shallow";
+import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 // import des types
 import type { NavList } from "../../../utils/types/commonTypes";
 // import du style
@@ -14,8 +16,12 @@ const AsideHeader = () => {
 	// on importe les données de language
 	const { language, translation } = useContext(TranslationContext);
 	// on importe l'onglet par défaut
-	const { selectedTabMenu, setSelectedTabMenu } =
-		useContext(MapAsideMenuContext);
+	const { selectedTabMenu, setSelectedTabMenu } = useMapAsideMenuStore(
+		useShallow((state) => ({
+			selectedTabMenu: state.selectedTabMenu,
+			setSelectedTabMenu: state.setSelectedTabMenu,
+		})),
+	);
 
 	const asideNavList: NavList = [
 		{
