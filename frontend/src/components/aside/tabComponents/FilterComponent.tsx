@@ -2,6 +2,7 @@
 import { useContext } from "react";
 // import des composants
 import TimeFilterComponent from "../filterComponents/TimeFilterComponent";
+import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
@@ -56,6 +57,9 @@ const FilterComponent = ({ timeMarkers }: FilterComponentProps) => {
 						return (
 							<TimeFilterComponent key={filter.id} timeMarkers={timeMarkers} />
 						);
+					}
+					if (filter.type === "location") {
+						return <LocationFilterComponent key={filter.id} />;
 					}
 				})}
 			</div>

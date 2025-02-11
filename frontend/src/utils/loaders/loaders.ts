@@ -87,6 +87,13 @@ const getAllAttestationsFromSourceId = async (sourceId: string) => {
 	return allAttestations;
 };
 
+// utilisée pour récupérer les options de filtre de localisation
+const getLocationOptions = async (routeSegment: string) => {
+	const response = await apiClient.get(`/map/locations/${routeSegment}`);
+	const locationOptions = await response.data;
+	return locationOptions;
+};
+
 export {
 	getAllMapsInfos,
 	getOneMapInfos,
@@ -97,4 +104,5 @@ export {
 	getAllCategoriesWithMapsInfos,
 	getAllMapsInfosFromCategoryId,
 	getAllAttestationsFromSourceId,
+	getLocationOptions,
 };
