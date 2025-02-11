@@ -2,6 +2,7 @@
 import { apiClient } from "../api/apiClient";
 // import des types
 import type { UserFilterType } from "../types/filterTypes";
+
 // récupérer toutes les informations de toutes les cartes (titre, description, critères...)
 const getAllMapsInfos = async () => {
 	const response = await apiClient.get("/dcart/maps/all");

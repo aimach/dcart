@@ -16,6 +16,7 @@
 		"freeExploration": "Free exploration",
 		"results": "Results",
 		"filters": "Filters",
+		"filter": "Filter",
 		"infos": "Infos",
 		"seeSources": "Explore sources",
 		"seeAll": "Explore all",
@@ -39,6 +40,13 @@
 		"anteDate": "end date"
 	},
 	"mapPage": {
-		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?"
+		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
+		"noResult": "No result",
+		"aside": {
+			"filters": "Filters",
+			"sources": "Sources",
+			"epithet": "Epithet",
+			"noFilter": "No filter defined"
+		}
 	}
 }

@@ -11,11 +11,14 @@ import { v4 as uuidv4 } from "uuid";
 import LoaderComponent from "../../common/loader/LoaderComponent";
 import ModalComponent from "../../modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
+import ResetControl from "../controls/ResetControlComponent";
+import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
+import { useShallow } from "zustand/shallow";
 // import des types
 import type { LatLngTuple } from "leaflet";
 import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
@@ -23,9 +26,6 @@ import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import "./mapComponent.css";
-import ResetControl from "../controls/ResetControlComponent";
-import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
-import { useShallow } from "zustand/shallow";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -33,13 +33,16 @@ interface MapComponentProps {
 }
 
 const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
+	// on définit le centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
 	// on gère l'affichage de la modale
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
 	// on récupère les informations du context
-	const { language } = useContext(TranslationContext);
+	const { translation, language } = useContext(TranslationContext);
+
+	// on récupère les informations du store
 	const { setSelectedTabMenu, resetFilters } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
@@ -118,7 +121,7 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 										);
 									})
 								) : (
-									<div>Aucun résultat</div>
+									<div>{translation[language].mapPage.noResult}</div>
 								)}
 								<ZoomControl position="topright" />
 								<ScaleControl position="bottomright" />

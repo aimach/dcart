@@ -1,5 +1,9 @@
+// import des bibliothèques
+import { useContext } from "react";
 // import des composants
 import TimeFilterComponent from "../filterComponents/TimeFilterComponent";
+// import du context
+import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useMapStore } from "../../../utils/stores/mapStore";
@@ -10,11 +14,15 @@ import type { MapInfoType } from "../../../utils/types/mapTypes";
 import type { UserFilterType } from "../../../utils/types/filterTypes";
 
 const FilterComponent = () => {
-	const mapFilters = useMapAsideMenuStore((state) => state.mapFilters);
-	const { mapInfos, setAllPoints, setMapReady } = useMapStore();
-	const userFilters = useMapFiltersStore((state) => state.userFilters);
+	// on récupère les données de la langue
+	const { translation, language } = useContext(TranslationContext);
 
-	// on charge les points de la carte
+	// on récupère les données depuis les stores
+	const mapFilters = useMapAsideMenuStore((state) => state.mapFilters);
+	const userFilters = useMapFiltersStore((state) => state.userFilters);
+	const { mapInfos, setAllPoints, setMapReady } = useMapStore();
+
+	// on créé une fonction de chargements des points de la carte avec filtres
 	const fetchAllPoints = async () => {
 		try {
 			const points = await getAllPointsByMapId(
@@ -34,7 +42,7 @@ const FilterComponent = () => {
 
 	return mapFilters.length ? (
 		<div>
-			Filtres
+			{translation[language].mapPage.aside.filters}
 			<div>
 				{mapFilters.map((filter) => {
 					if (filter.type === "time") {
@@ -43,11 +51,11 @@ const FilterComponent = () => {
 				})}
 			</div>
 			<button type="button" onClick={handleFilterButton}>
-				Filtrer
+				{translation[language].button.filter}
 			</button>
 		</div>
 	) : (
-		<div>Pas de filtre défini</div>
+		<div>{translation[language].mapPage.aside.noFilter}</div>
 	);
 };
 

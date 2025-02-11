@@ -1,7 +1,5 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
-// import des composants
-// import du context
 // import des services
 import { getTimeMarkers } from "../../../utils/loaders/loaders";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
@@ -19,6 +17,7 @@ const TimeFilterComponent = () => {
 		post: number;
 		ante: number;
 	}>({ post: 0, ante: 0 });
+
 	// on récupère les filtres de l'utilisateur dans le store
 	const { userFilters, setUserFilters } = useMapFiltersStore(
 		useShallow((state) => ({
@@ -27,6 +26,7 @@ const TimeFilterComponent = () => {
 		})),
 	);
 
+	// on récupère les marqueurs temporels depuis la base de données
 	const fetchTimeMarkers = async () => {
 		try {
 			const newTimeMarkers = await getTimeMarkers();
@@ -50,7 +50,7 @@ const TimeFilterComponent = () => {
 		fetchTimeMarkers();
 	}, []);
 
-	// on gère le changement des bornes temporelles
+	// on gère le changement des bornes temporelles par l'utilisateur
 	const handleTimeFilter = (e: FormEvent<HTMLInputElement>) => {
 		let newUserTimeFilters = 0;
 		const target = e.target as HTMLInputElement;
@@ -79,6 +79,7 @@ const TimeFilterComponent = () => {
 		}
 	};
 
+	// on initie une liste des inputs pour maper dessus
 	const inputList = ["post", "ante"];
 
 	return (

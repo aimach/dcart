@@ -18,6 +18,7 @@ type TranslationObject = {
 		freeExploration: string;
 		results: string;
 		filters: string;
+		filter: string;
 		infos: string;
 		seeSources: string;
 		seeAll: string;
@@ -42,6 +43,13 @@ type TranslationObject = {
 	};
 	mapPage: {
 		introduction: string;
+		noResult: string;
+		aside: {
+			filters: string;
+			sources: string;
+			epithet: string;
+			noFilter: string;
+		};
 	};
 };
 

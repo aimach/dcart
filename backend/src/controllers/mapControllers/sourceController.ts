@@ -15,7 +15,7 @@ import {
 } from "../../utils/functions/functions";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
-import { query, type Request, type Response } from "express";
+import type { Request, Response } from "express";
 
 export const sourceController = {
 	// récupérer toutes les sources

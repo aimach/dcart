@@ -11,11 +11,11 @@ import {
 	getAllPointsByMapId,
 	getOneMapInfos,
 } from "../../utils/loaders/loaders";
+import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../utils/stores/mapAsideMenuStore";
 // import du style
 import style from "./mapPage.module.scss";
-import { useShallow } from "zustand/shallow";
 
 const MapPage = () => {
 	// on récupère les params
@@ -87,7 +87,6 @@ const MapPage = () => {
 						setPanelDisplayed={setPanelDisplayed}
 						mapId={mapId as string}
 					/>
-					x
 				</section>
 			</section>
 		</section>
