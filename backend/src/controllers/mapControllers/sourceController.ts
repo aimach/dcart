@@ -28,14 +28,9 @@ export const sourceController = {
 			let results = null;
 
 			if (mapId === "exploration") {
-				const { location, element, ante, post } = req.query;
+				const { locationType, locationId, element, ante, post } = req.query;
 				// on prépare les query des filtres
-				const queryLocalisation = location
-					? getQueryStringForLocalisationFilter(
-							"greatRegion",
-							Number.parseInt(location as string, 10),
-						)
-					: "";
+				const queryLocalisation = "";
 				const queryAnte = ante
 					? getQueryStringForDateFilter(
 							"ante",
@@ -87,10 +82,13 @@ export const sourceController = {
 				} = mapInfos as MapContent;
 
 				// on prépare les query des filtres
-				const queryLocalisation = getQueryStringForLocalisationFilter(
-					locationType,
-					locationId,
-				);
+				let queryLocalisation =
+					locationType && locationId
+						? getQueryStringForLocalisationFilter(
+								locationType as string,
+								locationId as string,
+							)
+						: "";
 				let queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
 				let queryPost = post ? getQueryStringForDateFilter("post", post) : "";
 				const queryIncludedElements = includedElements
@@ -101,6 +99,13 @@ export const sourceController = {
 					: "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
+				queryLocalisation =
+					req.query.locationType && req.query.locationId
+						? getQueryStringForLocalisationFilter(
+								req.query.locationType as string,
+								req.query.locationId as string,
+							)
+						: queryLocalisation;
 				queryAnte = req.query.ante
 					? getQueryStringForDateFilter(
 							"ante",
@@ -124,7 +129,6 @@ export const sourceController = {
 					queryIncludedElements,
 					queryExcludedElements,
 				);
-				// console.log(sqlQuery);
 
 				results = await MapDataSource.query(sqlQuery, [elementNb, divinityNb]);
 			}

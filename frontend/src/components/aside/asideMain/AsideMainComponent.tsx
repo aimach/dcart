@@ -37,12 +37,11 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 		})),
 	);
 
-	// on initie le state des marqueurs temporels
+	// on récupère les marqueurs temporels depuis la base de données
 	const [timeMarkers, setTimeMarkers] = useState<{
 		post: number;
 		ante: number;
 	}>({ post: 0, ante: 0 });
-	// on récupère les marqueurs temporels depuis la base de données
 	const fetchTimeMarkers = async () => {
 		try {
 			const newTimeMarkers = await getTimeMarkers();

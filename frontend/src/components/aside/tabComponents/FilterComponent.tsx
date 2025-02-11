@@ -13,6 +13,8 @@ import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
 // import des types
 import type { MapInfoType } from "../../../utils/types/mapTypes";
 import type { UserFilterType } from "../../../utils/types/filterTypes";
+import { useParams } from "react-router";
+import { useShallow } from "zustand/shallow";
 
 interface FilterComponentProps {
 	timeMarkers: {
@@ -28,7 +30,9 @@ const FilterComponent = ({ timeMarkers }: FilterComponentProps) => {
 	// on récupère les données depuis les stores
 	const mapFilters = useMapAsideMenuStore((state) => state.mapFilters);
 	const userFilters = useMapFiltersStore((state) => state.userFilters);
-	const { mapInfos, setAllPoints, setMapReady } = useMapStore();
+	const { mapInfos, setAllPoints, setMapReady } = useMapStore(
+		useShallow((state) => state),
+	);
 
 	// on créé une fonction de chargements des points de la carte avec filtres
 	const fetchAllPoints = async () => {

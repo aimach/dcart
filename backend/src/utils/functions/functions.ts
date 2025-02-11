@@ -6,8 +6,9 @@ const getQueryStringForGodsFilter = (gods: string) => {
 
 const getQueryStringForLocalisationFilter = (
 	locationType: string,
-	locationId: number,
+	locationId: string,
 ) => {
+	// on récupère le champ de la base de données correspondant à la granularité de la localisation
 	let locationTypeField = "";
 	switch (locationType) {
 		case "subRegion":
@@ -20,6 +21,10 @@ const getQueryStringForLocalisationFilter = (
 		default:
 			locationTypeField = "grande_region";
 			break;
+	}
+	// on check le nombre d'ids
+	if (locationId.includes(",")) {
+		return `AND ${locationTypeField}.id IN (${locationId})`;
 	}
 	return `AND ${locationTypeField}.id = ${locationId}`;
 };

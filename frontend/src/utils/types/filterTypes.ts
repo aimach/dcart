@@ -7,7 +7,8 @@ type UserFilterType = {
 	ante?: number;
 	post?: number;
 	element?: string;
-	location?: string;
+	locationType?: string;
+	locationId?: string;
 };
 
 export type { FilterType, UserFilterType };

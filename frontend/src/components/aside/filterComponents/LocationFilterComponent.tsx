@@ -36,19 +36,20 @@ const LocationFilterComponent = () => {
 
 	// on définit l'url de la requête selon la granularité du filtre de localisation
 	let routeSegment = "";
+	let fetchLocation = "";
 
 	switch (locationType) {
 		case null:
 			routeSegment = "regions/all";
+			fetchLocation = "greatRegion";
 			break;
 		case "greatRegion":
 			routeSegment = `regions/${locationId}/subRegions`;
-			break;
-		case "subRegion":
-			routeSegment = `subRegions/${locationId}/cities`;
+			fetchLocation = "subRegion";
 			break;
 		default:
 			routeSegment = "regions/all";
+			fetchLocation = "greatRegion";
 			break;
 	}
 
@@ -81,14 +82,18 @@ const LocationFilterComponent = () => {
 			locationValuesArray.push(option.value);
 		}
 		const locationValuesString = locationValuesArray.join("|");
-		setUserFilters({ ...userFilters, location: locationValuesString });
+		setUserFilters({
+			...userFilters,
+			locationType: fetchLocation,
+			locationId: locationValuesString,
+		});
 	};
 
 	return (
 		<div>
 			<Select
 				options={locationOptions}
-				delimiter="|"
+				delimiter=", "
 				isMulti
 				onChange={(newValue) => onMultiSelectChange(newValue)}
 			/>

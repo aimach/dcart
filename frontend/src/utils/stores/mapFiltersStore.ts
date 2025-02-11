@@ -16,7 +16,8 @@ export const useMapFiltersStore = create<State & Action>((set) => ({
 		post: undefined,
 		ante: undefined,
 		element: undefined,
-		location: undefined,
+		locationType: undefined,
+		locationId: undefined,
 	},
 	setUserFilters: (userFilters) => set(() => ({ userFilters })),
 }));
