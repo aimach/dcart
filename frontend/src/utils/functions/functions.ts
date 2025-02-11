@@ -52,14 +52,14 @@ const getDatationSentence = (
 	translation: TranslationType,
 	language: Language,
 ) => {
-	if (!source.post && !source.ante) {
+	if (!source.post_quem && !source.ante_quem) {
 		return "";
 	}
 	const postQuemWithOperator =
-		source.post > 0 ? `+${source.post}` : source.post;
+		source.post_quem > 0 ? `+${source.post_quem}` : source.post_quem;
 	const anteQuemWithOperator =
-		source.ante > 0 ? `+${source.ante}` : source.ante;
-	return source.post === source.ante
+		source.ante_quem > 0 ? `+${source.ante_quem}` : source.ante_quem;
+	return source.post_quem === source.ante_quem
 		? `(${postQuemWithOperator})`
 		: `(${translation[language].common.between} ${postQuemWithOperator} ${translation[language].common.and} ${anteQuemWithOperator})`;
 };

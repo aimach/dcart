@@ -52,8 +52,8 @@ type AttestationType = {
 };
 
 type SourceType = {
-	ante: number;
-	post: number;
+	ante_quem: number;
+	post_quem: number;
 	source_id: number;
 	support_en: string;
 	support_fr: string;
