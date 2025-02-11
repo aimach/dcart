@@ -5,7 +5,8 @@ import { useEffect, useState } from "react";
 // import des services
 import { getTimeMarkers } from "../../../utils/loaders/loaders";
 // import des types
-import type { ChangeEvent } from "react";
+import type { FormEvent } from "react";
+import type { TimeMarkersType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./filtersComponent.module.scss";
 
@@ -45,99 +46,73 @@ const TimeFilterComponent = () => {
 	}, []);
 
 	// on gère le changement des bornes temporelles
-
-	const handleTimeFilter = (e: ChangeEvent<HTMLInputElement>) => {
-		const newUserTimeFilters = {
-			...userTimeFilters,
-			[e.target.id]: e.target.value,
-		};
-		setUserTimeFilters(newUserTimeFilters);
+	const handleTimeFilter = (e: FormEvent<HTMLInputElement>) => {
+		let newUserTimeFilters = 0;
+		const target = e.target as HTMLInputElement;
+		if (target.id === "ante_quem") {
+			const minValue = userTimeFilters.post_quem ?? timeMarkers.post_quem;
+			newUserTimeFilters = Number.parseInt(target.value, 10);
+			if (newUserTimeFilters >= minValue + 100) {
+				setUserTimeFilters({
+					...userTimeFilters,
+					[target.id]: newUserTimeFilters,
+				});
+			} else {
+				target.value = (minValue + 100).toString();
+			}
+		} else if (target.id === "post_quem") {
+			const maxValue = userTimeFilters.ante_quem ?? timeMarkers.ante_quem;
+			newUserTimeFilters = Number.parseInt(target.value, 10);
+			if (newUserTimeFilters <= maxValue - 100) {
+				setUserTimeFilters({
+					...userTimeFilters,
+					[target.id]: newUserTimeFilters,
+				});
+			} else {
+				target.value = (maxValue - 100).toString();
+			}
+		}
 	};
 
-	const list = [
-		-1000, -500, -100, -50, -10, -5, -1, 0, 1, 5, 10, 50, 100, 500, 1000,
-	];
+	const inputList = ["post_quem", "ante_quem"];
 
 	return (
 		timeMarkers.ante_quem && (
-			<div>
-				TimeFilterComponent
-				<div className={style.rangeContainer}>
-					<fieldset className={style.slidersControl}>
+			<div className={style.rangeContainer}>
+				<fieldset className={style.slidersControl}>
+					{inputList.map((input) => (
 						<input
-							id="post_quem"
+							key={input}
+							id={input}
 							type="range"
 							defaultValue={
-								userTimeFilters.post_quem === null
-									? timeMarkers.post_quem
-									: userTimeFilters.post_quem
+								userTimeFilters[input as keyof TimeMarkersType] === null
+									? (timeMarkers[input as keyof TimeMarkersType] as number)
+									: (userTimeFilters[input as keyof TimeMarkersType] as number)
 							}
 							min={timeMarkers.post_quem}
 							max={timeMarkers.ante_quem}
 							step={100}
-							onChange={(e) => handleTimeFilter(e)}
+							onInput={(e) => handleTimeFilter(e)}
 						/>
+					))}
+				</fieldset>
+				<div className={style.formControl}>
+					{inputList.map((input) => (
 						<input
-							id="ante_quem"
-							type="range"
-							defaultValue={
-								userTimeFilters.ante_quem === null
-									? timeMarkers.ante_quem
-									: userTimeFilters.ante_quem
+							key={input}
+							type="number"
+							id={input}
+							value={
+								userTimeFilters[input as keyof TimeMarkersType] === null
+									? (timeMarkers[input as keyof TimeMarkersType] as number)
+									: (userTimeFilters[input as keyof TimeMarkersType] as number)
 							}
+							readOnly
 							min={timeMarkers.post_quem}
 							max={timeMarkers.ante_quem}
-							step={100}
-							readOnly={
-								(userTimeFilters.ante_quem as number) < timeMarkers.post_quem
-							}
-							onChange={(e) => handleTimeFilter(e)}
 						/>
-					</fieldset>
-					<div className={style.formControl}>
-						<fieldset className="form_control_container">
-							<label
-								htmlFor="post_quem"
-								className="form_control_container__time"
-							>
-								Min
-							</label>
-							<input
-								className="form_control_container__time__input"
-								type="number"
-								id="post_quem"
-								value={
-									userTimeFilters.post_quem === null
-										? timeMarkers.post_quem
-										: userTimeFilters.post_quem
-								}
-								readOnly
-								min={timeMarkers.post_quem}
-								max={timeMarkers.ante_quem}
-							/>
-						</fieldset>
-						<fieldset className="form_control_container">
-							<label
-								htmlFor="ante_quem"
-								className="form_control_container__time"
-							>
-								Max
-							</label>
-							<input
-								className="form_control_container__time__input"
-								type="number"
-								id="ante_quem"
-								value={
-									userTimeFilters.ante_quem === null
-										? timeMarkers.ante_quem
-										: userTimeFilters.ante_quem
-								}
-								readOnly
-								min={timeMarkers.post_quem}
-								max={timeMarkers.ante_quem}
-							/>
-						</fieldset>
-					</div>
+					))}
 				</div>
 			</div>
 		)
