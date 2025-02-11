@@ -4,34 +4,39 @@ import { useEffect, useState } from "react";
 // import du context
 // import des services
 import { getTimeMarkers } from "../../../utils/loaders/loaders";
+import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
+import { useShallow } from "zustand/shallow";
 // import des types
 import type { FormEvent } from "react";
 import type { TimeMarkersType } from "../../../utils/types/mapTypes";
+import type { UserFilterType } from "../../../utils/types/filterTypes";
 // import du style
 import style from "./filtersComponent.module.scss";
 
 const TimeFilterComponent = () => {
+	// on initie le state des marqueurs temporels
 	const [timeMarkers, setTimeMarkers] = useState<{
 		post_quem: number;
 		ante_quem: number;
 	}>({ post_quem: 0, ante_quem: 0 });
-	const [userTimeFilters, setUserTimeFilters] = useState<{
-		post_quem: number | null;
-		ante_quem: number | null;
-	}>({
-		post_quem: null,
-		ante_quem: null,
-	});
+	// on récupère les filtres de l'utilisateur dans le store
+	const { userFilters, setUserFilters } = useMapFiltersStore(
+		useShallow((state) => ({
+			userFilters: state.userFilters,
+			setUserFilters: state.setUserFilters,
+		})),
+	);
 
 	const fetchTimeMarkers = async () => {
 		try {
 			const newTimeMarkers = await getTimeMarkers();
 			setTimeMarkers(newTimeMarkers);
-			const userFilters = {
+			const newUserFilters = {
+				...userFilters,
 				post_quem: newTimeMarkers.post_quem,
 				ante_quem: newTimeMarkers.ante_quem,
 			};
-			setUserTimeFilters(userFilters);
+			setUserFilters(newUserFilters);
 		} catch (error) {
 			console.error(
 				"Erreur lors du chargement des marqueurs temporels:",
@@ -50,22 +55,22 @@ const TimeFilterComponent = () => {
 		let newUserTimeFilters = 0;
 		const target = e.target as HTMLInputElement;
 		if (target.id === "ante_quem") {
-			const minValue = userTimeFilters.post_quem ?? timeMarkers.post_quem;
+			const minValue = userFilters.post_quem ?? timeMarkers.post_quem;
 			newUserTimeFilters = Number.parseInt(target.value, 10);
 			if (newUserTimeFilters >= minValue + 100) {
-				setUserTimeFilters({
-					...userTimeFilters,
+				setUserFilters({
+					...userFilters,
 					[target.id]: newUserTimeFilters,
 				});
 			} else {
 				target.value = (minValue + 100).toString();
 			}
 		} else if (target.id === "post_quem") {
-			const maxValue = userTimeFilters.ante_quem ?? timeMarkers.ante_quem;
+			const maxValue = userFilters.ante_quem ?? timeMarkers.ante_quem;
 			newUserTimeFilters = Number.parseInt(target.value, 10);
 			if (newUserTimeFilters <= maxValue - 100) {
-				setUserTimeFilters({
-					...userTimeFilters,
+				setUserFilters({
+					...userFilters,
 					[target.id]: newUserTimeFilters,
 				});
 			} else {
@@ -86,9 +91,9 @@ const TimeFilterComponent = () => {
 							id={input}
 							type="range"
 							defaultValue={
-								userTimeFilters[input as keyof TimeMarkersType] === null
+								userFilters[input as keyof UserFilterType] === undefined
 									? (timeMarkers[input as keyof TimeMarkersType] as number)
-									: (userTimeFilters[input as keyof TimeMarkersType] as number)
+									: (userFilters[input as keyof UserFilterType] as number)
 							}
 							min={timeMarkers.post_quem}
 							max={timeMarkers.ante_quem}
@@ -104,9 +109,9 @@ const TimeFilterComponent = () => {
 							type="number"
 							id={input}
 							value={
-								userTimeFilters[input as keyof TimeMarkersType] === null
+								userFilters[input as keyof UserFilterType] === undefined
 									? (timeMarkers[input as keyof TimeMarkersType] as number)
-									: (userTimeFilters[input as keyof TimeMarkersType] as number)
+									: (userFilters[input as keyof UserFilterType] as number)
 							}
 							readOnly
 							min={timeMarkers.post_quem}
