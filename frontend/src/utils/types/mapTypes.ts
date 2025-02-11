@@ -52,8 +52,8 @@ type AttestationType = {
 };
 
 type SourceType = {
-	ante_quem: number;
-	post_quem: number;
+	ante: number;
+	post: number;
 	source_id: number;
 	support_en: string;
 	support_fr: string;
@@ -88,8 +88,8 @@ type DivinityType = {
 };
 
 type TimeMarkersType = {
-	post_quem: number;
-	ante_quem: number;
+	post: number;
+	ante: number;
 };
 
 type CategoryType = {

@@ -1,6 +1,7 @@
 // import des services
 import { apiClient } from "../api/apiClient";
-
+// import des types
+import type { UserFilterType } from "../types/filterTypes";
 // récupérer toutes les informations de toutes les cartes (titre, description, critères...)
 const getAllMapsInfos = async () => {
 	const response = await apiClient.get("/dcart/maps/all");
@@ -19,12 +20,23 @@ const getOneMapInfos = async (mapId: string) => {
 };
 
 // récupérer toutes les sources d'une carte
-const getAllPointsByMapId = async (id: string, params: FormData | null) => {
+const getAllPointsByMapId = async (
+	id: string,
+	params: FormData | UserFilterType | null,
+) => {
 	const queryArray = [];
 	let query = "";
 	if (params !== null) {
-		for (const param of params) {
-			queryArray.push(`${param[0]}=${param[1]}`);
+		if (params instanceof FormData) {
+			for (const param of params) {
+				queryArray.push(`${param[0]}=${param[1]}`);
+			}
+		} else {
+			for (const [key, value] of Object.entries(params)) {
+				if (value !== undefined) {
+					queryArray.push(`${key}=${value}`);
+				}
+			}
 		}
 		query = queryArray.length ? `?${queryArray.join("&")}` : "";
 	}

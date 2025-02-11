@@ -4,8 +4,8 @@ type FilterType = {
 };
 
 type UserFilterType = {
-	ante_quem?: number;
-	post_quem?: number;
+	ante?: number;
+	post?: number;
 	element?: string;
 	location?: string;
 };

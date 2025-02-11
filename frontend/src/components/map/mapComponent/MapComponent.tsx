@@ -29,21 +29,10 @@ import { useShallow } from "zustand/shallow";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
-	points: PointType[];
-	setAllPoints: Dispatch<SetStateAction<PointType[]>>;
-	mapReady: boolean;
-	mapInfos: MapInfoType | null;
 	mapId: string;
 }
 
-const MapComponent = ({
-	setPanelDisplayed,
-	points,
-	setAllPoints,
-	mapReady,
-	mapInfos,
-	mapId,
-}: MapComponentProps) => {
+const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
 	// on gère l'affichage de la modale
@@ -57,13 +46,8 @@ const MapComponent = ({
 			resetFilters: state.resetFilters,
 		})),
 	);
-	const { map, setMap, resetSelectedMarker } = useMapStore(
-		useShallow((state) => ({
-			map: state.map,
-			setMap: state.setMap,
-			resetSelectedMarker: state.resetSelectedMarker,
-		})),
-	);
+	const { map, setMap, mapInfos, allPoints, mapReady, resetSelectedMarker } =
+		useMapStore(useShallow((state) => state));
 
 	// à l'arrivée sur la page, on remet les states à 0
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -82,15 +66,15 @@ const MapComponent = ({
 		if (mapId !== "exploration") {
 			setIsModalOpen(true);
 		}
-		if (points.length) {
-			for (const point of points) {
+		if (allPoints.length) {
+			for (const point of allPoints) {
 				bounds.push([point.latitude, point.longitude]);
 			}
 			if (map) {
 				map.fitBounds(bounds);
 			}
 		}
-	}, [points]);
+	}, [allPoints]);
 
 	return (
 		<>
@@ -100,10 +84,7 @@ const MapComponent = ({
 					{isModalOpen && (
 						<ModalComponent onClose={() => setIsModalOpen(false)}>
 							{mapId === "exploration" && (
-								<SearchFormComponent
-									setAllPoints={setAllPoints}
-									setIsModalOpen={setIsModalOpen}
-								/>
+								<SearchFormComponent setIsModalOpen={setIsModalOpen} />
 							)}
 							{mapInfos && (
 								<>
@@ -126,8 +107,8 @@ const MapComponent = ({
 									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 									url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
 								/>
-								{points.length ? (
-									points.map((point: PointType) => {
+								{allPoints.length ? (
+									allPoints.map((point: PointType) => {
 										return (
 											<MarkerComponent
 												key={uuidv4()}

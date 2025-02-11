@@ -13,8 +13,8 @@ type Action = {
 
 export const useMapFiltersStore = create<State & Action>((set) => ({
 	userFilters: {
-		post_quem: undefined,
-		ante_quem: undefined,
+		post: undefined,
+		ante: undefined,
 		element: undefined,
 		location: undefined,
 	},

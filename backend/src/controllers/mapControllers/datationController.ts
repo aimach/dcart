@@ -9,8 +9,8 @@ export const datationController = {
 		// récupérer dans la table datation le post_quem le plus bas et ante_quem le plus haut
 		try {
 			const query = `SELECT 
-			MIN(post_quem) AS post_quem, 
-			MAX(ante_quem) AS ante_quem 
+			MIN(post_quem) AS post, 
+			MAX(ante_quem) AS ante 
 			FROM datation`;
 			const results = await MapDataSource.query(query);
 

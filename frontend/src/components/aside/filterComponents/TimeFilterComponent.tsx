@@ -16,9 +16,9 @@ import style from "./filtersComponent.module.scss";
 const TimeFilterComponent = () => {
 	// on initie le state des marqueurs temporels
 	const [timeMarkers, setTimeMarkers] = useState<{
-		post_quem: number;
-		ante_quem: number;
-	}>({ post_quem: 0, ante_quem: 0 });
+		post: number;
+		ante: number;
+	}>({ post: 0, ante: 0 });
 	// on récupère les filtres de l'utilisateur dans le store
 	const { userFilters, setUserFilters } = useMapFiltersStore(
 		useShallow((state) => ({
@@ -33,8 +33,8 @@ const TimeFilterComponent = () => {
 			setTimeMarkers(newTimeMarkers);
 			const newUserFilters = {
 				...userFilters,
-				post_quem: newTimeMarkers.post_quem,
-				ante_quem: newTimeMarkers.ante_quem,
+				post: newTimeMarkers.post,
+				ante: newTimeMarkers.ante,
 			};
 			setUserFilters(newUserFilters);
 		} catch (error) {
@@ -54,8 +54,8 @@ const TimeFilterComponent = () => {
 	const handleTimeFilter = (e: FormEvent<HTMLInputElement>) => {
 		let newUserTimeFilters = 0;
 		const target = e.target as HTMLInputElement;
-		if (target.id === "ante_quem") {
-			const minValue = userFilters.post_quem ?? timeMarkers.post_quem;
+		if (target.id === "ante") {
+			const minValue = userFilters.post ?? timeMarkers.post;
 			newUserTimeFilters = Number.parseInt(target.value, 10);
 			if (newUserTimeFilters >= minValue + 100) {
 				setUserFilters({
@@ -65,8 +65,8 @@ const TimeFilterComponent = () => {
 			} else {
 				target.value = (minValue + 100).toString();
 			}
-		} else if (target.id === "post_quem") {
-			const maxValue = userFilters.ante_quem ?? timeMarkers.ante_quem;
+		} else if (target.id === "post") {
+			const maxValue = userFilters.ante ?? timeMarkers.ante;
 			newUserTimeFilters = Number.parseInt(target.value, 10);
 			if (newUserTimeFilters <= maxValue - 100) {
 				setUserFilters({
@@ -79,10 +79,10 @@ const TimeFilterComponent = () => {
 		}
 	};
 
-	const inputList = ["post_quem", "ante_quem"];
+	const inputList = ["post", "ante"];
 
 	return (
-		timeMarkers.ante_quem && (
+		timeMarkers.ante && (
 			<div className={style.rangeContainer}>
 				<fieldset className={style.slidersControl}>
 					{inputList.map((input) => (
@@ -95,8 +95,8 @@ const TimeFilterComponent = () => {
 									? (timeMarkers[input as keyof TimeMarkersType] as number)
 									: (userFilters[input as keyof UserFilterType] as number)
 							}
-							min={timeMarkers.post_quem}
-							max={timeMarkers.ante_quem}
+							min={timeMarkers.post}
+							max={timeMarkers.ante}
 							step={100}
 							onInput={(e) => handleTimeFilter(e)}
 						/>
@@ -114,8 +114,8 @@ const TimeFilterComponent = () => {
 									: (userFilters[input as keyof UserFilterType] as number)
 							}
 							readOnly
-							min={timeMarkers.post_quem}
-							max={timeMarkers.ante_quem}
+							min={timeMarkers.post}
+							max={timeMarkers.ante}
 						/>
 					))}
 				</div>

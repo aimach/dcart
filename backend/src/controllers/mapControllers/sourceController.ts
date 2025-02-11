@@ -15,7 +15,7 @@ import {
 } from "../../utils/functions/functions";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
-import type { Request, Response } from "express";
+import { query, type Request, type Response } from "express";
 
 export const sourceController = {
 	// récupérer toutes les sources
@@ -72,6 +72,7 @@ export const sourceController = {
 					res.status(404).send({ Erreur: "Carte non trouvée" });
 				}
 
+				// on récupère les éléments à filtrer depuis les informations de la carte
 				const {
 					elementNb,
 					elementOperator,
@@ -90,13 +91,27 @@ export const sourceController = {
 					locationType,
 					locationId,
 				);
-				const queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
-				const queryPost = post ? getQueryStringForDateFilter("post", post) : "";
+				let queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
+				let queryPost = post ? getQueryStringForDateFilter("post", post) : "";
 				const queryIncludedElements = includedElements
 					? getQueryStringForIncludedElements(includedElements)
 					: "";
 				const queryExcludedElements = excludedElements
 					? getQueryStringForExcludedElements(excludedElements)
+					: "";
+
+				// s'il existe des params, on remplace les valeurs par celles des params
+				queryAnte = req.query.ante
+					? getQueryStringForDateFilter(
+							"ante",
+							Number.parseInt(req.query.ante as string, 10),
+						)
+					: queryAnte;
+				queryPost = req.query.post
+					? getQueryStringForDateFilter(
+							"post",
+							Number.parseInt(req.query.post as string, 10),
+						)
 					: "";
 
 				// on récupère le texte de la requête SQL
@@ -105,10 +120,11 @@ export const sourceController = {
 					elementOperator, // obligé d'intégrer les opérateurs ici, sinon ça plante
 					divinityOperator,
 					queryAnte,
-					queryPost as string,
+					queryPost,
 					queryIncludedElements,
 					queryExcludedElements,
 				);
+				// console.log(sqlQuery);
 
 				results = await MapDataSource.query(sqlQuery, [elementNb, divinityNb]);
 			}

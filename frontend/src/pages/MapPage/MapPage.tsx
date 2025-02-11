@@ -13,27 +13,28 @@ import {
 } from "../../utils/loaders/loaders";
 import { useMapStore } from "../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../utils/stores/mapAsideMenuStore";
-// import des types
-import type { PointType } from "../../utils/types/mapTypes";
 // import du style
 import style from "./mapPage.module.scss";
+import { useShallow } from "zustand/shallow";
 
 const MapPage = () => {
 	// on récupère les params
 	const { categoryId, mapId } = useParams();
 
 	// on récupère le state pour l'includedElement
-	const setIncludedElementId = useMapStore(
-		(state) => state.setIncludedElementId,
-	);
+	const {
+		setMapInfos,
+		allPoints,
+		setAllPoints,
+		setIncludedElementId,
+		mapReady,
+		setMapReady,
+	} = useMapStore(useShallow((state) => state));
 	// on récupère le state pour les filtres
 	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
 
 	// on définit les states nécessaires
-	const [mapReady, setMapReady] = useState<boolean>(false);
 	const [panelDisplayed, setPanelDisplayed] = useState<boolean>(true);
-	const [mapInfos, setMapInfos] = useState(null);
-	const [allPoints, setAllPoints] = useState<PointType[]>([]);
 
 	// on charge les points de la carte
 	const fetchAllPoints = async () => {
@@ -84,12 +85,9 @@ const MapPage = () => {
 				<section className={mapReady ? undefined : style.mapSectionLoaded}>
 					<MapComponent
 						setPanelDisplayed={setPanelDisplayed}
-						points={allPoints}
-						setAllPoints={setAllPoints}
-						mapReady={mapReady}
-						mapInfos={mapInfos}
 						mapId={mapId as string}
 					/>
+					x
 				</section>
 			</section>
 		</section>
