@@ -11,13 +11,11 @@ import type { UserFilterType } from "../../../utils/types/filterTypes";
 // import du style
 import style from "./filtersComponent.module.scss";
 
-const TimeFilterComponent = () => {
-	// on initie le state des marqueurs temporels
-	const [timeMarkers, setTimeMarkers] = useState<{
-		post: number;
-		ante: number;
-	}>({ post: 0, ante: 0 });
+interface TimeFilterComponentProps {
+	timeMarkers: TimeMarkersType;
+}
 
+const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 	// on récupère les filtres de l'utilisateur dans le store
 	const { userFilters, setUserFilters } = useMapFiltersStore(
 		useShallow((state) => ({
@@ -25,30 +23,6 @@ const TimeFilterComponent = () => {
 			setUserFilters: state.setUserFilters,
 		})),
 	);
-
-	// on récupère les marqueurs temporels depuis la base de données
-	const fetchTimeMarkers = async () => {
-		try {
-			const newTimeMarkers = await getTimeMarkers();
-			setTimeMarkers(newTimeMarkers);
-			const newUserFilters = {
-				...userFilters,
-				post: newTimeMarkers.post,
-				ante: newTimeMarkers.ante,
-			};
-			setUserFilters(newUserFilters);
-		} catch (error) {
-			console.error(
-				"Erreur lors du chargement des marqueurs temporels:",
-				error,
-			);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
-		fetchTimeMarkers();
-	}, []);
 
 	// on gère le changement des bornes temporelles par l'utilisateur
 	const handleTimeFilter = (e: FormEvent<HTMLInputElement>) => {

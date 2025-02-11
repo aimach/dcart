@@ -13,7 +13,14 @@ import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
 import type { MapInfoType } from "../../../utils/types/mapTypes";
 import type { UserFilterType } from "../../../utils/types/filterTypes";
 
-const FilterComponent = () => {
+interface FilterComponentProps {
+	timeMarkers: {
+		post: number;
+		ante: number;
+	};
+}
+
+const FilterComponent = ({ timeMarkers }: FilterComponentProps) => {
 	// on récupère les données de la langue
 	const { translation, language } = useContext(TranslationContext);
 
@@ -46,7 +53,9 @@ const FilterComponent = () => {
 			<div>
 				{mapFilters.map((filter) => {
 					if (filter.type === "time") {
-						return <TimeFilterComponent key={filter.id} />;
+						return (
+							<TimeFilterComponent key={filter.id} timeMarkers={timeMarkers} />
+						);
 					}
 				})}
 			</div>
