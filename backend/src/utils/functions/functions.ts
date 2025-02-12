@@ -23,8 +23,9 @@ const getQueryStringForLocalisationFilter = (
 			break;
 	}
 	// on check le nombre d'ids
-	if (locationId.includes(",")) {
-		return `AND ${locationTypeField}.id IN (${locationId})`;
+	if (locationId.includes("|")) {
+		const locationIds = locationId.split("|").join(", ");
+		return `AND ${locationTypeField}.id IN (${locationIds})`;
 	}
 	return `AND ${locationTypeField}.id = ${locationId}`;
 };
