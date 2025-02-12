@@ -1,10 +1,12 @@
 // import des types
+import type { Dispatch, SetStateAction } from "react";
 import type { Language, TranslationType } from "../types/languageTypes";
 import type {
 	SourceType,
 	PointType,
 	AttestationType,
 	ElementType,
+	MapInfoType,
 } from "../types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 
@@ -263,6 +265,36 @@ const getAgentActivityLabelsAndNb = (point: PointType, language: Language) => {
 	return { labels, dataSets };
 };
 
+// utilisé pour récupérer l'url des localisations en fonction de la granularité du filtre
+const getLocationURL = (
+	mapInfos: MapInfoType,
+	setLocationLevel: Dispatch<SetStateAction<string>>,
+) => {
+	const locationType = (mapInfos as MapInfoType).locationType;
+	const locationId = (mapInfos as MapInfoType).locationId;
+
+	// on définit l'url de la requête selon la granularité du filtre de localisation
+	let routeSegment = "";
+	let locationLevel = "";
+
+	switch (locationType) {
+		case null:
+			routeSegment = "regions/all";
+			locationLevel = "greatRegion";
+			break;
+		case "greatRegion":
+			routeSegment = `regions/${locationId}/subRegions`;
+			locationLevel = "subRegion";
+			break;
+		default:
+			routeSegment = "regions/all";
+			locationLevel = "greatRegion";
+			break;
+	}
+	setLocationLevel(locationLevel);
+	return routeSegment;
+};
+
 export {
 	getBackGroundColorClassName,
 	getSupportAndMaterialSentence,
@@ -272,4 +304,5 @@ export {
 	getEpithetLabelsAndNb,
 	getAgentGenderLabelsAndNb,
 	getAgentActivityLabelsAndNb,
+	getLocationURL,
 };

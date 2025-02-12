@@ -13,17 +13,24 @@ import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
 // import des types
 import type { MapInfoType } from "../../../utils/types/mapTypes";
 import type { UserFilterType } from "../../../utils/types/filterTypes";
-import { useParams } from "react-router";
 import { useShallow } from "zustand/shallow";
+
+type OptionType = { value: string; label: string };
 
 interface FilterComponentProps {
 	timeMarkers: {
 		post: number;
 		ante: number;
 	};
+	locationOptions: OptionType[];
+	locationLevel: string;
 }
 
-const FilterComponent = ({ timeMarkers }: FilterComponentProps) => {
+const FilterComponent = ({
+	timeMarkers,
+	locationOptions,
+	locationLevel,
+}: FilterComponentProps) => {
 	// on récupère les données de la langue
 	const { translation, language } = useContext(TranslationContext);
 
@@ -63,7 +70,13 @@ const FilterComponent = ({ timeMarkers }: FilterComponentProps) => {
 						);
 					}
 					if (filter.type === "location") {
-						return <LocationFilterComponent key={filter.id} />;
+						return (
+							<LocationFilterComponent
+								key={filter.id}
+								locationOptions={locationOptions}
+								locationLevel={locationLevel}
+							/>
+						);
 					}
 				})}
 			</div>

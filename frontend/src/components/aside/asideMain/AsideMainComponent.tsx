@@ -1,17 +1,24 @@
-import { useState, useEffect } from "react";
+import { useState, useEffect, useContext } from "react";
 // import des composants
 import ResultComponent from "../tabComponents/ResultComponent";
 import FilterComponent from "../tabComponents/FilterComponent";
 import InfoComponent from "../tabComponents/InfoComponent";
 import ChartComponent from "../tabComponents/ChartComponent";
+// import du context
+import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
-import { getTimeMarkers } from "../../../utils/loaders/loaders";
+import {
+	getTimeMarkers,
+	getLocationOptions,
+} from "../../../utils/loaders/loaders";
+import { getLocationURL } from "../../../utils/functions/functions";
 // import des types
-import type { PointType } from "../../../utils/types/mapTypes";
+import type { PointType, GreatRegionType } from "../../../utils/types/mapTypes";
+
 // import du style
 import style from "./asideMainComponent.module.scss";
 
@@ -20,7 +27,12 @@ interface AsideMainComponentProps {
 	mapId: string;
 }
 
+type OptionType = { value: string; label: string };
+
 const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
+	// on récupère les données de la langue
+	const { language } = useContext(TranslationContext);
+
 	// on récupère l'onglet en cours
 	const selectedTabMenu = useMapAsideMenuStore(
 		(state) => state.selectedTabMenu,
@@ -37,7 +49,7 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 		})),
 	);
 
-	// on récupère les marqueurs temporels depuis la base de données
+	// RECUPERATION DES MARKERS TEMPORELS  POUR LES FILTRES
 	const [timeMarkers, setTimeMarkers] = useState<{
 		post: number;
 		ante: number;
@@ -65,12 +77,50 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 		fetchTimeMarkers();
 	}, []);
 
+	// RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
+	// on récupère les données de la carte depuis le store
+	const { mapInfos } = useMapStore();
+
+	// on va chercher les options du filtre de localisation
+	const [locationOptions, setLocationOptions] = useState<OptionType[]>([]);
+	const [locationLevel, setLocationLevel] = useState<string>("");
+
+	const fetchLocationOptions = async (routeSegment: string) => {
+		try {
+			const allLocationOptions = await getLocationOptions(routeSegment);
+			const formatedLocationOptions: OptionType[] = allLocationOptions.map(
+				(option: GreatRegionType) => ({
+					value: option.id,
+					label: option[`nom_${language}`],
+				}),
+			);
+			setLocationOptions(formatedLocationOptions);
+		} catch (error) {
+			console.error("Erreur lors du chargement des localités:", error);
+		}
+	};
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		console.log("je me déclenche");
+		if (mapInfos) {
+			const locationURL = getLocationURL(mapInfos, setLocationLevel);
+			fetchLocationOptions(locationURL);
+		}
+	}, [mapInfos]);
+
 	// on définit le composant à rendre
 	switch (selectedTabMenu) {
 		case "results":
 			return <ResultComponent results={results} mapId={mapId} />;
 		case "filters":
-			return <FilterComponent timeMarkers={timeMarkers} />;
+			return (
+				<FilterComponent
+					timeMarkers={timeMarkers}
+					locationOptions={locationOptions}
+					locationLevel={locationLevel}
+				/>
+			);
 		case "infos":
 			return (
 				selectedMarker && (
