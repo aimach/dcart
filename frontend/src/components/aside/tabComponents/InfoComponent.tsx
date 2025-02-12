@@ -27,7 +27,9 @@ const InfoComponent = ({ point, isSelected, mapId }: InfoComponentProps) => {
 	// on créé une classe spéciale si le point est sélectionné
 	const selectedClassName = isSelected ? style.isSelected : undefined;
 	return (
-		<details className={`${selectedClassName} ${style.resultDetailsContainer}`}>
+		<details
+			className={`${selectedClassName} ${style.selectionDetailsContainer}`}
+		>
 			<summary>
 				{point.nom_ville} ({point[subRegionLanguageKey]}) -{" "}
 				{point.sources.length} {point.sources.length > 1 ? "sources" : "source"}

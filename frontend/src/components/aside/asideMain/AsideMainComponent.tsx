@@ -108,7 +108,7 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// on définit le composant à rendre
 	switch (selectedTabMenu) {
 		case "results":
-			return <ResultComponent results={results} mapId={mapId} />;
+			return <ResultComponent results={results} />;
 		case "filters":
 			return (
 				<FilterComponent
@@ -133,7 +133,7 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 				<p>{translation[language].mapPage.aside.noSelectedMarker}</p>
 			);
 		default:
-			return <ResultComponent results={results} mapId={mapId} />;
+			return <ResultComponent results={results} />;
 	}
 };
 

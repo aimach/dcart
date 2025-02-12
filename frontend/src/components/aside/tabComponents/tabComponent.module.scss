@@ -4,9 +4,22 @@
 .resultContainer {
   overflow: scroll;
   height: calc(100vh - v.$main-header-height - v.$map-header-height - v.$aside-header-height);
+
 }
 
-.resultDetailsContainer {
+.resultDetails {
+  padding: v.$space-s;
+  border-bottom: 1px solid v.$color-neutral-80;
+  cursor: pointer;
+  @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-start, center);
+  gap: v.$space-s;
+
+  >svg {
+    color: v.$color-dark-lava;
+  }
+}
+
+.selectionDetailsContainer {
   padding: v.$space-s;
   overflow: scroll;
   border-bottom: 1px solid v.$color-neutral-80;
@@ -27,7 +40,7 @@
 }
 
 .isSelected {
-  background-color: #5fa052;
+  background-color: v.$color-grullo-light;
 }
 
 .chartContainer {
