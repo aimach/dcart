@@ -6,6 +6,8 @@
   padding: 0 v.$font-space-xl;
   @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
 
+  // border-bottom: v.$border-width-l solid v.$color-dark-lava;
+
   &Logo {
     cursor: pointer;
   }
