@@ -26,35 +26,14 @@ const LocationFilterComponent = () => {
 
 	// on récupère les données de la carte depuis le store
 	const { mapInfos } = useMapStore();
-	const locationType = (mapInfos as MapInfoType).locationType;
-	const locationId = (mapInfos as MapInfoType).locationId;
-
 	// on récupère les données des filtres depuis le store
 	const { userFilters, setUserFilters } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
 
-	// on définit l'url de la requête selon la granularité du filtre de localisation
-	let routeSegment = "";
-	let fetchLocation = "";
-
-	switch (locationType) {
-		case null:
-			routeSegment = "regions/all";
-			fetchLocation = "greatRegion";
-			break;
-		case "greatRegion":
-			routeSegment = `regions/${locationId}/subRegions`;
-			fetchLocation = "subRegion";
-			break;
-		default:
-			routeSegment = "regions/all";
-			fetchLocation = "greatRegion";
-			break;
-	}
-
 	// on va chercher les options du filtre de localisation
 	const [locationOptions, setLocationOptions] = useState<OptionType[]>([]);
+	const [fetchLocation, setFetchLocation] = useState<string>("");
 	const fetchLocationOptions = async (routeSegment: string) => {
 		try {
 			const allLocationOptions = await getLocationOptions(routeSegment);
@@ -70,10 +49,40 @@ const LocationFilterComponent = () => {
 		}
 	};
 
+	// on récupère le route segment
+	const getRouteSegment = (mapInfos: MapInfoType) => {
+		const locationType = (mapInfos as MapInfoType).locationType;
+		const locationId = (mapInfos as MapInfoType).locationId;
+
+		// on définit l'url de la requête selon la granularité du filtre de localisation
+		let routeSegment = "";
+		let fetchLocation = "";
+
+		switch (locationType) {
+			case null:
+				routeSegment = "regions/all";
+				fetchLocation = "greatRegion";
+				break;
+			case "greatRegion":
+				routeSegment = `regions/${locationId}/subRegions`;
+				fetchLocation = "subRegion";
+				break;
+			default:
+				routeSegment = "regions/all";
+				fetchLocation = "greatRegion";
+				break;
+		}
+		setFetchLocation(fetchLocation);
+		return routeSegment;
+	};
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		fetchLocationOptions(routeSegment);
-	}, [routeSegment, locationId]);
+		if (mapInfos) {
+			const routeSegment = getRouteSegment(mapInfos);
+			fetchLocationOptions(routeSegment);
+		}
+	}, [mapInfos]);
 
 	// on gère les changements du filtre générés par l'utilisateur
 	const onMultiSelectChange = (selectedOptions: MultiValue<OptionType>) => {
