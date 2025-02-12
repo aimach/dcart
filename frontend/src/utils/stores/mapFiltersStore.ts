@@ -9,15 +9,19 @@ type State = {
 
 type Action = {
 	setUserFilters: (filters: UserFilterType) => void;
+	resetUserFilters: () => void;
+};
+
+const emptyUserFilters: UserFilterType = {
+	post: undefined,
+	ante: undefined,
+	element: undefined,
+	locationType: undefined,
+	locationId: undefined,
 };
 
 export const useMapFiltersStore = create<State & Action>((set) => ({
-	userFilters: {
-		post: undefined,
-		ante: undefined,
-		element: undefined,
-		locationType: undefined,
-		locationId: undefined,
-	},
+	userFilters: emptyUserFilters,
 	setUserFilters: (userFilters) => set(() => ({ userFilters })),
+	resetUserFilters: () => set(() => ({ userFilters: emptyUserFilters })),
 }));

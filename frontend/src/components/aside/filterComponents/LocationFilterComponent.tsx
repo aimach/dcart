@@ -1,6 +1,8 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useContext } from "react";
 import Select from "react-select";
+// import du context
+import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
@@ -20,6 +22,9 @@ const LocationFilterComponent = ({
 	locationOptions,
 	locationLevel,
 }: LocationFilterComponentProps) => {
+	// on récupère les données de langue
+	const { translation, language } = useContext(TranslationContext);
+
 	// on récupère les données des filtres depuis le store
 	const { userFilters, setUserFilters } = useMapFiltersStore(
 		useShallow((state) => state),
@@ -64,7 +69,7 @@ const LocationFilterComponent = ({
 				delimiter="|"
 				isMulti
 				onChange={(newValue) => onMultiSelectChange(newValue)}
-				placeholder="Rechercher un lieu..."
+				placeholder={translation[language].mapPage.aside.searchForLocation}
 			/>
 		</div>
 	);

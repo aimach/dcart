@@ -24,7 +24,8 @@
 		"gender": "Gender",
 		"activity": "Activity",
 		"doughnut": "Doughnut",
-		"bar": "Bar"
+		"bar": "Bar",
+		"resetFilter": "Reset filters"
 	},
 	"common": {
 		"between": "between",
@@ -46,7 +47,8 @@
 			"filters": "Filters",
 			"sources": "Sources",
 			"epithet": "Epithet",
-			"noFilter": "No filter defined"
+			"noFilter": "No filter defined",
+			"searchForLocation": "Search for a location..."
 		}
 	}
 }

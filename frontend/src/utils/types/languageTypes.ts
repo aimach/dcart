@@ -27,6 +27,7 @@ type TranslationObject = {
 		activity: string;
 		doughnut: string;
 		bar: string;
+		resetFilter: string;
 	};
 	common: {
 		between: string;
@@ -49,6 +50,7 @@ type TranslationObject = {
 			sources: string;
 			epithet: string;
 			noFilter: string;
+			searchForLocation: string;
 		};
 	};
 };

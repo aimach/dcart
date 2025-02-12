@@ -27,7 +27,7 @@ interface AsideMainComponentProps {
 	mapId: string;
 }
 
-type OptionType = { value: string; label: string };
+type OptionType = { value: number; label: string };
 
 const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// on récupère les données de la langue
@@ -39,7 +39,7 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	);
 
 	// on récupère le point en cours
-	const selectedMarker = useMapStore((state) => state.selectedMarker);
+	const { mapInfos, selectedMarker } = useMapStore((state) => state);
 
 	// on récupère les filtres de l'utilisateur dans le store
 	const { userFilters, setUserFilters } = useMapFiltersStore(
@@ -78,9 +78,6 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	}, []);
 
 	// RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
-	// on récupère les données de la carte depuis le store
-	const { mapInfos } = useMapStore();
-
 	// on va chercher les options du filtre de localisation
 	const [locationOptions, setLocationOptions] = useState<OptionType[]>([]);
 	const [locationLevel, setLocationLevel] = useState<string>("");
@@ -102,7 +99,6 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		console.log("je me déclenche");
 		if (mapInfos) {
 			const locationURL = getLocationURL(mapInfos, setLocationLevel);
 			fetchLocationOptions(locationURL);

@@ -1,7 +1,3 @@
-// import des bibliothèques
-import { useEffect, useState } from "react";
-// import des services
-import { getTimeMarkers } from "../../../utils/loaders/loaders";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
 // import des types

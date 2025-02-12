@@ -15,7 +15,7 @@ import type { MapInfoType } from "../../../utils/types/mapTypes";
 import type { UserFilterType } from "../../../utils/types/filterTypes";
 import { useShallow } from "zustand/shallow";
 
-type OptionType = { value: string; label: string };
+type OptionType = { value: number; label: string };
 
 interface FilterComponentProps {
 	timeMarkers: {
@@ -36,7 +36,12 @@ const FilterComponent = ({
 
 	// on récupère les données depuis les stores
 	const mapFilters = useMapAsideMenuStore((state) => state.mapFilters);
-	const userFilters = useMapFiltersStore((state) => state.userFilters);
+	const { userFilters, resetUserFilters } = useMapFiltersStore(
+		useShallow((state) => ({
+			userFilters: state.userFilters,
+			resetUserFilters: state.resetUserFilters,
+		})),
+	);
 	const { mapInfos, setAllPoints, setMapReady } = useMapStore(
 		useShallow((state) => state),
 	);
@@ -83,6 +88,9 @@ const FilterComponent = ({
 			<button type="button" onClick={handleFilterButton}>
 				{translation[language].button.filter}
 			</button>
+			{/* <button type="button" onClick={resetUserFilters}>
+				{translation[language].button.resetFilter}
+			</button> */}
 		</div>
 	) : (
 		<div>{translation[language].mapPage.aside.noFilter}</div>
