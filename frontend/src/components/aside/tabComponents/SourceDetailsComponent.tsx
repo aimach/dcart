@@ -20,13 +20,11 @@ import style from "./tabComponent.module.scss";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;
-	isSelected: boolean;
 	mapId: string;
 };
 
 const SourceDetailsComponent = ({
 	source,
-	isSelected,
 	mapId,
 }: SourceDetailsComponentProps) => {
 	// on récupère le language

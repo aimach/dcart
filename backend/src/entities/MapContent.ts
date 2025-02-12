@@ -7,8 +7,11 @@ import {
 	Column,
 	BaseEntity,
 	ManyToOne,
+	ManyToMany,
+	JoinTable,
 } from "typeorm";
 import { Category } from "./Category";
+import { Filter } from "./Filter";
 
 enum location {
 	SUBREGION = "subRegion",
@@ -58,12 +61,12 @@ export class MapContent extends BaseEntity {
 	excludedElements?: string | null;
 
 	// type de localité : cf. enum ci-dessus
-	@Column({ type: "enum", enum: location, default: location.GREATREGION })
-	locationType: string = location.GREATREGION;
+	@Column({ type: "enum", enum: location, nullable: true, default: null })
+	locationType?: location | null;
 
 	// id de la localité
-	@Column({ type: "int" })
-	locationId!: number;
+	@Column({ type: "text", nullable: true, default: null })
+	locationId!: string | null;
 
 	// repère chronologique ante
 	@Column({ type: "int", nullable: true, default: null })
@@ -88,4 +91,11 @@ export class MapContent extends BaseEntity {
 		(category) => category.maps,
 	)
 	category!: Category;
+
+	@ManyToMany(() => Filter, {
+		cascade: true,
+		onDelete: "CASCADE",
+	}) // cascade: true permet d'insérer directement les filtres lors de la création de la carte
+	@JoinTable({ name: "map_filter" })
+	filters?: Filter[];
 }

@@ -5,4 +5,10 @@ import { mapController } from "../../controllers/mapControllers";
 export const locationRoutes = express.Router();
 
 // récupérer toutes les grandes regions
-locationRoutes.get("/regions/all", mapController.getAllGreatRegions);
+locationRoutes.get("/regions/:greatRegionId", mapController.getAllGreatRegions);
+
+// récupérer toutes les sous-regions d'une grande region
+locationRoutes.get(
+	"/regions/:greatRegionId/subRegions",
+	mapController.getAllSubRegionsFromGreatRegionId,
+);

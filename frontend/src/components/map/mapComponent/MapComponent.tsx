@@ -11,11 +11,14 @@ import { v4 as uuidv4 } from "uuid";
 import LoaderComponent from "../../common/loader/LoaderComponent";
 import ModalComponent from "../../modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
+import ResetControl from "../controls/ResetControlComponent";
+import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
+import { useShallow } from "zustand/shallow";
 // import des types
 import type { LatLngTuple } from "leaflet";
 import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
@@ -23,51 +26,39 @@ import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import "./mapComponent.css";
-import ResetControl from "../controls/ResetControlComponent";
-import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
-import { useShallow } from "zustand/shallow";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
-	points: PointType[];
-	setAllPoints: Dispatch<SetStateAction<PointType[]>>;
-	mapReady: boolean;
-	mapInfos: MapInfoType | null;
 	mapId: string;
 }
 
-const MapComponent = ({
-	setPanelDisplayed,
-	points,
-	setAllPoints,
-	mapReady,
-	mapInfos,
-	mapId,
-}: MapComponentProps) => {
+const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
+	// on définit le centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
 	// on gère l'affichage de la modale
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
 	// on récupère les informations du context
-	const { language } = useContext(TranslationContext);
-	const setSelectedTabMenu = useMapAsideMenuStore(
-		(state) => state.setSelectedTabMenu,
-	);
-	const { map, setMap, setSelectedMarker } = useMapStore(
+	const { translation, language } = useContext(TranslationContext);
+
+	// on récupère les informations du store
+	const { setSelectedTabMenu, resetFilters } = useMapAsideMenuStore(
 		useShallow((state) => ({
-			map: state.map,
-			setMap: state.setMap,
-			setSelectedMarker: state.setSelectedMarker,
+			setSelectedTabMenu: state.setSelectedTabMenu,
+			resetFilters: state.resetFilters,
 		})),
 	);
+	const { map, setMap, mapInfos, allPoints, mapReady, resetSelectedMarker } =
+		useMapStore(useShallow((state) => state));
 
 	// à l'arrivée sur la page, on remet les states à 0
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setSelectedTabMenu("results");
 		setIsModalOpen(true);
-		setSelectedMarker(undefined);
+		resetSelectedMarker();
+		resetFilters();
 	}, []);
 
 	// on met à jour les limites de la carte
@@ -78,15 +69,15 @@ const MapComponent = ({
 		if (mapId !== "exploration") {
 			setIsModalOpen(true);
 		}
-		if (points.length) {
-			for (const point of points) {
+		if (allPoints.length) {
+			for (const point of allPoints) {
 				bounds.push([point.latitude, point.longitude]);
 			}
 			if (map) {
 				map.fitBounds(bounds);
 			}
 		}
-	}, [points]);
+	}, [allPoints]);
 
 	return (
 		<>
@@ -96,10 +87,7 @@ const MapComponent = ({
 					{isModalOpen && (
 						<ModalComponent onClose={() => setIsModalOpen(false)}>
 							{mapId === "exploration" && (
-								<SearchFormComponent
-									setAllPoints={setAllPoints}
-									setIsModalOpen={setIsModalOpen}
-								/>
+								<SearchFormComponent setIsModalOpen={setIsModalOpen} />
 							)}
 							{mapInfos && (
 								<>
@@ -122,8 +110,8 @@ const MapComponent = ({
 									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 									url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
 								/>
-								{points.length ? (
-									points.map((point: PointType) => {
+								{allPoints.length ? (
+									allPoints.map((point: PointType) => {
 										return (
 											<MarkerComponent
 												key={uuidv4()}
@@ -133,7 +121,7 @@ const MapComponent = ({
 										);
 									})
 								) : (
-									<div>Aucun résultat</div>
+									<div>{translation[language].mapPage.noResult}</div>
 								)}
 								<ZoomControl position="topright" />
 								<ScaleControl position="bottomright" />

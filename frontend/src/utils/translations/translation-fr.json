@@ -16,6 +16,7 @@
 		"freeExploration": "Exploration libre",
 		"results": "Résultats",
 		"filters": "Filtres",
+		"filter": "Filtrer",
 		"infos": "Infos",
 		"seeSources": "Voir les sources",
 		"seeAll": "Tout voir",
@@ -23,7 +24,8 @@
 		"gender": "Genre",
 		"activity": "Activité",
 		"doughnut": "Donut",
-		"bar": "Barre"
+		"bar": "Barre",
+		"resetFilter": "Réinitialiser les filtres"
 	},
 	"common": {
 		"between": "entre",
@@ -39,6 +41,14 @@
 		"anteDate": "date fin"
 	},
 	"mapPage": {
-		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?"
+		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
+		"noResult": "Aucun résultat",
+		"aside": {
+			"filters": "Filtres",
+			"sources": "Sources",
+			"epithet": "Epithète",
+			"noFilter": "Pas de filtre défini",
+			"searchForLocation": "Rechercher un lieu..."
+		}
 	}
 }

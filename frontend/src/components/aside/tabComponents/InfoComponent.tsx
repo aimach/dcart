@@ -38,7 +38,6 @@ const InfoComponent = ({ point, isSelected, mapId }: InfoComponentProps) => {
 					<SourceDetailsComponent
 						key={source.source_id}
 						source={source}
-						isSelected={isSelected as boolean}
 						mapId={mapId}
 					/>
 				);

@@ -16,18 +16,18 @@ export const mapContentController = {
 			if (mapId === "all") {
 				const MapInfos = await dcartDataSource
 					.getRepository(MapContent)
-					.find({ where: { isActive: true } });
+					.find({ where: { isActive: true }, relations: ["filters"] });
 				res.status(200).send(MapInfos);
 				return;
 			}
 
 			const mapInfos = await dcartDataSource
 				.getRepository(MapContent)
-				.findOneBy({ id: mapId });
+				.find({ where: { id: mapId }, relations: ["filters"] });
 			if (!mapInfos) {
 				res.status(404).send({ Erreur: "Carte non trouvée" });
 			} else {
-				res.status(200).send(mapInfos);
+				res.status(200).send(mapInfos[0]);
 			}
 		} catch (error) {
 			handleError(res, error as Error);

@@ -11,26 +11,25 @@ import {
 	getTimeMarkers,
 	getAllPointsByMapId,
 } from "../../../utils/loaders/loaders";
+import { useMapStore } from "../../../utils/stores/mapStore";
 // import des types
 import type {
 	DivinityType,
 	GreatRegionType,
 	TimeMarkersType,
-	PointType,
 } from "../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 
 interface SearchFormComponentProps {
-	setAllPoints: Dispatch<SetStateAction<PointType[]>>;
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
-const SearchFormComponent = ({
-	setAllPoints,
-	setIsModalOpen,
-}: SearchFormComponentProps) => {
+const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	// on récupère le langage
 	const { language, translation } = useContext(TranslationContext);
+
+	// on récupère les points
+	const { setAllPoints } = useMapStore();
 
 	const [dataLoaded, setDataLoaded] = useState<boolean>(false);
 	const [greatRegions, setGreatRegions] = useState<GreatRegionType[]>([]);
@@ -69,7 +68,7 @@ const SearchFormComponent = ({
 
 	const createTimeOptions = (timeMarkers: TimeMarkersType) => {
 		const options = [];
-		for (let i = timeMarkers.post_quem; i <= timeMarkers.ante_quem; i += 100) {
+		for (let i = timeMarkers.post; i <= timeMarkers.ante; i += 100) {
 			options.push(i);
 		}
 		return options;

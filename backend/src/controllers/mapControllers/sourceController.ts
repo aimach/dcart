@@ -28,14 +28,9 @@ export const sourceController = {
 			let results = null;
 
 			if (mapId === "exploration") {
-				const { location, element, ante, post } = req.query;
+				const { locationType, locationId, element, ante, post } = req.query;
 				// on prépare les query des filtres
-				const queryLocalisation = location
-					? getQueryStringForLocalisationFilter(
-							"greatRegion",
-							Number.parseInt(location as string, 10),
-						)
-					: "";
+				const queryLocalisation = "";
 				const queryAnte = ante
 					? getQueryStringForDateFilter(
 							"ante",
@@ -72,6 +67,7 @@ export const sourceController = {
 					res.status(404).send({ Erreur: "Carte non trouvée" });
 				}
 
+				// on récupère les éléments à filtrer depuis les informations de la carte
 				const {
 					elementNb,
 					elementOperator,
@@ -86,17 +82,41 @@ export const sourceController = {
 				} = mapInfos as MapContent;
 
 				// on prépare les query des filtres
-				const queryLocalisation = getQueryStringForLocalisationFilter(
-					locationType,
-					locationId,
-				);
-				const queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
-				const queryPost = post ? getQueryStringForDateFilter("post", post) : "";
+				let queryLocalisation =
+					locationType && locationId
+						? getQueryStringForLocalisationFilter(
+								locationType as string,
+								locationId as string,
+							)
+						: "";
+				let queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
+				let queryPost = post ? getQueryStringForDateFilter("post", post) : "";
 				const queryIncludedElements = includedElements
 					? getQueryStringForIncludedElements(includedElements)
 					: "";
 				const queryExcludedElements = excludedElements
 					? getQueryStringForExcludedElements(excludedElements)
+					: "";
+
+				// s'il existe des params, on remplace les valeurs par celles des params
+				queryLocalisation =
+					req.query.locationType && req.query.locationId
+						? getQueryStringForLocalisationFilter(
+								req.query.locationType as string,
+								req.query.locationId as string,
+							)
+						: queryLocalisation;
+				queryAnte = req.query.ante
+					? getQueryStringForDateFilter(
+							"ante",
+							Number.parseInt(req.query.ante as string, 10),
+						)
+					: queryAnte;
+				queryPost = req.query.post
+					? getQueryStringForDateFilter(
+							"post",
+							Number.parseInt(req.query.post as string, 10),
+						)
 					: "";
 
 				// on récupère le texte de la requête SQL
@@ -105,7 +125,7 @@ export const sourceController = {
 					elementOperator, // obligé d'intégrer les opérateurs ici, sinon ça plante
 					divinityOperator,
 					queryAnte,
-					queryPost as string,
+					queryPost,
 					queryIncludedElements,
 					queryExcludedElements,
 				);
