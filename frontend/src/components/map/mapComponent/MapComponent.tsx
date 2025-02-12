@@ -114,6 +114,7 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 						{mapReady && (
 							<>
 								<TileLayer
+									opacity={0.8}
 									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 									url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
 								/>

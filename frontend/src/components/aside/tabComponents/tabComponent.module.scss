@@ -20,15 +20,31 @@
 }
 
 .selectionDetailsContainer {
-  padding: v.$space-s;
+  padding: v.$space-s 0 v.$space-s v.$space-s;
   overflow: scroll;
   border-bottom: 1px solid v.$color-neutral-80;
 
-  summary {
-    cursor: pointer;
+  >h4 {
+    font-size: v.$font-size-l;
+    margin-bottom: v.$space-s;
   }
 
+  .selectionDetails {
+    padding: v.$space-s;
+    border-bottom: 1px solid v.$color-neutral-80;
+    cursor: pointer;
+
+    >summary {
+      list-style-type: '>';
+    }
+
+  }
+
+  .selectionDetails[open]>summary {
+    list-style-type: '⌄';
+  }
 }
+
 
 .testimoniesInfo {
   margin: v.$space-s 0;

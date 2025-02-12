@@ -3,9 +3,10 @@
 
 .infoContainer {
     height: 100%;
-    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, space-between, flex-start);
+    height: calc(100vh - v.$main-header-height - v.$map-header-height - v.$aside-header-height);
 
-    details {
-        flex: 1;
+
+    >section {
+        height: 50%;
     }
 }

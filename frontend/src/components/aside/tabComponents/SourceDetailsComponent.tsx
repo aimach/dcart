@@ -63,11 +63,12 @@ const SourceDetailsComponent = ({
 
 	return (
 		<details
-			style={{ marginLeft: "10px" }}
 			onClick={() => setSourceIsSelected(true)}
 			onKeyUp={() => setSourceIsSelected(true)}
+			className={style.selectionDetails}
 		>
 			<summary>
+				{" "}
 				Source #{source.source_id} {datationSentence}
 			</summary>
 			{attestations.length ? (
