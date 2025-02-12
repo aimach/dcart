@@ -14,10 +14,10 @@
 	},
 	"button": {
 		"freeExploration": "Free exploration",
-		"results": "Results",
+		"results": "results",
 		"filters": "Filters",
 		"filter": "Filter",
-		"infos": "Infos",
+		"selection": "Selection",
 		"seeSources": "Explore sources",
 		"seeAll": "Explore all",
 		"epithet": "Epithet",
@@ -30,7 +30,8 @@
 	"common": {
 		"between": "between",
 		"and": "and",
-		"or": "OR"
+		"or": "OR",
+		"unknownDate": "no date"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
@@ -48,7 +49,12 @@
 			"sources": "Sources",
 			"epithet": "Epithet",
 			"noFilter": "No filter defined",
-			"searchForLocation": "Search for a location..."
+			"searchForLocation": "Search for a location...",
+			"noSelectedMarker": "Select a marker to see details",
+			"transliteration": "Transliteration",
+			"restitution": "Restitution",
+			"agents": "Agents",
+			"noAgent": "No agent"
 		}
 	}
 }

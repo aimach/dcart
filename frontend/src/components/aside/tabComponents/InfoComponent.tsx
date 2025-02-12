@@ -1,7 +1,8 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useContext, useState } from "react";
 // import des composants
 import SourceDetailsComponent from "./SourceDetailsComponent";
+import ChartComponent from "./ChartComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des types
@@ -24,25 +25,31 @@ const InfoComponent = ({ point, isSelected, mapId }: InfoComponentProps) => {
 	const subRegionLanguageKey: keyof PointType =
 		language === "fr" ? "sous_region_fr" : "sous_region_en";
 
-	// on créé une classe spéciale si le point est sélectionné
-	const selectedClassName = isSelected ? style.isSelected : undefined;
-
 	return (
-		<details className={`${selectedClassName} ${style.resultContainer}`}>
-			<summary>
+		<section className={style.selectionDetailsContainer}>
+			<h4>
 				{point.nom_ville} ({point[subRegionLanguageKey]}) -{" "}
 				{point.sources.length} {point.sources.length > 1 ? "sources" : "source"}
-			</summary>
-			{point.sources.map((source) => {
-				return (
-					<SourceDetailsComponent
-						key={source.source_id}
-						source={source}
-						mapId={mapId}
-					/>
-				);
-			})}
-		</details>
+			</h4>
+			<details className={style.sourceDetails}>
+				<summary>Voir les sources</summary>
+				{point.sources.map((source) => {
+					return (
+						<SourceDetailsComponent
+							key={source.source_id}
+							source={source}
+							mapId={mapId}
+						/>
+					);
+				})}
+			</details>
+			<details className={style.chartDetails}>
+				<summary>Voir les statistiques</summary>
+				{mapId !== "exploration" && (
+					<ChartComponent point={point as PointType} />
+				)}
+			</details>
+		</section>
 	);
 };
 

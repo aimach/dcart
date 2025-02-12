@@ -6,8 +6,20 @@
         @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
         gap: v.$font-space-xxxxl * 2;
 
-        >h3 {
-            font-size: v.$font-size-xxxxxl;
+        .TitleSection {
+            @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-start, center);
+
+            >h3 {
+                font-size: v.$font-size-xxxxxl;
+            }
+
+            >img:first-of-type {
+                rotate: 90deg;
+            }
+
+            >img:last-of-type {
+                rotate: -90deg;
+            }
         }
 
         >p {

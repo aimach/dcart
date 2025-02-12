@@ -35,7 +35,6 @@ export const locationController = {
 		res: Response,
 	): Promise<void> => {
 		try {
-			console.log(req.params.greatRegionId);
 			if (req.params.greatRegionId === "all") {
 				const results = await MapDataSource.query(
 					"SELECT id, nom_fr, nom_en FROM sous_region ORDER BY nom_fr ASC",
