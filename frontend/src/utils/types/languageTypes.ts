@@ -33,6 +33,7 @@ type TranslationObject = {
 		between: string;
 		and: string;
 		or: string;
+		unknownDate: string;
 	};
 	modal: {
 		firstContent: string;

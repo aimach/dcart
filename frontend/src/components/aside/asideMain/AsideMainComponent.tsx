@@ -125,9 +125,6 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 						isSelected={true}
 						mapId={mapId}
 					/>
-					{mapId !== "exploration" && (
-						<ChartComponent point={selectedMarker as PointType} />
-					)}
 				</div>
 			) : (
 				<p>{translation[language].mapPage.aside.noSelectedMarker}</p>

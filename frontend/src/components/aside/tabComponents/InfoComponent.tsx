@@ -1,7 +1,8 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useContext, useState } from "react";
 // import des composants
 import SourceDetailsComponent from "./SourceDetailsComponent";
+import ChartComponent from "./ChartComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des types
@@ -30,15 +31,24 @@ const InfoComponent = ({ point, isSelected, mapId }: InfoComponentProps) => {
 				{point.nom_ville} ({point[subRegionLanguageKey]}) -{" "}
 				{point.sources.length} {point.sources.length > 1 ? "sources" : "source"}
 			</h4>
-			{point.sources.map((source) => {
-				return (
-					<SourceDetailsComponent
-						key={source.source_id}
-						source={source}
-						mapId={mapId}
-					/>
-				);
-			})}
+			<details className={style.sourceDetails}>
+				<summary>Voir les sources</summary>
+				{point.sources.map((source) => {
+					return (
+						<SourceDetailsComponent
+							key={source.source_id}
+							source={source}
+							mapId={mapId}
+						/>
+					);
+				})}
+			</details>
+			<details className={style.chartDetails}>
+				<summary>Voir les statistiques</summary>
+				{mapId !== "exploration" && (
+					<ChartComponent point={point as PointType} />
+				)}
+			</details>
 		</section>
 	);
 };

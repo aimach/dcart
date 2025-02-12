@@ -20,7 +20,7 @@
 }
 
 .selectionDetailsContainer {
-  padding: v.$space-s 0 v.$space-s v.$space-s;
+  padding: v.$space-s 0 0 0;
   overflow: scroll;
   border-bottom: 1px solid v.$color-neutral-80;
 
@@ -38,10 +38,28 @@
       list-style-type: '>';
     }
 
+
   }
 
   .selectionDetails[open]>summary {
     list-style-type: '⌄';
+  }
+
+  .sourceDetails,
+  .chartDetails {
+    border-bottom: 1px solid v.$color-neutral-80;
+    padding: v.$space-s;
+    cursor: pointer;
+  }
+
+  .sourceDetails[open] {
+    height: 90%;
+    overflow: scroll;
+  }
+
+  .chartDetails[open] {
+    height: 100%;
+    overflow: scroll;
   }
 }
 
@@ -62,7 +80,6 @@
 .chartContainer {
   height: 300px;
   width: 100%;
-  border-top: 1px solid black;
   @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, space-between, center);
 
   >div {

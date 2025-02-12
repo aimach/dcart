@@ -30,7 +30,8 @@
 	"common": {
 		"between": "entre",
 		"and": "et",
-		"or": "OU"
+		"or": "OU",
+		"unknownDate": "sans date"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de la région de",

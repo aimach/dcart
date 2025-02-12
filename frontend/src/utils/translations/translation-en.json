@@ -30,7 +30,8 @@
 	"common": {
 		"between": "between",
 		"and": "and",
-		"or": "OR"
+		"or": "OR",
+		"unknownDate": "no date"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",

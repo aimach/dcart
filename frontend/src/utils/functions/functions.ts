@@ -55,7 +55,7 @@ const getDatationSentence = (
 	language: Language,
 ) => {
 	if (!source.post_quem && !source.ante_quem) {
-		return "";
+		return `(${translation[language].common.unknownDate})`;
 	}
 	const postQuemWithOperator =
 		source.post_quem > 0 ? `+${source.post_quem}` : source.post_quem;
