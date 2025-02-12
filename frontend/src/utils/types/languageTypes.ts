@@ -53,6 +53,10 @@ type TranslationObject = {
 			noFilter: string;
 			searchForLocation: string;
 			noSelectedMarker: string;
+			transliteration: string;
+			restitution: string;
+			agents: string;
+			noAgent: string;
 		};
 	};
 };

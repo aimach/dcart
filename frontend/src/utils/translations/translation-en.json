@@ -50,7 +50,11 @@
 			"epithet": "Epithet",
 			"noFilter": "No filter defined",
 			"searchForLocation": "Search for a location...",
-			"noSelectedMarker": "Select a marker to see details"
+			"noSelectedMarker": "Select a marker to see details",
+			"transliteration": "Transliteration",
+			"restitution": "Restitution",
+			"agents": "Agents",
+			"noAgent": "No agent"
 		}
 	}
 }

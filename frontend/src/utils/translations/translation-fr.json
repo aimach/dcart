@@ -50,7 +50,11 @@
 			"epithet": "Epithète",
 			"noFilter": "Pas de filtre défini",
 			"searchForLocation": "Rechercher un lieu...",
-			"noSelectedMarker": "Sélectionner un point pour voir les détails"
+			"noSelectedMarker": "Sélectionner un point pour voir les détails",
+			"transliteration": "Translittération",
+			"restitution": "Restitution",
+			"agents": "Agents",
+			"noAgent": "Pas d'agent"
 		}
 	}
 }
