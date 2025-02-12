@@ -4,16 +4,28 @@
 .reducedAsideNav {
   width: v.$space-xxl;
   height: 100%;
+  background-color: v.$color-grullo-light;
+  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+  padding-top: v.$space-l;
 
-  border: 1px solid black;
+  border-right: 1px solid v.$color-grullo;
 
-  ul {
+  >ul {
     height: 100%;
     @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
     gap: v.$font-space-xxxl;
 
-    li {
-      cursor: pointer
+    >li {
+      cursor: pointer;
+
+      >svg {
+        color: v.$color-black-chocolate;
+
+        &:hover {
+          transform: scale(1.1);
+          transition: transform 0.3s;
+        }
+      }
     }
   }
 }

@@ -1,9 +1,5 @@
-// import des bibliothèques
-import { useContext } from "react";
 // import des composants
 import NavComponent from "../../common/NavComponent";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 // import des types
@@ -12,6 +8,8 @@ import type { NavList } from "../../../utils/types/commonTypes";
 import type { MenuTabType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./asideReducedMenuComponent.module.scss";
+// import des icones
+import { Filter, ListCollapse, MapPin } from "lucide-react";
 
 interface AsideReducedMenuComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -20,8 +18,6 @@ interface AsideReducedMenuComponentProps {
 const AsideReducedMenuComponent = ({
 	setPanelDisplayed,
 }: AsideReducedMenuComponentProps) => {
-	// on importe les données de language
-	const { language, translation } = useContext(TranslationContext);
 	// on importe l'onglet par défaut
 	const setSelectedTabMenu = useMapAsideMenuStore(
 		(state) => state.setSelectedTabMenu,
@@ -35,19 +31,19 @@ const AsideReducedMenuComponent = ({
 	const reducedAsideNavList: NavList = [
 		{
 			id: "results",
-			title: translation[language].button.results,
+			title: <ListCollapse />,
 			onClickFunction: () => openMenuOnSelectedTab("results"),
 			route: undefined,
 		},
 		{
 			id: "filters",
-			title: translation[language].button.filters,
+			title: <Filter />,
 			onClickFunction: () => openMenuOnSelectedTab("filters"),
 			route: undefined,
 		},
 		{
 			id: "infos",
-			title: translation[language].button.infos,
+			title: <MapPin />,
 			onClickFunction: () => openMenuOnSelectedTab("infos"),
 			route: undefined,
 		},

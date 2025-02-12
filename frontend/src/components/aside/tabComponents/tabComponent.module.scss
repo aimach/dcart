@@ -2,7 +2,7 @@
 @use '../../../styles/variable' as v;
 
 .resultContainer {
-  padding: v.$space-s 0;
+  padding: v.$space-s;
   overflow: scroll;
 
   summary {

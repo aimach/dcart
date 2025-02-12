@@ -2,11 +2,14 @@
 @use '../../../styles/mixin' as m;
 
 .asideHeader {
-  ul {
+  border-bottom: 1px solid v.$color-dark-lava;
+  background-color: v.$color-grullo-light;
+
+  >ul {
     height: v.$space-xl;
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-around, center);
 
-    li {
+    >li {
       width: 33%;
       cursor: pointer;
       text-align: center;
@@ -15,6 +18,8 @@
 }
 
 .liActive {
-  background-color: v.$color-black-chocolate;
+  background-color: v.$color-dark-lava;
   color: white;
+  height: 100%;
+  @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-around, center);
 }

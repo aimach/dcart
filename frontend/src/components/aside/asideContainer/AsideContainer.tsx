@@ -1,11 +1,12 @@
+// import des composants
+import AsideMainComponent from "../asideMain/AsideMainComponent";
+import AsideHeader from "../asideHeader/AsideHeader";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { PointType } from "../../../utils/types/mapTypes";
-import type { FilterType } from "../../../utils/types/filterTypes";
 // import du style
 import style from "./asideContainer.module.scss";
-import AsideMainComponent from "../asideMain/AsideMainComponent";
-import AsideHeader from "../asideHeader/AsideHeader";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 interface AsideContainerProps {
 	panelDisplayed: boolean;
@@ -20,12 +21,12 @@ const AsideContainer = ({
 	allPoints,
 	mapId,
 }: AsideContainerProps) => {
+	let asideClassNames = `${style.aside}`;
+	asideClassNames += panelDisplayed
+		? ` ${style.asideOpened}`
+		: ` ${style.asideClosed}`;
 	return (
-		<aside
-			className={
-				panelDisplayed ? `${style.asideOpened}` : `${style.asideClosed}`
-			}
-		>
+		<aside className={asideClassNames}>
 			<AsideHeader />
 			<div className={style.toggleButtonContainer}>
 				<AsideMainComponent results={allPoints as PointType[]} mapId={mapId} />
@@ -35,7 +36,7 @@ const AsideContainer = ({
 						className={style.toggleButton}
 						onClick={() => setPanelDisplayed(false)}
 					>
-						{panelDisplayed ? "<" : ">"}
+						<ChevronLeft />
 					</button>
 				) : null}
 			</div>

@@ -32,7 +32,7 @@ const ResultComponent = ({ results, mapId }: ResultComponentProps) => {
 		zoomOnMarkerOnClick(map as LeafletMap, result as PointType);
 	};
 	return (
-		<div>
+		<>
 			{results.map((result: PointType) => {
 				const isSelected = isSelectedMarker(
 					selectedMarker as PointType,
@@ -52,7 +52,7 @@ const ResultComponent = ({ results, mapId }: ResultComponentProps) => {
 					</div>
 				);
 			})}
-		</div>
+		</>
 	);
 };
 
