@@ -12,13 +12,14 @@ import type { PointType } from "../../../utils/types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 // import du style
 import style from "./tabComponent.module.scss";
+import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 
 interface ResultComponentProps {
 	results: PointType[];
 	mapId: string;
 }
 const ResultComponent = ({ results, mapId }: ResultComponentProps) => {
-	// on récupère la carte depuis le context
+	// on récupère les informations de la carte depuis le store
 	const { map, selectedMarker, setSelectedMarker } = useMapStore(
 		useShallow((state) => ({
 			map: state.map,
@@ -26,10 +27,16 @@ const ResultComponent = ({ results, mapId }: ResultComponentProps) => {
 			setSelectedMarker: state.setSelectedMarker,
 		})),
 	);
+	const { setSelectedTabMenu } = useMapAsideMenuStore(
+		useShallow((state) => ({
+			setSelectedTabMenu: state.setSelectedTabMenu,
+		})),
+	);
 
 	// on définit un style différent pour le point sélectionné
 	const handleResultClick = (result: PointType) => {
 		setSelectedMarker(result);
+		setSelectedTabMenu("infos");
 		zoomOnMarkerOnClick(map as LeafletMap, result as PointType);
 	};
 	return (
