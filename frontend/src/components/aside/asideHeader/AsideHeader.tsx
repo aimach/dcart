@@ -11,6 +11,7 @@ import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import type { NavList } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./asideHeader.module.scss";
+import { useMapStore } from "../../../utils/stores/mapStore";
 
 const AsideHeader = () => {
 	// on importe les données de language
@@ -22,11 +23,13 @@ const AsideHeader = () => {
 			setSelectedTabMenu: state.setSelectedTabMenu,
 		})),
 	);
+	// on récupère des données de la carte
+	const allPoints = useMapStore((state) => state.allPoints);
 
 	const asideNavList: NavList = [
 		{
 			id: "results",
-			title: translation[language].button.results,
+			title: `${allPoints.length} ${translation[language].button.results}`,
 			onClickFunction: () => setSelectedTabMenu("results"),
 			route: undefined,
 		},
@@ -38,7 +41,7 @@ const AsideHeader = () => {
 		},
 		{
 			id: "infos",
-			title: translation[language].button.infos,
+			title: translation[language].button.selection,
 			onClickFunction: () => setSelectedTabMenu("infos"),
 			route: undefined,
 		},

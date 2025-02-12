@@ -19,7 +19,7 @@ type TranslationObject = {
 		results: string;
 		filters: string;
 		filter: string;
-		infos: string;
+		selection: string;
 		seeSources: string;
 		seeAll: string;
 		epithet: string;
@@ -51,6 +51,7 @@ type TranslationObject = {
 			epithet: string;
 			noFilter: string;
 			searchForLocation: string;
+			noSelectedMarker: string;
 		};
 	};
 };

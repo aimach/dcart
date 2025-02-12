@@ -2,8 +2,14 @@
 @use '../../../styles/variable' as v;
 
 .resultContainer {
+  overflow: scroll;
+  height: calc(100vh - v.$main-header-height - v.$map-header-height - v.$aside-header-height);
+}
+
+.resultDetailsContainer {
   padding: v.$space-s;
   overflow: scroll;
+  border-bottom: 1px solid v.$color-neutral-80;
 
   summary {
     cursor: pointer;

@@ -31,7 +31,7 @@ type OptionType = { value: number; label: string };
 
 const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// on récupère les données de la langue
-	const { language } = useContext(TranslationContext);
+	const { translation, language } = useContext(TranslationContext);
 
 	// on récupère l'onglet en cours
 	const selectedTabMenu = useMapAsideMenuStore(
@@ -118,19 +118,19 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 				/>
 			);
 		case "infos":
-			return (
-				selectedMarker && (
-					<div className={style.infoContainer}>
-						<InfoComponent
-							point={selectedMarker as PointType}
-							isSelected={true}
-							mapId={mapId}
-						/>
-						{mapId !== "exploration" && (
-							<ChartComponent point={selectedMarker as PointType} />
-						)}
-					</div>
-				)
+			return selectedMarker ? (
+				<div className={style.infoContainer}>
+					<InfoComponent
+						point={selectedMarker as PointType}
+						isSelected={true}
+						mapId={mapId}
+					/>
+					{mapId !== "exploration" && (
+						<ChartComponent point={selectedMarker as PointType} />
+					)}
+				</div>
+			) : (
+				<p>{translation[language].mapPage.aside.noSelectedMarker}</p>
 			);
 		default:
 			return <ResultComponent results={results} mapId={mapId} />;

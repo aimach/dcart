@@ -14,10 +14,10 @@
 	},
 	"button": {
 		"freeExploration": "Exploration libre",
-		"results": "Résultats",
+		"results": "résultats",
 		"filters": "Filtres",
 		"filter": "Filtrer",
-		"infos": "Infos",
+		"selection": "Sélection",
 		"seeSources": "Voir les sources",
 		"seeAll": "Tout voir",
 		"epithet": "Epithète",
@@ -48,7 +48,8 @@
 			"sources": "Sources",
 			"epithet": "Epithète",
 			"noFilter": "Pas de filtre défini",
-			"searchForLocation": "Rechercher un lieu..."
+			"searchForLocation": "Rechercher un lieu...",
+			"noSelectedMarker": "Sélectionner un point pour voir les détails"
 		}
 	}
 }

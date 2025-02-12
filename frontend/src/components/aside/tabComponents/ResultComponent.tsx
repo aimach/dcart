@@ -1,6 +1,5 @@
 // import des composants
 import InfoComponent from "./InfoComponent";
-
 // import des services
 import {
 	isSelectedMarker,
@@ -11,6 +10,8 @@ import { useShallow } from "zustand/shallow";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
+// import du style
+import style from "./tabComponent.module.scss";
 
 interface ResultComponentProps {
 	results: PointType[];
@@ -32,7 +33,7 @@ const ResultComponent = ({ results, mapId }: ResultComponentProps) => {
 		zoomOnMarkerOnClick(map as LeafletMap, result as PointType);
 	};
 	return (
-		<>
+		<div className={style.resultContainer}>
 			{results.map((result: PointType) => {
 				const isSelected = isSelectedMarker(
 					selectedMarker as PointType,
@@ -52,7 +53,7 @@ const ResultComponent = ({ results, mapId }: ResultComponentProps) => {
 					</div>
 				);
 			})}
-		</>
+		</div>
 	);
 };
 

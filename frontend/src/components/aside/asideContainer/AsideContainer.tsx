@@ -6,7 +6,8 @@ import type { Dispatch, SetStateAction } from "react";
 import type { PointType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./asideContainer.module.scss";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+// import des icônes
+import { ChevronLeft } from "lucide-react";
 
 interface AsideContainerProps {
 	panelDisplayed: boolean;
@@ -29,7 +30,6 @@ const AsideContainer = ({
 		<aside className={asideClassNames}>
 			<AsideHeader />
 			<div className={style.toggleButtonContainer}>
-				<AsideMainComponent results={allPoints as PointType[]} mapId={mapId} />
 				{panelDisplayed ? (
 					<button
 						type="button"
@@ -40,6 +40,7 @@ const AsideContainer = ({
 					</button>
 				) : null}
 			</div>
+			<AsideMainComponent results={allPoints as PointType[]} mapId={mapId} />
 		</aside>
 	);
 };
