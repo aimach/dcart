@@ -15,35 +15,47 @@ export const categoryController = {
 			const { categoryId } = req.params;
 			let results = null;
 			if (categoryId === "all") {
-				results = await dcartDataSource.getRepository(Category).find({
-					select: {
-						maps: {
-							id: true,
-							name_fr: true,
-							name_en: true,
-							description_en: true,
-							description_fr: true,
-						},
-					},
-					relations: { maps: true },
-				});
+				results = await dcartDataSource
+					.getRepository(Category)
+					.createQueryBuilder("category")
+					.innerJoin("category.maps", "map") // Exclure les catégories sans cartes
+					.select([
+						"category.id",
+						"category.name_fr",
+						"category.name_en",
+						"category.description_fr",
+						"category.description_en",
+						"map.id",
+						"map.name_fr",
+						"map.name_en",
+						"map.description_fr",
+						"map.description_en",
+					])
+					.getMany();
+
 				res.status(200).json(results);
 				return;
 			}
-			results = await dcartDataSource.getRepository(Category).find({
-				select: {
-					maps: {
-						id: true,
-						name_fr: true,
-						name_en: true,
-						description_en: true,
-						description_fr: true,
-					},
-				},
-				relations: { maps: true },
-				where: { id: categoryId },
-			});
-			res.status(200).json(results[0]);
+			results = await dcartDataSource
+				.getRepository(Category)
+				.createQueryBuilder("category")
+				.innerJoin("category.maps", "map") // Exclure les catégories sans cartes
+				.select([
+					"category.id",
+					"category.name_fr",
+					"category.name_en",
+					"category.description_fr",
+					"category.description_en",
+					"map.id",
+					"map.name_fr",
+					"map.name_en",
+					"map.description_fr",
+					"map.description_en",
+				])
+				.where({ id: categoryId })
+				.getOne();
+
+			res.status(200).json(results);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

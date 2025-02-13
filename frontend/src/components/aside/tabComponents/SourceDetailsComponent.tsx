@@ -63,11 +63,12 @@ const SourceDetailsComponent = ({
 
 	return (
 		<details
-			style={{ marginLeft: "10px" }}
 			onClick={() => setSourceIsSelected(true)}
 			onKeyUp={() => setSourceIsSelected(true)}
+			className={style.selectionDetails}
 		>
 			<summary>
+				{" "}
 				Source #{source.source_id} {datationSentence}
 			</summary>
 			{attestations.length ? (
@@ -98,8 +99,9 @@ const SourceDetailsComponent = ({
 									key={uuidv4()}
 									// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
 									dangerouslySetInnerHTML={{
-										__html: agent,
+										__html: `- ${agent}`,
 									}}
+									style={{ marginBottom: "0.5rem" }}
 								/>
 							);
 						});
@@ -107,17 +109,37 @@ const SourceDetailsComponent = ({
 
 					return (
 						<div key={uuidv4()} className={style.testimoniesInfo}>
-							<p>Attestation #{attestation.attestation_id}</p>
-							<div style={{ marginLeft: "10px" }}>
-								<p>{attestation[attestationNameLanguageKey]}</p>
-								<p
-									// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-									dangerouslySetInnerHTML={{
-										__html: sanitizedRestitution,
-									}}
-								/>
-								{agentsArray}
-							</div>
+							<table>
+								<tr>
+									<th>Attestation</th>
+									<td>#{attestation.attestation_id}</td>
+								</tr>
+								<tr>
+									<th>{translation[language].mapPage.aside.transliteration}</th>
+									<td>{attestation[attestationNameLanguageKey]}</td>
+								</tr>
+								<tr>
+									<th>{translation[language].mapPage.aside.restitution}</th>
+									<td>
+										<p
+											// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+											dangerouslySetInnerHTML={{
+												__html: sanitizedRestitution,
+											}}
+										/>
+									</td>
+								</tr>
+								<tr>
+									<th>{translation[language].mapPage.aside.agents}</th>
+									<td>
+										<p>
+											{agentsArray.length > 0
+												? agentsArray
+												: translation[language].mapPage.aside.noAgent}
+										</p>
+									</td>
+								</tr>
+							</table>
 						</div>
 					);
 				})

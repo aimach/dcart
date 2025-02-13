@@ -55,7 +55,7 @@ const getDatationSentence = (
 	language: Language,
 ) => {
 	if (!source.post_quem && !source.ante_quem) {
-		return "";
+		return `(${translation[language].common.unknownDate})`;
 	}
 	const postQuemWithOperator =
 		source.post_quem > 0 ? `+${source.post_quem}` : source.post_quem;
@@ -147,7 +147,6 @@ const getAgentGenderLabelsAndNb = (point: PointType, language: Language) => {
 					if (agent.genres) {
 						// si le tableau des genres contient plus d'un élément, on le remplace par un seul élément "mixed"
 						if (agent.genres.length > 1) {
-							console.log(agent.genres);
 							allAgentsGenderOfPoint.push({
 								nom_en: "Mixed",
 								nom_fr: "Mixte",

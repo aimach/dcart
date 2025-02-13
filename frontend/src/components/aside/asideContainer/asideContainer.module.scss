@@ -1,6 +1,9 @@
 @use '../../../styles/variable' as v;
+@use '../../../styles/mixin' as m;
 
 .aside {
+  border-right: 1px solid v.$color-grullo;
+
   &Opened {
     flex: 1;
   }
@@ -12,15 +15,23 @@
 
 .toggleButtonContainer {
   position: relative;
-  height: calc(100vh - v.$main-header-height - v.$map-header-height - v.$aside-header-height);
 }
 
 .toggleButton {
   position: absolute;
   top: 0;
   width: 40px;
-  height: 40px;
+  height: 50px;
   cursor: pointer;
-  right: 0;
+  right: -40px;
+  z-index: 1000;
+  background-color: v.$color-dark-lava;
+  color: v.$color-grullo-light ;
+  border-top-right-radius: v.$border-radius-rounded;
+  border-bottom-right-radius: v.$border-radius-rounded;
+  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
 
+  >svg {
+    color: v.$color-grullo-light;
+  }
 }

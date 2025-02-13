@@ -19,7 +19,7 @@ type TranslationObject = {
 		results: string;
 		filters: string;
 		filter: string;
-		infos: string;
+		selection: string;
 		seeSources: string;
 		seeAll: string;
 		epithet: string;
@@ -33,6 +33,7 @@ type TranslationObject = {
 		between: string;
 		and: string;
 		or: string;
+		unknownDate: string;
 	};
 	modal: {
 		firstContent: string;
@@ -51,6 +52,11 @@ type TranslationObject = {
 			epithet: string;
 			noFilter: string;
 			searchForLocation: string;
+			noSelectedMarker: string;
+			transliteration: string;
+			restitution: string;
+			agents: string;
+			noAgent: string;
 		};
 	};
 };

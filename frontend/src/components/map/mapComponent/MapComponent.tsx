@@ -25,7 +25,10 @@ import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
+import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
+// import des images
+import delta from "../../../assets/delta.png";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -90,10 +93,14 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 								<SearchFormComponent setIsModalOpen={setIsModalOpen} />
 							)}
 							{mapInfos && (
-								<>
-									<h3>{(mapInfos as MapInfoType)[`name_${language}`]}</h3>
+								<div className={style.modalContent}>
+									<div className={style.modalTitleSection}>
+										<img src={delta} alt="decoration" width={30} />
+										<h3>{(mapInfos as MapInfoType)[`name_${language}`]}</h3>
+										<img src={delta} alt="decoration" width={30} />
+									</div>
 									<p>{(mapInfos as MapInfoType)[`description_${language}`]}</p>
-								</>
+								</div>
 							)}
 						</ModalComponent>
 					)}
@@ -107,6 +114,7 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 						{mapReady && (
 							<>
 								<TileLayer
+									opacity={0.8}
 									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 									url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
 								/>

@@ -1,5 +1,7 @@
 // import du style
 import style from "./titleAndTextComponent.module.scss";
+// import des images
+import delta from "../../../assets/delta.png";
 
 interface TitleAndTextComponentProps {
 	title: string;
@@ -9,8 +11,11 @@ interface TitleAndTextComponentProps {
 const TitleAndTextComponent = ({ title, text }: TitleAndTextComponentProps) => {
 	return (
 		<section className={style.titleAndTextContainer}>
-			<h3>{title}</h3>
-			<div className={style.verticalSeparator} />
+			<div className={style.titleSection}>
+				<img src={delta} alt="decoration" width={50} />
+				<h3>{title}</h3>
+				<img src={delta} alt="decoration" width={50} />
+			</div>
 			<p>{text}</p>
 		</section>
 	);
