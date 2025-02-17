@@ -1,7 +1,6 @@
 // import des bibliothèques
 import { useContext } from "react";
 // import des composants
-import TimeFilterComponent from "../filterComponents/TimeFilterComponent";
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
