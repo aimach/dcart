@@ -44,7 +44,7 @@ export const sourceController = {
 						)
 					: "";
 				const queryIncludedElements = element
-					? getQueryStringForIncludedElements(element as string)
+					? getQueryStringForIncludedElements(element as string, "")
 					: "";
 
 				// on récupère le texte de la requête SQL
@@ -91,8 +91,8 @@ export const sourceController = {
 						: "";
 				let queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
 				let queryPost = post ? getQueryStringForDateFilter("post", post) : "";
-				const queryIncludedElements = includedElements
-					? getQueryStringForIncludedElements(includedElements)
+				let queryIncludedElements = includedElements
+					? getQueryStringForIncludedElements(includedElements, "")
 					: "";
 				const queryExcludedElements = excludedElements
 					? getQueryStringForExcludedElements(excludedElements)
@@ -118,6 +118,13 @@ export const sourceController = {
 							Number.parseInt(req.query.post as string, 10),
 						)
 					: "";
+
+				if (req.query.elementId) {
+					queryIncludedElements = getQueryStringForIncludedElements(
+						includedElements as string,
+						req.query.elementId as string,
+					);
+				}
 
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQueryWithDetails(

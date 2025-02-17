@@ -13,17 +13,20 @@ import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
 import type { MapInfoType } from "../../../utils/types/mapTypes";
 import type { UserFilterType } from "../../../utils/types/filterTypes";
 import { useShallow } from "zustand/shallow";
+import ElementFilterComponent from "../filterComponents/ElementFilter";
 
 type OptionType = { value: number; label: string };
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
 	locationLevel: string;
+	elementOptions: OptionType[];
 }
 
 const FilterComponent = ({
 	locationOptions,
 	locationLevel,
+	elementOptions,
 }: FilterComponentProps) => {
 	// on récupère les données de la langue
 	const { translation, language } = useContext(TranslationContext);
@@ -69,6 +72,14 @@ const FilterComponent = ({
 								key={filter.id}
 								locationOptions={locationOptions}
 								locationLevel={locationLevel}
+							/>
+						);
+					}
+					if (filter.type === "element") {
+						return (
+							<ElementFilterComponent
+								key={filter.id}
+								elementOptions={elementOptions}
 							/>
 						);
 					}

@@ -8,10 +8,20 @@ import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
-import { getLocationOptions } from "../../../utils/loaders/loaders";
-import { getLocationURL } from "../../../utils/functions/functions";
+import {
+	getLocationOptions,
+	getAllDivinities,
+} from "../../../utils/loaders/loaders";
+import {
+	getAllElementsFromPoints,
+	getLocationURL,
+} from "../../../utils/functions/functions";
 // import des types
-import type { PointType, GreatRegionType } from "../../../utils/types/mapTypes";
+import type {
+	PointType,
+	GreatRegionType,
+	DivinityType,
+} from "../../../utils/types/mapTypes";
 
 // import du style
 import style from "./asideMainComponent.module.scss";
@@ -33,7 +43,7 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	);
 
 	// on récupère le point en cours
-	const { mapInfos, selectedMarker } = useMapStore((state) => state);
+	const { mapInfos, allPoints, selectedMarker } = useMapStore((state) => state);
 
 	// RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
 	// on va chercher les options du filtre de localisation
@@ -55,11 +65,47 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 		}
 	};
 
+	// RECUPERATION DES OPTIONS D'ELEMENTS POUR LES FILTRES
+	// on va chercher les options du filtre d'éléments
+	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
+
+	const fetchElementOptions = async () => {
+		try {
+			// on récupère toutes les divinités
+			const allDivinities = await getAllDivinities();
+			// à partir des formules, on récupère tous les éléments
+			const allElements = await getAllElementsFromPoints(allPoints);
+			// on récupère les éléments qui ne sont pas des théonymes
+			const elementsWithoutTheonyms = allElements.filter((element) => {
+				return !allDivinities.some(
+					(divinity: DivinityType) => divinity.id === element.element_id,
+				);
+			});
+			// enfin, on formatte les options pour le select
+			const formatedElementOptions: OptionType[] = elementsWithoutTheonyms
+				.map((option) => ({
+					value: option.element_id,
+					label: option[`element_nom_${language}`],
+				}))
+				.sort((option1, option2) =>
+					option1.label < option2.label
+						? -1
+						: option1.label > option2.label
+							? 1
+							: 0,
+				);
+			setElementOptions(formatedElementOptions);
+		} catch (error) {
+			console.error("Erreur lors du chargement des localités:", error);
+		}
+	};
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (mapInfos) {
 			const locationURL = getLocationURL(mapInfos, setLocationLevel);
 			fetchLocationOptions(locationURL);
+			fetchElementOptions();
 		}
 	}, [mapInfos]);
 
@@ -72,6 +118,7 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 				<FilterComponent
 					locationOptions={locationOptions}
 					locationLevel={locationLevel}
+					elementOptions={elementOptions}
 				/>
 			);
 		case "infos":

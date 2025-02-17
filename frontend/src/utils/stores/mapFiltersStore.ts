@@ -15,7 +15,7 @@ type Action = {
 const emptyUserFilters: UserFilterType = {
 	post: undefined,
 	ante: undefined,
-	element: undefined,
+	elementId: undefined,
 	locationType: undefined,
 	locationId: undefined,
 };

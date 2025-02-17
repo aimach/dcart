@@ -302,6 +302,22 @@ const getAllDatationLabels = (minVal: number, maxVal: number, step: number) => {
 	return labelsArray;
 };
 
+const getAllElementsFromPoints = (points: PointType[]) => {
+	const allElements: ElementType[] = [];
+	points.map((point) => {
+		point.sources.map((source) => {
+			source.attestations.map((attestation) => {
+				attestation.elements.map((element) => {
+					if (!allElements.find((el) => el.element_id === element.element_id)) {
+						allElements.push(element);
+					}
+				});
+			});
+		});
+	});
+	return allElements;
+};
+
 export {
 	getBackGroundColorClassName,
 	getSupportAndMaterialSentence,
@@ -313,4 +329,5 @@ export {
 	getAgentActivityLabelsAndNb,
 	getLocationURL,
 	getAllDatationLabels,
+	getAllElementsFromPoints,
 };

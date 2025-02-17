@@ -59,16 +59,27 @@ const getQueryStringForDateFilter = (type: string, date: number) => {
 	return "";
 };
 
-const getQueryStringForIncludedElements = (includedElements: string) => {
-	const includedElementsArray = includedElements.split(",");
+const getQueryStringForIncludedElements = (
+	includedElements: string,
+	queryElements: string,
+) => {
+	const includedElementsArray = includedElements.split("|");
 	const includedElementsArrayWithBrackets = includedElementsArray.map(
 		(element) => `'%{${element}}%'`,
 	);
-	return ` AND formule.formule LIKE ANY(ARRAY[${includedElementsArrayWithBrackets}]) `;
+	const queryElementsArray = queryElements.split("|");
+	const queryElementsArrayWithBrackets = queryElementsArray.map(
+		(element) => `'%{${element}}%'`,
+	);
+	const query = ` AND formule.formule LIKE ANY(ARRAY[${includedElementsArrayWithBrackets}]) `;
+	if (queryElements) {
+		return `${query} AND formule.formule LIKE ANY(ARRAY[${queryElementsArrayWithBrackets}]) `;
+	}
+	return query;
 };
 
 const getQueryStringForExcludedElements = (excludedElements: string) => {
-	const excludedElementsArray = excludedElements.split(",");
+	const excludedElementsArray = excludedElements.split("|");
 	const excludedElementsArrayWithBrackets = excludedElementsArray.map(
 		(element) => `'%{${element}}%'`,
 	);

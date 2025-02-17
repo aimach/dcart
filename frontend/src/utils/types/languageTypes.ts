@@ -52,6 +52,7 @@ type TranslationObject = {
 			epithet: string;
 			noFilter: string;
 			searchForLocation: string;
+			searchForElement: string;
 			noSelectedMarker: string;
 			transliteration: string;
 			restitution: string;
