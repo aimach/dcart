@@ -13,12 +13,15 @@ import ModalComponent from "../../modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 import ResetControl from "../controls/ResetControlComponent";
 import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
+import TimeFilterComponent from "../../aside/filterComponents/TimeFilterComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
+import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
+import { getTimeMarkers } from "../../../utils/loaders/loaders";
 // import des types
 import type { LatLngTuple } from "leaflet";
 import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
@@ -68,10 +71,6 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	const bounds: LatLngTuple[] = [];
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		// mettre à jour la modale uniquement si on change de carte thématique
-		if (mapId !== "exploration") {
-			setIsModalOpen(true);
-		}
 		if (allPoints.length) {
 			for (const point of allPoints) {
 				bounds.push([point.latitude, point.longitude]);
@@ -81,6 +80,42 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 			}
 		}
 	}, [allPoints]);
+
+	// on récupère les filtres de l'utilisateur dans le store
+	const { userFilters, setUserFilters } = useMapFiltersStore(
+		useShallow((state) => ({
+			userFilters: state.userFilters,
+			setUserFilters: state.setUserFilters,
+		})),
+	);
+
+	// RECUPERATION DES MARKERS TEMPORELS  POUR LES FILTRES
+	const [timeMarkers, setTimeMarkers] = useState<{
+		post: number;
+		ante: number;
+	}>({ post: 0, ante: 0 });
+	const fetchTimeMarkers = async () => {
+		try {
+			const newTimeMarkers = await getTimeMarkers();
+			setTimeMarkers(newTimeMarkers);
+			const newUserFilters = {
+				...userFilters,
+				post: newTimeMarkers.post,
+				ante: newTimeMarkers.ante,
+			};
+			setUserFilters(newUserFilters);
+		} catch (error) {
+			console.error(
+				"Erreur lors du chargement des marqueurs temporels:",
+				error,
+			);
+		}
+	};
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		fetchTimeMarkers();
+	}, []);
 
 	return (
 		<>
@@ -138,6 +173,7 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 						)}
 					</MapContainer>
 				</section>
+				<TimeFilterComponent timeMarkers={timeMarkers} />
 			</div>
 		</>
 	);

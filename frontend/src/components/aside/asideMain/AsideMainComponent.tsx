@@ -8,12 +8,7 @@ import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
-import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
-import { useShallow } from "zustand/shallow";
-import {
-	getTimeMarkers,
-	getLocationOptions,
-} from "../../../utils/loaders/loaders";
+import { getLocationOptions } from "../../../utils/loaders/loaders";
 import { getLocationURL } from "../../../utils/functions/functions";
 // import des types
 import type { PointType, GreatRegionType } from "../../../utils/types/mapTypes";
@@ -39,42 +34,6 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 
 	// on récupère le point en cours
 	const { mapInfos, selectedMarker } = useMapStore((state) => state);
-
-	// on récupère les filtres de l'utilisateur dans le store
-	const { userFilters, setUserFilters } = useMapFiltersStore(
-		useShallow((state) => ({
-			userFilters: state.userFilters,
-			setUserFilters: state.setUserFilters,
-		})),
-	);
-
-	// RECUPERATION DES MARKERS TEMPORELS  POUR LES FILTRES
-	const [timeMarkers, setTimeMarkers] = useState<{
-		post: number;
-		ante: number;
-	}>({ post: 0, ante: 0 });
-	const fetchTimeMarkers = async () => {
-		try {
-			const newTimeMarkers = await getTimeMarkers();
-			setTimeMarkers(newTimeMarkers);
-			const newUserFilters = {
-				...userFilters,
-				post: newTimeMarkers.post,
-				ante: newTimeMarkers.ante,
-			};
-			setUserFilters(newUserFilters);
-		} catch (error) {
-			console.error(
-				"Erreur lors du chargement des marqueurs temporels:",
-				error,
-			);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
-		fetchTimeMarkers();
-	}, []);
 
 	// RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
 	// on va chercher les options du filtre de localisation
@@ -111,7 +70,6 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 		case "filters":
 			return (
 				<FilterComponent
-					timeMarkers={timeMarkers}
 					locationOptions={locationOptions}
 					locationLevel={locationLevel}
 				/>

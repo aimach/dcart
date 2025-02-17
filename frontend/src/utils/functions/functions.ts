@@ -294,6 +294,14 @@ const getLocationURL = (
 	return routeSegment;
 };
 
+const getAllDatationLabels = (minVal: number, maxVal: number, step: number) => {
+	const labelsArray = [];
+	for (let i = minVal; i <= maxVal; i += step) {
+		labelsArray.push(i.toString());
+	}
+	return labelsArray;
+};
+
 export {
 	getBackGroundColorClassName,
 	getSupportAndMaterialSentence,
@@ -304,4 +312,5 @@ export {
 	getAgentGenderLabelsAndNb,
 	getAgentActivityLabelsAndNb,
 	getLocationURL,
+	getAllDatationLabels,
 };
