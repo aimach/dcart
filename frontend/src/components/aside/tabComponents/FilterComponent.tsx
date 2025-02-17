@@ -15,6 +15,8 @@ import { useShallow } from "zustand/shallow";
 // import des types
 import type { MapInfoType } from "../../../utils/types/mapTypes";
 import type { UserFilterType } from "../../../utils/types/filterTypes";
+// import du style
+import style from "./tabComponent.module.scss";
 
 type OptionType = { value: number; label: string };
 
@@ -63,7 +65,7 @@ const FilterComponent = ({
 	};
 
 	return mapFilters.length ? (
-		<div>
+		<div className={style.resultContainer}>
 			{translation[language].mapPage.aside.filters}
 			<div>
 				{mapFilters.map((filter) => {

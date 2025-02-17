@@ -1,12 +1,2 @@
 @use '../../../styles/mixin' as m;
 @use '../../../styles/variable' as v;
-
-.infoContainer {
-    height: 100%;
-    height: calc(100vh - v.$main-header-height - v.$map-header-height - v.$aside-header-height);
-
-
-    >section {
-        height: 100%;
-    }
-}

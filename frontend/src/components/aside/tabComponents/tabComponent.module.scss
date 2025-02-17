@@ -4,7 +4,6 @@
 .resultContainer {
   overflow: scroll;
   height: calc(100vh - v.$main-header-height - v.$aside-header-height - v.$space-xs);
-
 }
 
 .resultDetails {
@@ -22,7 +21,7 @@
 .selectionDetailsContainer {
   padding: v.$space-s 0 0 0;
   overflow: scroll;
-  border-bottom: 1px solid v.$color-neutral-80;
+  height: calc(100vh - v.$main-header-height - v.$aside-header-height - v.$space-xs);
 
   >h4 {
     font-size: v.$font-size-l;

@@ -7,7 +7,6 @@ import ChartComponent from "./ChartComponent";
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
-
 // import du style
 import style from "./tabComponent.module.scss";
 
