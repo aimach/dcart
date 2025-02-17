@@ -122,7 +122,7 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 			{!mapReady && <LoaderComponent size={50} />}
 			<div className="map" id="map">
 				<section className="leaflet-container">
-					{isModalOpen && (
+					{isModalOpen && mapInfos && (
 						<ModalComponent onClose={() => setIsModalOpen(false)}>
 							{mapId === "exploration" && (
 								<SearchFormComponent setIsModalOpen={setIsModalOpen} />

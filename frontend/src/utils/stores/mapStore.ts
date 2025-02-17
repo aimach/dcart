@@ -39,3 +39,5 @@ export const useMapStore = create<State & Action>((set) => ({
 	mapReady: false,
 	setMapReady: (mapReady) => set(() => ({ mapReady })),
 }));
+
+console.log(useMapStore);

@@ -51,9 +51,17 @@ const MapPage = () => {
 	const fetchMapInfos = async (mapId: string) => {
 		try {
 			const mapInfos = await getOneMapInfos(mapId as string);
-			setIncludedElementId(mapInfos.includedElements);
-			setMapInfos(mapInfos);
-			setMapFilters(mapInfos.filters);
+			// si la carte est une carte d'exploration, on réinitialise les filtres
+			if (mapInfos === "exploration") {
+				setIncludedElementId(undefined);
+				setMapInfos(null);
+				setMapFilters([]);
+			} else {
+				// sinon on charge les informations de la carte
+				setIncludedElementId(mapInfos.includedElements);
+				setMapInfos(mapInfos);
+				setMapFilters(mapInfos.filters);
+			}
 		} catch (error) {
 			console.error("Erreur lors du chargement des infos de la carte:", error);
 		}
@@ -63,8 +71,8 @@ const MapPage = () => {
 	useEffect(() => {
 		setMapReady(false);
 		setPanelDisplayed(false);
-		fetchAllPoints();
 		fetchMapInfos(mapId as string);
+		fetchAllPoints();
 	}, [mapId]);
 
 	return (
