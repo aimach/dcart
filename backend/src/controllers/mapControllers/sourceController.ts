@@ -99,25 +99,39 @@ export const sourceController = {
 					: "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
-				queryLocalisation =
-					req.query.locationType && req.query.locationId
-						? getQueryStringForLocalisationFilter(
-								req.query.locationType as string,
-								req.query.locationId as string,
-							)
-						: queryLocalisation;
-				queryAnte = req.query.ante
-					? getQueryStringForDateFilter(
+				if (req.query.locationType && req.query.locationId) {
+					queryLocalisation =
+						req.query.locationType && req.query.locationId
+							? getQueryStringForLocalisationFilter(
+									req.query.locationType as string,
+									req.query.locationId as string,
+								)
+							: queryLocalisation;
+				}
+
+				if (req.query.ante) {
+					// on tient compte de la query uniquement si le filtre est inférieur à la borne temporelle définie pour la carte
+					if (
+						Number.parseInt(req.query.ante as string, 10) <= (ante as number)
+					) {
+						queryAnte = getQueryStringForDateFilter(
 							"ante",
 							Number.parseInt(req.query.ante as string, 10),
-						)
-					: queryAnte;
-				queryPost = req.query.post
-					? getQueryStringForDateFilter(
+						);
+					}
+				}
+
+				if (req.query.post) {
+					// on tient compte de la query uniquement si le filtre est supérieur à la borne temporelle définie pour la carte
+					if (
+						Number.parseInt(req.query.post as string, 10) >= (post as number)
+					) {
+						queryPost = getQueryStringForDateFilter(
 							"post",
 							Number.parseInt(req.query.post as string, 10),
-						)
-					: "";
+						);
+					}
+				}
 
 				if (req.query.elementId) {
 					queryIncludedElements = getQueryStringForIncludedElements(
