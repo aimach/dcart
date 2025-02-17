@@ -294,9 +294,18 @@ const getLocationURL = (
 	return routeSegment;
 };
 
-const getAllDatationLabels = (minVal: number, maxVal: number, step: number) => {
+const getAllDatationLabels = (
+	minVal: number | string,
+	maxVal: number | string,
+	step: number,
+) => {
+	const minValNumber =
+		typeof minVal === "string" ? Number.parseInt(minVal, 10) : minVal;
+	const maxValNumber =
+		typeof maxVal === "string" ? Number.parseInt(maxVal, 10) : maxVal;
+
 	const labelsArray = [];
-	for (let i = minVal; i <= maxVal; i += step) {
+	for (let i = minValNumber; i <= maxValNumber; i += step) {
 		labelsArray.push(i.toString());
 	}
 	return labelsArray;

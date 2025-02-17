@@ -111,3 +111,7 @@
     margin-top: v.$space-s;
   }
 }
+
+.filterButton {
+  @include m.buttonStyle(v.$color-dark-lava, v.$color-neutral-100);
+}

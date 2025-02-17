@@ -12,6 +12,7 @@ import type {
 	TimeMarkersType,
 	MapInfoType,
 } from "../../../utils/types/mapTypes";
+import type { UserFilterType } from "../../../utils/types/filterTypes";
 // import du style
 import style from "./filtersComponent.module.scss";
 import "./timeFilterComponent.css";
@@ -56,6 +57,7 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		try {
 			const mapId = mapInfos ? mapInfos.id : "exploration";
 			const points = await getAllPointsByMapId(mapId, {
+				...userFilters,
 				ante: e.maxValue,
 				post: e.minValue,
 			});
@@ -71,8 +73,8 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		timeMarkers.ante && (
 			<div className={style.rangeContainer}>
 				<MultiRangeSlider
-					min={timeMarkers.post}
-					max={timeMarkers.ante}
+					min={(mapInfos as MapInfoType).post ?? timeMarkers.post}
+					max={(mapInfos as MapInfoType).ante ?? timeMarkers.ante}
 					step={step}
 					stepOnly
 					baseClassName={"multi-range-slider-custom"}
@@ -87,8 +89,8 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 							: (userFilters.ante as number)
 					}
 					labels={getAllDatationLabels(
-						timeMarkers.post,
-						timeMarkers.ante,
+						(mapInfos as MapInfoType).post ?? timeMarkers.post,
+						(mapInfos as MapInfoType).ante ?? timeMarkers.ante,
 						step,
 					)}
 					onChange={(e) => {

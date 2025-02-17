@@ -111,27 +111,17 @@ export const sourceController = {
 				}
 
 				if (req.query.ante) {
-					// on tient compte de la query uniquement si le filtre est inférieur à la borne temporelle définie pour la carte
-					if (
-						Number.parseInt(req.query.ante as string, 10) <= (ante as number)
-					) {
-						queryAnte = getQueryStringForDateFilter(
-							"ante",
-							Number.parseInt(req.query.ante as string, 10),
-						);
-					}
+					queryAnte = getQueryStringForDateFilter(
+						"ante",
+						Number.parseInt(req.query.ante as string, 10),
+					);
 				}
 
 				if (req.query.post) {
-					// on tient compte de la query uniquement si le filtre est supérieur à la borne temporelle définie pour la carte
-					if (
-						Number.parseInt(req.query.post as string, 10) >= (post as number)
-					) {
-						queryPost = getQueryStringForDateFilter(
-							"post",
-							Number.parseInt(req.query.post as string, 10),
-						);
-					}
+					queryPost = getQueryStringForDateFilter(
+						"post",
+						Number.parseInt(req.query.post as string, 10),
+					);
 				}
 
 				if (req.query.elementId) {

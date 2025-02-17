@@ -64,6 +64,13 @@ const FilterComponent = ({
 		fetchAllPoints();
 	};
 
+	// on créé une fonction pour gérer le reset des filtres
+	const resetFilters = () => {
+		resetUserFilters();
+	};
+
+	console.log(userFilters);
+
 	return mapFilters.length ? (
 		<div className={style.resultContainer}>
 			{translation[language].mapPage.aside.filters}
@@ -91,12 +98,20 @@ const FilterComponent = ({
 					}
 				})}
 			</div>
-			<button type="button" onClick={handleFilterButton}>
+			<button
+				className={style.filterButton}
+				type="button"
+				onClick={handleFilterButton}
+			>
 				{translation[language].button.filter}
 			</button>
-			{/* <button type="button" onClick={resetUserFilters}>
+			<button
+				className={style.filterButton}
+				type="button"
+				onClick={resetFilters}
+			>
 				{translation[language].button.resetFilter}
-			</button> */}
+			</button>
 		</div>
 	) : (
 		<div>{translation[language].mapPage.aside.noFilter}</div>
