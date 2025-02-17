@@ -34,8 +34,7 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		})),
 	);
 
-	// on définit les bornes temporelles
-	// EXPLICATION : l'utilisation de setUserFilters entraînait malheureusement une boucle temporelle, réglée grâce à l'usage d'un state indépendant
+	// ATTENTION : l'utilisation de setUserFilters entraînait malheureusement une boucle infinie, réglée grâce à l'usage d'un state indépendant
 	const [timeValues, setTimeValues] = useState<{ ante: number; post: number }>({
 		ante: 0,
 		post: 0,
@@ -55,10 +54,11 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		// sinon on met à jour le state et on charge les points
 		setTimeValues({ ante: e.maxValue, post: e.minValue });
 		try {
-			const points = await getAllPointsByMapId(
-				(mapInfos as MapInfoType).id as string,
-				{ ante: e.maxValue, post: e.minValue },
-			);
+			const mapId = mapInfos ? mapInfos.id : "exploration";
+			const points = await getAllPointsByMapId(mapId, {
+				ante: e.maxValue,
+				post: e.minValue,
+			});
 			setAllPoints(points);
 		} catch (error) {
 			console.error("Erreur lors du chargement des points:", error);
