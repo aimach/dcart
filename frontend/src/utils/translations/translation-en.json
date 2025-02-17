@@ -31,7 +31,9 @@
 		"between": "between",
 		"and": "and",
 		"or": "OR",
-		"unknownDate": "no date"
+		"unknownDate": "no date",
+		"greek": "Greek",
+		"semitic": "Semitic"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",

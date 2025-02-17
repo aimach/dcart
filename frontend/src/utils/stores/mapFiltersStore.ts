@@ -18,6 +18,8 @@ const emptyUserFilters: UserFilterType = {
 	elementId: undefined,
 	locationType: undefined,
 	locationId: undefined,
+	greek: true,
+	semitic: true,
 };
 
 export const useMapFiltersStore = create<State & Action>((set) => ({

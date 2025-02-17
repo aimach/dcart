@@ -86,6 +86,17 @@ const getQueryStringForExcludedElements = (excludedElements: string) => {
 	return ` AND NOT (formule.formule LIKE ANY(ARRAY[${excludedElementsArrayWithBrackets}])) `;
 };
 
+const getQueryStringForLanguage = (language: string, queryLanguage: string) => {
+	if (language === "greek") {
+		return `${queryLanguage} AND SOURCE_LANGUE.id_SOURCE IN (SELECT id_source FROM source_langue WHERE id_langue != 25 GROUP BY id_source) `;
+		// ici on rechercher dans les sources qui n'ont pas la langue grecque mais pourraient avoir d'autres langues (Araméen, Hébreu, etc.)
+	}
+	if (language === "semitic") {
+		return `${queryLanguage} AND SOURCE_LANGUE.ID_LANGUE NOT IN (1, 2, 3, 4, 5, 6, 7, 8, 9, 10, 11, 13, 14, 31, 32) `;
+	}
+	return "";
+};
+
 export {
 	getQueryStringForGodsFilter,
 	getQueryStringForLocalisationFilter,
@@ -93,4 +104,5 @@ export {
 	getQueryStringForDateFilter,
 	getQueryStringForIncludedElements,
 	getQueryStringForExcludedElements,
+	getQueryStringForLanguage,
 };

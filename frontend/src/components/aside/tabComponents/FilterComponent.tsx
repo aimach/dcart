@@ -2,6 +2,8 @@
 import { useContext } from "react";
 // import des composants
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
+import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
+import ElementFilterComponent from "../filterComponents/ElementFilterComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
@@ -9,11 +11,10 @@ import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
+import { useShallow } from "zustand/shallow";
 // import des types
 import type { MapInfoType } from "../../../utils/types/mapTypes";
 import type { UserFilterType } from "../../../utils/types/filterTypes";
-import { useShallow } from "zustand/shallow";
-import ElementFilterComponent from "../filterComponents/ElementFilter";
 
 type OptionType = { value: number; label: string };
 
@@ -82,6 +83,9 @@ const FilterComponent = ({
 								elementOptions={elementOptions}
 							/>
 						);
+					}
+					if (filter.type === "language") {
+						return <LanguageFilterComponent key={filter.id} />;
 					}
 				})}
 			</div>

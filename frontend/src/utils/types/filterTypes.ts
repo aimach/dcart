@@ -9,6 +9,8 @@ type UserFilterType = {
 	elementId?: string;
 	locationType?: string;
 	locationId?: string;
+	greek: boolean;
+	semitic: boolean;
 };
 
 export type { FilterType, UserFilterType };

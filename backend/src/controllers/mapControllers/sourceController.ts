@@ -12,6 +12,7 @@ import {
 	getQueryStringForDateFilter,
 	getQueryStringForIncludedElements,
 	getQueryStringForExcludedElements,
+	getQueryStringForLanguage,
 } from "../../utils/functions/functions";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
@@ -140,6 +141,14 @@ export const sourceController = {
 					);
 				}
 
+				let queryLanguage = "";
+				if (req.query.greek === "false") {
+					queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
+				}
+				if (req.query.semitic === "false") {
+					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
+				}
+
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQueryWithDetails(
 					queryLocalisation,
@@ -149,6 +158,7 @@ export const sourceController = {
 					queryPost,
 					queryIncludedElements,
 					queryExcludedElements,
+					queryLanguage,
 				);
 
 				results = await MapDataSource.query(sqlQuery, [elementNb, divinityNb]);
