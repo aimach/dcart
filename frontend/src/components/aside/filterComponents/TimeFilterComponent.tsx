@@ -55,6 +55,23 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 	return (
 		timeMarkers.ante && (
 			<div className={style.rangeContainer}>
+				<div className={style.formControl}>
+					{inputList.map((input) => (
+						<input
+							key={input}
+							type="number"
+							id={input}
+							value={
+								userFilters[input as keyof UserFilterType] === undefined
+									? (timeMarkers[input as keyof TimeMarkersType] as number)
+									: (userFilters[input as keyof UserFilterType] as number)
+							}
+							readOnly
+							min={timeMarkers.post}
+							max={timeMarkers.ante}
+						/>
+					))}
+				</div>
 				<fieldset className={style.slidersControl}>
 					{inputList.map((input) => (
 						<input
@@ -73,23 +90,6 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 						/>
 					))}
 				</fieldset>
-				<div className={style.formControl}>
-					{inputList.map((input) => (
-						<input
-							key={input}
-							type="number"
-							id={input}
-							value={
-								userFilters[input as keyof UserFilterType] === undefined
-									? (timeMarkers[input as keyof TimeMarkersType] as number)
-									: (userFilters[input as keyof UserFilterType] as number)
-							}
-							readOnly
-							min={timeMarkers.post}
-							max={timeMarkers.ante}
-						/>
-					))}
-				</div>
 			</div>
 		)
 	);

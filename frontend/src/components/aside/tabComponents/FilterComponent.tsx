@@ -18,16 +18,11 @@ import { useShallow } from "zustand/shallow";
 type OptionType = { value: number; label: string };
 
 interface FilterComponentProps {
-	timeMarkers: {
-		post: number;
-		ante: number;
-	};
 	locationOptions: OptionType[];
 	locationLevel: string;
 }
 
 const FilterComponent = ({
-	timeMarkers,
 	locationOptions,
 	locationLevel,
 }: FilterComponentProps) => {
@@ -69,11 +64,6 @@ const FilterComponent = ({
 			{translation[language].mapPage.aside.filters}
 			<div>
 				{mapFilters.map((filter) => {
-					if (filter.type === "time") {
-						return (
-							<TimeFilterComponent key={filter.id} timeMarkers={timeMarkers} />
-						);
-					}
 					if (filter.type === "location") {
 						return (
 							<LocationFilterComponent
