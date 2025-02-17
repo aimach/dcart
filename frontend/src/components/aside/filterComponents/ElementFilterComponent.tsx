@@ -61,6 +61,7 @@ const ElementFilterComponent = ({
 	return (
 		<div>
 			<Select
+				key={userFilters.elementId} // permet d'effectuer un re-render au reset des filtres
 				options={elementOptions}
 				defaultValue={getDefaultValues()}
 				delimiter="|"

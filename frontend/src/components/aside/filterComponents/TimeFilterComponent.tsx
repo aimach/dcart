@@ -73,6 +73,7 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		timeMarkers.ante && (
 			<div className={style.rangeContainer}>
 				<MultiRangeSlider
+					key={userFilters.post} // permet d'effectuer un re-render au reset des filtres
 					min={(mapInfos as MapInfoType).post ?? timeMarkers.post}
 					max={(mapInfos as MapInfoType).ante ?? timeMarkers.ante}
 					step={step}

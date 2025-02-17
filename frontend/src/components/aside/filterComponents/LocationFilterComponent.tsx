@@ -64,6 +64,7 @@ const LocationFilterComponent = ({
 	return (
 		<div>
 			<Select
+				key={userFilters.locationId} // permet d'effectuer un re-render au reset des filtres
 				options={locationOptions}
 				defaultValue={getDefaultValues()}
 				delimiter="|"

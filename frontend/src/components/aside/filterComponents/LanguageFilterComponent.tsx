@@ -34,6 +34,7 @@ const LanguageFilterComponent = () => {
 		<>
 			<div>
 				<input
+					key={userFilters.greek.toString()} // permet d'effectuer un re-render au reset des filtres
 					type="checkbox"
 					id="greek"
 					name="greek"
@@ -46,6 +47,7 @@ const LanguageFilterComponent = () => {
 			</div>
 			<div>
 				<input
+					key={userFilters.semitic.toString()} // permet d'effectuer un re-render au reset des filtres
 					type="checkbox"
 					id="semitic"
 					name="semitic"

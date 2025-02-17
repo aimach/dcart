@@ -69,8 +69,6 @@ const FilterComponent = ({
 		resetUserFilters();
 	};
 
-	console.log(userFilters);
-
 	return mapFilters.length ? (
 		<div className={style.resultContainer}>
 			{translation[language].mapPage.aside.filters}
