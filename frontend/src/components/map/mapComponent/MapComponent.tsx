@@ -71,10 +71,6 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	const bounds: LatLngTuple[] = [];
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		// mettre à jour la modale uniquement si on change de carte thématique
-		if (mapId !== "exploration") {
-			setIsModalOpen(true);
-		}
 		if (allPoints.length) {
 			for (const point of allPoints) {
 				bounds.push([point.latitude, point.longitude]);

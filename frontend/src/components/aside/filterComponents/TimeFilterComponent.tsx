@@ -14,6 +14,7 @@ import type {
 } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./filtersComponent.module.scss";
+import "./timeFilterComponent.css";
 
 interface TimeFilterComponentProps {
 	timeMarkers: TimeMarkersType;
@@ -74,6 +75,7 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 					max={timeMarkers.ante}
 					step={step}
 					stepOnly
+					baseClassName={"multi-range-slider-custom"}
 					minValue={
 						userFilters.post === undefined
 							? (timeMarkers.post as number)
