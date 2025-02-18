@@ -37,8 +37,15 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 	const [dataLoaded, setDataLoaded] = useState(false);
 
 	// on récupère les données du formulaire
-	const { mapInfos, setMapInfos, step, incrementStep, decrementStep } =
-		useMapFormStore(useShallow((state) => state));
+	const {
+		mapInfos,
+		setMapInfos,
+		step,
+		incrementStep,
+		decrementStep,
+		visualReady,
+		setVisualReady,
+	} = useMapFormStore(useShallow((state) => state));
 
 	// on gère le formulaire
 	const {
@@ -53,6 +60,7 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 	// on initie le chargement du visuel
 	const loadVisualContent = (values: MapInfoType) => {
 		setMapInfos({ ...mapInfos, ...values });
+		setVisualReady(true);
 	};
 
 	// on initie la soumission du formulaire

@@ -10,6 +10,7 @@ type State = {
 	mapInfos: MapInfoType | null;
 	allPoints: PointType[];
 	mapReady: boolean;
+	visualReady: boolean;
 };
 
 type Action = {
@@ -21,6 +22,7 @@ type Action = {
 	resetMapInfos: () => void;
 	setAllPoints: (allPoints: PointType[]) => void;
 	setMapReady: (mapReady: boolean) => void;
+	setVisualReady: (visualReady: boolean) => void;
 };
 
 export const useMapFormStore = create<State & Action>((set) => ({
@@ -37,4 +39,6 @@ export const useMapFormStore = create<State & Action>((set) => ({
 	setAllPoints: (allPoints) => set(() => ({ allPoints })),
 	mapReady: false,
 	setMapReady: (mapReady) => set(() => ({ mapReady })),
+	visualReady: false,
+	setVisualReady: (visualReady) => set(() => ({ visualReady })),
 }));

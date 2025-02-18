@@ -34,16 +34,13 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 	// on définit le centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
-	// on récupère le fond de carte
-	const { tileLayerURL } = useMapStore((state) => state);
-
 	// on gère l'affichage de la modale
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
 	// on récupère les informations du context
 	const { translation, language } = useContext(TranslationContext);
 
-	const { map, setMap, mapInfos, allPoints, mapReady } = useMapFormStore(
+	const { map, setMap, mapInfos, allPoints, visualReady } = useMapFormStore(
 		useShallow((state) => state),
 	);
 
@@ -66,7 +63,7 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 		}
 	}, [allPoints]);
 
-	return (
+	return visualReady ? (
 		<>
 			{/* {!mapReady && <LoaderComponent size={50} />} */}
 			<div className="map" id="map">
@@ -114,6 +111,8 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 				</section>
 			</div>
 		</>
+	) : (
+		<div className={style.visualPreload}>Le visuel apparaîtra ici</div>
 	);
 };
 

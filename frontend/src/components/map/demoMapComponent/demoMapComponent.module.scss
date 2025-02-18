@@ -34,3 +34,13 @@
         width: 70%;
     }
 }
+
+
+.visualPreload {
+    width: 50%;
+    right: 0;
+    height: 100%;
+    border: v.$border-width-xl dashed v.$color-neutral-60;
+    color: v.$color-neutral-60;
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
+}
