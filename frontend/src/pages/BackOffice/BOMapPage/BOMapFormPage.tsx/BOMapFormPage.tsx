@@ -1,6 +1,7 @@
 // import des bibliothèques
 // import des composants
 import CommonForm from "../../../../components/form/mapForm/commonForm/CommonForm";
+import { mapInputs } from "../../../../utils/forms/mapInputArray";
 // import du context
 // import des services
 // import des types
@@ -11,7 +12,7 @@ const BOMapFormPage = () => {
 		<div>
 			<CommonForm
 				onSubmit={() => console.log("coucou")}
-				inputs={[]}
+				inputs={mapInputs}
 				defaultValues={undefined}
 			/>
 		</div>

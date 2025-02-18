@@ -155,6 +155,7 @@ const mapInputs: InputType[] = [
 		label_en: "Map category",
 		name: "categoryId",
 		type: "select",
+		options: [{ value: "0", label: "Choisir une catégorie" }],
 		required: {
 			value: false,
 		},

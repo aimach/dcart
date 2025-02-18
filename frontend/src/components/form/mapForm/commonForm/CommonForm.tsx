@@ -1,17 +1,21 @@
 // import des bibliothèques
-import { useRef } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { useContext, useEffect, useState } from "react";
+import { useForm } from "react-hook-form";
 // import des composants
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du context
+import { TranslationContext } from "../../../../context/TranslationContext";
 // import des services
+import { getAllCategories } from "../../../../utils/loaders/loaders";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type { InputType } from "../../../../utils/types/formTypes";
+import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./commonForm.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
+import { CategoryType } from "../../../../utils/types/mapTypes";
 
 type allInputsType = any;
 
@@ -22,6 +26,12 @@ type CommonFormProps = {
 };
 
 const CommonForm = ({ onSubmit, inputs, defaultValues }: CommonFormProps) => {
+	// on récupère la langue
+	const { language } = useContext(TranslationContext);
+
+	// on prépare un state pour le chargement des données
+	const [dataLoaded, setDataLoaded] = useState(false);
+
 	// on gère le formulaire
 	const {
 		control,
@@ -32,57 +42,105 @@ const CommonForm = ({ onSubmit, inputs, defaultValues }: CommonFormProps) => {
 		defaultValues: defaultValues ?? {},
 	});
 
-	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className={style.commonFormContainer}
-		>
-			{inputs.map((input) => {
-				if (input.type === "select") {
-					return (
-						<div key={input.name} className={style.commonFormInputContainer}>
-							<label htmlFor={input.name}>{input.label}</label>
-							<select
-								{...register(input.name as keyof allInputsType, {
-									required: input.required.value,
-								})}
-							>
-								{input.options?.map((option) => (
-									<option key={option.value} value={option.value}>
-										{option.label}
-									</option>
-								))}
-							</select>
-
-							{errors[input.name as keyof allInputsType] && (
-								<ErrorComponent message={input.required.message as string} />
-							)}
-						</div>
-					);
+	// CATEGORIES : on ajoute les options à l'objet input
+	const getCategoryOptions = async () => {
+		try {
+			const allCategories = await getAllCategories();
+			const formatedCategoryOptions: OptionType[] = allCategories.map(
+				(category: CategoryType) => ({
+					value: category.id,
+					label: category[`name_${language}`],
+				}),
+			);
+			for (const input of inputs) {
+				if (input.name === "categoryId") {
+					input.options = formatedCategoryOptions;
 				}
-				if (input.type === "text") {
-					return (
-						<div key={input.name} className={style.commonFormInputContainer}>
-							<label htmlFor={input.name}>{input.label}</label>
-							<input
-								{...register(input.name as keyof storymapInputsType, {
-									required: input.required.value,
-								})}
-							/>
+			}
+			setDataLoaded(true);
+		} catch (error) {
+			console.error("Erreur lors du chargement des localités:", error);
+		}
+	};
 
-							{input.required.value &&
-								errors[input.name as keyof allInputsType] && (
+	useEffect(() => {
+		getCategoryOptions();
+	}, [language]);
+
+	return (
+		dataLoaded && (
+			<form
+				onSubmit={handleSubmit(onSubmit)}
+				className={style.commonFormContainer}
+			>
+				{inputs.map((input) => {
+					if (input.type === "select") {
+						return (
+							<div key={input.name} className={style.commonFormInputContainer}>
+								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<select
+									{...register(input.name, {
+										required: input.required.value,
+									})}
+								>
+									{input.options?.map((option) => {
+										console.log(option);
+										return (
+											<option key={option.value} value={option.value}>
+												{option.label}
+											</option>
+										);
+									})}
+								</select>
+
+								{errors[input.name] && (
+									<ErrorComponent
+										message={input.required.message[language] as string}
+									/>
+								)}
+							</div>
+						);
+					}
+					if (input.type === "text") {
+						return (
+							<div key={input.name} className={style.commonFormInputContainer}>
+								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<input
+									{...register(input.name, {
+										required: input.required.value,
+									})}
+								/>
+
+								{input.required.value && errors[input.name] && (
 									<ErrorComponent message={input.required.message as string} />
 								)}
-						</div>
-					);
-				}
-			})}
+							</div>
+						);
+					}
+					if (input.type === "number") {
+						return (
+							<div key={input.name} className={style.commonFormInputContainer}>
+								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<input
+									type="number"
+									{...register(input.name, {
+										required: input.required.value,
+									})}
+								/>
 
-			<button type="submit">
-				Suivant <ChevronRight />
-			</button>
-		</form>
+								{input.required.value && errors[input.name] && (
+									<ErrorComponent message={input.required.message as string} />
+								)}
+							</div>
+						);
+					}
+				})}
+
+				<button type="submit">
+					Suivant <ChevronRight />
+				</button>
+			</form>
+		)
 	);
 };
 

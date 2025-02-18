@@ -22,6 +22,7 @@ import type {
 	GreatRegionType,
 	DivinityType,
 } from "../../../utils/types/mapTypes";
+import type { OptionType } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./asideMainComponent.module.scss";
 
@@ -29,8 +30,6 @@ interface AsideMainComponentProps {
 	results: PointType[];
 	mapId: string;
 }
-
-type OptionType = { value: number; label: string };
 
 const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// on récupère les données de la langue

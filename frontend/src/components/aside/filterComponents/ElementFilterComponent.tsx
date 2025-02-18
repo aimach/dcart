@@ -8,8 +8,7 @@ import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
 // import des types
 import type { MultiValue } from "react-select";
-
-type OptionType = { value: number; label: string };
+import type { OptionType } from "../../../utils/types/commonTypes";
 
 interface ElementFilterComponentProps {
 	elementOptions: OptionType[];
