@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useState } from "react";
+import { useContext } from "react";
 // import des composants
 import SourceDetailsComponent from "./SourceDetailsComponent";
 import ChartComponent from "./ChartComponent";
@@ -7,7 +7,6 @@ import ChartComponent from "./ChartComponent";
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
-
 // import du style
 import style from "./tabComponent.module.scss";
 
@@ -17,7 +16,7 @@ interface InfoComponentProps {
 	mapId: string;
 }
 
-const InfoComponent = ({ point, isSelected, mapId }: InfoComponentProps) => {
+const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
 	// on récupère le language
 	const { language } = useContext(TranslationContext);
 

@@ -1,0 +1,191 @@
+.multi-range-slider-custom * {
+	box-sizing: border-box;
+	padding: 0px;
+	margin: 0px;
+}
+
+.multi-range-slider-custom {
+	display: flex;
+	position: relative;
+	padding: 20px 10px;
+	flex-direction: column;
+	-webkit-touch-callout: none;
+	/* iOS Safari */
+	-webkit-user-select: none;
+	/* Safari */
+	-khtml-user-select: none;
+	/* Konqueror HTML */
+	-moz-user-select: none;
+	/* Old versions of Firefox */
+	-ms-user-select: none;
+	/* Internet Explorer/Edge */
+	user-select: none;
+	/* Non-prefixed version, currently supported by Chrome, Edge,*/
+}
+
+.multi-range-slider-custom .bar {
+	display: flex;
+}
+
+.multi-range-slider-custom .bar-left {
+	width: 25%;
+	background-color: #ded6ce;
+	border-radius: 10px 0px 0px 10px;
+	padding: 4px 0px;
+}
+
+.multi-range-slider-custom .bar-right {
+	width: 25%;
+	background-color: #ded6ce;
+	border-radius: 0px 10px 10px 0px;
+}
+
+.multi-range-slider-custom .bar-inner {
+	background-color: #6e5c49;
+	display: flex;
+	flex-grow: 1;
+	flex-shrink: 1;
+	justify-content: space-between;
+	position: relative;
+	border: solid 1px black;
+	justify-content: space-between;
+}
+
+.multi-range-slider-custom .bar-inner-left {
+	width: 50%;
+}
+
+.multi-range-slider-custom .bar-inner-right {
+	width: 50%;
+}
+
+.multi-range-slider-custom .thumb {
+	background-color: white;
+	position: relative;
+	z-index: 1;
+	cursor: pointer;
+}
+
+.multi-range-slider-custom .thumb::before {
+	content: "";
+	background-color: inherit;
+	position: absolute;
+	width: 20px;
+	height: 20px;
+	border: solid 1px black;
+	border-radius: 50%;
+	z-index: 1;
+	margin: -8px -12px;
+	cursor: pointer;
+}
+
+.multi-range-slider-custom .input-type-range:focus + .thumb::after {
+	content: "";
+	position: absolute;
+	top: -4px;
+	left: -7px;
+	width: 11px;
+	height: 11px;
+	z-index: 2;
+	border-radius: 50%;
+	border: dotted 1px black;
+}
+
+.multi-range-slider-custom .caption {
+	position: absolute;
+	bottom: 35px;
+	width: 2px;
+	height: 2px;
+	left: 1px;
+	display: flex;
+	justify-content: center;
+	align-items: center;
+	overflow: visible;
+	display: none;
+}
+
+.multi-range-slider-custom .thumb .caption * {
+	display: none;
+}
+
+.multi-range-slider-custom .input-type-range:focus + .thumb .caption {
+	display: flex;
+}
+
+.multi-range-slider-custom .input-type-range {
+	position: absolute;
+	top: 0px;
+	left: 0px;
+	width: 100%;
+	opacity: 0;
+	pointer-events: none;
+}
+
+.multi-range-slider-custom .ruler {
+	margin: 10px 0px -5px 0px;
+	display: flex;
+	/* display: none; */
+	overflow: hidden;
+}
+
+.multi-range-slider-custom .ruler .ruler-rule {
+	border-left: solid 1px;
+	border-bottom: solid 1px;
+	display: flex;
+	flex-grow: 1;
+	flex-shrink: 1;
+	padding: 5px 0px;
+}
+
+.multi-range-slider-custom .ruler .ruler-rule:last-child {
+	border-right: solid 1px;
+}
+
+.multi-range-slider-custom .ruler .ruler-sub-rule {
+	border-left: solid 1px;
+	/* border-bottom: solid 1px; */
+	display: flex;
+	flex-grow: 1;
+	flex-shrink: 1;
+	padding: 3px 0px;
+	bottom: 0px;
+	margin-bottom: -5px;
+}
+
+.multi-range-slider-custom .ruler .ruler-sub-rule:first-child {
+	border-left: none;
+}
+
+.multi-range-slider-custom .labels {
+	display: flex;
+	justify-content: space-between;
+	padding: 0px;
+	margin-top: 10px;
+	margin-bottom: -20px;
+	/* display: none; */
+}
+
+.multi-range-slider-custom .label {
+	font-size: 80%;
+	display: flex;
+	width: 1px;
+	justify-content: center;
+}
+
+.multi-range-slider-custom .label:first-child {
+	justify-content: start;
+}
+
+.multi-range-slider-custom .label:last-child {
+	justify-content: end;
+}
+
+.multi-range-slider-custom.zero-ranage-margin .thumb-left {
+	right: 12px;
+}
+
+.multi-range-slider-custom.zero-ranage-margin .thumb-right {
+	left: 8px;
+}
+
+/* NB : le style pour disabled a été retiré */

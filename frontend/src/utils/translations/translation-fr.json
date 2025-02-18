@@ -31,7 +31,9 @@
 		"between": "entre",
 		"and": "et",
 		"or": "OU",
-		"unknownDate": "sans date"
+		"unknownDate": "sans date",
+		"greek": "Grec",
+		"semitic": "Sémitique"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de la région de",
@@ -50,6 +52,7 @@
 			"epithet": "Epithète",
 			"noFilter": "Pas de filtre défini",
 			"searchForLocation": "Rechercher un lieu...",
+			"searchForElement": "Rechercher un element...",
 			"noSelectedMarker": "Sélectionner un point pour voir les détails",
 			"transliteration": "Translittération",
 			"restitution": "Restitution",

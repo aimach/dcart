@@ -31,7 +31,9 @@
 		"between": "between",
 		"and": "and",
 		"or": "OR",
-		"unknownDate": "no date"
+		"unknownDate": "no date",
+		"greek": "Greek",
+		"semitic": "Semitic"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
@@ -50,6 +52,7 @@
 			"epithet": "Epithet",
 			"noFilter": "No filter defined",
 			"searchForLocation": "Search for a location...",
+			"searchForElement": "Search for an element...",
 			"noSelectedMarker": "Select a marker to see details",
 			"transliteration": "Transliteration",
 			"restitution": "Restitution",

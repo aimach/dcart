@@ -34,6 +34,8 @@ type TranslationObject = {
 		and: string;
 		or: string;
 		unknownDate: string;
+		greek: string;
+		semitic: string;
 	};
 	modal: {
 		firstContent: string;
@@ -52,6 +54,7 @@ type TranslationObject = {
 			epithet: string;
 			noFilter: string;
 			searchForLocation: string;
+			searchForElement: string;
 			noSelectedMarker: string;
 			transliteration: string;
 			restitution: string;

@@ -1,5 +1,6 @@
-// import du style
+// import des bibliothèques
 import { Link } from "react-router";
+// import du style
 import style from "./buttonComponent.module.scss";
 
 interface ButtonComponentProps {

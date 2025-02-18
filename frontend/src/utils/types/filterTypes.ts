@@ -6,9 +6,11 @@ type FilterType = {
 type UserFilterType = {
 	ante?: number;
 	post?: number;
-	element?: string;
+	elementId?: string;
 	locationType?: string;
 	locationId?: string;
+	greek: boolean;
+	semitic: boolean;
 };
 
 export type { FilterType, UserFilterType };

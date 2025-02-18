@@ -11,15 +11,13 @@ import type { MultiValue } from "react-select";
 
 type OptionType = { value: number; label: string };
 
-interface LocationFilterComponentProps {
-	locationOptions: OptionType[];
-	locationLevel: string;
+interface ElementFilterComponentProps {
+	elementOptions: OptionType[];
 }
 
-const LocationFilterComponent = ({
-	locationOptions,
-	locationLevel,
-}: LocationFilterComponentProps) => {
+const ElementFilterComponent = ({
+	elementOptions,
+}: ElementFilterComponentProps) => {
 	// on récupère les données de langue
 	const { translation, language } = useContext(TranslationContext);
 
@@ -30,29 +28,28 @@ const LocationFilterComponent = ({
 
 	// on gère les changements du filtre générés par l'utilisateur
 	const onMultiSelectChange = (selectedOptions: MultiValue<OptionType>) => {
-		const locationValuesArray: number[] = [];
+		const elementValuesArray: number[] = [];
 		for (const option of selectedOptions) {
-			locationValuesArray.push(option.value);
+			elementValuesArray.push(option.value);
 		}
-		const locationValuesString = locationValuesArray.join("|");
+		const elementValuesString = elementValuesArray.join("|");
 		setUserFilters({
 			...userFilters,
-			locationType: locationLevel,
-			locationId: locationValuesString,
+			elementId: elementValuesString,
 		});
 	};
 
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = () => {
 		const defaultValues: OptionType[] = [];
-		if (userFilters.locationId) {
-			const locationValuesArray = userFilters.locationId.split("|");
-			for (const locationValue of locationValuesArray) {
-				const locationOption = locationOptions.find(
-					(option) => option.value === Number.parseInt(locationValue, 10),
+		if (userFilters.elementId) {
+			const elementValuesArray = userFilters.elementId.split("|");
+			for (const elementValue of elementValuesArray) {
+				const elementOption = elementOptions.find(
+					(option) => option.value === Number.parseInt(elementValue, 10),
 				);
-				if (locationOption) {
-					defaultValues.push(locationOption);
+				if (elementOption) {
+					defaultValues.push(elementOption);
 				}
 			}
 		}
@@ -63,15 +60,15 @@ const LocationFilterComponent = ({
 		<div>
 			<Select
 				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-				options={locationOptions}
+				options={elementOptions}
 				defaultValue={getDefaultValues()}
 				delimiter="|"
 				isMulti
 				onChange={(newValue) => onMultiSelectChange(newValue)}
-				placeholder={translation[language].mapPage.aside.searchForLocation}
+				placeholder={translation[language].mapPage.aside.searchForElement}
 			/>
 		</div>
 	);
 };
 
-export default LocationFilterComponent;
+export default ElementFilterComponent;

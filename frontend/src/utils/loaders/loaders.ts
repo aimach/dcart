@@ -17,7 +17,7 @@ const getOneMapInfos = async (mapId: string) => {
 		const mapInfos = await response.data;
 		return mapInfos;
 	}
-	return null;
+	return "exploration";
 };
 
 // récupérer toutes les sources d'une carte

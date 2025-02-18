@@ -142,6 +142,7 @@ export const getSourcesQueryWithDetails = (
 	queryPost: string,
 	queryIncludedElements: string,
 	queryExcludedElements: string,
+	queryLanguage: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -258,7 +259,8 @@ AND localisation_source.longitude IS NOT NULL
 AND formule.puissances_divines ${divinityOperator} $2
 AND attestation.id_etat_fiche = 4 
 ${queryLocalisation} 
-${queryAnte} ${queryPost} -- ajouter ici le filtre des dates
+${queryLanguage} 
+${queryAnte} ${queryPost} 
 GROUP BY 
   localisation_source.latitude,
 	localisation_source.longitude, 

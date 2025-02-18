@@ -3,8 +3,7 @@
 
 .resultContainer {
   overflow: scroll;
-  height: calc(100vh - v.$main-header-height - v.$map-header-height - v.$aside-header-height);
-
+  height: calc(100vh - v.$main-header-height - v.$aside-header-height - v.$space-xs);
 }
 
 .resultDetails {
@@ -22,7 +21,7 @@
 .selectionDetailsContainer {
   padding: v.$space-s 0 0 0;
   overflow: scroll;
-  border-bottom: 1px solid v.$color-neutral-80;
+  height: calc(100vh - v.$main-header-height - v.$aside-header-height - v.$space-xs);
 
   >h4 {
     font-size: v.$font-size-l;
@@ -111,4 +110,8 @@
     gap: v.$space-s;
     margin-top: v.$space-s;
   }
+}
+
+.filterButton {
+  @include m.buttonStyle(v.$color-dark-lava, v.$color-neutral-100);
 }

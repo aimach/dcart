@@ -1,8 +1,9 @@
 // import des bibliothèques
 import { NavLink } from "react-router";
+// import des composants
+import NavItemComponent from "./navItem/NavItemComponent";
 // import des types
 import type { NavList } from "../../utils/types/commonTypes";
-import NavItemComponent from "./navItem/NavItemComponent";
 
 interface NavComponentProps {
 	type: "route" | "list" | "augmented";

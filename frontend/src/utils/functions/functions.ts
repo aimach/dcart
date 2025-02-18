@@ -294,6 +294,39 @@ const getLocationURL = (
 	return routeSegment;
 };
 
+const getAllDatationLabels = (
+	minVal: number | string,
+	maxVal: number | string,
+	step: number,
+) => {
+	const minValNumber =
+		typeof minVal === "string" ? Number.parseInt(minVal, 10) : minVal;
+	const maxValNumber =
+		typeof maxVal === "string" ? Number.parseInt(maxVal, 10) : maxVal;
+
+	const labelsArray = [];
+	for (let i = minValNumber; i <= maxValNumber; i += step) {
+		labelsArray.push(i.toString());
+	}
+	return labelsArray;
+};
+
+const getAllElementsFromPoints = (points: PointType[]) => {
+	const allElements: ElementType[] = [];
+	points.map((point) => {
+		point.sources.map((source) => {
+			source.attestations.map((attestation) => {
+				attestation.elements.map((element) => {
+					if (!allElements.find((el) => el.element_id === element.element_id)) {
+						allElements.push(element);
+					}
+				});
+			});
+		});
+	});
+	return allElements;
+};
+
 export {
 	getBackGroundColorClassName,
 	getSupportAndMaterialSentence,
@@ -304,4 +337,6 @@ export {
 	getAgentGenderLabelsAndNb,
 	getAgentActivityLabelsAndNb,
 	getLocationURL,
+	getAllDatationLabels,
+	getAllElementsFromPoints,
 };

@@ -12,6 +12,7 @@ import {
 	getQueryStringForDateFilter,
 	getQueryStringForIncludedElements,
 	getQueryStringForExcludedElements,
+	getQueryStringForLanguage,
 } from "../../utils/functions/functions";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
@@ -44,7 +45,7 @@ export const sourceController = {
 						)
 					: "";
 				const queryIncludedElements = element
-					? getQueryStringForIncludedElements(element as string)
+					? getQueryStringForIncludedElements(element as string, "")
 					: "";
 
 				// on récupère le texte de la requête SQL
@@ -91,33 +92,52 @@ export const sourceController = {
 						: "";
 				let queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
 				let queryPost = post ? getQueryStringForDateFilter("post", post) : "";
-				const queryIncludedElements = includedElements
-					? getQueryStringForIncludedElements(includedElements)
+				let queryIncludedElements = includedElements
+					? getQueryStringForIncludedElements(includedElements, "")
 					: "";
 				const queryExcludedElements = excludedElements
 					? getQueryStringForExcludedElements(excludedElements)
 					: "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
-				queryLocalisation =
-					req.query.locationType && req.query.locationId
-						? getQueryStringForLocalisationFilter(
-								req.query.locationType as string,
-								req.query.locationId as string,
-							)
-						: queryLocalisation;
-				queryAnte = req.query.ante
-					? getQueryStringForDateFilter(
-							"ante",
-							Number.parseInt(req.query.ante as string, 10),
-						)
-					: queryAnte;
-				queryPost = req.query.post
-					? getQueryStringForDateFilter(
-							"post",
-							Number.parseInt(req.query.post as string, 10),
-						)
-					: "";
+				if (req.query.locationType && req.query.locationId) {
+					queryLocalisation =
+						req.query.locationType && req.query.locationId
+							? getQueryStringForLocalisationFilter(
+									req.query.locationType as string,
+									req.query.locationId as string,
+								)
+							: queryLocalisation;
+				}
+
+				if (req.query.ante) {
+					queryAnte = getQueryStringForDateFilter(
+						"ante",
+						Number.parseInt(req.query.ante as string, 10),
+					);
+				}
+
+				if (req.query.post) {
+					queryPost = getQueryStringForDateFilter(
+						"post",
+						Number.parseInt(req.query.post as string, 10),
+					);
+				}
+
+				if (req.query.elementId) {
+					queryIncludedElements = getQueryStringForIncludedElements(
+						includedElements as string,
+						req.query.elementId as string,
+					);
+				}
+
+				let queryLanguage = "";
+				if (req.query.greek === "false") {
+					queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
+				}
+				if (req.query.semitic === "false") {
+					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
+				}
 
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQueryWithDetails(
@@ -128,6 +148,7 @@ export const sourceController = {
 					queryPost,
 					queryIncludedElements,
 					queryExcludedElements,
+					queryLanguage,
 				);
 
 				results = await MapDataSource.query(sqlQuery, [elementNb, divinityNb]);
@@ -152,8 +173,8 @@ export const sourceController = {
 				"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
 			);
 			const sourceWithAttestations = await MapDataSource.query(sqlQuery, [
-				sourceId,
 				3,
+				sourceId,
 			]);
 
 			res.status(200).json(sourceWithAttestations[0].attestations);
