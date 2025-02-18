@@ -68,6 +68,13 @@ const DemoMapComponent = () => {
 		<>
 			{/* {!mapReady && <LoaderComponent size={50} />} */}
 			<div className="map" id="map">
+				<button
+					type="button"
+					onClick={() => console.log("cliqué")}
+					onKeyUp={() => console.log("cliqué")}
+				>
+					Recharger la carte
+				</button>
 				<section className="leaflet-container">
 					{isModalOpen && (
 						<ModalComponent onClose={() => setIsModalOpen(false)} isDemo={true}>
