@@ -2,7 +2,7 @@
 @use '../../../styles/variable' as v;
 
 .tileLayerChoiceContainer {
-    width: 50%;
+    width: 30%;
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-end, center);
     gap: v.$space-s;
     margin-right: v.$space-s;

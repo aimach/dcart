@@ -25,6 +25,10 @@
   &Loaded {
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
   }
+
+  &Hidden {
+    display: none;
+  }
 }
 
 .toggleButtonContainer {

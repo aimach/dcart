@@ -177,10 +177,12 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 						)}
 					</MapContainer>
 				</section>
-				<section className={style.mapBottomSection}>
-					<TimeFilterComponent timeMarkers={timeMarkers} />
-					<TileLayerChoiceComponent />
-				</section>
+				{mapReady && (
+					<section className={style.mapBottomSection}>
+						<TimeFilterComponent timeMarkers={timeMarkers} />
+						<TileLayerChoiceComponent />
+					</section>
+				)}
 			</div>
 		</>
 	);
