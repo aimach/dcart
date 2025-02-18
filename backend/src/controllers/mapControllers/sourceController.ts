@@ -173,8 +173,8 @@ export const sourceController = {
 				"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
 			);
 			const sourceWithAttestations = await MapDataSource.query(sqlQuery, [
-				sourceId,
 				3,
+				sourceId,
 			]);
 
 			res.status(200).json(sourceWithAttestations[0].attestations);
