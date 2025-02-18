@@ -26,7 +26,7 @@ const LocationFilterComponent = ({
 	const { translation, language } = useContext(TranslationContext);
 
 	// on récupère les données des filtres depuis le store
-	const { userFilters, setUserFilters } = useMapFiltersStore(
+	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
 
@@ -64,7 +64,7 @@ const LocationFilterComponent = ({
 	return (
 		<div>
 			<Select
-				key={userFilters.locationId} // permet d'effectuer un re-render au reset des filtres
+				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 				options={locationOptions}
 				defaultValue={getDefaultValues()}
 				delimiter="|"

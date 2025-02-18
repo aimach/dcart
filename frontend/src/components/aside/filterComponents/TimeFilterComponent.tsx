@@ -8,11 +8,7 @@ import { getAllDatationLabels } from "../../../utils/functions/functions";
 import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
 import { useMapStore } from "../../../utils/stores/mapStore";
 // import des types
-import type {
-	TimeMarkersType,
-	MapInfoType,
-} from "../../../utils/types/mapTypes";
-import type { UserFilterType } from "../../../utils/types/filterTypes";
+import type { TimeMarkersType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./filtersComponent.module.scss";
 import "./timeFilterComponent.css";
@@ -23,9 +19,10 @@ interface TimeFilterComponentProps {
 
 const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 	// on récupère les filtres de l'utilisateur dans le store
-	const { userFilters } = useMapFiltersStore(
+	const { userFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => ({
 			userFilters: state.userFilters,
+			isReset: state.isReset,
 		})),
 	);
 	const { mapInfos, setAllPoints } = useMapStore(
@@ -73,9 +70,14 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		timeMarkers.ante && (
 			<div className={style.rangeContainer}>
 				<MultiRangeSlider
-					key={userFilters.post} // permet d'effectuer un re-render au reset des filtres
-					min={(mapInfos as MapInfoType).post ?? timeMarkers.post}
-					max={(mapInfos as MapInfoType).ante ?? timeMarkers.ante}
+					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
+					min={
+						// si mapInfos existe (ce n'est pas "exploration"), si mapInfos[post/ante] n'est pas null, on prend sa valeur, sinon on prend la valeur la plus haute ou basse de la BDD
+						mapInfos ? (mapInfos.post ?? timeMarkers.post) : timeMarkers.post
+					}
+					max={
+						mapInfos ? (mapInfos.ante ?? timeMarkers.ante) : timeMarkers.ante
+					}
 					step={step}
 					stepOnly
 					baseClassName={"multi-range-slider-custom"}
@@ -90,8 +92,8 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 							: (userFilters.ante as number)
 					}
 					labels={getAllDatationLabels(
-						(mapInfos as MapInfoType).post ?? timeMarkers.post,
-						(mapInfos as MapInfoType).ante ?? timeMarkers.ante,
+						mapInfos ? (mapInfos.post ?? timeMarkers.post) : timeMarkers.post,
+						mapInfos ? (mapInfos.ante ?? timeMarkers.ante) : timeMarkers.ante,
 						step,
 					)}
 					onChange={(e) => {

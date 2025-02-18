@@ -16,7 +16,7 @@ const LanguageFilterComponent = () => {
 	const { translation, language } = useContext(TranslationContext);
 
 	// on récupère les données des filtres depuis le store
-	const { userFilters, setUserFilters } = useMapFiltersStore(
+	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
 
@@ -34,7 +34,7 @@ const LanguageFilterComponent = () => {
 		<>
 			<div>
 				<input
-					key={userFilters.greek.toString()} // permet d'effectuer un re-render au reset des filtres
+					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 					type="checkbox"
 					id="greek"
 					name="greek"
@@ -47,7 +47,7 @@ const LanguageFilterComponent = () => {
 			</div>
 			<div>
 				<input
-					key={userFilters.semitic.toString()} // permet d'effectuer un re-render au reset des filtres
+					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 					type="checkbox"
 					id="semitic"
 					name="semitic"

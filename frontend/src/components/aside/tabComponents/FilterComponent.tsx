@@ -36,23 +36,34 @@ const FilterComponent = ({
 
 	// on récupère les données depuis les stores
 	const mapFilters = useMapAsideMenuStore((state) => state.mapFilters);
-	const { userFilters, resetUserFilters } = useMapFiltersStore(
-		useShallow((state) => ({
-			userFilters: state.userFilters,
-			resetUserFilters: state.resetUserFilters,
-		})),
-	);
+	const { userFilters, resetUserFilters, isReset, setIsReset } =
+		useMapFiltersStore(
+			useShallow((state) => ({
+				userFilters: state.userFilters,
+				resetUserFilters: state.resetUserFilters,
+				isReset: state.isReset,
+				setIsReset: state.setIsReset,
+			})),
+		);
 	const { mapInfos, setAllPoints, setMapReady } = useMapStore(
 		useShallow((state) => state),
 	);
 
 	// on créé une fonction de chargements des points de la carte avec filtres
-	const fetchAllPoints = async () => {
+	const fetchAllPoints = async (type: string) => {
 		try {
-			const points = await getAllPointsByMapId(
-				(mapInfos as MapInfoType).id as string,
-				userFilters as UserFilterType,
-			);
+			let points = [];
+			if (type === "filter") {
+				points = await getAllPointsByMapId(
+					(mapInfos as MapInfoType).id as string,
+					userFilters as UserFilterType,
+				);
+			} else if (type === "reset") {
+				points = await getAllPointsByMapId(
+					((mapInfos as MapInfoType).id as string) ?? "exploration",
+					null,
+				);
+			}
 			setAllPoints(points);
 			setMapReady(true);
 		} catch (error) {
@@ -61,12 +72,15 @@ const FilterComponent = ({
 	};
 
 	const handleFilterButton = () => {
-		fetchAllPoints();
+		fetchAllPoints("filter");
 	};
 
 	// on créé une fonction pour gérer le reset des filtres
 	const resetFilters = () => {
 		resetUserFilters();
+		setIsReset(!isReset);
+		// on recharge les points de la carte
+		fetchAllPoints("reset");
 	};
 
 	return mapFilters.length ? (

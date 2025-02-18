@@ -42,6 +42,14 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	// on définit le centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
+	// on récupère les filtres de l'utilisateur dans le store
+	const { userFilters, setUserFilters } = useMapFiltersStore(
+		useShallow((state) => ({
+			userFilters: state.userFilters,
+			setUserFilters: state.setUserFilters,
+		})),
+	);
+
 	// on gère l'affichage de la modale
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
 
@@ -80,14 +88,6 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 			}
 		}
 	}, [allPoints]);
-
-	// on récupère les filtres de l'utilisateur dans le store
-	const { userFilters, setUserFilters } = useMapFiltersStore(
-		useShallow((state) => ({
-			userFilters: state.userFilters,
-			setUserFilters: state.setUserFilters,
-		})),
-	);
 
 	// RECUPERATION DES MARKERS TEMPORELS  POUR LES FILTRES
 	const [timeMarkers, setTimeMarkers] = useState<{
