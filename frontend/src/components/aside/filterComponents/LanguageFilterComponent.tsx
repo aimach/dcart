@@ -1,15 +1,10 @@
 // import des bibliothèques
 import { useContext } from "react";
-// import des composants
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
-
 // import des services
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
-// import des types
-// import du style
-import style from "./filtersComponent.module.scss";
 
 const LanguageFilterComponent = () => {
 	// on récupère les données de langue

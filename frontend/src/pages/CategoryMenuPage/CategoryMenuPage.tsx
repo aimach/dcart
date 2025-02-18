@@ -1,6 +1,5 @@
 // import des bibliothèques
 import { useContext } from "react";
-import { Link } from "react-router";
 // import des composants
 import MapCategoryNav from "../../components/map/mapCategoryNav/MapCategoryNav";
 import TitleAndTextComponent from "../../components/common/titleAndText/TitleAndTextComponent";

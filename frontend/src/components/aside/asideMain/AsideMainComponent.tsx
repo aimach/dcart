@@ -22,7 +22,6 @@ import type {
 	GreatRegionType,
 	DivinityType,
 } from "../../../utils/types/mapTypes";
-
 // import du style
 import style from "./asideMainComponent.module.scss";
 

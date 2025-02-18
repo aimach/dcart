@@ -5,7 +5,6 @@ import { useParams } from "react-router";
 import MapComponent from "../../components/map/mapComponent/MapComponent";
 import AsideContainer from "../../components/aside/asideContainer/AsideContainer";
 import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/AsideReducedMenuComponent";
-import MapMenuNav from "../../components/map/mapMenuNav/MapMenuNav";
 // import des services
 import {
 	getAllPointsByMapId,

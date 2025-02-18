@@ -1,10 +1,12 @@
-// import des types
+// import des bibliothèques
 import { useContext } from "react";
+// import du context
+import { TranslationContext } from "../../../context/TranslationContext";
+// import des types
 import type {
 	DivinityType,
 	GreatRegionType,
 } from "../../../utils/types/mapTypes";
-import { TranslationContext } from "../../../context/TranslationContext";
 
 interface SelectOptionsComponentProps {
 	selectId: string;

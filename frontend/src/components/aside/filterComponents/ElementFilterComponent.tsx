@@ -8,8 +8,6 @@ import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
 // import des types
 import type { MultiValue } from "react-select";
-// import du style
-import style from "./filtersComponent.module.scss";
 
 type OptionType = { value: number; label: string };
 

@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useState } from "react";
+import { useContext } from "react";
 // import des composants
 import NavComponent from "../../common/NavComponent";
 // import du context
@@ -7,11 +7,11 @@ import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useShallow } from "zustand/shallow";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
+import { useMapStore } from "../../../utils/stores/mapStore";
 // import des types
 import type { NavList } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./asideHeader.module.scss";
-import { useMapStore } from "../../../utils/stores/mapStore";
 
 const AsideHeader = () => {
 	// on importe les données de language
