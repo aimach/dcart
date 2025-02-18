@@ -7,40 +7,59 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 import { TranslationContext } from "../../../../context/TranslationContext";
 // import des services
 import { getAllCategories } from "../../../../utils/loaders/loaders";
+import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
+import { useShallow } from "zustand/shallow";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type { InputType } from "../../../../utils/types/formTypes";
 import type { OptionType } from "../../../../utils/types/commonTypes";
+import type {
+	CategoryType,
+	MapInfoType,
+} from "../../../../utils/types/mapTypes";
 // import du style
-import style from "./commonForm.module.scss";
+import style from "./demoCommonForm.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
-import { CategoryType } from "../../../../utils/types/mapTypes";
 
 type allInputsType = any;
 
-type CommonFormProps = {
-	onSubmit: SubmitHandler<any>;
+type DemoCommonFormProps = {
 	inputs: InputType[];
 	defaultValues: any | undefined;
 };
 
-const CommonForm = ({ onSubmit, inputs, defaultValues }: CommonFormProps) => {
+const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 	// on récupère la langue
 	const { language } = useContext(TranslationContext);
 
 	// on prépare un state pour le chargement des données
 	const [dataLoaded, setDataLoaded] = useState(false);
 
+	// on récupère les données du formulaire
+	const { mapInfos, setMapInfos, step, incrementStep } = useMapFormStore(
+		useShallow((state) => state),
+	);
+
 	// on gère le formulaire
 	const {
-		control,
 		register,
 		handleSubmit,
+		getValues,
 		formState: { errors },
 	} = useForm<allInputsType>({
-		defaultValues: defaultValues ?? {},
+		defaultValues: mapInfos ?? {},
 	});
+
+	// on initie le chargement du visuel
+	const loadVisualContent = (values: MapInfoType) => {
+		setMapInfos({ ...mapInfos, ...values });
+	};
+
+	// on initie la soumission du formulaire
+	const onSubmit: SubmitHandler<allInputsType> = (data) => {
+		incrementStep(step);
+	};
 
 	// CATEGORIES : on ajoute les options à l'objet input
 	const getCategoryOptions = async () => {
@@ -52,6 +71,7 @@ const CommonForm = ({ onSubmit, inputs, defaultValues }: CommonFormProps) => {
 					label: category[`name_${language}`],
 				}),
 			);
+
 			for (const input of inputs) {
 				if (input.name === "categoryId") {
 					input.options = formatedCategoryOptions;
@@ -111,7 +131,9 @@ const CommonForm = ({ onSubmit, inputs, defaultValues }: CommonFormProps) => {
 								/>
 
 								{input.required.value && errors[input.name] && (
-									<ErrorComponent message={input.required.message as string} />
+									<ErrorComponent
+										message={input.required.message[language] as string}
+									/>
 								)}
 							</div>
 						);
@@ -128,13 +150,21 @@ const CommonForm = ({ onSubmit, inputs, defaultValues }: CommonFormProps) => {
 								/>
 
 								{input.required.value && errors[input.name] && (
-									<ErrorComponent message={input.required.message as string} />
+									<ErrorComponent
+										message={input.required.message[language] as string}
+									/>
 								)}
 							</div>
 						);
 					}
 				})}
-
+				<button
+					type="button"
+					onClick={() => loadVisualContent(getValues())}
+					onKeyUp={() => loadVisualContent(getValues())}
+				>
+					Charger le visuel
+				</button>
 				<button type="submit">
 					Suivant <ChevronRight />
 				</button>
@@ -143,4 +173,4 @@ const CommonForm = ({ onSubmit, inputs, defaultValues }: CommonFormProps) => {
 	);
 };
 
-export default CommonForm;
+export default DemoCommonForm;
