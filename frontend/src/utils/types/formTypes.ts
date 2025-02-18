@@ -1,11 +1,12 @@
 type InputType = {
-	label: string;
+	label_fr: string;
+	label_en: string;
 	name: string;
 	type: string;
 	options?: { value: string; label: string }[];
 	required: {
 		value: boolean;
-		message?: string;
+		message?: { fr: string; en: string };
 	};
 };
 
