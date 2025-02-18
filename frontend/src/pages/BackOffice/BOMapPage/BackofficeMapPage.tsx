@@ -1,10 +1,14 @@
 // import des bibliothèques
 import { useState, useEffect, useContext } from "react";
+// import des composants
+import ButtonComponent from "../../../components/common/button/ButtonComponent";
 // import des services
 import { getAllMapsInfos } from "../../../utils/loaders/loaders";
 // import des types
 import type { MapType } from "../../../utils/types/mapTypes";
 import { TranslationContext } from "../../../context/TranslationContext";
+// import du style
+import style from "./backofficeMapPage.module.scss";
 
 const BackofficeMapPage = () => {
 	// on récupère la langue
@@ -29,16 +33,23 @@ const BackofficeMapPage = () => {
 	}, []);
 
 	return (
-		<div>
+		<section className={style.backofficeMapPageContainer}>
 			<h2>Gestion des cartes</h2>
-			<section>
+			<ButtonComponent
+				type="route"
+				color="gold"
+				textContent="Créer une carte"
+				link="/backoffice/maps/create"
+			/>
+			<section className={style.mapList}>
+				Liste des cartes :
 				<ul>
 					{allMapsInfos.map((map) => (
-						<li key={map.id}>{`name_${language}`}</li>
+						<li key={map.id}>{map[`name_${language}`]}</li>
 					))}
 				</ul>
 			</section>
-		</div>
+		</section>
 	);
 };
 

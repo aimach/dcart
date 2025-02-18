@@ -13,6 +13,7 @@ import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.ts
 import BackofficeStorymapPage from "./pages/BackOffice/BOStorymapPage/BackofficeStorymapPage.tsx";
 import BackofficeTranslationPage from "./pages/BackOffice/BOTranslationPage/BackofficeTranslationPage.tsx";
 import CategoryMenuPage from "./pages/CategoryMenuPage/CategoryMenuPage.tsx";
+import BOMapFormPage from "./pages/BackOffice/BOMapPage/BOMapFormPage.tsx/BOMapFormPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -41,7 +42,10 @@ if (rootElement) {
 						<Route path="authentification" element={<AuthentificationPage />} />
 						<Route path="backoffice" element={<ProtectedLayout />}>
 							<Route index element={<BOHomePage />} />
-							<Route path="maps" element={<BackofficeMapPage />} />
+							<Route path="maps">
+								<Route index element={<BackofficeMapPage />} />
+								<Route path="create" element={<BOMapFormPage />} />
+							</Route>
 							<Route path="storymaps" element={<BackofficeStorymapPage />} />
 							<Route
 								path="translation"
