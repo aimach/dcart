@@ -32,6 +32,7 @@ import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
+import TileLayerChoiceComponent from "../tileLayerChoice/TileLayerChoiceComponent";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -41,6 +42,9 @@ interface MapComponentProps {
 const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	// on définit le centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];
+
+	// on récupère le fond de carte
+	const { tileLayerURL } = useMapStore((state) => state);
 
 	// on récupère les filtres de l'utilisateur dans le store
 	const { userFilters, setUserFilters } = useMapFiltersStore(
@@ -151,7 +155,7 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 								<TileLayer
 									opacity={0.8}
 									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-									url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
+									url={tileLayerURL}
 								/>
 								{allPoints.length ? (
 									allPoints.map((point: PointType) => {
@@ -173,7 +177,12 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 						)}
 					</MapContainer>
 				</section>
-				<TimeFilterComponent timeMarkers={timeMarkers} />
+				{mapReady && (
+					<section className={style.mapBottomSection}>
+						<TimeFilterComponent timeMarkers={timeMarkers} />
+						<TileLayerChoiceComponent />
+					</section>
+				)}
 			</div>
 		</>
 	);
