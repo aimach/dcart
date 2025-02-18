@@ -37,9 +37,8 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 	const [dataLoaded, setDataLoaded] = useState(false);
 
 	// on récupère les données du formulaire
-	const { mapInfos, setMapInfos, step, incrementStep } = useMapFormStore(
-		useShallow((state) => state),
-	);
+	const { mapInfos, setMapInfos, step, incrementStep, decrementStep } =
+		useMapFormStore(useShallow((state) => state));
 
 	// on gère le formulaire
 	const {
@@ -57,7 +56,7 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 	};
 
 	// on initie la soumission du formulaire
-	const onSubmit: SubmitHandler<allInputsType> = (data) => {
+	const onSubmit: SubmitHandler<allInputsType> = () => {
 		incrementStep(step);
 	};
 
@@ -165,6 +164,16 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 				>
 					Charger le visuel
 				</button>
+				{step > 1 && (
+					<button
+						type="button"
+						onClick={() => decrementStep(step)}
+						onKeyUp={() => decrementStep(step)}
+					>
+						Précédent
+					</button>
+				)}
+
 				<button type="submit">
 					Suivant <ChevronRight />
 				</button>

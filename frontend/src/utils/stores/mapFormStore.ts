@@ -14,6 +14,7 @@ type State = {
 
 type Action = {
 	incrementStep: (step: number) => void;
+	decrementStep: (step: number) => void;
 	setMap: (map: LeafletMap | null) => void;
 	setMapInfos: (mapInfo: MapInfoType | null) => void;
 	setAllPoints: (allPoints: PointType[]) => void;
@@ -23,6 +24,7 @@ type Action = {
 export const useMapFormStore = create<State & Action>((set) => ({
 	step: 1,
 	incrementStep: (step) => set(() => ({ step: step + 1 })),
+	decrementStep: (step) => set(() => ({ step: step - 1 })),
 	map: null,
 	setMap: (map) => set(() => ({ map })),
 	mapInfos: null,

@@ -13,7 +13,6 @@ type ErrorComponentProps = {
 };
 
 const ErrorComponent = ({ message }: ErrorComponentProps) => {
-	console.log(message);
 	return (
 		<span className={style.error}>
 			<CircleAlert />
