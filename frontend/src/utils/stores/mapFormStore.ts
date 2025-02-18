@@ -5,6 +5,7 @@ import type { Map as LeafletMap } from "leaflet";
 import type { MapInfoType, PointType } from "../types/mapTypes";
 
 type State = {
+	step: number;
 	map: LeafletMap | null;
 	mapInfos: MapInfoType | null;
 	allPoints: PointType[];
@@ -12,6 +13,7 @@ type State = {
 };
 
 type Action = {
+	setStep: (step: number) => void;
 	setMap: (map: LeafletMap | null) => void;
 	setMapInfos: (mapInfo: MapInfoType | null) => void;
 	setAllPoints: (allPoints: PointType[]) => void;
@@ -19,6 +21,8 @@ type Action = {
 };
 
 export const useMapFormStore = create<State & Action>((set) => ({
+	step: 1,
+	setStep: (step) => set(() => ({ step: step + 1 })),
 	map: null,
 	setMap: (map) => set(() => ({ map })),
 	mapInfos: null,

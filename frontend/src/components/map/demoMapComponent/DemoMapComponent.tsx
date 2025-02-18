@@ -8,10 +8,8 @@ import {
 } from "react-leaflet";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
-import LoaderComponent from "../../common/loader/LoaderComponent";
 import ModalComponent from "../../modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
-import ResetControl from "../controls/ResetControlComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
@@ -28,7 +26,11 @@ import "./demoMapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
 
-const DemoMapComponent = () => {
+interface DemoMapComponentProps {
+	showModal: boolean;
+}
+
+const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 	// on définit le centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
@@ -76,7 +78,7 @@ const DemoMapComponent = () => {
 					Recharger la carte
 				</button>
 				<section className="leaflet-container">
-					{isModalOpen && (
+					{showModal && isModalOpen && (
 						<ModalComponent onClose={() => setIsModalOpen(false)} isDemo={true}>
 							{mapInfos && (
 								<div className={style.modalContent}>
