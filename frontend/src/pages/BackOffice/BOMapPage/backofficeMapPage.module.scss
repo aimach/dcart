@@ -5,3 +5,20 @@
     @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
     gap: v.$space-xl;
 }
+
+.BOmapFormPageContainer {
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-start, flex-start);
+    height: calc(100vh - v.$main-header-height);
+
+    >div:first-child {
+        width: 50%;
+        height: 100%;
+        border-right: 1px solid grey;
+        overflow-y: scroll;
+    }
+
+    >div {
+        width: 50%;
+        right: 0;
+    }
+}

@@ -19,7 +19,7 @@ import style from "./markerComponent.module.scss";
 
 interface MarkerComponentProps {
 	point: PointType;
-	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
+	setPanelDisplayed?: Dispatch<SetStateAction<boolean>>;
 }
 
 const MarkerComponent = ({
@@ -64,7 +64,7 @@ const MarkerComponent = ({
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
 		// on passe dans l'onglet "infos"
 		setSelectedTabMenu("infos");
-		setPanelDisplayed(true);
+		setPanelDisplayed?.(true);
 		// on zoom sur le marker
 		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
 		setSelectedMarker(point);

@@ -83,7 +83,7 @@ const getAllCategoriesWithMapsInfos = async () => {
 
 // récupérer toutes les cartes d'une catégorie
 const getAllMapsInfosFromCategoryId = async (categoryId: string) => {
-	const response = await apiClient.get(`/dcart/categories/${categoryId}`);
+	const response = await apiClient.get(`/dcart/categories/${categoryId}/maps`);
 	const allMaps = await response.data;
 	return allMaps;
 };

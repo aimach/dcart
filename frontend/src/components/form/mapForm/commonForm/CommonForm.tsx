@@ -84,7 +84,6 @@ const CommonForm = ({ onSubmit, inputs, defaultValues }: CommonFormProps) => {
 									})}
 								>
 									{input.options?.map((option) => {
-										console.log(option);
 										return (
 											<option key={option.value} value={option.value}>
 												{option.label}
