@@ -11,6 +11,7 @@ type State = {
 	selectedMarker: PointType | undefined;
 	includedElementId: string | undefined;
 	mapReady: boolean;
+	tileLayerURL: string;
 };
 
 type Action = {
@@ -21,6 +22,8 @@ type Action = {
 	resetSelectedMarker: () => void;
 	setIncludedElementId: (includedElementId: string | undefined) => void;
 	setMapReady: (mapReady: boolean) => void;
+	setTileLayerURL: (tileLayerURL: string) => void;
+	resetTileLayerURL: () => void;
 };
 
 export const useMapStore = create<State & Action>((set) => ({
@@ -38,4 +41,12 @@ export const useMapStore = create<State & Action>((set) => ({
 		set(() => ({ includedElementId })),
 	mapReady: false,
 	setMapReady: (mapReady) => set(() => ({ mapReady })),
+	tileLayerURL:
+		"https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png",
+	setTileLayerURL: (tileLayerURL) => set(() => ({ tileLayerURL })),
+	resetTileLayerURL: () =>
+		set(() => ({
+			tileLayerURL:
+				"https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png",
+		})),
 }));

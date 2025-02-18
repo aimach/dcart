@@ -28,6 +28,7 @@ const MapPage = () => {
 		setIncludedElementId,
 		mapReady,
 		setMapReady,
+		resetTileLayerURL,
 	} = useMapStore(useShallow((state) => state));
 	// on récupère le state pour les filtres
 	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
@@ -72,6 +73,7 @@ const MapPage = () => {
 		setPanelDisplayed(false);
 		fetchMapInfos(mapId as string);
 		fetchAllPoints();
+		resetTileLayerURL();
 	}, [mapId]);
 
 	return (

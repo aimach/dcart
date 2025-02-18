@@ -1,0 +1,27 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.tileLayerChoiceContainer {
+    width: 50%;
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-end, center);
+    gap: v.$space-s;
+    margin-right: v.$space-s;
+}
+
+.tileLayerChoice {
+    width: 70px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s;
+
+    >img {
+        width: 100%;
+        height: 100%;
+        border: 1px solid v.$color-neutral-80;
+        border-radius: v.$border-radius-rounded;
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
+}

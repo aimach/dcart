@@ -25,6 +25,12 @@
         }
 
     }
+}
 
+.mapBottomSection {
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-start, center);
 
+    >div:first-of-type {
+        width: 50%;
+    }
 }
