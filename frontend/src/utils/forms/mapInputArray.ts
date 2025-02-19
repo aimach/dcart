@@ -223,4 +223,111 @@ const firstStepInputs: InputType[] = [
 	},
 ];
 
-export { mapInputs, firstStepInputs };
+const secondStepInputs: InputType[] = [
+	{
+		label_fr: "Nombre d'éléments",
+		label_en: "Elements number",
+		name: "elementNb",
+		type: "number",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Opérateur sur les éléments",
+		label_en: "Element Operator",
+		name: "elementOperator",
+		type: "select",
+		options: [
+			{ value: "=", label: "=" },
+			{ value: ">", label: ">" },
+			{ value: "<", label: "<" },
+			{ value: ">=", label: ">=" },
+			{ value: "<=", label: "<=" },
+		],
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Nombre de puissances divines",
+		label_en: "Divinity number",
+		name: "divinityNb",
+		type: "number",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Opérateur sur les puissances divines",
+		label_en: "Divinity Operator",
+		name: "divinityOperator",
+		type: "select",
+		options: [
+			{ value: "=", label: "=" },
+			{ value: ">", label: ">" },
+			{ value: "<", label: "<" },
+			{ value: ">=", label: ">=" },
+			{ value: "<=", label: "<=" },
+		],
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Elements inclus",
+		label_en: "Included elements",
+		name: "includedElements",
+		type: "asyncSelect",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Elements exclus",
+		label_en: "Excluded elements",
+		name: "excludedElements",
+		type: "asyncSelect",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Type de localisation",
+		label_en: "Location type",
+		name: "locationType",
+		type: "select",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Localisation",
+		label_en: "Location",
+		name: "locationId",
+		type: "select",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Sources avant",
+		label_en: "Sources before",
+		name: "ante",
+		type: "number",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Sources après",
+		label_en: "Sources post",
+		name: "post",
+		type: "number",
+		required: {
+			value: false,
+		},
+	},
+];
+
+export { mapInputs, firstStepInputs, secondStepInputs };
