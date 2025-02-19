@@ -64,7 +64,7 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		}
 	};
 
-	const step = 100;
+	const step = 25;
 
 	return (
 		timeMarkers.ante && (

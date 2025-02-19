@@ -306,7 +306,10 @@ const getAllDatationLabels = (
 
 	const labelsArray = [];
 	for (let i = minValNumber; i <= maxValNumber; i += step) {
-		labelsArray.push(i.toString());
+		if (!(i % 10)) {
+			// si i finit par 0
+			labelsArray.push(i.toString());
+		}
 	}
 	return labelsArray;
 };
