@@ -80,10 +80,9 @@ const SourceDetailsComponent = ({
 					let agentsArray: JSX.Element[] = [];
 					if (attestation.agents?.length) {
 						agentsArray = attestation.agents.map((agentElement: AgentType) => {
-							console.log(agentElement);
 							let agent = "";
-							if (agentElement.designation === "") {
-								agent = translation[language].mapPage.aside.noDesignation;
+							if (agentElement.designation === null) {
+								agent = `(${translation[language].mapPage.aside.noDesignation})`;
 							} else {
 								// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
 								// qu'il correspond au langage choisi
@@ -140,11 +139,11 @@ const SourceDetailsComponent = ({
 									<tr>
 										<th>{translation[language].mapPage.aside.agents}</th>
 										<td>
-											<p>
+											<div>
 												{agentsArray.length > 0
 													? agentsArray
 													: translation[language].mapPage.aside.noAgent}
-											</p>
+											</div>
 										</td>
 									</tr>
 								</tbody>

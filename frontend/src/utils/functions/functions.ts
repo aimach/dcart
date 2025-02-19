@@ -8,7 +8,7 @@ import type {
 	ElementType,
 	MapInfoType,
 } from "../types/mapTypes";
-import type { Map as LeafletMap } from "leaflet";
+import { point, type Map as LeafletMap } from "leaflet";
 
 // utilisée pour définir la couleur du background pour les markers en fonction du nombre de sources
 const getBackGroundColorClassName = (sourcesNb: number) => {
@@ -265,33 +265,28 @@ const getAgentActivityLabelsAndNb = (point: PointType, language: Language) => {
 };
 
 // utilisé pour récupérer l'url des localisations en fonction de la granularité du filtre
-const getLocationURL = (
+const getLocationLevel = (
 	mapInfos: MapInfoType,
 	setLocationLevel: Dispatch<SetStateAction<string>>,
 ) => {
 	const locationType = (mapInfos as MapInfoType).locationType;
-	const locationId = (mapInfos as MapInfoType).locationId;
 
 	// on définit l'url de la requête selon la granularité du filtre de localisation
-	let routeSegment = "";
 	let locationLevel = "";
 
 	switch (locationType) {
 		case null:
-			routeSegment = "regions/all";
 			locationLevel = "greatRegion";
 			break;
 		case "greatRegion":
-			routeSegment = `regions/${locationId}/subRegions`;
 			locationLevel = "subRegion";
 			break;
 		default:
-			routeSegment = "regions/all";
 			locationLevel = "greatRegion";
 			break;
 	}
 	setLocationLevel(locationLevel);
-	return routeSegment;
+	return locationLevel;
 };
 
 const getAllDatationLabels = (
@@ -330,6 +325,26 @@ const getAllElementsFromPoints = (points: PointType[]) => {
 	return allElements;
 };
 
+const getAllLocationsFromPoints = (points: PointType[]) => {
+	const allLocations: { [key: string]: string }[] = [];
+	points.map((point) => {
+		if (
+			allLocations.find((loc) => loc.sous_region_fr === point.sous_region_fr)
+		) {
+			return;
+		}
+		allLocations.push({
+			grande_region_id: point.grande_region_id,
+			grande_region_fr: point.grande_region_fr,
+			grande_region_en: point.grande_region_en,
+			sous_region_id: point.sous_region_id,
+			sous_region_fr: point.sous_region_fr,
+			sous_region_en: point.sous_region_en,
+		});
+	});
+	return allLocations;
+};
+
 export {
 	getBackGroundColorClassName,
 	getSupportAndMaterialSentence,
@@ -339,7 +354,8 @@ export {
 	getEpithetLabelsAndNb,
 	getAgentGenderLabelsAndNb,
 	getAgentActivityLabelsAndNb,
-	getLocationURL,
+	getLocationLevel,
 	getAllDatationLabels,
 	getAllElementsFromPoints,
+	getAllLocationsFromPoints,
 };

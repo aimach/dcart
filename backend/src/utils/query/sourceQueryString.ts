@@ -94,6 +94,10 @@ sources_without_duplicate AS (
 SELECT 
   localisation_source.latitude, 
   localisation_source.longitude,
+  grande_region.id AS grande_region_id,
+  grande_region.nom_fr AS grande_region_fr,
+  grande_region.nom_en AS grande_region_en,
+  sous_region.id AS sous_region_id,
   sous_region.nom_fr AS sous_region_fr,
   sous_region.nom_en AS sous_region_EN,
   localisation_source.nom_ville,
@@ -129,6 +133,10 @@ GROUP BY
   localisation_source.latitude,
 	localisation_source.longitude, 
   localisation_source.nom_ville, 
+  grande_region.id,
+  grande_region.nom_fr,
+  grande_region.nom_en,
+  sous_region.id,
   sous_region.nom_fr, 
   sous_region.nom_en`;
 };
@@ -226,6 +234,10 @@ sources_without_duplicate AS (
 SELECT 
   localisation_source.latitude, 
   localisation_source.longitude,
+  grande_region.id AS grande_region_id,
+  grande_region.nom_fr AS grande_region_fr,
+  grande_region.nom_en AS grande_region_en,
+  sous_region.id AS sous_region_id,
   sous_region.nom_fr AS sous_region_fr,
   sous_region.nom_en AS sous_region_EN,
   localisation_source.nom_ville,
@@ -263,6 +275,10 @@ GROUP BY
   localisation_source.latitude,
 	localisation_source.longitude, 
   localisation_source.nom_ville, 
+  grande_region.id,
+  grande_region.nom_fr,
+  grande_region.nom_en,
+  sous_region.id,
   sous_region.nom_fr, 
   sous_region.nom_en`;
 };
