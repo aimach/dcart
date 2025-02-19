@@ -32,15 +32,9 @@ export const sourceController = {
 				const { locationType, locationId, element, ante, post } = req.query;
 				// on prépare les query des filtres
 				const queryLocalisation = "";
-				const maxValue = ante ? ante : null;
-				const minValue = post ? post : null;
-				console.log({ maxValue, minValue });
 				const queryDatation =
 					ante && post
-						? getQueryStringForDateFilter(
-								maxValue as string,
-								minValue as string,
-							)
+						? getQueryStringForDateFilter(ante as string, post as string)
 						: "";
 				const queryIncludedElements = element
 					? getQueryStringForIncludedElements(element as string, "")
@@ -89,8 +83,7 @@ export const sourceController = {
 						: "";
 				const maxValue = ante ? ante.toString() : null;
 				const minValue = post ? post.toString() : null;
-				let queryDatation =
-					ante && post ? getQueryStringForDateFilter(maxValue, minValue) : "";
+				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
 				let queryIncludedElements = includedElements
 					? getQueryStringForIncludedElements(includedElements, "")
 					: "";
@@ -110,10 +103,9 @@ export const sourceController = {
 				}
 
 				if (req.query.ante || req.query.post) {
-					const maxValue = ante ? ante.toString() : null;
-					const minValue = post ? post.toString() : null;
-					queryDatation =
-						ante && post ? getQueryStringForDateFilter(maxValue, minValue) : "";
+					const maxValue = req.query.ante ? req.query.ante.toString() : null;
+					const minValue = req.query.post ? req.query.post.toString() : null;
+					queryDatation = getQueryStringForDateFilter(maxValue, minValue);
 				}
 
 				if (req.query.elementId) {

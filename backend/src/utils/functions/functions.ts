@@ -49,7 +49,19 @@ const getQueryStringForLanguageFilter = (languages: string) => {
 	}
 };
 
-const getQueryStringForDateFilter = (ante: string, post: string) => {
+const getQueryStringForDateFilter = (
+	ante: string | null,
+	post: string | null,
+) => {
+	if (!ante && !post) {
+		return "";
+	}
+	if (!ante) {
+		return ` and datation.ante_quem >= ${post} `;
+	}
+	if (!post) {
+		return ` and datation.post_quem <= ${ante} `;
+	}
 	return ` and datation.post_quem <= ${ante} and datation.ante_quem >= ${post} `;
 };
 
