@@ -124,11 +124,22 @@ const getEpithetLabelsAndNb = (
 			}
 		}
 	}
-	const labels: string[] = datasAndLabelsArray.map(
-		(data) => Object.keys(data)[0],
+
+	// on trie le tableau par ordre décroissant
+	const sortedDatasAndLabelsArray = [];
+	for (const data of datasAndLabelsArray) {
+		const key = Object.keys(data)[0];
+		const value = Object.values(data)[0];
+		sortedDatasAndLabelsArray.push([key, value]);
+	}
+	sortedDatasAndLabelsArray.sort((a, b) => (b[1] as number) - (a[1] as number));
+
+	// on stocke les valeurs triées dans deux tableaux
+	const labels: string[] = sortedDatasAndLabelsArray.map(
+		(data) => data[0] as string,
 	);
-	const dataSets: number[] = datasAndLabelsArray.map(
-		(data) => Object.values(data)[0],
+	const dataSets: number[] = sortedDatasAndLabelsArray.map(
+		(data) => data[1] as number,
 	);
 
 	return { labels, dataSets };

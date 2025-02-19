@@ -57,8 +57,7 @@
   }
 
   .chartDetails[open] {
-    height: 100%;
-    overflow: scroll;
+    height: 50%;
   }
 }
 
@@ -96,18 +95,17 @@
 }
 
 .chartContainer {
-  height: 300px;
   width: 100%;
   @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, space-between, center);
 
   >div {
-    width: 70%;
     @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
   }
 
   .chartRadio {
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-end, center);
     gap: v.$space-s;
+    width: 100%;
     margin-top: v.$space-s;
   }
 }
