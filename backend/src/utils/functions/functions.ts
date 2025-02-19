@@ -49,14 +49,8 @@ const getQueryStringForLanguageFilter = (languages: string) => {
 	}
 };
 
-const getQueryStringForDateFilter = (type: string, date: number) => {
-	if (type === "ante") {
-		return ` AND DATATION.ANTE_QUEM <= ${date} `;
-	}
-	if (type === "post") {
-		return ` AND DATATION.POST_QUEM >= ${date} `;
-	}
-	return "";
+const getQueryStringForDateFilter = (ante: string, post: string) => {
+	return ` and datation.post_quem <= ${ante} and datation.ante_quem >= ${post} `;
 };
 
 const getQueryStringForIncludedElements = (

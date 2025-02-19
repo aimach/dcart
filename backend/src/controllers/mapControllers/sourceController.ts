@@ -32,18 +32,16 @@ export const sourceController = {
 				const { locationType, locationId, element, ante, post } = req.query;
 				// on prépare les query des filtres
 				const queryLocalisation = "";
-				const queryAnte = ante
-					? getQueryStringForDateFilter(
-							"ante",
-							Number.parseInt(ante as string, 10),
-						)
-					: "";
-				const queryPost = post
-					? getQueryStringForDateFilter(
-							"post",
-							Number.parseInt(post as string, 10),
-						)
-					: "";
+				const maxValue = ante ? ante : null;
+				const minValue = post ? post : null;
+				console.log({ maxValue, minValue });
+				const queryDatation =
+					ante && post
+						? getQueryStringForDateFilter(
+								maxValue as string,
+								minValue as string,
+							)
+						: "";
 				const queryIncludedElements = element
 					? getQueryStringForIncludedElements(element as string, "")
 					: "";
@@ -53,8 +51,7 @@ export const sourceController = {
 					queryLocalisation,
 					"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
 					"=",
-					queryAnte,
-					queryPost,
+					queryDatation,
 					queryIncludedElements,
 					"",
 				);
@@ -90,8 +87,10 @@ export const sourceController = {
 								locationId as string,
 							)
 						: "";
-				let queryAnte = ante ? getQueryStringForDateFilter("ante", ante) : "";
-				let queryPost = post ? getQueryStringForDateFilter("post", post) : "";
+				const maxValue = ante ? ante.toString() : null;
+				const minValue = post ? post.toString() : null;
+				let queryDatation =
+					ante && post ? getQueryStringForDateFilter(maxValue, minValue) : "";
 				let queryIncludedElements = includedElements
 					? getQueryStringForIncludedElements(includedElements, "")
 					: "";
@@ -110,18 +109,11 @@ export const sourceController = {
 							: queryLocalisation;
 				}
 
-				if (req.query.ante) {
-					queryAnte = getQueryStringForDateFilter(
-						"ante",
-						Number.parseInt(req.query.ante as string, 10),
-					);
-				}
-
-				if (req.query.post) {
-					queryPost = getQueryStringForDateFilter(
-						"post",
-						Number.parseInt(req.query.post as string, 10),
-					);
+				if (req.query.ante || req.query.post) {
+					const maxValue = ante ? ante.toString() : null;
+					const minValue = post ? post.toString() : null;
+					queryDatation =
+						ante && post ? getQueryStringForDateFilter(maxValue, minValue) : "";
 				}
 
 				if (req.query.elementId) {
@@ -144,8 +136,7 @@ export const sourceController = {
 					queryLocalisation,
 					elementOperator, // obligé d'intégrer les opérateurs ici, sinon ça plante
 					divinityOperator,
-					queryAnte,
-					queryPost,
+					queryDatation,
 					queryIncludedElements,
 					queryExcludedElements,
 					queryLanguage,

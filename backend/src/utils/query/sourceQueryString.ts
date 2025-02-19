@@ -6,8 +6,7 @@ export const getSourcesQueryWithoutDetails = (
 	queryLocalisation: string,
 	elementOperator: string,
 	divinityOperator: string,
-	queryAnte: string,
-	queryPost: string,
+	queryDatation: string,
 	queryIncludedElements: string,
 	queryExcludedElements: string,
 ) => {
@@ -125,7 +124,7 @@ AND localisation_source.longitude IS NOT NULL
 AND formule.puissances_divines ${divinityOperator} $2
 AND attestation.id_etat_fiche = 4 
 ${queryLocalisation} 
-${queryAnte} ${queryPost} -- ajouter ici le filtre des dates
+${queryDatation} -- ajouter ici le filtre des dates
 GROUP BY 
   localisation_source.latitude,
 	localisation_source.longitude, 
@@ -138,8 +137,7 @@ export const getSourcesQueryWithDetails = (
 	queryLocalisation: string,
 	elementOperator: string,
 	divinityOperator: string,
-	queryAnte: string,
-	queryPost: string,
+	queryDatation: string,
 	queryIncludedElements: string,
 	queryExcludedElements: string,
 	queryLanguage: string,
@@ -260,7 +258,7 @@ AND formule.puissances_divines ${divinityOperator} $2
 AND attestation.id_etat_fiche = 4 
 ${queryLocalisation} 
 ${queryLanguage} 
-${queryAnte} ${queryPost} 
+${queryDatation}
 GROUP BY 
   localisation_source.latitude,
 	localisation_source.longitude, 
