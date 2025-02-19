@@ -101,11 +101,11 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	const fetchTimeMarkers = async () => {
 		try {
 			const newTimeMarkers = await getTimeMarkers();
-			setTimeMarkers(newTimeMarkers);
+			setTimeMarkers({ post: newTimeMarkers.post, ante: 400 }); // l'équipe préfère mettre une date max. fixe
 			const newUserFilters = {
 				...userFilters,
 				post: newTimeMarkers.post,
-				ante: newTimeMarkers.ante,
+				ante: 400, // l'équipe préfère mettre une date max. fixe
 			};
 			setUserFilters(newUserFilters);
 		} catch (error) {
@@ -127,7 +127,10 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 			<div className="map" id="map">
 				<section className="leaflet-container">
 					{isModalOpen && mapInfos && (
-						<ModalComponent onClose={() => setIsModalOpen(false)}>
+						<ModalComponent
+							onClose={() => setIsModalOpen(false)}
+							isDemo={false}
+						>
 							{mapId === "exploration" && (
 								<SearchFormComponent setIsModalOpen={setIsModalOpen} />
 							)}
