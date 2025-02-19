@@ -21,6 +21,7 @@ import style from "./tabComponent.module.scss";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
+	locationLevel: string;
 	elementOptions: OptionType[];
 }
 

@@ -112,7 +112,7 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 			fetchLocationOptions(locationLevel);
 			fetchElementOptions();
 		}
-	}, [mapInfos]);
+	}, [mapInfos, allPoints]);
 
 	// on définit le composant à rendre
 	switch (selectedTabMenu) {
