@@ -80,19 +80,24 @@ const SourceDetailsComponent = ({
 					let agentsArray: JSX.Element[] = [];
 					if (attestation.agents?.length) {
 						agentsArray = attestation.agents.map((agentElement: AgentType) => {
-							// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
-							// qu'il correspond au langage choisi
-							const sanitizedAgent = DOMPurify.sanitize(
-								agentElement.designation,
-							);
-							const sanitizedAgentInSelectedLanguage =
-								sanitizedAgent.split("<br>");
+							console.log(agentElement);
 							let agent = "";
-							if (sanitizedAgentInSelectedLanguage.length > 1) {
-								agent =
-									sanitizedAgentInSelectedLanguage[language === "fr" ? 0 : 1];
+							if (agentElement.designation === "") {
+								agent = translation[language].mapPage.aside.noDesignation;
 							} else {
-								agent = sanitizedAgentInSelectedLanguage[0];
+								// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
+								// qu'il correspond au langage choisi
+								const sanitizedAgent = DOMPurify.sanitize(
+									agentElement.designation,
+								);
+								const sanitizedAgentInSelectedLanguage =
+									sanitizedAgent.split("<br>");
+								if (sanitizedAgentInSelectedLanguage.length > 1) {
+									agent =
+										sanitizedAgentInSelectedLanguage[language === "fr" ? 0 : 1];
+								} else {
+									agent = sanitizedAgentInSelectedLanguage[0];
+								}
 							}
 							return (
 								<p
@@ -110,35 +115,39 @@ const SourceDetailsComponent = ({
 					return (
 						<div key={uuidv4()} className={style.testimoniesInfo}>
 							<table>
-								<tr>
-									<th>Attestation</th>
-									<td>#{attestation.attestation_id}</td>
-								</tr>
-								<tr>
-									<th>{translation[language].mapPage.aside.traduction}</th>
-									<td>{attestation[attestationNameLanguageKey]}</td>
-								</tr>
-								<tr>
-									<th>{translation[language].mapPage.aside.originalVersion}</th>
-									<td>
-										<p
-											// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-											dangerouslySetInnerHTML={{
-												__html: sanitizedRestitution,
-											}}
-										/>
-									</td>
-								</tr>
-								<tr>
-									<th>{translation[language].mapPage.aside.agents}</th>
-									<td>
-										<p>
-											{agentsArray.length > 0
-												? agentsArray
-												: translation[language].mapPage.aside.noAgent}
-										</p>
-									</td>
-								</tr>
+								<tbody>
+									<tr>
+										<th>Attestation</th>
+										<td>#{attestation.attestation_id}</td>
+									</tr>
+									<tr>
+										<th>{translation[language].mapPage.aside.traduction}</th>
+										<td>{attestation[attestationNameLanguageKey]}</td>
+									</tr>
+									<tr>
+										<th>
+											{translation[language].mapPage.aside.originalVersion}
+										</th>
+										<td>
+											<p
+												// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+												dangerouslySetInnerHTML={{
+													__html: sanitizedRestitution,
+												}}
+											/>
+										</td>
+									</tr>
+									<tr>
+										<th>{translation[language].mapPage.aside.agents}</th>
+										<td>
+											<p>
+												{agentsArray.length > 0
+													? agentsArray
+													: translation[language].mapPage.aside.noAgent}
+											</p>
+										</td>
+									</tr>
+								</tbody>
 							</table>
 						</div>
 					);

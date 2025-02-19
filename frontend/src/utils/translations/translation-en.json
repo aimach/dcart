@@ -57,7 +57,8 @@
 			"traduction": "Traduction",
 			"originalVersion": "Original version",
 			"agents": "Agents",
-			"noAgent": "No agent"
+			"noAgent": "No agent",
+			"noDesignation": "No designation"
 		}
 	}
 }

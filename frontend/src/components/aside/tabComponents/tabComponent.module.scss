@@ -85,7 +85,7 @@
       font-weight: v.$font-weight-bold;
     }
 
-    >tr:first-of-type {
+    >tbody>tr:first-of-type {
       background-color: v.$color-grullo-light;
     }
   }

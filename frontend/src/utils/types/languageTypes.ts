@@ -60,6 +60,7 @@ type TranslationObject = {
 			originalVersion: string;
 			agents: string;
 			noAgent: string;
+			noDesignation: string;
 		};
 	};
 };

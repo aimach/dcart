@@ -159,14 +159,14 @@ const getAgentGenderLabelsAndNb = (point: PointType, language: Language) => {
 						// si le tableau des genres est vide, on ajoute un élément "unknown"
 						allAgentsGenderOfPoint.push({
 							nom_en: "Unknown",
-							nom_fr: "Non connu",
+							nom_fr: "Indéterminé",
 						});
 					}
 				}
 			} else {
 				allAgentsGenderOfPoint.push({
-					nom_en: "No agent",
-					nom_fr: "Pas d'agent",
+					nom_en: "Unknown",
+					nom_fr: "Indéterminé",
 				});
 			}
 		});
@@ -222,14 +222,14 @@ const getAgentActivityLabelsAndNb = (point: PointType, language: Language) => {
 					} else {
 						allAgentsActivityOfPoint.push({
 							activite_en: "Unknown",
-							activite_fr: "Non connue",
+							activite_fr: "Indéterminé",
 						});
 					}
 				}
 			} else {
 				allAgentsActivityOfPoint.push({
-					activite_en: "No agent",
-					activite_fr: "Pas d'agent",
+					activite_en: "Unknown",
+					activite_fr: "Indéterminé",
 				});
 			}
 		});
