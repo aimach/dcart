@@ -56,8 +56,8 @@ type TranslationObject = {
 			searchForLocation: string;
 			searchForElement: string;
 			noSelectedMarker: string;
-			transliteration: string;
-			restitution: string;
+			traduction: string;
+			originalVersion: string;
 			agents: string;
 			noAgent: string;
 		};

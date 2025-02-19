@@ -115,11 +115,11 @@ const SourceDetailsComponent = ({
 									<td>#{attestation.attestation_id}</td>
 								</tr>
 								<tr>
-									<th>{translation[language].mapPage.aside.transliteration}</th>
+									<th>{translation[language].mapPage.aside.traduction}</th>
 									<td>{attestation[attestationNameLanguageKey]}</td>
 								</tr>
 								<tr>
-									<th>{translation[language].mapPage.aside.restitution}</th>
+									<th>{translation[language].mapPage.aside.originalVersion}</th>
 									<td>
 										<p
 											// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
