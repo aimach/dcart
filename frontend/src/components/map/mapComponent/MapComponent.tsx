@@ -180,7 +180,7 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 								)}
 								<ZoomControl position="topright" />
 								<ScaleControl position="bottomright" />
-								<ResetControl mapBounds={bounds} />
+								{/* <ResetControl mapBounds={bounds} /> */}
 							</>
 						)}
 					</MapContainer>
