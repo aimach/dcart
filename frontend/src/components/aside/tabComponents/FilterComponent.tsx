@@ -51,6 +51,7 @@ const FilterComponent = ({
 	// on créé une fonction de chargements des points de la carte avec filtres
 	const fetchAllPoints = async (type: string) => {
 		try {
+			setMapReady(false);
 			let points = [];
 			if (type === "filter") {
 				points = await getAllPointsByMapId(

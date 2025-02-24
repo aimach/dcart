@@ -8,7 +8,6 @@ import ProtectedLayout from "./layouts/ProtectedLayout.tsx";
 import AuthentificationPage from "./pages/BackOffice/AuthentificationPage/AuthentificationPage.tsx";
 import BOHomePage from "./pages/BackOffice/BOHomePage/BOHomePage.tsx";
 import MapPage from "./pages/MapPage/MapPage.tsx";
-import MapMenuPage from "./pages/MapMenuPage/MapMenuPage.tsx";
 import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.tsx";
 import BackofficeStorymapPage from "./pages/BackOffice/BOStorymapPage/BackofficeStorymapPage.tsx";
 import BackofficeTranslationPage from "./pages/BackOffice/BOTranslationPage/BackofficeTranslationPage.tsx";
@@ -34,7 +33,6 @@ if (rootElement) {
 							<Route path="maps/categories">
 								<Route index element={<CategoryMenuPage />} />
 								<Route path=":categoryId">
-									<Route index element={<MapMenuPage />} />
 									<Route path="map/:mapId" element={<MapPage />} />
 								</Route>
 							</Route>

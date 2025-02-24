@@ -54,6 +54,8 @@
 			"location": "Location",
 			"element": "Element",
 			"language": "Language",
+			"seeStat": "See statistics",
+			"seeSources": "See sources",
 			"searchForLocation": "Search for a location...",
 			"searchForElement": "Search for an element...",
 			"noSelectedMarker": "Select a marker to see details",
@@ -61,7 +63,7 @@
 			"originalVersion": "Original version",
 			"agents": "Agents",
 			"noAgent": "No agent",
-			"noDesignation": "no designation"
+			"noDesignation": "agent with no designation"
 		}
 	}
 }
