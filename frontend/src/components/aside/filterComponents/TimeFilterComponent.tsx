@@ -12,6 +12,7 @@ import type { TimeMarkersType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./filtersComponent.module.scss";
 import "./timeFilterComponent.css";
+import { set } from "react-hook-form";
 
 interface TimeFilterComponentProps {
 	timeMarkers: TimeMarkersType;
@@ -19,9 +20,10 @@ interface TimeFilterComponentProps {
 
 const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 	// on récupère les filtres de l'utilisateur dans le store
-	const { userFilters, isReset } = useMapFiltersStore(
+	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => ({
 			userFilters: state.userFilters,
+			setUserFilters: state.setUserFilters,
 			isReset: state.isReset,
 		})),
 	);
@@ -37,6 +39,16 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		ante: 0,
 		post: 0,
 	});
+
+	// on change quand même les user filters pour les bornes temporelles
+	const changeUserFilters = (e: {
+		min: number;
+		max: number;
+		minValue: number;
+		maxValue: number;
+	}) => {
+		setUserFilters({ ...userFilters, ante: e.maxValue, post: e.minValue });
+	};
 
 	// on gère le changement des bornes temporelles par l'utilisateur
 	const handleTimeFilter = async (e: {
@@ -64,7 +76,7 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		}
 	};
 
-	const step = 100;
+	const step = 25;
 
 	return (
 		timeMarkers.ante && (
@@ -98,6 +110,7 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 					)}
 					onChange={(e) => {
 						handleTimeFilter(e);
+						changeUserFilters(e);
 					}}
 				/>
 			</div>
