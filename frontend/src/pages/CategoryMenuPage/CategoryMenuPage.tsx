@@ -20,12 +20,12 @@ const CategoryMenuPage = () => {
 					title={translation[language].navigation.explore as string}
 					text={translation[language].mapPage.introduction as string}
 				/>
-				<ButtonComponent
+				{/* <ButtonComponent
 					type="route"
 					color="gold"
 					textContent={translation[language].button.freeExploration as string}
 					link="all/map/exploration"
-				/>
+				/> */}
 			</div>
 			<div className={style.categoryMenuNavContainer}>
 				<MapCategoryNav />
