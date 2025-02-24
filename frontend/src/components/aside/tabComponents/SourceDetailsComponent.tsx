@@ -68,7 +68,6 @@ const SourceDetailsComponent = ({
 			className={style.selectionDetails}
 		>
 			<summary>
-				{" "}
 				Source #{source.source_id} {datationSentence}
 			</summary>
 			{attestations.length ? (

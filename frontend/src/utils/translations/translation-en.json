@@ -14,7 +14,7 @@
 	},
 	"button": {
 		"freeExploration": "Free exploration",
-		"results": "results",
+		"result": "result",
 		"filters": "Filters",
 		"filter": "Filter",
 		"selection": "Selection",

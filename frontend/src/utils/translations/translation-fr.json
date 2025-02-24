@@ -14,7 +14,7 @@
 	},
 	"button": {
 		"freeExploration": "Exploration libre",
-		"results": "résultats",
+		"result": "résultat",
 		"filters": "Filtres",
 		"filter": "Filtrer",
 		"selection": "Sélection",

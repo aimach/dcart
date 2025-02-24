@@ -16,7 +16,7 @@ type TranslationObject = {
 	};
 	button: {
 		freeExploration: string;
-		results: string;
+		result: string;
 		filters: string;
 		filter: string;
 		selection: string;

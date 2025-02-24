@@ -29,7 +29,9 @@ const AsideHeader = () => {
 	const asideNavList: NavList = [
 		{
 			id: "results",
-			title: `${allPoints.length} ${translation[language].button.results}`,
+			title: `${allPoints.length} ${translation[language].button.result}${
+				allPoints.length > 1 ? "s" : ""
+			}`,
 			onClickFunction: () => setSelectedTabMenu("results"),
 			route: undefined,
 		},
