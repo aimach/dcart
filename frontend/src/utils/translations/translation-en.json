@@ -14,7 +14,7 @@
 	},
 	"button": {
 		"freeExploration": "Free exploration",
-		"results": "results",
+		"result": "result",
 		"filters": "Filters",
 		"filter": "Filter",
 		"selection": "Selection",
@@ -51,6 +51,9 @@
 			"sources": "Sources",
 			"epithet": "Epithet",
 			"noFilter": "No filter defined",
+			"location": "Location",
+			"element": "Element",
+			"language": "Language",
 			"searchForLocation": "Search for a location...",
 			"searchForElement": "Search for an element...",
 			"noSelectedMarker": "Select a marker to see details",

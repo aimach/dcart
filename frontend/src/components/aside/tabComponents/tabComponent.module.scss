@@ -30,13 +30,12 @@
 
   .selectionDetails {
     padding: v.$space-s;
-    border-bottom: 1px solid v.$color-neutral-80;
-    cursor: pointer;
+    cursor: default;
 
     >summary {
       list-style-type: '>';
+      cursor: pointer;
     }
-
 
   }
 
@@ -46,14 +45,15 @@
 
   .sourceDetails,
   .chartDetails {
-    border-bottom: 1px solid v.$color-neutral-80;
     padding: v.$space-s;
-    cursor: pointer;
+
+    >summary {
+      cursor: pointer;
+    }
   }
 
-  .sourceDetails[open] {
-    height: 90%;
-    overflow: scroll;
+  .chartDetails {
+    border-bottom: 1px solid v.$color-neutral-80;
   }
 
   .chartDetails[open] {
@@ -110,6 +110,33 @@
   }
 }
 
-.filterButton {
-  @include m.buttonStyle(v.$color-dark-lava, v.$color-neutral-100);
+
+
+.filterContainer {
+  margin: v.$space-xl v.$space-s;
+
+  >h4 {
+    font-size: v.$font-size-l;
+    margin-bottom: v.$space-s;
+  }
+
+  >div {
+    margin-left: v.$space-s;
+  }
+}
+
+
+.filterButtonContainer {
+  margin: v.$space-s;
+  @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
+  gap: v.$space-s;
+
+  .filterButton:first-of-type {
+    @include m.buttonStyle(v.$color-dark-lava, v.$color-neutral-100);
+  }
+
+  .filterButton:last-of-type {
+    @include m.buttonStyle(v.$color-neutral-100, v.$color-dark-lava);
+    border: 1px solid v.$color-dark-lava;
+  }
 }

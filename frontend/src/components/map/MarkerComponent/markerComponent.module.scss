@@ -28,7 +28,12 @@
 }
 
 .selectedBackgroundColor {
-  background-color: #5fa052;
+  background-color: v.$color-grullo-light;
+  border: 2px solid v.$color-dark-lava;
+
+  >div {
+    color: v.$color-black-chocolate !important;
+  }
 }
 
 .invisibleIcon {
