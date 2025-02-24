@@ -26,7 +26,7 @@ const LanguageFilterComponent = () => {
 	}
 
 	return (
-		<>
+		<div>
 			<div>
 				<input
 					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
@@ -53,7 +53,7 @@ const LanguageFilterComponent = () => {
 				/>
 				<label htmlFor="semitic">{translation[language].common.semitic}</label>
 			</div>
-		</>
+		</div>
 	);
 };
 

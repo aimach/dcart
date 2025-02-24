@@ -84,45 +84,57 @@ const FilterComponent = ({
 
 	return mapFilters.length ? (
 		<div className={style.resultContainer}>
-			{translation[language].mapPage.aside.filters}
 			<div>
 				{mapFilters.map((filter) => {
 					if (filter.type === "location") {
 						return (
-							<LocationFilterComponent
-								key={filter.id}
-								locationOptions={locationOptions}
-								locationLevel={locationLevel}
-							/>
+							<div className={style.filterContainer}>
+								<h4>{translation[language].mapPage.aside.location}</h4>
+								<LocationFilterComponent
+									key={filter.id}
+									locationOptions={locationOptions}
+									locationLevel={locationLevel}
+								/>
+							</div>
 						);
 					}
 					if (filter.type === "element") {
 						return (
-							<ElementFilterComponent
-								key={filter.id}
-								elementOptions={elementOptions}
-							/>
+							<div className={style.filterContainer}>
+								<h4>{translation[language].mapPage.aside.element}</h4>
+								<ElementFilterComponent
+									key={filter.id}
+									elementOptions={elementOptions}
+								/>
+							</div>
 						);
 					}
 					if (filter.type === "language") {
-						return <LanguageFilterComponent key={filter.id} />;
+						return (
+							<div className={style.filterContainer}>
+								<h4>{translation[language].mapPage.aside.language}</h4>
+								<LanguageFilterComponent key={filter.id} />
+							</div>
+						);
 					}
 				})}
 			</div>
-			<button
-				className={style.filterButton}
-				type="button"
-				onClick={handleFilterButton}
-			>
-				{translation[language].button.filter}
-			</button>
-			<button
-				className={style.filterButton}
-				type="button"
-				onClick={resetFilters}
-			>
-				{translation[language].button.resetFilter}
-			</button>
+			<div className={style.filterButtonContainer}>
+				<button
+					className={style.filterButton}
+					type="button"
+					onClick={handleFilterButton}
+				>
+					{translation[language].button.filter}
+				</button>
+				<button
+					className={style.filterButton}
+					type="button"
+					onClick={resetFilters}
+				>
+					{translation[language].button.resetFilter}
+				</button>
+			</div>
 		</div>
 	) : (
 		<div>{translation[language].mapPage.aside.noFilter}</div>

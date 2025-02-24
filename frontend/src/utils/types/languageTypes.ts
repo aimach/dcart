@@ -53,6 +53,9 @@ type TranslationObject = {
 			sources: string;
 			epithet: string;
 			noFilter: string;
+			location: string;
+			element: string;
+			language: string;
 			searchForLocation: string;
 			searchForElement: string;
 			noSelectedMarker: string;
