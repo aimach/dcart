@@ -84,8 +84,6 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 		resetUserFilters();
 	}, [isModalOpen]);
 
-	console.log(userFilters);
-
 	// on met à jour les limites de la carte
 	const bounds: LatLngTuple[] = [];
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -163,7 +161,7 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 						{mapReady && (
 							<>
 								<TileLayer
-									opacity={0.8}
+									opacity={0.6}
 									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 									url={tileLayerURL}
 								/>

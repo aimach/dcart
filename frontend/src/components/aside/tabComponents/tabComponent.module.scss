@@ -30,13 +30,12 @@
 
   .selectionDetails {
     padding: v.$space-s;
-    border-bottom: 1px solid v.$color-neutral-80;
-    cursor: pointer;
+    cursor: default;
 
     >summary {
       list-style-type: '>';
+      cursor: pointer;
     }
-
 
   }
 
@@ -46,14 +45,15 @@
 
   .sourceDetails,
   .chartDetails {
-    border-bottom: 1px solid v.$color-neutral-80;
     padding: v.$space-s;
-    cursor: pointer;
+
+    >summary {
+      cursor: pointer;
+    }
   }
 
-  .sourceDetails[open] {
-    height: 90%;
-    overflow: scroll;
+  .chartDetails {
+    border-bottom: 1px solid v.$color-neutral-80;
   }
 
   .chartDetails[open] {
