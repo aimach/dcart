@@ -4,7 +4,8 @@
 .categoryMenu {
   width: 100vw;
   height: calc(100vh - v.$main-header-height);
-  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, space-between, center);
+  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, center);
+  gap: v.$space-xl;
 
   background-image: url('../../assets/map_bg.png');
   background-position-y: 43%;
@@ -17,17 +18,6 @@
   }
 
   &NavContainer {
-    height: 30%;
     @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-end);
-    margin-bottom: v.$font-space-xxxl * 2;
-  }
-
-  &Nav {
-    ul {
-      @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-end);
-      gap: v.$font-space-xxxxl * 2;
-
-
-    }
   }
 }
