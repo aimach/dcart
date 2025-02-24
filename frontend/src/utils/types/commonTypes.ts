@@ -6,4 +6,6 @@ type NavList = {
 	route: undefined | string;
 }[];
 
-export type { NavList };
+type OptionType = { value: number | string; label: string };
+
+export type { NavList, OptionType };

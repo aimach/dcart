@@ -8,20 +8,15 @@ import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
-import {
-	getLocationOptions,
-	getAllDivinities,
-} from "../../../utils/loaders/loaders";
+import { getAllDivinities } from "../../../utils/loaders/loaders";
 import {
 	getAllElementsFromPoints,
-	getLocationURL,
+	getLocationLevel,
+	getAllLocationsFromPoints,
 } from "../../../utils/functions/functions";
 // import des types
-import type {
-	PointType,
-	GreatRegionType,
-	DivinityType,
-} from "../../../utils/types/mapTypes";
+import type { PointType, DivinityType } from "../../../utils/types/mapTypes";
+import type { OptionType } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./asideMainComponent.module.scss";
 
@@ -29,8 +24,6 @@ interface AsideMainComponentProps {
 	results: PointType[];
 	mapId: string;
 }
-
-type OptionType = { value: number; label: string };
 
 const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// on récupère les données de la langue
@@ -49,15 +42,28 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	const [locationOptions, setLocationOptions] = useState<OptionType[]>([]);
 	const [locationLevel, setLocationLevel] = useState<string>("");
 
-	const fetchLocationOptions = async (routeSegment: string) => {
+	const fetchLocationOptions = async (locationLevel: string) => {
 		try {
-			const allLocationOptions = await getLocationOptions(routeSegment);
-			const formatedLocationOptions: OptionType[] = allLocationOptions.map(
-				(option: GreatRegionType) => ({
-					value: option.id,
-					label: option[`nom_${language}`],
-				}),
-			);
+			// on récupère toutes les localités depuis les points de la carte
+			const allLocationsFromPoints: { [key: string]: string }[] =
+				getAllLocationsFromPoints(allPoints);
+			// on récupère la clé du champ en fonction du niveau de localisation (grande région / sous région)
+			const fieldKeyFromLocationLevel =
+				locationLevel === "greatRegion" ? "grande_region" : "sous_region";
+
+			// on prépare les valeurs pour le select
+			const formatedLocationOptions: OptionType[] = allLocationsFromPoints
+				.map((option) => ({
+					value: option[`${fieldKeyFromLocationLevel}_id`],
+					label: option[`${fieldKeyFromLocationLevel}_${language}`],
+				}))
+				.sort((option1, option2) =>
+					option1.label < option2.label
+						? -1
+						: option1.label > option2.label
+							? 1
+							: 0,
+				);
 			setLocationOptions(formatedLocationOptions);
 		} catch (error) {
 			console.error("Erreur lors du chargement des localités:", error);
@@ -102,11 +108,11 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (mapInfos) {
-			const locationURL = getLocationURL(mapInfos, setLocationLevel);
-			fetchLocationOptions(locationURL);
+			const locationLevel = getLocationLevel(mapInfos, setLocationLevel);
+			fetchLocationOptions(locationLevel);
 			fetchElementOptions();
 		}
-	}, [mapInfos]);
+	}, [mapInfos, allPoints]);
 
 	// on définit le composant à rendre
 	switch (selectedTabMenu) {

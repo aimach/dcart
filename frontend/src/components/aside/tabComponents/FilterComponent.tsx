@@ -15,10 +15,9 @@ import { useShallow } from "zustand/shallow";
 // import des types
 import type { MapInfoType } from "../../../utils/types/mapTypes";
 import type { UserFilterType } from "../../../utils/types/filterTypes";
+import type { OptionType } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
-
-type OptionType = { value: number; label: string };
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];

@@ -6,11 +6,12 @@ import style from "./modalComponent.module.scss";
 interface ModalComponentProps {
 	onClose: () => void;
 	children: React.ReactNode;
+	isDemo: boolean;
 }
 
-const ModalComponent = ({ onClose, children }: ModalComponentProps) => {
+const ModalComponent = ({ onClose, children, isDemo }: ModalComponentProps) => {
 	return (
-		<div className={style.modalOverlay}>
+		<div className={isDemo ? style.demoModalOverlay : style.modalOverlay}>
 			<div className={style.modalContent}>
 				<button type="button" className={style.modalClose} onClick={onClose}>
 					&times;

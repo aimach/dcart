@@ -67,16 +67,23 @@ const getTimeMarkers = async () => {
 	return timeMarker;
 };
 
+// récupérer toutes les catégories
+const getAllCategories = async () => {
+	const response = await apiClient.get("/dcart/categories/all");
+	const allCategories = await response.data;
+	return allCategories;
+};
+
 // récupérer toutes les catégories avec les cartes associées
 const getAllCategoriesWithMapsInfos = async () => {
-	const response = await apiClient.get("/dcart/categories/all");
+	const response = await apiClient.get("/dcart/categories/all/maps");
 	const allCategories = await response.data;
 	return allCategories;
 };
 
 // récupérer toutes les cartes d'une catégorie
 const getAllMapsInfosFromCategoryId = async (categoryId: string) => {
-	const response = await apiClient.get(`/dcart/categories/${categoryId}`);
+	const response = await apiClient.get(`/dcart/categories/${categoryId}/maps`);
 	const allMaps = await response.data;
 	return allMaps;
 };
@@ -101,6 +108,7 @@ export {
 	getAllGreatRegions,
 	getAllDivinities,
 	getTimeMarkers,
+	getAllCategories,
 	getAllCategoriesWithMapsInfos,
 	getAllMapsInfosFromCategoryId,
 	getAllAttestationsFromSourceId,

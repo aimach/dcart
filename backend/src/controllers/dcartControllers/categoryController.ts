@@ -7,6 +7,26 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 
 export const categoryController = {
+	getAllCategories: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { categoryId } = req.params;
+			let results = null;
+			if (categoryId === "all") {
+				results = await dcartDataSource.getRepository(Category).find();
+
+				res.status(200).json(results);
+				return;
+			}
+			results = await dcartDataSource
+				.getRepository(Category)
+				.findOneBy({ id: categoryId });
+
+			res.status(200).json(results);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
 	getAllCategoriesWithMaps: async (
 		req: Request,
 		res: Response,

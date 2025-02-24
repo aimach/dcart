@@ -5,4 +5,9 @@ import { dcartControllers } from "../../controllers/dcartControllers";
 
 export const categoryRoutes = express.Router();
 
-categoryRoutes.get("/:categoryId", dcartControllers.getAllCategoriesWithMaps);
+categoryRoutes.get("/:categoryId", dcartControllers.getAllCategories);
+
+categoryRoutes.get(
+	"/:categoryId/maps",
+	dcartControllers.getAllCategoriesWithMaps,
+);

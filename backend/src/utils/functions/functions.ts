@@ -49,14 +49,20 @@ const getQueryStringForLanguageFilter = (languages: string) => {
 	}
 };
 
-const getQueryStringForDateFilter = (type: string, date: number) => {
-	if (type === "ante") {
-		return ` AND DATATION.ANTE_QUEM <= ${date} `;
+const getQueryStringForDateFilter = (
+	ante: string | null,
+	post: string | null,
+) => {
+	if (!ante && !post) {
+		return "";
 	}
-	if (type === "post") {
-		return ` AND DATATION.POST_QUEM >= ${date} `;
+	if (!ante) {
+		return ` and datation.ante_quem >= ${post} `;
 	}
-	return "";
+	if (!post) {
+		return ` and datation.post_quem <= ${ante} `;
+	}
+	return ` and datation.post_quem <= ${ante} and datation.ante_quem >= ${post} `;
 };
 
 const getQueryStringForIncludedElements = (

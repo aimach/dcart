@@ -8,7 +8,6 @@ import {
 	ArcElement,
 	Tooltip,
 	Legend,
-	Colors,
 	Title,
 } from "chart.js";
 import { Doughnut, Bar } from "react-chartjs-2";
@@ -25,6 +24,8 @@ import { useMapStore } from "../../../utils/stores/mapStore";
 import type { PointType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./tabComponent.module.scss";
+// import des icônes
+import { ChartColumnBig, ChartPie } from "lucide-react";
 
 // import des éléments de chart.js
 ChartJS.register(
@@ -34,7 +35,6 @@ ChartJS.register(
 	ArcElement,
 	Tooltip,
 	Legend,
-	Colors,
 	Title,
 );
 
@@ -86,23 +86,25 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 	}, [dataType, point, language, includedElementId]);
 
 	const barOptions = {
-		indexAxis: "y" as const,
+		indexAxis: "x" as const,
 		responsive: true,
 		plugins: {
 			legend: {
 				display: false,
 			},
 			title: {
-				display: true,
-				text: `${point.nom_ville} (${point[`sous_region_${language}`]})`,
+				display: false,
 			},
 			tooltip: {
-				xAlign: "left",
+				xAlign: "center",
 			},
 		},
 		scales: {
-			y: {
+			x: {
 				display: false,
+			},
+			y: {
+				display: true,
 			},
 		},
 	};
@@ -117,17 +119,19 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 				display: false,
 			},
 			title: {
-				display: true,
-				text: `${point.nom_ville} (${point[`sous_region_${language}`]})`,
+				display: false,
 			},
 		},
 	};
+
+	const commonColor = "#AD9A85";
 
 	const finalData = {
 		labels,
 		datasets: [
 			{
 				data: dataSets,
+				backgroundColor: commonColor,
 			},
 		],
 	};
@@ -137,31 +141,16 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 		dataSets.length && (
 			<section className={style.chartContainer}>
 				<fieldset className={style.chartRadio}>
-					<div>
-						<input
-							type="radio"
-							id="doughnut"
-							name="chart"
-							value="doughnut"
-							checked={chartType === "doughnut"}
-							onChange={() => setChartType("doughnut")}
-						/>
-						<label htmlFor="doughnut">
-							{translation[language].button.doughnut}
-						</label>
-					</div>
-
-					<div>
-						<input
-							type="radio"
-							id="bar"
-							name="chart"
-							value="bar"
-							checked={chartType === "bar"}
-							onChange={() => setChartType("bar")}
-						/>
-						<label htmlFor="bar">{translation[language].button.bar}</label>
-					</div>
+					<ChartPie
+						size={24}
+						style={{ color: chartType === "doughnut" ? "#251F18" : "#a1afc4" }}
+						onClick={() => setChartType("doughnut")}
+					/>
+					<ChartColumnBig
+						size={24}
+						style={{ color: chartType === "bar" ? "#251F18" : "#a1afc4" }}
+						onClick={() => setChartType("bar")}
+					/>
 				</fieldset>
 				<div>
 					{chartType === "doughnut" ? (
