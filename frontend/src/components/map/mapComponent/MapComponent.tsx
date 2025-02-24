@@ -47,10 +47,11 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	const { tileLayerURL } = useMapStore((state) => state);
 
 	// on récupère les filtres de l'utilisateur dans le store
-	const { userFilters, setUserFilters } = useMapFiltersStore(
+	const { userFilters, setUserFilters, resetUserFilters } = useMapFiltersStore(
 		useShallow((state) => ({
 			userFilters: state.userFilters,
 			setUserFilters: state.setUserFilters,
+			resetUserFilters: state.resetUserFilters,
 		})),
 	);
 
@@ -61,10 +62,9 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	const { translation, language } = useContext(TranslationContext);
 
 	// on récupère les informations du store
-	const { setSelectedTabMenu, resetFilters } = useMapAsideMenuStore(
+	const { setSelectedTabMenu } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
-			resetFilters: state.resetFilters,
 		})),
 	);
 	const { map, setMap, mapInfos, allPoints, mapReady, resetSelectedMarker } =
@@ -76,8 +76,15 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 		setSelectedTabMenu("results");
 		setIsModalOpen(true);
 		resetSelectedMarker();
-		resetFilters();
 	}, []);
+
+	// on s'assure que les filtres sont mis à 0
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		resetUserFilters();
+	}, [isModalOpen]);
+
+	console.log(userFilters);
 
 	// on met à jour les limites de la carte
 	const bounds: LatLngTuple[] = [];
