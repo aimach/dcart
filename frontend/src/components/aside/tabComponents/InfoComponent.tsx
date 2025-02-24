@@ -30,6 +30,12 @@ const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
 				{point.nom_ville} ({point[subRegionLanguageKey]}) -{" "}
 				{point.sources.length} {point.sources.length > 1 ? "sources" : "source"}
 			</h4>
+			<details className={style.chartDetails} open>
+				<summary>Voir les statistiques</summary>
+				{mapId !== "exploration" && (
+					<ChartComponent point={point as PointType} />
+				)}
+			</details>
 			<details className={style.sourceDetails}>
 				<summary>Voir les sources</summary>
 				{point.sources.map((source) => {
@@ -41,12 +47,6 @@ const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
 						/>
 					);
 				})}
-			</details>
-			<details className={style.chartDetails}>
-				<summary>Voir les statistiques</summary>
-				{mapId !== "exploration" && (
-					<ChartComponent point={point as PointType} />
-				)}
 			</details>
 		</section>
 	);

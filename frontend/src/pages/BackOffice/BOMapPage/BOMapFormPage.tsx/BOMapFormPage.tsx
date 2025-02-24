@@ -5,7 +5,10 @@ import DemoCommonForm from "../../../../components/form/mapForm/demoCommonForm/D
 import DemoMapComponent from "../../../../components/map/demoMapComponent/DemoMapComponent";
 // import du context
 // import des services
-import { firstStepInputs } from "../../../../utils/forms/mapInputArray";
+import {
+	firstStepInputs,
+	secondStepInputs,
+} from "../../../../utils/forms/mapInputArray";
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 // import des types
 // import du style
@@ -25,6 +28,9 @@ const BOMapFormPage = () => {
 			<div>
 				{step === 1 && (
 					<DemoCommonForm inputs={firstStepInputs} defaultValues={undefined} />
+				)}
+				{step === 2 && (
+					<DemoCommonForm inputs={secondStepInputs} defaultValues={undefined} />
 				)}
 			</div>
 			<DemoMapComponent showModal={step === 1} />

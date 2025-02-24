@@ -6,8 +6,7 @@ export const getSourcesQueryWithoutDetails = (
 	queryLocalisation: string,
 	elementOperator: string,
 	divinityOperator: string,
-	queryAnte: string,
-	queryPost: string,
+	queryDatation: string,
 	queryIncludedElements: string,
 	queryExcludedElements: string,
 ) => {
@@ -95,6 +94,10 @@ sources_without_duplicate AS (
 SELECT 
   localisation_source.latitude, 
   localisation_source.longitude,
+  grande_region.id AS grande_region_id,
+  grande_region.nom_fr AS grande_region_fr,
+  grande_region.nom_en AS grande_region_en,
+  sous_region.id AS sous_region_id,
   sous_region.nom_fr AS sous_region_fr,
   sous_region.nom_en AS sous_region_EN,
   localisation_source.nom_ville,
@@ -125,11 +128,15 @@ AND localisation_source.longitude IS NOT NULL
 AND formule.puissances_divines ${divinityOperator} $2
 AND attestation.id_etat_fiche = 4 
 ${queryLocalisation} 
-${queryAnte} ${queryPost} -- ajouter ici le filtre des dates
+${queryDatation} -- ajouter ici le filtre des dates
 GROUP BY 
   localisation_source.latitude,
 	localisation_source.longitude, 
   localisation_source.nom_ville, 
+  grande_region.id,
+  grande_region.nom_fr,
+  grande_region.nom_en,
+  sous_region.id,
   sous_region.nom_fr, 
   sous_region.nom_en`;
 };
@@ -138,8 +145,7 @@ export const getSourcesQueryWithDetails = (
 	queryLocalisation: string,
 	elementOperator: string,
 	divinityOperator: string,
-	queryAnte: string,
-	queryPost: string,
+	queryDatation: string,
 	queryIncludedElements: string,
 	queryExcludedElements: string,
 	queryLanguage: string,
@@ -228,6 +234,10 @@ sources_without_duplicate AS (
 SELECT 
   localisation_source.latitude, 
   localisation_source.longitude,
+  grande_region.id AS grande_region_id,
+  grande_region.nom_fr AS grande_region_fr,
+  grande_region.nom_en AS grande_region_en,
+  sous_region.id AS sous_region_id,
   sous_region.nom_fr AS sous_region_fr,
   sous_region.nom_en AS sous_region_EN,
   localisation_source.nom_ville,
@@ -260,11 +270,15 @@ AND formule.puissances_divines ${divinityOperator} $2
 AND attestation.id_etat_fiche = 4 
 ${queryLocalisation} 
 ${queryLanguage} 
-${queryAnte} ${queryPost} 
+${queryDatation}
 GROUP BY 
   localisation_source.latitude,
 	localisation_source.longitude, 
   localisation_source.nom_ville, 
+  grande_region.id,
+  grande_region.nom_fr,
+  grande_region.nom_en,
+  sous_region.id,
   sous_region.nom_fr, 
   sous_region.nom_en`;
 };

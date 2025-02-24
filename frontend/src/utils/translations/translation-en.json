@@ -54,10 +54,11 @@
 			"searchForLocation": "Search for a location...",
 			"searchForElement": "Search for an element...",
 			"noSelectedMarker": "Select a marker to see details",
-			"transliteration": "Transliteration",
-			"restitution": "Restitution",
+			"traduction": "Traduction",
+			"originalVersion": "Original version",
 			"agents": "Agents",
-			"noAgent": "No agent"
+			"noAgent": "No agent",
+			"noDesignation": "no designation"
 		}
 	}
 }
