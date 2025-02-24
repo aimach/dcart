@@ -16,7 +16,7 @@ type TranslationObject = {
 	};
 	button: {
 		freeExploration: string;
-		results: string;
+		result: string;
 		filters: string;
 		filter: string;
 		selection: string;
@@ -53,6 +53,11 @@ type TranslationObject = {
 			sources: string;
 			epithet: string;
 			noFilter: string;
+			location: string;
+			element: string;
+			language: string;
+			seeStat: string;
+			seeSources: string;
 			searchForLocation: string;
 			searchForElement: string;
 			noSelectedMarker: string;

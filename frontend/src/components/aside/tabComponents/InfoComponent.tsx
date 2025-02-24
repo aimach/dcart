@@ -18,7 +18,7 @@ interface InfoComponentProps {
 
 const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
 	// on récupère le language
-	const { language } = useContext(TranslationContext);
+	const { translation, language } = useContext(TranslationContext);
 
 	// on prépare les clés pour l'objet de traduction
 	const subRegionLanguageKey: keyof PointType =
@@ -30,14 +30,14 @@ const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
 				{point.nom_ville} ({point[subRegionLanguageKey]}) -{" "}
 				{point.sources.length} {point.sources.length > 1 ? "sources" : "source"}
 			</h4>
-			<details className={style.chartDetails} open>
-				<summary>Voir les statistiques</summary>
-				{mapId !== "exploration" && (
+			{mapId !== "exploration" && (
+				<details className={style.chartDetails} open>
+					<summary>{translation[language].mapPage.aside.seeStat}</summary>
 					<ChartComponent point={point as PointType} />
-				)}
-			</details>
+				</details>
+			)}
 			<details className={style.sourceDetails}>
-				<summary>Voir les sources</summary>
+				<summary>{translation[language].mapPage.aside.seeSources}</summary>
 				{point.sources.map((source) => {
 					return (
 						<SourceDetailsComponent

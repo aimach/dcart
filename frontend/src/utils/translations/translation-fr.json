@@ -14,7 +14,7 @@
 	},
 	"button": {
 		"freeExploration": "Exploration libre",
-		"results": "résultats",
+		"result": "résultat",
 		"filters": "Filtres",
 		"filter": "Filtrer",
 		"selection": "Sélection",
@@ -51,6 +51,11 @@
 			"sources": "Sources",
 			"epithet": "Epithète",
 			"noFilter": "Pas de filtre défini",
+			"location": "Localisation",
+			"element": "Element",
+			"language": "Language",
+			"seeStat": "Voir les statistiques",
+			"seeSources": "Voir les sources",
 			"searchForLocation": "Rechercher un lieu...",
 			"searchForElement": "Rechercher un element...",
 			"noSelectedMarker": "Sélectionner un point pour voir les détails",
@@ -58,7 +63,7 @@
 			"originalVersion": "Version originale",
 			"agents": "Agents",
 			"noAgent": "Pas d'agent",
-			"noDesignation": "pas de désignation"
+			"noDesignation": "agent sans désignation"
 		}
 	}
 }

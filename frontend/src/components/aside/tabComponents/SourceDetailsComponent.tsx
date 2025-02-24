@@ -13,7 +13,10 @@ import type {
 	SourceType,
 } from "../../../utils/types/mapTypes";
 // import des services
-import { getDatationSentence } from "../../../utils/functions/functions";
+import {
+	getAgentsArrayWithoutDuplicates,
+	getDatationSentence,
+} from "../../../utils/functions/functions";
 import { getAllAttestationsFromSourceId } from "../../../utils/loaders/loaders";
 // import du style
 import style from "./tabComponent.module.scss";
@@ -68,7 +71,6 @@ const SourceDetailsComponent = ({
 			className={style.selectionDetails}
 		>
 			<summary>
-				{" "}
 				Source #{source.source_id} {datationSentence}
 			</summary>
 			{attestations.length ? (
@@ -79,36 +81,44 @@ const SourceDetailsComponent = ({
 					);
 					let agentsArray: JSX.Element[] = [];
 					if (attestation.agents?.length) {
-						agentsArray = attestation.agents.map((agentElement: AgentType) => {
-							let agent = "";
-							if (agentElement.designation === null) {
-								agent = `(${translation[language].mapPage.aside.noDesignation})`;
-							} else {
-								// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
-								// qu'il correspond au langage choisi
-								const sanitizedAgent = DOMPurify.sanitize(
-									agentElement.designation,
-								);
-								const sanitizedAgentInSelectedLanguage =
-									sanitizedAgent.split("<br>");
-								if (sanitizedAgentInSelectedLanguage.length > 1) {
-									agent =
-										sanitizedAgentInSelectedLanguage[language === "fr" ? 0 : 1];
+						// on supprime les doublons causés par l'activité (si plusieurs activités pour 1 même agent, il revient plusieurs fois dans le tableau)
+						const agentsWithoutDuplicates = getAgentsArrayWithoutDuplicates(
+							attestation.agents,
+						);
+						agentsArray = agentsWithoutDuplicates.map(
+							(agentElement: AgentType) => {
+								let agent = "";
+								if (agentElement.designation === null) {
+									agent = `(${translation[language].mapPage.aside.noDesignation})`;
 								} else {
-									agent = sanitizedAgentInSelectedLanguage[0];
+									// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
+									// qu'il correspond au langage choisi
+									const sanitizedAgent = DOMPurify.sanitize(
+										agentElement.designation,
+									);
+									const sanitizedAgentInSelectedLanguage =
+										sanitizedAgent.split("<br>");
+									if (sanitizedAgentInSelectedLanguage.length > 1) {
+										agent =
+											sanitizedAgentInSelectedLanguage[
+												language === "fr" ? 0 : 1
+											];
+									} else {
+										agent = sanitizedAgentInSelectedLanguage[0];
+									}
 								}
-							}
-							return (
-								<p
-									key={uuidv4()}
-									// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-									dangerouslySetInnerHTML={{
-										__html: `- ${agent}`,
-									}}
-									style={{ marginBottom: "0.5rem" }}
-								/>
-							);
-						});
+								return (
+									<p
+										key={uuidv4()}
+										// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+										dangerouslySetInnerHTML={{
+											__html: `- ${agent}`,
+										}}
+										style={{ marginBottom: "0.5rem" }}
+									/>
+								);
+							},
+						);
 					}
 
 					return (

@@ -1,17 +1,21 @@
 @use '../../../styles/mixin' as m;
 @use '../../../styles/variable' as v;
 
-.mapCategoryNav {
-  height: v.$map-header-height;
-  width: 100%;
-  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+.categoryMenu {
+  @include m.flexbox(flex, column, null, null, wrap, 0, 0, null, center, center);
+  gap: v.$space-xl;
+}
 
+.categoryMenuNav {
   >ul {
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
-    gap: v.$space-xxxl;
+    @include m.flexbox(flex, row, null, null, wrap, 0, 0, null, center, center);
+    gap: v.$space-s;
 
-    >li {
-      width: 200px;
+    li {
+      width: 150px;
+      text-align: center;
+      cursor: pointer;
+      font-size: v.$font-size-l;
     }
   }
 
@@ -20,4 +24,37 @@
     background-color: v.$color-black-chocolate;
     color: white;
   }
+}
+
+.categoryMenuContent {
+  width: 70vw;
+  padding: v.$space-xl;
+  font-size: v.$font-size-l;
+}
+
+.mapListContainer {
+  padding: v.$space-xl 0;
+  @include m.flexbox(flex, column, null, null, wrap, 0, 0, null, flex-start, flex-start);
+  gap: v.$space-xl;
+
+  .mapListItem {
+    @include m.flexbox(flex, row, null, null, wrap, 0, 0, null, flex-start, center);
+    gap: v.$space-m;
+
+    img {
+      rotate: 90deg;
+    }
+  }
+
+}
+
+.selectedCategoryUnderline {
+  height: v.$border-width-l;
+  width: 100%;
+  background-color: v.$color-old-gold;
+}
+
+.categoryNameContainer {
+  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, center);
+  gap: v.$space-s/5;
 }

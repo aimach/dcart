@@ -27,12 +27,15 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 			isReset: state.isReset,
 		})),
 	);
-	const { mapInfos, setAllPoints } = useMapStore(
-		useShallow((state) => ({
-			mapInfos: state.mapInfos,
-			setAllPoints: state.setAllPoints,
-		})),
-	);
+	const { mapInfos, setAllPoints, setMapReady, setSelectedMarker } =
+		useMapStore(
+			useShallow((state) => ({
+				mapInfos: state.mapInfos,
+				setAllPoints: state.setAllPoints,
+				setMapReady: state.setMapReady,
+				setSelectedMarker: state.setSelectedMarker,
+			})),
+		);
 
 	// ATTENTION : l'utilisation de setUserFilters entraînait malheureusement une boucle infinie, réglée grâce à l'usage d'un state indépendant
 	const [timeValues, setTimeValues] = useState<{ ante: number; post: number }>({
@@ -63,6 +66,7 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		}
 		// sinon on met à jour le state et on charge les points
 		setTimeValues({ ante: e.maxValue, post: e.minValue });
+		setMapReady(false);
 		try {
 			const mapId = mapInfos ? mapInfos.id : "exploration";
 			const points = await getAllPointsByMapId(mapId, {
@@ -71,6 +75,8 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 				post: e.minValue,
 			});
 			setAllPoints(points);
+			setSelectedMarker(undefined);
+			setMapReady(true);
 		} catch (error) {
 			console.error("Erreur lors du chargement des points:", error);
 		}
