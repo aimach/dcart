@@ -101,6 +101,15 @@ const getLocationOptions = async (routeSegment: string) => {
 	return locationOptions;
 };
 
+const getAllSourcesAndAttestationsFromPoint = async (
+	lon: number,
+	lat: number,
+) => {
+	const response = await apiClient.get(`/map/sources/coord/${lon}/${lat}`);
+	const allSourcesAndAttestations = await response.data[0].sources;
+	return allSourcesAndAttestations;
+};
+
 export {
 	getAllMapsInfos,
 	getOneMapInfos,
@@ -113,4 +122,5 @@ export {
 	getAllMapsInfosFromCategoryId,
 	getAllAttestationsFromSourceId,
 	getLocationOptions,
+	getAllSourcesAndAttestationsFromPoint,
 };

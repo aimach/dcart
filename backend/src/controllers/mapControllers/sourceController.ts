@@ -4,6 +4,7 @@ import { MapContent } from "../../entities/MapContent";
 import { dcartDataSource, MapDataSource } from "../../dataSource/dataSource";
 import {
 	getAttestationsBySourceId,
+	getSourcesByCoordinates,
 	getSourcesQueryWithDetails,
 	getSourcesQueryWithoutDetails,
 } from "../../utils/query/sourceQueryString";
@@ -43,13 +44,12 @@ export const sourceController = {
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQueryWithoutDetails(
 					queryLocalisation,
-					"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
-					"=",
+					">", // obligé d'intégrer les opérateurs ici, sinon ça plante
 					queryDatation,
 					queryIncludedElements,
 					"",
 				);
-				results = await MapDataSource.query(sqlQuery, [3, 1]);
+				results = await MapDataSource.query(sqlQuery, [1]);
 			} else {
 				// on récupère les informations de la carte
 				const mapInfos = await dcartDataSource
@@ -138,6 +138,32 @@ export const sourceController = {
 			}
 
 			res.status(200).json(results);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	getSourcesAndAttestationsByCoordinates: async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		try {
+			// on récupère params et query
+			const { lat, lon } = req.params;
+
+			// on récupère le texte de la requête SQL
+			const sqlQuery = getSourcesByCoordinates(
+				"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
+				"=",
+			);
+			const sourceWithAttestations = await MapDataSource.query(sqlQuery, [
+				3,
+				lat,
+				lon,
+				1,
+			]);
+
+			res.status(200).json(sourceWithAttestations);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

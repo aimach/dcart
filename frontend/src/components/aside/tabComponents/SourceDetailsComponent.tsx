@@ -27,6 +27,8 @@ const SourceDetailsComponent = ({
 	source,
 	mapId,
 }: SourceDetailsComponentProps) => {
+	console.log(source);
+
 	// on récupère le language
 	const { language, translation } = useContext(TranslationContext);
 
@@ -37,123 +39,88 @@ const SourceDetailsComponent = ({
 	// on prépare la string de datation
 	const datationSentence = getDatationSentence(source, translation, language);
 
-	// si la source est sélectionnée, on va chercher les attestations correspondantes
-	const [attestations, setAttestations] = useState<AttestationType[]>(
-		mapId === "exploration" ? [] : source.attestations,
-	);
-	const [sourceIsSelected, setSourceIsSelected] = useState<boolean>(false);
-
-	const fetchAllAttestations = async () => {
-		try {
-			const allAttestations = await getAllAttestationsFromSourceId(
-				source.source_id.toString(),
-			);
-			setAttestations(allAttestations);
-		} catch (error) {
-			console.error("Erreur lors du chargement des infos de la carte:", error);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
-		if (sourceIsSelected && attestations.length === 0) {
-			fetchAllAttestations();
-		}
-	}, [sourceIsSelected, source.source_id, attestations.length]);
-
 	return (
-		<details
-			onClick={() => setSourceIsSelected(true)}
-			onKeyUp={() => setSourceIsSelected(true)}
-			className={style.selectionDetails}
-		>
+		<details className={style.selectionDetails}>
 			<summary>
-				{" "}
 				Source #{source.source_id} {datationSentence}
 			</summary>
-			{attestations.length ? (
-				attestations.map((attestation: AttestationType) => {
-					// on prépare l'extrait avec restitution en vérifiant qu'il ne contient que du code validé
-					const sanitizedRestitution = DOMPurify.sanitize(
-						attestation.extrait_avec_restitution,
-					);
-					let agentsArray: JSX.Element[] = [];
-					if (attestation.agents?.length) {
-						agentsArray = attestation.agents.map((agentElement: AgentType) => {
-							let agent = "";
-							if (agentElement.designation === null) {
-								agent = `(${translation[language].mapPage.aside.noDesignation})`;
-							} else {
-								// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
-								// qu'il correspond au langage choisi
-								const sanitizedAgent = DOMPurify.sanitize(
-									agentElement.designation,
-								);
-								const sanitizedAgentInSelectedLanguage =
-									sanitizedAgent.split("<br>");
-								if (sanitizedAgentInSelectedLanguage.length > 1) {
-									agent =
-										sanitizedAgentInSelectedLanguage[language === "fr" ? 0 : 1];
-								} else {
-									agent = sanitizedAgentInSelectedLanguage[0];
-								}
-							}
-							return (
-								<p
-									key={uuidv4()}
-									// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-									dangerouslySetInnerHTML={{
-										__html: `- ${agent}`,
-									}}
-									style={{ marginBottom: "0.5rem" }}
-								/>
+			{source.attestations.map((attestation: AttestationType) => {
+				// on prépare l'extrait avec restitution en vérifiant qu'il ne contient que du code validé
+				const sanitizedRestitution = DOMPurify.sanitize(
+					attestation.extrait_avec_restitution,
+				);
+				let agentsArray: JSX.Element[] = [];
+				if (attestation.agents?.length) {
+					agentsArray = attestation.agents.map((agentElement: AgentType) => {
+						let agent = "";
+						if (agentElement.designation === null) {
+							agent = `(${translation[language].mapPage.aside.noDesignation})`;
+						} else {
+							// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
+							// qu'il correspond au langage choisi
+							const sanitizedAgent = DOMPurify.sanitize(
+								agentElement.designation,
 							);
-						});
-					}
+							const sanitizedAgentInSelectedLanguage =
+								sanitizedAgent.split("<br>");
+							if (sanitizedAgentInSelectedLanguage.length > 1) {
+								agent =
+									sanitizedAgentInSelectedLanguage[language === "fr" ? 0 : 1];
+							} else {
+								agent = sanitizedAgentInSelectedLanguage[0];
+							}
+						}
+						return (
+							<p
+								key={uuidv4()}
+								// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+								dangerouslySetInnerHTML={{
+									__html: `- ${agent}`,
+								}}
+								style={{ marginBottom: "0.5rem" }}
+							/>
+						);
+					});
+				}
 
-					return (
-						<div key={uuidv4()} className={style.testimoniesInfo}>
-							<table>
-								<tbody>
-									<tr>
-										<th>Attestation</th>
-										<td>#{attestation.attestation_id}</td>
-									</tr>
-									<tr>
-										<th>{translation[language].mapPage.aside.traduction}</th>
-										<td>{attestation[attestationNameLanguageKey]}</td>
-									</tr>
-									<tr>
-										<th>
-											{translation[language].mapPage.aside.originalVersion}
-										</th>
-										<td>
-											<p
-												// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-												dangerouslySetInnerHTML={{
-													__html: sanitizedRestitution,
-												}}
-											/>
-										</td>
-									</tr>
-									<tr>
-										<th>{translation[language].mapPage.aside.agents}</th>
-										<td>
-											<div>
-												{agentsArray.length > 0
-													? agentsArray
-													: translation[language].mapPage.aside.noAgent}
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					);
-				})
-			) : (
-				<LoaderComponent size={40} />
-			)}
+				return (
+					<div key={uuidv4()} className={style.testimoniesInfo}>
+						<table>
+							<tbody>
+								<tr>
+									<th>Attestation</th>
+									<td>#{attestation.attestation_id}</td>
+								</tr>
+								<tr>
+									<th>{translation[language].mapPage.aside.traduction}</th>
+									<td>{attestation[attestationNameLanguageKey]}</td>
+								</tr>
+								<tr>
+									<th>{translation[language].mapPage.aside.originalVersion}</th>
+									<td>
+										<p
+											// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+											dangerouslySetInnerHTML={{
+												__html: sanitizedRestitution,
+											}}
+										/>
+									</td>
+								</tr>
+								<tr>
+									<th>{translation[language].mapPage.aside.agents}</th>
+									<td>
+										<div>
+											{agentsArray.length > 0
+												? agentsArray
+												: translation[language].mapPage.aside.noAgent}
+										</div>
+									</td>
+								</tr>
+							</tbody>
+						</table>
+					</div>
+				);
+			})}
 		</details>
 	);
 };

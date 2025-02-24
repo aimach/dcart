@@ -1,14 +1,18 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useState, useEffect, useContext } from "react";
 // import des composants
 import SourceDetailsComponent from "./SourceDetailsComponent";
 import ChartComponent from "./ChartComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
+// import des services
+import { getAllSourcesAndAttestationsFromPoint } from "../../../utils/loaders/loaders";
 // import des types
-import type { PointType } from "../../../utils/types/mapTypes";
+import type { PointType, SourceType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./tabComponent.module.scss";
+import { set } from "react-hook-form";
+import LoaderComponent from "../../common/loader/LoaderComponent";
 
 interface InfoComponentProps {
 	point: PointType;
@@ -24,7 +28,31 @@ const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
 	const subRegionLanguageKey: keyof PointType =
 		language === "fr" ? "sous_region_fr" : "sous_region_en";
 
-	return (
+	// on va récupérer toutes les sources et attestations du point
+	const [pointWithSources, setPointWithSources] = useState<PointType>(
+		point as PointType,
+	);
+	const fetchAllSourcesFromPoint = async () => {
+		try {
+			const allSourcesAndAttestations =
+				await getAllSourcesAndAttestationsFromPoint(
+					point.latitude,
+					point.longitude,
+				);
+			setPointWithSources({ ...point, sources: allSourcesAndAttestations });
+		} catch (error) {
+			console.error("Erreur lors du chargement des sources du point:", error);
+		}
+	};
+	console.log(pointWithSources);
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		if (mapId === "exploration") {
+			fetchAllSourcesFromPoint();
+		}
+	}, [point, mapId]);
+
+	return pointWithSources.sources[0].attestations ? (
 		<section className={style.selectionDetailsContainer}>
 			<h4>
 				{point.nom_ville} ({point[subRegionLanguageKey]}) -{" "}
@@ -32,13 +60,11 @@ const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
 			</h4>
 			<details className={style.chartDetails} open>
 				<summary>Voir les statistiques</summary>
-				{mapId !== "exploration" && (
-					<ChartComponent point={point as PointType} />
-				)}
+				<ChartComponent point={pointWithSources as PointType} />
 			</details>
 			<details className={style.sourceDetails}>
 				<summary>Voir les sources</summary>
-				{point.sources.map((source) => {
+				{pointWithSources.sources.map((source) => {
 					return (
 						<SourceDetailsComponent
 							key={source.source_id}
@@ -49,6 +75,8 @@ const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
 				})}
 			</details>
 		</section>
+	) : (
+		<LoaderComponent size={40} />
 	);
 };
 
