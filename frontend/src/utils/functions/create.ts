@@ -4,11 +4,14 @@ import type { MapInfoType } from "../types/mapTypes";
 
 const createNewMap = async (body: MapInfoType) => {
 	try {
-		await apiClient("dcart/maps", {
+		const newMap = await apiClient("dcart/maps", {
 			method: "POST",
 			data: JSON.stringify(body),
 		});
-	} catch (error) {}
+		return newMap;
+	} catch (error) {
+		console.error("Erreur lors de la création de la carte :", error);
+	}
 };
 
 export { createNewMap };
