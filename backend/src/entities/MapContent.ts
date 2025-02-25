@@ -39,6 +39,9 @@ export class MapContent extends BaseEntity {
 	@Column({ type: "text" })
 	attestationIds!: string;
 
+	@Column({ type: "text", nullable: true })
+	divinityIds?: string | null;
+
 	// booléen si la carte est active ou non (càd, publiée)
 	@Column({ type: "boolean", default: false })
 	isActive!: boolean;

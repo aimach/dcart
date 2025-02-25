@@ -58,7 +58,7 @@ const MapPage = () => {
 				setMapFilters([]);
 			} else {
 				// sinon on charge les informations de la carte
-				setIncludedElementId(mapInfos.includedElements);
+				setIncludedElementId(mapInfos.divinityIds);
 				setMapInfos(mapInfos);
 				setMapFilters(mapInfos.filters);
 			}
