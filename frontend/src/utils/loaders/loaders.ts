@@ -2,6 +2,7 @@
 import { apiClient } from "../api/apiClient";
 // import des types
 import type { UserFilterType } from "../types/filterTypes";
+import { PointType } from "../types/mapTypes";
 
 // récupérer toutes les informations de toutes les cartes (titre, description, critères...)
 const getAllMapsInfos = async () => {
@@ -67,6 +68,21 @@ const getTimeMarkers = async () => {
 	return timeMarker;
 };
 
+const getPointsTimeMarkers = (allPoints: PointType[]) => {
+	const timeMarkers = { post: 400, ante: -1000 };
+	for (const points of allPoints) {
+		for (const source of points.sources) {
+			if (source.ante_quem > timeMarkers.ante) {
+				timeMarkers.ante = source.ante_quem;
+			}
+			if (source.post_quem < timeMarkers.post) {
+				timeMarkers.post = source.post_quem;
+			}
+		}
+	}
+	return timeMarkers;
+};
+
 // récupérer toutes les catégories
 const getAllCategories = async () => {
 	const response = await apiClient.get("/dcart/categories/all");
@@ -108,6 +124,7 @@ export {
 	getAllGreatRegions,
 	getAllDivinities,
 	getTimeMarkers,
+	getPointsTimeMarkers,
 	getAllCategories,
 	getAllCategoriesWithMapsInfos,
 	getAllMapsInfosFromCategoryId,

@@ -12,7 +12,6 @@ import type { TimeMarkersType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./filtersComponent.module.scss";
 import "./timeFilterComponent.css";
-import { set } from "react-hook-form";
 
 interface TimeFilterComponentProps {
 	timeMarkers: TimeMarkersType;
@@ -69,7 +68,7 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		setMapReady(false);
 		try {
 			const mapId = mapInfos ? mapInfos.id : "exploration";
-			const points = await getAllPointsByMapId(mapId, {
+			const points = await getAllPointsByMapId(mapId as string, {
 				...userFilters,
 				ante: e.maxValue,
 				post: e.minValue,
@@ -89,13 +88,8 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 			<div className={style.rangeContainer}>
 				<MultiRangeSlider
 					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-					min={
-						// si mapInfos existe (ce n'est pas "exploration"), si mapInfos[post/ante] n'est pas null, on prend sa valeur, sinon on prend la valeur la plus haute ou basse de la BDD
-						mapInfos ? (mapInfos.post ?? timeMarkers.post) : timeMarkers.post
-					}
-					max={
-						mapInfos ? (mapInfos.ante ?? timeMarkers.ante) : timeMarkers.ante
-					}
+					min={timeMarkers.post}
+					max={timeMarkers.ante}
 					step={step}
 					stepOnly
 					baseClassName={"multi-range-slider-custom"}
@@ -110,8 +104,8 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 							: (userFilters.ante as number)
 					}
 					labels={getAllDatationLabels(
-						mapInfos ? (mapInfos.post ?? timeMarkers.post) : timeMarkers.post,
-						mapInfos ? (mapInfos.ante ?? timeMarkers.ante) : timeMarkers.ante,
+						timeMarkers.post,
+						timeMarkers.ante,
 						step,
 					)}
 					onChange={(e) => {

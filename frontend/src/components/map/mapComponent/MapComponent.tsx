@@ -21,7 +21,10 @@ import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
-import { getTimeMarkers } from "../../../utils/loaders/loaders";
+import {
+	getPointsTimeMarkers,
+	getTimeMarkers,
+} from "../../../utils/loaders/loaders";
 // import des types
 import type { LatLngTuple } from "leaflet";
 import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
@@ -33,6 +36,7 @@ import "./mapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
 import TileLayerChoiceComponent from "../tileLayerChoice/TileLayerChoiceComponent";
+import { all } from "axios";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -89,12 +93,15 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (allPoints.length) {
+			// on récupère les limites de la carte
 			for (const point of allPoints) {
 				bounds.push([point.latitude, point.longitude]);
 			}
 			if (map) {
 				map.fitBounds(bounds);
 			}
+			// on récupère les marqueurs temporels
+			fetchTimeMarkers();
 		}
 	}, [allPoints]);
 
@@ -105,12 +112,11 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	}>({ post: 0, ante: 0 });
 	const fetchTimeMarkers = async () => {
 		try {
-			const newTimeMarkers = await getTimeMarkers();
-			setTimeMarkers({ post: newTimeMarkers.post, ante: 400 }); // l'équipe préfère mettre une date max. fixe
+			const newTimeMarkers = getPointsTimeMarkers(allPoints);
+			setTimeMarkers(newTimeMarkers);
 			const newUserFilters = {
 				...userFilters,
-				post: newTimeMarkers.post,
-				ante: 400, // l'équipe préfère mettre une date max. fixe
+				newTimeMarkers,
 			};
 			setUserFilters(newUserFilters);
 		} catch (error) {
@@ -120,11 +126,6 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 			);
 		}
 	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
-		fetchTimeMarkers();
-	}, []);
 
 	return (
 		<>
