@@ -374,12 +374,13 @@ const getAgentsArrayWithoutDuplicates = (agentsArray: AgentType[]) => {
 
 const getAllAttestationsIdsFromParsedPoints = (
 	parsedPoints: ParsedPoint[],
-): number[] => {
-	const allAttestationsIds: number[] = [];
+): string => {
+	let allAttestationsIds = "";
 	parsedPoints.map((point) => {
-		allAttestationsIds.push(point.id);
+		allAttestationsIds += `${point.id},`;
 	});
-	return allAttestationsIds;
+	const allAttestationsIdsWithoutLastComma = allAttestationsIds.slice(0, -1);
+	return allAttestationsIdsWithoutLastComma;
 };
 
 export {

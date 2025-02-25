@@ -7,3 +7,6 @@ export const mapRoutes = express.Router();
 
 // récupérer les données d'une carte
 mapRoutes.get("/:mapId", dcartControllers.getMapInformationsById);
+
+// créer une nouvelle carte
+mapRoutes.post("/", dcartControllers.createMap);

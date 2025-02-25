@@ -33,4 +33,32 @@ export const mapContentController = {
 			handleError(res, error as Error);
 		}
 	},
+
+	createMap: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const {
+				name_en,
+				name_fr,
+				description_en,
+				description_fr,
+				categoryId,
+				attestationIds,
+			} = req.body;
+
+			const newMap = dcartDataSource.getRepository(MapContent).create({
+				name_en,
+				name_fr,
+				description_en,
+				description_fr,
+				category: categoryId,
+				attestationIds,
+			});
+
+			await dcartDataSource.getRepository(MapContent).save(newMap);
+
+			res.status(201).send(newMap);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
 };

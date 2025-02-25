@@ -9,12 +9,16 @@ import { useShallow } from "zustand/shallow";
 // import des types
 import type { ChangeEvent } from "react";
 import type { ParseResult } from "papaparse";
-import type { ParsedPoint } from "../../../../utils/types/mapTypes";
+import type {
+	MapInfoType,
+	ParsedPoint,
+} from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./uploadForm.module.scss";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/functions";
 import { all } from "axios";
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
+import { createNewMap } from "../../../../utils/functions/create";
 
 const UploadForm = () => {
 	// on récupère les données du formulaire
@@ -29,7 +33,6 @@ const UploadForm = () => {
 	} = useMapFormStore(useShallow((state) => state));
 
 	// on gère l'upload du csv
-
 	const handleFileUpload = (event: ChangeEvent) => {
 		// on définit la correspondance avec les headers du csv
 		const headerMapping: { [key: string]: string } = {
@@ -60,7 +63,7 @@ const UploadForm = () => {
 					);
 					setMapInfos({
 						...mapInfos,
-						attestationsIds: allAttestationsIds,
+						attestationIds: allAttestationsIds,
 					});
 				},
 				error: (error) => {
@@ -70,8 +73,19 @@ const UploadForm = () => {
 		}
 	};
 
+	// on gère la soumission du formulaire
+	const handleSubmit = async (event: any) => {
+		event.preventDefault();
+		try {
+			const newMap = await createNewMap(mapInfos as MapInfoType);
+			console.log(newMap);
+		} catch (error) {
+			console.error("Erreur lors de la soumission du formulaire :", error);
+		}
+	};
+
 	return (
-		<form>
+		<form onSubmit={handleSubmit}>
 			<label htmlFor="points">Charger les points</label>
 			<input id="point" type="file" accept=".csv" onChange={handleFileUpload} />
 			<NavigationButtonComponent step={step} />
