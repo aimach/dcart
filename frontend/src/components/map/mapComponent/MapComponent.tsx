@@ -14,6 +14,7 @@ import MarkerComponent from "../MarkerComponent/MarkerComponent";
 import ResetControl from "../controls/ResetControlComponent";
 import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
 import TimeFilterComponent from "../../aside/filterComponents/TimeFilterComponent";
+import TileLayerChoiceComponent from "../tileLayerChoice/TileLayerChoiceComponent";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
@@ -21,10 +22,7 @@ import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
-import {
-	getPointsTimeMarkers,
-	getTimeMarkers,
-} from "../../../utils/loaders/loaders";
+import { getPointsTimeMarkers } from "../../../utils/loaders/loaders";
 // import des types
 import type { LatLngTuple } from "leaflet";
 import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
@@ -35,8 +33,6 @@ import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
-import TileLayerChoiceComponent from "../tileLayerChoice/TileLayerChoiceComponent";
-import { all } from "axios";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;

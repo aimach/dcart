@@ -146,6 +146,7 @@ export const getSourcesQueryWithDetails = (
 	queryLocalisation: string,
 	queryDatation: string,
 	queryLanguage: string,
+	queryIncludedElements: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -213,6 +214,7 @@ sources_with_attestations AS (
   JOIN formule ON formule.attestation_id = attestation.id
   LEFT JOIN agent ON agent.id_attestation = attestation.id
   WHERE attestation.id IN (${attestationIds})
+  ${queryIncludedElements}
 ),
 
 -- on enlève les doublons des sources

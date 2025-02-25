@@ -61,8 +61,6 @@ const MapCategoryNav = () => {
 	// on initie un state pour l'underline d'exploration
 	const [selectedExploration, setSelectedExploration] = useState(false);
 
-	console.log(selectedExploration);
-
 	return (
 		<section className={style.categoryMenu}>
 			<nav className={style.categoryMenuNav}>

@@ -55,6 +55,7 @@ export const sourceController = {
 				const maxValue = null;
 				const minValue = null;
 				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+				let queryIncludedElements = "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (req.query.locationId) {
@@ -71,13 +72,12 @@ export const sourceController = {
 					queryDatation = getQueryStringForDateFilter(maxValue, minValue);
 				}
 
-				// ici se fait la récupération des épithètes, qui ne peut plus fonctionner dans ce cas
-				// if (req.query.elementId) {
-				// 	queryIncludedElements = getQueryStringForIncludedElements(
-				// 		includedElements as string,
-				// 		req.query.elementId as string,
-				// 	);
-				// }
+				// ici se fait la récupération des épithètes
+				if (req.query.elementId) {
+					queryIncludedElements = getQueryStringForIncludedElements(
+						req.query.elementId as string,
+					);
+				}
 
 				let queryLanguage = "";
 				if (req.query.greek === "false") {
@@ -93,6 +93,7 @@ export const sourceController = {
 					queryLocalisation,
 					queryDatation,
 					queryLanguage,
+					queryIncludedElements,
 				);
 
 				results = await MapDataSource.query(sqlQuery);

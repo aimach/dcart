@@ -48,21 +48,14 @@ const getQueryStringForDateFilter = (
 	return ` and datation.post_quem <= ${ante} and datation.ante_quem >= ${post} `;
 };
 
-const getQueryStringForIncludedElements = (
-	includedElements: string,
-	queryElements: string,
-) => {
-	const includedElementsArray = includedElements.split("|");
-	const includedElementsArrayWithBrackets = includedElementsArray.map(
-		(element) => `'%{${element}}%'`,
-	);
+const getQueryStringForIncludedElements = (queryElements: string) => {
 	const queryElementsArray = queryElements.split("|");
 	const queryElementsArrayWithBrackets = queryElementsArray.map(
 		(element) => `'%{${element}}%'`,
 	);
-	const query = ` AND formule.formule LIKE ANY(ARRAY[${includedElementsArrayWithBrackets}]) `;
+	let query = "";
 	if (queryElements) {
-		return `${query} AND formule.formule LIKE ANY(ARRAY[${queryElementsArrayWithBrackets}]) `;
+		query += ` AND formule.formule LIKE ANY(ARRAY[${queryElementsArrayWithBrackets}]) `;
 	}
 	return query;
 };

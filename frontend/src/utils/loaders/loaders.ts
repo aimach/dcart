@@ -2,7 +2,7 @@
 import { apiClient } from "../api/apiClient";
 // import des types
 import type { UserFilterType } from "../types/filterTypes";
-import { PointType } from "../types/mapTypes";
+import type { PointType } from "../types/mapTypes";
 
 // récupérer toutes les informations de toutes les cartes (titre, description, critères...)
 const getAllMapsInfos = async () => {
