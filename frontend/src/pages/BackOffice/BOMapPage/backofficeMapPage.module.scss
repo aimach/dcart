@@ -12,9 +12,16 @@
 
     >div:first-child {
         width: 50%;
-        height: 100%;
+        height: calc(100vh - v.$main-header-height);
         border-right: 1px solid grey;
         overflow-y: scroll;
+        overflow-x: hidden;
+
+        >form {
+            height: calc(100vh - 200px);
+            @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, space-between, flex-start);
+            margin: v.$space-s 0
+        }
     }
 
     >div:last-child {

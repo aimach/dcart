@@ -32,9 +32,6 @@ const BOMapFormPage = () => {
 					<DemoCommonForm inputs={firstStepInputs} defaultValues={undefined} />
 				)}
 				{step === 2 && <UploadForm />}
-				{/* {step === 2 && (
-					<DemoCommonForm inputs={secondStepInputs} defaultValues={undefined} />
-				)} */}
 			</div>
 			<DemoMapComponent showModal={step === 1} />
 		</section>

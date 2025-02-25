@@ -33,7 +33,7 @@ const NavigationButtonComponent = ({
 			)}
 
 			<button type="submit">
-				Suivant <ChevronRight />
+				{step === 1 ? "Suivant" : "Créer"} <ChevronRight />
 			</button>
 		</div>
 	);

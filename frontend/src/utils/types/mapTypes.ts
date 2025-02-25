@@ -77,7 +77,14 @@ type PointType = {
 
 type MenuTabType = "results" | "filters" | "infos";
 
-type MapInfoType = { [key: string]: string | number[] };
+type MapInfoType = {
+	name_en: string;
+	name_fr: string;
+	description_en: string;
+	description_fr: string;
+	categoryId: string;
+	attestationIds: string;
+};
 
 type GreatRegionType = {
 	id: number;

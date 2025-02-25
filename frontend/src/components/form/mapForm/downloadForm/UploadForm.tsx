@@ -1,36 +1,28 @@
 // import des bibliothèques
-import { useState } from "react";
 import { parse } from "papaparse";
 // import des composants
+import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 // import du context
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
+import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/functions";
+import { createNewMap } from "../../../../utils/functions/create";
 // import des types
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, FormEventHandler } from "react";
 import type { ParseResult } from "papaparse";
 import type {
 	MapInfoType,
 	ParsedPoint,
 } from "../../../../utils/types/mapTypes";
 // import du style
-import style from "./uploadForm.module.scss";
-import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/functions";
-import { all } from "axios";
-import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
-import { createNewMap } from "../../../../utils/functions/create";
+import style from "../demoCommonForm/demoCommonForm.module.scss";
 
 const UploadForm = () => {
 	// on récupère les données du formulaire
-	const {
-		mapInfos,
-		setMapInfos,
-		step,
-		incrementStep,
-		decrementStep,
-		visualReady,
-		setVisualReady,
-	} = useMapFormStore(useShallow((state) => state));
+	const { mapInfos, setMapInfos, step } = useMapFormStore(
+		useShallow((state) => state),
+	);
 
 	// on gère l'upload du csv
 	const handleFileUpload = (event: ChangeEvent) => {
@@ -52,11 +44,11 @@ const UploadForm = () => {
 		// s'il existe bien un fichier, on le parse et on stocke les points dans un state
 		if (file) {
 			parse(file, {
-				skipFirstNLines: 2,
 				header: true,
 				transformHeader: (header) => headerMapping[header] || header,
 				skipEmptyLines: true,
 				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
+				skipFirstNLines: 2,
 				complete: (result: ParseResult<ParsedPoint>) => {
 					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
 						result.data,
@@ -64,7 +56,7 @@ const UploadForm = () => {
 					setMapInfos({
 						...mapInfos,
 						attestationIds: allAttestationsIds,
-					});
+					} as MapInfoType);
 				},
 				error: (error) => {
 					console.error("Erreur lors de la lecture du fichier :", error);
@@ -74,20 +66,26 @@ const UploadForm = () => {
 	};
 
 	// on gère la soumission du formulaire
-	const handleSubmit = async (event: any) => {
+	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
 		try {
-			const newMap = await createNewMap(mapInfos as MapInfoType);
-			console.log(newMap);
+			await createNewMap(mapInfos as MapInfoType);
 		} catch (error) {
 			console.error("Erreur lors de la soumission du formulaire :", error);
 		}
 	};
 
 	return (
-		<form onSubmit={handleSubmit}>
-			<label htmlFor="points">Charger les points</label>
-			<input id="point" type="file" accept=".csv" onChange={handleFileUpload} />
+		<form onSubmit={handleSubmit} className={style.commonFormContainer}>
+			<div className={style.commonFormInputContainer}>
+				<label htmlFor="points">Charger les points</label>
+				<input
+					id="point"
+					type="file"
+					accept=".csv"
+					onChange={handleFileUpload}
+				/>
+			</div>
 			<NavigationButtonComponent step={step} />
 		</form>
 	);

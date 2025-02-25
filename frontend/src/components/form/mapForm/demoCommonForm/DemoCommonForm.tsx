@@ -2,6 +2,7 @@
 import { useContext, useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 // import des composants
+import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du context
 import { TranslationContext } from "../../../../context/TranslationContext";
@@ -10,25 +11,22 @@ import { getAllCategories } from "../../../../utils/loaders/loaders";
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
 // import des types
-import type { SubmitHandler } from "react-hook-form";
+import type { FieldErrors, SubmitHandler } from "react-hook-form";
 import type { InputType } from "../../../../utils/types/formTypes";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type {
 	CategoryType,
 	MapInfoType,
 } from "../../../../utils/types/mapTypes";
+import type { TranslationType } from "../../../../utils/types/languageTypes";
 // import du style
 import style from "./demoCommonForm.module.scss";
-import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
-
-type allInputsType = any;
 
 type DemoCommonFormProps = {
 	inputs: InputType[];
-	defaultValues: any | undefined;
 };
 
-const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
+const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 	// on récupère la langue
 	const { language } = useContext(TranslationContext);
 
@@ -36,14 +34,8 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 	const [dataLoaded, setDataLoaded] = useState(false);
 
 	// on récupère les données du formulaire
-	const {
-		mapInfos,
-		setMapInfos,
-		step,
-		incrementStep,
-		visualReady,
-		setVisualReady,
-	} = useMapFormStore(useShallow((state) => state));
+	const { mapInfos, setMapInfos, step, incrementStep, setVisualReady } =
+		useMapFormStore(useShallow((state) => state));
 
 	// on gère le formulaire
 	const {
@@ -51,7 +43,7 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 		handleSubmit,
 		getValues,
 		formState: { errors },
-	} = useForm<allInputsType>({
+	} = useForm<MapInfoType>({
 		defaultValues: mapInfos ?? {},
 	});
 
@@ -62,7 +54,8 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 	};
 
 	// on initie la soumission du formulaire
-	const onSubmit: SubmitHandler<allInputsType> = () => {
+	const onSubmit: SubmitHandler<MapInfoType> = (data) => {
+		setMapInfos({ ...mapInfos, ...data });
 		incrementStep(step);
 	};
 
@@ -105,7 +98,7 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 							<div key={input.name} className={style.commonFormInputContainer}>
 								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
 								<select
-									{...register(input.name, {
+									{...register(input.name as keyof MapInfoType, {
 										required: input.required.value,
 									})}
 								>
@@ -118,9 +111,13 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 									})}
 								</select>
 
-								{errors[input.name] && (
+								{errors[input.name as keyof FieldErrors<MapInfoType>] && (
 									<ErrorComponent
-										message={input.required.message[language] as string}
+										message={
+											input.required.message?.[
+												language as keyof TranslationType
+											] as string
+										}
 									/>
 								)}
 							</div>
@@ -131,16 +128,21 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 							<div key={input.name} className={style.commonFormInputContainer}>
 								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
 								<input
-									{...register(input.name, {
+									{...register(input.name as keyof MapInfoType, {
 										required: input.required.value,
 									})}
 								/>
 
-								{input.required.value && errors[input.name] && (
-									<ErrorComponent
-										message={input.required.message[language] as string}
-									/>
-								)}
+								{input.required.value &&
+									errors[input.name as keyof FieldErrors<MapInfoType>] && (
+										<ErrorComponent
+											message={
+												input.required.message?.[
+													language as keyof TranslationType
+												] as string
+											}
+										/>
+									)}
 							</div>
 						);
 					}
@@ -149,35 +151,21 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 							<div key={input.name} className={style.commonFormInputContainer}>
 								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
 								<textarea
-									{...register(input.name, {
+									{...register(input.name as keyof MapInfoType, {
 										required: input.required.value,
 									})}
 								/>
 
-								{input.required.value && errors[input.name] && (
-									<ErrorComponent
-										message={input.required.message[language] as string}
-									/>
-								)}
-							</div>
-						);
-					}
-					if (input.type === "number") {
-						return (
-							<div key={input.name} className={style.commonFormInputContainer}>
-								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-								<input
-									type="number"
-									{...register(input.name, {
-										required: input.required.value,
-									})}
-								/>
-
-								{input.required.value && errors[input.name] && (
-									<ErrorComponent
-										message={input.required.message[language] as string}
-									/>
-								)}
+								{input.required.value &&
+									errors[input.name as keyof FieldErrors<MapInfoType>] && (
+										<ErrorComponent
+											message={
+												input.required.message?.[
+													language as keyof TranslationType
+												] as string
+											}
+										/>
+									)}
 							</div>
 						);
 					}
