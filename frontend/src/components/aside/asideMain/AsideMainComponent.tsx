@@ -40,16 +40,14 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
 	// on va chercher les options du filtre de localisation
 	const [locationOptions, setLocationOptions] = useState<OptionType[]>([]);
-	const [locationLevel, setLocationLevel] = useState<string>("");
 
-	const fetchLocationOptions = async (locationLevel: string) => {
+	const fetchLocationOptions = async () => {
 		try {
 			// on récupère toutes les localités depuis les points de la carte
 			const allLocationsFromPoints: { [key: string]: string }[] =
 				getAllLocationsFromPoints(allPoints);
 			// on récupère la clé du champ en fonction du niveau de localisation (grande région / sous région)
-			const fieldKeyFromLocationLevel =
-				locationLevel === "greatRegion" ? "grande_region" : "sous_region";
+			const fieldKeyFromLocationLevel = "sous_region";
 
 			// on prépare les valeurs pour le select
 			const formatedLocationOptions: OptionType[] = allLocationsFromPoints
@@ -108,8 +106,7 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (mapInfos) {
-			const locationLevel = getLocationLevel(mapInfos, setLocationLevel);
-			fetchLocationOptions(locationLevel);
+			fetchLocationOptions();
 			fetchElementOptions();
 		}
 	}, [mapInfos, allPoints]);
@@ -122,7 +119,6 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 			return (
 				<FilterComponent
 					locationOptions={locationOptions}
-					locationLevel={locationLevel}
 					elementOptions={elementOptions}
 				/>
 			);

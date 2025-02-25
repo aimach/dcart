@@ -4,30 +4,13 @@ const getQueryStringForGodsFilter = (gods: string) => {
 	return ` AND formule.formule NOT LIKE ALL(ARRAY[${arrayElements}]) `;
 };
 
-const getQueryStringForLocalisationFilter = (
-	locationType: string,
-	locationId: string,
-) => {
-	// on récupère le champ de la base de données correspondant à la granularité de la localisation
-	let locationTypeField = "";
-	switch (locationType) {
-		case "subRegion":
-			locationTypeField = "sous_region";
-			break;
-		case "greatRegion":
-			locationTypeField = "grande_region";
-			break;
-
-		default:
-			locationTypeField = "grande_region";
-			break;
-	}
+const getQueryStringForLocalisationFilter = (locationId: string) => {
 	// on check le nombre d'ids
 	if (locationId.includes("|")) {
 		const locationIds = locationId.split("|").join(", ");
-		return `AND ${locationTypeField}.id IN (${locationIds})`;
+		return `AND sous_region.id IN (${locationIds})`;
 	}
-	return `AND ${locationTypeField}.id = ${locationId}`;
+	return `AND sous_region.id = ${locationId}`;
 };
 
 const getQueryStringForLanguageFilter = (languages: string) => {

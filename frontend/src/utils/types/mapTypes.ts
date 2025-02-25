@@ -78,6 +78,7 @@ type PointType = {
 type MenuTabType = "results" | "filters" | "infos";
 
 type MapInfoType = {
+	id?: string;
 	name_en: string;
 	name_fr: string;
 	description_en: string;

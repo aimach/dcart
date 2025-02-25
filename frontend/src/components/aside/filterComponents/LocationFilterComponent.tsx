@@ -12,12 +12,10 @@ import type { OptionType } from "../../../utils/types/commonTypes";
 
 interface LocationFilterComponentProps {
 	locationOptions: OptionType[];
-	locationLevel: string;
 }
 
 const LocationFilterComponent = ({
 	locationOptions,
-	locationLevel,
 }: LocationFilterComponentProps) => {
 	// on récupère les données de langue
 	const { translation, language } = useContext(TranslationContext);
@@ -31,12 +29,11 @@ const LocationFilterComponent = ({
 	const onMultiSelectChange = (selectedOptions: MultiValue<OptionType>) => {
 		const locationValuesArray: number[] = [];
 		for (const option of selectedOptions) {
-			locationValuesArray.push(option.value);
+			locationValuesArray.push(option.value as number);
 		}
 		const locationValuesString = locationValuesArray.join("|");
 		setUserFilters({
 			...userFilters,
-			locationType: locationLevel,
 			locationId: locationValuesString,
 		});
 	};

@@ -57,14 +57,12 @@ export const sourceController = {
 				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
 
 				// s'il existe des params, on remplace les valeurs par celles des params
-				if (req.query.locationType && req.query.locationId) {
-					queryLocalisation =
-						req.query.locationType && req.query.locationId
-							? getQueryStringForLocalisationFilter(
-									req.query.locationType as string,
-									req.query.locationId as string,
-								)
-							: queryLocalisation;
+				if (req.query.locationId) {
+					queryLocalisation = req.query.locationId
+						? getQueryStringForLocalisationFilter(
+								req.query.locationId as string,
+							)
+						: queryLocalisation;
 				}
 
 				if (req.query.ante || req.query.post) {

@@ -21,13 +21,11 @@ import style from "./tabComponent.module.scss";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
-	locationLevel: string;
 	elementOptions: OptionType[];
 }
 
 const FilterComponent = ({
 	locationOptions,
-	locationLevel,
 	elementOptions,
 }: FilterComponentProps) => {
 	// on récupère les données de la langue
@@ -94,7 +92,6 @@ const FilterComponent = ({
 								<LocationFilterComponent
 									key={filter.id}
 									locationOptions={locationOptions}
-									locationLevel={locationLevel}
 								/>
 							</div>
 						);
