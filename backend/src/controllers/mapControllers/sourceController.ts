@@ -29,16 +29,44 @@ export const sourceController = {
 			let results = null;
 
 			if (mapId === "exploration") {
+				// on prépare les query des filtres
+				let queryLocalisation = "";
+				const maxValue = null;
+				const minValue = null;
+				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+				let queryIncludedElements = "";
+
+				if (req.query.locationId) {
+					// s'il existe des params, on remplace les valeurs par celles des params
+					queryLocalisation = req.query.locationId
+						? getQueryStringForLocalisationFilter(
+								mapId,
+								req.query.locationId as string,
+							)
+						: queryLocalisation;
+				}
+
+				if (req.query.ante || req.query.post) {
+					const maxValue = req.query.ante ? req.query.ante.toString() : null;
+					const minValue = req.query.post ? req.query.post.toString() : null;
+					queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+				}
+
+				if (req.query.elementId) {
+					// ici se fait la récupération des épithètes
+					queryIncludedElements = getQueryStringForIncludedElements(
+						mapId,
+						req.query.elementId as string,
+					);
+				}
+
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQueryWithoutDetails(
-					"",
-					"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
-					"=",
-					"",
-					"",
-					"",
+					queryLocalisation,
+					queryDatation,
+					queryIncludedElements,
 				);
-				results = await MapDataSource.query(sqlQuery, [3, 1]);
+				results = await MapDataSource.query(sqlQuery);
 			} else {
 				// on récupère les informations de la carte
 				const mapInfos = await dcartDataSource
@@ -61,6 +89,7 @@ export const sourceController = {
 				if (req.query.locationId) {
 					queryLocalisation = req.query.locationId
 						? getQueryStringForLocalisationFilter(
+								mapId,
 								req.query.locationId as string,
 							)
 						: queryLocalisation;
@@ -75,6 +104,7 @@ export const sourceController = {
 				// ici se fait la récupération des épithètes
 				if (req.query.elementId) {
 					queryIncludedElements = getQueryStringForIncludedElements(
+						mapId,
 						req.query.elementId as string,
 					);
 				}

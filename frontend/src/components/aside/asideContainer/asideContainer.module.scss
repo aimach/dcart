@@ -6,6 +6,10 @@
 
   &Opened {
     flex: 1;
+
+    >p {
+      margin: v.$space-s;
+    }
   }
 
   &Closed {

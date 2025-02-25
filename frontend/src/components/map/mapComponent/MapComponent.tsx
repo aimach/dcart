@@ -22,7 +22,6 @@ import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
-import { getPointsTimeMarkers } from "../../../utils/loaders/loaders";
 // import des types
 import type { LatLngTuple } from "leaflet";
 import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
@@ -33,6 +32,7 @@ import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
+import { getPointsTimeMarkers } from "../../../utils/loaders/loaders";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -47,10 +47,8 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	const { tileLayerURL } = useMapStore((state) => state);
 
 	// on récupère les filtres de l'utilisateur dans le store
-	const { userFilters, setUserFilters, resetUserFilters } = useMapFiltersStore(
+	const { resetUserFilters } = useMapFiltersStore(
 		useShallow((state) => ({
-			userFilters: state.userFilters,
-			setUserFilters: state.setUserFilters,
 			resetUserFilters: state.resetUserFilters,
 		})),
 	);
@@ -84,6 +82,9 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 		resetUserFilters();
 	}, [isModalOpen]);
 
+	// on disable le filtre de temps si on a des points sans date
+	const [timeFilterIsDisabled, setTimeFilterIsDisabled] =
+		useState<boolean>(false);
 	// on met à jour les limites de la carte
 	const bounds: LatLngTuple[] = [];
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -97,18 +98,20 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 				map.fitBounds(bounds);
 			}
 		}
+		const timeMarkers = getPointsTimeMarkers(allPoints);
+		if (!timeMarkers.post && !timeMarkers.ante) {
+			setTimeFilterIsDisabled(true);
+		}
 	}, [allPoints]);
 
-	// RECUPERATION DES MARKERS TEMPORELS  POUR LES FILTRES
-	const [timeFilterIsDisabled, setTimeFilterIsDisabled] =
-		useState<boolean>(false);
+	console.log(mapInfos);
 
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
 			<div className="map" id="map">
 				<section className="leaflet-container">
-					{isModalOpen && mapInfos && (
+					{isModalOpen && (
 						<ModalComponent
 							onClose={() => setIsModalOpen(false)}
 							isDemo={false}

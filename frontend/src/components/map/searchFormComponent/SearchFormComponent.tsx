@@ -81,13 +81,13 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 					<p>
 						{translation[language].modal.firstContent}{" "}
 						<SelectOptionsComponent
-							selectId="location"
+							selectId="locationId"
 							basicOptionContent={translation[language].modal.chooseRegion}
 							options={greatRegions}
 						/>{" "}
 						{translation[language].modal.secondContent}{" "}
 						<SelectOptionsComponent
-							selectId="element"
+							selectId="elementId"
 							basicOptionContent={translation[language].modal.chooseDivinity}
 							options={divinities}
 						/>{" "}

@@ -4,13 +4,17 @@ const getQueryStringForGodsFilter = (gods: string) => {
 	return ` AND formule.formule NOT LIKE ALL(ARRAY[${arrayElements}]) `;
 };
 
-const getQueryStringForLocalisationFilter = (locationId: string) => {
+const getQueryStringForLocalisationFilter = (
+	mapId: string,
+	locationId: string,
+) => {
+	const tableName = mapId === "exploration" ? "grande_region" : "sous_region";
 	// on check le nombre d'ids
 	if (locationId.includes("|")) {
 		const locationIds = locationId.split("|").join(", ");
-		return `AND sous_region.id IN (${locationIds})`;
+		return `AND ${tableName}.id IN (${locationIds})`;
 	}
-	return `AND sous_region.id = ${locationId}`;
+	return `AND ${tableName}.id = ${locationId}`;
 };
 
 const getQueryStringForLanguageFilter = (languages: string) => {
@@ -48,14 +52,17 @@ const getQueryStringForDateFilter = (
 	return ` and datation.post_quem <= ${ante} and datation.ante_quem >= ${post} `;
 };
 
-const getQueryStringForIncludedElements = (queryElements: string) => {
+const getQueryStringForIncludedElements = (
+	mapId: string,
+	queryElements: string,
+) => {
 	const queryElementsArray = queryElements.split("|");
 	const queryElementsArrayWithBrackets = queryElementsArray.map(
 		(element) => `'%{${element}}%'`,
 	);
-	let query = "";
+	let query = mapId === "exploration" ? "WHERE" : "AND";
 	if (queryElements) {
-		query += ` AND formule.formule LIKE ANY(ARRAY[${queryElementsArrayWithBrackets}]) `;
+		query += ` formule.formule LIKE ANY(ARRAY[${queryElementsArrayWithBrackets}]) `;
 	}
 	return query;
 };
