@@ -77,7 +77,7 @@ type PointType = {
 
 type MenuTabType = "results" | "filters" | "infos";
 
-type MapInfoType = { [key: string]: string };
+type MapInfoType = { [key: string]: string | number[] };
 
 type GreatRegionType = {
 	id: number;
@@ -110,6 +110,18 @@ type CategoryType = {
 	}[];
 };
 
+type ParsedPoint = {
+	latitude: number;
+	longitude: number;
+	great_region: string;
+	sub_region: string;
+	language: string;
+	post_quem: number;
+	ante_quem: number;
+	formula: string;
+	id: number;
+};
+
 export type {
 	MapType,
 	PointType,
@@ -123,4 +135,5 @@ export type {
 	DivinityType,
 	TimeMarkersType,
 	CategoryType,
+	ParsedPoint,
 };

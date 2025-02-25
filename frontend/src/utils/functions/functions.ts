@@ -8,6 +8,7 @@ import type {
 	ElementType,
 	MapInfoType,
 	AgentType,
+	ParsedPoint,
 } from "../types/mapTypes";
 import { point, type Map as LeafletMap } from "leaflet";
 
@@ -371,6 +372,16 @@ const getAgentsArrayWithoutDuplicates = (agentsArray: AgentType[]) => {
 	return agentsWithoutDuplicates;
 };
 
+const getAllAttestationsIdsFromParsedPoints = (
+	parsedPoints: ParsedPoint[],
+): number[] => {
+	const allAttestationsIds: number[] = [];
+	parsedPoints.map((point) => {
+		allAttestationsIds.push(point.id);
+	});
+	return allAttestationsIds;
+};
+
 export {
 	getBackGroundColorClassName,
 	getSupportAndMaterialSentence,
@@ -385,4 +396,5 @@ export {
 	getAllElementsFromPoints,
 	getAllLocationsFromPoints,
 	getAgentsArrayWithoutDuplicates,
+	getAllAttestationsIdsFromParsedPoints,
 };

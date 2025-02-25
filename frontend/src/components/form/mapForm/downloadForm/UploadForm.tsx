@@ -4,15 +4,31 @@ import { parse } from "papaparse";
 // import des composants
 // import du context
 // import des services
+import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
+import { useShallow } from "zustand/shallow";
 // import des types
 import type { ChangeEvent } from "react";
 import type { ParseResult } from "papaparse";
+import type { ParsedPoint } from "../../../../utils/types/mapTypes";
 // import du style
-import style from "./downloadForm.module.scss";
+import style from "./uploadForm.module.scss";
+import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/functions";
+import { all } from "axios";
+import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 
-const DownloadForm = () => {
+const UploadForm = () => {
+	// on récupère les données du formulaire
+	const {
+		mapInfos,
+		setMapInfos,
+		step,
+		incrementStep,
+		decrementStep,
+		visualReady,
+		setVisualReady,
+	} = useMapFormStore(useShallow((state) => state));
+
 	// on gère l'upload du csv
-	const [parsedPoints, setParsedPoints] = useState<any[]>([]);
 
 	const handleFileUpload = (event: ChangeEvent) => {
 		// on définit la correspondance avec les headers du csv
@@ -38,9 +54,14 @@ const DownloadForm = () => {
 				transformHeader: (header) => headerMapping[header] || header,
 				skipEmptyLines: true,
 				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
-				complete: (result: ParseResult<any>) => {
-					console.log(result.data);
-					setParsedPoints(result.data);
+				complete: (result: ParseResult<ParsedPoint>) => {
+					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
+						result.data,
+					);
+					setMapInfos({
+						...mapInfos,
+						attestationsIds: allAttestationsIds,
+					});
 				},
 				error: (error) => {
 					console.error("Erreur lors de la lecture du fichier :", error);
@@ -53,8 +74,9 @@ const DownloadForm = () => {
 		<form>
 			<label htmlFor="points">Charger les points</label>
 			<input id="point" type="file" accept=".csv" onChange={handleFileUpload} />
+			<NavigationButtonComponent step={step} />
 		</form>
 	);
 };
 
-export default DownloadForm;
+export default UploadForm;

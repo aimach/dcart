@@ -19,8 +19,7 @@ import type {
 } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./demoCommonForm.module.scss";
-// import des icônes
-import { ChevronRight } from "lucide-react";
+import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 
 type allInputsType = any;
 
@@ -42,7 +41,6 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 		setMapInfos,
 		step,
 		incrementStep,
-		decrementStep,
 		visualReady,
 		setVisualReady,
 	} = useMapFormStore(useShallow((state) => state));
@@ -191,19 +189,7 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 				>
 					Charger le visuel
 				</button>
-				{step > 1 && (
-					<button
-						type="button"
-						onClick={() => decrementStep(step)}
-						onKeyUp={() => decrementStep(step)}
-					>
-						Précédent
-					</button>
-				)}
-
-				<button type="submit">
-					Suivant <ChevronRight />
-				</button>
+				<NavigationButtonComponent step={step} />
 			</form>
 		)
 	);
