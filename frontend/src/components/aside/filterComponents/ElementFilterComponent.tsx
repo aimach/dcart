@@ -29,7 +29,7 @@ const ElementFilterComponent = ({
 	const onMultiSelectChange = (selectedOptions: MultiValue<OptionType>) => {
 		const elementValuesArray: number[] = [];
 		for (const option of selectedOptions) {
-			elementValuesArray.push(option.value);
+			elementValuesArray.push(option.value as number);
 		}
 		const elementValuesString = elementValuesArray.join("|");
 		setUserFilters({
@@ -65,6 +65,7 @@ const ElementFilterComponent = ({
 				isMulti
 				onChange={(newValue) => onMultiSelectChange(newValue)}
 				placeholder={translation[language].mapPage.aside.searchForElement}
+				isClearable={false}
 			/>
 		</div>
 	);

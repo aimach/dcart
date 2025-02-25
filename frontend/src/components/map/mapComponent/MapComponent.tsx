@@ -89,8 +89,6 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (allPoints.length) {
-			// on récupère les marqueurs temporels
-			fetchTimeMarkers();
 			// on récupère les limites de la carte
 			for (const point of allPoints) {
 				bounds.push([point.latitude, point.longitude]);
@@ -104,31 +102,6 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	// RECUPERATION DES MARKERS TEMPORELS  POUR LES FILTRES
 	const [timeFilterIsDisabled, setTimeFilterIsDisabled] =
 		useState<boolean>(false);
-	const [timeMarkers, setTimeMarkers] = useState<{
-		post: number;
-		ante: number;
-	}>({ post: 0, ante: 0 });
-	const fetchTimeMarkers = async () => {
-		try {
-			const newTimeMarkers = getPointsTimeMarkers(allPoints);
-			if (!newTimeMarkers.post && !newTimeMarkers.ante) {
-				setTimeFilterIsDisabled(true);
-			} else {
-				setTimeFilterIsDisabled(false);
-				setTimeMarkers(newTimeMarkers);
-				const newUserFilters = {
-					...userFilters,
-					...newTimeMarkers,
-				};
-				setUserFilters(newUserFilters);
-			}
-		} catch (error) {
-			console.error(
-				"Erreur lors du chargement des marqueurs temporels:",
-				error,
-			);
-		}
-	};
 
 	return (
 		<>
@@ -191,10 +164,7 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 				</section>
 				{mapReady && (
 					<section className={style.mapBottomSection}>
-						<TimeFilterComponent
-							timeMarkers={timeMarkers}
-							disabled={timeFilterIsDisabled}
-						/>
+						<TimeFilterComponent disabled={timeFilterIsDisabled} />
 						<TileLayerChoiceComponent />
 					</section>
 				)}

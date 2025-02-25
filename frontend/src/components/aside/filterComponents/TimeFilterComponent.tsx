@@ -8,20 +8,15 @@ import { getAllDatationLabels } from "../../../utils/functions/functions";
 import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
 import { useMapStore } from "../../../utils/stores/mapStore";
 // import des types
-import type { TimeMarkersType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./filtersComponent.module.scss";
 import "./timeFilterComponent.css";
 
 interface TimeFilterComponentProps {
-	timeMarkers: TimeMarkersType;
 	disabled: boolean;
 }
 
-const TimeFilterComponent = ({
-	timeMarkers,
-	disabled,
-}: TimeFilterComponentProps) => {
+const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 	// on récupère les filtres de l'utilisateur dans le store
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => ({
@@ -88,38 +83,28 @@ const TimeFilterComponent = ({
 	const step = 25;
 
 	return (
-		timeMarkers.ante && (
-			<div className={style.rangeContainer}>
-				<MultiRangeSlider
-					disabled={disabled}
-					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-					min={timeMarkers.post}
-					max={timeMarkers.ante}
-					step={step}
-					stepOnly
-					baseClassName={"multi-range-slider-custom"}
-					minValue={
-						userFilters.post === undefined
-							? (timeMarkers.post as number)
-							: (userFilters.post as number)
-					}
-					maxValue={
-						userFilters.ante === undefined
-							? (timeMarkers.ante as number)
-							: (userFilters.ante as number)
-					}
-					labels={getAllDatationLabels(
-						timeMarkers.post,
-						timeMarkers.ante,
-						step,
-					)}
-					onChange={(e) => {
-						handleTimeFilter(e);
-						changeUserFilters(e);
-					}}
-				/>
-			</div>
-		)
+		<div className={style.rangeContainer}>
+			<MultiRangeSlider
+				disabled={disabled}
+				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
+				min={-1000}
+				max={400}
+				step={step}
+				stepOnly
+				baseClassName={"multi-range-slider-custom"}
+				minValue={
+					userFilters.post === undefined ? -1000 : (userFilters.post as number)
+				}
+				maxValue={
+					userFilters.ante === undefined ? 400 : (userFilters.ante as number)
+				}
+				labels={getAllDatationLabels(-1000, 400, step)}
+				onChange={(e) => {
+					handleTimeFilter(e);
+					changeUserFilters(e);
+				}}
+			/>
+		</div>
 	);
 };
 

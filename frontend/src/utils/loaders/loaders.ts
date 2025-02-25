@@ -73,10 +73,12 @@ const getPointsTimeMarkers = (allPoints: PointType[]) => {
 	for (const points of allPoints) {
 		for (const source of points.sources) {
 			if (source.ante_quem > timeMarkers.ante) {
-				timeMarkers.ante = source.ante_quem;
+				// on arrondit le chiffre pour avoir un multiple de 10 et mieux gérer l'échelle du filtre du temps
+				timeMarkers.ante = Math.ceil(source.ante_quem / 10) * 10;
 			}
 			if (source.post_quem < timeMarkers.post) {
-				timeMarkers.post = source.post_quem;
+				// on arrondit le chiffre pour avoir un multiple de 10 et mieux gérer l'échelle du filtre du temps
+				timeMarkers.post = Math.floor(source.post_quem / 10) * 10;
 			}
 		}
 	}

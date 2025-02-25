@@ -65,6 +65,7 @@ const LocationFilterComponent = ({
 				isMulti
 				onChange={(newValue) => onMultiSelectChange(newValue)}
 				placeholder={translation[language].mapPage.aside.searchForLocation}
+				isClearable={false}
 			/>
 		</div>
 	);

@@ -277,31 +277,6 @@ const getAgentActivityLabelsAndNb = (point: PointType, language: Language) => {
 	return { labels, dataSets };
 };
 
-// utilisé pour récupérer l'url des localisations en fonction de la granularité du filtre
-const getLocationLevel = (
-	mapInfos: MapInfoType,
-	setLocationLevel: Dispatch<SetStateAction<string>>,
-) => {
-	const locationType = (mapInfos as MapInfoType).locationType;
-
-	// on définit l'url de la requête selon la granularité du filtre de localisation
-	let locationLevel = "";
-
-	switch (locationType) {
-		case null:
-			locationLevel = "greatRegion";
-			break;
-		case "greatRegion":
-			locationLevel = "subRegion";
-			break;
-		default:
-			locationLevel = "greatRegion";
-			break;
-	}
-	setLocationLevel(locationLevel);
-	return locationLevel;
-};
-
 const getAllDatationLabels = (
 	minVal: number | string,
 	maxVal: number | string,
@@ -392,7 +367,6 @@ export {
 	getEpithetLabelsAndNb,
 	getAgentGenderLabelsAndNb,
 	getAgentActivityLabelsAndNb,
-	getLocationLevel,
 	getAllDatationLabels,
 	getAllElementsFromPoints,
 	getAllLocationsFromPoints,

@@ -11,7 +11,6 @@ import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { getAllDivinities } from "../../../utils/loaders/loaders";
 import {
 	getAllElementsFromPoints,
-	getLocationLevel,
 	getAllLocationsFromPoints,
 } from "../../../utils/functions/functions";
 // import des types
