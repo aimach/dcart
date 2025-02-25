@@ -1,6 +1,6 @@
 // import des bibliothèques
-// import des composants
 import { useEffect } from "react";
+// import des composants
 import DemoCommonForm from "../../../../components/form/mapForm/demoCommonForm/DemoCommonForm";
 import DemoMapComponent from "../../../../components/map/demoMapComponent/DemoMapComponent";
 // import du context
@@ -13,13 +13,15 @@ import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 // import des types
 // import du style
 import style from "../backofficeMapPage.module.scss";
+import DownloadForm from "../../../../components/form/mapForm/downloadForm/downloadForm";
 
 const BOMapFormPage = () => {
 	// on récupère les étapes
 	const { step, setStep, resetMapInfos } = useMapFormStore((state) => state);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		setStep(1);
+		setStep(2);
 		resetMapInfos();
 	}, []);
 
@@ -29,9 +31,10 @@ const BOMapFormPage = () => {
 				{step === 1 && (
 					<DemoCommonForm inputs={firstStepInputs} defaultValues={undefined} />
 				)}
-				{step === 2 && (
+				{step === 2 && <DownloadForm />}
+				{/* {step === 2 && (
 					<DemoCommonForm inputs={secondStepInputs} defaultValues={undefined} />
-				)}
+				)} */}
 			</div>
 			<DemoMapComponent showModal={step === 1} />
 		</section>

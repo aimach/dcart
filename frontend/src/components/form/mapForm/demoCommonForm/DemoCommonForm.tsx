@@ -90,6 +90,7 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 		}
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		getCategoryOptions();
 	}, [language]);
@@ -132,6 +133,24 @@ const DemoCommonForm = ({ inputs, defaultValues }: DemoCommonFormProps) => {
 							<div key={input.name} className={style.commonFormInputContainer}>
 								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
 								<input
+									{...register(input.name, {
+										required: input.required.value,
+									})}
+								/>
+
+								{input.required.value && errors[input.name] && (
+									<ErrorComponent
+										message={input.required.message[language] as string}
+									/>
+								)}
+							</div>
+						);
+					}
+					if (input.type === "textarea") {
+						return (
+							<div key={input.name} className={style.commonFormInputContainer}>
+								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<textarea
 									{...register(input.name, {
 										required: input.required.value,
 									})}
