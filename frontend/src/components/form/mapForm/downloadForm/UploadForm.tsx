@@ -44,6 +44,7 @@ const UploadForm = () => {
 
 		// s'il existe bien un fichier, on le parse et on stocke les points dans un state
 		if (file) {
+			// @ts-ignore : on ignore l'erreur de type car on sait que le fichier est bien de type File (problème de typage avec l'utilisation de l'option skipFirstNLines)
 			parse(file, {
 				header: true,
 				transformHeader: (header) => headerMapping[header] || header,

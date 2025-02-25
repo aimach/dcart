@@ -142,12 +142,9 @@ GROUP BY
 };
 
 export const getSourcesQueryWithDetails = (
+	attestationIds: string,
 	queryLocalisation: string,
-	elementOperator: string,
-	divinityOperator: string,
 	queryDatation: string,
-	queryIncludedElements: string,
-	queryExcludedElements: string,
 	queryLanguage: string,
 ) => {
 	return `
@@ -215,9 +212,7 @@ sources_with_attestations AS (
   JOIN attestation_with_elements ON attestation.id = attestation_with_elements.id_attestation
   JOIN formule ON formule.attestation_id = attestation.id
   LEFT JOIN agent ON agent.id_attestation = attestation.id
-  WHERE attestation_with_elements.nb_element ${elementOperator} $1
-  ${queryIncludedElements} 
-  ${queryExcludedElements} 
+  WHERE attestation.id IN (${attestationIds})
 ),
 
 -- on enlève les doublons des sources
@@ -266,7 +261,6 @@ LEFT JOIN type_support ON type_support.id = source.type_support_id
 LEFT JOIN materiau ON materiau.id = source.materiau_id 
 WHERE localisation_source.latitude IS NOT NULL
 AND localisation_source.longitude IS NOT NULL 
-AND formule.puissances_divines ${divinityOperator} $2
 AND attestation.id_etat_fiche = 4 
 ${queryLocalisation} 
 ${queryLanguage} 

@@ -29,24 +29,13 @@ export const sourceController = {
 			let results = null;
 
 			if (mapId === "exploration") {
-				const { locationType, locationId, element, ante, post } = req.query;
-				// on prépare les query des filtres
-				const queryLocalisation = "";
-				const queryDatation =
-					ante && post
-						? getQueryStringForDateFilter(ante as string, post as string)
-						: "";
-				const queryIncludedElements = element
-					? getQueryStringForIncludedElements(element as string, "")
-					: "";
-
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQueryWithoutDetails(
-					queryLocalisation,
+					"",
 					"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
 					"=",
-					queryDatation,
-					queryIncludedElements,
+					"",
+					"",
 					"",
 				);
 				results = await MapDataSource.query(sqlQuery, [3, 1]);
@@ -59,85 +48,59 @@ export const sourceController = {
 					res.status(404).send({ Erreur: "Carte non trouvée" });
 				}
 
-				// on récupère les éléments à filtrer depuis les informations de la carte
-				// 	const {
-				// 		elementNb,
-				// 		elementOperator,
-				// 		divinityNb,
-				// 		divinityOperator,
-				// 		locationType,
-				// 		locationId,
-				// 		ante,
-				// 		post,
-				// 		includedElements,
-				// 		excludedElements,
-				// 	} = mapInfos;
+				const { attestationIds } = mapInfos as MapContent;
 
-				// 	// on prépare les query des filtres
-				// 	let queryLocalisation =
-				// 		locationType && locationId
-				// 			? getQueryStringForLocalisationFilter(
-				// 					locationType as string,
-				// 					locationId as string,
-				// 				)
-				// 			: "";
-				// 	const maxValue = ante ? ante.toString() : null;
-				// 	const minValue = post ? post.toString() : null;
-				// 	let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
-				// 	let queryIncludedElements = includedElements
-				// 		? getQueryStringForIncludedElements(includedElements, "")
-				// 		: "";
-				// 	const queryExcludedElements = excludedElements
-				// 		? getQueryStringForExcludedElements(excludedElements)
-				// 		: "";
+				// on prépare les query des filtres
+				let queryLocalisation = "";
+				const maxValue = null;
+				const minValue = null;
+				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
 
-				// 	// s'il existe des params, on remplace les valeurs par celles des params
-				// 	if (req.query.locationType && req.query.locationId) {
-				// 		queryLocalisation =
-				// 			req.query.locationType && req.query.locationId
-				// 				? getQueryStringForLocalisationFilter(
-				// 						req.query.locationType as string,
-				// 						req.query.locationId as string,
-				// 					)
-				// 				: queryLocalisation;
-				// 	}
+				// s'il existe des params, on remplace les valeurs par celles des params
+				if (req.query.locationType && req.query.locationId) {
+					queryLocalisation =
+						req.query.locationType && req.query.locationId
+							? getQueryStringForLocalisationFilter(
+									req.query.locationType as string,
+									req.query.locationId as string,
+								)
+							: queryLocalisation;
+				}
 
-				// 	if (req.query.ante || req.query.post) {
-				// 		const maxValue = req.query.ante ? req.query.ante.toString() : null;
-				// 		const minValue = req.query.post ? req.query.post.toString() : null;
-				// 		queryDatation = getQueryStringForDateFilter(maxValue, minValue);
-				// 	}
+				if (req.query.ante || req.query.post) {
+					const maxValue = req.query.ante ? req.query.ante.toString() : null;
+					const minValue = req.query.post ? req.query.post.toString() : null;
+					queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+				}
 
-				// 	if (req.query.elementId) {
-				// 		queryIncludedElements = getQueryStringForIncludedElements(
-				// 			includedElements as string,
-				// 			req.query.elementId as string,
-				// 		);
-				// 	}
-
-				// 	let queryLanguage = "";
-				// 	if (req.query.greek === "false") {
-				// 		queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
-				// 	}
-				// 	if (req.query.semitic === "false") {
-				// 		queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
-				// 	}
-
-				// 	// on récupère le texte de la requête SQL
-				// 	const sqlQuery = getSourcesQueryWithDetails(
-				// 		queryLocalisation,
-				// 		elementOperator, // obligé d'intégrer les opérateurs ici, sinon ça plante
-				// 		divinityOperator,
-				// 		queryDatation,
-				// 		queryIncludedElements,
-				// 		queryExcludedElements,
-				// 		queryLanguage,
+				// ici se fait la récupération des épithètes, qui ne peut plus fonctionner dans ce cas
+				// if (req.query.elementId) {
+				// 	queryIncludedElements = getQueryStringForIncludedElements(
+				// 		includedElements as string,
+				// 		req.query.elementId as string,
 				// 	);
+				// }
 
-				// 	results = await MapDataSource.query(sqlQuery, [elementNb, divinityNb]);
+				let queryLanguage = "";
+				if (req.query.greek === "false") {
+					queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
+				}
+				if (req.query.semitic === "false") {
+					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
+				}
+
+				// on récupère le texte de la requête SQL
+				const sqlQuery = getSourcesQueryWithDetails(
+					attestationIds,
+					queryLocalisation,
+					queryDatation,
+					queryLanguage,
+				);
+
+				results = await MapDataSource.query(sqlQuery);
 			}
 
-			// res.status(200).json(results);
+			res.status(200).json(results);
 		} catch (error) {
 			handleError(res, error as Error);
 		}
