@@ -15,9 +15,13 @@ import "./timeFilterComponent.css";
 
 interface TimeFilterComponentProps {
 	timeMarkers: TimeMarkersType;
+	disabled: boolean;
 }
 
-const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
+const TimeFilterComponent = ({
+	timeMarkers,
+	disabled,
+}: TimeFilterComponentProps) => {
 	// on récupère les filtres de l'utilisateur dans le store
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => ({
@@ -87,6 +91,7 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		timeMarkers.ante && (
 			<div className={style.rangeContainer}>
 				<MultiRangeSlider
+					disabled={disabled}
 					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 					min={timeMarkers.post}
 					max={timeMarkers.ante}

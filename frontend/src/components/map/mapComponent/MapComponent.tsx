@@ -89,6 +89,8 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (allPoints.length) {
+			// on récupère les marqueurs temporels
+			fetchTimeMarkers();
 			// on récupère les limites de la carte
 			for (const point of allPoints) {
 				bounds.push([point.latitude, point.longitude]);
@@ -96,12 +98,12 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 			if (map) {
 				map.fitBounds(bounds);
 			}
-			// on récupère les marqueurs temporels
-			fetchTimeMarkers();
 		}
 	}, [allPoints]);
 
 	// RECUPERATION DES MARKERS TEMPORELS  POUR LES FILTRES
+	const [timeFilterIsDisabled, setTimeFilterIsDisabled] =
+		useState<boolean>(false);
 	const [timeMarkers, setTimeMarkers] = useState<{
 		post: number;
 		ante: number;
@@ -109,12 +111,17 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	const fetchTimeMarkers = async () => {
 		try {
 			const newTimeMarkers = getPointsTimeMarkers(allPoints);
-			setTimeMarkers(newTimeMarkers);
-			const newUserFilters = {
-				...userFilters,
-				newTimeMarkers,
-			};
-			setUserFilters(newUserFilters);
+			if (!newTimeMarkers.post && !newTimeMarkers.ante) {
+				setTimeFilterIsDisabled(true);
+			} else {
+				setTimeFilterIsDisabled(false);
+				setTimeMarkers(newTimeMarkers);
+				const newUserFilters = {
+					...userFilters,
+					...newTimeMarkers,
+				};
+				setUserFilters(newUserFilters);
+			}
 		} catch (error) {
 			console.error(
 				"Erreur lors du chargement des marqueurs temporels:",
@@ -184,7 +191,10 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 				</section>
 				{mapReady && (
 					<section className={style.mapBottomSection}>
-						<TimeFilterComponent timeMarkers={timeMarkers} />
+						<TimeFilterComponent
+							timeMarkers={timeMarkers}
+							disabled={timeFilterIsDisabled}
+						/>
 						<TileLayerChoiceComponent />
 					</section>
 				)}
