@@ -9,6 +9,7 @@ import type {
 	MapInfoType,
 	AgentType,
 	ParsedPoint,
+	MapFilterType,
 } from "../types/mapTypes";
 import { point, type Map as LeafletMap } from "leaflet";
 
@@ -378,6 +379,26 @@ const getFilterLabel = (
 	}
 };
 
+const alreadyTwoFiltersChecked = (mapFilters: MapFilterType) => {
+	let filtersChecked = 0;
+	for (const filter in mapFilters) {
+		if (mapFilters[filter as keyof MapFilterType]) {
+			filtersChecked += 1;
+		}
+	}
+	return filtersChecked >= 2;
+};
+
+const noFilterChecked = (mapFilters: MapFilterType) => {
+	let filtersChecked = 0;
+	for (const filter in mapFilters) {
+		if (mapFilters[filter as keyof MapFilterType]) {
+			filtersChecked += 1;
+		}
+	}
+	return filtersChecked === 0;
+};
+
 export {
 	getBackGroundColorClassName,
 	getSupportAndMaterialSentence,
@@ -393,4 +414,6 @@ export {
 	getAgentsArrayWithoutDuplicates,
 	getAllAttestationsIdsFromParsedPoints,
 	getFilterLabel,
+	alreadyTwoFiltersChecked,
+	noFilterChecked,
 };

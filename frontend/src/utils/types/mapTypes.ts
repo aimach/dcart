@@ -130,6 +130,12 @@ type ParsedPoint = {
 	id: number;
 };
 
+type MapFilterType = {
+	location: boolean;
+	language: boolean;
+	element: boolean;
+};
+
 export type {
 	MapType,
 	PointType,
@@ -144,4 +150,5 @@ export type {
 	TimeMarkersType,
 	CategoryType,
 	ParsedPoint,
+	MapFilterType,
 };
