@@ -36,6 +36,8 @@ type TranslationObject = {
 		unknownDate: string;
 		greek: string;
 		semitic: string;
+		previous: string;
+		next: string;
 	};
 	modal: {
 		firstContent: string;
@@ -70,12 +72,16 @@ type TranslationObject = {
 	};
 	backoffice: {
 		mapFormPage: {
+			addMapIntro: string;
+			addMapPoints: string;
+			uploadPoints: string;
 			addFilters: string;
 			filterIntroduction: string;
 			locationFilter: string;
 			languageFilter: string;
 			epithetFilter: string;
 			noFilter: string;
+			create: string;
 		};
 	};
 };

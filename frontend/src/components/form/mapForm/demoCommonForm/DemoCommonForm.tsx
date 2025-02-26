@@ -28,7 +28,7 @@ type DemoCommonFormProps = {
 
 const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 	// on récupère la langue
-	const { language } = useContext(TranslationContext);
+	const { translation, language } = useContext(TranslationContext);
 
 	// on prépare un state pour le chargement des données
 	const [dataLoaded, setDataLoaded] = useState(false);
@@ -92,6 +92,7 @@ const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 				onSubmit={handleSubmit(onSubmit)}
 				className={style.commonFormContainer}
 			>
+				<h4>{translation[language].backoffice.mapFormPage.addMapIntro}</h4>
 				{inputs.map((input) => {
 					if (input.type === "select") {
 						return (

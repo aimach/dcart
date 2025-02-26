@@ -1,8 +1,10 @@
 // import des bibliothèques
+import { useContext } from "react";
 import { parse } from "papaparse";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 // import du context
+import { TranslationContext } from "../../../../context/TranslationContext";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
@@ -19,6 +21,9 @@ import type {
 import style from "../demoCommonForm/demoCommonForm.module.scss";
 
 const UploadForm = () => {
+	// on récupère la langue
+	const { translation, language } = useContext(TranslationContext);
+
 	// on récupère les données du formulaire
 	const { mapInfos, setMapInfos, step, setStep } = useMapFormStore(
 		useShallow((state) => state),
@@ -82,8 +87,11 @@ const UploadForm = () => {
 
 	return (
 		<form onSubmit={handleSubmit} className={style.commonFormContainer}>
+			<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
 			<div className={style.commonFormInputContainer}>
-				<label htmlFor="points">Charger les points</label>
+				<label htmlFor="points">
+					{translation[language].backoffice.mapFormPage.uploadPoints}
+				</label>
 				<input
 					id="point"
 					type="file"

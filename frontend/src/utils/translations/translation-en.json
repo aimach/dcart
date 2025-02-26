@@ -33,7 +33,9 @@
 		"or": "OR",
 		"unknownDate": "no date",
 		"greek": "Greek",
-		"semitic": "Semitic"
+		"semitic": "Semitic",
+		"previous": "Previous",
+		"next": "Next"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
@@ -68,12 +70,16 @@
 	},
 	"backoffice": {
 		"mapFormPage": {
+			"addMapIntro": "Add map information",
+			"addMapPoints": "Add map points",
+			"uploadPoints": "Upload points",
 			"addFilters": "Add user filters to the map",
 			"filterIntroduction": "It is possible to add up to 2 filters per card, in addition to the time filter which is always displayed.",
 			"locationFilter": "Location filter",
 			"languageFilter": "Language filter (greek or semitic)",
 			"epithetFilter": "Epithet filter",
-			"noFilter": "I don't want to add a filter"
+			"noFilter": "I don't want to add a filter",
+			"create": "Create"
 		}
 	}
 }

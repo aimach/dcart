@@ -1,6 +1,8 @@
 // import des bibliothèques
+import { useContext } from "react";
 // import des composants
 // import du context
+import { TranslationContext } from "../../../../context/TranslationContext";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
@@ -17,6 +19,9 @@ type NavigationButtonComponentProps = {
 const NavigationButtonComponent = ({
 	step,
 }: NavigationButtonComponentProps) => {
+	// on récupère les données de la langue
+	const { translation, language } = useContext(TranslationContext);
+
 	// on récupère les fonctions pour changer d'étape
 	const { decrementStep } = useMapFormStore(useShallow((state) => state));
 
@@ -28,12 +33,15 @@ const NavigationButtonComponent = ({
 					onClick={() => decrementStep(step)}
 					onKeyUp={() => decrementStep(step)}
 				>
-					<ChevronLeft /> Précédent
+					<ChevronLeft /> {translation[language].common.previous}
 				</button>
 			)}
 
 			<button type="submit">
-				{step <= 2 ? "Suivant" : "Créer"} <ChevronRight />
+				{step <= 2
+					? translation[language].common.next
+					: translation[language].backoffice.mapFormPage.create}{" "}
+				<ChevronRight />
 			</button>
 		</div>
 	);
