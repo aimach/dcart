@@ -19,7 +19,7 @@ const BOMapFormPage = () => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		setStep(3);
+		setStep(1);
 		resetMapInfos();
 	}, []);
 

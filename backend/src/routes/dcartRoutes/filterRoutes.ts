@@ -6,3 +6,5 @@ import { dcartControllers } from "../../controllers/dcartControllers";
 export const filterRoutes = express.Router();
 
 filterRoutes.get("/:filterId", dcartControllers.getAllFilters);
+
+filterRoutes.post("/add/:mapId", dcartControllers.addFiltersToMap);

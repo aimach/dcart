@@ -8,10 +8,26 @@ const createNewMap = async (body: MapInfoType) => {
 			method: "POST",
 			data: JSON.stringify(body),
 		});
-		return newMap;
+		return newMap.data;
 	} catch (error) {
 		console.error("Erreur lors de la création de la carte :", error);
 	}
 };
 
-export { createNewMap };
+const addFiltersToMap = async (
+	mapId: string,
+	mapFilters: { [key: string]: boolean },
+) => {
+	try {
+		const response = await apiClient(`dcart/filters/add/${mapId}`, {
+			method: "POST",
+			data: JSON.stringify({ filters: mapFilters }),
+		});
+		console.log(response);
+		return response;
+	} catch (error) {
+		console.error("Erreur lors de la création de la carte :", error);
+	}
+};
+
+export { createNewMap, addFiltersToMap };

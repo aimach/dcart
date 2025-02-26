@@ -72,6 +72,7 @@ const UploadForm = () => {
 		try {
 			const newMap = await createNewMap(mapInfos as MapInfoType);
 			if (newMap) {
+				setMapInfos(newMap);
 				setStep(3);
 			}
 		} catch (error) {

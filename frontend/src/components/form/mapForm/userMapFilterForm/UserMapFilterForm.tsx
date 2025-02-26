@@ -10,7 +10,7 @@ import { useShallow } from "zustand/shallow";
 import { getUserFilters } from "../../../../utils/loaders/loaders";
 // import des types
 import type { FilterType } from "../../../../utils/types/filterTypes";
-import type { ChangeEvent } from "react";
+import type { ChangeEvent, FormEventHandler } from "react";
 // import du style
 import style from "../demoCommonForm/demoCommonForm.module.scss";
 import {
@@ -18,6 +18,8 @@ import {
 	getFilterLabel,
 	noFilterChecked,
 } from "../../../../utils/functions/functions";
+import { useNavigate } from "react-router";
+import { addFiltersToMap } from "../../../../utils/functions/create";
 
 const UserMapFilterForm = () => {
 	// on importe la langue
@@ -69,10 +71,29 @@ const UserMapFilterForm = () => {
 	};
 
 	// on gère la soumission du formulaire
+	const navigate = useNavigate();
+	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+		event.preventDefault();
+		try {
+			if (noFilterChecked(mapFilters)) {
+				navigate("/backoffice/maps");
+			} else {
+				const response = await addFiltersToMap(
+					mapInfos?.id as string,
+					mapFilters,
+				);
+				if (response?.status === 201) {
+					navigate("/backoffice/maps");
+				}
+			}
+		} catch (error) {
+			console.error("Erreur lors de la soumission du formulaire :", error);
+		}
+	};
 
 	return (
 		userMapFilterTypes && (
-			<form className={style.commonFormContainer}>
+			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
 				<h4>{translation[language].backoffice.mapFormPage.addFilters}</h4>
 				<p>{translation[language].backoffice.mapFormPage.filterIntroduction}</p>
 				<div className={style.commonFormInputContainer}>
