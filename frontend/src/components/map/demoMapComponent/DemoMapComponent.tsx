@@ -63,6 +63,17 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 		}
 	}, [allPoints]);
 
+	console.log("allPoints", allPoints);
+
+	// const memoizedPoints = useMemo(
+	// 	() =>
+	// 		allPoints.map((point) => ({
+	// 			...point,
+	// 			key: uuidv4(),
+	// 		})),
+	// 	[allPoints],
+	// );
+
 	return visualReady ? (
 		<div className="demo-map" id="demo-map">
 			<section className="leaflet-container">
@@ -80,31 +91,29 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 						)}
 					</ModalComponent>
 				)}
+
 				<MapContainer
 					center={mapCenter}
 					zoomControl={false}
 					minZoom={4}
 					maxZoom={11}
+					zoom={5}
 					ref={setMap}
 				>
-					{/* {mapReady && ( */}
-					<>
-						<TileLayer
-							opacity={0.8}
-							attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-							url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
-						/>
-						{allPoints.length ? (
-							allPoints.map((point: PointType) => {
-								return <MarkerComponent key={uuidv4()} point={point} />;
-							})
-						) : (
-							<div>{translation[language].mapPage.noResult}</div>
-						)}
-						<ZoomControl position="topright" />
-						<ScaleControl position="bottomright" />
-					</>
-					{/* )} */}
+					<TileLayer
+						opacity={0.8}
+						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+						url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
+					/>
+					{allPoints.length > 0 ? (
+						allPoints.map((point: PointType) => {
+							return <MarkerComponent key={uuidv4()} point={point} />;
+						})
+					) : (
+						<Marker position={[40.43, 16.52]} />
+					)}
+					<ZoomControl position="topright" />
+					<ScaleControl position="bottomright" />
 				</MapContainer>
 			</section>
 		</div>
