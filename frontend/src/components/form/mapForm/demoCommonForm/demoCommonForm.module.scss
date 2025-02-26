@@ -5,7 +5,12 @@
     @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, flex-start);
     gap: v.$space-l;
     width: 50vw;
-    padding: 0 v.$space-xxl;
+    padding: v.$space-xxl;
+
+    >h4 {
+        font-size: v.$font-size-l;
+        font-weight: v.$font-weight-bold;
+    }
 
     >button {
         @include m.buttonStyle(v.$color-umber, v.$color-neutral-100, (v.$space-s v.$space-l));
@@ -18,6 +23,11 @@
     @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, flex-start);
     gap: v.$space-s;
     width: 100%;
+
+    >h4 {
+        font-size: v.$font-size-l;
+        font-weight: v.$font-weight-bold;
+    }
 
     >label {
         font-size: v.$font-size-m;
