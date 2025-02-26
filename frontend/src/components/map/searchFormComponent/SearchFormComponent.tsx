@@ -29,6 +29,7 @@ import type {
 } from "react-select";
 // import du style
 import style from "./searchFormComponent.module.scss";
+import LoaderComponent from "../../common/loader/LoaderComponent";
 
 interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -197,76 +198,80 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	};
 
 	return (
-		dataLoaded && (
-			<div className={style.searchFormContainer}>
-				<form method="post" onSubmit={handleSubmit} id="myForm">
-					<div className={style.searchFormTextContainer}>
-						{translation[language].modal.firstContent}{" "}
-						<Select
-							styles={selectStyle}
-							options={greatRegions}
-							delimiter="|"
-							isMulti
-							placeholder={translation[language].modal.chooseRegion}
-							onChange={(newValue) =>
-								onMultiSelectChange(
-									"locationId",
-									newValue as MultiValue<OptionType>,
-								)
-							}
-							blurInputOnSelect
-						/>
-						{translation[language].modal.secondContent}{" "}
-						<Select
-							styles={selectStyle}
-							inputId="elementId"
-							options={divinities}
-							delimiter="|"
-							isMulti
-							placeholder={translation[language].modal.chooseDivinity}
-							onChange={(newValue) =>
-								onMultiSelectChange(
-									"elementId",
-									newValue as MultiValue<OptionType>,
-								)
-							}
-							blurInputOnSelect
-						/>{" "}
-						{translation[language].common.between}{" "}
-						<Select
-							styles={selectStyle}
-							inputId="post"
-							options={afterOptions}
-							placeholder={translation[language].modal.postDate}
-							value={afterValue}
-							onChange={(newValue) => onMultiSelectChange("post", newValue)}
-							blurInputOnSelect
-						/>{" "}
-						{translation[language].common.and}{" "}
-						<Select
-							styles={selectStyle}
-							inputId="ante"
-							options={beforeOptions}
-							placeholder={translation[language].modal.anteDate}
-							value={beforeValue}
-							onChange={(newValue) => onMultiSelectChange("ante", newValue)}
-							blurInputOnSelect
-						/>{" "}
-					</div>
-					<button type="submit">
-						{translation[language].button.seeSources}
+		<div className={style.searchFormContainer}>
+			{dataLoaded ? (
+				<>
+					<form method="post" onSubmit={handleSubmit} id="myForm">
+						<div className={style.searchFormTextContainer}>
+							{translation[language].modal.firstContent}{" "}
+							<Select
+								styles={selectStyle}
+								options={greatRegions}
+								delimiter="|"
+								isMulti
+								placeholder={translation[language].modal.chooseRegion}
+								onChange={(newValue) =>
+									onMultiSelectChange(
+										"locationId",
+										newValue as MultiValue<OptionType>,
+									)
+								}
+								blurInputOnSelect
+							/>
+							{translation[language].modal.secondContent}{" "}
+							<Select
+								styles={selectStyle}
+								inputId="elementId"
+								options={divinities}
+								delimiter="|"
+								isMulti
+								placeholder={translation[language].modal.chooseDivinity}
+								onChange={(newValue) =>
+									onMultiSelectChange(
+										"elementId",
+										newValue as MultiValue<OptionType>,
+									)
+								}
+								blurInputOnSelect
+							/>{" "}
+							{translation[language].common.between}{" "}
+							<Select
+								styles={selectStyle}
+								inputId="post"
+								options={afterOptions}
+								placeholder={translation[language].modal.postDate}
+								value={afterValue}
+								onChange={(newValue) => onMultiSelectChange("post", newValue)}
+								blurInputOnSelect
+							/>{" "}
+							{translation[language].common.and}{" "}
+							<Select
+								styles={selectStyle}
+								inputId="ante"
+								options={beforeOptions}
+								placeholder={translation[language].modal.anteDate}
+								value={beforeValue}
+								onChange={(newValue) => onMultiSelectChange("ante", newValue)}
+								blurInputOnSelect
+							/>{" "}
+						</div>
+						<button type="submit">
+							{translation[language].button.seeSources}
+						</button>
+					</form>
+					<div>-- {translation[language].common.or} --</div>
+					<button
+						type="button"
+						onClick={() => setIsModalOpen(false)}
+						onKeyUp={() => setIsModalOpen(false)}
+					>
+						{translation[language].button.seeAll}
 					</button>
-				</form>
-				<div>-- {translation[language].common.or} --</div>
-				<button
-					type="button"
-					onClick={() => setIsModalOpen(false)}
-					onKeyUp={() => setIsModalOpen(false)}
-				>
-					{translation[language].button.seeAll}
-				</button>
-			</div>
-		)
+				</>
+			) : (
+				<LoaderComponent size={40} />
+			)}
+		</div>
 	);
 };
 
