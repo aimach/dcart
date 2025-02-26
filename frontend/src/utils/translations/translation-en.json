@@ -37,9 +37,9 @@
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
-		"secondContent": "on divinity",
-		"chooseRegion": "Choose a region",
-		"chooseDivinity": "Choose a divinity",
+		"secondContent": "on",
+		"chooseRegion": "a region",
+		"chooseDivinity": "a divinity",
 		"postDate": "start date",
 		"anteDate": "end date"
 	},

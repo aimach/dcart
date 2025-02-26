@@ -104,8 +104,6 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 		}
 	}, [allPoints]);
 
-	console.log(mapInfos);
-
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
