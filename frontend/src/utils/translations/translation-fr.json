@@ -36,9 +36,9 @@
 		"semitic": "Sémitique"
 	},
 	"modal": {
-		"firstContent": "J'aimerais voir les sources",
+		"firstContent": "J'aimerais voir les sources de",
 		"secondContent": "sur",
-		"chooseRegion": "de la région",
+		"chooseRegion": "la région",
 		"chooseDivinity": "la divinité",
 		"postDate": "date début",
 		"anteDate": "date fin"

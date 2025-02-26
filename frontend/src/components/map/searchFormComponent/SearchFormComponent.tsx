@@ -21,7 +21,12 @@ import type {
 } from "../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 import type { OptionType } from "../../../utils/types/commonTypes";
-import type { MultiValue, SingleValue } from "react-select";
+import type {
+	CSSObjectWithLabel,
+	MultiValue,
+	ControlProps,
+	SingleValue,
+} from "react-select";
 // import du style
 import style from "./searchFormComponent.module.scss";
 
@@ -80,7 +85,11 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 		// Prevent the browser from reloading the page
 		e.preventDefault();
 
-		const allPoints = await getAllPointsByMapId("exploration", userFilters);
+		const allPoints = await getAllPointsByMapId("exploration", {
+			...userFilters,
+			post: afterValue?.value as number,
+			ante: beforeValue?.value as number,
+		});
 		setAllPoints(allPoints);
 		setIsModalOpen(false);
 	};
@@ -156,61 +165,92 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 		}
 		if (key === "post") {
 			setAfterValue(selectedOptions as OptionType);
-			setUserFilters({
-				...userFilters,
-				post: (selectedOptions as OptionType).value as number,
-			});
+			// on met à jour les userFilters au moment du submit pour éviter de modifier le filtre temporel (qui est visible)
 		}
 		if (key === "ante") {
 			setBeforeValue(selectedOptions as OptionType);
-			setUserFilters({
-				...userFilters,
-				ante: (selectedOptions as OptionType).value as number,
-			});
+			// on met à jour les userFilters au moment du submit pour éviter de modifier le filtre temporel (qui est visible)
 		}
+	};
+
+	// on créé le style
+	const selectStyle = {
+		control: (
+			base: CSSObjectWithLabel,
+			props: ControlProps<OptionType, true>,
+		) => ({
+			...base,
+			border: props.isFocused ? "none" : "none",
+			borderBottom: "1px solid #251F18",
+			width: "200px",
+		}),
+		option: (
+			base: CSSObjectWithLabel,
+			{ isFocused }: { isFocused: boolean },
+		) => ({
+			...base,
+			backgroundColor: isFocused ? "#DED6CE" : "white",
+			":active": {
+				backgroundColor: "#AD9A85",
+			},
+		}),
 	};
 
 	return (
 		dataLoaded && (
 			<div className={style.searchFormContainer}>
 				<form method="post" onSubmit={handleSubmit} id="myForm">
-					<div>
+					<div className={style.searchFormTextContainer}>
 						{translation[language].modal.firstContent}{" "}
 						<Select
+							styles={selectStyle}
 							options={greatRegions}
 							delimiter="|"
 							isMulti
 							placeholder={translation[language].modal.chooseRegion}
 							onChange={(newValue) =>
-								onMultiSelectChange("locationId", newValue)
+								onMultiSelectChange(
+									"locationId",
+									newValue as MultiValue<OptionType>,
+								)
 							}
+							blurInputOnSelect
 						/>
 						{translation[language].modal.secondContent}{" "}
 						<Select
+							styles={selectStyle}
 							inputId="elementId"
 							options={divinities}
 							delimiter="|"
 							isMulti
 							placeholder={translation[language].modal.chooseDivinity}
 							onChange={(newValue) =>
-								onMultiSelectChange("elementId", newValue)
+								onMultiSelectChange(
+									"elementId",
+									newValue as MultiValue<OptionType>,
+								)
 							}
+							blurInputOnSelect
 						/>{" "}
 						{translation[language].common.between}{" "}
 						<Select
+							styles={selectStyle}
 							inputId="post"
 							options={afterOptions}
 							placeholder={translation[language].modal.postDate}
 							value={afterValue}
 							onChange={(newValue) => onMultiSelectChange("post", newValue)}
+							blurInputOnSelect
 						/>{" "}
 						{translation[language].common.and}{" "}
 						<Select
+							styles={selectStyle}
 							inputId="ante"
 							options={beforeOptions}
 							placeholder={translation[language].modal.anteDate}
 							value={beforeValue}
 							onChange={(newValue) => onMultiSelectChange("ante", newValue)}
+							blurInputOnSelect
 						/>{" "}
 					</div>
 					<button type="submit">
