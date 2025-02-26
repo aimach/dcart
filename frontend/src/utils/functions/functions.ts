@@ -358,6 +358,26 @@ const getAllAttestationsIdsFromParsedPoints = (
 	return allAttestationsIdsWithoutLastComma;
 };
 
+const getFilterLabel = (
+	filterType: string,
+	translation: TranslationType,
+	language: string,
+) => {
+	switch (filterType) {
+		case "location":
+			return translation[language as keyof TranslationType].backoffice
+				.mapFormPage.locationFilter;
+		case "language":
+			return translation[language as keyof TranslationType].backoffice
+				.mapFormPage.languageFilter;
+		case "element":
+			return translation[language as keyof TranslationType].backoffice
+				.mapFormPage.epithetFilter;
+		default:
+			break;
+	}
+};
+
 export {
 	getBackGroundColorClassName,
 	getSupportAndMaterialSentence,
@@ -372,4 +392,5 @@ export {
 	getAllLocationsFromPoints,
 	getAgentsArrayWithoutDuplicates,
 	getAllAttestationsIdsFromParsedPoints,
+	getFilterLabel,
 };

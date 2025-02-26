@@ -65,5 +65,15 @@
 			"noAgent": "Pas d'agent",
 			"noDesignation": "agent sans désignation"
 		}
+	},
+	"backoffice": {
+		"mapFormPage": {
+			"addFilters": "Ajouter des filtres",
+			"filterIntroduction": "Il est possible d'ajouter jusqu'2 filtres par carte, en plus du filtre temporel toujours affiché.",
+			"locationFilter": "Filtre du lieu",
+			"languageFilter": "Filtre de la langue (grec ou sémitique)",
+			"epithetFilter": "Filtre avec les épithètes",
+			"noFilter": "Je ne souhaite pas ajouter de filtre"
+		}
 	}
 }

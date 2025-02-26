@@ -3,13 +3,11 @@ import { useEffect } from "react";
 // import des composants
 import DemoCommonForm from "../../../../components/form/mapForm/demoCommonForm/DemoCommonForm";
 import DemoMapComponent from "../../../../components/map/demoMapComponent/DemoMapComponent";
-import UploadForm from "../../../../components/form/mapForm/downloadForm/UploadForm";
+import UploadForm from "../../../../components/form/mapForm/uploadForm/UploadForm";
+import UserMapFilterForm from "../../../../components/form/mapForm/userMapFilterForm/UserMapFilterForm";
 // import du context
 // import des services
-import {
-	firstStepInputs,
-	secondStepInputs,
-} from "../../../../utils/forms/mapInputArray";
+import { firstStepInputs } from "../../../../utils/forms/mapInputArray";
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 // import des types
 // import du style
@@ -21,7 +19,7 @@ const BOMapFormPage = () => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		setStep(1);
+		setStep(3);
 		resetMapInfos();
 	}, []);
 
@@ -30,6 +28,7 @@ const BOMapFormPage = () => {
 			<div>
 				{step === 1 && <DemoCommonForm inputs={firstStepInputs} />}
 				{step === 2 && <UploadForm />}
+				{step === 3 && <UserMapFilterForm />}
 			</div>
 			<DemoMapComponent showModal={step === 1} />
 		</section>

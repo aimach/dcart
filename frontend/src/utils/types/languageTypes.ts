@@ -68,6 +68,16 @@ type TranslationObject = {
 			noDesignation: string;
 		};
 	};
+	backoffice: {
+		mapFormPage: {
+			addFilters: string;
+			filterIntroduction: string;
+			locationFilter: string;
+			languageFilter: string;
+			epithetFilter: string;
+			noFilter: string;
+		};
+	};
 };
 
 type TranslationType = {

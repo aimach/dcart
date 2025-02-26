@@ -1,6 +1,5 @@
 // import des bibliothèques
 import { parse } from "papaparse";
-import { useNavigate } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 // import du context
@@ -21,7 +20,7 @@ import style from "../demoCommonForm/demoCommonForm.module.scss";
 
 const UploadForm = () => {
 	// on récupère les données du formulaire
-	const { mapInfos, setMapInfos, step } = useMapFormStore(
+	const { mapInfos, setMapInfos, step, setStep } = useMapFormStore(
 		useShallow((state) => state),
 	);
 
@@ -68,13 +67,12 @@ const UploadForm = () => {
 	};
 
 	// on gère la soumission du formulaire
-	const navigate = useNavigate();
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
 		try {
 			const newMap = await createNewMap(mapInfos as MapInfoType);
 			if (newMap) {
-				navigate("/backoffice/maps");
+				setStep(3);
 			}
 		} catch (error) {
 			console.error("Erreur lors de la soumission du formulaire :", error);

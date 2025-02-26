@@ -40,3 +40,15 @@
     }
 
 }
+
+.userFilterInputContainer {
+    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, flex-start);
+    gap: v.$space-s;
+    width: 100%;
+
+    >label {
+        font-size: v.$font-size-m;
+        font-weight: v.$font-weight-bold;
+    }
+
+}

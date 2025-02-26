@@ -65,5 +65,15 @@
 			"noAgent": "No agent",
 			"noDesignation": "agent with no designation"
 		}
+	},
+	"backoffice": {
+		"mapFormPage": {
+			"addFilters": "Add user filters to the map",
+			"filterIntroduction": "It is possible to add up to 2 filters per card, in addition to the time filter which is always displayed.",
+			"locationFilter": "Location filter",
+			"languageFilter": "Language filter (greek or semitic)",
+			"epithetFilter": "Epithet filter",
+			"noFilter": "I don't want to add a filter"
+		}
 	}
 }

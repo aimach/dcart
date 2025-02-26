@@ -119,6 +119,13 @@ const getLocationOptions = async (routeSegment: string) => {
 	return locationOptions;
 };
 
+// utilisée pour récupérer les filtres utilisateurs
+const getUserFilters = async () => {
+	const response = await apiClient.get("/dcart/filters/all");
+	const userFilters = await response.data;
+	return userFilters;
+};
+
 export {
 	getAllMapsInfos,
 	getOneMapInfos,
@@ -132,4 +139,5 @@ export {
 	getAllMapsInfosFromCategoryId,
 	getAllAttestationsFromSourceId,
 	getLocationOptions,
+	getUserFilters,
 };
