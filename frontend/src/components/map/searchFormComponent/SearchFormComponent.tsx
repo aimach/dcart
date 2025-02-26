@@ -12,6 +12,7 @@ import {
 	getAllPointsByMapId,
 } from "../../../utils/loaders/loaders";
 import { useMapStore } from "../../../utils/stores/mapStore";
+import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 // import des types
 import type {
 	DivinityType,
@@ -20,10 +21,9 @@ import type {
 } from "../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 import type { OptionType } from "../../../utils/types/commonTypes";
-import type { MultiValue } from "react-select";
+import type { MultiValue, SingleValue } from "react-select";
 // import du style
 import style from "./searchFormComponent.module.scss";
-import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 
 interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -43,10 +43,38 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	const [greatRegions, setGreatRegions] = useState<OptionType[]>([]);
 	const [divinities, setDivinities] = useState<OptionType[]>([]);
 	const [timeOptions, setTimeOptions] = useState<OptionType[]>([]);
+	const [afterValue, setAfterValue] = useState<OptionType | null>(null);
+	const [beforeValue, setBeforeValue] = useState<OptionType | null>(null);
+	const [afterOptions, setAfterOptions] = useState<OptionType[]>([]);
+	const [beforeOptions, setBeforeOptions] = useState<OptionType[]>([]);
 
 	useEffect(() => {
 		fetchAllDatasForSearchForm();
 	}, []);
+
+	// utilisé pour mettre à jour les valeurs des options des bornes temporelles en fonction de ce qu'à choisi l'utilisateur
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		if (afterValue) {
+			setBeforeOptions(
+				timeOptions.filter((opt) => opt.value > afterValue.value),
+			);
+		} else {
+			setBeforeOptions(timeOptions);
+		}
+	}, [afterValue]);
+
+	// utilisé pour mettre à jour les valeurs des options des bornes temporelles en fonction de ce qu'à choisi l'utilisateur
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		if (beforeValue) {
+			setAfterOptions(
+				timeOptions.filter((opt) => opt.value < beforeValue.value),
+			);
+		} else {
+			setAfterOptions(timeOptions);
+		}
+	}, [beforeValue]);
 
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		// Prevent the browser from reloading the page
@@ -90,9 +118,16 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 			const timeOptions = createTimeOptions(timeMarkers);
 
 			setTimeOptions(timeOptions);
+			setAfterOptions(timeOptions);
+			setBeforeOptions(timeOptions);
 
 			setDataLoaded(true);
-		} catch (error) {}
+		} catch (error) {
+			console.error(
+				"Erreur lors de la récupération des données pour le formulaire de recherche des sources :",
+				error,
+			);
+		}
 	};
 
 	const createTimeOptions = (timeMarkers: TimeMarkersType) => {
@@ -106,7 +141,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	// on gère les changements du filtre générés par l'utilisateur
 	const onMultiSelectChange = (
 		key: string,
-		selectedOptions: MultiValue<OptionType> | OptionType,
+		selectedOptions: MultiValue<OptionType> | SingleValue<OptionType>,
 	) => {
 		if (key === "locationId" || key === "elementId") {
 			const valuesArray: number[] = [];
@@ -119,10 +154,18 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 				[key]: valuesString,
 			});
 		}
-		if (key === "post" || key === "ante") {
+		if (key === "post") {
+			setAfterValue(selectedOptions as OptionType);
 			setUserFilters({
 				...userFilters,
-				[key]: (selectedOptions as OptionType).value as number,
+				post: (selectedOptions as OptionType).value as number,
+			});
+		}
+		if (key === "ante") {
+			setBeforeValue(selectedOptions as OptionType);
+			setUserFilters({
+				...userFilters,
+				ante: (selectedOptions as OptionType).value as number,
 			});
 		}
 	};
@@ -156,15 +199,17 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 						{translation[language].common.between}{" "}
 						<Select
 							inputId="post"
-							options={timeOptions}
+							options={afterOptions}
 							placeholder={translation[language].modal.postDate}
+							value={afterValue}
 							onChange={(newValue) => onMultiSelectChange("post", newValue)}
 						/>{" "}
 						{translation[language].common.and}{" "}
 						<Select
 							inputId="ante"
-							options={timeOptions}
+							options={beforeOptions}
 							placeholder={translation[language].modal.anteDate}
+							value={beforeValue}
 							onChange={(newValue) => onMultiSelectChange("ante", newValue)}
 						/>{" "}
 					</div>
