@@ -144,14 +144,11 @@ export const sourceController = {
 			const { sourceId } = req.params;
 
 			// on récupère le texte de la requête SQL
-			const sqlQuery = getAttestationsBySourceId(
-				"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
-			);
+			const sqlQuery = getAttestationsBySourceId();
 			const sourceWithAttestations = await MapDataSource.query(sqlQuery, [
-				3,
 				sourceId,
 			]);
-
+			console.log(sourceWithAttestations);
 			res.status(200).json(sourceWithAttestations[0].attestations);
 		} catch (error) {
 			handleError(res, error as Error);

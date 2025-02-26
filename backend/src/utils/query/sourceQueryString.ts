@@ -273,7 +273,7 @@ GROUP BY
   sous_region.nom_en`;
 };
 
-export const getAttestationsBySourceId = (elementOperator: string) => {
+export const getAttestationsBySourceId = () => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
 WITH attestation_with_elements AS (
@@ -339,7 +339,6 @@ sources_with_attestations AS (
   JOIN attestation_with_elements ON attestation.id = attestation_with_elements.id_attestation
   JOIN formule ON formule.attestation_id = attestation.id
   LEFT JOIN agent ON agent.id_attestation = attestation.id
-  WHERE attestation_with_elements.nb_element ${elementOperator} $1
 )
 
 
@@ -348,7 +347,7 @@ SELECT
   json_agg(DISTINCT sources_with_attestations.attestations) as attestations
   FROM source
 JOIN sources_with_attestations ON source.id = sources_with_attestations.source_id 
-WHERE source.id = $2
+WHERE source.id = $1
 GROUP BY source.id
 `;
 };
