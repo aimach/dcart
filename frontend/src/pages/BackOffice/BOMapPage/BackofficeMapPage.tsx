@@ -3,7 +3,7 @@ import { useState, useEffect, useContext } from "react";
 // import des composants
 import ButtonComponent from "../../../components/common/button/ButtonComponent";
 // import des services
-import { getAllMapsInfos } from "../../../utils/loaders/loaders";
+import { getAllMapsInfos } from "../../../utils/api/getRequests";
 // import des types
 import type { MapType } from "../../../utils/types/mapTypes";
 import { TranslationContext } from "../../../context/TranslationContext";

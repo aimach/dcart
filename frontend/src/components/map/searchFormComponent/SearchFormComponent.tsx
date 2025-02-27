@@ -10,7 +10,7 @@ import {
 	getAllDivinities,
 	getTimeMarkers,
 	getAllPointsByMapId,
-} from "../../../utils/loaders/loaders";
+} from "../../../utils/api/getRequests";
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 // import des types

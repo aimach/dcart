@@ -10,7 +10,7 @@ import { TranslationContext } from "../../../context/TranslationContext";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
-import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
+import { getAllPointsByMapId } from "../../../utils/api/getRequests";
 import { useShallow } from "zustand/shallow";
 // import des types
 import type { MapInfoType } from "../../../utils/types/mapTypes";

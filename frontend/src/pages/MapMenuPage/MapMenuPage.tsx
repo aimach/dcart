@@ -7,7 +7,7 @@ import TitleAndTextComponent from "../../components/common/titleAndText/TitleAnd
 // import du context
 import { TranslationContext } from "../../context/TranslationContext";
 // import des services
-import { getAllMapsInfosFromCategoryId } from "../../utils/loaders/loaders";
+import { getAllMapsInfosFromCategoryId } from "../../utils/api/getRequests";
 // import des types
 import type { CategoryType, MapType } from "../../utils/types/mapTypes";
 import type { NavList } from "../../utils/types/commonTypes";

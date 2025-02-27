@@ -7,7 +7,7 @@ import { TranslationContext } from "../../../../context/TranslationContext";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
-import { getUserFilters } from "../../../../utils/loaders/loaders";
+import { getUserFilters } from "../../../../utils/api/getRequests";
 // import des types
 import type { FilterType } from "../../../../utils/types/filterTypes";
 import type { MapInfoType } from "../../../../utils/types/mapTypes";

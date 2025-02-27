@@ -7,7 +7,7 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du context
 import { TranslationContext } from "../../../../context/TranslationContext";
 // import des services
-import { getAllCategories } from "../../../../utils/loaders/loaders";
+import { getAllCategories } from "../../../../utils/api/getRequests";
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
 // import des types

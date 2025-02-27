@@ -8,7 +8,7 @@ import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
-import { getAllDivinities } from "../../../utils/loaders/loaders";
+import { getAllDivinities } from "../../../utils/api/getRequests";
 import {
 	getAllElementsFromPoints,
 	getAllLocationsFromPoints,

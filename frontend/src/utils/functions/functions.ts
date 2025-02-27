@@ -399,6 +399,28 @@ const noFilterChecked = (mapFilters: MapFilterType) => {
 	return filtersChecked === 0;
 };
 
+/**
+ * R
+ * @param allPoints
+ * @returns
+ */
+const getPointsTimeMarkers = (allPoints: PointType[]) => {
+	const timeMarkers = { post: 400, ante: -1000 };
+	for (const points of allPoints) {
+		for (const source of points.sources) {
+			if (source.ante_quem > timeMarkers.ante) {
+				// on arrondit le chiffre pour avoir un multiple de 10 et mieux gérer l'échelle du filtre du temps
+				timeMarkers.ante = Math.ceil(source.ante_quem / 10) * 10;
+			}
+			if (source.post_quem < timeMarkers.post) {
+				// on arrondit le chiffre pour avoir un multiple de 10 et mieux gérer l'échelle du filtre du temps
+				timeMarkers.post = Math.floor(source.post_quem / 10) * 10;
+			}
+		}
+	}
+	return timeMarkers;
+};
+
 export {
 	getBackGroundColorClassName,
 	getSupportAndMaterialSentence,
@@ -416,4 +438,5 @@ export {
 	getFilterLabel,
 	alreadyTwoFiltersChecked,
 	noFilterChecked,
+	getPointsTimeMarkers,
 };

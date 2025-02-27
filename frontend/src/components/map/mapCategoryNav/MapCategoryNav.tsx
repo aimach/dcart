@@ -4,7 +4,7 @@ import { Link } from "react-router";
 // import du context
 import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
-import { getAllCategoriesWithMapsInfos } from "../../../utils/loaders/loaders";
+import { getAllCategoriesWithMapsInfos } from "../../../utils/api/getRequests";
 // import des types
 import type { CategoryType } from "../../../utils/types/mapTypes";
 import type { NavList } from "../../../utils/types/commonTypes";

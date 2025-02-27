@@ -9,7 +9,7 @@ import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/A
 import {
 	getAllPointsByMapId,
 	getOneMapInfos,
-} from "../../utils/loaders/loaders";
+} from "../../utils/api/getRequests";
 import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../utils/stores/mapAsideMenuStore";

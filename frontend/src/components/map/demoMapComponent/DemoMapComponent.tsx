@@ -25,7 +25,7 @@ import style from "./demoMapComponent.module.scss";
 import "./demoMapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
-import { getAllPointsForDemoMap } from "../../../utils/loaders/loaders";
+import { getAllPointsForDemoMap } from "../../../utils/api/getRequests";
 
 interface DemoMapComponentProps {
 	showModal: boolean;

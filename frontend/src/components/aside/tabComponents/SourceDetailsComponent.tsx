@@ -17,7 +17,7 @@ import {
 	getAgentsArrayWithoutDuplicates,
 	getDatationSentence,
 } from "../../../utils/functions/functions";
-import { getAllAttestationsFromSourceId } from "../../../utils/loaders/loaders";
+import { getAllAttestationsFromSourceId } from "../../../utils/api/getRequests";
 // import du style
 import style from "./tabComponent.module.scss";
 
