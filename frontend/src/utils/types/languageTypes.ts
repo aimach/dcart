@@ -1,6 +1,6 @@
 type Language = "en" | "fr";
 
-type TranslationObject = {
+type LanguageObject = {
 	title: string;
 	en: string;
 	fr: string;
@@ -87,8 +87,8 @@ type TranslationObject = {
 };
 
 type TranslationType = {
-	en: TranslationObject;
-	fr: TranslationObject;
+	en: LanguageObject;
+	fr: LanguageObject;
 };
 
-export type { Language, TranslationObject, TranslationType };
+export type { Language, LanguageObject, TranslationType };

@@ -8,7 +8,7 @@ import type {
 	ElementType,
 	MapInfoType,
 	AgentType,
-	ParsedPoint,
+	ParsedPointType,
 	MapFilterType,
 } from "../types/mapTypes";
 import { point, type Map as LeafletMap } from "leaflet";
@@ -349,7 +349,7 @@ const getAgentsArrayWithoutDuplicates = (agentsArray: AgentType[]) => {
 };
 
 const getAllAttestationsIdsFromParsedPoints = (
-	parsedPoints: ParsedPoint[],
+	parsedPoints: ParsedPointType[],
 ): string => {
 	let allAttestationsIds = "";
 	parsedPoints.map((point) => {

@@ -14,7 +14,7 @@ import type { ChangeEvent, FormEventHandler } from "react";
 import type { ParseResult } from "papaparse";
 import type {
 	MapInfoType,
-	ParsedPoint,
+	ParsedPointType,
 } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../demoCommonForm/demoCommonForm.module.scss";
@@ -54,7 +54,7 @@ const UploadForm = () => {
 				skipEmptyLines: true,
 				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
 				skipFirstNLines: 2,
-				complete: (result: ParseResult<ParsedPoint>) => {
+				complete: (result: ParseResult<ParsedPointType>) => {
 					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
 						result.data,
 					);
