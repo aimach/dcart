@@ -62,7 +62,7 @@ const SourceDetailsComponent = ({
 		if (sourceIsSelected && attestations.length === 0) {
 			fetchAllAttestations();
 		}
-	}, [sourceIsSelected, source.source_id, attestations.length]);
+	}, [sourceIsSelected, source.source_id, attestations]);
 
 	return (
 		<details
