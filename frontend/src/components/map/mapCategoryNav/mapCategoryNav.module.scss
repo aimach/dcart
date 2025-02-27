@@ -2,13 +2,13 @@
 @use '../../../styles/variable' as v;
 
 .categoryMenu {
-  @include m.flexbox(flex, column, null, null, wrap, 0, 0, null, center, center);
+  @include m.flexbox(flex, column, wrap, center, center);
   gap: v.$space-xl;
 }
 
 .categoryMenuNav {
   >ul {
-    @include m.flexbox(flex, row, null, null, wrap, 0, 0, null, center, center);
+    @include m.flexbox(flex, row, wrap, center, center);
     gap: v.$space-s;
 
     li {
@@ -34,11 +34,11 @@
 
 .mapListContainer {
   padding: v.$space-xl 0;
-  @include m.flexbox(flex, column, null, null, wrap, 0, 0, null, flex-start, flex-start);
+  @include m.flexbox(flex, column, wrap, flex-start, flex-start);
   gap: v.$space-xl;
 
   .mapListItem {
-    @include m.flexbox(flex, row, null, null, wrap, 0, 0, null, flex-start, center);
+    @include m.flexbox(flex, row, wrap, flex-start, center);
     gap: v.$space-m;
 
     img {
@@ -55,6 +55,6 @@
 }
 
 .categoryNameContainer {
-  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, center);
+  @include m.flexbox(flex, column, nowrap, flex-start, center);
   gap: v.$space-s/5;
 }

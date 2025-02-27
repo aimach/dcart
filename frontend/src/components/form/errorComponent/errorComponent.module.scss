@@ -4,6 +4,6 @@
 .error {
     color: v.$color-error;
     font-size: v.$font-size-m;
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
+    @include m.flexbox(flex, row, nowrap, center, center);
     gap: v.$space-s;
 }
