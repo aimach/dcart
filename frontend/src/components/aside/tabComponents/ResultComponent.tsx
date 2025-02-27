@@ -6,7 +6,7 @@ import { TranslationContext } from "../../../context/TranslationContext";
 import {
 	isSelectedMarker,
 	zoomOnMarkerOnClick,
-} from "../../../utils/functions/functions";
+} from "../../../utils/functions/map";
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useShallow } from "zustand/shallow";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";

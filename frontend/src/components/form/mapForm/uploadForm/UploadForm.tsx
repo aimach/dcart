@@ -8,7 +8,7 @@ import { TranslationContext } from "../../../../context/TranslationContext";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
-import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/functions";
+import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 // import des types
 import type { ChangeEvent, FormEventHandler } from "react";
 import type { ParseResult } from "papaparse";

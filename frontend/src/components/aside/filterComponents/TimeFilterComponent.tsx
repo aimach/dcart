@@ -4,7 +4,7 @@ import MultiRangeSlider from "multi-range-slider-react";
 // import des services
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
-import { getAllDatationLabels } from "../../../utils/functions/functions";
+import { getAllDatationLabels } from "../../../utils/functions/filter";
 import { getAllPointsByMapId } from "../../../utils/api/getRequests";
 import { useMapStore } from "../../../utils/stores/mapStore";
 // import des types

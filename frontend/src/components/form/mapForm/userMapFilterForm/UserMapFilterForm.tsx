@@ -18,7 +18,7 @@ import {
 	alreadyTwoFiltersChecked,
 	getFilterLabel,
 	noFilterChecked,
-} from "../../../../utils/functions/functions";
+} from "../../../../utils/functions/filter";
 import { useNavigate } from "react-router";
 import {
 	addFiltersToMap,
@@ -71,27 +71,21 @@ const UserMapFilterForm = () => {
 	const navigate = useNavigate();
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
-		try {
-			const newMap = await createNewMap(mapInfos as MapInfoType);
-			if (newMap) {
-				if (noFilterChecked(mapFilters)) {
+
+		const newMap = await createNewMap(mapInfos as MapInfoType);
+		if (newMap) {
+			if (noFilterChecked(mapFilters)) {
+				navigate("/backoffice/maps");
+			} else {
+				const response = await addFiltersToMap(newMap.id as string, mapFilters);
+				if (response?.status === 201) {
+					// on reset tous les states
+					resetMapInfos();
+					resetMapFilters();
+					resetAllPoints();
 					navigate("/backoffice/maps");
-				} else {
-					const response = await addFiltersToMap(
-						newMap.id as string,
-						mapFilters,
-					);
-					if (response?.status === 201) {
-						// on reset tous les states
-						resetMapInfos();
-						resetMapFilters();
-						resetAllPoints();
-						navigate("/backoffice/maps");
-					}
 				}
 			}
-		} catch (error) {
-			console.error("Erreur lors de la soumission du formulaire :", error);
 		}
 	};
 

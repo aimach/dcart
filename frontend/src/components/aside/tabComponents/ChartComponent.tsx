@@ -18,7 +18,7 @@ import {
 	getAgentGenderLabelsAndNb,
 	getEpithetLabelsAndNb,
 	getAgentActivityLabelsAndNb,
-} from "../../../utils/functions/functions";
+} from "../../../utils/functions/chart";
 import { useMapStore } from "../../../utils/stores/mapStore";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";

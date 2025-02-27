@@ -12,7 +12,7 @@ import { getAllDivinities } from "../../../utils/api/getRequests";
 import {
 	getAllElementsFromPoints,
 	getAllLocationsFromPoints,
-} from "../../../utils/functions/functions";
+} from "../../../utils/functions/filter";
 // import des types
 import type { PointType, DivinityType } from "../../../utils/types/mapTypes";
 import type { OptionType } from "../../../utils/types/commonTypes";

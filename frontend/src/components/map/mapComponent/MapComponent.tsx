@@ -32,7 +32,7 @@ import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
-import { getPointsTimeMarkers } from "../../../utils/functions/functions";
+import { getPointsTimeMarkers } from "../../../utils/functions/filter";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;

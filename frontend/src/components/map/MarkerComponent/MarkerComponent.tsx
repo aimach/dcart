@@ -4,8 +4,8 @@ import { Marker, Tooltip } from "react-leaflet";
 import {
 	getBackGroundColorClassName,
 	isSelectedMarker,
-} from "../../../utils/functions/functions";
-import { zoomOnMarkerOnClick } from "../../../utils/functions/functions";
+	zoomOnMarkerOnClick,
+} from "../../../utils/functions/map";
 import { getIcon } from "../icons";
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";

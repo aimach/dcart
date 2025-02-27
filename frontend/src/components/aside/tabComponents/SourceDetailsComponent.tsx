@@ -16,7 +16,7 @@ import type {
 import {
 	getAgentsArrayWithoutDuplicates,
 	getDatationSentence,
-} from "../../../utils/functions/functions";
+} from "../../../utils/functions/map";
 import { getAllAttestationsFromSourceId } from "../../../utils/api/getRequests";
 // import du style
 import style from "./tabComponent.module.scss";
