@@ -135,6 +135,32 @@ export const sourceController = {
 		}
 	},
 
+	// récupérer toutes les sources par la liste des attestations
+	getSourcesByAttestationIds: async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		try {
+			// on récupère la liste des attestations
+			const { attestationIds } = req.body;
+
+			// on récupère le texte de la requête SQL
+			const sqlQuery = getSourcesQueryWithDetails(
+				attestationIds,
+				"",
+				"",
+				"",
+				"",
+			);
+
+			const results = await MapDataSource.query(sqlQuery);
+
+			res.status(200).json(results);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
 	getAttestationsBySourceId: async (
 		req: Request,
 		res: Response,

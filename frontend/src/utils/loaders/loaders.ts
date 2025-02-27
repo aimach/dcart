@@ -47,6 +47,20 @@ const getAllPointsByMapId = async (
 	return allPoints;
 };
 
+// récupérer toutes les sources d'une carte en cours de création
+const getAllPointsForDemoMap = async (attestationIds: string) => {
+	try {
+		const response = await apiClient("map/sources/demo/attestations", {
+			method: "POST",
+			data: JSON.stringify({ attestationIds }),
+		});
+		const allPoints = await response.data;
+		return allPoints;
+	} catch (error) {
+		console.error("Erreur lors du chargement des sources :", error);
+	}
+};
+
 // récupérer toutes les grandes régions
 const getAllGreatRegions = async () => {
 	const response = await apiClient.get("/map/locations/regions/all");
@@ -130,6 +144,7 @@ export {
 	getAllMapsInfos,
 	getOneMapInfos,
 	getAllPointsByMapId,
+	getAllPointsForDemoMap,
 	getAllGreatRegions,
 	getAllDivinities,
 	getTimeMarkers,

@@ -23,7 +23,6 @@ const addFiltersToMap = async (
 			method: "POST",
 			data: JSON.stringify({ filters: mapFilters }),
 		});
-		console.log(response);
 		return response;
 	} catch (error) {
 		console.error("Erreur lors de la création de la carte :", error);
