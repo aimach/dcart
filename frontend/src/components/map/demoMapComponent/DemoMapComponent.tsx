@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useState, useMemo } from "react";
 import {
 	MapContainer,
 	TileLayer,
@@ -82,14 +82,15 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 		}
 	}, [mapInfos]);
 
-	// const memoizedPoints = useMemo(
-	// 	() =>
-	// 		allPoints.map((point) => ({
-	// 			...point,
-	// 			key: uuidv4(),
-	// 		})),
-	// 	[allPoints],
-	// );
+	// on génère des uuid() pour les keys des composants
+	const allMemoizedPoints = useMemo(
+		() =>
+			allPoints.map((point) => ({
+				...point,
+				key: uuidv4(),
+			})),
+		[allPoints], // Se régénère seulement si allPoints change
+	);
 
 	return visualReady ? (
 		<div className="demo-map" id="demo-map">
@@ -122,9 +123,9 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 						attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 						url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
 					/>
-					{allPoints.length > 0 ? (
-						allPoints.map((point: PointType) => {
-							return <MarkerComponent key={uuidv4()} point={point} />;
+					{allMemoizedPoints.length > 0 ? (
+						allMemoizedPoints.map((point: PointType) => {
+							return <MarkerComponent key={point.key} point={point} />;
 						})
 					) : (
 						<Marker position={[40.43, 16.52]} />

@@ -34,8 +34,14 @@ const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 	const [dataLoaded, setDataLoaded] = useState(false);
 
 	// on récupère les données du formulaire
-	const { mapInfos, setMapInfos, step, incrementStep, setVisualReady } =
-		useMapFormStore(useShallow((state) => state));
+	const {
+		mapInfos,
+		setMapInfos,
+		step,
+		incrementStep,
+		resetAllPoints,
+		setVisualReady,
+	} = useMapFormStore(useShallow((state) => state));
 
 	// on gère le formulaire
 	const {
@@ -83,7 +89,10 @@ const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
+		// on récupère les catégories
 		getCategoryOptions();
+		// on reset les points
+		resetAllPoints();
 	}, [language]);
 
 	return (

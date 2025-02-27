@@ -10,6 +10,7 @@ import { useShallow } from "zustand/shallow";
 import { getUserFilters } from "../../../../utils/loaders/loaders";
 // import des types
 import type { FilterType } from "../../../../utils/types/filterTypes";
+import type { MapInfoType } from "../../../../utils/types/mapTypes";
 import type { ChangeEvent, FormEventHandler } from "react";
 // import du style
 import style from "../demoCommonForm/demoCommonForm.module.scss";
@@ -19,7 +20,10 @@ import {
 	noFilterChecked,
 } from "../../../../utils/functions/functions";
 import { useNavigate } from "react-router";
-import { addFiltersToMap } from "../../../../utils/functions/create";
+import {
+	addFiltersToMap,
+	createNewMap,
+} from "../../../../utils/functions/create";
 
 const UserMapFilterForm = () => {
 	// on importe la langue
@@ -69,15 +73,18 @@ const UserMapFilterForm = () => {
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
 		try {
-			if (noFilterChecked(mapFilters)) {
-				navigate("/backoffice/maps");
-			} else {
-				const response = await addFiltersToMap(
-					mapInfos?.id as string,
-					mapFilters,
-				);
-				if (response?.status === 201) {
+			const newMap = await createNewMap(mapInfos as MapInfoType);
+			if (newMap) {
+				if (noFilterChecked(mapFilters)) {
 					navigate("/backoffice/maps");
+				} else {
+					const response = await addFiltersToMap(
+						newMap.id as string,
+						mapFilters,
+					);
+					if (response?.status === 201) {
+						navigate("/backoffice/maps");
+					}
 				}
 			}
 		} catch (error) {

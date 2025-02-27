@@ -15,12 +15,15 @@ import style from "../backofficeMapPage.module.scss";
 
 const BOMapFormPage = () => {
 	// on récupère les étapes
-	const { step, setStep, resetMapInfos } = useMapFormStore((state) => state);
+	const { step, setStep, resetMapInfos, resetAllPoints } = useMapFormStore(
+		(state) => state,
+	);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setStep(1);
 		resetMapInfos();
+		resetAllPoints();
 	}, []);
 
 	return (

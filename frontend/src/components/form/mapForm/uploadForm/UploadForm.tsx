@@ -9,7 +9,6 @@ import { TranslationContext } from "../../../../context/TranslationContext";
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/functions";
-import { createNewMap } from "../../../../utils/functions/create";
 // import des types
 import type { ChangeEvent, FormEventHandler } from "react";
 import type { ParseResult } from "papaparse";
@@ -75,11 +74,7 @@ const UploadForm = () => {
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
 		try {
-			const newMap = await createNewMap(mapInfos as MapInfoType);
-			if (newMap) {
-				setMapInfos(newMap);
-				setStep(3);
-			}
+			setStep(3);
 		} catch (error) {
 			console.error("Erreur lors de la soumission du formulaire :", error);
 		}

@@ -63,6 +63,7 @@ type SourceType = {
 };
 
 type PointType = {
+	key?: string;
 	latitude: number;
 	longitude: number;
 	grande_region_id: string;
