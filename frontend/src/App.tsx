@@ -4,26 +4,14 @@ import { useContext } from "react";
 import NavComponent from "./components/common/NavComponent";
 // import du context
 import { TranslationContext } from "./context/TranslationContext";
+// import des services
+import { getHomePageMenuList } from "./utils/menu/menuListArrays";
 // import du style
 import style from "./App.module.scss";
 
 function App() {
+	// récupération des données de traduction
 	const { language, translation } = useContext(TranslationContext);
-
-	const menuList = [
-		{
-			id: "maps",
-			title: translation[language].navigation.explore,
-			onClickFunction: undefined,
-			route: "maps/categories",
-		},
-		{
-			id: "storymaps",
-			title: translation[language].navigation.discover,
-			onClickFunction: undefined,
-			route: "/storymaps",
-		},
-	];
 
 	return (
 		<section className={style.mainPage}>
@@ -41,7 +29,7 @@ function App() {
 			<NavComponent
 				type="route"
 				navClassName={style.homeMenu}
-				list={menuList}
+				list={getHomePageMenuList(translation, language)}
 			/>
 		</section>
 	);

@@ -26,7 +26,6 @@ if (rootElement) {
 		<BrowserRouter>
 			<TranslationProvider>
 				<AuthProvider>
-					{/* <StrictMode> */}
 					<Routes>
 						<Route element={<NavigationLayout />}>
 							<Route index element={<App />} />
@@ -51,7 +50,6 @@ if (rootElement) {
 							/>
 						</Route>
 					</Routes>
-					{/* </StrictMode> */}
 				</AuthProvider>
 			</TranslationProvider>
 		</BrowserRouter>,
