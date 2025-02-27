@@ -1,17 +1,20 @@
 // import des bibliothèques
-import { useContext } from "react";
 // import des composants
 import NavComponent from "./components/common/NavComponent";
-// import du context
-import { TranslationContext } from "./context/TranslationContext";
 // import des services
 import { getHomePageMenuList } from "./utils/menu/menuListArrays";
+// import des custom hooks
+import { useTranslation } from "./utils/hooks/useTranslation";
 // import du style
 import style from "./App.module.scss";
 
+/**
+ * Composant principal de l'application qui affiche la page d'accueil
+ * @returns {JSX.Element} - Les éléments de la page d'accueil : titre, description et barre de navigation
+ */
 function App() {
 	// récupération des données de traduction
-	const { language, translation } = useContext(TranslationContext);
+	const { language, translation } = useTranslation();
 
 	return (
 		<section className={style.mainPage}>
