@@ -30,8 +30,15 @@ const UserMapFilterForm = () => {
 	const { translation, language } = useContext(TranslationContext);
 
 	// on importe les données du formulaire de la carte
-	const { mapInfos, mapFilters, setMapFilters, resetMapFilters, step } =
-		useMapFormStore(useShallow((state) => state));
+	const {
+		mapInfos,
+		resetMapInfos,
+		resetAllPoints,
+		mapFilters,
+		setMapFilters,
+		resetMapFilters,
+		step,
+	} = useMapFormStore(useShallow((state) => state));
 
 	// on va chercher tous les types de filtres existants
 	const [userMapFilterTypes, setUserMapFilterTypes] = useState<FilterType[]>(
@@ -83,6 +90,10 @@ const UserMapFilterForm = () => {
 						mapFilters,
 					);
 					if (response?.status === 201) {
+						// on reset tous les states
+						resetMapInfos();
+						resetMapFilters();
+						resetAllPoints();
 						navigate("/backoffice/maps");
 					}
 				}

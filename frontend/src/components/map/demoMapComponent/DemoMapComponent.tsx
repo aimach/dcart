@@ -41,10 +41,18 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 	// on récupère les informations du context
 	const { translation, language } = useContext(TranslationContext);
 
-	const { map, setMap, mapInfos, setAllPoints, allPoints, visualReady } =
-		useMapFormStore(useShallow((state) => state));
+	const {
+		map,
+		setMap,
+		mapInfos,
+
+		setAllPoints,
+		allPoints,
+		visualReady,
+	} = useMapFormStore(useShallow((state) => state));
 
 	// à l'arrivée sur la page, on remet les states à 0
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setIsModalOpen(true);
 	}, []);
@@ -63,8 +71,7 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 		}
 	}, [allPoints]);
 
-	console.log(mapInfos);
-
+	// si les points sont chargés, on les affiche
 	const fetchAllPointsForDemoMap = async (attestationIds: string) => {
 		try {
 			const points = await getAllPointsForDemoMap(attestationIds);
@@ -73,8 +80,6 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 			console.error("Erreur lors du chargement des points:", error);
 		}
 	};
-
-	// si les points sont chargés, on les affiche
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (mapInfos?.attestationIds) {
