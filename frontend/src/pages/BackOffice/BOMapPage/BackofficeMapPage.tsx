@@ -17,18 +17,12 @@ const BackofficeMapPage = () => {
 	// on récupère les données des cartes dans la BDD
 	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
 
-	// Fonction pour charger les informations des cartes
-	const fetchAllMapsInfos = async () => {
-		try {
+	useEffect(() => {
+		// Fonction pour charger les informations des cartes
+		const fetchAllMapsInfos = async () => {
 			const maps = await getAllMapsInfos();
 			setAllMapsInfos(maps);
-		} catch (error) {
-			console.error("Erreur lors du chargement des cartes:", error);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
+		};
 		fetchAllMapsInfos();
 	}, []);
 

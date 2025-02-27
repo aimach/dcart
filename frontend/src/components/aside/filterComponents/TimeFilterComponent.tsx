@@ -65,19 +65,16 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		// sinon on met à jour le state et on charge les points
 		setTimeValues({ ante: e.maxValue, post: e.minValue });
 		setMapReady(false);
-		try {
-			const mapId = mapInfos ? mapInfos.id : "exploration";
-			const points = await getAllPointsByMapId(mapId as string, {
-				...userFilters,
-				ante: e.maxValue,
-				post: e.minValue,
-			});
-			setAllPoints(points);
-			setSelectedMarker(undefined);
-			setMapReady(true);
-		} catch (error) {
-			console.error("Erreur lors du chargement des points:", error);
-		}
+
+		const mapId = mapInfos ? mapInfos.id : "exploration";
+		const points = await getAllPointsByMapId(mapId as string, {
+			...userFilters,
+			ante: e.maxValue,
+			post: e.minValue,
+		});
+		setAllPoints(points);
+		setSelectedMarker(undefined);
+		setMapReady(true);
 	};
 
 	const step = 25;

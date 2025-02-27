@@ -23,7 +23,7 @@ import { useNavigate } from "react-router";
 import {
 	addFiltersToMap,
 	createNewMap,
-} from "../../../../utils/functions/create";
+} from "../../../../utils/api/postRequests";
 
 const UserMapFilterForm = () => {
 	// on importe la langue
@@ -44,20 +44,12 @@ const UserMapFilterForm = () => {
 	const [userMapFilterTypes, setUserMapFilterTypes] = useState<FilterType[]>(
 		[],
 	);
-	const fetchUserMapFilterTypes = async () => {
-		try {
+
+	useEffect(() => {
+		const fetchUserMapFilterTypes = async () => {
 			const allFilterTypes = await getUserFilters();
 			setUserMapFilterTypes(allFilterTypes);
-		} catch (error) {
-			console.error(
-				"Erreur lors du chargement des filtres utilisateurs :",
-				error,
-			);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
+		};
 		fetchUserMapFilterTypes();
 	}, []);
 

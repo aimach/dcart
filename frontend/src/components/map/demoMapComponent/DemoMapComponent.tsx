@@ -72,16 +72,12 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 	}, [allPoints]);
 
 	// si les points sont chargés, on les affiche
-	const fetchAllPointsForDemoMap = async (attestationIds: string) => {
-		try {
-			const points = await getAllPointsForDemoMap(attestationIds);
-			setAllPoints(points);
-		} catch (error) {
-			console.error("Erreur lors du chargement des points:", error);
-		}
-	};
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
+		const fetchAllPointsForDemoMap = async (attestationIds: string) => {
+			const points = await getAllPointsForDemoMap(attestationIds);
+			setAllPoints(points);
+		};
 		if (mapInfos?.attestationIds) {
 			fetchAllPointsForDemoMap(mapInfos.attestationIds);
 		}

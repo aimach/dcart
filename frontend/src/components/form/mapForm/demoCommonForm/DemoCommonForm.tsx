@@ -60,8 +60,9 @@ const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 	};
 
 	// CATEGORIES : on ajoute les options à l'objet input
-	const getCategoryOptions = async () => {
-		try {
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		const getCategoryOptions = async () => {
 			const allCategories = await getAllCategories();
 			const formatedCategoryOptions: OptionType[] = allCategories.map(
 				(category: CategoryType) => ({
@@ -76,14 +77,7 @@ const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 				}
 			}
 			setDataLoaded(true);
-		} catch (error) {
-			console.error("Erreur lors du chargement des localités:", error);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
-		// on récupère les catégories
+		};
 		getCategoryOptions();
 	}, [language]);
 

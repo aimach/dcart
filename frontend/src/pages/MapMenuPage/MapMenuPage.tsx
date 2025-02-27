@@ -29,15 +29,11 @@ const MapMenuPage = () => {
 
 	// Fonction pour charger les informations des cartes
 	const fetchAllMapsInfosFromCategory = async () => {
-		try {
-			const categoryWithMaps = await getAllMapsInfosFromCategoryId(
-				categoryId as string,
-			);
-			setAllMapsFromCategoryId(categoryWithMaps.maps);
-			setCategoryInfos(categoryWithMaps);
-		} catch (error) {
-			console.error("Erreur lors du chargement des cartes:", error);
-		}
+		const categoryWithMaps = await getAllMapsInfosFromCategoryId(
+			categoryId as string,
+		);
+		setAllMapsFromCategoryId(categoryWithMaps.maps);
+		setCategoryInfos(categoryWithMaps);
 	};
 
 	// Met à jour la liste des cartes dès que allMapsInfos change

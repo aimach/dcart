@@ -96,48 +96,39 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	};
 
 	const fetchAllDatasForSearchForm = async () => {
-		try {
-			// on récupère les grandes régions
-			const allGreatRegions = await getAllGreatRegions();
-			// on les formate pour qu'elles soient utilisables dans le select
-			const formatedGreatRegions = allGreatRegions.map(
-				(region: GreatRegionType) => {
-					return {
-						value: region.id,
-						label: region[`nom_${language}` as keyof GreatRegionType],
-					};
-				},
-			);
-			// on les stocke dans le state
-			setGreatRegions(formatedGreatRegions);
+		// on récupère les grandes régions
+		const allGreatRegions = await getAllGreatRegions();
+		// on les formate pour qu'elles soient utilisables dans le select
+		const formatedGreatRegions = allGreatRegions.map(
+			(region: GreatRegionType) => {
+				return {
+					value: region.id,
+					label: region[`nom_${language}` as keyof GreatRegionType],
+				};
+			},
+		);
+		// on les stocke dans le state
+		setGreatRegions(formatedGreatRegions);
 
-			// on récupère les divinités
-			const allDivinities = await getAllDivinities();
-			// on les formate pour qu'elles soient utilisables dans le select
-			const formatedDivinities = allDivinities.map(
-				(divinity: DivinityType) => ({
-					value: divinity.id,
-					label: divinity[`nom_${language}` as keyof DivinityType],
-				}),
-			);
-			// on les stocke dans le state
-			setDivinities(formatedDivinities);
+		// on récupère les divinités
+		const allDivinities = await getAllDivinities();
+		// on les formate pour qu'elles soient utilisables dans le select
+		const formatedDivinities = allDivinities.map((divinity: DivinityType) => ({
+			value: divinity.id,
+			label: divinity[`nom_${language}` as keyof DivinityType],
+		}));
+		// on les stocke dans le state
+		setDivinities(formatedDivinities);
 
-			// on récupère les bornes temporelles
-			const timeMarkers = await getTimeMarkers();
-			const timeOptions = createTimeOptions(timeMarkers);
+		// on récupère les bornes temporelles
+		const timeMarkers = await getTimeMarkers();
+		const timeOptions = createTimeOptions(timeMarkers);
 
-			setTimeOptions(timeOptions);
-			setAfterOptions(timeOptions);
-			setBeforeOptions(timeOptions);
+		setTimeOptions(timeOptions);
+		setAfterOptions(timeOptions);
+		setBeforeOptions(timeOptions);
 
-			setDataLoaded(true);
-		} catch (error) {
-			console.error(
-				"Erreur lors de la récupération des données pour le formulaire de recherche des sources :",
-				error,
-			);
-		}
+		setDataLoaded(true);
 	};
 
 	const createTimeOptions = (timeMarkers: TimeMarkersType) => {

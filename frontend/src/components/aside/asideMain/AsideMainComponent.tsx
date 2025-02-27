@@ -70,36 +70,31 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// RECUPERATION DES OPTIONS D'ELEMENTS POUR LES FILTRES
 	// on va chercher les options du filtre d'éléments
 	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
-
 	const fetchElementOptions = async () => {
-		try {
-			// on récupère toutes les divinités
-			const allDivinities = await getAllDivinities();
-			// à partir des formules, on récupère tous les éléments
-			const allElements = await getAllElementsFromPoints(allPoints);
-			// on récupère les éléments qui ne sont pas des théonymes
-			const elementsWithoutTheonyms = allElements.filter((element) => {
-				return !allDivinities.some(
-					(divinity: DivinityType) => divinity.id === element.element_id,
-				);
-			});
-			// enfin, on formatte les options pour le select
-			const formatedElementOptions: OptionType[] = elementsWithoutTheonyms
-				.map((option) => ({
-					value: option.element_id,
-					label: option[`element_nom_${language}`],
-				}))
-				.sort((option1, option2) =>
-					option1.label < option2.label
-						? -1
-						: option1.label > option2.label
-							? 1
-							: 0,
-				);
-			setElementOptions(formatedElementOptions);
-		} catch (error) {
-			console.error("Erreur lors du chargement des localités:", error);
-		}
+		// on récupère toutes les divinités
+		const allDivinities = await getAllDivinities();
+		// à partir des formules, on récupère tous les éléments
+		const allElements = await getAllElementsFromPoints(allPoints);
+		// on récupère les éléments qui ne sont pas des théonymes
+		const elementsWithoutTheonyms = allElements.filter((element) => {
+			return !allDivinities.some(
+				(divinity: DivinityType) => divinity.id === element.element_id,
+			);
+		});
+		// enfin, on formatte les options pour le select
+		const formatedElementOptions: OptionType[] = elementsWithoutTheonyms
+			.map((option) => ({
+				value: option.element_id,
+				label: option[`element_nom_${language}`],
+			}))
+			.sort((option1, option2) =>
+				option1.label < option2.label
+					? -1
+					: option1.label > option2.label
+						? 1
+						: 0,
+			);
+		setElementOptions(formatedElementOptions);
 	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:

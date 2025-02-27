@@ -1,12 +1,6 @@
 // import des services
 import { apiClient } from "../api/apiClient";
 // import des types
-import type {
-	GreatRegionType,
-	MapInfoType,
-	MapType,
-	PointType,
-} from "../types/mapTypes";
 import type { UserFilterType } from "../types/filterTypes";
 
 /**
@@ -15,9 +9,17 @@ import type { UserFilterType } from "../types/filterTypes";
  * @returns {Promise} - Toutes les attestations de la source
  */
 const getAllAttestationsFromSourceId = async (sourceId: string) => {
-	const response = await apiClient.get(`/map/sources/${sourceId}/attestations`);
-	const allAttestations = await response.data;
-	return allAttestations;
+	try {
+		const response = await apiClient.get(
+			`/map/sources/${sourceId}/attestations`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Erreur lors du chargement des attestations de la source :",
+			error,
+		);
+	}
 };
 
 /**
@@ -25,9 +27,12 @@ const getAllAttestationsFromSourceId = async (sourceId: string) => {
  * @returns {Promise} - Toutes les catégories
  */
 const getAllCategories = async () => {
-	const response = await apiClient.get("/dcart/categories/all");
-	const allCategories = await response.data;
-	return allCategories;
+	try {
+		const response = await apiClient.get("/dcart/categories/all");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des catégories :", error);
+	}
 };
 
 /**
@@ -35,9 +40,15 @@ const getAllCategories = async () => {
  * @returns {Promise} - Toutes les catégories qui ont des cartes associées
  */
 const getAllCategoriesWithMapsInfos = async () => {
-	const response = await apiClient.get("/dcart/categories/all/maps");
-	const allCategories = await response.data;
-	return allCategories;
+	try {
+		const response = await apiClient.get("/dcart/categories/all/maps");
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Erreur lors du chargement des catégories avec les informations des cartes :",
+			error,
+		);
+	}
 };
 
 /**
@@ -45,9 +56,12 @@ const getAllCategoriesWithMapsInfos = async () => {
  * @returns {Promise} - Toutes les divinités
  */
 const getAllDivinities = async () => {
-	const response = await apiClient.get("/map/elements/divinities/all");
-	const allDivinities = await response.data;
-	return allDivinities;
+	try {
+		const response = await apiClient.get("/map/elements/divinities/all");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des divinités :", error);
+	}
 };
 
 /**
@@ -55,9 +69,12 @@ const getAllDivinities = async () => {
  * @returns {Promise} - Toutes les grandes régions
  */
 const getAllGreatRegions = async () => {
-	const response = await apiClient.get("/map/locations/regions/all");
-	const allGreatRegions = await response.data;
-	return allGreatRegions;
+	try {
+		const response = await apiClient.get("/map/locations/regions/all");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des grandes régions :", error);
+	}
 };
 
 /**
@@ -65,9 +82,12 @@ const getAllGreatRegions = async () => {
  * @returns {Promise} - Toutes les informations des cartes actives
  */
 const getAllMapsInfos = async () => {
-	const response = await apiClient.get("/dcart/maps/all");
-	const allMapsInfos = await response.data;
-	return allMapsInfos;
+	try {
+		const response = await apiClient.get("/dcart/maps/all");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des cartes :", error);
+	}
 };
 
 /**
@@ -76,9 +96,17 @@ const getAllMapsInfos = async () => {
  * @returns {Promise} - Toutes les cartes de la catégorie
  */
 const getAllMapsInfosFromCategoryId = async (categoryId: string) => {
-	const response = await apiClient.get(`/dcart/categories/${categoryId}/maps`);
-	const allMaps = await response.data;
-	return allMaps;
+	try {
+		const response = await apiClient.get(
+			`/dcart/categories/${categoryId}/maps`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Erreur lors du chargement des cartes de la catégorie :",
+			error,
+		);
+	}
 };
 
 /**
@@ -89,27 +117,25 @@ const getAllMapsInfosFromCategoryId = async (categoryId: string) => {
  */
 const getAllPointsByMapId = async (
 	id: string,
-	params: FormData | UserFilterType | null,
+	params: UserFilterType | null,
 ) => {
-	const queryArray = [];
-	let query = "";
-	if (params !== null) {
-		if (params instanceof FormData) {
-			for (const param of params) {
-				queryArray.push(`${param[0]}=${param[1]}`);
-			}
-		} else {
+	try {
+		const queryArray = [];
+		let query = "";
+		if (params !== null) {
 			for (const [key, value] of Object.entries(params)) {
 				if (value !== undefined) {
 					queryArray.push(`${key}=${value}`);
 				}
 			}
+
+			query = queryArray.length ? `?${queryArray.join("&")}` : "";
 		}
-		query = queryArray.length ? `?${queryArray.join("&")}` : "";
+		const response = await apiClient.get(`/map/sources/${id}${query}`);
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des sources :", error);
 	}
-	const response = await apiClient.get(`/map/sources/${id}${query}`);
-	const allPoints = await response.data;
-	return allPoints;
 };
 
 /**
@@ -123,25 +149,34 @@ const getAllPointsForDemoMap = async (attestationIds: string) => {
 			method: "POST",
 			data: JSON.stringify({ attestationIds }),
 		});
-		const allPoints = await response.data;
-		return allPoints;
+		return response.data;
 	} catch (error) {
-		console.error("Erreur lors du chargement des sources :", error);
+		console.error(
+			"Erreur lors du chargement des sources pour la démo :",
+			error,
+		);
 	}
 };
 
 /**
  * Récupère toutes les informations d'une carte à partir de son id
  * @param {string} mapId - L'id de la carte
- * @returns {Promise} - Les informations de la carte
+ * @returns {Promise | string} - Les informations de la carte ou une string "exploration"
  */
 const getOneMapInfos = async (mapId: string) => {
-	if (mapId !== "exploration") {
-		const response = await apiClient.get(`/dcart/maps/${mapId}`);
-		const mapInfos = await response.data;
-		return mapInfos;
+	try {
+		if (mapId !== "exploration") {
+			const response = await apiClient.get(`/dcart/maps/${mapId}`);
+			const mapInfos = await response.data;
+			return mapInfos;
+		}
+		return "exploration";
+	} catch (error) {
+		console.error(
+			"Erreur lors du chargement des informations de la carte :",
+			error,
+		);
 	}
-	return "exploration";
 };
 
 /**
@@ -149,9 +184,12 @@ const getOneMapInfos = async (mapId: string) => {
  * @returns {Promise} - Les bornes temporelles de la base de données
  */
 const getTimeMarkers = async () => {
-	const response = await apiClient.get("/map/datation/timeMarkers");
-	const timeMarker = await response.data;
-	return timeMarker;
+	try {
+		const response = await apiClient.get("/map/datation/timeMarkers");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des bornes temporelles :", error);
+	}
 };
 
 /**
@@ -159,9 +197,12 @@ const getTimeMarkers = async () => {
  * @returns {Promise} - Les filtres utilisateur
  */
 const getUserFilters = async () => {
-	const response = await apiClient.get("/dcart/filters/all");
-	const userFilters = await response.data;
-	return userFilters;
+	try {
+		const response = await apiClient.get("/dcart/filters/all");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des filtres utilisateur :", error);
+	}
 };
 
 export {

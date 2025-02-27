@@ -38,32 +38,24 @@ const MapPage = () => {
 
 	// on charge les points de la carte
 	const fetchAllPoints = async () => {
-		try {
-			const points = await getAllPointsByMapId(mapId as string, null);
-			setAllPoints(points);
-			setMapReady(true);
-		} catch (error) {
-			console.error("Erreur lors du chargement des points:", error);
-		}
+		const points = await getAllPointsByMapId(mapId as string, null);
+		setAllPoints(points);
+		setMapReady(true);
 	};
 
 	// on charge les informations d'introduction de la carte
 	const fetchMapInfos = async (mapId: string) => {
-		try {
-			const mapInfos = await getOneMapInfos(mapId as string);
-			// si la carte est une carte d'exploration, on réinitialise les filtres
-			if (mapInfos === "exploration") {
-				setIncludedElementId(undefined);
-				setMapInfos(null);
-				setMapFilters([]);
-			} else {
-				// sinon on charge les informations de la carte
-				setIncludedElementId(mapInfos.divinityIds);
-				setMapInfos(mapInfos);
-				setMapFilters(mapInfos.filters);
-			}
-		} catch (error) {
-			console.error("Erreur lors du chargement des infos de la carte:", error);
+		const mapInfos = await getOneMapInfos(mapId as string);
+		// si la carte est une carte d'exploration, on réinitialise les filtres
+		if (mapInfos === "exploration") {
+			setIncludedElementId(undefined);
+			setMapInfos(null);
+			setMapFilters([]);
+		} else {
+			// sinon on charge les informations de la carte
+			setIncludedElementId(mapInfos.divinityIds);
+			setMapInfos(mapInfos);
+			setMapFilters(mapInfos.filters);
 		}
 	};
 

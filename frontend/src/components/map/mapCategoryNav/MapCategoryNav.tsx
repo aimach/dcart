@@ -23,16 +23,6 @@ const MapCategoryNav = () => {
 	>([]);
 	const [categoryMapList, setCategoryMapList] = useState<NavList>([]);
 
-	// Fonction pour charger les informations des cartes
-	const fetchAllCategoriesInfos = async () => {
-		try {
-			const categories = await getAllCategoriesWithMapsInfos();
-			setAllCategoriesWithMaps(categories);
-		} catch (error) {
-			console.error("Erreur lors du chargement des catégories:", error);
-		}
-	};
-
 	// Met à jour la liste des cartes dès que allMapsInfos change
 	useEffect(() => {
 		if (allCategoriesWithMaps.length > 0) {
@@ -47,8 +37,12 @@ const MapCategoryNav = () => {
 		}
 	}, [allCategoriesWithMaps, language]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	// Fonction pour charger les informations des cartes
 	useEffect(() => {
+		const fetchAllCategoriesInfos = async () => {
+			const categories = await getAllCategoriesWithMapsInfos();
+			setAllCategoriesWithMaps(categories);
+		};
 		fetchAllCategoriesInfos();
 	}, []);
 
