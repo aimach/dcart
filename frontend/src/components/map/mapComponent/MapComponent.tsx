@@ -39,6 +39,12 @@ interface MapComponentProps {
 	mapId: string;
 }
 
+/**
+ * Composant de la carte
+ * @param {Dispatch<SetStateAction<boolean>>} props.setPanelDisplayed - Modifie l'état d'affichage du panel latéral
+ * @param {string} mapId - id de la carte
+ * @returns ModalComponent | MapContainer | LoaderComponent | TimeFilterComponent | TileLayerChoiceComponent
+ */
 const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	// on définit le centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];

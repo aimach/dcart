@@ -16,6 +16,12 @@ interface TimeFilterComponentProps {
 	disabled: boolean;
 }
 
+/**
+ * Affiche le filtre du temps
+ * @param {Object} props
+ * @param {boolean} props.disabled - Si le filtre est désactivé
+ * @returns MultiRangeSlider
+ */
 const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 	// on récupère les filtres de l'utilisateur dans le store
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(

@@ -16,11 +16,17 @@ import { useMapAsideMenuStore } from "../../utils/stores/mapAsideMenuStore";
 // import du style
 import style from "./mapPage.module.scss";
 
+/**
+ * Page de la carte
+ * @returns AsideContainer | AsideReducedMenuComponent | MapComponent
+ */
 const MapPage = () => {
-	// on récupère les params
-	const { categoryId, mapId } = useParams();
+	// Import des hooks
+	const { mapId } = useParams();
+	const [panelDisplayed, setPanelDisplayed] = useState<boolean>(true);
 
-	// on récupère le state pour l'includedElement
+	// Récupération des données externes (context, store, params, etc.)
+	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
 	const {
 		setMapInfos,
 		allPoints,
@@ -30,20 +36,13 @@ const MapPage = () => {
 		setMapReady,
 		resetTileLayerURL,
 	} = useMapStore(useShallow((state) => state));
-	// on récupère le state pour les filtres
-	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
 
-	// on définit les states nécessaires
-	const [panelDisplayed, setPanelDisplayed] = useState<boolean>(true);
-
-	// on charge les points de la carte
+	// Déclaration des fonctions internes
 	const fetchAllPoints = async () => {
 		const points = await getAllPointsByMapId(mapId as string, null);
 		setAllPoints(points);
 		setMapReady(true);
 	};
-
-	// on charge les informations d'introduction de la carte
 	const fetchMapInfos = async (mapId: string) => {
 		const mapInfos = await getOneMapInfos(mapId as string);
 		// si la carte est une carte d'exploration, on réinitialise les filtres
@@ -59,6 +58,7 @@ const MapPage = () => {
 		}
 	};
 
+	// Effets secondaires (useEffect, useMemo, useCallback)
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setMapReady(false);
@@ -68,6 +68,7 @@ const MapPage = () => {
 		resetTileLayerURL();
 	}, [mapId]);
 
+	// Retour du JSX
 	return (
 		<section className={style.mapSection}>
 			{/* <MapMenuNav categoryId={categoryId as string} /> */}

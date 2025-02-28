@@ -7,6 +7,10 @@ import AppMenuComponent from "../components/menu/AppMenuComponent";
 // import du style
 import style from "./layout.module.scss";
 
+/**
+ * Layout de la navigation qui affiche le header ou le composant du menu (pleine page)
+ * @returns HeaderComponent | AppMenuComponent
+ */
 const NavigationLayout = () => {
 	// on initie le state pour l'affichage du menu
 	const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);

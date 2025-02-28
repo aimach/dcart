@@ -11,6 +11,14 @@ interface ButtonComponentProps {
 	link?: string;
 }
 
+/**
+ * Composant bouton
+ * @param {string} type - Type de bouton (route ou button)
+ * @param {string} color - Couleur du bouton (gold ou brown)
+ * @param {string} textContent - Texte du bouton
+ * @param {function} onClickFunction - Fonction à exécuter au clic
+ * @param {string} link - Si de type "route", lien vers lequel rediriger
+ */
 const ButtonComponent = ({
 	type,
 	color,

@@ -6,6 +6,9 @@ import { TranslationContext } from "../../../context/TranslationContext";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
 
+/**
+ * Composant de filtre pour les langues (grec, sémitique)
+ */
 const LanguageFilterComponent = () => {
 	// on récupère les données de langue
 	const { translation, language } = useContext(TranslationContext);

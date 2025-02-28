@@ -20,6 +20,12 @@ interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+/**
+ * Composant du menu de l'application
+ * @param {Object} props - Les propriétés du composant
+ * @param {Function} props.setMenuIsOpen - La fonction pour ouvrir/fermer le menu
+ * @returns ImageWithLink
+ */
 const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 	// on importe les données de language
 	const { language, translation } = useContext(TranslationContext);

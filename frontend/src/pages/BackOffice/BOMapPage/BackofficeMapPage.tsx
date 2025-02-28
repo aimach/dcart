@@ -1,21 +1,30 @@
 // import des bibliothèques
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 // import des composants
 import ButtonComponent from "../../../components/common/button/ButtonComponent";
+// import des hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { getAllMapsInfos } from "../../../utils/api/getRequests";
 // import des types
 import type { MapType } from "../../../utils/types/mapTypes";
-import { TranslationContext } from "../../../context/TranslationContext";
 // import du style
 import style from "./backofficeMapPage.module.scss";
 
+/**
+ * Page du backoffice pour la gestion des cartes (création, modification, suppression)
+ * @returns ButtonComponent
+ */
 const BackofficeMapPage = () => {
-	// on récupère la langue
-	const { language } = useContext(TranslationContext);
-
-	// on récupère les données des cartes dans la BDD
+	// Import des hooks (useState, useEffect, etc.
 	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
+	// Récupération des données externes (context, store, params, etc.)
+	// on récupère la langue
+	const { language } = useTranslation();
+	// Déclaration des constantes (ex : URLs, variables non réactives)
+	// Déclaration des fonctions internes
+	// Effets secondaires (useEffect, useMemo, useCallback)
+	// Retour du JSX
 
 	useEffect(() => {
 		// Fonction pour charger les informations des cartes

@@ -8,6 +8,9 @@ import { useMapStore } from "../../../utils/stores/mapStore";
 // import du style
 import style from "./tileLayerChoiceComponent.module.scss";
 
+/**
+ * Composant de choix du fond de carte
+ */
 const TileLayerChoiceComponent = () => {
 	// source : https://leaflet-extras.github.io/leaflet-providers/preview/
 	// {z} : Niveau de zoom.
@@ -43,7 +46,7 @@ const TileLayerChoiceComponent = () => {
 	];
 
 	// on récupère les données du store
-	const { tileLayerURL, setTileLayerURL } = useMapStore(
+	const { setTileLayerURL } = useMapStore(
 		useShallow((state) => ({
 			tileLayerURL: state.tileLayerURL,
 			setTileLayerURL: state.setTileLayerURL,
@@ -56,9 +59,6 @@ const TileLayerChoiceComponent = () => {
 				<div
 					key={tileLayer.name}
 					className={style.tileLayerChoice}
-					// style={{
-					// 	backgroundImage: `url(${tileLayer.urlMini})`,
-					// }}
 					onClick={() => setTileLayerURL(tileLayer.url)}
 					onKeyUp={() => setTileLayerURL(tileLayer.url)}
 				>

@@ -31,6 +31,12 @@ interface DemoMapComponentProps {
 	showModal: boolean;
 }
 
+/**
+ * Composant de la carte de démonstration
+ * @param {Object} props
+ * @param {boolean} props.showModal - Affiche la modale
+ * @returns ModalComponent | MapContainer
+ */
 const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 	// on définit le centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];
@@ -52,7 +58,6 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 	} = useMapFormStore(useShallow((state) => state));
 
 	// à l'arrivée sur la page, on remet les states à 0
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setIsModalOpen(true);
 	}, []);

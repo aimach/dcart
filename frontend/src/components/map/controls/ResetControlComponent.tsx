@@ -10,7 +10,11 @@ interface ResetControlProps {
 	mapBounds: LatLngTuple[];
 }
 
-// Composant pour ajouter un contrôle personnalisé
+/**
+ * Composant de contrôle permettant de réinitialiser la vue de la carte
+ * @param {Ojbect} props Les props du composant
+ * @param {LatLngTuple[]} props.mapBounds Les limites de la carte
+ */
 const ResetControl = ({ mapBounds }: ResetControlProps) => {
 	const map = useMapStore((state) => state.map);
 

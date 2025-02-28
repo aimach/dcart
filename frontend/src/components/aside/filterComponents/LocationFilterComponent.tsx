@@ -14,6 +14,12 @@ interface LocationFilterComponentProps {
 	locationOptions: OptionType[];
 }
 
+/**
+ * Composant de filtre de localisation
+ * @param {Object} props
+ * @param {OptionType[]} props.locationOptions - Liste des options pour le filtre de la localisation
+ * @returns Select (react-select)
+ */
 const LocationFilterComponent = ({
 	locationOptions,
 }: LocationFilterComponentProps) => {

@@ -19,6 +19,9 @@ import type {
 // import du style
 import style from "../demoCommonForm/demoCommonForm.module.scss";
 
+/**
+ * Formulaire de la deuxième étape : upload de points sur la carte
+ */
 const UploadForm = () => {
 	// on récupère la langue
 	const { translation, language } = useContext(TranslationContext);

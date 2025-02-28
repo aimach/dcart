@@ -24,6 +24,13 @@ interface FilterComponentProps {
 	elementOptions: OptionType[];
 }
 
+/**
+ * Affiche les filtres de la carte
+ * @param {Object} props
+ * @param {OptionType[]} props.locationOptions - Liste des options pour le filtre de la localisation
+ * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
+ * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
+ */
 const FilterComponent = ({
 	locationOptions,
 	elementOptions,

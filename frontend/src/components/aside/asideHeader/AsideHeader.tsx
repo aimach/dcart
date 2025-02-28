@@ -13,6 +13,10 @@ import type { NavList } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./asideHeader.module.scss";
 
+/**
+ * Affiche les onglets de navigation du panel latéral
+ * @returns NavComponent
+ */
 const AsideHeader = () => {
 	// on importe les données de language
 	const { language, translation } = useContext(TranslationContext);

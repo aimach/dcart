@@ -9,8 +9,8 @@ import { useTranslation } from "./utils/hooks/useTranslation";
 import style from "./App.module.scss";
 
 /**
- * Composant principal de l'application qui affiche la page d'accueil
- * @returns {JSX.Element} - Les éléments de la page d'accueil : titre, description et barre de navigation
+ * Page d'accueil : titre, description et barre de navigation
+ * @returns NavComponent
  */
 function App() {
 	// récupération des données de traduction

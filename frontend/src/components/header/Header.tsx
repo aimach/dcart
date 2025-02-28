@@ -22,6 +22,12 @@ interface HeaderComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+/**
+ * Composant Header avec liens externes, menu de navigation et traduction
+ * @param {string} type - le type de header à afficher
+ * @param {function} setMenuIsOpen - la fonction pour ouvrir le menu
+ * @returns ImageWithLink | NavComponent
+ */
 const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	// on récupère le contexte qui gère le language et on crée la fonction pour switcher
 	const { language, translation, setLanguage } = useContext(TranslationContext);

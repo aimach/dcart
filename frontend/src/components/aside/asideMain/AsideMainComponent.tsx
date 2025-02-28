@@ -24,6 +24,13 @@ interface AsideMainComponentProps {
 	mapId: string;
 }
 
+/**
+ * Affiche le corps du panel latéral en fonction de l'onglet sélectionné
+ * @param {Object} props
+ * @param {boolean} props.results - La liste des points affichés sur la carte
+ * @param {string} props.mapId - Identifiant de la carte
+ * @returns ResultComponent | FilterComponent | InfoComponent
+ */
 const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// on récupère les données de la langue
 	const { translation, language } = useContext(TranslationContext);

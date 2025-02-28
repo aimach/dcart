@@ -25,6 +25,9 @@ import {
 	createNewMap,
 } from "../../../../utils/api/postRequests";
 
+/**
+ * Formulaire de la troisième étape : définition des filtres utilisateur pour la carte
+ */
 const UserMapFilterForm = () => {
 	// on importe la langue
 	const { translation, language } = useContext(TranslationContext);

@@ -26,6 +26,11 @@ type DemoCommonFormProps = {
 	inputs: InputType[];
 };
 
+/**
+ * Formulaire de la première étape de création : informations générales (titre, description, catégorie)
+ * @param inputs la liste des inputs du formulaire
+ * @returns ErrorComponent | NavigationButtonComponent
+ */
 const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 	// on récupère la langue
 	const { translation, language } = useContext(TranslationContext);

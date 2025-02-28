@@ -35,6 +35,11 @@ interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+/**
+ * Composant du formulaire de recherche de la carte "exploration"
+ * @param {Dispatch<SetStateAction<boolean>>} props.setIsModalOpen - Modifie l'état d'affichage du modal
+ * @returns Select (react-select) | LoaderComponent
+ */
 const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	// on récupère le langage
 	const { language, translation } = useContext(TranslationContext);

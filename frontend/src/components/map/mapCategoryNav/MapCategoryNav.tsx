@@ -13,6 +13,9 @@ import style from "./mapCategoryNav.module.scss";
 // import des images
 import delta from "../../../assets/delta.png";
 
+/**
+ * Composant de navigation dans les catégories et les cartes associées
+ */
 const MapCategoryNav = () => {
 	// on récupère la langue
 	const { language } = useContext(TranslationContext);
@@ -47,7 +50,6 @@ const MapCategoryNav = () => {
 	}, []);
 
 	// on initie un state pour l'apparition des cartes
-	const [showMaps, setShowMaps] = useState(false);
 	const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
 		null,
 	);
