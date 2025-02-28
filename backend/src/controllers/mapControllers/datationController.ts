@@ -12,6 +12,7 @@ export const datationController = {
 			MIN(post_quem) AS post, 
 			MAX(ante_quem) AS ante 
 			FROM datation`;
+
 			const results = await mapDataSource.query(query);
 
 			res.status(200).json(results[0]);

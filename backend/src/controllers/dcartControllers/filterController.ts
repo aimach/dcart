@@ -14,6 +14,7 @@ export const filterController = {
 		try {
 			const { filterId } = req.params;
 			let results = null;
+
 			if (filterId === "all") {
 				results = await dcartDataSource.getRepository(Filter).find();
 				res.status(200).json(results);
@@ -22,6 +23,12 @@ export const filterController = {
 			results = await dcartDataSource.getRepository(Filter).find({
 				where: { id: filterId },
 			});
+
+			if (!results) {
+				res.status(404).json({ message: "Filtre non trouvé" });
+				return;
+			}
+
 			res.status(200).json(results[0]);
 		} catch (error) {
 			handleError(res, error as Error);
@@ -53,11 +60,19 @@ export const filterController = {
 						});
 					if (filterToAdd) {
 						newFilters.push(filterToAdd);
+					} else {
+						res
+							.status(404)
+							.json({ message: `Filtre non trouvé, id : ${filter}` });
+						return;
 					}
 				}
 			}
+
+			// on ajoute les filtres à la carte
 			map.filters = newFilters;
 			await dcartDataSource.getRepository(MapContent).save(map);
+
 			res.status(201).json({ message: "Filtres ajoutés à la carte" });
 		} catch (error) {
 			handleError(res, error as Error);
