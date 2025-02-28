@@ -7,7 +7,8 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 
 export const categoryController = {
-	getAllCategories: async (req: Request, res: Response): Promise<void> => {
+	// récupère toutes les catégories ou une catégorie en particulier
+	getCategories: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { categoryId } = req.params;
 			let results = null;
@@ -27,6 +28,7 @@ export const categoryController = {
 		}
 	},
 
+	// récupère toutes les catégories avec les cartes associées
 	getAllCategoriesWithMaps: async (
 		req: Request,
 		res: Response,
@@ -51,6 +53,7 @@ export const categoryController = {
 						"map.description_fr",
 						"map.description_en",
 					])
+					.where("map.isActive = true") // Exclure les cartes inactives
 					.getMany();
 
 				res.status(200).json(results);

@@ -11,7 +11,6 @@ import {
 	getQueryStringForLocalisationFilter,
 	getQueryStringForDateFilter,
 	getQueryStringForIncludedElements,
-	getQueryStringForExcludedElements,
 	getQueryStringForLanguage,
 } from "../../utils/query/filtersQueryString";
 import { handleError } from "../../utils/errorHandler/errorHandler";
@@ -19,7 +18,7 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 
 export const sourceController = {
-	// récupérer toutes les sources
+	// récupérer toutes les sources à partir de l'id de la carte
 	getSourcesByMapId: async (req: Request, res: Response): Promise<void> => {
 		try {
 			// on récupère params et query
@@ -161,6 +160,7 @@ export const sourceController = {
 		}
 	},
 
+	// récupérer les attestations par l'id d'une source (demo)
 	getAttestationsBySourceId: async (
 		req: Request,
 		res: Response,
@@ -174,7 +174,12 @@ export const sourceController = {
 			const sourceWithAttestations = await mapDataSource.query(sqlQuery, [
 				sourceId,
 			]);
-			console.log(sourceWithAttestations);
+
+			if (sourceWithAttestations.length === 0) {
+				res.status(404).send({ Erreur: "Source non trouvée" });
+				return;
+			}
+
 			res.status(200).json(sourceWithAttestations[0].attestations);
 		} catch (error) {
 			handleError(res, error as Error);

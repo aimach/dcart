@@ -7,17 +7,16 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 
 export const mapContentController = {
-	getMapInformationsById: async (
-		req: Request,
-		res: Response,
-	): Promise<void> => {
+	// récupérer les données de toutes les cartes ou d'une carte en particulier
+	getMapContent: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { mapId } = req.params;
+
 			if (mapId === "all") {
-				const MapInfos = await dcartDataSource
+				const allMaps = await dcartDataSource
 					.getRepository(MapContent)
 					.find({ where: { isActive: true }, relations: ["filters"] });
-				res.status(200).send(MapInfos);
+				res.status(200).send(allMaps);
 				return;
 			}
 
@@ -34,6 +33,7 @@ export const mapContentController = {
 		}
 	},
 
+	// créer une nouvelle carte
 	createMap: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const {

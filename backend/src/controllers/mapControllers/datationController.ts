@@ -5,8 +5,8 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 
 export const datationController = {
+	// récupérer dans la table datation le post_quem le plus bas et ante_quem le plus haut
 	getTimeMarkers: async (req: Request, res: Response): Promise<void> => {
-		// récupérer dans la table datation le post_quem le plus bas et ante_quem le plus haut
 		try {
 			const query = `SELECT 
 			MIN(post_quem) AS post, 
