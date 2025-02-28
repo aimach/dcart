@@ -1,6 +1,11 @@
 // import des types
 import type { Response } from "express";
 
+/**
+ * Fonction qui gère les erreurs des controllers
+ * @param {Response} res - la réponse
+ * @param {Error} error - l'erreur
+ */
 const handleError = (res: Response, error: Error) => {
 	if (error instanceof Error) {
 		res.status(500).json({

@@ -1,5 +1,5 @@
 // import des services
-import { MapDataSource } from "../../dataSource/dataSource";
+import { mapDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
@@ -12,7 +12,7 @@ export const datationController = {
 			MIN(post_quem) AS post, 
 			MAX(ante_quem) AS ante 
 			FROM datation`;
-			const results = await MapDataSource.query(query);
+			const results = await mapDataSource.query(query);
 
 			res.status(200).json(results[0]);
 		} catch (error) {

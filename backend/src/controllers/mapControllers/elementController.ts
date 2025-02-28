@@ -1,5 +1,5 @@
 // import des services
-import { MapDataSource } from "../../dataSource/dataSource";
+import { mapDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
@@ -20,7 +20,7 @@ export const elementController = {
 			WHERE nature_element.nom_fr LIKE $1
 			ORDER BY element.id
 			`;
-			const results = await MapDataSource.query(query, ["%Substantif%"]);
+			const results = await mapDataSource.query(query, ["%Substantif%"]);
 
 			res.status(200).json(results);
 		} catch (error) {
