@@ -124,10 +124,6 @@ const SourceDetailsComponent = ({
 										<td>#{attestation.attestation_id}</td>
 									</tr>
 									<tr>
-										<th>{translation[language].mapPage.aside.traduction}</th>
-										<td>{attestation[attestationNameLanguageKey]}</td>
-									</tr>
-									<tr>
 										<th>
 											{translation[language].mapPage.aside.originalVersion}
 										</th>
@@ -139,6 +135,10 @@ const SourceDetailsComponent = ({
 												}}
 											/>
 										</td>
+									</tr>
+									<tr>
+										<th>{translation[language].mapPage.aside.traduction}</th>
+										<td>{attestation[attestationNameLanguageKey]}</td>
 									</tr>
 									<tr>
 										<th>{translation[language].mapPage.aside.agents}</th>

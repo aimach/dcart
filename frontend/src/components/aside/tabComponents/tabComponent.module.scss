@@ -25,7 +25,7 @@
 
   >h4 {
     font-size: v.$font-size-l;
-    margin-bottom: v.$space-s;
+    margin: v.$space-s;
   }
 
   .selectionDetails {
@@ -95,11 +95,13 @@
 }
 
 .chartContainer {
-  width: 100%;
+  // width: 100%;
+  // height: 60%;
   @include m.flexbox(flex, column, nowrap, space-between, center);
 
   >div {
     @include m.flexbox(flex, column, nowrap, center, center);
+    height: 200px;
   }
 
   .chartRadio {

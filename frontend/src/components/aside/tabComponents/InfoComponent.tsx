@@ -42,18 +42,32 @@ const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
 					<ChartComponent point={point as PointType} />
 				</details>
 			)}
-			<details className={style.sourceDetails}>
-				<summary>{translation[language].mapPage.aside.seeSources}</summary>
-				{point.sources.map((source) => {
-					return (
-						<SourceDetailsComponent
-							key={source.source_id}
-							source={source}
-							mapId={mapId}
-						/>
-					);
-				})}
-			</details>
+			{mapId !== "exploration" ? (
+				<details className={style.sourceDetails}>
+					<summary>{translation[language].mapPage.aside.seeSources}</summary>
+					{point.sources.map((source) => {
+						return (
+							<SourceDetailsComponent
+								key={source.source_id}
+								source={source}
+								mapId={mapId}
+							/>
+						);
+					})}
+				</details>
+			) : (
+				<>
+					{point.sources.map((source) => {
+						return (
+							<SourceDetailsComponent
+								key={source.source_id}
+								source={source}
+								mapId={mapId}
+							/>
+						);
+					})}
+				</>
+			)}
 		</section>
 	);
 };

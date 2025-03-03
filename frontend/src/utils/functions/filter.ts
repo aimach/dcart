@@ -27,7 +27,6 @@ const alreadyTwoFiltersChecked = (mapFilters: MapFilterType) => {
 const getAllDatationLabels = (
 	minVal: number | string,
 	maxVal: number | string,
-	step: number,
 ) => {
 	const minValNumber =
 		typeof minVal === "string" ? Number.parseInt(minVal, 10) : minVal;
@@ -35,7 +34,7 @@ const getAllDatationLabels = (
 		typeof maxVal === "string" ? Number.parseInt(maxVal, 10) : maxVal;
 
 	const labelsArray = [];
-	for (let i = minValNumber; i <= maxValNumber; i += step) {
+	for (let i = minValNumber; i <= maxValNumber; i += 100) {
 		if (!(i % 10)) {
 			// si i finit par 0
 			labelsArray.push(i.toString());

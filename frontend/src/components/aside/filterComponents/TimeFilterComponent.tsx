@@ -101,7 +101,7 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 				maxValue={
 					userFilters.ante === undefined ? 400 : (userFilters.ante as number)
 				}
-				labels={getAllDatationLabels(-1000, 400, step)}
+				labels={getAllDatationLabels(-1000, 400)}
 				onChange={(e) => {
 					handleTimeFilter(e);
 					changeUserFilters(e);
