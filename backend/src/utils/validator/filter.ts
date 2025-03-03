@@ -1,0 +1,32 @@
+// import des bibliothèques
+import Joi from "joi";
+// import des types
+import type { Request, Response, NextFunction } from "express";
+
+const filterSchema = Joi.object({
+	location: Joi.boolean().required().messages({
+		"any.required": "Le booléen 'location' est requis",
+		"boolean.base": "'location' doit être un booléen",
+	}),
+	language: Joi.boolean().required().messages({
+		"any.required": "Le booléen 'language' est requis",
+		"boolean.base": "'language' doit être un booléen",
+	}),
+	element: Joi.boolean().required().messages({
+		"any.required": "Le booléen 'element' est requis",
+		"boolean.base": "'element' doit être un booléen",
+	}),
+});
+
+export const validateFilterBody = (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	const { error } = filterSchema.validate(req.body);
+	if (error) {
+		res.status(422).send({ erreur: error.details[0].message });
+	} else {
+		next();
+	}
+};
