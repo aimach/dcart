@@ -9,10 +9,12 @@ import type { Request, Response } from "express";
 import type { FilterType } from "../../entities/Filter";
 
 export const filterController = {
-	getAllFilters: async (req: Request, res: Response): Promise<void> => {
+	// récupère tous les filtres
+	getFilters: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { filterId } = req.params;
 			let results = null;
+
 			if (filterId === "all") {
 				results = await dcartDataSource.getRepository(Filter).find();
 				res.status(200).json(results);
@@ -21,12 +23,19 @@ export const filterController = {
 			results = await dcartDataSource.getRepository(Filter).find({
 				where: { id: filterId },
 			});
+
+			if (!results) {
+				res.status(404).json({ message: "Filtre non trouvé" });
+				return;
+			}
+
 			res.status(200).json(results[0]);
 		} catch (error) {
 			handleError(res, error as Error);
 		}
 	},
 
+	// ajoute un ou des filtres à une carte
 	addFiltersToMap: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { filters } = req.body;
@@ -39,6 +48,7 @@ export const filterController = {
 				res.status(404).json({ message: "Carte non trouvée" });
 				return;
 			}
+
 			const newFilters = [];
 			for (const filter in filters) {
 				if (filters[filter]) {
@@ -50,12 +60,19 @@ export const filterController = {
 						});
 					if (filterToAdd) {
 						newFilters.push(filterToAdd);
+					} else {
+						res
+							.status(404)
+							.json({ message: `Filtre non trouvé, id : ${filter}` });
+						return;
 					}
 				}
 			}
+
+			// on ajoute les filtres à la carte
 			map.filters = newFilters;
-			console.log(map.filters);
 			await dcartDataSource.getRepository(MapContent).save(map);
+
 			res.status(201).json({ message: "Filtres ajoutés à la carte" });
 		} catch (error) {
 			handleError(res, error as Error);

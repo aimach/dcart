@@ -17,7 +17,7 @@ export const dcartDataSource = new DataSource({
 	entities: [`${__dirname}/../entities/*.ts`],
 });
 
-export const MapDataSource = new DataSource({
+export const mapDataSource = new DataSource({
 	type: "postgres",
 	host: process.env.MAP_DB_HOST,
 	port: Number.parseInt(process.env.MAP_DB_PORT as string, 10),

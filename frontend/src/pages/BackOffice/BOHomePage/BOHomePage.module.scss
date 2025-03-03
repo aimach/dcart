@@ -4,15 +4,17 @@
 .homeNav {
 
     ul {
-        @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
+        @include m.flexbox(flex, row, nowrap, center, center);
         list-style: none;
         padding: 0;
         margin: 0;
         gap: 10px;
+
         li {
             a {
                 text-decoration: none;
                 color: black;
+
                 &:hover {
                     border-bottom: 1px solid black;
                 }
@@ -21,9 +23,9 @@
     }
 
     &Container {
-    width: 100vw;
-    height: calc(100vh - v.$main-header-height);
-    border: 1px solid black;
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
-}
+        width: 100vw;
+        height: calc(100vh - v.$main-header-height);
+        border: 1px solid black;
+        @include m.flexbox(flex, row, nowrap, center, center);
+    }
 }

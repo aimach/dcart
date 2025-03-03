@@ -7,7 +7,7 @@ export const sourceRoutes = express.Router();
 // récupérer les sources par l'id de la map
 sourceRoutes.get("/:mapId", mapController.getSourcesByMapId);
 
-// récupérer les attestations d'une source
+// récupérer les attestations par l'id d'une source
 sourceRoutes.get(
 	"/:sourceId/attestations",
 	mapController.getAttestationsBySourceId,

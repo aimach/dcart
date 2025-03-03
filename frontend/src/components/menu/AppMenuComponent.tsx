@@ -7,7 +7,6 @@ import ImageWithLink from "../common/ImageWithLink";
 import { TranslationContext } from "../../context/TranslationContext";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
-import type { NavList } from "../../utils/types/commonTypes";
 // import du style
 import style from "./appMenuComponent.module.scss";
 // import des icones et images
@@ -15,11 +14,18 @@ import { X } from "lucide-react";
 import labexLogo from "../../assets/logo_SMS.png";
 import HNLogo from "../../assets/huma_num_logo.png";
 import mapLogo from "../../assets/map_logo.png";
+import { getMenuPageMenuList } from "../../utils/menu/menuListArrays";
 
 interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+/**
+ * Composant du menu de l'application
+ * @param {Object} props - Les propriétés du composant
+ * @param {Function} props.setMenuIsOpen - La fonction pour ouvrir/fermer le menu
+ * @returns ImageWithLink
+ */
 const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 	// on importe les données de language
 	const { language, translation } = useContext(TranslationContext);
@@ -36,26 +42,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 		setIsLongLine(newObject);
 	};
 
-	const navigationList: NavList = [
-		{
-			id: "home",
-			title: translation[language].navigation.home,
-			onClickFunction: undefined,
-			route: "/",
-		},
-		{
-			id: "maps",
-			title: translation[language].navigation.maps,
-			onClickFunction: undefined,
-			route: "maps/categories",
-		},
-		{
-			id: "storymaps",
-			title: translation[language].navigation.storymaps,
-			onClickFunction: undefined,
-			route: "/storymaps",
-		},
-	];
+	const navigationList = getMenuPageMenuList(translation, language);
 
 	return (
 		<main className={style.menuPageContainer}>

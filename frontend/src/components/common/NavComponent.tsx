@@ -15,6 +15,17 @@ interface NavComponentProps {
 	notActiveLinkClassName?: string;
 }
 
+/**
+ * Composant de navigation
+ * @param {string} type - le type de navigation à afficher (route, list, augmented)
+ * @param {string} navClassName - la classe CSS du composant
+ * @param {NavList} list - la liste des éléments à afficher
+ * @param {string} selectedElement - l'élément sélectionné
+ * @param {string} liClasseName - la classe CSS des éléments de la liste (li)
+ * @param {string} activeLinkClassName - la classe CSS des liens actifs
+ * @param {string} notActiveLinkClassName - la classe CSS des liens non actifs
+ * @returns NavLink | li
+ */
 const NavComponent = ({
 	type,
 	navClassName,

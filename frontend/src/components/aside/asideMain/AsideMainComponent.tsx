@@ -8,11 +8,11 @@ import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
-import { getAllDivinities } from "../../../utils/loaders/loaders";
+import { getAllDivinities } from "../../../utils/api/getRequests";
 import {
 	getAllElementsFromPoints,
 	getAllLocationsFromPoints,
-} from "../../../utils/functions/functions";
+} from "../../../utils/functions/filter";
 // import des types
 import type { PointType, DivinityType } from "../../../utils/types/mapTypes";
 import type { OptionType } from "../../../utils/types/commonTypes";
@@ -24,6 +24,13 @@ interface AsideMainComponentProps {
 	mapId: string;
 }
 
+/**
+ * Affiche le corps du panel latéral en fonction de l'onglet sélectionné
+ * @param {Object} props
+ * @param {boolean} props.results - La liste des points affichés sur la carte
+ * @param {string} props.mapId - Identifiant de la carte
+ * @returns ResultComponent | FilterComponent | InfoComponent
+ */
 const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// on récupère les données de la langue
 	const { translation, language } = useContext(TranslationContext);
@@ -70,36 +77,31 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 	// RECUPERATION DES OPTIONS D'ELEMENTS POUR LES FILTRES
 	// on va chercher les options du filtre d'éléments
 	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
-
 	const fetchElementOptions = async () => {
-		try {
-			// on récupère toutes les divinités
-			const allDivinities = await getAllDivinities();
-			// à partir des formules, on récupère tous les éléments
-			const allElements = await getAllElementsFromPoints(allPoints);
-			// on récupère les éléments qui ne sont pas des théonymes
-			const elementsWithoutTheonyms = allElements.filter((element) => {
-				return !allDivinities.some(
-					(divinity: DivinityType) => divinity.id === element.element_id,
-				);
-			});
-			// enfin, on formatte les options pour le select
-			const formatedElementOptions: OptionType[] = elementsWithoutTheonyms
-				.map((option) => ({
-					value: option.element_id,
-					label: option[`element_nom_${language}`],
-				}))
-				.sort((option1, option2) =>
-					option1.label < option2.label
-						? -1
-						: option1.label > option2.label
-							? 1
-							: 0,
-				);
-			setElementOptions(formatedElementOptions);
-		} catch (error) {
-			console.error("Erreur lors du chargement des localités:", error);
-		}
+		// on récupère toutes les divinités
+		const allDivinities = await getAllDivinities();
+		// à partir des formules, on récupère tous les éléments
+		const allElements = await getAllElementsFromPoints(allPoints);
+		// on récupère les éléments qui ne sont pas des théonymes
+		const elementsWithoutTheonyms = allElements.filter((element) => {
+			return !allDivinities.some(
+				(divinity: DivinityType) => divinity.id === element.element_id,
+			);
+		});
+		// enfin, on formatte les options pour le select
+		const formatedElementOptions: OptionType[] = elementsWithoutTheonyms
+			.map((option) => ({
+				value: option.element_id,
+				label: option[`element_nom_${language}`],
+			}))
+			.sort((option1, option2) =>
+				option1.label < option2.label
+					? -1
+					: option1.label > option2.label
+						? 1
+						: 0,
+			);
+		setElementOptions(formatedElementOptions);
 	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:

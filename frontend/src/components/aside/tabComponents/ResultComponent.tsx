@@ -6,7 +6,7 @@ import { TranslationContext } from "../../../context/TranslationContext";
 import {
 	isSelectedMarker,
 	zoomOnMarkerOnClick,
-} from "../../../utils/functions/functions";
+} from "../../../utils/functions/map";
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useShallow } from "zustand/shallow";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
@@ -21,6 +21,12 @@ import { MapPin } from "lucide-react";
 interface ResultComponentProps {
 	results: PointType[];
 }
+
+/**
+ * Affiche une liste des points affichés sur la carte (filtrés ou non)
+ * @param {Object} props
+ * @param {PointType[]} props.results - Liste des points à afficher
+ */
 const ResultComponent = ({ results }: ResultComponentProps) => {
 	// on récupère le language
 	const { language } = useContext(TranslationContext);

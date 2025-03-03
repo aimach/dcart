@@ -5,14 +5,14 @@
   width: v.$space-xxl;
   height: 100%;
   background-color: v.$color-grullo-light;
-  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+  @include m.flexbox(flex, column, nowrap, center, center);
   padding-top: v.$space-l;
 
   border-right: 1px solid v.$color-grullo;
 
   >ul {
     height: 100%;
-    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
+    @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
     gap: v.$font-space-xxxl;
 
     >li {

@@ -5,6 +5,10 @@ interface LoaderComponentProps {
 	size: number;
 }
 
+/**
+ * Composant de chargement
+ * @param {number} size - Taille du loader
+ */
 const LoaderComponent = ({ size }: LoaderComponentProps) => {
 	const classNames = `${style.loader} ${style[`loader-${size}`]}`;
 	return <div className={classNames} />;

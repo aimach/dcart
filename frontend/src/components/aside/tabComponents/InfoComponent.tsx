@@ -16,6 +16,12 @@ interface InfoComponentProps {
 	mapId: string;
 }
 
+/**
+ * Affiche les informations du point sélectionné
+ * @param {Object} props
+ * @param {PointType} props.point - Les informations du point sélectionné
+ * @param {string} props.mapId - Identifiant de la carte
+ */
 const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
 	// on récupère le language
 	const { translation, language } = useContext(TranslationContext);

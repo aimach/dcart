@@ -13,6 +13,9 @@ import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 // import du style
 import style from "../backofficeMapPage.module.scss";
 
+/**
+ * Page du formulaire de création de carte
+ */
 const BOMapFormPage = () => {
 	// on récupère les étapes
 	const { step, setStep } = useMapFormStore((state) => state);

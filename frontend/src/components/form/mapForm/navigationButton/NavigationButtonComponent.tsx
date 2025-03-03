@@ -16,6 +16,11 @@ type NavigationButtonComponentProps = {
 	step: number;
 };
 
+/**
+ * Composant des boutons de navigation du formulaire de création de la carte
+ * @param {Object} props
+ * @param {number} props.step - L'étape actuelle
+ */
 const NavigationButtonComponent = ({
 	step,
 }: NavigationButtonComponentProps) => {

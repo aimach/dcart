@@ -9,6 +9,12 @@ interface MapMenuNavProps {
 	mapList: NavList;
 }
 
+/**
+ * Composant du menu de navigation des cartes
+ * @param {Object} props - Les propriétés du composant
+ * @param {NavList} props.mapList - La liste des cartes
+ * @returns NavComponent
+ */
 const MapMenuNav = ({ mapList }: MapMenuNavProps) => {
 	return (
 		<NavComponent

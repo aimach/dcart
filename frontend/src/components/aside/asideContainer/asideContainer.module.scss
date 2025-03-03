@@ -33,7 +33,7 @@
   color: v.$color-grullo-light ;
   border-top-right-radius: v.$border-radius-rounded;
   border-bottom-right-radius: v.$border-radius-rounded;
-  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+  @include m.flexbox(flex, column, nowrap, center, center);
 
   >svg {
     color: v.$color-grullo-light;

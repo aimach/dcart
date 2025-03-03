@@ -10,7 +10,7 @@ import { TranslationContext } from "../../../context/TranslationContext";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
-import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
+import { getAllPointsByMapId } from "../../../utils/api/getRequests";
 import { useShallow } from "zustand/shallow";
 // import des types
 import type { MapInfoType } from "../../../utils/types/mapTypes";
@@ -24,6 +24,13 @@ interface FilterComponentProps {
 	elementOptions: OptionType[];
 }
 
+/**
+ * Affiche les filtres de la carte
+ * @param {Object} props
+ * @param {OptionType[]} props.locationOptions - Liste des options pour le filtre de la localisation
+ * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
+ * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
+ */
 const FilterComponent = ({
 	locationOptions,
 	elementOptions,
@@ -48,25 +55,21 @@ const FilterComponent = ({
 
 	// on créé une fonction de chargements des points de la carte avec filtres
 	const fetchAllPoints = async (type: string) => {
-		try {
-			setMapReady(false);
-			let points = [];
-			if (type === "filter") {
-				points = await getAllPointsByMapId(
-					(mapInfos as MapInfoType).id as string,
-					userFilters as UserFilterType,
-				);
-			} else if (type === "reset") {
-				points = await getAllPointsByMapId(
-					((mapInfos as MapInfoType).id as string) ?? "exploration",
-					null,
-				);
-			}
-			setAllPoints(points);
-			setMapReady(true);
-		} catch (error) {
-			console.error("Erreur lors du chargement des points:", error);
+		setMapReady(false);
+		let points = [];
+		if (type === "filter") {
+			points = await getAllPointsByMapId(
+				(mapInfos as MapInfoType).id as string,
+				userFilters as UserFilterType,
+			);
+		} else if (type === "reset") {
+			points = await getAllPointsByMapId(
+				((mapInfos as MapInfoType).id as string) ?? "exploration",
+				null,
+			);
 		}
+		setAllPoints(points);
+		setMapReady(true);
 	};
 
 	const handleFilterButton = () => {

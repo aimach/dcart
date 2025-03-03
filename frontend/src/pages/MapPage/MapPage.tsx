@@ -9,18 +9,24 @@ import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/A
 import {
 	getAllPointsByMapId,
 	getOneMapInfos,
-} from "../../utils/loaders/loaders";
+} from "../../utils/api/getRequests";
 import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../utils/stores/mapAsideMenuStore";
 // import du style
 import style from "./mapPage.module.scss";
 
+/**
+ * Page de la carte
+ * @returns AsideContainer | AsideReducedMenuComponent | MapComponent
+ */
 const MapPage = () => {
-	// on récupère les params
-	const { categoryId, mapId } = useParams();
+	// Import des hooks
+	const { mapId } = useParams();
+	const [panelDisplayed, setPanelDisplayed] = useState<boolean>(true);
 
-	// on récupère le state pour l'includedElement
+	// Récupération des données externes (context, store, params, etc.)
+	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
 	const {
 		setMapInfos,
 		allPoints,
@@ -30,43 +36,29 @@ const MapPage = () => {
 		setMapReady,
 		resetTileLayerURL,
 	} = useMapStore(useShallow((state) => state));
-	// on récupère le state pour les filtres
-	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
 
-	// on définit les states nécessaires
-	const [panelDisplayed, setPanelDisplayed] = useState<boolean>(true);
-
-	// on charge les points de la carte
+	// Déclaration des fonctions internes
 	const fetchAllPoints = async () => {
-		try {
-			const points = await getAllPointsByMapId(mapId as string, null);
-			setAllPoints(points);
-			setMapReady(true);
-		} catch (error) {
-			console.error("Erreur lors du chargement des points:", error);
-		}
+		const points = await getAllPointsByMapId(mapId as string, null);
+		setAllPoints(points);
+		setMapReady(true);
 	};
-
-	// on charge les informations d'introduction de la carte
 	const fetchMapInfos = async (mapId: string) => {
-		try {
-			const mapInfos = await getOneMapInfos(mapId as string);
-			// si la carte est une carte d'exploration, on réinitialise les filtres
-			if (mapInfos === "exploration") {
-				setIncludedElementId(undefined);
-				setMapInfos(null);
-				setMapFilters([]);
-			} else {
-				// sinon on charge les informations de la carte
-				setIncludedElementId(mapInfos.divinityIds);
-				setMapInfos(mapInfos);
-				setMapFilters(mapInfos.filters);
-			}
-		} catch (error) {
-			console.error("Erreur lors du chargement des infos de la carte:", error);
+		const mapInfos = await getOneMapInfos(mapId as string);
+		// si la carte est une carte d'exploration, on réinitialise les filtres
+		if (mapInfos === "exploration") {
+			setIncludedElementId(undefined);
+			setMapInfos(null);
+			setMapFilters([]);
+		} else {
+			// sinon on charge les informations de la carte
+			setIncludedElementId(mapInfos.divinityIds);
+			setMapInfos(mapInfos);
+			setMapFilters(mapInfos.filters);
 		}
 	};
 
+	// Effets secondaires (useEffect, useMemo, useCallback)
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setMapReady(false);
@@ -76,6 +68,7 @@ const MapPage = () => {
 		resetTileLayerURL();
 	}, [mapId]);
 
+	// Retour du JSX
 	return (
 		<section className={style.mapSection}>
 			{/* <MapMenuNav categoryId={categoryId as string} /> */}

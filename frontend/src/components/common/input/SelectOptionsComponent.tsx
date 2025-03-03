@@ -14,6 +14,13 @@ interface SelectOptionsComponentProps {
 	options: GreatRegionType[] | DivinityType[] | number[];
 }
 
+/**
+ * Composant de select/options
+ * @param {Object} props : props du composant
+ * @param {string} selectId - id du select
+ * @param {string} basicOptionContent - contenu de l'option par défaut
+ * @param {GreatRegionType[] | DivinityType[] | number[]} options - liste des options du select
+ */
 const SelectOptionsComponent = ({
 	selectId,
 	basicOptionContent,

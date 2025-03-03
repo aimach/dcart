@@ -2,12 +2,12 @@
 @use '../../../../styles/variable' as v;
 
 .navigationButtonContainer {
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, flex-start);
+    @include m.flexbox(flex, row, nowrap, center, flex-start);
     gap: v.$space-l;
 
     >button {
         @include m.buttonStyle(v.$color-umber, v.$color-neutral-100, (v.$space-s v.$space-l));
-        @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-evenly, center);
+        @include m.flexbox(flex, row, nowrap, space-evenly, center);
         gap: v.$space-s;
     }
 }

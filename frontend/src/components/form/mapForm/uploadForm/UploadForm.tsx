@@ -8,17 +8,20 @@ import { TranslationContext } from "../../../../context/TranslationContext";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
-import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/functions";
+import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 // import des types
 import type { ChangeEvent, FormEventHandler } from "react";
 import type { ParseResult } from "papaparse";
 import type {
 	MapInfoType,
-	ParsedPoint,
+	ParsedPointType,
 } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../demoCommonForm/demoCommonForm.module.scss";
 
+/**
+ * Formulaire de la deuxième étape : upload de points sur la carte
+ */
 const UploadForm = () => {
 	// on récupère la langue
 	const { translation, language } = useContext(TranslationContext);
@@ -54,7 +57,7 @@ const UploadForm = () => {
 				skipEmptyLines: true,
 				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
 				skipFirstNLines: 2,
-				complete: (result: ParseResult<ParsedPoint>) => {
+				complete: (result: ParseResult<ParsedPointType>) => {
 					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
 						result.data,
 					);

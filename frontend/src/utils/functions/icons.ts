@@ -1,5 +1,12 @@
 import L from "leaflet";
 
+/**
+ * Retourne une icone de taille petite
+ * @param {CSSModuleClasses} style - Le fichier scss
+ * @param {string} customClassName - La classe CSS personnalisée
+ * @param content - Le contenu de l'icone (le nombre de sources)
+ * @returns {L.DivIcon}
+ */
 const getLittleIcon = (
 	style: CSSModuleClasses,
 	customClassName: string,
@@ -13,6 +20,13 @@ const getLittleIcon = (
 	});
 };
 
+/**
+ * Retourne une icone de taille moyenne
+ * @param {CSSModuleClasses} style - Le fichier scss
+ * @param {string} customClassName - La classe CSS personnalisée
+ * @param content - Le contenu de l'icone (le nombre de sources)
+ * @returns {L.DivIcon}
+ */
 const getMediumIcon = (
 	style: CSSModuleClasses,
 	customClassName: string,
@@ -26,6 +40,13 @@ const getMediumIcon = (
 	});
 };
 
+/**
+ * Retourne une icone de taille grande
+ * @param {CSSModuleClasses} style - Le fichier scss
+ * @param {string} customClassName - La classe CSS personnalisée
+ * @param content - Le contenu de l'icone (le nombre de sources)
+ * @returns {L.DivIcon}
+ */
 const getDarkIcon = (
 	style: CSSModuleClasses,
 	customClassName: string,
@@ -39,7 +60,14 @@ const getDarkIcon = (
 	});
 };
 
-// utilisée pour définir la taille de l'icone en fonction du nombre de sources
+/**
+ * Retourne l'icone en fonction du nombre de sources
+ * @param {number} sourcesNb - Le nombre de sources
+ * @param {CSSModuleClasses} style - Le fichier scss
+ * @param {string} customClassName - La classe CSS personnalisée
+ * @param content - Le contenu de l'icone (le nombre de sources)
+ * @returns {L.DivIcon}
+ */
 const getIcon = (
 	sourcesNb: number,
 	style: CSSModuleClasses,

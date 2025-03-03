@@ -32,13 +32,19 @@ import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
-import { getPointsTimeMarkers } from "../../../utils/loaders/loaders";
+import { getPointsTimeMarkers } from "../../../utils/functions/filter";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 	mapId: string;
 }
 
+/**
+ * Composant de la carte
+ * @param {Dispatch<SetStateAction<boolean>>} props.setPanelDisplayed - Modifie l'état d'affichage du panel latéral
+ * @param {string} mapId - id de la carte
+ * @returns ModalComponent | MapContainer | LoaderComponent | TimeFilterComponent | TileLayerChoiceComponent
+ */
 const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 	// on définit le centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];

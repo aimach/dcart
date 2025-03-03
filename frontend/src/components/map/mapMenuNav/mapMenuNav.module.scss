@@ -4,11 +4,11 @@
 .mapMenuNav {
   height: v.$map-header-height;
   width: 100%;
-  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, center, center);
+  @include m.flexbox(flex, column, nowrap, center, center);
 
   ul {
     width: 100%;
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
+    @include m.flexbox(flex, row, nowrap, center, center);
 
     gap: v.$space-xxl;
 

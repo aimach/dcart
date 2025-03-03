@@ -7,7 +7,7 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du context
 import { TranslationContext } from "../../../../context/TranslationContext";
 // import des services
-import { getAllCategories } from "../../../../utils/loaders/loaders";
+import { getAllCategories } from "../../../../utils/api/getRequests";
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
 // import des types
@@ -26,6 +26,11 @@ type DemoCommonFormProps = {
 	inputs: InputType[];
 };
 
+/**
+ * Formulaire de la première étape de création : informations générales (titre, description, catégorie)
+ * @param inputs la liste des inputs du formulaire
+ * @returns ErrorComponent | NavigationButtonComponent
+ */
 const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 	// on récupère la langue
 	const { translation, language } = useContext(TranslationContext);
@@ -60,8 +65,9 @@ const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 	};
 
 	// CATEGORIES : on ajoute les options à l'objet input
-	const getCategoryOptions = async () => {
-		try {
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		const getCategoryOptions = async () => {
 			const allCategories = await getAllCategories();
 			const formatedCategoryOptions: OptionType[] = allCategories.map(
 				(category: CategoryType) => ({
@@ -76,14 +82,7 @@ const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 				}
 			}
 			setDataLoaded(true);
-		} catch (error) {
-			console.error("Erreur lors du chargement des localités:", error);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
-		// on récupère les catégories
+		};
 		getCategoryOptions();
 	}, [language]);
 

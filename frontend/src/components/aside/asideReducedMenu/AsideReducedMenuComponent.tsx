@@ -15,6 +15,12 @@ interface AsideReducedMenuComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 }
 
+/**
+ * Affiche le panel latéral en version réduite, avec le lien vers les onglets
+ * @param {Object} props
+ * @param {Dispatch<SetStateAction<boolean>>} props.setPanelDisplayed - Modifie l'état d'affichage du panel latéral
+ * @returns NavComponent
+ */
 const AsideReducedMenuComponent = ({
 	setPanelDisplayed,
 }: AsideReducedMenuComponentProps) => {

@@ -4,9 +4,9 @@ import { Marker, Tooltip } from "react-leaflet";
 import {
 	getBackGroundColorClassName,
 	isSelectedMarker,
-} from "../../../utils/functions/functions";
-import { zoomOnMarkerOnClick } from "../../../utils/functions/functions";
-import { getIcon } from "../icons";
+	zoomOnMarkerOnClick,
+} from "../../../utils/functions/map";
+import { getIcon } from "../../../utils/functions/icons";
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
@@ -22,6 +22,13 @@ interface MarkerComponentProps {
 	setPanelDisplayed?: Dispatch<SetStateAction<boolean>>;
 }
 
+/**
+ * Composant marker de la carte
+ * @param {Object} props - Les propriétés du composant
+ * @param {PointType} props.point - Le point à afficher
+ * @param {Function} props.setPanelDisplayed - La fonction pour afficher le panel
+ * @returns
+ */
 const MarkerComponent = ({
 	point,
 	setPanelDisplayed,

@@ -1,7 +1,12 @@
-// LEGENDE des paramètres
-// $1 = opérateur et nombre d'éléments dans l'attestation
-// $2 = opérateur et nombre de puissances divines
-
+/**
+ * Génère un requête SQL pour récupérer les sources sans informations détaillées (pour la carte "exploration").
+ * La requête agrège les attestations et leurs éléments, agents et métadonnées correspondants,
+ * et groupe les sources par localité.
+ * @param queryLocalisation - Une chaîne de caractères permettant de filtrer par la localisation.
+ * @param queryDatation - Une chaîne de caractères permettant de filtrer par la date.
+ * @param queryIncludedElements - Une chaîne de caractères permettant de filtrer par élément.
+ * @returns Une chaîne de caractères contenant la requête SQL.
+ */
 export const getSourcesQueryWithoutDetails = (
 	queryLocalisation: string,
 	queryDatation: string,
@@ -135,6 +140,17 @@ GROUP BY
   sous_region.nom_en`;
 };
 
+/**
+ * Génère un requête SQL pour récupérer les sources avec toutes les attestations (pour toutes les cartes).
+ * La requête agrège les attestations et leurs éléments, agents et métadonnées correspondants,
+ * et groupe les sources par localité.
+ * @param attestationIds - Une chaîne de caractères permettant de filtrer les attestations par identifiants.
+ * @param queryLocalisation - Une chaîne de caractères permettant de filtrer par la localisation.
+ * @param queryDatation - Une chaîne de caractères permettant de filtrer par la date.
+ * @param queryLanguage - Une chaîne de caractères permettant de filtrer par la langue.
+ * @param queryIncludedElements - Une chaîne de caractères permettant de filtrer par élément.
+ * @returns Une chaîne de caractères contenant la requête SQL.
+ */
 export const getSourcesQueryWithDetails = (
 	attestationIds: string,
 	queryLocalisation: string,
@@ -273,6 +289,11 @@ GROUP BY
   sous_region.nom_en`;
 };
 
+/**
+ * Génère un requête SQL pour récupérer toutes les attestations à partir de l'id d'une source.
+ * La requête agrège les attestations et leurs éléments, agents et métadonnées correspondants.
+ * @returns Une chaîne de caractères contenant la requête SQL.
+ */
 export const getAttestationsBySourceId = () => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants

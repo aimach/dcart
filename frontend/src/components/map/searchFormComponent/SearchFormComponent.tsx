@@ -10,7 +10,7 @@ import {
 	getAllDivinities,
 	getTimeMarkers,
 	getAllPointsByMapId,
-} from "../../../utils/loaders/loaders";
+} from "../../../utils/api/getRequests";
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 // import des types
@@ -35,6 +35,11 @@ interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+/**
+ * Composant du formulaire de recherche de la carte "exploration"
+ * @param {Dispatch<SetStateAction<boolean>>} props.setIsModalOpen - Modifie l'état d'affichage du modal
+ * @returns Select (react-select) | LoaderComponent
+ */
 const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	// on récupère le langage
 	const { language, translation } = useContext(TranslationContext);
@@ -96,48 +101,39 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	};
 
 	const fetchAllDatasForSearchForm = async () => {
-		try {
-			// on récupère les grandes régions
-			const allGreatRegions = await getAllGreatRegions();
-			// on les formate pour qu'elles soient utilisables dans le select
-			const formatedGreatRegions = allGreatRegions.map(
-				(region: GreatRegionType) => {
-					return {
-						value: region.id,
-						label: region[`nom_${language}` as keyof GreatRegionType],
-					};
-				},
-			);
-			// on les stocke dans le state
-			setGreatRegions(formatedGreatRegions);
+		// on récupère les grandes régions
+		const allGreatRegions = await getAllGreatRegions();
+		// on les formate pour qu'elles soient utilisables dans le select
+		const formatedGreatRegions = allGreatRegions.map(
+			(region: GreatRegionType) => {
+				return {
+					value: region.id,
+					label: region[`nom_${language}` as keyof GreatRegionType],
+				};
+			},
+		);
+		// on les stocke dans le state
+		setGreatRegions(formatedGreatRegions);
 
-			// on récupère les divinités
-			const allDivinities = await getAllDivinities();
-			// on les formate pour qu'elles soient utilisables dans le select
-			const formatedDivinities = allDivinities.map(
-				(divinity: DivinityType) => ({
-					value: divinity.id,
-					label: divinity[`nom_${language}` as keyof DivinityType],
-				}),
-			);
-			// on les stocke dans le state
-			setDivinities(formatedDivinities);
+		// on récupère les divinités
+		const allDivinities = await getAllDivinities();
+		// on les formate pour qu'elles soient utilisables dans le select
+		const formatedDivinities = allDivinities.map((divinity: DivinityType) => ({
+			value: divinity.id,
+			label: divinity[`nom_${language}` as keyof DivinityType],
+		}));
+		// on les stocke dans le state
+		setDivinities(formatedDivinities);
 
-			// on récupère les bornes temporelles
-			const timeMarkers = await getTimeMarkers();
-			const timeOptions = createTimeOptions(timeMarkers);
+		// on récupère les bornes temporelles
+		const timeMarkers = await getTimeMarkers();
+		const timeOptions = createTimeOptions(timeMarkers);
 
-			setTimeOptions(timeOptions);
-			setAfterOptions(timeOptions);
-			setBeforeOptions(timeOptions);
+		setTimeOptions(timeOptions);
+		setAfterOptions(timeOptions);
+		setBeforeOptions(timeOptions);
 
-			setDataLoaded(true);
-		} catch (error) {
-			console.error(
-				"Erreur lors de la récupération des données pour le formulaire de recherche des sources :",
-				error,
-			);
-		}
+		setDataLoaded(true);
 	};
 
 	const createTimeOptions = (timeMarkers: TimeMarkersType) => {

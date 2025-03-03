@@ -25,12 +25,18 @@ import style from "./demoMapComponent.module.scss";
 import "./demoMapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
-import { getAllPointsForDemoMap } from "../../../utils/loaders/loaders";
+import { getAllPointsForDemoMap } from "../../../utils/api/getRequests";
 
 interface DemoMapComponentProps {
 	showModal: boolean;
 }
 
+/**
+ * Composant de la carte de démonstration
+ * @param {Object} props
+ * @param {boolean} props.showModal - Affiche la modale
+ * @returns ModalComponent | MapContainer
+ */
 const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 	// on définit le centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];
@@ -52,7 +58,6 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 	} = useMapFormStore(useShallow((state) => state));
 
 	// à l'arrivée sur la page, on remet les states à 0
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setIsModalOpen(true);
 	}, []);
@@ -72,16 +77,12 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 	}, [allPoints]);
 
 	// si les points sont chargés, on les affiche
-	const fetchAllPointsForDemoMap = async (attestationIds: string) => {
-		try {
-			const points = await getAllPointsForDemoMap(attestationIds);
-			setAllPoints(points);
-		} catch (error) {
-			console.error("Erreur lors du chargement des points:", error);
-		}
-	};
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
+		const fetchAllPointsForDemoMap = async (attestationIds: string) => {
+			const points = await getAllPointsForDemoMap(attestationIds);
+			setAllPoints(points);
+		};
 		if (mapInfos?.attestationIds) {
 			fetchAllPointsForDemoMap(mapInfos.attestationIds);
 		}

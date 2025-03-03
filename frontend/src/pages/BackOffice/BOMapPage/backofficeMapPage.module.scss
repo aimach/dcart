@@ -2,12 +2,12 @@
 @use '../../../styles/variable' as v;
 
 .backofficeMapPageContainer {
-    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
+    @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
     gap: v.$space-xl;
 }
 
 .BOmapFormPageContainer {
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-start, flex-start);
+    @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
     height: calc(100vh - v.$main-header-height);
 
     >div:first-child {
@@ -19,7 +19,7 @@
 
         >form {
             height: calc(100vh - 200px);
-            @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, space-between, flex-start);
+            @include m.flexbox(flex, column, nowrap, space-between, flex-start);
             margin: v.$space-s 0
         }
     }

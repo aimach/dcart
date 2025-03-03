@@ -16,8 +16,8 @@ import type {
 import {
 	getAgentsArrayWithoutDuplicates,
 	getDatationSentence,
-} from "../../../utils/functions/functions";
-import { getAllAttestationsFromSourceId } from "../../../utils/loaders/loaders";
+} from "../../../utils/functions/map";
+import { getAllAttestationsFromSourceId } from "../../../utils/api/getRequests";
 // import du style
 import style from "./tabComponent.module.scss";
 
@@ -46,19 +46,13 @@ const SourceDetailsComponent = ({
 	);
 	const [sourceIsSelected, setSourceIsSelected] = useState<boolean>(false);
 
-	const fetchAllAttestations = async () => {
-		try {
+	useEffect(() => {
+		const fetchAllAttestations = async () => {
 			const allAttestations = await getAllAttestationsFromSourceId(
 				source.source_id.toString(),
 			);
 			setAttestations(allAttestations);
-		} catch (error) {
-			console.error("Erreur lors du chargement des infos de la carte:", error);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
+		};
 		if (sourceIsSelected && attestations.length === 0) {
 			fetchAllAttestations();
 		}

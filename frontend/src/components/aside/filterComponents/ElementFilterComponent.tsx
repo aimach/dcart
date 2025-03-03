@@ -14,6 +14,12 @@ interface ElementFilterComponentProps {
 	elementOptions: OptionType[];
 }
 
+/**
+ * Affiche le filtre des éléments
+ * @param {Object} props
+ * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
+ * @returns Select (react-select)
+ */
 const ElementFilterComponent = ({
 	elementOptions,
 }: ElementFilterComponentProps) => {

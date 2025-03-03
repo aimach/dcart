@@ -7,7 +7,7 @@ import { TranslationContext } from "../../../../context/TranslationContext";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
-import { getUserFilters } from "../../../../utils/loaders/loaders";
+import { getUserFilters } from "../../../../utils/api/getRequests";
 // import des types
 import type { FilterType } from "../../../../utils/types/filterTypes";
 import type { MapInfoType } from "../../../../utils/types/mapTypes";
@@ -18,13 +18,16 @@ import {
 	alreadyTwoFiltersChecked,
 	getFilterLabel,
 	noFilterChecked,
-} from "../../../../utils/functions/functions";
+} from "../../../../utils/functions/filter";
 import { useNavigate } from "react-router";
 import {
 	addFiltersToMap,
 	createNewMap,
-} from "../../../../utils/functions/create";
+} from "../../../../utils/api/postRequests";
 
+/**
+ * Formulaire de la troisième étape : définition des filtres utilisateur pour la carte
+ */
 const UserMapFilterForm = () => {
 	// on importe la langue
 	const { translation, language } = useContext(TranslationContext);
@@ -44,20 +47,12 @@ const UserMapFilterForm = () => {
 	const [userMapFilterTypes, setUserMapFilterTypes] = useState<FilterType[]>(
 		[],
 	);
-	const fetchUserMapFilterTypes = async () => {
-		try {
+
+	useEffect(() => {
+		const fetchUserMapFilterTypes = async () => {
 			const allFilterTypes = await getUserFilters();
 			setUserMapFilterTypes(allFilterTypes);
-		} catch (error) {
-			console.error(
-				"Erreur lors du chargement des filtres utilisateurs :",
-				error,
-			);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
+		};
 		fetchUserMapFilterTypes();
 	}, []);
 
@@ -79,27 +74,21 @@ const UserMapFilterForm = () => {
 	const navigate = useNavigate();
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
-		try {
-			const newMap = await createNewMap(mapInfos as MapInfoType);
-			if (newMap) {
-				if (noFilterChecked(mapFilters)) {
+
+		const newMap = await createNewMap(mapInfos as MapInfoType);
+		if (newMap) {
+			if (noFilterChecked(mapFilters)) {
+				navigate("/backoffice/maps");
+			} else {
+				const response = await addFiltersToMap(newMap.id as string, mapFilters);
+				if (response?.status === 201) {
+					// on reset tous les states
+					resetMapInfos();
+					resetMapFilters();
+					resetAllPoints();
 					navigate("/backoffice/maps");
-				} else {
-					const response = await addFiltersToMap(
-						newMap.id as string,
-						mapFilters,
-					);
-					if (response?.status === 201) {
-						// on reset tous les states
-						resetMapInfos();
-						resetMapFilters();
-						resetAllPoints();
-						navigate("/backoffice/maps");
-					}
 				}
 			}
-		} catch (error) {
-			console.error("Erreur lors de la soumission du formulaire :", error);
 		}
 	};
 

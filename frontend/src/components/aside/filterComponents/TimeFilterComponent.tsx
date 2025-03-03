@@ -4,8 +4,8 @@ import MultiRangeSlider from "multi-range-slider-react";
 // import des services
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
-import { getAllDatationLabels } from "../../../utils/functions/functions";
-import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
+import { getAllDatationLabels } from "../../../utils/functions/filter";
+import { getAllPointsByMapId } from "../../../utils/api/getRequests";
 import { useMapStore } from "../../../utils/stores/mapStore";
 // import des types
 // import du style
@@ -16,6 +16,12 @@ interface TimeFilterComponentProps {
 	disabled: boolean;
 }
 
+/**
+ * Affiche le filtre du temps
+ * @param {Object} props
+ * @param {boolean} props.disabled - Si le filtre est désactivé
+ * @returns MultiRangeSlider
+ */
 const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 	// on récupère les filtres de l'utilisateur dans le store
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
@@ -65,19 +71,16 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		// sinon on met à jour le state et on charge les points
 		setTimeValues({ ante: e.maxValue, post: e.minValue });
 		setMapReady(false);
-		try {
-			const mapId = mapInfos ? mapInfos.id : "exploration";
-			const points = await getAllPointsByMapId(mapId as string, {
-				...userFilters,
-				ante: e.maxValue,
-				post: e.minValue,
-			});
-			setAllPoints(points);
-			setSelectedMarker(undefined);
-			setMapReady(true);
-		} catch (error) {
-			console.error("Erreur lors du chargement des points:", error);
-		}
+
+		const mapId = mapInfos ? mapInfos.id : "exploration";
+		const points = await getAllPointsByMapId(mapId as string, {
+			...userFilters,
+			ante: e.maxValue,
+			post: e.minValue,
+		});
+		setAllPoints(points);
+		setSelectedMarker(undefined);
+		setMapReady(true);
 	};
 
 	const step = 25;

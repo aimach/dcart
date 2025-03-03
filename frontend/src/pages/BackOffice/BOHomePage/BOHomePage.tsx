@@ -6,6 +6,9 @@ import { TranslationContext } from "../../../context/TranslationContext";
 import style from "./BOHomePage.module.scss";
 import { Link } from "react-router";
 
+/**
+ * Page d'accueil du backoffice avec liens vers toutes les pages
+ */
 const BOHomePage = () => {
 	// on récupère le language
 	const { language, translation } = useContext(TranslationContext);

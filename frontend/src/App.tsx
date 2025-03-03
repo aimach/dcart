@@ -1,29 +1,20 @@
 // import des bibliothèques
-import { useContext } from "react";
 // import des composants
 import NavComponent from "./components/common/NavComponent";
-// import du context
-import { TranslationContext } from "./context/TranslationContext";
+// import des services
+import { getHomePageMenuList } from "./utils/menu/menuListArrays";
+// import des custom hooks
+import { useTranslation } from "./utils/hooks/useTranslation";
 // import du style
 import style from "./App.module.scss";
 
+/**
+ * Page d'accueil : titre, description et barre de navigation
+ * @returns NavComponent
+ */
 function App() {
-	const { language, translation } = useContext(TranslationContext);
-
-	const menuList = [
-		{
-			id: "maps",
-			title: translation[language].navigation.explore,
-			onClickFunction: undefined,
-			route: "maps/categories",
-		},
-		{
-			id: "storymaps",
-			title: translation[language].navigation.discover,
-			onClickFunction: undefined,
-			route: "/storymaps",
-		},
-	];
+	// récupération des données de traduction
+	const { language, translation } = useTranslation();
 
 	return (
 		<section className={style.mainPage}>
@@ -41,7 +32,7 @@ function App() {
 			<NavComponent
 				type="route"
 				navClassName={style.homeMenu}
-				list={menuList}
+				list={getHomePageMenuList(translation, language)}
 			/>
 		</section>
 	);

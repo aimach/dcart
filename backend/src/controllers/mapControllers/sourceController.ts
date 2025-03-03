@@ -1,7 +1,7 @@
 // import des entités
 import { MapContent } from "../../entities/MapContent";
 // import des services
-import { dcartDataSource, MapDataSource } from "../../dataSource/dataSource";
+import { dcartDataSource, mapDataSource } from "../../dataSource/dataSource";
 import {
 	getAttestationsBySourceId,
 	getSourcesQueryWithDetails,
@@ -11,15 +11,14 @@ import {
 	getQueryStringForLocalisationFilter,
 	getQueryStringForDateFilter,
 	getQueryStringForIncludedElements,
-	getQueryStringForExcludedElements,
 	getQueryStringForLanguage,
-} from "../../utils/functions/functions";
+} from "../../utils/query/filtersQueryString";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 
 export const sourceController = {
-	// récupérer toutes les sources
+	// récupérer toutes les sources à partir de l'id de la carte
 	getSourcesByMapId: async (req: Request, res: Response): Promise<void> => {
 		try {
 			// on récupère params et query
@@ -66,7 +65,7 @@ export const sourceController = {
 					queryDatation,
 					queryIncludedElements,
 				);
-				results = await MapDataSource.query(sqlQuery);
+				results = await mapDataSource.query(sqlQuery);
 			} else {
 				// on récupère les informations de la carte
 				const mapInfos = await dcartDataSource
@@ -126,7 +125,7 @@ export const sourceController = {
 					queryIncludedElements,
 				);
 
-				results = await MapDataSource.query(sqlQuery);
+				results = await mapDataSource.query(sqlQuery);
 			}
 
 			res.status(200).json(results);
@@ -153,7 +152,7 @@ export const sourceController = {
 				"",
 			);
 
-			const results = await MapDataSource.query(sqlQuery);
+			const results = await mapDataSource.query(sqlQuery);
 
 			res.status(200).json(results);
 		} catch (error) {
@@ -161,6 +160,7 @@ export const sourceController = {
 		}
 	},
 
+	// récupérer les attestations par l'id d'une source (demo)
 	getAttestationsBySourceId: async (
 		req: Request,
 		res: Response,
@@ -171,10 +171,15 @@ export const sourceController = {
 
 			// on récupère le texte de la requête SQL
 			const sqlQuery = getAttestationsBySourceId();
-			const sourceWithAttestations = await MapDataSource.query(sqlQuery, [
+			const sourceWithAttestations = await mapDataSource.query(sqlQuery, [
 				sourceId,
 			]);
-			console.log(sourceWithAttestations);
+
+			if (sourceWithAttestations.length === 0) {
+				res.status(404).send({ Erreur: "Source non trouvée" });
+				return;
+			}
+
 			res.status(200).json(sourceWithAttestations[0].attestations);
 		} catch (error) {
 			handleError(res, error as Error);

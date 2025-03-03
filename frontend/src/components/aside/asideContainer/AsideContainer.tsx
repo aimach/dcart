@@ -16,6 +16,15 @@ interface AsideContainerProps {
 	mapId: string;
 }
 
+/**
+ * Affiche le panel latéral avec la liste des points, les filtres et les informations du point sélectionné
+ * @param {Object} props
+ * @param {boolean} props.panelDisplayed - Affiche ou masque le panel latéral
+ * @param {Dispatch<SetStateAction<boolean>>} props.setPanelDisplayed - Modifie l'état d'affichage du panel latéral
+ * @param {PointType[]} props.allPoints - Liste des points à afficher
+ * @param {string} props.mapId - Identifiant de la carte
+ * @returns AsideHeader | AsideMainComponent
+ */
 const AsideContainer = ({
 	panelDisplayed,
 	setPanelDisplayed,
