@@ -13,7 +13,7 @@ import type { FilterType } from "../../../../utils/types/filterTypes";
 import type { MapInfoType } from "../../../../utils/types/mapTypes";
 import type { ChangeEvent, FormEventHandler } from "react";
 // import du style
-import style from "../demoCommonForm/demoCommonForm.module.scss";
+import style from "../introForm/introForm.module.scss";
 import {
 	alreadyTwoFiltersChecked,
 	getFilterLabel,

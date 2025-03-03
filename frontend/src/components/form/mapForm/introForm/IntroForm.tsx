@@ -20,9 +20,9 @@ import type {
 } from "../../../../utils/types/mapTypes";
 import type { TranslationType } from "../../../../utils/types/languageTypes";
 // import du style
-import style from "./demoCommonForm.module.scss";
+import style from "./introForm.module.scss";
 
-type DemoCommonFormProps = {
+type IntroFormProps = {
 	inputs: InputType[];
 };
 
@@ -31,7 +31,7 @@ type DemoCommonFormProps = {
  * @param inputs la liste des inputs du formulaire
  * @returns ErrorComponent | NavigationButtonComponent
  */
-const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
+const IntroForm = ({ inputs }: IntroFormProps) => {
 	// on récupère la langue
 	const { translation, language } = useContext(TranslationContext);
 
@@ -184,4 +184,4 @@ const DemoCommonForm = ({ inputs }: DemoCommonFormProps) => {
 	);
 };
 
-export default DemoCommonForm;
+export default IntroForm;

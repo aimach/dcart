@@ -17,7 +17,7 @@ import type {
 	ParsedPointType,
 } from "../../../../utils/types/mapTypes";
 // import du style
-import style from "../demoCommonForm/demoCommonForm.module.scss";
+import style from "../introForm/introForm.module.scss";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte

@@ -1,7 +1,7 @@
 // import des bibliothèques
 import { useEffect } from "react";
 // import des composants
-import DemoCommonForm from "../../../../components/form/mapForm/demoCommonForm/DemoCommonForm";
+import IntroForm from "../../../../components/form/mapForm/introForm/IntroForm";
 import DemoMapComponent from "../../../../components/map/demoMapComponent/DemoMapComponent";
 import UploadForm from "../../../../components/form/mapForm/uploadForm/UploadForm";
 import UserMapFilterForm from "../../../../components/form/mapForm/userMapFilterForm/UserMapFilterForm";
@@ -28,7 +28,7 @@ const BOMapFormPage = () => {
 	return (
 		<section className={style.BOmapFormPageContainer}>
 			<div>
-				{step === 1 && <DemoCommonForm inputs={firstStepInputs} />}
+				{step === 1 && <IntroForm inputs={firstStepInputs} />}
 				{step === 2 && <UploadForm />}
 				{step === 3 && <UserMapFilterForm />}
 			</div>
