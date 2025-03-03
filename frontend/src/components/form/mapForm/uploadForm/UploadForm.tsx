@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useState, useContext } from "react";
 import { parse } from "papaparse";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
@@ -30,6 +30,9 @@ const UploadForm = () => {
 	const { mapInfos, setMapInfos, step, setStep } = useMapFormStore(
 		useShallow((state) => state),
 	);
+
+	// on génère un state pour afficher le bouton suivant si les points ont bien été uploadés
+	const [nextButtonDisplayed, setNextButtonDisplayed] = useState(false);
 
 	// on gère l'upload du csv
 	const handleFileUpload = (event: ChangeEvent) => {
@@ -65,6 +68,7 @@ const UploadForm = () => {
 						...mapInfos,
 						attestationIds: allAttestationsIds,
 					} as MapInfoType);
+					setNextButtonDisplayed(true);
 				},
 				error: (error) => {
 					console.error("Erreur lors de la lecture du fichier :", error);
@@ -97,7 +101,10 @@ const UploadForm = () => {
 					onChange={handleFileUpload}
 				/>
 			</div>
-			<NavigationButtonComponent step={step} />
+			<NavigationButtonComponent
+				step={step}
+				nextButtonDisplayed={nextButtonDisplayed}
+			/>
 		</form>
 	);
 };
