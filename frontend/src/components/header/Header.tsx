@@ -16,6 +16,11 @@ import style from "./header.module.scss";
 import MAPLogo from "../../assets/map_logo.png";
 // import des icônes
 import { MenuIcon } from "lucide-react";
+import {
+	getBackofficeNavigationList,
+	getTranslationNavigationList,
+	getVisitorNavigationList,
+} from "../../utils/menu/menuListArrays";
 
 interface HeaderComponentProps {
 	type: "visitor" | "backoffice";
@@ -38,69 +43,6 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	// on récupère l'url en cours pour savoir si on est sur la page d'accueil
 	const { pathname } = useLocation();
 
-	const visitorNavigationList: NavList = [
-		{
-			id: "home",
-			title: translation[language].navigation.home,
-			onClickFunction: undefined,
-			route: "/",
-		},
-		{
-			id: "maps",
-			title: translation[language].navigation.maps,
-			onClickFunction: undefined,
-			route: "maps/categories",
-		},
-		{
-			id: "storymaps",
-			title: translation[language].navigation.storymaps,
-			onClickFunction: undefined,
-			route: "/storymaps",
-		},
-	];
-
-	const backofficeNavigationList: NavList = [
-		{
-			id: "home",
-			title: translation[language].navigation.backoffice,
-			onClickFunction: undefined,
-			route: "/backoffice",
-		},
-		{
-			id: "maps",
-			title: translation[language].navigation.maps,
-			onClickFunction: undefined,
-			route: "/backoffice/maps",
-		},
-		{
-			id: "storymaps",
-			title: translation[language].navigation.storymaps,
-			onClickFunction: undefined,
-			route: "/backoffice/storymaps",
-		},
-		{
-			id: "translation",
-			title: translation[language].navigation.translation,
-			onClickFunction: undefined,
-			route: "/backoffice/translation",
-		},
-	];
-
-	const translationNavigationList: NavList = [
-		{
-			id: "fr",
-			title: translation[language].fr,
-			onClickFunction: () => switchLanguage("fr"),
-			route: undefined,
-		},
-		{
-			id: "en",
-			title: translation[language].en,
-			onClickFunction: () => switchLanguage("en"),
-			route: undefined,
-		},
-	];
-
 	return (
 		<header className={style.header}>
 			{type === "visitor" ? (
@@ -122,8 +64,8 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 					navClassName={style.headerNavMenu}
 					list={
 						type === "visitor"
-							? visitorNavigationList
-							: backofficeNavigationList
+							? getVisitorNavigationList(translation, language)
+							: getBackofficeNavigationList(translation, language)
 					}
 					activeLinkClassName={style.headerNavMenuActive}
 					notActiveLinkClassName={style.headerNavMenuNotActive}
@@ -136,7 +78,11 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 						<NavComponent
 							type="list"
 							navClassName={style.headerTranslationMenu}
-							list={translationNavigationList}
+							list={getTranslationNavigationList(
+								translation,
+								language,
+								switchLanguage,
+							)}
 							selectedElement={language}
 							liClasseName={style.languageSelected}
 						/>
