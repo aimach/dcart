@@ -1,61 +1,45 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router";
-// import des composants
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
 // import des services
 import { getAllCategoriesWithMapsInfos } from "../../../utils/api/getRequests";
 // import des types
 import type { CategoryType } from "../../../utils/types/mapTypes";
-import type { NavList } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./mapCategoryNav.module.scss";
 // import des images
 import delta from "../../../assets/delta.png";
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 
 /**
  * Composant de navigation dans les catégories et les cartes associées
  */
 const MapCategoryNav = () => {
-	// on récupère la langue
-	const { language } = useContext(TranslationContext);
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-	// on récupère les données des cartes dans la BDD
-	const [allCategoriesWithMaps, setAllCategoriesWithMaps] = useState<
-		CategoryType[]
-	>([]);
-	const [categoryMapList, setCategoryMapList] = useState<NavList>([]);
+	// état pour stocker les catégories avec cartes
+	const [categoriesWithMaps, setCategoriesWithMaps] = useState<CategoryType[]>(
+		[],
+	);
 
-	// Met à jour la liste des cartes dès que allMapsInfos change
-	useEffect(() => {
-		if (allCategoriesWithMaps) {
-			const categoryList = allCategoriesWithMaps.map((category) => ({
-				id: category.id,
-				title: category[`name_${language}`],
-				description: category[`description_${language}`],
-				onClickFunction: undefined, // Ajoutez une fonction ici si nécessaire
-				route: `${category.id}`,
-			}));
-			setCategoryMapList(categoryList);
-		}
-	}, [allCategoriesWithMaps, language]);
-
-	// Fonction pour charger les informations des cartes
-	useEffect(() => {
-		const fetchAllCategoriesInfos = async () => {
-			const categories = await getAllCategoriesWithMapsInfos();
-			setAllCategoriesWithMaps(categories ?? []);
-		};
-		fetchAllCategoriesInfos();
-	}, []);
-
-	// on initie un state pour l'apparition des cartes
+	// état pour gérer la catégorie sélectionnée
 	const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
 		null,
 	);
 
-	// on initie un state pour l'underline d'exploration
+	// état pour gérer la sélection de la carte "exploration"
 	const [selectedExploration, setSelectedExploration] = useState(false);
+
+	//fonction pour récupérer les catégories et les cartes associées
+	const fetchCategoriesWithMaps = useCallback(async () => {
+		const categories = await getAllCategoriesWithMapsInfos();
+		setCategoriesWithMaps(categories ?? []);
+	}, []);
+
+	// chargement des catégories et des cartes associées au montage du composant
+	useEffect(() => {
+		fetchCategoriesWithMaps();
+	}, [fetchCategoriesWithMaps]);
 
 	return (
 		<section className={style.categoryMenu}>
@@ -68,7 +52,9 @@ const MapCategoryNav = () => {
 								setSelectedExploration(true);
 							}}
 						>
-							<Link to="all/map/exploration">Exploration libre</Link>
+							<Link to="all/map/exploration">
+								{translation[language].button.freeExploration}
+							</Link>
 						</li>
 						<span
 							className={
@@ -76,7 +62,7 @@ const MapCategoryNav = () => {
 							}
 						/>
 					</div>
-					{allCategoriesWithMaps?.map((category) => {
+					{categoriesWithMaps?.map((category) => {
 						return (
 							<div key={category.id} className={style.categoryNameContainer}>
 								<li

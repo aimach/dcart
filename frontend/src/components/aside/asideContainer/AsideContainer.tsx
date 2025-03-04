@@ -31,6 +31,7 @@ const AsideContainer = ({
 	allPoints,
 	mapId,
 }: AsideContainerProps) => {
+	// définition des classes CSS en fonction de l'état d'affichage du panel (ouvert ou fermé)
 	let asideClassNames = `${style.aside}`;
 	asideClassNames += panelDisplayed
 		? ` ${style.asideOpened}`
