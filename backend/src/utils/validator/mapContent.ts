@@ -27,12 +27,10 @@ const mapContentSchema = Joi.object({
 			"La liste des id des attestations doit être une chaîne de caractères",
 	}),
 	divinityIds: Joi.string().optional().allow("").allow(null),
-	isActive: Joi.boolean().required().messages({
-		"any.required": "Le booléen 'isActive' est requis",
-		"boolean.base": "'isActive' doit être un booléen",
-	}),
+	isActive: Joi.boolean().optional(),
 	createdAt: Joi.date().optional(),
 	updatedAt: Joi.date().optional(),
+	categoryId: Joi.string().uuid().optional(), // pour la création de la carte
 	category: Joi.object({
 		id: Joi.string().uuid().required(),
 	}).optional(),

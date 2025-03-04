@@ -16,7 +16,7 @@ const addFiltersToMap = async (
 	try {
 		const response = await apiClient(`dcart/filters/add/${mapId}`, {
 			method: "POST",
-			data: JSON.stringify({ filters: mapFilters }),
+			data: JSON.stringify(mapFilters),
 		});
 		return response;
 	} catch (error) {

@@ -38,7 +38,6 @@ export const filterController = {
 	// ajoute un ou des filtres à une carte
 	addFiltersToMap: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { filters } = req.body;
 			const { mapId } = req.params;
 
 			const map = await dcartDataSource.getRepository(MapContent).findOne({
@@ -50,8 +49,8 @@ export const filterController = {
 			}
 
 			const newFilters = [];
-			for (const filter in filters) {
-				if (filters[filter]) {
+			for (const filter in req.body) {
+				if (req.body[filter]) {
 					// si le filtre est coché
 					const filterToAdd = await dcartDataSource
 						.getRepository(Filter)
