@@ -24,7 +24,7 @@ interface AsideReducedMenuComponentProps {
 const AsideReducedMenuComponent = ({
 	setPanelDisplayed,
 }: AsideReducedMenuComponentProps) => {
-	// on importe l'onglet par défaut
+	// récupération des données des stores
 	const setSelectedTabMenu = useMapAsideMenuStore(
 		(state) => state.setSelectedTabMenu,
 	);

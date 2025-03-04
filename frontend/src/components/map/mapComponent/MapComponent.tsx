@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
 	MapContainer,
 	TileLayer,
@@ -15,13 +15,14 @@ import ResetControl from "../controls/ResetControlComponent";
 import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
 import TimeFilterComponent from "../../aside/filterComponents/TimeFilterComponent";
 import TileLayerChoiceComponent from "../tileLayerChoice/TileLayerChoiceComponent";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
+import { getPointsTimeMarkers } from "../../../utils/functions/filter";
 // import des types
 import type { LatLngTuple } from "leaflet";
 import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
@@ -32,49 +33,52 @@ import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
-import { getPointsTimeMarkers } from "../../../utils/functions/filter";
+import { useParams } from "react-router";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
-	mapId: string;
 }
 
 /**
  * Composant de la carte
  * @param {Dispatch<SetStateAction<boolean>>} props.setPanelDisplayed - Modifie l'état d'affichage du panel latéral
- * @param {string} mapId - id de la carte
  * @returns ModalComponent | MapContainer | LoaderComponent | TimeFilterComponent | TileLayerChoiceComponent
  */
-const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
-	// on définit le centre de la carte
-	const mapCenter: LatLngTuple = [40.43, 16.52];
+const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-	// on récupère le fond de carte
-	const { tileLayerURL } = useMapStore((state) => state);
+	// récupération de l'id de la carte en cours
+	const { mapId } = useParams();
 
-	// on récupère les filtres de l'utilisateur dans le store
+	// récupération des données du store
+	const {
+		map,
+		setMap,
+		mapInfos,
+		allPoints,
+		mapReady,
+		resetSelectedMarker,
+		tileLayerURL,
+	} = useMapStore(useShallow((state) => state));
 	const { resetUserFilters } = useMapFiltersStore(
 		useShallow((state) => ({
 			resetUserFilters: state.resetUserFilters,
 		})),
 	);
-
-	// on gère l'affichage de la modale
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
-
-	// on récupère les informations du context
-	const { translation, language } = useContext(TranslationContext);
-
-	// on récupère les informations du store
 	const { setSelectedTabMenu } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
 		})),
 	);
-	const { map, setMap, mapInfos, allPoints, mapReady, resetSelectedMarker } =
-		useMapStore(useShallow((state) => state));
 
-	// à l'arrivée sur la page, on remet les states à 0
+	// définition de l'état d'affichage de la modale
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
+
+	// définition du centre de la carte
+	const mapCenter: LatLngTuple = [40.43, 16.52];
+
+	// au montage du composant, réinitialisation de l'onglet sélectionné et ouverture de la modale (au cas où l'utilisateur viendrait d'une autre carte)
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setSelectedTabMenu("results");
@@ -82,33 +86,34 @@ const MapComponent = ({ setPanelDisplayed, mapId }: MapComponentProps) => {
 		resetSelectedMarker();
 	}, []);
 
-	// on s'assure que les filtres sont mis à 0
+	// réinitialisation des filtres utilisateur si la modale est ouverte (s'exécute quand l'utilisateur change de carte)
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		resetUserFilters();
 	}, [isModalOpen]);
 
-	// on disable le filtre de temps si on a des points sans date
 	const [timeFilterIsDisabled, setTimeFilterIsDisabled] =
 		useState<boolean>(false);
-	// on met à jour les limites de la carte
-	const bounds: LatLngTuple[] = [];
+
+	// mise à jour des limites de la carte
+	const bounds = useMemo(() => {
+		return allPoints.map(
+			(point) => [point.latitude, point.longitude] as LatLngTuple,
+		);
+	}, [allPoints]);
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		if (allPoints.length) {
-			// on récupère les limites de la carte
-			for (const point of allPoints) {
-				bounds.push([point.latitude, point.longitude]);
-			}
-			if (map) {
-				map.fitBounds(bounds);
-			}
+		// si des points sont affichés, ajustement des limites de la carte
+		if (bounds.length && map) {
+			map.fitBounds(bounds);
 		}
+
+		// s'il n'y a pas de dates dans les points, désactivation du filtre temporel
 		const timeMarkers = getPointsTimeMarkers(allPoints);
-		if (!timeMarkers.post && !timeMarkers.ante) {
-			setTimeFilterIsDisabled(true);
-		}
-	}, [allPoints]);
+		const isDisabled = !timeMarkers.post && !timeMarkers.ante;
+		setTimeFilterIsDisabled(isDisabled);
+	}, [bounds]);
 
 	return (
 		<>

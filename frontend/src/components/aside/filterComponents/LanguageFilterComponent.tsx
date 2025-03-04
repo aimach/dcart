@@ -1,7 +1,5 @@
-// import des bibliothèques
-import { useContext } from "react";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
@@ -10,17 +8,16 @@ import { useShallow } from "zustand/shallow";
  * Composant de filtre pour les langues (grec, sémitique)
  */
 const LanguageFilterComponent = () => {
-	// on récupère les données de langue
-	const { translation, language } = useContext(TranslationContext);
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-	// on récupère les données des filtres depuis le store
+	// récupération des données des filtres depuis le store
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
 
-	//on définit la fonction qui permet de gérer le changement d'état des checkboxs
+	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
 	function handleChangeCheckbox(checked: boolean, name: string) {
-		// modifier l'état de la checkbox
 		const newLanguageFiltersObject = {
 			...userFilters,
 			[name]: checked,

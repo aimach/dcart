@@ -33,7 +33,7 @@ const MarkerComponent = ({
 	point,
 	setPanelDisplayed,
 }: MarkerComponentProps) => {
-	// on récupère le context (point sélectionné, map)
+	// récupération des données des stores
 	const { selectedMarker, setSelectedMarker, map } = useMapStore(
 		useShallow((state) => ({
 			selectedMarker: state.selectedMarker,
@@ -41,16 +41,14 @@ const MarkerComponent = ({
 			map: state.map,
 		})),
 	);
-
-	// on récupère l'onglet en cours dans le panel
 	const setSelectedTabMenu = useMapAsideMenuStore(
 		(state) => state.setSelectedTabMenu,
 	);
 
-	// on créé une clé pour chaque point
+	// création d'une clé pour chaque point (pas besoin de la mémoiser car les points ne changent pas)
 	const keyPoint = `${point.latitude}-${point.longitude}`;
 
-	// on génère un nom de classe à partir du nombre de sources
+	// génération d'un nom de classe à partir du nombre de sources
 	let backgroundColorClassName = null;
 	if (selectedMarker && isSelectedMarker(selectedMarker, point)) {
 		backgroundColorClassName = "selectedBackgroundColor";
@@ -60,19 +58,20 @@ const MarkerComponent = ({
 		);
 	}
 
-	// on créé une icone adaptée au nombre de sources
-	const icon = getIcon(
+	// génération d'une icone adaptée au nombre de sources (pas besoin de mémoiser car peu complexe)
+	const customIcon = getIcon(
 		point.sources.length,
 		style,
 		backgroundColorClassName,
 		point.sources.length.toString(),
 	);
 
+	// fonction pour gérer le clic sur un marker par l'utilisateur
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
-		// on passe dans l'onglet "infos"
+		// ouverture de l'onglet "infos"
 		setSelectedTabMenu("infos");
 		setPanelDisplayed?.(true);
-		// on zoom sur le marker
+		// zoom sur le marker
 		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
 		setSelectedMarker(point);
 	};
@@ -81,7 +80,7 @@ const MarkerComponent = ({
 		<Marker
 			key={keyPoint}
 			position={[point.latitude, point.longitude]}
-			icon={icon}
+			icon={customIcon}
 			eventHandlers={{
 				click: () => handleMarkerOnClick(map as LeafletMap, point),
 			}}

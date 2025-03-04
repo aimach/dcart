@@ -1,6 +1,15 @@
 // import des types
 import type { TranslationType } from "../types/languageTypes";
-import type { PointType, ElementType, MapFilterType } from "../types/mapTypes";
+import type {
+	PointType,
+	ElementType,
+	MapFilterType,
+	GreatRegionType,
+	TimeMarkersType,
+} from "../types/mapTypes";
+import type { MultiValue, SingleValue } from "react-select";
+import type { OptionType } from "../types/commonTypes";
+import type { UserFilterType } from "../types/filterTypes";
 
 /**
  * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
@@ -15,6 +24,34 @@ const alreadyTwoFiltersChecked = (mapFilters: MapFilterType) => {
 		}
 	}
 	return filtersChecked >= 2;
+};
+
+/**
+ * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
+ * @param {TimeMarkersType} timeMarkers - Les bornes temporelles
+ * @returns {string[]} - Un tableau avec la liste des options temporelles
+ */
+const createTimeOptions = (timeMarkers: TimeMarkersType) => {
+	const options = [];
+	for (let i = timeMarkers.post; i <= timeMarkers.ante; i += 100) {
+		options.push({ value: i, label: i.toString() });
+	}
+	return options;
+};
+
+/**
+ * Fonction qui formate les données pour le select de react-select (sortie {value, label})
+ * @param {MapFilterType} mapFilters - Les filtres de la carte en construction
+ * @returns {OptionType[]} - Un tableau d'options formatées
+ */
+const formatDataForReactSelect = (
+	dataArray: GreatRegionType[],
+	language: string,
+) => {
+	return dataArray.map((data) => ({
+		value: data.id,
+		label: data[`nom_${language}` as keyof GreatRegionType] as string,
+	}));
 };
 
 /**
@@ -139,6 +176,80 @@ const getPointsTimeMarkers = (allPoints: PointType[]) => {
 };
 
 /**
+ * Fonction qui renvoie les valeurs par défaut des filtres, formatées pour le select
+ * @param {MapFilterType} userFilters - Les filtres de l'utilisateur
+ * @param {OptionType[]} listOptions - Les options du select
+ * @returns {OptionType[]} - Les options du select filtrées et formatées
+ */
+const getSelectDefaultValues = (
+	userFiltersListId: string,
+	listOptions: OptionType[],
+) => {
+	if (!userFiltersListId) return [];
+
+	// convertir les valeurs en nombre
+	const locationIds = userFiltersListId
+		.split("|")
+		.map((id) => Number.parseInt(id, 10));
+
+	// trouver les options correspondantes
+	return listOptions.filter((option) =>
+		locationIds.includes(option.value as number),
+	);
+};
+
+const handleMultiSelectChange = (
+	key: string,
+	selectedOptions: MultiValue<OptionType> | SingleValue<OptionType>,
+	setUserFilters: (filters: UserFilterType) => void,
+	userFilters: UserFilterType,
+	setAfterValue: (value: OptionType) => void,
+	setBeforeValue: (value: OptionType) => void,
+) => {
+	if (key === "locationId" || key === "elementId") {
+		const newValues = (selectedOptions as MultiValue<OptionType>)
+			.map((option) => option.value)
+			.join("|");
+
+		setUserFilters({
+			...userFilters,
+			[key]: newValues,
+		});
+	}
+	if (key === "post") {
+		setAfterValue(selectedOptions as OptionType);
+		// on met à jour les userFilters au moment du submit pour éviter de modifier le filtre temporel (qui est visible)
+	}
+	if (key === "ante") {
+		setBeforeValue(selectedOptions as OptionType);
+		// on met à jour les userFilters au moment du submit pour éviter de modifier le filtre temporel (qui est visible)
+	}
+};
+
+/**
+ * Fonction qui gère les changements de select générés par l'utilisateur et stocke les valeurs dans le filtre des éléments
+ * @param {MultiValue<OptionType>} selectedOptions - Les options sélectionnées
+ * @param {string} key - La clé du filtre
+ * @param {Function} setUserFilters - La fonction pour mettre à jour les filtres de l'utilisateur
+ * @param {MapFilterType} userFilters - Les filtres de l'utilisateur
+ * @returns {void} - Ne retourne rien
+ */
+const onMultiSelectChange = (
+	selectedOptions: MultiValue<OptionType>,
+	key: string,
+	setUserFilters: (filters: UserFilterType) => void,
+	userFilters: UserFilterType,
+) => {
+	const elementValuesString = selectedOptions
+		.map((option) => option.value)
+		.join("|");
+	setUserFilters({
+		...userFilters,
+		[key]: elementValuesString,
+	});
+};
+
+/**
  * Fonction qui vérifie si aucun filtre n'est sélectionné
  * @param {MapFilterType} mapFilters - Les filtres de la carte en construction
  * @returns {boolean} - Un booléen
@@ -155,10 +266,15 @@ const noFilterChecked = (mapFilters: MapFilterType) => {
 
 export {
 	alreadyTwoFiltersChecked,
+	createTimeOptions,
+	formatDataForReactSelect,
 	getAllDatationLabels,
 	getAllElementsFromPoints,
 	getAllLocationsFromPoints,
 	getFilterLabel,
 	getPointsTimeMarkers,
+	getSelectDefaultValues,
+	handleMultiSelectChange,
+	onMultiSelectChange,
 	noFilterChecked,
 };

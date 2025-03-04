@@ -88,8 +88,6 @@ const MapPage = () => {
 					<AsideContainer
 						panelDisplayed={panelDisplayed}
 						setPanelDisplayed={setPanelDisplayed}
-						allPoints={mapStore.allPoints}
-						mapId={mapId as string}
 					/>
 				) : (
 					<AsideReducedMenuComponent setPanelDisplayed={setPanelDisplayed} />
@@ -98,10 +96,7 @@ const MapPage = () => {
 				<section
 					className={mapStore.mapReady ? undefined : style.mapSectionLoaded}
 				>
-					<MapComponent
-						setPanelDisplayed={setPanelDisplayed}
-						mapId={mapId as string}
-					/>
+					<MapComponent setPanelDisplayed={setPanelDisplayed} />
 				</section>
 			</section>
 		</section>

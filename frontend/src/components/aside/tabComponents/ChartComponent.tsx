@@ -38,16 +38,12 @@ ChartJS.register(
 	Title,
 );
 
-interface ChartComponentProps {
-	point: PointType;
-}
-
-const ChartComponent = ({ point }: ChartComponentProps) => {
+const ChartComponent = () => {
 	// on récupère les données de language
 	const { translation, language } = useContext(TranslationContext);
 
 	// on récupère l'includedElement en cours
-	const includedElementId = useMapStore((state) => state.includedElementId);
+	const { includedElementId, selectedMarker } = useMapStore((state) => state);
 
 	// on initie le state pour le type de données à afficher
 	const [dataType, setDataType] = useState<string>("epithet");
@@ -67,15 +63,21 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 			case "epithet":
 				({ labels, dataSets } = getEpithetLabelsAndNb(
 					includedElementId as string,
-					point,
+					selectedMarker as PointType,
 					language,
 				));
 				break;
 			case "gender":
-				({ labels, dataSets } = getAgentGenderLabelsAndNb(point, language));
+				({ labels, dataSets } = getAgentGenderLabelsAndNb(
+					selectedMarker as PointType,
+					language,
+				));
 				break;
 			case "activity":
-				({ labels, dataSets } = getAgentActivityLabelsAndNb(point, language));
+				({ labels, dataSets } = getAgentActivityLabelsAndNb(
+					selectedMarker as PointType,
+					language,
+				));
 				break;
 			default:
 				return;
@@ -83,7 +85,7 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 
 		setLabels(labels);
 		setDataSets(dataSets);
-	}, [dataType, point, language, includedElementId]);
+	}, [dataType, selectedMarker, language, includedElementId]);
 
 	const barOptions = {
 		indexAxis: "x" as const,

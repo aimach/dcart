@@ -12,6 +12,11 @@ interface NavItemComponentProps {
 	link: string;
 }
 
+/**
+ *
+ * @param param0
+ * @returns
+ */
 const NavItemComponent = ({
 	title,
 	description,

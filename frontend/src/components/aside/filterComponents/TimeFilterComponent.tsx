@@ -11,6 +11,7 @@ import { useMapStore } from "../../../utils/stores/mapStore";
 // import du style
 import style from "./filtersComponent.module.scss";
 import "./timeFilterComponent.css";
+import { useParams } from "react-router";
 
 interface TimeFilterComponentProps {
 	disabled: boolean;
@@ -23,7 +24,10 @@ interface TimeFilterComponentProps {
  * @returns MultiRangeSlider
  */
 const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
-	// on récupère les filtres de l'utilisateur dans le store
+	// récupération de l'id de la carte en cours
+	const { mapId } = useParams();
+
+	// récupération des données des stores
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => ({
 			userFilters: state.userFilters,
@@ -31,23 +35,21 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 			isReset: state.isReset,
 		})),
 	);
-	const { mapInfos, setAllPoints, setMapReady, setSelectedMarker } =
-		useMapStore(
-			useShallow((state) => ({
-				mapInfos: state.mapInfos,
-				setAllPoints: state.setAllPoints,
-				setMapReady: state.setMapReady,
-				setSelectedMarker: state.setSelectedMarker,
-			})),
-		);
+	const { setAllPoints, setMapReady, setSelectedMarker } = useMapStore(
+		useShallow((state) => ({
+			setAllPoints: state.setAllPoints,
+			setMapReady: state.setMapReady,
+			setSelectedMarker: state.setSelectedMarker,
+		})),
+	);
 
 	// ATTENTION : l'utilisation de setUserFilters entraînait malheureusement une boucle infinie, réglée grâce à l'usage d'un state indépendant
 	const [timeValues, setTimeValues] = useState<{ ante: number; post: number }>({
-		ante: 0,
-		post: 0,
+		ante: 400,
+		post: -1000,
 	});
 
-	// on change quand même les user filters pour les bornes temporelles
+	// mise à jour des user filters pour les bornes temporelles
 	const changeUserFilters = (e: {
 		min: number;
 		max: number;
@@ -57,7 +59,7 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		setUserFilters({ ...userFilters, ante: e.maxValue, post: e.minValue });
 	};
 
-	// on gère le changement des bornes temporelles par l'utilisateur
+	// fonction pour le changement des bornes temporelles par l'utilisateur
 	const handleTimeFilter = async (e: {
 		min: number;
 		max: number;
@@ -72,7 +74,6 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		setTimeValues({ ante: e.maxValue, post: e.minValue });
 		setMapReady(false);
 
-		const mapId = mapInfos ? mapInfos.id : "exploration";
 		const points = await getAllPointsByMapId(mapId as string, {
 			...userFilters,
 			ante: e.maxValue,
@@ -83,8 +84,6 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		setMapReady(true);
 	};
 
-	const step = 25;
-
 	return (
 		<div className={style.rangeContainer}>
 			<MultiRangeSlider
@@ -92,7 +91,7 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 				min={-1000}
 				max={400}
-				step={step}
+				step={25}
 				stepOnly
 				baseClassName={"multi-range-slider-custom"}
 				minValue={

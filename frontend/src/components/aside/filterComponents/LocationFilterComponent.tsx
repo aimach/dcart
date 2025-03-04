@@ -1,13 +1,16 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useMemo } from "react";
 import Select from "react-select";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
+import {
+	onMultiSelectChange,
+	getSelectDefaultValues,
+} from "../../../utils/functions/filter";
 // import des types
-import type { MultiValue } from "react-select";
 import type { OptionType } from "../../../utils/types/commonTypes";
 
 interface LocationFilterComponentProps {
@@ -23,53 +26,38 @@ interface LocationFilterComponentProps {
 const LocationFilterComponent = ({
 	locationOptions,
 }: LocationFilterComponentProps) => {
-	// on récupère les données de langue
-	const { translation, language } = useContext(TranslationContext);
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-	// on récupère les données des filtres depuis le store
+	// récupération des données depuis le store
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
 
-	// on gère les changements du filtre générés par l'utilisateur
-	const onMultiSelectChange = (selectedOptions: MultiValue<OptionType>) => {
-		const locationValuesArray: number[] = [];
-		for (const option of selectedOptions) {
-			locationValuesArray.push(option.value as number);
-		}
-		const locationValuesString = locationValuesArray.join("|");
-		setUserFilters({
-			...userFilters,
-			locationId: locationValuesString,
-		});
-	};
-
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
-	const getDefaultValues = () => {
-		const defaultValues: OptionType[] = [];
-		if (userFilters.locationId) {
-			const locationValuesArray = userFilters.locationId.split("|");
-			for (const locationValue of locationValuesArray) {
-				const locationOption = locationOptions.find(
-					(option) => option.value === Number.parseInt(locationValue, 10),
-				);
-				if (locationOption) {
-					defaultValues.push(locationOption);
-				}
-			}
-		}
-		return defaultValues;
-	};
+	const getDefaultValues = useMemo(() => {
+		return getSelectDefaultValues(
+			userFilters.elementId as string,
+			locationOptions,
+		);
+	}, [userFilters.elementId, locationOptions]);
 
 	return (
 		<div>
 			<Select
 				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 				options={locationOptions}
-				defaultValue={getDefaultValues()}
+				defaultValue={getDefaultValues}
 				delimiter="|"
 				isMulti
-				onChange={(newValue) => onMultiSelectChange(newValue)}
+				onChange={(newValue) =>
+					onMultiSelectChange(
+						newValue,
+						"locationId",
+						setUserFilters,
+						userFilters,
+					)
+				}
 				placeholder={translation[language].mapPage.aside.searchForLocation}
 				isClearable={false}
 			/>

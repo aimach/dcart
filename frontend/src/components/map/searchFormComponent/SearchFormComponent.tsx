@@ -1,35 +1,30 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
-import Select from "react-select";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 // import des composants
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+import LoaderComponent from "../../common/loader/LoaderComponent";
+import MultiSelectComponent from "../../common/multiSelect/MultiSelectComponent";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
+import useFilterSearch from "../../../utils/hooks/useFilterSearch";
 // import des services
 import {
 	getAllGreatRegions,
 	getAllDivinities,
 	getTimeMarkers,
-	getAllPointsByMapId,
 } from "../../../utils/api/getRequests";
-import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
+import {
+	formatDataForReactSelect,
+	createTimeOptions,
+	handleMultiSelectChange,
+} from "../../../utils/functions/filter";
 // import des types
-import type {
-	DivinityType,
-	GreatRegionType,
-	TimeMarkersType,
-} from "../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 import type { OptionType } from "../../../utils/types/commonTypes";
-import type {
-	CSSObjectWithLabel,
-	MultiValue,
-	ControlProps,
-	SingleValue,
-} from "react-select";
+import type { MultiValue } from "react-select";
 // import du style
 import style from "./searchFormComponent.module.scss";
-import LoaderComponent from "../../common/loader/LoaderComponent";
 
 interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -41,15 +36,16 @@ interface SearchFormComponentProps {
  * @returns Select (react-select) | LoaderComponent
  */
 const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
-	// on récupère le langage
-	const { language, translation } = useContext(TranslationContext);
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-	// on récupère les points
-	const { setAllPoints } = useMapStore();
+	// récupération de l'id de la carte en cours
+	const { mapId } = useParams();
 
-	// on récupère les filtres de l'utilisateur
+	// récupération des données des stores
 	const { userFilters, setUserFilters } = useMapFiltersStore();
 
+	// définition des états pour gérer les données du formulaire
 	const [dataLoaded, setDataLoaded] = useState<boolean>(false);
 	const [greatRegions, setGreatRegions] = useState<OptionType[]>([]);
 	const [divinities, setDivinities] = useState<OptionType[]>([]);
@@ -60,10 +56,37 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	const [beforeOptions, setBeforeOptions] = useState<OptionType[]>([]);
 
 	useEffect(() => {
-		fetchAllDatasForSearchForm();
-	}, []);
+		// récupération de toutes les données pour le formulaire
+		const fetchAllDatasForSearchForm = async () => {
+			// récupération des grandes régions
+			const allGreatRegions = await getAllGreatRegions();
+			const formatedGreatRegions: OptionType[] = formatDataForReactSelect(
+				allGreatRegions,
+				language,
+			);
+			setGreatRegions(formatedGreatRegions);
 
-	// utilisé pour mettre à jour les valeurs des options des bornes temporelles en fonction de ce qu'à choisi l'utilisateur
+			// récupération des divinités
+			const allDivinities = await getAllDivinities();
+			const formatedDivinities = formatDataForReactSelect(
+				allDivinities,
+				language,
+			);
+			setDivinities(formatedDivinities);
+
+			// récupération des bornes temporelles
+			const timeMarkers = await getTimeMarkers();
+			const timeOptions = createTimeOptions(timeMarkers);
+			setTimeOptions(timeOptions);
+			setAfterOptions(timeOptions);
+			setBeforeOptions(timeOptions);
+
+			setDataLoaded(true);
+		};
+		fetchAllDatasForSearchForm();
+	}, [language]);
+
+	// utilisé pour mettre à jour les valeurs des options des bornes temporelles "AVANT" en fonction de ce qu'à choisi l'utilisateur
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (afterValue) {
@@ -75,7 +98,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 		}
 	}, [afterValue]);
 
-	// utilisé pour mettre à jour les valeurs des options des bornes temporelles en fonction de ce qu'à choisi l'utilisateur
+	// utilisé pour mettre à jour les valeurs des options des bornes temporelles "APRES" en fonction de ce qu'à choisi l'utilisateur
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (beforeValue) {
@@ -87,110 +110,25 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 		}
 	}, [beforeValue]);
 
+	// fonction pour gérer la soumission du formulaire (filtrage des points)
+	const { fetchFilteredPoints } = useFilterSearch();
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		// Prevent the browser from reloading the page
 		e.preventDefault();
-
-		const allPoints = await getAllPointsByMapId("exploration", {
-			...userFilters,
-			post: afterValue?.value as number,
-			ante: beforeValue?.value as number,
-		});
-		setAllPoints(allPoints);
+		fetchFilteredPoints(mapId as string, userFilters);
 		setIsModalOpen(false);
 	};
 
-	const fetchAllDatasForSearchForm = async () => {
-		// on récupère les grandes régions
-		const allGreatRegions = await getAllGreatRegions();
-		// on les formate pour qu'elles soient utilisables dans le select
-		const formatedGreatRegions = allGreatRegions.map(
-			(region: GreatRegionType) => {
-				return {
-					value: region.id,
-					label: region[`nom_${language}` as keyof GreatRegionType],
-				};
-			},
+	// fonction pour gérer le changement des valeurs du select
+	const handleChange = (key: string, value: MultiValue<OptionType>) => {
+		console.log(key, value);
+		handleMultiSelectChange(
+			key,
+			value,
+			setUserFilters,
+			userFilters,
+			setAfterValue,
+			setBeforeValue,
 		);
-		// on les stocke dans le state
-		setGreatRegions(formatedGreatRegions);
-
-		// on récupère les divinités
-		const allDivinities = await getAllDivinities();
-		// on les formate pour qu'elles soient utilisables dans le select
-		const formatedDivinities = allDivinities.map((divinity: DivinityType) => ({
-			value: divinity.id,
-			label: divinity[`nom_${language}` as keyof DivinityType],
-		}));
-		// on les stocke dans le state
-		setDivinities(formatedDivinities);
-
-		// on récupère les bornes temporelles
-		const timeMarkers = await getTimeMarkers();
-		const timeOptions = createTimeOptions(timeMarkers);
-
-		setTimeOptions(timeOptions);
-		setAfterOptions(timeOptions);
-		setBeforeOptions(timeOptions);
-
-		setDataLoaded(true);
-	};
-
-	const createTimeOptions = (timeMarkers: TimeMarkersType) => {
-		const options = [];
-		for (let i = timeMarkers.post; i <= timeMarkers.ante; i += 100) {
-			options.push({ value: i, label: i.toString() });
-		}
-		return options;
-	};
-
-	// on gère les changements du filtre générés par l'utilisateur
-	const onMultiSelectChange = (
-		key: string,
-		selectedOptions: MultiValue<OptionType> | SingleValue<OptionType>,
-	) => {
-		if (key === "locationId" || key === "elementId") {
-			const valuesArray: number[] = [];
-			for (const option of selectedOptions as MultiValue<OptionType>) {
-				valuesArray.push(option.value as number);
-			}
-			const valuesString = valuesArray.join("|");
-			setUserFilters({
-				...userFilters,
-				[key]: valuesString,
-			});
-		}
-		if (key === "post") {
-			setAfterValue(selectedOptions as OptionType);
-			// on met à jour les userFilters au moment du submit pour éviter de modifier le filtre temporel (qui est visible)
-		}
-		if (key === "ante") {
-			setBeforeValue(selectedOptions as OptionType);
-			// on met à jour les userFilters au moment du submit pour éviter de modifier le filtre temporel (qui est visible)
-		}
-	};
-
-	// on créé le style
-	const selectStyle = {
-		control: (
-			base: CSSObjectWithLabel,
-			props: ControlProps<OptionType, true>,
-		) => ({
-			...base,
-			border: props.isFocused ? "none" : "none",
-			borderBottom: "1px solid #251F18",
-			width: "200px",
-		}),
-		option: (
-			base: CSSObjectWithLabel,
-			{ isFocused }: { isFocused: boolean },
-		) => ({
-			...base,
-			backgroundColor: isFocused ? "#DED6CE" : "white",
-			":active": {
-				backgroundColor: "#AD9A85",
-			},
-		}),
 	};
 
 	return (
@@ -200,55 +138,32 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 					<form method="post" onSubmit={handleSubmit} id="myForm">
 						<div className={style.searchFormTextContainer}>
 							{translation[language].modal.firstContent}{" "}
-							<Select
-								styles={selectStyle}
+							<MultiSelectComponent
 								options={greatRegions}
-								delimiter="|"
-								isMulti
+								selectKey="locationId"
 								placeholder={translation[language].modal.chooseRegion}
-								onChange={(newValue) =>
-									onMultiSelectChange(
-										"locationId",
-										newValue as MultiValue<OptionType>,
-									)
-								}
-								blurInputOnSelect
+								handleChange={handleChange}
 							/>
 							{translation[language].modal.secondContent}{" "}
-							<Select
-								styles={selectStyle}
-								inputId="elementId"
+							<MultiSelectComponent
 								options={divinities}
-								delimiter="|"
-								isMulti
+								selectKey="elementId"
 								placeholder={translation[language].modal.chooseDivinity}
-								onChange={(newValue) =>
-									onMultiSelectChange(
-										"elementId",
-										newValue as MultiValue<OptionType>,
-									)
-								}
-								blurInputOnSelect
+								handleChange={handleChange}
 							/>{" "}
 							{translation[language].common.between}{" "}
-							<Select
-								styles={selectStyle}
-								inputId="post"
+							<MultiSelectComponent
 								options={afterOptions}
+								selectKey="post"
 								placeholder={translation[language].modal.postDate}
-								value={afterValue}
-								onChange={(newValue) => onMultiSelectChange("post", newValue)}
-								blurInputOnSelect
+								handleChange={handleChange}
 							/>{" "}
 							{translation[language].common.and}{" "}
-							<Select
-								styles={selectStyle}
-								inputId="ante"
+							<MultiSelectComponent
 								options={beforeOptions}
+								selectKey="ante"
 								placeholder={translation[language].modal.anteDate}
-								value={beforeValue}
-								onChange={(newValue) => onMultiSelectChange("ante", newValue)}
-								blurInputOnSelect
+								handleChange={handleChange}
 							/>{" "}
 						</div>
 						<button type="submit">

@@ -71,6 +71,7 @@ type MapInfoType = {
 	description_fr: string;
 	categoryId: string;
 	attestationIds: string;
+	filters?: { [key: string]: string }[];
 };
 
 type MapType = {
@@ -119,6 +120,8 @@ type PointType = {
 	sous_region_en: string;
 	nom_ville: string;
 	sources: SourceType[];
+	selectedClassName?: string;
+	isSelected?: boolean;
 };
 
 type SourceType = {

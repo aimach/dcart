@@ -1,10 +1,10 @@
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useMemo } from "react";
 // import des composants
 import ResultComponent from "../tabComponents/ResultComponent";
 import FilterComponent from "../tabComponents/FilterComponent";
 import InfoComponent from "../tabComponents/InfoComponent";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useMapStore } from "../../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
@@ -14,49 +14,39 @@ import {
 	getAllLocationsFromPoints,
 } from "../../../utils/functions/filter";
 // import des types
-import type { PointType, DivinityType } from "../../../utils/types/mapTypes";
+import type { DivinityType } from "../../../utils/types/mapTypes";
 import type { OptionType } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./asideMainComponent.module.scss";
 
-interface AsideMainComponentProps {
-	results: PointType[];
-	mapId: string;
-}
-
 /**
  * Affiche le corps du panel latéral en fonction de l'onglet sélectionné
- * @param {Object} props
- * @param {boolean} props.results - La liste des points affichés sur la carte
- * @param {string} props.mapId - Identifiant de la carte
  * @returns ResultComponent | FilterComponent | InfoComponent
  */
-const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
-	// on récupère les données de la langue
-	const { translation, language } = useContext(TranslationContext);
+const AsideMainComponent = () => {
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-	// on récupère l'onglet en cours
+	// récupération des données des stores
 	const selectedTabMenu = useMapAsideMenuStore(
 		(state) => state.selectedTabMenu,
 	);
-
-	// on récupère le point en cours
 	const { mapInfos, allPoints, selectedMarker } = useMapStore((state) => state);
 
-	// RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
-	// on va chercher les options du filtre de localisation
-	const [locationOptions, setLocationOptions] = useState<OptionType[]>([]);
-
-	const fetchLocationOptions = async () => {
-		try {
-			// on récupère toutes les localités depuis les points de la carte
+	// --- RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
+	let locationOptions: OptionType[] = [];
+	// si le filtre de localisation est activé, utilisation du hook useMemo
+	if (mapInfos?.filters?.some((filter) => filter.type === "location")) {
+		locationOptions = useMemo(() => {
+			// récupération de toutes les localités depuis la liste des points
 			const allLocationsFromPoints: { [key: string]: string }[] =
 				getAllLocationsFromPoints(allPoints);
-			// on récupère la clé du champ en fonction du niveau de localisation (grande région / sous région)
+
+			// récupération de la clé du champ en fonction du niveau de localisation (grande région / sous région)
 			const fieldKeyFromLocationLevel = "sous_region";
 
-			// on prépare les valeurs pour le select
-			const formatedLocationOptions: OptionType[] = allLocationsFromPoints
+			// formattage des options pour le select
+			return allLocationsFromPoints
 				.map((option) => ({
 					value: option[`${fieldKeyFromLocationLevel}_id`],
 					label: option[`${fieldKeyFromLocationLevel}_${language}`],
@@ -68,27 +58,27 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 							? 1
 							: 0,
 				);
-			setLocationOptions(formatedLocationOptions);
-		} catch (error) {
-			console.error("Erreur lors du chargement des localités:", error);
-		}
-	};
+		}, [allPoints, language]);
+	}
 
-	// RECUPERATION DES OPTIONS D'ELEMENTS POUR LES FILTRES
-	// on va chercher les options du filtre d'éléments
+	// --- RECUPERATION DES OPTIONS D'ELEMENTS POUR LES FILTRES
 	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
+	// pas d'utilisation de useMemo car requête asynchrone
 	const fetchElementOptions = async () => {
-		// on récupère toutes les divinités
+		// récupération des divinités de la BDD MAP
 		const allDivinities = await getAllDivinities();
-		// à partir des formules, on récupère tous les éléments
-		const allElements = await getAllElementsFromPoints(allPoints);
-		// on récupère les éléments qui ne sont pas des théonymes
+
+		// extraction des éléments depuis les formules des points
+		const allElements = getAllElementsFromPoints(allPoints);
+
+		// filtrage des éléments qui ne sont pas des théonymes
 		const elementsWithoutTheonyms = allElements.filter((element) => {
 			return !allDivinities.some(
 				(divinity: DivinityType) => divinity.id === element.element_id,
 			);
 		});
-		// enfin, on formatte les options pour le select
+
+		// formattage des options pour le select
 		const formatedElementOptions: OptionType[] = elementsWithoutTheonyms
 			.map((option) => ({
 				value: option.element_id,
@@ -101,21 +91,25 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 						? 1
 						: 0,
 			);
+
+		// mise à jour des options
 		setElementOptions(formatedElementOptions);
 	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (mapInfos && allPoints) {
-			fetchLocationOptions();
-			fetchElementOptions();
+			// si le filtre des éléments est activé, on récupère les options
+			if (mapInfos.filters?.some((filter) => filter.type === "element")) {
+				fetchElementOptions();
+			}
 		}
 	}, [mapInfos, allPoints]);
 
-	// on définit le composant à rendre
+	// définition du composant à rendre
 	switch (selectedTabMenu) {
 		case "results":
-			return <ResultComponent results={results} />;
+			return <ResultComponent />;
 		case "filters":
 			return (
 				<FilterComponent
@@ -126,17 +120,13 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 		case "infos":
 			return selectedMarker ? (
 				<div className={style.infoContainer}>
-					<InfoComponent
-						point={selectedMarker as PointType}
-						isSelected={true}
-						mapId={mapId}
-					/>
+					<InfoComponent />
 				</div>
 			) : (
 				<p>{translation[language].mapPage.aside.noSelectedMarker}</p>
 			);
 		default:
-			return <ResultComponent results={results} />;
+			return <ResultComponent />;
 	}
 };
 

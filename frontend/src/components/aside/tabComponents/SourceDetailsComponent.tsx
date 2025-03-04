@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { useContext, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import DOMPurify from "dompurify";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
@@ -23,19 +24,14 @@ import style from "./tabComponent.module.scss";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;
-	mapId: string;
 };
 
-const SourceDetailsComponent = ({
-	source,
-	mapId,
-}: SourceDetailsComponentProps) => {
+const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 	// on récupère le language
 	const { language, translation } = useContext(TranslationContext);
 
-	// on prépare les clés pour l'objet de traduction
-	const attestationNameLanguageKey: keyof AttestationType =
-		language === "fr" ? "nom_fr" : "nom_en";
+	// on récupère l'identifiant de la carte
+	const { mapId } = useParams();
 
 	// on prépare la string de datation
 	const datationSentence = getDatationSentence(source, translation, language);
@@ -44,6 +40,7 @@ const SourceDetailsComponent = ({
 	const [attestations, setAttestations] = useState<AttestationType[]>(
 		mapId === "exploration" ? [] : source.attestations,
 	);
+
 	const [sourceIsSelected, setSourceIsSelected] = useState<boolean>(false);
 
 	useEffect(() => {
@@ -67,7 +64,7 @@ const SourceDetailsComponent = ({
 			<summary>
 				Source #{source.source_id} {datationSentence}
 			</summary>
-			{attestations.length ? (
+			{attestations?.length ? (
 				attestations.map((attestation: AttestationType) => {
 					// on prépare l'extrait avec restitution en vérifiant qu'il ne contient que du code validé
 					const sanitizedRestitution = DOMPurify.sanitize(
@@ -138,7 +135,7 @@ const SourceDetailsComponent = ({
 									</tr>
 									<tr>
 										<th>{translation[language].mapPage.aside.traduction}</th>
-										<td>{attestation[attestationNameLanguageKey]}</td>
+										<td>{attestation[`nom_${language}`]}</td>
 									</tr>
 									<tr>
 										<th>{translation[language].mapPage.aside.agents}</th>

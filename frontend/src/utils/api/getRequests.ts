@@ -53,7 +53,7 @@ const getAllCategoriesWithMapsInfos = async () => {
 
 /**
  * Récupère toutes les divinités
- * @returns {Promise} - Toutes les divinités
+ * @returns {Promise} - Toutes les divinités de la BDD MAP
  */
 const getAllDivinities = async () => {
 	try {

@@ -1,7 +1,7 @@
 // import des bibliothèques
-import { useContext } from "react";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+import { useCallback, useMemo } from "react";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import {
 	isSelectedMarker,
@@ -18,23 +18,18 @@ import style from "./tabComponent.module.scss";
 // import des icônes
 import { MapPin } from "lucide-react";
 
-interface ResultComponentProps {
-	results: PointType[];
-}
-
 /**
  * Affiche une liste des points affichés sur la carte (filtrés ou non)
- * @param {Object} props
- * @param {PointType[]} props.results - Liste des points à afficher
  */
-const ResultComponent = ({ results }: ResultComponentProps) => {
-	// on récupère le language
-	const { language } = useContext(TranslationContext);
+const ResultComponent = () => {
+	// récupération des données de traduction
+	const { language } = useTranslation();
 
-	// on récupère les informations de la carte depuis le store
-	const { map, selectedMarker, setSelectedMarker } = useMapStore(
+	// récupération des données des stores
+	const { map, allPoints, selectedMarker, setSelectedMarker } = useMapStore(
 		useShallow((state) => ({
 			map: state.map,
+			allPoints: state.allPoints,
 			selectedMarker: state.selectedMarker,
 			setSelectedMarker: state.setSelectedMarker,
 		})),
@@ -45,33 +40,41 @@ const ResultComponent = ({ results }: ResultComponentProps) => {
 		})),
 	);
 
-	// on définit un style différent pour le point sélectionné
-	const handleResultClick = (result: PointType) => {
-		setSelectedMarker(result);
-		setSelectedTabMenu("infos");
-		zoomOnMarkerOnClick(map as LeafletMap, result as PointType);
-	};
+	// fonction pour gérer le clic sur un point (zoom et passage à l'onglet "sélection")
+	const handleResultClick = useCallback(
+		(result: PointType) => {
+			setSelectedMarker(result);
+			setSelectedTabMenu("infos");
+			zoomOnMarkerOnClick(map as LeafletMap, result as PointType);
+		},
+		[map, setSelectedMarker, setSelectedTabMenu],
+	);
+
+	// fonction de calcul de la classe CSS pour chaque point (sélectionné ou non)
+	const resultsWithSelectedPoint = useMemo(() => {
+		return allPoints.map((point: PointType) => {
+			const isSelected = isSelectedMarker(selectedMarker as PointType, point);
+			return {
+				...point,
+				isSelected,
+				selectedClassName: isSelected ? style.isSelected : undefined,
+			};
+		});
+	}, [allPoints, selectedMarker]);
+
 	return (
 		<div className={style.resultContainer}>
-			{results.map((result: PointType) => {
-				const isSelected = isSelectedMarker(
-					selectedMarker as PointType,
-					result,
-				);
-				const selectedClassName = isSelected ? style.isSelected : undefined;
-				// on prépare les clés pour l'objet de traduction
-				const subRegionLanguageKey: keyof PointType =
-					language === "fr" ? "sous_region_fr" : "sous_region_en";
+			{resultsWithSelectedPoint.map((result: PointType) => {
 				return (
 					<div
 						key={`${result.latitude}-${result.longitude}`}
 						onClick={() => handleResultClick(result)}
 						onKeyUp={() => handleResultClick(result)}
-						className={`${style.resultDetails} ${selectedClassName}`}
+						className={`${style.resultDetails} ${result.selectedClassName}`}
 					>
 						<MapPin />
 						<p>
-							{result.nom_ville} ({result[subRegionLanguageKey]}) -{" "}
+							{result.nom_ville} ({result[`sous_region_${language}`]}) -{" "}
 							{result.sources.length}{" "}
 							{result.sources.length > 1 ? "sources" : "source"}
 						</p>

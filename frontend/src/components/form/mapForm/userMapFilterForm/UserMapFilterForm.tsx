@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { useContext, useEffect, useState } from "react";
+import { useNavigate } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 // import du context
@@ -8,22 +9,21 @@ import { TranslationContext } from "../../../../context/TranslationContext";
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import { getUserFilters } from "../../../../utils/api/getRequests";
+import {
+	alreadyTwoFiltersChecked,
+	getFilterLabel,
+	noFilterChecked,
+} from "../../../../utils/functions/filter";
+import {
+	addFiltersToMap,
+	createNewMap,
+} from "../../../../utils/api/postRequests";
 // import des types
 import type { FilterType } from "../../../../utils/types/filterTypes";
 import type { MapInfoType } from "../../../../utils/types/mapTypes";
 import type { ChangeEvent, FormEventHandler } from "react";
 // import du style
 import style from "../introForm/introForm.module.scss";
-import {
-	alreadyTwoFiltersChecked,
-	getFilterLabel,
-	noFilterChecked,
-} from "../../../../utils/functions/filter";
-import { useNavigate } from "react-router";
-import {
-	addFiltersToMap,
-	createNewMap,
-} from "../../../../utils/api/postRequests";
 
 /**
  * Formulaire de la troisième étape : définition des filtres utilisateur pour la carte

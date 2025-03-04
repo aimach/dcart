@@ -1,11 +1,11 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useCallback } from "react";
 // import des composants
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
 import ElementFilterComponent from "../filterComponents/ElementFilterComponent";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useMapAsideMenuStore } from "../../../utils/stores/mapAsideMenuStore";
 import { useMapStore } from "../../../utils/stores/mapStore";
@@ -13,8 +13,6 @@ import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { getAllPointsByMapId } from "../../../utils/api/getRequests";
 import { useShallow } from "zustand/shallow";
 // import des types
-import type { MapInfoType } from "../../../utils/types/mapTypes";
-import type { UserFilterType } from "../../../utils/types/filterTypes";
 import type { OptionType } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
@@ -35,10 +33,13 @@ const FilterComponent = ({
 	locationOptions,
 	elementOptions,
 }: FilterComponentProps) => {
-	// on récupère les données de la langue
-	const { translation, language } = useContext(TranslationContext);
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-	// on récupère les données depuis les stores
+	// récupération des données depuis les stores
+	const { mapInfos, setAllPoints, setMapReady } = useMapStore(
+		useShallow((state) => state),
+	);
 	const mapFilters = useMapAsideMenuStore((state) => state.mapFilters);
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(
@@ -49,40 +50,37 @@ const FilterComponent = ({
 				setIsReset: state.setIsReset,
 			})),
 		);
-	const { mapInfos, setAllPoints, setMapReady } = useMapStore(
-		useShallow((state) => state),
+
+	// fonction de chargements des points de la carte (avec filtres ou non)
+	const fetchAllPoints = useCallback(
+		async (type: "filter" | "reset") => {
+			setMapReady(false);
+
+			const mapId = mapInfos?.id ?? "exploration";
+			const points = await getAllPointsByMapId(
+				mapId,
+				type === "filter" ? userFilters : null,
+			);
+
+			setAllPoints(points);
+			setMapReady(true);
+		},
+		[mapInfos, setAllPoints, setMapReady, userFilters],
 	);
 
-	// on créé une fonction de chargements des points de la carte avec filtres
-	const fetchAllPoints = async (type: string) => {
-		setMapReady(false);
-		let points = [];
-		if (type === "filter") {
-			points = await getAllPointsByMapId(
-				(mapInfos as MapInfoType).id as string,
-				userFilters as UserFilterType,
-			);
-		} else if (type === "reset") {
-			points = await getAllPointsByMapId(
-				((mapInfos as MapInfoType).id as string) ?? "exploration",
-				null,
-			);
-		}
-		setAllPoints(points);
-		setMapReady(true);
-	};
-
-	const handleFilterButton = () => {
+	// fonction pour gérer le clic sur le bouton de filtre
+	const handleFilterButton = useCallback(() => {
 		fetchAllPoints("filter");
-	};
+	}, [fetchAllPoints]);
 
-	// on créé une fonction pour gérer le reset des filtres
-	const resetFilters = () => {
+	// fonction pour gérer le reset des filtres
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	const resetFilters = useCallback(() => {
 		resetUserFilters();
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
-	};
+	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
 	return mapFilters.length ? (
 		<div className={style.resultContainer}>

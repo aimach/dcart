@@ -1,5 +1,7 @@
 import { useState, useEffect, useCallback } from "react";
 import { Link } from "react-router";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { getAllCategoriesWithMapsInfos } from "../../../utils/api/getRequests";
 // import des types
@@ -8,7 +10,6 @@ import type { CategoryType } from "../../../utils/types/mapTypes";
 import style from "./mapCategoryNav.module.scss";
 // import des images
 import delta from "../../../assets/delta.png";
-import { useTranslation } from "../../../utils/hooks/useTranslation";
 
 /**
  * Composant de navigation dans les catégories et les cartes associées
