@@ -2,6 +2,8 @@
 import express from "express";
 // import des controllers
 import { dcartControllers } from "../../controllers/dcartControllers";
+// import des validateurs
+import { validateMapContentBody } from "../../utils/validator/mapContent";
 
 export const mapRoutes = express.Router();
 
@@ -9,4 +11,4 @@ export const mapRoutes = express.Router();
 mapRoutes.get("/:mapId", dcartControllers.getMapContent);
 
 // créer une nouvelle carte
-mapRoutes.post("/", dcartControllers.createMap);
+mapRoutes.post("/", validateMapContentBody, dcartControllers.createMap);

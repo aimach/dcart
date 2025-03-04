@@ -178,7 +178,7 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 				>
 					Charger le visuel
 				</button>
-				<NavigationButtonComponent step={step} />
+				<NavigationButtonComponent step={step} nextButtonDisplayed={true} />
 			</form>
 		)
 	);

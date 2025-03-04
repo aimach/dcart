@@ -132,7 +132,7 @@ const UserMapFilterForm = () => {
 						/>
 					</div>
 				</div>
-				<NavigationButtonComponent step={step} />
+				<NavigationButtonComponent step={step} nextButtonDisplayed={true} />
 			</form>
 		)
 	);

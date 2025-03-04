@@ -14,15 +14,18 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type NavigationButtonComponentProps = {
 	step: number;
+	nextButtonDisplayed: boolean;
 };
 
 /**
  * Composant des boutons de navigation du formulaire de création de la carte
  * @param {Object} props
  * @param {number} props.step - L'étape actuelle
+ * @param {number} props.nextButtonDisplayed - Booléen pour afficher ou non le bouton suivant
  */
 const NavigationButtonComponent = ({
 	step,
+	nextButtonDisplayed,
 }: NavigationButtonComponentProps) => {
 	// on récupère les données de la langue
 	const { translation, language } = useContext(TranslationContext);
@@ -42,12 +45,14 @@ const NavigationButtonComponent = ({
 				</button>
 			)}
 
-			<button type="submit">
-				{step <= 2
-					? translation[language].common.next
-					: translation[language].backoffice.mapFormPage.create}{" "}
-				<ChevronRight />
-			</button>
+			{nextButtonDisplayed && (
+				<button type="submit">
+					{step <= 2
+						? translation[language].common.next
+						: translation[language].backoffice.mapFormPage.create}{" "}
+					<ChevronRight />
+				</button>
+			)}
 		</div>
 	);
 };

@@ -28,7 +28,7 @@ const MapCategoryNav = () => {
 
 	// Met à jour la liste des cartes dès que allMapsInfos change
 	useEffect(() => {
-		if (allCategoriesWithMaps.length > 0) {
+		if (allCategoriesWithMaps) {
 			const categoryList = allCategoriesWithMaps.map((category) => ({
 				id: category.id,
 				title: category[`name_${language}`],
@@ -44,7 +44,7 @@ const MapCategoryNav = () => {
 	useEffect(() => {
 		const fetchAllCategoriesInfos = async () => {
 			const categories = await getAllCategoriesWithMapsInfos();
-			setAllCategoriesWithMaps(categories);
+			setAllCategoriesWithMaps(categories ?? []);
 		};
 		fetchAllCategoriesInfos();
 	}, []);
@@ -76,7 +76,7 @@ const MapCategoryNav = () => {
 							}
 						/>
 					</div>
-					{allCategoriesWithMaps.map((category) => {
+					{allCategoriesWithMaps?.map((category) => {
 						return (
 							<div key={category.id} className={style.categoryNameContainer}>
 								<li

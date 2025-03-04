@@ -106,7 +106,7 @@ const AsideMainComponent = ({ results, mapId }: AsideMainComponentProps) => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		if (mapInfos) {
+		if (mapInfos && allPoints) {
 			fetchLocationOptions();
 			fetchElementOptions();
 		}
