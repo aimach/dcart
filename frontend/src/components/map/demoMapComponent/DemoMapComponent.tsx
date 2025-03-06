@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect, useState, useMemo } from "react";
+import { useEffect, useState, useMemo } from "react";
 import {
 	MapContainer,
 	TileLayer,
@@ -11,11 +11,12 @@ import { v4 as uuidv4 } from "uuid";
 // import des composants
 import ModalComponent from "../../modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
+import { getAllPointsForDemoMap } from "../../../utils/api/getRequests";
 // import des types
 import type { LatLngTuple } from "leaflet";
 import type { MapInfoType, PointType } from "../../../utils/types/mapTypes";
@@ -25,7 +26,6 @@ import style from "./demoMapComponent.module.scss";
 import "./demoMapComponent.css";
 // import des images
 import delta from "../../../assets/delta.png";
-import { getAllPointsForDemoMap } from "../../../utils/api/getRequests";
 
 interface DemoMapComponentProps {
 	showModal: boolean;
@@ -38,45 +38,32 @@ interface DemoMapComponentProps {
  * @returns ModalComponent | MapContainer
  */
 const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
-	// on définit le centre de la carte
+	// récupération des données de la langue
+	const { language } = useTranslation();
+
+	// récupération des données des stores
+	const { map, setMap, mapInfos, setAllPoints, allPoints } = useMapFormStore(
+		useShallow((state) => state),
+	);
+
+	// définition du centre de la carte
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
-	// on gère l'affichage de la modale
-	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
-
-	// on récupère les informations du context
-	const { translation, language } = useContext(TranslationContext);
-
-	const {
-		map,
-		setMap,
-		mapInfos,
-
-		setAllPoints,
-		allPoints,
-		visualReady,
-	} = useMapFormStore(useShallow((state) => state));
-
-	// à l'arrivée sur la page, on remet les states à 0
-	useEffect(() => {
-		setIsModalOpen(true);
-	}, []);
-
-	// on met à jour les limites de la carte
-	const bounds: LatLngTuple[] = [];
+	// mise à jour des limites de la carte
+	const bounds = useMemo(() => {
+		return allPoints.map(
+			(point) => [point.latitude, point.longitude] as LatLngTuple,
+		);
+	}, [allPoints]);
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		if (allPoints.length) {
-			for (const point of allPoints) {
-				bounds.push([point.latitude, point.longitude]);
-			}
-			if (map) {
-				map.fitBounds(bounds);
-			}
+		// si des points sont affichés, ajustement des limites de la carte
+		if (bounds.length && map) {
+			map.fitBounds(bounds);
 		}
-	}, [allPoints]);
+	}, [bounds]);
 
-	// si les points sont chargés, on les affiche
+	// si les ids des attestations sont chargées via le CSV, récupération des points dans la BDD
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const fetchAllPointsForDemoMap = async (attestationIds: string) => {
@@ -88,21 +75,21 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 		}
 	}, [mapInfos]);
 
-	// on génère des uuid() pour les keys des composants
+	// génération des uuid() pour les keys des composants (se régénère seulement si allPoints change)
 	const allMemoizedPoints = useMemo(
 		() =>
 			allPoints.map((point) => ({
 				...point,
 				key: uuidv4(),
 			})),
-		[allPoints], // Se régénère seulement si allPoints change
+		[allPoints],
 	);
 
-	return visualReady ? (
+	return (
 		<div className="demo-map" id="demo-map">
 			<section className="leaflet-container">
-				{showModal && isModalOpen && (
-					<ModalComponent onClose={() => setIsModalOpen(false)} isDemo={true}>
+				{showModal && (
+					<ModalComponent isDemo={true}>
 						{mapInfos && (
 							<div className={style.modalContent}>
 								<div className={style.modalTitleSection}>
@@ -141,8 +128,6 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 				</MapContainer>
 			</section>
 		</div>
-	) : (
-		<div className={style.visualPreload}>Le visuel apparaîtra ici</div>
 	);
 };
 

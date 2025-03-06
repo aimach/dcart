@@ -49,7 +49,7 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		post: -1000,
 	});
 
-	// mise à jour des user filters pour les bornes temporelles
+	// fonction de mise à jour des user filters pour les bornes temporelles
 	const changeUserFilters = (e: {
 		min: number;
 		max: number;
@@ -59,18 +59,18 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		setUserFilters({ ...userFilters, ante: e.maxValue, post: e.minValue });
 	};
 
-	// fonction pour le changement des bornes temporelles par l'utilisateur
+	// fonction qui met à jour les bornes temporelles dans le selecteur de temps et charge les points
 	const handleTimeFilter = async (e: {
 		min: number;
 		max: number;
 		minValue: number;
 		maxValue: number;
 	}) => {
-		// si la valeur est la même, on ne fait rien
+		// si la valeur est la même, rien ne se passe
 		if (e.minValue === timeValues.post && e.maxValue === timeValues.ante) {
 			return;
 		}
-		// sinon on met à jour le state et on charge les points
+		// sinon mise à jour du state et chargement des points
 		setTimeValues({ ante: e.maxValue, post: e.minValue });
 		setMapReady(false);
 

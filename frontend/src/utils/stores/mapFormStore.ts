@@ -11,7 +11,6 @@ type State = {
 	mapFilters: MapFilterType;
 	allPoints: PointType[];
 	mapReady: boolean;
-	visualReady: boolean;
 };
 
 type Action = {
@@ -26,7 +25,6 @@ type Action = {
 	setAllPoints: (allPoints: PointType[]) => void;
 	resetAllPoints: () => void;
 	setMapReady: (mapReady: boolean) => void;
-	setVisualReady: (visualReady: boolean) => void;
 };
 
 export const useMapFormStore = create<State & Action>((set) => ({
@@ -50,6 +48,4 @@ export const useMapFormStore = create<State & Action>((set) => ({
 	resetAllPoints: () => set(() => ({ allPoints: [] })),
 	mapReady: false,
 	setMapReady: (mapReady) => set(() => ({ mapReady })),
-	visualReady: false,
-	setVisualReady: (visualReady) => set(() => ({ visualReady })),
 }));

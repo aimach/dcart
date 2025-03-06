@@ -16,18 +16,15 @@ import style from "./backofficeMapPage.module.scss";
  * @returns ButtonComponent
  */
 const BackofficeMapPage = () => {
-	// Import des hooks (useState, useEffect, etc.
-	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
-	// Récupération des données externes (context, store, params, etc.)
-	// on récupère la langue
+	// récupération des données de la langue
 	const { language } = useTranslation();
-	// Déclaration des constantes (ex : URLs, variables non réactives)
-	// Déclaration des fonctions internes
-	// Effets secondaires (useEffect, useMemo, useCallback)
-	// Retour du JSX
 
+	// état pour stocker les informations des cartes
+	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
+
+	// chargement des informations des cartes au montage du composant
 	useEffect(() => {
-		// Fonction pour charger les informations des cartes
+		// fonction pour charger les informations des cartes
 		const fetchAllMapsInfos = async () => {
 			const maps = await getAllMapsInfos();
 			setAllMapsInfos(maps);

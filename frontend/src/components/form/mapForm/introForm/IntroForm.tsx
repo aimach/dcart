@@ -1,11 +1,11 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useForm } from "react-hook-form";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
-// import du context
-import { TranslationContext } from "../../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { getAllCategories } from "../../../../utils/api/getRequests";
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
@@ -32,39 +32,43 @@ type IntroFormProps = {
  * @returns ErrorComponent | NavigationButtonComponent
  */
 const IntroForm = ({ inputs }: IntroFormProps) => {
-	// on récupère la langue
-	const { translation, language } = useContext(TranslationContext);
+	// récupération des données de la langue
+	const { translation, language } = useTranslation();
 
-	// on prépare un state pour le chargement des données
-	const [dataLoaded, setDataLoaded] = useState(false);
+	// récupération des données des stores
+	const { mapInfos, setMapInfos, step, incrementStep } = useMapFormStore(
+		useShallow((state) => state),
+	);
 
-	// on récupère les données du formulaire
-	const { mapInfos, setMapInfos, step, incrementStep, setVisualReady } =
-		useMapFormStore(useShallow((state) => state));
-
-	// on gère le formulaire
+	// import des services du formulaire
 	const {
 		register,
 		handleSubmit,
-		getValues,
+		watch,
 		formState: { errors },
 	} = useForm<MapInfoType>({
 		defaultValues: mapInfos ?? {},
 	});
 
-	// on initie le chargement du visuel
-	const loadVisualContent = (values: MapInfoType) => {
-		setMapInfos({ ...mapInfos, ...values });
-		setVisualReady(true);
-	};
+	// définition d'un état pour savoir si les données sont chargées
+	const [dataLoaded, setDataLoaded] = useState(false);
 
-	// on initie la soumission du formulaire
+	// définition de la fonction de soumission du formulaire (ajout des données au store et passage à l'étape suivante)
 	const onSubmit: SubmitHandler<MapInfoType> = (data) => {
 		setMapInfos({ ...mapInfos, ...data });
 		incrementStep(step);
 	};
 
-	// CATEGORIES : on ajoute les options à l'objet input
+	// à chaque changement dans les inputs, mise à jour du store avec les informations des inputs
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		const subscription = watch((value) => {
+			setMapInfos(value as MapInfoType);
+		});
+		return () => subscription.unsubscribe();
+	}, [watch]);
+
+	// au montage du composant, et si le language change, récupération des catégories pour le select/options
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const getCategoryOptions = async () => {
@@ -171,13 +175,6 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 						);
 					}
 				})}
-				<button
-					type="button"
-					onClick={() => loadVisualContent(getValues())}
-					onKeyUp={() => loadVisualContent(getValues())}
-				>
-					Charger le visuel
-				</button>
 				<NavigationButtonComponent step={step} nextButtonDisplayed={true} />
 			</form>
 		)

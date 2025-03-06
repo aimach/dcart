@@ -1,3 +1,5 @@
+// import des bibliothèques
+import DOMPurify from "dompurify";
 // import des types
 import type { Language, TranslationType } from "../types/languageTypes";
 import type {
@@ -86,6 +88,27 @@ const getDatationSentence = (
 };
 
 /**
+ * Fonction qui nettoie le texte HTML des agents pour pouvoir utiliser dangerouslySetInnerHTML
+ * @param {AgentType} agentElement -
+ * @returns {string} - La désignation de l'agent
+ */
+const getSanitizedAgent = (
+	agentElement: AgentType,
+	translation: TranslationType,
+	language: Language,
+) => {
+	if (!agentElement.designation) {
+		return `(${translation[language].mapPage.aside.noDesignation})`;
+	}
+
+	const sanitizedAgent = DOMPurify.sanitize(agentElement.designation);
+	const sanitizedAgentInSelectedLanguage = sanitizedAgent.split("<br>");
+	return sanitizedAgentInSelectedLanguage.length > 1
+		? sanitizedAgentInSelectedLanguage[language === "fr" ? 0 : 1]
+		: sanitizedAgentInSelectedLanguage[0];
+};
+
+/**
  * Fonction qui compare le point sélectionné et un point donné
  * @param {PointType} selectedMarker
  * @param {PointType} point
@@ -118,6 +141,7 @@ export {
 	getAllAttestationsIdsFromParsedPoints,
 	getBackGroundColorClassName,
 	getDatationSentence,
+	getSanitizedAgent,
 	isSelectedMarker,
 	zoomOnMarkerOnClick,
 };

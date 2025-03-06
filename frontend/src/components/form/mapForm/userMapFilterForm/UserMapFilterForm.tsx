@@ -1,10 +1,10 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
-// import du context
-import { TranslationContext } from "../../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
@@ -29,10 +29,10 @@ import style from "../introForm/introForm.module.scss";
  * Formulaire de la troisième étape : définition des filtres utilisateur pour la carte
  */
 const UserMapFilterForm = () => {
-	// on importe la langue
-	const { translation, language } = useContext(TranslationContext);
+	// récupération des données de la langue
+	const { translation, language } = useTranslation();
 
-	// on importe les données du formulaire de la carte
+	// récupération des données des stores
 	const {
 		mapInfos,
 		resetMapInfos,
@@ -43,11 +43,12 @@ const UserMapFilterForm = () => {
 		step,
 	} = useMapFormStore(useShallow((state) => state));
 
-	// on va chercher tous les types de filtres existants
+	// définition d'un état pour stocker tous les filtres utilisateur de la BDD
 	const [userMapFilterTypes, setUserMapFilterTypes] = useState<FilterType[]>(
 		[],
 	);
 
+	// au montage du composant, récupération de tous les filtres utilisateurs de la BDD
 	useEffect(() => {
 		const fetchUserMapFilterTypes = async () => {
 			const allFilterTypes = await getUserFilters();
@@ -56,9 +57,9 @@ const UserMapFilterForm = () => {
 		fetchUserMapFilterTypes();
 	}, []);
 
-	// on gère le changement des checkboxs
+	// fonction qui gère le changement de valeur des checkbox
 	const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
-		// s'il n'y a pas déjà 2 filtres sélectionnés ou que l'utilisateur n'essaie pas de décocher un filtre
+		// s'il n'y a pas déjà 2 filtres sélectionnés ou que l'utilisateur essaie de décocher un filtre
 		if (
 			!alreadyTwoFiltersChecked(mapFilters) ||
 			event.target.checked === false
@@ -70,19 +71,20 @@ const UserMapFilterForm = () => {
 		}
 	};
 
-	// on gère la soumission du formulaire
+	// fonction qui gère la soumission du formulaire
 	const navigate = useNavigate();
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
-
+		// création de la nouvelle carte avec les données stockées dans le store
 		const newMap = await createNewMap(mapInfos as MapInfoType);
+		// si la carte a bien été créée, ajout des filtres utilisateurs à la carte ou retour à la page des cartes
 		if (newMap) {
 			if (noFilterChecked(mapFilters)) {
 				navigate("/backoffice/maps");
 			} else {
 				const response = await addFiltersToMap(newMap.id as string, mapFilters);
 				if (response?.status === 201) {
-					// on reset tous les states
+					// réinitialisation des données du store
 					resetMapInfos();
 					resetMapFilters();
 					resetAllPoints();

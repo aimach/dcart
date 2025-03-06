@@ -1,10 +1,10 @@
 // import des bibliothèques
-import { useState, useContext } from "react";
+import { useState } from "react";
 import { parse } from "papaparse";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 // import du context
-import { TranslationContext } from "../../../../context/TranslationContext";
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
@@ -23,20 +23,20 @@ import style from "../introForm/introForm.module.scss";
  * Formulaire de la deuxième étape : upload de points sur la carte
  */
 const UploadForm = () => {
-	// on récupère la langue
-	const { translation, language } = useContext(TranslationContext);
+	// récupération des données de la langue
+	const { translation, language } = useTranslation();
 
-	// on récupère les données du formulaire
+	// récupération des données des stores
 	const { mapInfos, setMapInfos, step, setStep } = useMapFormStore(
 		useShallow((state) => state),
 	);
 
-	// on génère un state pour afficher le bouton suivant si les points ont bien été uploadés
+	// définition d'un état pour afficher le bouton suivant si les points ont bien été uploadés
 	const [nextButtonDisplayed, setNextButtonDisplayed] = useState(false);
 
-	// on gère l'upload du csv
+	// fonction pour gérer l'upload du fichier
 	const handleFileUpload = (event: ChangeEvent) => {
-		// on définit la correspondance avec les headers du csv
+		// définition de la correspondance avec les headers du csv
 		const headerMapping: { [key: string]: string } = {
 			Langues: "language",
 			"Post Quem": "post_quem",
@@ -48,26 +48,29 @@ const UploadForm = () => {
 			Formule: "formula",
 			ID: "id",
 		};
-		// on récupère le fichier
+
 		const file = (event.target as HTMLInputElement).files?.[0];
 
-		// s'il existe bien un fichier, on le parse et on stocke les points dans un state
+		// s'il existe bien un fichier, les données sont parsées et les points sont ajoutés à la carte de démonstration
 		if (file) {
-			// @ts-ignore : on ignore l'erreur de type car on sait que le fichier est bien de type File (problème de typage avec l'utilisation de l'option skipFirstNLines)
+			// @ts-ignore : l'erreur de type sur File, le fichier est bien de type File (problème de typage avec l'utilisation de l'option skipFirstNLines)
 			parse(file, {
 				header: true,
 				transformHeader: (header) => headerMapping[header] || header,
 				skipEmptyLines: true,
-				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
+				dynamicTyping: true, // option qui permet d'avoir les chiffres et booléens en tant que tels
 				skipFirstNLines: 2,
 				complete: (result: ParseResult<ParsedPointType>) => {
+					// récupération des ids des attestations
 					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
 						result.data,
 					);
+					// ajout des ids des attestations au store
 					setMapInfos({
 						...mapInfos,
 						attestationIds: allAttestationsIds,
 					} as MapInfoType);
+					// affichage du bouton "Suivant"
 					setNextButtonDisplayed(true);
 				},
 				error: (error) => {
@@ -77,14 +80,10 @@ const UploadForm = () => {
 		}
 	};
 
-	// on gère la soumission du formulaire
+	// fonction pour gérer la soumission du formulaire (passage à l'étape suivante)
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
-		try {
-			setStep(3);
-		} catch (error) {
-			console.error("Erreur lors de la soumission du formulaire :", error);
-		}
+		setStep(3);
 	};
 
 	return (

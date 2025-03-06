@@ -1,14 +1,12 @@
 // import des bibliothèques
-import { useContext } from "react";
 import { Link, useLocation } from "react-router";
 // import des composants
 import NavComponent from "../common/NavComponent";
 import ImageWithLink from "../common/ImageWithLink";
-// import du context
-import { TranslationContext } from "../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../utils/hooks/useTranslation";
 // import des types
 import type { Language } from "../../utils/types/languageTypes";
-import type { NavList } from "../../utils/types/commonTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./header.module.scss";
@@ -34,13 +32,10 @@ interface HeaderComponentProps {
  * @returns ImageWithLink | NavComponent
  */
 const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
-	// on récupère le contexte qui gère le language et on crée la fonction pour switcher
-	const { language, translation, setLanguage } = useContext(TranslationContext);
-	const switchLanguage = (newLanguage: Language) => {
-		setLanguage(newLanguage);
-	};
+	// récupération des données de traduction
+	const { language, translation, setLanguage } = useTranslation();
 
-	// on récupère l'url en cours pour savoir si on est sur la page d'accueil
+	// récupération de l'url de la page en cours pour savoir si l'utilisateur est sur la page d'accueil
 	const { pathname } = useLocation();
 
 	return (
@@ -81,7 +76,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 							list={getTranslationNavigationList(
 								translation,
 								language,
-								switchLanguage,
+								setLanguage,
 							)}
 							selectedElement={language}
 							liClasseName={style.languageSelected}

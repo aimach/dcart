@@ -1,8 +1,8 @@
 // import des biblio
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du style
 import style from "./navItemComponent.module.scss";
 
@@ -13,19 +13,20 @@ interface NavItemComponentProps {
 }
 
 /**
- *
- * @param param0
- * @returns
+ * Renvoie un élément de navigation avec une description
+ * @param {string} title - Le titre de l'élément
+ * @param {string} description - La description de l'élément
+ * @param {string} link - Le lien vers une page
  */
 const NavItemComponent = ({
 	title,
 	description,
 	link,
 }: NavItemComponentProps) => {
-	// on récupère les données de la langue
-	const { language, translation } = useContext(TranslationContext);
+	// récupération des données de traduction
+	const { language, translation } = useTranslation();
 
-	// on initie un state pour la gestion de la description
+	// déclaration d'un état pour la gestion de la description
 	const [displayDescription, setDisplayDescription] = useState<boolean>(false);
 
 	const shortDescription = `${description.slice(0, 50)}...`;

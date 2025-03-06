@@ -1,23 +1,21 @@
 // import des bibliothèques
 import { useEffect } from "react";
 // import des composants
-import IntroForm from "../../../../components/form/mapForm/introForm/IntroForm";
-import DemoMapComponent from "../../../../components/map/demoMapComponent/DemoMapComponent";
-import UploadForm from "../../../../components/form/mapForm/uploadForm/UploadForm";
-import UserMapFilterForm from "../../../../components/form/mapForm/userMapFilterForm/UserMapFilterForm";
-// import du context
+import IntroForm from "../../../components/form/mapForm/introForm/IntroForm";
+import DemoMapComponent from "../../../components/map/demoMapComponent/DemoMapComponent";
+import UploadForm from "../../../components/form/mapForm/uploadForm/UploadForm";
+import UserMapFilterForm from "../../../components/form/mapForm/userMapFilterForm/UserMapFilterForm";
 // import des services
-import { firstStepInputs } from "../../../../utils/forms/mapInputArray";
-import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
-// import des types
+import { firstStepInputs } from "../../../utils/forms/mapInputArray";
+import { useMapFormStore } from "../../../utils/stores/mapFormStore";
 // import du style
-import style from "../backofficeMapPage.module.scss";
+import style from "./BOMapFormPage.module.scss";
 
 /**
  * Page du formulaire de création de carte
  */
 const BOMapFormPage = () => {
-	// on récupère les étapes
+	// récupération des données des stores
 	const { step, setStep } = useMapFormStore((state) => state);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:

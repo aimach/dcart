@@ -1,8 +1,5 @@
-// import des bibliothèques
-import { useContext } from "react";
-// import des composants
-// import du context
-import { TranslationContext } from "../../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
 import { useShallow } from "zustand/shallow";
@@ -27,10 +24,10 @@ const NavigationButtonComponent = ({
 	step,
 	nextButtonDisplayed,
 }: NavigationButtonComponentProps) => {
-	// on récupère les données de la langue
-	const { translation, language } = useContext(TranslationContext);
+	// récupération des données de la langue
+	const { translation, language } = useTranslation();
 
-	// on récupère les fonctions pour changer d'étape
+	// récupération des données du store
 	const { decrementStep } = useMapFormStore(useShallow((state) => state));
 
 	return (

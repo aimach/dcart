@@ -4,7 +4,7 @@ import type React from "react";
 import style from "./modalComponent.module.scss";
 
 interface ModalComponentProps {
-	onClose: () => void;
+	onClose?: () => void;
 	children: React.ReactNode;
 	isDemo: boolean;
 }

@@ -115,6 +115,16 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		setTimeFilterIsDisabled(isDisabled);
 	}, [bounds]);
 
+	// génération des uuid() pour les keys des composants (se régénère seulement si allPoints change)
+	const allMemoizedPoints = useMemo(
+		() =>
+			allPoints.map((point) => ({
+				...point,
+				key: uuidv4(),
+			})),
+		[allPoints],
+	);
+
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
@@ -154,11 +164,11 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 									url={tileLayerURL}
 								/>
-								{allPoints.length ? (
-									allPoints.map((point: PointType) => {
+								{allMemoizedPoints.length ? (
+									allMemoizedPoints.map((point: PointType) => {
 										return (
 											<MarkerComponent
-												key={uuidv4()}
+												key={point.key}
 												point={point}
 												setPanelDisplayed={setPanelDisplayed}
 											/>
