@@ -7,9 +7,11 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 
 export const categoryController = {
-	getAllCategories: async (req: Request, res: Response): Promise<void> => {
+	// récupère toutes les catégories ou une catégorie en particulier
+	getCategories: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { categoryId } = req.params;
+
 			let results = null;
 			if (categoryId === "all") {
 				results = await dcartDataSource.getRepository(Category).find();
@@ -17,9 +19,14 @@ export const categoryController = {
 				res.status(200).json(results);
 				return;
 			}
+
 			results = await dcartDataSource
 				.getRepository(Category)
 				.findOneBy({ id: categoryId });
+
+			if (!results) {
+				res.status(404).json("Aucune catégorie trouvée");
+			}
 
 			res.status(200).json(results);
 		} catch (error) {
@@ -27,12 +34,14 @@ export const categoryController = {
 		}
 	},
 
+	// récupère toutes les catégories avec les cartes associées
 	getAllCategoriesWithMaps: async (
 		req: Request,
 		res: Response,
 	): Promise<void> => {
 		try {
 			const { categoryId } = req.params;
+
 			let results = null;
 			if (categoryId === "all") {
 				results = await dcartDataSource
@@ -51,11 +60,23 @@ export const categoryController = {
 						"map.description_fr",
 						"map.description_en",
 					])
+					.where("map.isActive = true") // Exclure les cartes inactives
 					.getMany();
 
 				res.status(200).json(results);
 				return;
 			}
+
+			// on vérifie que la catégorie existe
+			const category = await dcartDataSource
+				.getRepository(Category)
+				.findOneBy({ id: categoryId });
+
+			if (!category) {
+				res.status(404).json("Aucune catégorie trouvée");
+				return;
+			}
+
 			results = await dcartDataSource
 				.getRepository(Category)
 				.createQueryBuilder("category")

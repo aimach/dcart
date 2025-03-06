@@ -33,13 +33,15 @@
 		"or": "OR",
 		"unknownDate": "no date",
 		"greek": "Greek",
-		"semitic": "Semitic"
+		"semitic": "Semitic",
+		"previous": "Previous",
+		"next": "Next"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
-		"secondContent": "on divinity",
-		"chooseRegion": "Choose a region",
-		"chooseDivinity": "Choose a divinity",
+		"secondContent": "on",
+		"chooseRegion": "a region",
+		"chooseDivinity": "a divinity",
 		"postDate": "start date",
 		"anteDate": "end date"
 	},
@@ -64,6 +66,20 @@
 			"agents": "Agents",
 			"noAgent": "No agent",
 			"noDesignation": "agent with no designation"
+		}
+	},
+	"backoffice": {
+		"mapFormPage": {
+			"addMapIntro": "Add map information",
+			"addMapPoints": "Add map points",
+			"uploadPoints": "Upload points",
+			"addFilters": "Add user filters to the map",
+			"filterIntroduction": "It is possible to add up to 2 filters per card, in addition to the time filter which is always displayed.",
+			"locationFilter": "Location filter",
+			"languageFilter": "Language filter (greek or semitic)",
+			"epithetFilter": "Epithet filter",
+			"noFilter": "I don't want to add a filter",
+			"create": "Create"
 		}
 	}
 }

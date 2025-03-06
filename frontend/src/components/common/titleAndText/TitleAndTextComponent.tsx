@@ -7,7 +7,12 @@ interface TitleAndTextComponentProps {
 	title: string;
 	text: string;
 }
-
+/**
+ * Affichage un titre h3 entouré d'images de décoration et une description
+ * @param {string} title le titre h3
+ * @param {string} text la description
+ * @returns
+ */
 const TitleAndTextComponent = ({ title, text }: TitleAndTextComponentProps) => {
 	return (
 		<section className={style.titleAndTextContainer}>

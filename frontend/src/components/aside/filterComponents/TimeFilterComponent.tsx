@@ -4,21 +4,30 @@ import MultiRangeSlider from "multi-range-slider-react";
 // import des services
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
-import { getAllDatationLabels } from "../../../utils/functions/functions";
-import { getAllPointsByMapId } from "../../../utils/loaders/loaders";
+import { getAllDatationLabels } from "../../../utils/functions/filter";
+import { getAllPointsByMapId } from "../../../utils/api/getRequests";
 import { useMapStore } from "../../../utils/stores/mapStore";
 // import des types
-import type { TimeMarkersType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./filtersComponent.module.scss";
 import "./timeFilterComponent.css";
+import { useParams } from "react-router";
 
 interface TimeFilterComponentProps {
-	timeMarkers: TimeMarkersType;
+	disabled: boolean;
 }
 
-const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
-	// on récupère les filtres de l'utilisateur dans le store
+/**
+ * Affiche le filtre du temps
+ * @param {Object} props
+ * @param {boolean} props.disabled - Si le filtre est désactivé
+ * @returns MultiRangeSlider
+ */
+const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
+	// récupération de l'id de la carte en cours
+	const { mapId } = useParams();
+
+	// récupération des données des stores
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => ({
 			userFilters: state.userFilters,
@@ -26,23 +35,21 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 			isReset: state.isReset,
 		})),
 	);
-	const { mapInfos, setAllPoints, setMapReady, setSelectedMarker } =
-		useMapStore(
-			useShallow((state) => ({
-				mapInfos: state.mapInfos,
-				setAllPoints: state.setAllPoints,
-				setMapReady: state.setMapReady,
-				setSelectedMarker: state.setSelectedMarker,
-			})),
-		);
+	const { setAllPoints, setMapReady, setSelectedMarker } = useMapStore(
+		useShallow((state) => ({
+			setAllPoints: state.setAllPoints,
+			setMapReady: state.setMapReady,
+			setSelectedMarker: state.setSelectedMarker,
+		})),
+	);
 
 	// ATTENTION : l'utilisation de setUserFilters entraînait malheureusement une boucle infinie, réglée grâce à l'usage d'un state indépendant
 	const [timeValues, setTimeValues] = useState<{ ante: number; post: number }>({
-		ante: 0,
-		post: 0,
+		ante: 400,
+		post: -1000,
 	});
 
-	// on change quand même les user filters pour les bornes temporelles
+	// fonction de mise à jour des user filters pour les bornes temporelles
 	const changeUserFilters = (e: {
 		min: number;
 		max: number;
@@ -52,74 +59,54 @@ const TimeFilterComponent = ({ timeMarkers }: TimeFilterComponentProps) => {
 		setUserFilters({ ...userFilters, ante: e.maxValue, post: e.minValue });
 	};
 
-	// on gère le changement des bornes temporelles par l'utilisateur
+	// fonction qui met à jour les bornes temporelles dans le selecteur de temps et charge les points
 	const handleTimeFilter = async (e: {
 		min: number;
 		max: number;
 		minValue: number;
 		maxValue: number;
 	}) => {
-		// si la valeur est la même, on ne fait rien
+		// si la valeur est la même, rien ne se passe
 		if (e.minValue === timeValues.post && e.maxValue === timeValues.ante) {
 			return;
 		}
-		// sinon on met à jour le state et on charge les points
+		// sinon mise à jour du state et chargement des points
 		setTimeValues({ ante: e.maxValue, post: e.minValue });
 		setMapReady(false);
-		try {
-			const mapId = mapInfos ? mapInfos.id : "exploration";
-			const points = await getAllPointsByMapId(mapId, {
-				...userFilters,
-				ante: e.maxValue,
-				post: e.minValue,
-			});
-			setAllPoints(points);
-			setSelectedMarker(undefined);
-			setMapReady(true);
-		} catch (error) {
-			console.error("Erreur lors du chargement des points:", error);
-		}
+
+		const points = await getAllPointsByMapId(mapId as string, {
+			...userFilters,
+			ante: e.maxValue,
+			post: e.minValue,
+		});
+		setAllPoints(points);
+		setSelectedMarker(undefined);
+		setMapReady(true);
 	};
 
-	const step = 25;
-
 	return (
-		timeMarkers.ante && (
-			<div className={style.rangeContainer}>
-				<MultiRangeSlider
-					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-					min={
-						// si mapInfos existe (ce n'est pas "exploration"), si mapInfos[post/ante] n'est pas null, on prend sa valeur, sinon on prend la valeur la plus haute ou basse de la BDD
-						mapInfos ? (mapInfos.post ?? timeMarkers.post) : timeMarkers.post
-					}
-					max={
-						mapInfos ? (mapInfos.ante ?? timeMarkers.ante) : timeMarkers.ante
-					}
-					step={step}
-					stepOnly
-					baseClassName={"multi-range-slider-custom"}
-					minValue={
-						userFilters.post === undefined
-							? (timeMarkers.post as number)
-							: (userFilters.post as number)
-					}
-					maxValue={
-						userFilters.ante === undefined
-							? (timeMarkers.ante as number)
-							: (userFilters.ante as number)
-					}
-					labels={getAllDatationLabels(
-						mapInfos ? (mapInfos.post ?? timeMarkers.post) : timeMarkers.post,
-						mapInfos ? (mapInfos.ante ?? timeMarkers.ante) : timeMarkers.ante,
-						step,
-					)}
-					onChange={(e) => {
-						handleTimeFilter(e);
-						changeUserFilters(e);
-					}}
-				/>
-			</div>
-		)
+		<div className={style.rangeContainer}>
+			<MultiRangeSlider
+				disabled={disabled}
+				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
+				min={-1000}
+				max={400}
+				step={25}
+				stepOnly
+				baseClassName={"multi-range-slider-custom"}
+				minValue={
+					userFilters.post === undefined ? -1000 : (userFilters.post as number)
+				}
+				maxValue={
+					userFilters.ante === undefined ? 400 : (userFilters.ante as number)
+				}
+				labels={getAllDatationLabels(-1000, 400)}
+				onChange={(e) => {
+					handleTimeFilter(e);
+					changeUserFilters(e);
+				}}
+			/>
+		</div>
 	);
 };
 

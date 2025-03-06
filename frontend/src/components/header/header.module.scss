@@ -4,9 +4,8 @@
 .header {
   height: v.$space-xxl;
   padding: 0 v.$font-space-xl;
-  @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
-
-  // border-bottom: v.$border-width-l solid v.$color-dark-lava;
+  @include m.flexbox(flex, row, nowrap, space-between, center);
+  border-bottom: v.$border-width-l solid v.$color-umber;
 
   &Logo {
     cursor: pointer;
@@ -15,7 +14,7 @@
   &NavMenu {
     >ul {
 
-      @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
+      @include m.flexbox(flex, row, nowrap, space-between, center);
       gap: v.$space-xxl;
 
       >a {
@@ -33,7 +32,7 @@
   }
 
   &LastSection {
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, center);
+    @include m.flexbox(flex, row, nowrap, space-between, center);
     gap: 1rem;
 
     >svg {
@@ -44,7 +43,7 @@
 
   &TranslationMenu {
     ul {
-      @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-end);
+      @include m.flexbox(flex, row, nowrap, flex-end);
       gap: v.$font-space-l;
       list-style-type: none;
     }

@@ -7,7 +7,7 @@
 
   >ul {
     height: v.$space-xl;
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-around, center);
+    @include m.flexbox(flex, row, nowrap, space-around, center);
 
     >li {
       width: 33%;
@@ -22,5 +22,5 @@
   background-color: v.$color-dark-lava;
   color: white;
   height: 100%;
-  @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-around, center);
+  @include m.flexbox(flex, row, nowrap, space-around, center);
 }

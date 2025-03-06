@@ -1,6 +1,67 @@
 // import des types
 import type { InputType } from "../types/formTypes";
 
+const firstStepInputs: InputType[] = [
+	{
+		label_fr: "Nom de la carte en français",
+		label_en: "Map name in french",
+		name: "name_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en français est requis",
+				en: "The title in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Nom de la carte en anglais",
+		label_en: "Map name in english",
+		name: "name_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en anglais est requis",
+				en: "The title in english is required",
+			},
+		},
+	},
+	{
+		label_fr: "Description de la carte en français",
+		label_en: "Map description in french",
+		name: "description_fr",
+		type: "textarea",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Description de la carte en anglais",
+		label_en: "Map description in english",
+		name: "description_en",
+		type: "textarea",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Catégorie de la carte",
+		label_en: "Map category",
+		name: "categoryId",
+		type: "select",
+		options: [{ value: "0", label: "Choisir une catégorie" }],
+		required: {
+			value: true,
+			message: {
+				fr: "La catégorie de la carte est requise",
+				en: "Map category is required",
+			},
+		},
+	},
+];
+
 const mapInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en français",
@@ -162,67 +223,6 @@ const mapInputs: InputType[] = [
 	},
 ];
 
-const firstStepInputs: InputType[] = [
-	{
-		label_fr: "Nom de la carte en français",
-		label_en: "Map name in french",
-		name: "name_fr",
-		type: "text",
-		required: {
-			value: true,
-			message: {
-				fr: "Le titre en français est requis",
-				en: "The title in french is required",
-			},
-		},
-	},
-	{
-		label_fr: "Nom de la carte en anglais",
-		label_en: "Map name in english",
-		name: "name_en",
-		type: "text",
-		required: {
-			value: true,
-			message: {
-				fr: "Le titre en anglais est requis",
-				en: "The title in english is required",
-			},
-		},
-	},
-	{
-		label_fr: "Description de la carte en français",
-		label_en: "Map description in french",
-		name: "description_fr",
-		type: "text",
-		required: {
-			value: false,
-		},
-	},
-	{
-		label_fr: "Description de la carte en anglais",
-		label_en: "Map description in english",
-		name: "description_en",
-		type: "text",
-		required: {
-			value: false,
-		},
-	},
-	{
-		label_fr: "Catégorie de la carte",
-		label_en: "Map category",
-		name: "categoryId",
-		type: "select",
-		options: [{ value: "0", label: "Choisir une catégorie" }],
-		required: {
-			value: true,
-			message: {
-				fr: "La catégorie de la carte est requise",
-				en: "Map category is required",
-			},
-		},
-	},
-];
-
 const secondStepInputs: InputType[] = [
 	{
 		label_fr: "Nombre d'éléments",
@@ -330,4 +330,4 @@ const secondStepInputs: InputType[] = [
 	},
 ];
 
-export { mapInputs, firstStepInputs, secondStepInputs };
+export { firstStepInputs, mapInputs, secondStepInputs };

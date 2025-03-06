@@ -1,6 +1,6 @@
 type Language = "en" | "fr";
 
-type TranslationObject = {
+type LanguageObject = {
 	title: string;
 	en: string;
 	fr: string;
@@ -36,6 +36,8 @@ type TranslationObject = {
 		unknownDate: string;
 		greek: string;
 		semitic: string;
+		previous: string;
+		next: string;
 	};
 	modal: {
 		firstContent: string;
@@ -68,11 +70,25 @@ type TranslationObject = {
 			noDesignation: string;
 		};
 	};
+	backoffice: {
+		mapFormPage: {
+			addMapIntro: string;
+			addMapPoints: string;
+			uploadPoints: string;
+			addFilters: string;
+			filterIntroduction: string;
+			locationFilter: string;
+			languageFilter: string;
+			epithetFilter: string;
+			noFilter: string;
+			create: string;
+		};
+	};
 };
 
 type TranslationType = {
-	en: TranslationObject;
-	fr: TranslationObject;
+	en: LanguageObject;
+	fr: LanguageObject;
 };
 
-export type { Language, TranslationObject, TranslationType };
+export type { Language, LanguageObject, TranslationType };

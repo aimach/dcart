@@ -1,7 +1,5 @@
-// import des bibliothèques
-import { useContext } from "react";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des types
 import type {
 	DivinityType,
@@ -14,14 +12,20 @@ interface SelectOptionsComponentProps {
 	options: GreatRegionType[] | DivinityType[] | number[];
 }
 
+/**
+ * Composant de select/options
+ * @param {Object} props : props du composant
+ * @param {string} selectId - id du select
+ * @param {string} basicOptionContent - contenu de l'option par défaut
+ * @param {GreatRegionType[] | DivinityType[] | number[]} options - liste des options du select
+ */
 const SelectOptionsComponent = ({
 	selectId,
 	basicOptionContent,
 	options,
 }: SelectOptionsComponentProps) => {
-	// import du language
-	const { language } = useContext(TranslationContext);
-	const nameKey: "nom_fr" | "nom_en" = `nom_${language}`;
+	// récupération des données de traduction
+	const { language } = useTranslation();
 
 	return (
 		<>
@@ -31,7 +35,7 @@ const SelectOptionsComponent = ({
 					if (option instanceof Object) {
 						return (
 							<option key={option.id} value={option.id}>
-								{option[nameKey]}
+								{option[`nom_${language}`]}
 							</option>
 						);
 					}

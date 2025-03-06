@@ -1,7 +1,7 @@
 // import des entités
 import { MapContent } from "../../entities/MapContent";
 // import des services
-import { dcartDataSource, MapDataSource } from "../../dataSource/dataSource";
+import { dcartDataSource, mapDataSource } from "../../dataSource/dataSource";
 import {
 	getAttestationsBySourceId,
 	getSourcesQueryWithDetails,
@@ -11,15 +11,14 @@ import {
 	getQueryStringForLocalisationFilter,
 	getQueryStringForDateFilter,
 	getQueryStringForIncludedElements,
-	getQueryStringForExcludedElements,
 	getQueryStringForLanguage,
-} from "../../utils/functions/functions";
+} from "../../utils/query/filtersQueryString";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 
 export const sourceController = {
-	// récupérer toutes les sources
+	// récupérer toutes les sources à partir de l'id de la carte
 	getSourcesByMapId: async (req: Request, res: Response): Promise<void> => {
 		try {
 			// on récupère params et query
@@ -29,77 +28,21 @@ export const sourceController = {
 			let results = null;
 
 			if (mapId === "exploration") {
-				const { locationType, locationId, element, ante, post } = req.query;
 				// on prépare les query des filtres
-				const queryLocalisation = "";
-				const queryDatation =
-					ante && post
-						? getQueryStringForDateFilter(ante as string, post as string)
-						: "";
-				const queryIncludedElements = element
-					? getQueryStringForIncludedElements(element as string, "")
-					: "";
-
-				// on récupère le texte de la requête SQL
-				const sqlQuery = getSourcesQueryWithoutDetails(
-					queryLocalisation,
-					"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
-					"=",
-					queryDatation,
-					queryIncludedElements,
-					"",
-				);
-				results = await MapDataSource.query(sqlQuery, [3, 1]);
-			} else {
-				// on récupère les informations de la carte
-				const mapInfos = await dcartDataSource
-					.getRepository(MapContent)
-					.findOneBy({ id: mapId });
-				if (!mapInfos) {
-					res.status(404).send({ Erreur: "Carte non trouvée" });
-				}
-
-				// on récupère les éléments à filtrer depuis les informations de la carte
-				const {
-					elementNb,
-					elementOperator,
-					divinityNb,
-					divinityOperator,
-					locationType,
-					locationId,
-					ante,
-					post,
-					includedElements,
-					excludedElements,
-				} = mapInfos as MapContent;
-
-				// on prépare les query des filtres
-				let queryLocalisation =
-					locationType && locationId
-						? getQueryStringForLocalisationFilter(
-								locationType as string,
-								locationId as string,
-							)
-						: "";
-				const maxValue = ante ? ante.toString() : null;
-				const minValue = post ? post.toString() : null;
+				let queryLocalisation = "";
+				const maxValue = null;
+				const minValue = null;
 				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
-				let queryIncludedElements = includedElements
-					? getQueryStringForIncludedElements(includedElements, "")
-					: "";
-				const queryExcludedElements = excludedElements
-					? getQueryStringForExcludedElements(excludedElements)
-					: "";
+				let queryIncludedElements = "";
 
-				// s'il existe des params, on remplace les valeurs par celles des params
-				if (req.query.locationType && req.query.locationId) {
-					queryLocalisation =
-						req.query.locationType && req.query.locationId
-							? getQueryStringForLocalisationFilter(
-									req.query.locationType as string,
-									req.query.locationId as string,
-								)
-							: queryLocalisation;
+				if (req.query.locationId) {
+					// s'il existe des params, on remplace les valeurs par celles des params
+					queryLocalisation = req.query.locationId
+						? getQueryStringForLocalisationFilter(
+								mapId,
+								req.query.locationId as string,
+							)
+						: queryLocalisation;
 				}
 
 				if (req.query.ante || req.query.post) {
@@ -109,8 +52,58 @@ export const sourceController = {
 				}
 
 				if (req.query.elementId) {
+					// ici se fait la récupération des épithètes
 					queryIncludedElements = getQueryStringForIncludedElements(
-						includedElements as string,
+						mapId,
+						req.query.elementId as string,
+					);
+				}
+
+				// on récupère le texte de la requête SQL
+				const sqlQuery = getSourcesQueryWithoutDetails(
+					queryLocalisation,
+					queryDatation,
+					queryIncludedElements,
+				);
+				results = await mapDataSource.query(sqlQuery);
+			} else {
+				// on récupère les informations de la carte
+				const mapInfos = await dcartDataSource
+					.getRepository(MapContent)
+					.findOneBy({ id: mapId });
+				if (!mapInfos) {
+					res.status(404).send({ Erreur: "Carte non trouvée" });
+				}
+
+				const { attestationIds } = mapInfos as MapContent;
+
+				// on prépare les query des filtres
+				let queryLocalisation = "";
+				const maxValue = null;
+				const minValue = null;
+				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+				let queryIncludedElements = "";
+
+				// s'il existe des params, on remplace les valeurs par celles des params
+				if (req.query.locationId) {
+					queryLocalisation = req.query.locationId
+						? getQueryStringForLocalisationFilter(
+								mapId,
+								req.query.locationId as string,
+							)
+						: queryLocalisation;
+				}
+
+				if (req.query.ante || req.query.post) {
+					const maxValue = req.query.ante ? req.query.ante.toString() : null;
+					const minValue = req.query.post ? req.query.post.toString() : null;
+					queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+				}
+
+				// ici se fait la récupération des épithètes
+				if (req.query.elementId) {
+					queryIncludedElements = getQueryStringForIncludedElements(
+						mapId,
 						req.query.elementId as string,
 					);
 				}
@@ -125,16 +118,14 @@ export const sourceController = {
 
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQueryWithDetails(
+					attestationIds,
 					queryLocalisation,
-					elementOperator, // obligé d'intégrer les opérateurs ici, sinon ça plante
-					divinityOperator,
 					queryDatation,
-					queryIncludedElements,
-					queryExcludedElements,
 					queryLanguage,
+					queryIncludedElements,
 				);
 
-				results = await MapDataSource.query(sqlQuery, [elementNb, divinityNb]);
+				results = await mapDataSource.query(sqlQuery);
 			}
 
 			res.status(200).json(results);
@@ -143,6 +134,33 @@ export const sourceController = {
 		}
 	},
 
+	// récupérer toutes les sources par la liste des attestations
+	getSourcesByAttestationIds: async (
+		req: Request,
+		res: Response,
+	): Promise<void> => {
+		try {
+			// on récupère la liste des attestations
+			const { attestationIds } = req.body;
+
+			// on récupère le texte de la requête SQL
+			const sqlQuery = getSourcesQueryWithDetails(
+				attestationIds,
+				"",
+				"",
+				"",
+				"",
+			);
+
+			const results = await mapDataSource.query(sqlQuery);
+
+			res.status(200).json(results);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	// récupérer les attestations par l'id d'une source (demo)
 	getAttestationsBySourceId: async (
 		req: Request,
 		res: Response,
@@ -152,13 +170,15 @@ export const sourceController = {
 			const { sourceId } = req.params;
 
 			// on récupère le texte de la requête SQL
-			const sqlQuery = getAttestationsBySourceId(
-				"<=", // obligé d'intégrer les opérateurs ici, sinon ça plante
-			);
-			const sourceWithAttestations = await MapDataSource.query(sqlQuery, [
-				3,
+			const sqlQuery = getAttestationsBySourceId();
+			const sourceWithAttestations = await mapDataSource.query(sqlQuery, [
 				sourceId,
 			]);
+
+			if (sourceWithAttestations.length === 0) {
+				res.status(404).send({ Erreur: "Source non trouvée" });
+				return;
+			}
 
 			res.status(200).json(sourceWithAttestations[0].attestations);
 		} catch (error) {

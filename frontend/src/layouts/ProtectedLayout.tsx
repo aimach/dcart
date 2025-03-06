@@ -6,6 +6,11 @@ import HeaderComponent from "../components/header/Header";
 // import du contexte
 import { AuthContext } from "../context/AuthContext";
 
+/**
+ * Layout de la partie backoffice, qui vérifie si l'utilisateur est connecté
+ * et redirige vers la page d'authentification si ce n'est pas le cas
+ * @returns HeaderComponent
+ */
 const ProtectedLayout = () => {
 	const { isAuthenticated } = useContext(AuthContext);
 	const navigate = useNavigate();

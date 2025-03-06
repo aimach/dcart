@@ -6,6 +6,9 @@ import type { User } from "../../utils/types/userTypes";
 // import des services
 import { loginUser } from "../../utils/api/authAPI";
 
+/**
+ * Composant de formulaire d'authentification
+ */
 const AuthFormComponent = () => {
 	// définition du state pour les données du formulaire
 	const [userAuthInformations, setUserAuthInformations] = useState<User>({

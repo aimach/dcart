@@ -3,7 +3,7 @@
 
 .tileLayerChoiceContainer {
     width: 30%;
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, flex-end, center);
+    @include m.flexbox(flex, row, nowrap, flex-end, center);
     gap: v.$space-s;
     margin-right: v.$space-s;
 }

@@ -2,7 +2,7 @@
 @use '../../styles/variable' as v;
 
 .mapSection {
-  @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
+  @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
   height: calc(100vh - v.$main-header-height);
 
   &Header {
@@ -12,7 +12,7 @@
   }
 
   &Main {
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, space-between, flex-start);
+    @include m.flexbox(flex, row, nowrap, space-between, flex-start);
     width: 100%;
     flex-grow: 1;
 
@@ -23,7 +23,7 @@
   }
 
   &Loaded {
-    @include m.flexbox(flex, row, null, null, nowrap, 0, 0, null, center, center);
+    @include m.flexbox(flex, row, nowrap, center, center);
   }
 
   &Hidden {

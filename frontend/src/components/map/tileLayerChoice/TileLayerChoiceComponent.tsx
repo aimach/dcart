@@ -8,17 +8,22 @@ import { useMapStore } from "../../../utils/stores/mapStore";
 // import du style
 import style from "./tileLayerChoiceComponent.module.scss";
 
+/**
+ * Composant de choix du fond de carte
+ */
 const TileLayerChoiceComponent = () => {
 	// source : https://leaflet-extras.github.io/leaflet-providers/preview/
-	// {z} : Niveau de zoom.
-	// {x}, {y} : Coordonnées de la tuile
-	// {r} : Optionnel. Version en fonction résolution de l'écran
+	// définition des variables utiles pour l'affichage des tuiles
+	// {s} : Sous-domaine aléatoire
+	const subdomains = ["a", "b", "c"];
+	const s = subdomains[Math.floor(Math.random() * subdomains.length)]; // définition d'un sous-domaine aléatoire
+	// {z} : Niveau de zoom
 	const z = 7;
+	// {x}, {y} : Coordonnées de la tuile
 	const x = 74;
 	const y = 49;
-	const subdomains = ["a", "b", "c"];
-	const s = subdomains[Math.floor(Math.random() * subdomains.length)]; // on récupère un sous-domaine aléatoire
 
+	// liste du choix des tuiles (à déporter dans la BDD)
 	const tileLayers = [
 		{
 			name: "Consortium of Ancient World Mappers",
@@ -42,8 +47,8 @@ const TileLayerChoiceComponent = () => {
 		},
 	];
 
-	// on récupère les données du store
-	const { tileLayerURL, setTileLayerURL } = useMapStore(
+	// récuépration des données du store
+	const { setTileLayerURL } = useMapStore(
 		useShallow((state) => ({
 			tileLayerURL: state.tileLayerURL,
 			setTileLayerURL: state.setTileLayerURL,
@@ -56,9 +61,6 @@ const TileLayerChoiceComponent = () => {
 				<div
 					key={tileLayer.name}
 					className={style.tileLayerChoice}
-					// style={{
-					// 	backgroundImage: `url(${tileLayer.urlMini})`,
-					// }}
 					onClick={() => setTileLayerURL(tileLayer.url)}
 					onKeyUp={() => setTileLayerURL(tileLayer.url)}
 				>

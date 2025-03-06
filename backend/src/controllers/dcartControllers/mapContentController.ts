@@ -7,17 +7,16 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 
 export const mapContentController = {
-	getMapInformationsById: async (
-		req: Request,
-		res: Response,
-	): Promise<void> => {
+	// récupérer les données de toutes les cartes ou d'une carte en particulier
+	getMapContent: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { mapId } = req.params;
+
 			if (mapId === "all") {
-				const MapInfos = await dcartDataSource
+				const allMaps = await dcartDataSource
 					.getRepository(MapContent)
 					.find({ where: { isActive: true }, relations: ["filters"] });
-				res.status(200).send(MapInfos);
+				res.status(200).send(allMaps);
 				return;
 			}
 
@@ -29,6 +28,35 @@ export const mapContentController = {
 			} else {
 				res.status(200).send(mapInfos[0]);
 			}
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	// créer une nouvelle carte
+	createMap: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const {
+				name_en,
+				name_fr,
+				description_en,
+				description_fr,
+				categoryId,
+				attestationIds,
+			} = req.body;
+
+			const newMap = dcartDataSource.getRepository(MapContent).create({
+				name_en,
+				name_fr,
+				description_en,
+				description_fr,
+				category: categoryId,
+				attestationIds,
+			});
+
+			await dcartDataSource.getRepository(MapContent).save(newMap);
+
+			res.status(201).send(newMap);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

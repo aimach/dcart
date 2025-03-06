@@ -12,7 +12,7 @@ import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.ts
 import BackofficeStorymapPage from "./pages/BackOffice/BOStorymapPage/BackofficeStorymapPage.tsx";
 import BackofficeTranslationPage from "./pages/BackOffice/BOTranslationPage/BackofficeTranslationPage.tsx";
 import CategoryMenuPage from "./pages/CategoryMenuPage/CategoryMenuPage.tsx";
-import BOMapFormPage from "./pages/BackOffice/BOMapPage/BOMapFormPage.tsx/BOMapFormPage.tsx";
+import BOMapFormPage from "./pages/BackOffice/BOMapFormPage.tsx/BOMapFormPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -26,7 +26,6 @@ if (rootElement) {
 		<BrowserRouter>
 			<TranslationProvider>
 				<AuthProvider>
-					{/* <StrictMode> */}
 					<Routes>
 						<Route element={<NavigationLayout />}>
 							<Route index element={<App />} />
@@ -51,7 +50,6 @@ if (rootElement) {
 							/>
 						</Route>
 					</Routes>
-					{/* </StrictMode> */}
 				</AuthProvider>
 			</TranslationProvider>
 		</BrowserRouter>,

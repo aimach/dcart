@@ -1,123 +1,188 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
+import { useParams } from "react-router";
 // import des composants
-import SelectOptionsComponent from "../../common/input/SelectOptionsComponent";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+import LoaderComponent from "../../common/loader/LoaderComponent";
+import MultiSelectComponent from "../../common/multiSelect/MultiSelectComponent";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
+import useFilterSearch from "../../../utils/hooks/useFilterSearch";
 // import des services
 import {
 	getAllGreatRegions,
 	getAllDivinities,
 	getTimeMarkers,
-	getAllPointsByMapId,
-} from "../../../utils/loaders/loaders";
-import { useMapStore } from "../../../utils/stores/mapStore";
+} from "../../../utils/api/getRequests";
+import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
+import {
+	formatDataForReactSelect,
+	createTimeOptions,
+	handleMultiSelectChange,
+} from "../../../utils/functions/filter";
 // import des types
-import type {
-	DivinityType,
-	GreatRegionType,
-	TimeMarkersType,
-} from "../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
+import type { OptionType } from "../../../utils/types/commonTypes";
+import type { MultiValue } from "react-select";
+// import du style
+import style from "./searchFormComponent.module.scss";
 
 interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+/**
+ * Composant du formulaire de recherche de la carte "exploration"
+ * @param {Dispatch<SetStateAction<boolean>>} props.setIsModalOpen - Modifie l'état d'affichage du modal
+ * @returns Select (react-select) | LoaderComponent
+ */
 const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
-	// on récupère le langage
-	const { language, translation } = useContext(TranslationContext);
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-	// on récupère les points
-	const { setAllPoints } = useMapStore();
+	// récupération de l'id de la carte en cours
+	const { mapId } = useParams();
 
+	// récupération des données des stores
+	const { userFilters, setUserFilters } = useMapFiltersStore();
+
+	// définition des états pour gérer les données du formulaire
 	const [dataLoaded, setDataLoaded] = useState<boolean>(false);
-	const [greatRegions, setGreatRegions] = useState<GreatRegionType[]>([]);
-	const [divinities, setDivinities] = useState<DivinityType[]>([]);
-	const [timeOptions, setTimeOptions] = useState<number[]>([]);
+	const [greatRegions, setGreatRegions] = useState<OptionType[]>([]);
+	const [divinities, setDivinities] = useState<OptionType[]>([]);
+	const [timeOptions, setTimeOptions] = useState<OptionType[]>([]);
+	const [afterValue, setAfterValue] = useState<OptionType | null>(null);
+	const [beforeValue, setBeforeValue] = useState<OptionType | null>(null);
+	const [afterOptions, setAfterOptions] = useState<OptionType[]>([]);
+	const [beforeOptions, setBeforeOptions] = useState<OptionType[]>([]);
 
 	useEffect(() => {
-		fetchAllDatasForSearchForm();
-	}, []);
-
-	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
-		// Prevent the browser from reloading the page
-		e.preventDefault();
-
-		// Read the form data
-		const form = e.target as HTMLFormElement;
-		const formData = new FormData(form);
-		const allPoints = await getAllPointsByMapId("exploration", formData);
-		setAllPoints(allPoints);
-		setIsModalOpen(false);
-	};
-
-	const fetchAllDatasForSearchForm = async () => {
-		try {
+		// récupération de toutes les données pour le formulaire
+		const fetchAllDatasForSearchForm = async () => {
+			// récupération des grandes régions
 			const allGreatRegions = await getAllGreatRegions();
-			setGreatRegions(allGreatRegions);
+			const formatedGreatRegions: OptionType[] = formatDataForReactSelect(
+				allGreatRegions,
+				language,
+			);
+			setGreatRegions(formatedGreatRegions);
+
+			// récupération des divinités
 			const allDivinities = await getAllDivinities();
-			setDivinities(allDivinities);
+			const formatedDivinities = formatDataForReactSelect(
+				allDivinities,
+				language,
+			);
+			setDivinities(formatedDivinities);
+
+			// récupération des bornes temporelles
 			const timeMarkers = await getTimeMarkers();
 			const timeOptions = createTimeOptions(timeMarkers);
 			setTimeOptions(timeOptions);
+			setAfterOptions(timeOptions);
+			setBeforeOptions(timeOptions);
 
 			setDataLoaded(true);
-		} catch (error) {}
+		};
+		fetchAllDatasForSearchForm();
+	}, [language]);
+
+	// utilisé pour mettre à jour les valeurs des options des bornes temporelles "AVANT" en fonction de ce qu'à choisi l'utilisateur
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		if (afterValue) {
+			setBeforeOptions(
+				timeOptions.filter((opt) => opt.value > afterValue.value),
+			);
+		} else {
+			setBeforeOptions(timeOptions);
+		}
+	}, [afterValue]);
+
+	// utilisé pour mettre à jour les valeurs des options des bornes temporelles "APRES" en fonction de ce qu'à choisi l'utilisateur
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		if (beforeValue) {
+			setAfterOptions(
+				timeOptions.filter((opt) => opt.value < beforeValue.value),
+			);
+		} else {
+			setAfterOptions(timeOptions);
+		}
+	}, [beforeValue]);
+
+	// fonction pour gérer la soumission du formulaire (filtrage des points)
+	const { fetchFilteredPoints } = useFilterSearch();
+	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
+		e.preventDefault();
+		fetchFilteredPoints(mapId as string, userFilters);
+		setIsModalOpen(false);
 	};
 
-	const createTimeOptions = (timeMarkers: TimeMarkersType) => {
-		const options = [];
-		for (let i = timeMarkers.post; i <= timeMarkers.ante; i += 100) {
-			options.push(i);
-		}
-		return options;
+	// fonction pour gérer le changement des valeurs du select
+	const handleChange = (key: string, value: MultiValue<OptionType>) => {
+		console.log(key, value);
+		handleMultiSelectChange(
+			key,
+			value,
+			setUserFilters,
+			userFilters,
+			setAfterValue,
+			setBeforeValue,
+		);
 	};
 
 	return (
-		dataLoaded && (
-			<>
-				<form method="post" onSubmit={handleSubmit}>
-					<p>
-						{translation[language].modal.firstContent}{" "}
-						<SelectOptionsComponent
-							selectId="location"
-							basicOptionContent={translation[language].modal.chooseRegion}
-							options={greatRegions}
-						/>{" "}
-						{translation[language].modal.secondContent}{" "}
-						<SelectOptionsComponent
-							selectId="element"
-							basicOptionContent={translation[language].modal.chooseDivinity}
-							options={divinities}
-						/>{" "}
-						{translation[language].common.between}{" "}
-						<SelectOptionsComponent
-							selectId="post"
-							basicOptionContent={translation[language].modal.postDate}
-							options={timeOptions}
-						/>{" "}
-						{translation[language].common.between}{" "}
-						<SelectOptionsComponent
-							selectId="ante"
-							basicOptionContent={translation[language].modal.anteDate}
-							options={timeOptions}
-						/>{" "}
-					</p>
-					<button type="submit">
-						{translation[language].button.seeSources}
+		<div className={style.searchFormContainer}>
+			{dataLoaded ? (
+				<>
+					<form method="post" onSubmit={handleSubmit} id="myForm">
+						<div className={style.searchFormTextContainer}>
+							{translation[language].modal.firstContent}{" "}
+							<MultiSelectComponent
+								options={greatRegions}
+								selectKey="locationId"
+								placeholder={translation[language].modal.chooseRegion}
+								handleChange={handleChange}
+							/>
+							{translation[language].modal.secondContent}{" "}
+							<MultiSelectComponent
+								options={divinities}
+								selectKey="elementId"
+								placeholder={translation[language].modal.chooseDivinity}
+								handleChange={handleChange}
+							/>{" "}
+							{translation[language].common.between}{" "}
+							<MultiSelectComponent
+								options={afterOptions}
+								selectKey="post"
+								placeholder={translation[language].modal.postDate}
+								handleChange={handleChange}
+							/>{" "}
+							{translation[language].common.and}{" "}
+							<MultiSelectComponent
+								options={beforeOptions}
+								selectKey="ante"
+								placeholder={translation[language].modal.anteDate}
+								handleChange={handleChange}
+							/>{" "}
+						</div>
+						<button type="submit">
+							{translation[language].button.seeSources}
+						</button>
+					</form>
+					<div>-- {translation[language].common.or} --</div>
+					<button
+						type="button"
+						onClick={() => setIsModalOpen(false)}
+						onKeyUp={() => setIsModalOpen(false)}
+					>
+						{translation[language].button.seeAll}
 					</button>
-				</form>
-				<div>-- {translation[language].common.or} --</div>
-				<button
-					type="button"
-					onClick={() => setIsModalOpen(false)}
-					onKeyUp={() => setIsModalOpen(false)}
-				>
-					{translation[language].button.seeAll}
-				</button>
-			</>
-		)
+				</>
+			) : (
+				<LoaderComponent size={40} />
+			)}
+		</div>
 	);
 };
 

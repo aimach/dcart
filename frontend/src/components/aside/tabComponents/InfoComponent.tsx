@@ -1,54 +1,68 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useParams } from "react-router";
 // import des composants
 import SourceDetailsComponent from "./SourceDetailsComponent";
 import ChartComponent from "./ChartComponent";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
-// import des types
-import type { PointType } from "../../../utils/types/mapTypes";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du style
 import style from "./tabComponent.module.scss";
+import { useMapStore } from "../../../utils/stores/mapStore";
 
-interface InfoComponentProps {
-	point: PointType;
-	isSelected?: boolean;
-	mapId: string;
-}
+/**
+ * Affiche les informations du point sélectionné
+ */
+const InfoComponent = () => {
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-const InfoComponent = ({ point, mapId }: InfoComponentProps) => {
-	// on récupère le language
-	const { translation, language } = useContext(TranslationContext);
+	// récupération de l'id de la carte
+	const { mapId } = useParams();
 
-	// on prépare les clés pour l'objet de traduction
-	const subRegionLanguageKey: keyof PointType =
-		language === "fr" ? "sous_region_fr" : "sous_region_en";
+	// récupération des données des stores
+	const { selectedMarker } = useMapStore((state) => state);
 
 	return (
-		<section className={style.selectionDetailsContainer}>
-			<h4>
-				{point.nom_ville} ({point[subRegionLanguageKey]}) -{" "}
-				{point.sources.length} {point.sources.length > 1 ? "sources" : "source"}
-			</h4>
-			{mapId !== "exploration" && (
-				<details className={style.chartDetails} open>
-					<summary>{translation[language].mapPage.aside.seeStat}</summary>
-					<ChartComponent point={point as PointType} />
-				</details>
-			)}
-			<details className={style.sourceDetails}>
-				<summary>{translation[language].mapPage.aside.seeSources}</summary>
-				{point.sources.map((source) => {
-					return (
-						<SourceDetailsComponent
-							key={source.source_id}
-							source={source}
-							mapId={mapId}
-						/>
-					);
-				})}
-			</details>
-		</section>
+		selectedMarker && (
+			<section className={style.selectionDetailsContainer}>
+				<h4>
+					{selectedMarker.nom_ville} (
+					{selectedMarker[`sous_region_${language}`]}) -{" "}
+					{selectedMarker.sources.length}{" "}
+					{selectedMarker.sources.length > 1 ? "sources" : "source"}
+				</h4>
+				{mapId !== "exploration" && (
+					<details className={style.chartDetails} open>
+						<summary>{translation[language].mapPage.aside.seeStat}</summary>
+						<ChartComponent />
+					</details>
+				)}
+				{mapId !== "exploration" ? (
+					<details className={style.sourceDetails}>
+						<summary>{translation[language].mapPage.aside.seeSources}</summary>
+						{selectedMarker.sources.map((source) => {
+							return (
+								<SourceDetailsComponent
+									key={source.source_id}
+									source={source}
+								/>
+							);
+						})}
+					</details>
+				) : (
+					<>
+						{selectedMarker.sources.map((source) => {
+							return (
+								<SourceDetailsComponent
+									key={source.source_id}
+									source={source}
+								/>
+							);
+						})}
+					</>
+				)}
+			</section>
+		)
 	);
 };
 

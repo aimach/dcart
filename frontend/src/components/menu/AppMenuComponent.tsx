@@ -1,13 +1,14 @@
 // import des bibliothèques
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { Link } from "react-router";
 // import des composants
 import ImageWithLink from "../common/ImageWithLink";
-// import du context
-import { TranslationContext } from "../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../utils/hooks/useTranslation";
+// import des services
+import { getMenuPageMenuList } from "../../utils/menu/menuListArrays";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
-import type { NavList } from "../../utils/types/commonTypes";
 // import du style
 import style from "./appMenuComponent.module.scss";
 // import des icones et images
@@ -20,42 +21,31 @@ interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
 }
 
+/**
+ * Composant du menu de l'application
+ * @param {Object} props - Les propriétés du composant
+ * @param {Function} props.setMenuIsOpen - La fonction pour ouvrir/fermer le menu
+ * @returns ImageWithLink
+ */
 const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
-	// on importe les données de language
-	const { language, translation } = useContext(TranslationContext);
+	// import des données de traduction
+	const { language, translation } = useTranslation();
 
-	// on initie un state pour le style des éléments du menu
+	// récupération des éléments de navigation
+	const navigationList = getMenuPageMenuList(translation, language);
+
+	// déclaration d'un état pour le style des éléments du menu
 	const [isLongLine, setIsLongLine] = useState<{ [key: string]: boolean }>({
 		home: false,
 		maps: false,
 		storymaps: false,
 	});
 
+	// fonction pour modifier le style des éléments survolés
 	const handleLine = (id: string, boolean: boolean) => {
 		const newObject = { ...isLongLine, [id]: boolean };
 		setIsLongLine(newObject);
 	};
-
-	const navigationList: NavList = [
-		{
-			id: "home",
-			title: translation[language].navigation.home,
-			onClickFunction: undefined,
-			route: "/",
-		},
-		{
-			id: "maps",
-			title: translation[language].navigation.maps,
-			onClickFunction: undefined,
-			route: "maps/categories",
-		},
-		{
-			id: "storymaps",
-			title: translation[language].navigation.storymaps,
-			onClickFunction: undefined,
-			route: "/storymaps",
-		},
-	];
 
 	return (
 		<main className={style.menuPageContainer}>

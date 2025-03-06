@@ -1,5 +1,5 @@
 // import des bibiliothèques
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	Chart as ChartJS,
 	CategoryScale,
@@ -9,16 +9,17 @@ import {
 	Tooltip,
 	Legend,
 	Title,
+	Colors,
 } from "chart.js";
 import { Doughnut, Bar } from "react-chartjs-2";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import {
 	getAgentGenderLabelsAndNb,
 	getEpithetLabelsAndNb,
 	getAgentActivityLabelsAndNb,
-} from "../../../utils/functions/functions";
+} from "../../../utils/functions/chart";
 import { useMapStore } from "../../../utils/stores/mapStore";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
@@ -36,29 +37,30 @@ ChartJS.register(
 	Tooltip,
 	Legend,
 	Title,
+	Colors,
 );
 
-interface ChartComponentProps {
-	point: PointType;
-}
+/**
+ * Affiche un graphique (donut ou barre) et des boutons radios (épithète, genre, activité)
+ */
+const ChartComponent = () => {
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-const ChartComponent = ({ point }: ChartComponentProps) => {
-	// on récupère les données de language
-	const { translation, language } = useContext(TranslationContext);
+	// récupération des données des stores
+	const { includedElementId, selectedMarker } = useMapStore((state) => state);
 
-	// on récupère l'includedElement en cours
-	const includedElementId = useMapStore((state) => state.includedElementId);
-
-	// on initie le state pour le type de données à afficher
+	// déclaration d'un état pour le type de données à afficher
 	const [dataType, setDataType] = useState<string>("epithet");
 
-	// on initie le state pour le type de chart
+	// déclaration d'un état pour le type de graphique à afficher
 	const [chartType, setChartType] = useState<string>("doughnut");
 
-	// on initie les labels et les datasets
+	// déclaration d'états pour les labels et les données
 	const [labels, setLabels] = useState<string[]>([]);
 	const [dataSets, setDataSets] = useState<number[]>([]);
 
+	// mise à jour des labels et données en fonction du type de données, du marqueur sélectionné et de la langue
 	useEffect(() => {
 		let labels = [];
 		let dataSets = [];
@@ -67,15 +69,21 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 			case "epithet":
 				({ labels, dataSets } = getEpithetLabelsAndNb(
 					includedElementId as string,
-					point,
+					selectedMarker as PointType,
 					language,
 				));
 				break;
 			case "gender":
-				({ labels, dataSets } = getAgentGenderLabelsAndNb(point, language));
+				({ labels, dataSets } = getAgentGenderLabelsAndNb(
+					selectedMarker as PointType,
+					language,
+				));
 				break;
 			case "activity":
-				({ labels, dataSets } = getAgentActivityLabelsAndNb(point, language));
+				({ labels, dataSets } = getAgentActivityLabelsAndNb(
+					selectedMarker as PointType,
+					language,
+				));
 				break;
 			default:
 				return;
@@ -83,8 +91,9 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 
 		setLabels(labels);
 		setDataSets(dataSets);
-	}, [dataType, point, language, includedElementId]);
+	}, [dataType, selectedMarker, language, includedElementId]);
 
+	// options pour le graphique en barres
 	const barOptions = {
 		indexAxis: "x" as const,
 		responsive: true,
@@ -96,7 +105,7 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 				display: false,
 			},
 			tooltip: {
-				xAlign: "center",
+				xAlign: "center" as const,
 			},
 		},
 		scales: {
@@ -109,6 +118,7 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 		},
 	};
 
+	// options pour le graphique en donut
 	const doughnutOptions = {
 		responsive: true,
 		animation: {
@@ -124,14 +134,12 @@ const ChartComponent = ({ point }: ChartComponentProps) => {
 		},
 	};
 
-	const commonColor = "#AD9A85";
-
+	// données finales pour le graphique
 	const finalData = {
 		labels,
 		datasets: [
 			{
 				data: dataSets,
-				backgroundColor: commonColor,
 			},
 		],
 	};

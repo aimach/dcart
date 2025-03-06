@@ -1,70 +1,64 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useMemo } from "react";
 import Select from "react-select";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
-// import des services
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation"; // import des services
 import { useMapFiltersStore } from "../../../utils/stores/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
+import {
+	getSelectDefaultValues,
+	onMultiSelectChange,
+} from "../../../utils/functions/filter";
 // import des types
-import type { MultiValue } from "react-select";
 import type { OptionType } from "../../../utils/types/commonTypes";
 
 interface ElementFilterComponentProps {
 	elementOptions: OptionType[];
 }
 
+/**
+ * Affiche le filtre des éléments
+ * @param {Object} props
+ * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
+ * @returns Select (react-select)
+ */
 const ElementFilterComponent = ({
 	elementOptions,
 }: ElementFilterComponentProps) => {
-	// on récupère les données de langue
-	const { translation, language } = useContext(TranslationContext);
+	// récupération des données de traduction
+	const { translation, language } = useTranslation();
 
-	// on récupère les données des filtres depuis le store
+	// récupération des données des filtres depuis le store
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
 
-	// on gère les changements du filtre générés par l'utilisateur
-	const onMultiSelectChange = (selectedOptions: MultiValue<OptionType>) => {
-		const elementValuesArray: number[] = [];
-		for (const option of selectedOptions) {
-			elementValuesArray.push(option.value);
-		}
-		const elementValuesString = elementValuesArray.join("|");
-		setUserFilters({
-			...userFilters,
-			elementId: elementValuesString,
-		});
-	};
-
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
-	const getDefaultValues = () => {
-		const defaultValues: OptionType[] = [];
-		if (userFilters.elementId) {
-			const elementValuesArray = userFilters.elementId.split("|");
-			for (const elementValue of elementValuesArray) {
-				const elementOption = elementOptions.find(
-					(option) => option.value === Number.parseInt(elementValue, 10),
-				);
-				if (elementOption) {
-					defaultValues.push(elementOption);
-				}
-			}
-		}
-		return defaultValues;
-	};
+	const getDefaultValues = useMemo(() => {
+		return getSelectDefaultValues(
+			userFilters.elementId as string,
+			elementOptions,
+		);
+	}, [userFilters.elementId, elementOptions]);
 
 	return (
 		<div>
 			<Select
 				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 				options={elementOptions}
-				defaultValue={getDefaultValues()}
+				defaultValue={getDefaultValues}
 				delimiter="|"
 				isMulti
-				onChange={(newValue) => onMultiSelectChange(newValue)}
+				onChange={(newValue) =>
+					onMultiSelectChange(
+						newValue,
+						"elementId",
+						setUserFilters,
+						userFilters,
+					)
+				}
 				placeholder={translation[language].mapPage.aside.searchForElement}
+				isClearable={false}
 			/>
 		</div>
 	);

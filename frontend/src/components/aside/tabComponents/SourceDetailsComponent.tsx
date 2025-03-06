@@ -1,11 +1,12 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
+import { useMemo, useEffect, useState } from "react";
+import { useParams } from "react-router";
 import DOMPurify from "dompurify";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import LoaderComponent from "../../common/loader/LoaderComponent";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des types
 import type {
 	AgentType,
@@ -16,53 +17,113 @@ import type {
 import {
 	getAgentsArrayWithoutDuplicates,
 	getDatationSentence,
-} from "../../../utils/functions/functions";
-import { getAllAttestationsFromSourceId } from "../../../utils/loaders/loaders";
+	getSanitizedAgent,
+} from "../../../utils/functions/map";
+import { getAllAttestationsFromSourceId } from "../../../utils/api/getRequests";
 // import du style
 import style from "./tabComponent.module.scss";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;
-	mapId: string;
 };
 
-const SourceDetailsComponent = ({
-	source,
-	mapId,
-}: SourceDetailsComponentProps) => {
-	// on récupère le language
-	const { language, translation } = useContext(TranslationContext);
+/**
+ * Retourne un accordéon avec les informations de la source et les tableaux des attestations
+ * @param {SourceType} source - la source à afficher
+ * @returns Les informations de la source et les attestations formatées en tableau
+ */
+const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
+	// récupération des données de traduction
+	const { language, translation } = useTranslation();
 
-	// on prépare les clés pour l'objet de traduction
-	const attestationNameLanguageKey: keyof AttestationType =
-		language === "fr" ? "nom_fr" : "nom_en";
+	// récupération de l'id de la carte en cours
+	const { mapId } = useParams();
 
-	// on prépare la string de datation
+	// définition de la chaîne de caractères contenant les dates
 	const datationSentence = getDatationSentence(source, translation, language);
 
-	// si la source est sélectionnée, on va chercher les attestations correspondantes
+	// définition d'un état permettant de stocker les attestations (si la carte est en mode exploration, on stocke un tableau vide car elles ne sont pas encore chargées)
 	const [attestations, setAttestations] = useState<AttestationType[]>(
 		mapId === "exploration" ? [] : source.attestations,
 	);
+
+	// définition d'un état permettant de savoir si la source est sélectionnée
 	const [sourceIsSelected, setSourceIsSelected] = useState<boolean>(false);
 
-	const fetchAllAttestations = async () => {
-		try {
+	// récupération des attestations de la source si elles ne sont pas déjà chargées
+	useEffect(() => {
+		const fetchAllAttestations = async () => {
 			const allAttestations = await getAllAttestationsFromSourceId(
 				source.source_id.toString(),
 			);
 			setAttestations(allAttestations);
-		} catch (error) {
-			console.error("Erreur lors du chargement des infos de la carte:", error);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
+		};
 		if (sourceIsSelected && attestations.length === 0) {
 			fetchAllAttestations();
 		}
-	}, [sourceIsSelected, source.source_id, attestations.length]);
+	}, [sourceIsSelected, source.source_id, attestations]);
+
+	// formatage des attestations avant affichage
+	const formattedAttestations = useMemo(() => {
+		return attestations?.map((attestation: AttestationType) => {
+			// préparation de l'extrait avec restitution en vérifiant qu'il ne contient que du code validé
+			const sanitizedRestitution = DOMPurify.sanitize(
+				attestation.extrait_avec_restitution,
+			);
+
+			// récupération et affichage des agents
+			let agentsString = null;
+			if (attestation.agents) {
+				agentsString = getAgentsArrayWithoutDuplicates(
+					attestation.agents as AgentType[],
+				).map((agentElement) => (
+					<p
+						key={uuidv4()}
+						// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+						dangerouslySetInnerHTML={{
+							__html: `- ${getSanitizedAgent(agentElement, translation, language)}`,
+						}}
+						style={{ marginBottom: "0.5rem" }}
+					/>
+				));
+			} else {
+				agentsString = translation[language].mapPage.aside.noAgent;
+			}
+
+			// Retourne une attestation formatée
+			return (
+				<div key={attestation.attestation_id} className={style.testimoniesInfo}>
+					<table>
+						<tbody>
+							<tr>
+								<th>Attestation</th>
+								<td>#{attestation.attestation_id}</td>
+							</tr>
+							<tr>
+								<th>{translation[language].mapPage.aside.originalVersion}</th>
+								<td>
+									<p
+										// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+										dangerouslySetInnerHTML={{ __html: sanitizedRestitution }}
+									/>
+								</td>
+							</tr>
+							<tr>
+								<th>{translation[language].mapPage.aside.traduction}</th>
+								<td>{attestation[`nom_${language}`]}</td>
+							</tr>
+							<tr>
+								<th>{translation[language].mapPage.aside.agents}</th>
+								<td>
+									<div>{agentsString}</div>
+								</td>
+							</tr>
+						</tbody>
+					</table>
+				</div>
+			);
+		});
+	}, [attestations, language, translation]);
 
 	return (
 		<details
@@ -73,94 +134,8 @@ const SourceDetailsComponent = ({
 			<summary>
 				Source #{source.source_id} {datationSentence}
 			</summary>
-			{attestations.length ? (
-				attestations.map((attestation: AttestationType) => {
-					// on prépare l'extrait avec restitution en vérifiant qu'il ne contient que du code validé
-					const sanitizedRestitution = DOMPurify.sanitize(
-						attestation.extrait_avec_restitution,
-					);
-					let agentsArray: JSX.Element[] = [];
-					if (attestation.agents?.length) {
-						// on supprime les doublons causés par l'activité (si plusieurs activités pour 1 même agent, il revient plusieurs fois dans le tableau)
-						const agentsWithoutDuplicates = getAgentsArrayWithoutDuplicates(
-							attestation.agents,
-						);
-						agentsArray = agentsWithoutDuplicates.map(
-							(agentElement: AgentType) => {
-								let agent = "";
-								if (agentElement.designation === null) {
-									agent = `(${translation[language].mapPage.aside.noDesignation})`;
-								} else {
-									// on prépare la string de l'agent en vérifiant qu'il ne contient que du code validé,
-									// qu'il correspond au langage choisi
-									const sanitizedAgent = DOMPurify.sanitize(
-										agentElement.designation,
-									);
-									const sanitizedAgentInSelectedLanguage =
-										sanitizedAgent.split("<br>");
-									if (sanitizedAgentInSelectedLanguage.length > 1) {
-										agent =
-											sanitizedAgentInSelectedLanguage[
-												language === "fr" ? 0 : 1
-											];
-									} else {
-										agent = sanitizedAgentInSelectedLanguage[0];
-									}
-								}
-								return (
-									<p
-										key={uuidv4()}
-										// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-										dangerouslySetInnerHTML={{
-											__html: `- ${agent}`,
-										}}
-										style={{ marginBottom: "0.5rem" }}
-									/>
-								);
-							},
-						);
-					}
-
-					return (
-						<div key={uuidv4()} className={style.testimoniesInfo}>
-							<table>
-								<tbody>
-									<tr>
-										<th>Attestation</th>
-										<td>#{attestation.attestation_id}</td>
-									</tr>
-									<tr>
-										<th>{translation[language].mapPage.aside.traduction}</th>
-										<td>{attestation[attestationNameLanguageKey]}</td>
-									</tr>
-									<tr>
-										<th>
-											{translation[language].mapPage.aside.originalVersion}
-										</th>
-										<td>
-											<p
-												// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-												dangerouslySetInnerHTML={{
-													__html: sanitizedRestitution,
-												}}
-											/>
-										</td>
-									</tr>
-									<tr>
-										<th>{translation[language].mapPage.aside.agents}</th>
-										<td>
-											<div>
-												{agentsArray.length > 0
-													? agentsArray
-													: translation[language].mapPage.aside.noAgent}
-											</div>
-										</td>
-									</tr>
-								</tbody>
-							</table>
-						</div>
-					);
-				})
+			{attestations?.length ? (
+				formattedAttestations
 			) : (
 				<LoaderComponent size={40} />
 			)}

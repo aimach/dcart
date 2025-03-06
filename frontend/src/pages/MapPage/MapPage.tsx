@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router";
 // import des composants
 import MapComponent from "../../components/map/mapComponent/MapComponent";
@@ -9,71 +9,75 @@ import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/A
 import {
 	getAllPointsByMapId,
 	getOneMapInfos,
-} from "../../utils/loaders/loaders";
+} from "../../utils/api/getRequests";
 import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../utils/stores/mapStore";
 import { useMapAsideMenuStore } from "../../utils/stores/mapAsideMenuStore";
 // import du style
 import style from "./mapPage.module.scss";
 
+/**
+ * Page de la carte
+ * @returns AsideContainer | AsideReducedMenuComponent | MapComponent
+ */
 const MapPage = () => {
-	// on récupère les params
-	const { categoryId, mapId } = useParams();
+	// récupération des paramètres de l'URL : l'id de la carte en cours
+	const { mapId } = useParams();
 
-	// on récupère le state pour l'includedElement
-	const {
-		setMapInfos,
-		allPoints,
-		setAllPoints,
-		setIncludedElementId,
-		mapReady,
-		setMapReady,
-		resetTileLayerURL,
-	} = useMapStore(useShallow((state) => state));
-	// on récupère le state pour les filtres
-	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
-
-	// on définit les states nécessaires
+	// état pour gérer l'affichage du panneau latéral
 	const [panelDisplayed, setPanelDisplayed] = useState<boolean>(true);
 
-	// on charge les points de la carte
-	const fetchAllPoints = async () => {
-		try {
-			const points = await getAllPointsByMapId(mapId as string, null);
-			setAllPoints(points);
-			setMapReady(true);
-		} catch (error) {
-			console.error("Erreur lors du chargement des points:", error);
-		}
-	};
+	// récupération des données des stores
+	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
+	const mapStore = useMapStore(
+		useShallow((state) => ({
+			setMapInfos: state.setMapInfos,
+			allPoints: state.allPoints,
+			setAllPoints: state.setAllPoints,
+			setIncludedElementId: state.setIncludedElementId,
+			mapReady: state.mapReady,
+			setMapReady: state.setMapReady,
+			resetTileLayerURL: state.resetTileLayerURL,
+		})),
+	);
 
-	// on charge les informations d'introduction de la carte
-	const fetchMapInfos = async (mapId: string) => {
-		try {
+	// fonction pour récupérer les points de la carte en cours
+	const fetchAllPoints = useCallback(async () => {
+		const points = await getAllPointsByMapId(mapId as string, null);
+		mapStore.setAllPoints(points);
+		mapStore.setMapReady(true);
+	}, [mapId, mapStore]);
+
+	// fonction pour récupérer les informations de la carte
+	const fetchMapInfos = useCallback(
+		async (mapId: string) => {
+			if (!mapId) return;
 			const mapInfos = await getOneMapInfos(mapId as string);
 			// si la carte est une carte d'exploration, on réinitialise les filtres
 			if (mapInfos === "exploration") {
-				setIncludedElementId(undefined);
-				setMapInfos(null);
+				mapStore.setIncludedElementId(undefined);
+				mapStore.setMapInfos(null);
 				setMapFilters([]);
 			} else {
 				// sinon on charge les informations de la carte
-				setIncludedElementId(mapInfos.includedElements);
-				setMapInfos(mapInfos);
+				mapStore.setIncludedElementId(mapInfos.divinityIds);
+				mapStore.setMapInfos(mapInfos);
 				setMapFilters(mapInfos.filters);
 			}
-		} catch (error) {
-			console.error("Erreur lors du chargement des infos de la carte:", error);
-		}
-	};
+		},
+		[mapStore, setMapFilters],
+	);
 
+	// chargement des données de la carte au montage du composant et réinitialisation des états
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		setMapReady(false);
-		setPanelDisplayed(false);
+		// chargement des données
 		fetchMapInfos(mapId as string);
 		fetchAllPoints();
-		resetTileLayerURL();
+		// réinitialisation des états si l'utilisateur vient d'une autre carte
+		mapStore.setMapReady(false);
+		mapStore.resetTileLayerURL();
+		setPanelDisplayed(false);
 	}, [mapId]);
 
 	return (
@@ -84,18 +88,15 @@ const MapPage = () => {
 					<AsideContainer
 						panelDisplayed={panelDisplayed}
 						setPanelDisplayed={setPanelDisplayed}
-						allPoints={allPoints}
-						mapId={mapId as string}
 					/>
 				) : (
 					<AsideReducedMenuComponent setPanelDisplayed={setPanelDisplayed} />
 				)}
 
-				<section className={mapReady ? undefined : style.mapSectionLoaded}>
-					<MapComponent
-						setPanelDisplayed={setPanelDisplayed}
-						mapId={mapId as string}
-					/>
+				<section
+					className={mapStore.mapReady ? undefined : style.mapSectionLoaded}
+				>
+					<MapComponent setPanelDisplayed={setPanelDisplayed} />
 				</section>
 			</section>
 		</section>

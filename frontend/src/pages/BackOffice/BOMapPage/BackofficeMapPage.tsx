@@ -1,34 +1,34 @@
 // import des bibliothèques
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect } from "react";
 // import des composants
 import ButtonComponent from "../../../components/common/button/ButtonComponent";
+// import des hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
-import { getAllMapsInfos } from "../../../utils/loaders/loaders";
+import { getAllMapsInfos } from "../../../utils/api/getRequests";
 // import des types
 import type { MapType } from "../../../utils/types/mapTypes";
-import { TranslationContext } from "../../../context/TranslationContext";
 // import du style
 import style from "./backofficeMapPage.module.scss";
 
+/**
+ * Page du backoffice pour la gestion des cartes (création, modification, suppression)
+ * @returns ButtonComponent
+ */
 const BackofficeMapPage = () => {
-	// on récupère la langue
-	const { language } = useContext(TranslationContext);
+	// récupération des données de la langue
+	const { language } = useTranslation();
 
-	// on récupère les données des cartes dans la BDD
+	// état pour stocker les informations des cartes
 	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
 
-	// Fonction pour charger les informations des cartes
-	const fetchAllMapsInfos = async () => {
-		try {
+	// chargement des informations des cartes au montage du composant
+	useEffect(() => {
+		// fonction pour charger les informations des cartes
+		const fetchAllMapsInfos = async () => {
 			const maps = await getAllMapsInfos();
 			setAllMapsInfos(maps);
-		} catch (error) {
-			console.error("Erreur lors du chargement des cartes:", error);
-		}
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
+		};
 		fetchAllMapsInfos();
 	}, []);
 

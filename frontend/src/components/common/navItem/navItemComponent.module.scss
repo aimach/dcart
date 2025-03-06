@@ -2,7 +2,7 @@
 @use '../../../styles/variable' as v;
 
 .navItem {
-    @include m.flexbox(flex, column, null, null, nowrap, 0, 0, null, flex-start, flex-start);
+    @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
     position: absolute;
     bottom: v.$font-space-xxxl * 2;
     transition: height 0.5s ease;

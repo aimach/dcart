@@ -1,14 +1,15 @@
-// import des bibliothèques
-import { useContext } from "react";
-// import du context
-import { TranslationContext } from "../../../context/TranslationContext";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du style
 import style from "./BOHomePage.module.scss";
 import { Link } from "react-router";
 
+/**
+ * Page d'accueil du backoffice avec liens vers toutes les pages
+ */
 const BOHomePage = () => {
-	// on récupère le language
-	const { language, translation } = useContext(TranslationContext);
+	// récupération des données de la langue
+	const { language, translation } = useTranslation();
 	return (
 		<div className={style.homeNavContainer}>
 			<nav className={style.homeNav}>

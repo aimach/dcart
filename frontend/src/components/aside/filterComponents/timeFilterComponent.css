@@ -191,4 +191,34 @@
 	left: 8px;
 }
 
-/* NB : le style pour disabled a été retiré */
+/* Disabled */
+.multi-range-slider-custom.disabled {
+	color: rgb(180, 180, 180);
+}
+.multi-range-slider-custom .bar {
+	display: flex;
+}
+.multi-range-slider-custom.disabled .bar-left {
+	background-color: #c9c9c9;
+	box-shadow: inset 0px 0px 5px rgb(160, 160, 160);
+}
+.multi-range-slider-custom.disabled .bar-right {
+	background-color: #c9c9c9;
+	box-shadow: inset 0px 0px 5px rgb(160, 160, 160);
+}
+.multi-range-slider-custom.disabled .bar-inner {
+	background-color: rgb(149, 149, 149);
+}
+.multi-range-slider-custom.disabled .thumb {
+	background-color: white;
+}
+.multi-range-slider-custom.disabled .thumb::before {
+	border: solid 1px rgb(200, 200, 200);
+}
+.multi-range-slider-custom.disabled .input-type-range:focus + .thumb::after {
+	border: dotted 1px rgb(35, 35, 35);
+}
+.multi-range-slider-custom.disabled .thumb .caption * {
+	background-color: white;
+	color: rgb(199, 199, 199);
+}

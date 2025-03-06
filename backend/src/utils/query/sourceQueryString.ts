@@ -1,14 +1,16 @@
-// LEGENDE des paramètres
-// $1 = opérateur et nombre d'éléments dans l'attestation
-// $2 = opérateur et nombre de puissances divines
-
+/**
+ * Génère un requête SQL pour récupérer les sources sans informations détaillées (pour la carte "exploration").
+ * La requête agrège les attestations et leurs éléments, agents et métadonnées correspondants,
+ * et groupe les sources par localité.
+ * @param queryLocalisation - Une chaîne de caractères permettant de filtrer par la localisation.
+ * @param queryDatation - Une chaîne de caractères permettant de filtrer par la date.
+ * @param queryIncludedElements - Une chaîne de caractères permettant de filtrer par élément.
+ * @returns Une chaîne de caractères contenant la requête SQL.
+ */
 export const getSourcesQueryWithoutDetails = (
 	queryLocalisation: string,
-	elementOperator: string,
-	divinityOperator: string,
 	queryDatation: string,
 	queryIncludedElements: string,
-	queryExcludedElements: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -75,9 +77,7 @@ sources_with_attestations AS (
   JOIN attestation_with_elements ON attestation.id = attestation_with_elements.id_attestation
   JOIN formule ON formule.attestation_id = attestation.id
   LEFT JOIN agent ON agent.id_attestation = attestation.id
-  WHERE attestation_with_elements.nb_element ${elementOperator} $1
   ${queryIncludedElements} 
-  ${queryExcludedElements} 
 ),
 
 -- on enlève les doublons des sources
@@ -125,7 +125,6 @@ LEFT JOIN type_support ON type_support.id = source.type_support_id
 LEFT JOIN materiau ON materiau.id = source.materiau_id 
 WHERE localisation_source.latitude IS NOT NULL
 AND localisation_source.longitude IS NOT NULL 
-AND formule.puissances_divines ${divinityOperator} $2
 AND attestation.id_etat_fiche = 4 
 ${queryLocalisation} 
 ${queryDatation} -- ajouter ici le filtre des dates
@@ -141,14 +140,23 @@ GROUP BY
   sous_region.nom_en`;
 };
 
+/**
+ * Génère un requête SQL pour récupérer les sources avec toutes les attestations (pour toutes les cartes).
+ * La requête agrège les attestations et leurs éléments, agents et métadonnées correspondants,
+ * et groupe les sources par localité.
+ * @param attestationIds - Une chaîne de caractères permettant de filtrer les attestations par identifiants.
+ * @param queryLocalisation - Une chaîne de caractères permettant de filtrer par la localisation.
+ * @param queryDatation - Une chaîne de caractères permettant de filtrer par la date.
+ * @param queryLanguage - Une chaîne de caractères permettant de filtrer par la langue.
+ * @param queryIncludedElements - Une chaîne de caractères permettant de filtrer par élément.
+ * @returns Une chaîne de caractères contenant la requête SQL.
+ */
 export const getSourcesQueryWithDetails = (
+	attestationIds: string,
 	queryLocalisation: string,
-	elementOperator: string,
-	divinityOperator: string,
 	queryDatation: string,
-	queryIncludedElements: string,
-	queryExcludedElements: string,
 	queryLanguage: string,
+	queryIncludedElements: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -215,9 +223,8 @@ sources_with_attestations AS (
   JOIN attestation_with_elements ON attestation.id = attestation_with_elements.id_attestation
   JOIN formule ON formule.attestation_id = attestation.id
   LEFT JOIN agent ON agent.id_attestation = attestation.id
-  WHERE attestation_with_elements.nb_element ${elementOperator} $1
-  ${queryIncludedElements} 
-  ${queryExcludedElements} 
+  WHERE attestation.id IN (${attestationIds})
+  ${queryIncludedElements}
 ),
 
 -- on enlève les doublons des sources
@@ -266,7 +273,6 @@ LEFT JOIN type_support ON type_support.id = source.type_support_id
 LEFT JOIN materiau ON materiau.id = source.materiau_id 
 WHERE localisation_source.latitude IS NOT NULL
 AND localisation_source.longitude IS NOT NULL 
-AND formule.puissances_divines ${divinityOperator} $2
 AND attestation.id_etat_fiche = 4 
 ${queryLocalisation} 
 ${queryLanguage} 
@@ -283,7 +289,12 @@ GROUP BY
   sous_region.nom_en`;
 };
 
-export const getAttestationsBySourceId = (elementOperator: string) => {
+/**
+ * Génère un requête SQL pour récupérer toutes les attestations à partir de l'id d'une source.
+ * La requête agrège les attestations et leurs éléments, agents et métadonnées correspondants.
+ * @returns Une chaîne de caractères contenant la requête SQL.
+ */
+export const getAttestationsBySourceId = () => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
 WITH attestation_with_elements AS (
@@ -349,7 +360,6 @@ sources_with_attestations AS (
   JOIN attestation_with_elements ON attestation.id = attestation_with_elements.id_attestation
   JOIN formule ON formule.attestation_id = attestation.id
   LEFT JOIN agent ON agent.id_attestation = attestation.id
-  WHERE attestation_with_elements.nb_element ${elementOperator} $1
 )
 
 
@@ -358,7 +368,7 @@ SELECT
   json_agg(DISTINCT sources_with_attestations.attestations) as attestations
   FROM source
 JOIN sources_with_attestations ON source.id = sources_with_attestations.source_id 
-WHERE source.id = $2
+WHERE source.id = $1
 GROUP BY source.id
 `;
 };

@@ -1,17 +1,18 @@
-// import des bibliothèques
-import { useContext } from "react";
 // import des composants
 import MapCategoryNav from "../../components/map/mapCategoryNav/MapCategoryNav";
 import TitleAndTextComponent from "../../components/common/titleAndText/TitleAndTextComponent";
-import ButtonComponent from "../../components/common/button/ButtonComponent";
-// import du context
-import { TranslationContext } from "../../context/TranslationContext";
+// import des hooks
+import { useTranslation } from "../../utils/hooks/useTranslation";
 // import du style
 import style from "./categoryMenuPage.module.scss";
 
+/**
+ * Page de navigation qui présente toutes les catégories et les cartes associées
+ * @returns TitleAndTextComponent | MapCategoryNav
+ */
 const CategoryMenuPage = () => {
-	// on récupère le language
-	const { language, translation } = useContext(TranslationContext);
+	// Récupération des données externes (context, store, params, etc.)
+	const { translation, language } = useTranslation();
 
 	return (
 		<section className={style.categoryMenu}>
@@ -20,12 +21,6 @@ const CategoryMenuPage = () => {
 					title={translation[language].navigation.explore as string}
 					text={translation[language].mapPage.introduction as string}
 				/>
-				{/* <ButtonComponent
-					type="route"
-					color="gold"
-					textContent={translation[language].button.freeExploration as string}
-					link="all/map/exploration"
-				/> */}
 			</div>
 			<div className={style.categoryMenuNavContainer}>
 				<MapCategoryNav />
