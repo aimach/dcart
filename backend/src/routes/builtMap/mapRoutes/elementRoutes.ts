@@ -1,6 +1,6 @@
 // import des bibiliothèques
 import express from "express";
-import { mapController } from "../../controllers/mapControllers";
+import { mapController } from "../../../controllers/builtMap/mapControllers";
 
 export const elementRoutes = express.Router();
 

@@ -8,6 +8,7 @@ import {
 } from "typeorm";
 // import des entités
 import { MapContent } from "./MapContent";
+import { Storymap } from "../storymap/Storymap";
 
 @Entity()
 export class Category extends BaseEntity {
@@ -31,4 +32,11 @@ export class Category extends BaseEntity {
 		(map) => map.category,
 	)
 	maps!: MapContent[];
+
+	@OneToMany(
+		() => Storymap,
+		(Storymap) => Storymap.category,
+		{ cascade: true },
+	)
+	storymaps!: Storymap[];
 }

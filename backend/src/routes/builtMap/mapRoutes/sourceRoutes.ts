@@ -1,7 +1,7 @@
 // import des bibiliothèques
 import express from "express";
-import { mapController } from "../../controllers/mapControllers";
-import { validateSourceBody } from "../../utils/validator/source";
+import { mapController } from "../../../controllers/builtMap/mapControllers";
+import { validateSourceBody } from "../../../utils/validator/source";
 
 export const sourceRoutes = express.Router();
 

@@ -1,12 +1,12 @@
 // import des entités
-import { Filter } from "../../entities/Filter";
-import { MapContent } from "../../entities/MapContent";
+import { Filter } from "../../../entities/builtMap/Filter";
+import { MapContent } from "../../../entities/builtMap/MapContent";
+import type { FilterType } from "../../../entities/builtMap/Filter";
 // import des services
-import { dcartDataSource } from "../../dataSource/dataSource";
-import { handleError } from "../../utils/errorHandler/errorHandler";
+import { dcartDataSource } from "../../../dataSource/dataSource";
+import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
-import type { FilterType } from "../../entities/Filter";
 
 export const filterController = {
 	// récupère tous les filtres

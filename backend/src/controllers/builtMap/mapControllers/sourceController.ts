@@ -1,19 +1,19 @@
 // import des entités
-import { MapContent } from "../../entities/MapContent";
+import { MapContent } from "../../../entities/builtMap/MapContent";
 // import des services
-import { dcartDataSource, mapDataSource } from "../../dataSource/dataSource";
+import { dcartDataSource, mapDataSource } from "../../../dataSource/dataSource";
 import {
 	getAttestationsBySourceId,
 	getSourcesQueryWithDetails,
 	getSourcesQueryWithoutDetails,
-} from "../../utils/query/sourceQueryString";
+} from "../../../utils/query/sourceQueryString";
 import {
 	getQueryStringForLocalisationFilter,
 	getQueryStringForDateFilter,
 	getQueryStringForIncludedElements,
 	getQueryStringForLanguage,
-} from "../../utils/query/filtersQueryString";
-import { handleError } from "../../utils/errorHandler/errorHandler";
+} from "../../../utils/query/filtersQueryString";
+import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 

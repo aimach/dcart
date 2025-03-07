@@ -1,8 +1,8 @@
 // import des entités
-import { Category } from "../../entities/Category";
+import { Category } from "../../../entities/builtMap/Category";
 // import des services
-import { dcartDataSource } from "../../dataSource/dataSource";
-import { handleError } from "../../utils/errorHandler/errorHandler";
+import { dcartDataSource } from "../../../dataSource/dataSource";
+import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 
