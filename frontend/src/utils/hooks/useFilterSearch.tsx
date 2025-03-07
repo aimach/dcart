@@ -1,8 +1,8 @@
 // import des bibliothèques
 import { useState, useMemo, useCallback } from "react";
 // import des services
-import { useMapStore } from "../stores/mapStore";
-import { getAllPointsByMapId } from "../api/getRequests";
+import { useMapStore } from "../stores/builtMap/mapStore";
+import { getAllPointsByMapId } from "../api/builtMap/getRequests";
 // import des types
 import type { UserFilterType } from "../types/filterTypes";
 

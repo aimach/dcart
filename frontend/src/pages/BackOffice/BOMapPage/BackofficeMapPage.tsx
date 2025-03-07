@@ -5,7 +5,7 @@ import ButtonComponent from "../../../components/common/button/ButtonComponent";
 // import des hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
-import { getAllMapsInfos } from "../../../utils/api/getRequests";
+import { getAllMapsInfos } from "../../../utils/api/builtMap/getRequests";
 // import des types
 import type { MapType } from "../../../utils/types/mapTypes";
 // import du style

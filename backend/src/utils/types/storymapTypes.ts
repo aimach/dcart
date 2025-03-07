@@ -1,7 +1,7 @@
 // import des entités
-import type { Point } from "../entities/storymap/Point";
-import type { Block } from "../entities/storymap/Block";
-import type { Storymap } from "../entities/storymap/Storymap";
+import type { Point } from "../../entities/storymap/Point";
+import type { Block } from "../../entities/storymap/Block";
+import type { Storymap } from "../../entities/storymap/Storymap";
 
 interface StorymapInterface extends Storymap {
 	blocks: Block[] | BlockInterface[];

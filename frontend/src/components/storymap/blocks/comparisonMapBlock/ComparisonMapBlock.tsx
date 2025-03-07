@@ -1,0 +1,98 @@
+// import des bibliothèques
+import { useEffect } from "react";
+import { v4 as uuidv4 } from "uuid";
+import L from "leaflet";
+// import du context
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import des services
+import {
+	getIcon,
+	getLittleCircleIcon,
+} from "../../../../utils/functions/icons";
+// import des types
+import type {
+	BlockContentType,
+	GroupedTyped,
+} from "../../../../utils/types/storymapTypes";
+// import du style
+import style from "./comparisonMapBloc.module.scss";
+import "leaflet/dist/leaflet.css";
+import "leaflet-side-by-side";
+
+interface ComparisonMapBlockProps {
+	blockContent: BlockContentType;
+}
+
+const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
+	// on récupère le language
+	const { language } = useTranslation();
+
+	const mapName = `comparison-map-${uuidv4}`;
+
+	useEffect(() => {
+		const position: L.LatLngExpression = [33.39, 35.55];
+		const comparisonMap = L.map(mapName, {
+			scrollWheelZoom: false,
+		}).setView(position, 6);
+
+		comparisonMap.createPane("left");
+		comparisonMap.createPane("right");
+
+		const attribution =
+			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+
+		const rightLayer = L.tileLayer(blockContent.content2_en, {
+			pane: "right",
+			attribution,
+		}).addTo(comparisonMap);
+
+		const leftLayer = L.tileLayer(blockContent.content2_fr, {
+			pane: "left",
+			attribution,
+		}).addTo(comparisonMap);
+
+		// on créé les points sur chaque pane
+		(blockContent.groupedPoints as GroupedTyped[]).map((point) => {
+			// on créé une icone adaptée au nombre de sources
+			const icon = getIcon(
+				point.attestations.length,
+				style,
+				point.pane === "left" ? "red" : "blue",
+				point.attestations.length.toString(),
+			);
+			L.marker([point.latitude, point.longitude], {
+				pane: point.pane,
+				shadowPane: point.pane,
+				icon: icon,
+			})
+				.addTo(comparisonMap)
+				.bindPopup(point.pane);
+		});
+
+		// on créé un point miniature sur le pane opposé
+		(blockContent.groupedPoints as GroupedTyped[]).map((point) => {
+			L.marker([point.latitude, point.longitude], {
+				pane: point.pane === "left" ? "right" : "left",
+				shadowPane: point.pane === "left" ? "right" : "left",
+				icon: getLittleCircleIcon(style),
+			}).addTo(comparisonMap);
+		});
+
+		L.control.sideBySide(leftLayer, rightLayer).addTo(comparisonMap);
+
+		return () => {
+			comparisonMap.remove();
+		};
+	}, [blockContent.groupedPoints, mapName]);
+
+	return (
+		<>
+			<div id={mapName} />
+			{blockContent.content1_fr && (
+				<p>{blockContent[`content1_${language}`]}</p>
+			)}
+		</>
+	);
+};
+
+export default ComparisonMapBlock;

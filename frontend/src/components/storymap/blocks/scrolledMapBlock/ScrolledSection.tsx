@@ -1,0 +1,50 @@
+// import de bibliothèques
+import { Scrollama, Step } from "react-scrollama";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import des types
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+// import du style
+import style from "./scrolledMapBlock.module.scss";
+
+interface ScrolledSectionProps {
+	onStepEnter: ({ data }: { data: string }) => void;
+	steps: BlockContentType[];
+	currentPoint: string | number;
+}
+
+const ScrolledSection = ({
+	onStepEnter,
+	steps,
+	currentPoint,
+}: ScrolledSectionProps) => {
+	const { language } = useTranslation();
+
+	return (
+		<>
+			<Scrollama offset={0.2} onStepEnter={onStepEnter}>
+				{(steps as BlockContentType[]).map((point) => {
+					return (
+						<Step data={point.id} key={point.id + (point.position as number)}>
+							<div
+								id={point.id.toString()}
+								style={{
+									opacity:
+										(currentPoint as number) === (point.id as number) ? 1 : 0.2,
+								}}
+							>
+								<div className={style.infoElement}>
+									<p>{point[`content1_${language}`]}</p>
+									<p>{point[`content2_${language}`]}</p>
+								</div>
+							</div>
+						</Step>
+					);
+				})}
+			</Scrollama>
+			<div className={style.spaceBottom} />
+		</>
+	);
+};
+
+export default ScrolledSection;

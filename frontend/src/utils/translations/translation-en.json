@@ -35,7 +35,8 @@
 		"greek": "Greek",
 		"semitic": "Semitic",
 		"previous": "Previous",
-		"next": "Next"
+		"next": "Next",
+		"back": "Back"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
@@ -43,7 +44,10 @@
 		"chooseRegion": "a region",
 		"chooseDivinity": "a divinity",
 		"postDate": "start date",
-		"anteDate": "end date"
+		"anteDate": "end date",
+		"yes": "yes",
+		"no": "no",
+		"deleteBlockText": "Are you sure you want to delete this block?"
 	},
 	"mapPage": {
 		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
@@ -80,6 +84,45 @@
 			"epithetFilter": "Epithet filter",
 			"noFilter": "I don't want to add a filter",
 			"create": "Create"
+		},
+		"storymapFormPage": {
+			"preview": "Preview",
+			"chooseBlock": "Choose a block",
+			"textContent": "Text content and layout",
+			"mediaContent": "Media content",
+			"mapsContent": "Maps content",
+			"types": {
+				"title": "Title",
+				"subtitle": "Subtitle",
+				"text": "Text",
+				"image": "Image",
+				"link": "Link",
+				"quote": "Quote",
+				"layout": "Text and image",
+				"simple_map": "Simple map",
+				"comparison_map": "Comparison map",
+				"scroll_map": "Scroll map",
+				"separator": "Separator"
+			},
+			"form": {
+				"create": "Create",
+				"edit": "Edit",
+				"title": "the title",
+				"subtitle": "the subtitle",
+				"text": "the text",
+				"image": "the image",
+				"link": "the link",
+				"quote": "the quote",
+				"layout": "layout for text and image",
+				"simple_map": "the simple map",
+				"comparison_map": "the comparison map",
+				"scroll_map": "the scroll map",
+				"separator": "the separator",
+				"step": "the step",
+				"csv": "Add a CSV file with map markers",
+				"forLeftPane": "for the left pane",
+				"forRightPane": "for the right pane"
+			}
 		}
 	}
 }

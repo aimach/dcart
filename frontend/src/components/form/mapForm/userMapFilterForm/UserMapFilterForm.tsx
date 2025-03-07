@@ -6,18 +6,18 @@ import NavigationButtonComponent from "../navigationButton/NavigationButtonCompo
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
+import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
-import { getUserFilters } from "../../../../utils/api/getRequests";
+import { getUserFilters } from "../../../../utils/api/builtMap/getRequests";
+import {
+	addFiltersToMap,
+	createNewMap,
+} from "../../../../utils/api/builtMap/postRequests";
 import {
 	alreadyTwoFiltersChecked,
 	getFilterLabel,
 	noFilterChecked,
 } from "../../../../utils/functions/filter";
-import {
-	addFiltersToMap,
-	createNewMap,
-} from "../../../../utils/api/postRequests";
 // import des types
 import type { FilterType } from "../../../../utils/types/filterTypes";
 import type { MapInfoType } from "../../../../utils/types/mapTypes";

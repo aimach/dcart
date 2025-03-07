@@ -1,0 +1,16 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.imageSection {
+    @include m.flexbox(flex, column, nowrap, center, center);
+    gap: v.$font-space-l;
+
+    img {
+        max-height: 70vh;
+        max-width: 40vw;
+    }
+
+    p {
+        font-style: italic;
+    }
+}

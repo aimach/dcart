@@ -86,4 +86,26 @@ const getIcon = (
 	return getLittleIcon(style, customClassName, content);
 };
 
-export { getIcon };
+const getLittleCircleIcon = (style: CSSModuleClasses) => {
+	return L.divIcon({
+		className: style.littleCircle,
+		iconSize: [8, 8], // Dimensions du conteneur
+		iconAnchor: [4, 4], // Centre du marqueur
+	});
+};
+
+// utilisée pour définir la couleur du background pour les markers en fonction du nombre de sources
+const getBackGroundColorClassName = (sourcesNb: number) => {
+	if (sourcesNb < 10) {
+		return "lightBackgroundColor";
+	}
+	if (sourcesNb >= 10 && sourcesNb < 50) {
+		return "mediumBackgroundColor";
+	}
+	if (sourcesNb >= 50) {
+		return "darkBackgroundColor";
+	}
+	return "lightBackgroundColor";
+};
+
+export { getIcon, getBackGroundColorClassName, getLittleCircleIcon };

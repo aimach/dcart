@@ -1,0 +1,8 @@
+.titleContainer {
+    @include m.flexbox(flex, row, nowrap, flex-start, center);
+    gap: v.$space-s;
+
+    >h4 {
+        font-size: v.$font-size-m;
+    }
+}

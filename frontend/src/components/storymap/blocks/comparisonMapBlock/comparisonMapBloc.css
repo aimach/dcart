@@ -1,0 +1,11 @@
+/* cette classe est INDISPENSABLE pour afficher la carte (avoir au minmum la height de défini) */
+
+[id*="comparison-map-"] {
+	height: 70vh;
+	width: 80vw;
+}
+
+.leaflet-container {
+	height: 70vh;
+	width: 80vw;
+}

@@ -6,7 +6,7 @@ import NavigationButtonComponent from "../navigationButton/NavigationButtonCompo
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
+import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 // import des types
