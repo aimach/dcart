@@ -38,6 +38,27 @@
     cursor: pointer;
     color: #333;
   }
+
+  &CustomContentContainer {
+    @include m.flexbox(flex, column, nowrap, flex-start, center);
+    gap: v.$space-s;
+
+    .buttonContainer {
+      @include m.flexbox(flex, row, nowrap, flex-start, center);
+      gap: v.$space-s;
+
+      >button:first-child {
+        width: 100px;
+        @include m.buttonStyle(rgb(79, 148, 79), white);
+      }
+
+      >button:last-child {
+        width: 100px;
+        @include m.buttonStyle(rgb(255, 84, 84), white);
+      }
+
+    }
+  }
 }
 
 .demoModal {
