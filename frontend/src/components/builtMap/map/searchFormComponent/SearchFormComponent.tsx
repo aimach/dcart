@@ -120,7 +120,6 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 
 	// fonction pour gérer le changement des valeurs du select
 	const handleChange = (key: string, value: MultiValue<OptionType>) => {
-		console.log(key, value);
 		handleMultiSelectChange(
 			key,
 			value,

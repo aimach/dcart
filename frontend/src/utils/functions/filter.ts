@@ -200,7 +200,7 @@ const getSelectDefaultValues = (
 
 const handleMultiSelectChange = (
 	key: string,
-	selectedOptions: MultiValue<OptionType> | SingleValue<OptionType>,
+	selectedOptions: MultiValue<OptionType>,
 	setUserFilters: (filters: UserFilterType) => void,
 	userFilters: UserFilterType,
 	setAfterValue: (value: OptionType) => void,
@@ -217,11 +217,11 @@ const handleMultiSelectChange = (
 		});
 	}
 	if (key === "post") {
-		setAfterValue(selectedOptions as OptionType);
+		setAfterValue(selectedOptions[0]);
 		// on met à jour les userFilters au moment du submit pour éviter de modifier le filtre temporel (qui est visible)
 	}
 	if (key === "ante") {
-		setBeforeValue(selectedOptions as OptionType);
+		setBeforeValue(selectedOptions[0]);
 		// on met à jour les userFilters au moment du submit pour éviter de modifier le filtre temporel (qui est visible)
 	}
 };
