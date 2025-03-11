@@ -1,7 +1,7 @@
 import type { FormType } from "./formTypes";
 
 type StorymapType = {
-	id: number;
+	id: string;
 	title_en: string;
 	title_fr: string;
 	description_en: string;

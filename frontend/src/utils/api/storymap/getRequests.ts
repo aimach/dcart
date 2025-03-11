@@ -99,6 +99,30 @@ const deleteBlock = async (blockId: string) => {
 	}
 };
 
+/**
+ * Fonction de suppression d'une carte
+ * @param mapId  - l'id de la carte à supprimer
+ */
+const deleteMap = async (mapId: string) => {
+	try {
+		await apiClient.delete(`/dcart/maps/${mapId}`);
+	} catch (error) {
+		console.error("Erreur lors de la suppression de la carte :", error);
+	}
+};
+
+/**
+ * Fonction de suppression d'une storymap
+ * @param storymapId  - l'id de la storymap à supprimer
+ */
+const deleteStorymap = async (storymapId: string) => {
+	try {
+		await apiClient.delete(`/storymap/storymap/${storymapId}`);
+	} catch (error) {
+		console.error("Erreur lors de la suppression de la storymap :", error);
+	}
+};
+
 export {
 	getStorymapInfosAndBlocks,
 	getAllStorymapCategories,
@@ -106,4 +130,6 @@ export {
 	updateBlocksPosition,
 	getBlockInfos,
 	deleteBlock,
+	deleteMap,
+	deleteStorymap,
 };

@@ -159,6 +159,19 @@ const getAllPointsForDemoMap = async (attestationIds: string) => {
 };
 
 /**
+ * Récupère les informations de toutes les cartes qui sont actives
+ * @returns {Promise} - Toutes les informations des cartes actives
+ */
+const getAllStorymapsInfos = async () => {
+	try {
+		const response = await apiClient.get("/storymap/storymap/all");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des cartes :", error);
+	}
+};
+
+/**
  * Récupère toutes les informations d'une carte à partir de son id
  * @param {string} mapId - L'id de la carte
  * @returns {Promise | string} - Les informations de la carte ou une string "exploration"
@@ -215,6 +228,7 @@ export {
 	getAllMapsInfosFromCategoryId,
 	getAllPointsByMapId,
 	getAllPointsForDemoMap,
+	getAllStorymapsInfos,
 	getOneMapInfos,
 	getTimeMarkers,
 	getUserFilters,

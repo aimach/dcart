@@ -12,3 +12,6 @@ mapRoutes.get("/:mapId", dcartControllers.getMapContent);
 
 // créer une nouvelle carte
 mapRoutes.post("/", validateMapContentBody, dcartControllers.createMap);
+
+// supprimer carte
+mapRoutes.delete("/:mapId", dcartControllers.deleteMap);

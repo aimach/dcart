@@ -16,3 +16,9 @@ storymapContentRoutes.put(
 	"/:storymapId",
 	storymapContentControllers.updateStorymap,
 );
+
+// supprime une storymap
+storymapContentRoutes.delete(
+	"/:storymapId",
+	storymapContentControllers.deleteStorymap,
+);

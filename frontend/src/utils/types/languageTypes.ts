@@ -50,6 +50,8 @@ type LanguageObject = {
 		yes: string;
 		no: string;
 		deleteBlockText: string;
+		deteleStorymapText: string;
+		deteleMapText: string;
 	};
 	mapPage: {
 		introduction: string;
