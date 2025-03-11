@@ -87,7 +87,7 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 
 	return (
 		<div className="demo-map" id="demo-map">
-			<section className="leaflet-container">
+			<section className="demo-leaflet-container">
 				{showModal && (
 					<ModalComponent isDemo={true}>
 						{mapInfos && (

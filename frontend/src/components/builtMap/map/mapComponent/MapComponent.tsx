@@ -7,6 +7,7 @@ import {
 	ZoomControl,
 } from "react-leaflet";
 import { v4 as uuidv4 } from "uuid";
+import { useParams } from "react-router";
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
 import ModalComponent from "../../../common/modal/ModalComponent";
@@ -33,7 +34,6 @@ import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 // import des images
 import delta from "../../../../assets/delta.png";
-import { useParams } from "react-router";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -128,7 +128,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
-			<div className="map" id="map">
+			<div className="built-map" id="built-map">
 				<section className="leaflet-container">
 					{isModalOpen && (
 						<ModalComponent

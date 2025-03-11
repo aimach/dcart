@@ -1,6 +1,7 @@
 /* cette classe est INDISPENSABLE pour afficher la carte (avoir au minmum la height de défini) */
 
-.leaflet-container {
+/* Spécificer l'id de la carte permet de s'assurer que ça ne s'applique que container leaflet de cette carte */
+#built-map .leaflet-container {
 	height: calc(100vh - 60px - 50px - 20px);
 	/* hauteur totale - 60px de mainHeader - 50px de mapHeader - 20px pour laisser la place au filtre du temps */
 }
