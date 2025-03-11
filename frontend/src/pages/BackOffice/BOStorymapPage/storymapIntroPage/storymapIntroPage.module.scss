@@ -1,0 +1,6 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.storymapIntroContainer {
+    @include m.flexbox(flex, column, nowrap, center, center);
+}

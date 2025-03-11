@@ -18,6 +18,9 @@ import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
 // import du style
 import "./index.css";
+import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
+import StorymapBuilderPage from "./pages/BackOffice/BOStorymapPage/storymapBuilder/StorymapBuilderPage.tsx";
+import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -35,6 +38,12 @@ if (rootElement) {
 									<Route path="map/:mapId" element={<MapPage />} />
 								</Route>
 							</Route>
+							<Route path="storymaps/categories">
+								<Route index element={<CategoryMenuPage />} />
+								<Route path=":categoryId">
+									<Route path="storymaps/:mapId" element={<MapPage />} />
+								</Route>
+							</Route>
 						</Route>
 						<Route path="authentification" element={<AuthentificationPage />} />
 						<Route path="backoffice" element={<ProtectedLayout />}>
@@ -43,7 +52,19 @@ if (rootElement) {
 								<Route index element={<BackofficeMapPage />} />
 								<Route path="create" element={<BOMapFormPage />} />
 							</Route>
-							<Route path="storymaps" element={<BackofficeStorymapPage />} />
+							<Route path="storymaps">
+								<Route index element={<BackofficeStorymapPage />} />
+								<Route path="create" element={<StorymapIntroPage />} />
+								<Route
+									path="build/:storymapId"
+									element={<StorymapBuilderPage />}
+								/>
+								<Route
+									path="edit/:storymapId"
+									element={<StorymapIntroPage />}
+								/>
+								<Route path="view/:storymapId" element={<StorymapPage />} />
+							</Route>
 							<Route
 								path="translation"
 								element={<BackofficeTranslationPage />}

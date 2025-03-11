@@ -14,7 +14,10 @@ export const dcartDataSource = new DataSource({
 	database: process.env.DCART_DB_NAME,
 	synchronize: true, // Crée automatiquement les tables
 	logging: false, // Active les logs pour le debug
-	entities: [`${__dirname}/../entities/*.ts`],
+	entities: [
+		`${__dirname}/../entities/builtMap/*.ts`,
+		`${__dirname}/../entities/storymap/*.ts`,
+	],
 });
 
 export const mapDataSource = new DataSource({

@@ -1,0 +1,18 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.quoteBlockContainer {
+    width: 70vw;
+    background-color: v.$color-neutral-80;
+
+    p:first-child {
+        font-style: italic;
+        font-size: v.$font-size-xxl;
+    }
+
+    p {
+        text-align: justify;
+        margin: v.$font-space-xxxxl;
+        line-height: v.$font-space-xxxl;
+    }
+}

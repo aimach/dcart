@@ -2,12 +2,12 @@
 import { useEffect } from "react";
 // import des composants
 import IntroForm from "../../../components/form/mapForm/introForm/IntroForm";
-import DemoMapComponent from "../../../components/map/demoMapComponent/DemoMapComponent";
+import DemoMapComponent from "../../../components/builtMap/map/demoMapComponent/DemoMapComponent";
 import UploadForm from "../../../components/form/mapForm/uploadForm/UploadForm";
 import UserMapFilterForm from "../../../components/form/mapForm/userMapFilterForm/UserMapFilterForm";
 // import des services
 import { firstStepInputs } from "../../../utils/forms/mapInputArray";
-import { useMapFormStore } from "../../../utils/stores/mapFormStore";
+import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 // import du style
 import style from "./BOMapFormPage.module.scss";
 

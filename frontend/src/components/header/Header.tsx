@@ -6,7 +6,6 @@ import ImageWithLink from "../common/ImageWithLink";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import des types
-import type { Language } from "../../utils/types/languageTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./header.module.scss";

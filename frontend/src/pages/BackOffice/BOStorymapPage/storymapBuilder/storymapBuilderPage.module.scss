@@ -1,0 +1,53 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.storymapBuilderContainer {
+    width: 100vw;
+    height: 100%;
+    @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
+
+    .storymapBuilderPanelSection {
+        flex: 1;
+        min-height: calc(100vh - 60px);
+        height: 100%;
+        overflow-y: scroll;
+        background-color: v.$color-grullo-light;
+        padding-top: v.$space-s;
+
+        >div {
+            @include m.flexbox(flex, column, nowrap, flex-start, center);
+            gap: v.$space-s;
+
+            >div {
+                border: v.$border-width-m solid v.$color-umber;
+                width: 90%;
+                padding: 10px;
+                background: v.$color-neutral-100;
+                border-radius: v.$border-radius-rounded;
+                cursor: grab;
+
+
+
+                >p {
+                    font-size: v.$font-size-s;
+                }
+            }
+        }
+    }
+
+    .storymapBuilderFormSection {
+        flex: 5;
+        height: 100%;
+        overflow-y: scroll;
+
+        >button {
+            @include m.buttonStyle(v.$color-umber, v.$color-neutral-100);
+            @include m.flexbox(flex, row, nowrap, flex-start, center);
+        }
+
+        >h3 {
+            text-align: center;
+            font-size: v.$font-size-xxxl;
+        }
+    }
+}

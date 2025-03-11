@@ -1,8 +1,0 @@
-@use '../../../styles/mixin' as m;
-@use '../../../styles/variable' as v;
-
-.rangeContainer {
-    display: flex;
-    flex-direction: column;
-    padding: 0 v.$space-xl;
-}

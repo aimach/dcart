@@ -35,7 +35,8 @@
 		"greek": "Grec",
 		"semitic": "Sémitique",
 		"previous": "Précédent",
-		"next": "Suivant"
+		"next": "Suivant",
+		"back": "Retour"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",
@@ -43,7 +44,10 @@
 		"chooseRegion": "la région",
 		"chooseDivinity": "la divinité",
 		"postDate": "date début",
-		"anteDate": "date fin"
+		"anteDate": "date fin",
+		"yes": "oui",
+		"no": "non",
+		"deleteBlockText": "Êtes-vous sûr de vouloir supprimer ce bloc ?"
 	},
 	"mapPage": {
 		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
@@ -80,6 +84,45 @@
 			"epithetFilter": "Filtre avec les épithètes",
 			"noFilter": "Je ne souhaite pas ajouter de filtre",
 			"create": "Créer"
+		},
+		"storymapFormPage": {
+			"preview": "Aperçu",
+			"chooseBlock": "Choisissez un bloc",
+			"textContent": "Contenu textuel et de mise en page",
+			"mediaContent": "Contenu multimédia",
+			"mapsContent": "Contenu cartographique",
+			"types": {
+				"title": "Titre",
+				"subtitle": "Sous-titre",
+				"text": "Texte",
+				"image": "Image",
+				"link": "Lien",
+				"quote": "Citation",
+				"layout": "Texte et image",
+				"simple_map": "Carte simple",
+				"comparison_map": "Carte de comparaison",
+				"scroll_map": "Carte déroulante",
+				"separator": "Séparateur"
+			},
+			"form": {
+				"create": "Créer",
+				"edit": "Modifier",
+				"title": "le titre",
+				"subtitle": "le sous-titre",
+				"text": "le texte",
+				"image": "l'image",
+				"link": "le lien",
+				"quote": "la citation",
+				"layout": "un ensemble texte et image",
+				"simple_map": "la carte simple",
+				"comparison_map": "la carte de comparaison",
+				"scroll_map": "la carte déroulante",
+				"separator": "un séparateur",
+				"step": "l'étape",
+				"csv": "Ajouter un CSV avec les points",
+				"forLeftPane": "pour le panel de gauche",
+				"forRightPane": "pour le panel de droite"
+			}
 		}
 	}
 }

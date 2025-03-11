@@ -7,9 +7,10 @@ import cookieParser from "cookie-parser";
 // import des dataSources
 import { dcartDataSource, mapDataSource } from "./dataSource/dataSource";
 // import des routes
-import { dcartRoutes } from "./routes/dcartRoutes";
-import { mapRoutes } from "./routes/mapRoutes";
+import { dcartRoutes } from "./routes/builtMap/dcartRoutes";
+import { mapRoutes } from "./routes/builtMap/mapRoutes";
 import { authRoutes } from "./routes/authRoutes";
+import { storymapRoutes } from "./routes/storymap";
 
 // on charge les variables d'environnement
 dotenv.config();
@@ -47,6 +48,7 @@ mapDataSource
 app.use("/dcart", dcartRoutes);
 app.use("/map", mapRoutes);
 app.use("/auth", authRoutes);
+app.use("/storymap", storymapRoutes);
 
 // Démarrage du serveur
 app.listen(PORT, () =>

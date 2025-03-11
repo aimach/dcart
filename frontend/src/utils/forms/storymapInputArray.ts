@@ -1,0 +1,513 @@
+// import des types
+import type { InputType } from "../types/formTypes";
+
+const tileOptions = [
+	{
+		label: "Consortium of Ancient World Mappers",
+		value:
+			"https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png",
+	},
+	{
+		label: "Open Street Map Basic",
+		value: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
+	},
+	{
+		label: "Stamen Toner Background",
+		value:
+			"https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}{r}.png",
+	},
+	{
+		label: "Stamen Watercolor",
+		value:
+			"https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.png",
+	},
+];
+
+const storymapInputs: InputType[] = [
+	{
+		label_fr: "Titre en français",
+		label_en: "Title in french",
+		name: "title_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en français est requis",
+				en: "The title in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Titre en anglais",
+		label_en: "Title in english",
+		name: "title_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en anglais est requis",
+				en: "The title in english is required",
+			},
+		},
+	},
+	{
+		label_fr: "Description en français",
+		label_en: "Description in french",
+		name: "description_fr",
+		type: "text",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Description en anglais",
+		label_en: "Description in english",
+		name: "description_en",
+		type: "text",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "URL de l'image",
+		label_en: "Image URL",
+		name: "image_url",
+		type: "text",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Auteur",
+		label_en: "Author",
+		name: "author",
+		type: "text",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Date de publication",
+		label_en: "Publication date",
+		name: "publishedAt",
+		type: "text",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Catégorie de la storymap",
+		label_en: "Storymap category",
+		name: "category_id",
+		type: "select",
+		options: [],
+		required: {
+			value: true,
+			message: {
+				fr: "La catégorie de la storymap est requise",
+				en: "The storymap category is required",
+			},
+		},
+	},
+];
+
+const titleInput: InputType[] = [
+	{
+		label_fr: "Titre en français",
+		label_en: "Title in french",
+		name: "content1_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en français est requis",
+				en: "The title in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Titre en anglais",
+		label_en: "Title in english",
+		name: "content1_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en anglais est requis",
+				en: "The title in english is required",
+			},
+		},
+	},
+];
+
+const subtitleInputs: InputType[] = [
+	{
+		label_fr: "Titre en français",
+		label_en: "Title in french",
+		name: "content1_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en français est requis",
+				en: "The title in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Titre en anglais",
+		label_en: "Title in english",
+		name: "content1_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en anglais est requis",
+				en: "The title in english is required",
+			},
+		},
+	},
+];
+
+const textInputs: InputType[] = [
+	{
+		label_fr: "Texte en français",
+		label_en: "Texte in french",
+		name: "content1_fr",
+		type: "wysiwyg",
+		required: {
+			value: true,
+			message: {
+				fr: "Le texte en français est requis",
+				en: "The text in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Texte en anglais",
+		label_en: "Text in english",
+		name: "content1_en",
+		type: "wysiwyg",
+		required: {
+			value: true,
+			message: {
+				fr: "Le texte en anglais est requis",
+				en: "The text in english is required",
+			},
+		},
+	},
+];
+
+const linkInputs: InputType[] = [
+	{
+		label_fr: "Lien",
+		label_en: "Link",
+		name: "content1_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: { fr: "Le lien est requis", en: "The link is required" },
+		},
+	},
+];
+
+const quoteInputs: InputType[] = [
+	{
+		label_fr: "Citation en français",
+		label_en: "Quote in french",
+		name: "content1_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "La citation en français est requise",
+				en: "The quote in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Citation en anglais",
+		label_en: "Quote in english",
+		name: "content1_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "La citation en anglais est requise",
+				en: "The quote in english is required",
+			},
+		},
+	},
+	{
+		label_fr: "Source en français",
+		label_en: "Source in french",
+		name: "content2_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "La source en français est requise",
+				en: "The source in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Source en anglais",
+		label_en: "Source in english",
+		name: "content2_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "La source en anglais est requise",
+				en: "The source in english is required",
+			},
+		},
+	},
+];
+
+const imageInputs: InputType[] = [
+	{
+		label_fr: "Lien de l'image",
+		label_en: "Link of the image",
+		name: "content1_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le lien de l'image est requis",
+				en: "The link of the image is required",
+			},
+		},
+	},
+	{
+		label_fr: "Légende de l'image en français",
+		label_en: "Image legend in french",
+		name: "content2_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "La légende de l'image en français est requise",
+				en: "The image legend in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Légende de l'image en anglais",
+		label_en: "Image legend in english",
+		name: "content2_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "La légende de l'image en anglais est requise",
+				en: "The image legend in english is required",
+			},
+		},
+	},
+];
+
+const simpleMapInputs: InputType[] = [
+	{
+		label_fr: "Nom de la carte en français",
+		label_en: "Map name in french",
+		name: "content1_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le nom de la carte en français est requis",
+				en: "The map name in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Nom de la carte en anglais",
+		label_en: "Map name in english",
+		name: "content1_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le nom de la carte en anglais est requis",
+				en: "The map name in english is required",
+			},
+		},
+	},
+	{
+		label_fr: "Fond de carte",
+		label_en: "Map background tiles",
+		name: "content2_fr",
+		type: "select",
+		options: tileOptions,
+		required: {
+			value: true,
+			message: {
+				fr: "Le fond de carte est requis",
+				en: "The map background tiles are required",
+			},
+		},
+	},
+];
+
+const comparisonMapInputs: InputType[] = [
+	{
+		label_fr: "Nom de la carte en français",
+		label_en: "Map name in french",
+		name: "content1_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le nom de la carte en français est requis",
+				en: "The map name in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Nom de la carte en anglais",
+		label_en: "Map name in english",
+		name: "content1_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le nom de la carte en anglais est requis",
+				en: "The map name in english is required",
+			},
+		},
+	},
+	{
+		label_fr: "Fond de carte pour le panel de gauche",
+		label_en: "Map background tiles for the left panel",
+		name: "content2_fr",
+		type: "select",
+		options: tileOptions,
+		required: {
+			value: true,
+			message: {
+				fr: "Le fond de carte est requis",
+				en: "The map background tiles are required",
+			},
+		},
+	},
+	{
+		label_fr: "Fond de carte pour le panel de droite",
+		label_en: "Map background tiles for the right panel",
+		name: "content2_en",
+		type: "select",
+		options: tileOptions,
+		required: {
+			value: true,
+			message: {
+				fr: "Le fond de carte est requis",
+				en: "The map background tiles are required",
+			},
+		},
+	},
+];
+
+const scrollMapInputs: InputType[] = [
+	{
+		label_fr: "Nom de la carte en français",
+		label_en: "Map name in french",
+		name: "content1_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le nom de la carte en français est requis",
+				en: "The map name in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Nom de la carte en anglais",
+		label_en: "Map name in english",
+		name: "content1_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le nom de la carte en anglais est requis",
+				en: "The map name in english is required",
+			},
+		},
+	},
+	{
+		label_fr: "Fond de carte",
+		label_en: "Map background tiles",
+		name: "content2_fr",
+		type: "select",
+		options: tileOptions,
+		required: {
+			value: true,
+			message: {
+				fr: "Le fond de carte est requis",
+				en: "The map background tiles are required",
+			},
+		},
+	},
+];
+
+const stepInputs: InputType[] = [
+	{
+		label_fr: "Titre en français",
+		label_en: "Title in french",
+		name: "content1_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en français est requis",
+				en: "The title in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Titre en anglais",
+		label_en: "Title in english",
+		name: "content1_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en anglais est requis",
+				en: "The title in english is required",
+			},
+		},
+	},
+	{
+		label_fr: "Description en français",
+		label_en: "Description in french",
+		name: "content2_fr",
+		type: "text",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Description en anglais",
+		label_en: "Description in english",
+		name: "content2_en",
+		type: "text",
+		required: {
+			value: false,
+		},
+	},
+];
+
+export {
+	storymapInputs,
+	titleInput,
+	subtitleInputs,
+	textInputs,
+	linkInputs,
+	quoteInputs,
+	simpleMapInputs,
+	comparisonMapInputs,
+	scrollMapInputs,
+	stepInputs,
+	imageInputs,
+};

@@ -7,8 +7,8 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { getAllCategories } from "../../../../utils/api/getRequests";
-import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
+import { getAllCategories } from "../../../../utils/api/builtMap/getRequests";
+import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 // import des types
 import type { FieldErrors, SubmitHandler } from "react-hook-form";

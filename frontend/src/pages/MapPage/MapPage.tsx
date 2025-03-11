@@ -2,17 +2,17 @@
 import { useState, useEffect, useCallback } from "react";
 import { useParams } from "react-router";
 // import des composants
-import MapComponent from "../../components/map/mapComponent/MapComponent";
-import AsideContainer from "../../components/aside/asideContainer/AsideContainer";
-import AsideReducedMenuComponent from "../../components/aside/asideReducedMenu/AsideReducedMenuComponent";
+import MapComponent from "../../components/builtMap/map/mapComponent/MapComponent";
+import AsideContainer from "../../components/builtMap/aside/asideContainer/AsideContainer";
+import AsideReducedMenuComponent from "../../components/builtMap/aside/asideReducedMenu/AsideReducedMenuComponent";
 // import des services
 import {
 	getAllPointsByMapId,
 	getOneMapInfos,
-} from "../../utils/api/getRequests";
+} from "../../utils/api/builtMap/getRequests";
 import { useShallow } from "zustand/shallow";
-import { useMapStore } from "../../utils/stores/mapStore";
-import { useMapAsideMenuStore } from "../../utils/stores/mapAsideMenuStore";
+import { useMapStore } from "../../utils/stores/builtMap/mapStore";
+import { useMapAsideMenuStore } from "../../utils/stores/builtMap/mapAsideMenuStore";
 // import du style
 import style from "./mapPage.module.scss";
 

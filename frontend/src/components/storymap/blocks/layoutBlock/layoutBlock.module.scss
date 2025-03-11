@@ -1,0 +1,22 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.layoutSection {
+    width: 70vw;
+}
+
+.left {
+    section:first-of-type {
+        float: left;
+        margin-bottom: v.$space-s;
+        margin-right: v.$space-xl;
+    }
+}
+
+.right {
+    section:first-of-type {
+        float: right;
+        margin-bottom: v.$space-s;
+        margin-left: v.$space-xl;
+    }
+}

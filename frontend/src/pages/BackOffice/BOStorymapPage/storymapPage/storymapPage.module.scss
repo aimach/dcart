@@ -1,0 +1,11 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.storymapContainer {
+    display: flex;
+    flex-direction: column;
+    align-items: center;
+    justify-content: center;
+    padding: v.$font-space-xxxxl;
+    gap: v.$font-space-xxxl;
+}

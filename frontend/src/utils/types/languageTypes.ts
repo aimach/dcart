@@ -38,6 +38,7 @@ type LanguageObject = {
 		semitic: string;
 		previous: string;
 		next: string;
+		back: string;
 	};
 	modal: {
 		firstContent: string;
@@ -46,6 +47,9 @@ type LanguageObject = {
 		chooseDivinity: string;
 		postDate: string;
 		anteDate: string;
+		yes: string;
+		no: string;
+		deleteBlockText: string;
 	};
 	mapPage: {
 		introduction: string;
@@ -82,6 +86,45 @@ type LanguageObject = {
 			epithetFilter: string;
 			noFilter: string;
 			create: string;
+		};
+		storymapFormPage: {
+			preview: string;
+			chooseBlock: string;
+			textContent: string;
+			mediaContent: string;
+			mapsContent: string;
+			types: {
+				title: string;
+				subtitle: string;
+				text: string;
+				image: string;
+				link: string;
+				quote: string;
+				layout: string;
+				simple_map: string;
+				comparison_map: string;
+				scroll_map: string;
+				separator: string;
+			};
+			form: {
+				create: string;
+				edit: string;
+				title: string;
+				subtitle: string;
+				text: string;
+				image: string;
+				link: string;
+				quote: string;
+				layout: string;
+				simple_map: string;
+				comparison_map: string;
+				scroll_map: string;
+				separator: string;
+				step: string;
+				csv: string;
+				forLeftPane: string;
+				forRightPane: string;
+			};
 		};
 	};
 };

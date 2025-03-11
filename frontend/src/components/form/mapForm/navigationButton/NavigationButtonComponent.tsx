@@ -1,7 +1,7 @@
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { useMapFormStore } from "../../../../utils/stores/mapFormStore";
+import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 // import des types
 // import du style

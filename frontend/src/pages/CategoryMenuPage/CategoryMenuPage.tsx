@@ -1,5 +1,5 @@
 // import des composants
-import MapCategoryNav from "../../components/map/mapCategoryNav/MapCategoryNav";
+import MapCategoryNav from "../../components/builtMap/map/mapCategoryNav/MapCategoryNav";
 import TitleAndTextComponent from "../../components/common/titleAndText/TitleAndTextComponent";
 // import des hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
