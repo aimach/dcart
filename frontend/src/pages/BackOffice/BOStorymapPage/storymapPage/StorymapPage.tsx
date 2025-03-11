@@ -84,7 +84,9 @@ const StorymapPage = () => {
 	return (
 		storymapInfos && (
 			<>
-				<Link to={`/build/${storymapId}`}>Modifier la storymap</Link>
+				<Link to={`/backoffice/storymaps/build/${storymapId}`}>
+					Modifier la storymap
+				</Link>
 				<section className={style.storymapContainer}>
 					<StorymapIntroduction
 						introductionContent={storymapInfos as StorymapType}

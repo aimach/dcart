@@ -4,10 +4,11 @@
 .storymapBuilderContainer {
     width: 100vw;
     height: 100%;
-    @include m.flexbox(flex, row, nowrap, center, center);
+    @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
 
     .storymapBuilderPanelSection {
         flex: 1;
+        min-height: calc(100vh - 60px);
         height: 100%;
         overflow-y: scroll;
         background-color: v.$color-grullo-light;
@@ -37,7 +38,6 @@
     .storymapBuilderFormSection {
         flex: 5;
         height: 100%;
-        padding: v.$space-xl;
         overflow-y: scroll;
 
         >button {

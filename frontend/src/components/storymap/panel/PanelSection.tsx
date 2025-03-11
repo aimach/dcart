@@ -64,7 +64,9 @@ const PanelSection = ({ blockList, setBlockList }: PanelSectionProps) => {
 		blockList && (
 			<>
 				<div className={style.buttonContainer}>
-					<Link to={`/view/${(storymapInfos as StorymapType).id}`}>
+					<Link
+						to={`/backoffice/storymaps/view/${(storymapInfos as StorymapType).id}`}
+					>
 						<button type="button" className={style.previewButton}>
 							{translation[language].backoffice.storymapFormPage.preview}
 						</button>
@@ -73,7 +75,7 @@ const PanelSection = ({ blockList, setBlockList }: PanelSectionProps) => {
 				<div ref={setNodeRef}>
 					<div>
 						Introduction{" "}
-						<Link to={`/edit/${storymapId}`}>
+						<Link to={`/backoffice/storymaps/edit/${storymapId}`}>
 							<Pen size={20} style={{ cursor: "pointer" }} />
 						</Link>
 					</div>

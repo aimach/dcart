@@ -10,7 +10,7 @@ import type { BlockContentType } from "../../types/storymapTypes";
  */
 const getStorymapInfosAndBlocks = async (storymapId: string) => {
 	try {
-		const response = await apiClient.get(`/storymap/${storymapId}`);
+		const response = await apiClient.get(`/storymap/storymap/${storymapId}`);
 		return response.data;
 	} catch (error) {
 		console.error(
@@ -46,7 +46,7 @@ const getAllStorymapCategories = async () => {
  */
 const updateBlocksPosition = async (blocks: BlockContentType[]) => {
 	try {
-		await apiClient.put("/blocks/position/update", { blocks });
+		await apiClient.put("/storymap/blocks/position/update", { blocks });
 	} catch (error) {
 		console.error(
 			"Erreur lors de la mise à jour de la position des blocs :",
@@ -62,7 +62,7 @@ const updateBlocksPosition = async (blocks: BlockContentType[]) => {
  */
 const getBlockInfos = async (blockId: string) => {
 	try {
-		const response = await apiClient.get(`/blocks/${blockId}`);
+		const response = await apiClient.get(`/storymap/blocks/${blockId}`);
 		return response.data;
 	} catch (error) {
 		console.error(
@@ -80,7 +80,7 @@ const getBlockInfos = async (blockId: string) => {
  */
 const getAllBlockTypes = async () => {
 	try {
-		const response = await apiClient.get("/types/all");
+		const response = await apiClient.get("/storymap/types/all");
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des types de bloc :", error);
@@ -93,7 +93,7 @@ const getAllBlockTypes = async () => {
  */
 const deleteBlock = async (blockId: string) => {
 	try {
-		await apiClient.delete(`/blocks/${blockId}`);
+		await apiClient.delete(`/storymap/blocks/${blockId}`);
 	} catch (error) {
 		console.error("Erreur lors de la suppression du bloc :", error);
 	}

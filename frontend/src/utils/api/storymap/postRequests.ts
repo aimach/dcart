@@ -16,7 +16,7 @@ import type { blockType, parsedPointType } from "../../types/formTypes";
  */
 const createStorymap = async (body: storymapInputsType) => {
 	try {
-		const response = await apiClient("/storymap", {
+		const response = await apiClient("/storymap/storymap", {
 			method: "POST",
 			data: JSON.stringify(body),
 		});
@@ -34,7 +34,7 @@ const createStorymap = async (body: storymapInputsType) => {
  */
 const updateStorymap = async (body: storymapInputsType, storymapId: string) => {
 	try {
-		const response = await apiClient(`/storymap/${storymapId}`, {
+		const response = await apiClient(`/storymap/storymap/${storymapId}`, {
 			method: "PUT",
 			data: JSON.stringify(body),
 		});
@@ -54,7 +54,7 @@ const createBlock = async (body: blockType) => {
 		// ajout des clés manquantes avec une valeur null si elles ne sont pas complétées
 		const newBody = normalizeBody(body, requiredBlockKeys);
 
-		const response = await apiClient("/blocks", {
+		const response = await apiClient("/storymap/blocks", {
 			method: "POST",
 			data: JSON.stringify(newBody),
 		});
@@ -75,7 +75,7 @@ const updateBlock = async (body: blockType, blockId: string) => {
 		// ajout des clés manquantes avec une valeur null si elles ne sont pas complétées
 		const newBody = normalizeBody(body, requiredBlockKeys);
 
-		const response = await apiClient(`/blocks/${blockId}`, {
+		const response = await apiClient(`/storymap/blocks/${blockId}`, {
 			method: "PUT",
 			data: JSON.stringify(newBody),
 		});
@@ -115,7 +115,7 @@ const uploadParsedPointsForSimpleMap = async (
 			mapId = newMapInfos?.id;
 
 			// chargement des points
-			await apiClient(`/points/${mapId}`, {
+			await apiClient(`/storymap/points/${mapId}`, {
 				method: "POST",
 				data: JSON.stringify({ parsedPoints }),
 			});
@@ -134,12 +134,12 @@ const uploadParsedPointsForSimpleMap = async (
 			// si l'utilisateur a chargé des points
 			if (parsedPoints.length > 0) {
 				// suppressino des anciens points
-				await apiClient(`/points/${mapId}`, {
+				await apiClient(`/storymap/points/${mapId}`, {
 					method: "DELETE",
 				});
 
 				// chargement des nouveaux points
-				await apiClient(`/points/${mapId}`, {
+				await apiClient(`/storymap/points/${mapId}`, {
 					method: "POST",
 					data: JSON.stringify({ parsedPoints }),
 				});
@@ -182,7 +182,7 @@ const uploadParsedPointsForComparisonMap = async (
 
 			// chargement des points pour les 2 panels
 			for (const parsedPoints of parsedPointsWithPanel) {
-				await apiClient(`/points/${mapId}`, {
+				await apiClient(`/storymap/points/${mapId}`, {
 					method: "POST",
 					data: JSON.stringify({ parsedPoints }),
 				});
@@ -204,12 +204,15 @@ const uploadParsedPointsForComparisonMap = async (
 			for (const parsedPoints of parsedPointsWithPanel) {
 				// s'il y a des points chargés, supression des anciens
 				if (parsedPoints.length > 0) {
-					await apiClient(`/points/${mapId}?pane=${parsedPoints[0].pane}`, {
-						method: "DELETE",
-					});
+					await apiClient(
+						`/storymap/points/${mapId}?pane=${parsedPoints[0].pane}`,
+						{
+							method: "DELETE",
+						},
+					);
 
 					// chargement des nouveaux points
-					await apiClient(`/points/${mapId}`, {
+					await apiClient(`/storymap/points/${mapId}`, {
 						method: "POST",
 						data: JSON.stringify({ parsedPoints }),
 					});

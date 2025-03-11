@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useState, useCallback } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate, useParams, useLocation } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
@@ -23,6 +23,7 @@ import type {
 	storymapInputsType,
 	allInputsType,
 } from "../../../../utils/types/formTypes";
+import { createCategoryOptions } from "../../../../utils/functions/storymap";
 
 /**
  * Formulaire d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.
@@ -43,43 +44,24 @@ const IntroductionForm = () => {
 	const [inputs, setInputs] = useState<InputType[]>(storymapInputs);
 
 	// au montage du composant, récupération des catégories pour le select/options
-	const [categories, setCategories] = useState<CategoryType[]>([]);
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const fetchAllCategoriesAndCreateOptions = async () => {
 			try {
 				const allCategories: CategoryType[] = await getAllStorymapCategories();
-				setCategories(allCategories);
+				// création des options pour le select des catégories
+				const newInputs = createCategoryOptions(
+					allCategories,
+					language,
+					inputs,
+				);
+				setInputs(newInputs);
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		fetchAllCategoriesAndCreateOptions();
-	}, []);
-
-	// création des options pour le select des catégories
-	useCallback(() => {
-		// préparation des catégories pour les inputs
-		const categoryArray = categories.map((category) => ({
-			value: category.id,
-			label: category[`name_${language}`],
-		}));
-
-		// récupération de l'id de l'input des catégories
-		const categoryInputIndex = inputs
-			.map((input) => input.name)
-			.indexOf("category_id");
-
-		// insertion des nouvelles données
-		inputs[categoryInputIndex].options = [
-			{
-				value: "0",
-				label: "Choisissez une catégorie",
-			},
-			...categoryArray,
-		];
-		const newInputs: InputType[] = [...inputs];
-		setInputs(newInputs);
-	}, [categories, inputs, language]);
+	}, [language]);
 
 	// -- MODE MODIFICATION --
 	// récupération de l'id de la storymap
@@ -105,10 +87,10 @@ const IntroductionForm = () => {
 	const onSubmit: SubmitHandler<storymapInputsType> = async (data) => {
 		if (isCreateForm) {
 			const newStorymapId = await createStorymap(data);
-			navigate(`/build/${newStorymapId}`);
+			navigate(`/backoffice/storymaps/build/${newStorymapId}`);
 		} else {
 			await updateStorymap(data, storymapId as string);
-			navigate(`/build/${storymapId}`);
+			navigate(`/backoffice/storymaps/build/${storymapId}`);
 		}
 	};
 
@@ -116,7 +98,9 @@ const IntroductionForm = () => {
 		<>
 			{isEditForm && storymapInfos && (
 				<>
-					<Link to={`/build/${storymapId}`}>Retour aux blocs</Link>
+					<Link to={`/backoffice/storymaps/build/${storymapId}`}>
+						Retour aux blocs
+					</Link>
 					<CommonForm
 						onSubmit={onSubmit as SubmitHandler<allInputsType>}
 						inputs={inputs}
