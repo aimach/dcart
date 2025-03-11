@@ -13,11 +13,11 @@ const mapContentSchema = Joi.object({
 		"any.required": "Le nom en anglais est requis",
 		"string.base": "Le nom en anglais doit être une chaîne de caractères",
 	}),
-	description_fr: Joi.string().optional().allow(null).messages({
+	description_fr: Joi.string().optional().allow("").messages({
 		"string.base":
 			"La description en français doit être une chaîne de caractères",
 	}),
-	description_en: Joi.string().optional().allow(null).messages({
+	description_en: Joi.string().optional().allow("").messages({
 		"string.base":
 			"La description en anglais doit être une chaîne de caractères",
 	}),

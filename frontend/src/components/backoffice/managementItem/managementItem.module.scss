@@ -17,6 +17,8 @@
     }
 
     &Title {
+        flex: 1;
+
         >p {
             font-style: italic;
         }

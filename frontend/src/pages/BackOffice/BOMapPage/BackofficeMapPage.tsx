@@ -20,7 +20,7 @@ const BackofficeMapPage = () => {
 					<DeleteMapContent />
 				</ModalComponent>
 			)}
-			<ManagementContainer type="map" />
+			<ManagementContainer type="map" key={isDeleteModalOpen.toString()} />
 		</section>
 	);
 };

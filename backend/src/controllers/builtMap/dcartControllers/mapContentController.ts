@@ -13,9 +13,10 @@ export const mapContentController = {
 			const { mapId } = req.params;
 
 			if (mapId === "all") {
+				const isActive = req.query.isActive === "true";
 				const allMaps = await dcartDataSource
 					.getRepository(MapContent)
-					.find({ where: { isActive: true }, relations: ["filters"] });
+					.find({ where: { isActive }, relations: ["filters"] });
 				res.status(200).send(allMaps);
 				return;
 			}

@@ -20,7 +20,7 @@ const BackofficeStorymapPage = () => {
 					<DeleteStorymapContent />
 				</ModalComponent>
 			)}
-			<ManagementContainer type="storymap" />
+			<ManagementContainer type="storymap" key={isDeleteModalOpen.toString()} />
 		</section>
 	);
 };

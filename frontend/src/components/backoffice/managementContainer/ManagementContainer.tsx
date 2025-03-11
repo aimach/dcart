@@ -8,6 +8,7 @@ import {
 	getAllMapsInfos,
 	getAllStorymapsInfos,
 } from "../../../utils/api/builtMap/getRequests";
+import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import des types
 import type { MapType } from "../../../utils/types/mapTypes";
 // import du style
@@ -18,6 +19,9 @@ type ManagementContainerProps = {
 };
 
 const ManagementContainer = ({ type }: ManagementContainerProps) => {
+	// récupération des données des stores
+	const { reload } = useModalStore();
+
 	// état pour stocker les informations des cartes
 	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
 	const [allStorymapsInfos, setAllStorymapsInfos] = useState<MapType[]>([]);
@@ -39,7 +43,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 		if (type === "storymap") {
 			fetchAllStorymapsInfos();
 		}
-	}, [type]);
+	}, [type, reload]);
 
 	const textKey = type === "map" ? "cartes" : "storymaps";
 
@@ -49,22 +53,20 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 			<ButtonComponent
 				type="route"
 				color="gold"
-				textContent="Créer une carte"
+				textContent={`Créer une ${textKey}`}
 				link={`/backoffice/${type}s/create`}
 			/>
-			<section className={style.mapList}>
+			<section className={style.managementContainerList}>
 				{type === "map" ? (
-					<>
-						<ul className={style.managementContainerList}>
-							{allMapsInfos.map((map) => (
-								<ManagementItem
-									key={map.id}
-									itemInfos={map as MapType}
-									type="map"
-								/>
-							))}
-						</ul>
-					</>
+					<ul className={style.managementContainerList}>
+						{allMapsInfos.map((map) => (
+							<ManagementItem
+								key={map.id}
+								itemInfos={map as MapType}
+								type="map"
+							/>
+						))}
+					</ul>
 				) : (
 					<ul className={style.managementContainerList}>
 						{allStorymapsInfos.map((storymap) => (

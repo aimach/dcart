@@ -102,10 +102,12 @@ const deleteBlock = async (blockId: string) => {
 /**
  * Fonction de suppression d'une carte
  * @param mapId  - l'id de la carte à supprimer
+ * @returns le statut de la requête
  */
 const deleteMap = async (mapId: string) => {
 	try {
-		await apiClient.delete(`/dcart/maps/${mapId}`);
+		const response = await apiClient.delete(`/dcart/maps/${mapId}`);
+		return response.status;
 	} catch (error) {
 		console.error("Erreur lors de la suppression de la carte :", error);
 	}
@@ -114,10 +116,12 @@ const deleteMap = async (mapId: string) => {
 /**
  * Fonction de suppression d'une storymap
  * @param storymapId  - l'id de la storymap à supprimer
+ * @returns le statut de la requête
  */
 const deleteStorymap = async (storymapId: string) => {
 	try {
-		await apiClient.delete(`/storymap/storymap/${storymapId}`);
+		const response = await apiClient.delete(`/storymap/storymap/${storymapId}`);
+		return response.status;
 	} catch (error) {
 		console.error("Erreur lors de la suppression de la storymap :", error);
 	}

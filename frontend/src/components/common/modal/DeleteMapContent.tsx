@@ -17,12 +17,16 @@ const DeleteMapContent = () => {
 	const { language, translation } = useTranslation();
 
 	// récupération des données des stores
-	const { closeDeleteModal, idToDelete } = useModalStore();
+	const { closeDeleteModal, idToDelete, reload, setReload } = useModalStore();
 
 	// fonction pour supprimer une storymap
-	const handleMapDelete = (mapId: string) => {
-		deleteMap(mapId);
-		closeDeleteModal();
+	const handleMapDelete = async (mapId: string) => {
+		const responseStatus = await deleteMap(mapId);
+		// attendre le retour de la requête pour fermer le modal et rafraîchir la liste
+		if (responseStatus === 200) {
+			closeDeleteModal();
+			setReload(!reload);
+		}
 	};
 
 	return (

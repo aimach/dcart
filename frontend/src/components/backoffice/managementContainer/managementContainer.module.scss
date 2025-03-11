@@ -11,5 +11,6 @@
     &List {
         @include m.flexbox(flex, row, wrap, center, center);
         gap: v.$space-xl;
+        width: 100%;
     }
 }
