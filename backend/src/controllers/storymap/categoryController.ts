@@ -14,7 +14,10 @@ export const categoryController = {
 			if (id === "all") {
 				const allCategories = await dcartDataSource
 					.getRepository(Category)
-					.find();
+					.createQueryBuilder("category")
+					.leftJoinAndSelect("category.storymaps", "storymaps")
+					.where("storymaps.isActive = :isActive", { isActive: true })
+					.getMany();
 				res.status(200).send(allCategories);
 				return;
 			}

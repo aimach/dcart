@@ -4,6 +4,7 @@ import { Link } from "react-router";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { getAllCategoriesWithMapsInfos } from "../../../../utils/api/builtMap/getRequests";
+import { getAllStorymapCategories } from "../../../../utils/api/storymap/getRequests";
 // import des types
 import type { CategoryType } from "../../../../utils/types/mapTypes";
 // import du style
@@ -11,10 +12,15 @@ import style from "./mapCategoryNav.module.scss";
 // import des images
 import delta from "../../../../assets/delta.png";
 
+interface MapCategoryNavProps {
+	type: "map" | "storymap";
+}
+
 /**
  * Composant de navigation dans les catégories et les cartes associées
+ * @param type - type de carte (map ou storymap)
  */
-const MapCategoryNav = () => {
+const MapCategoryNav = ({ type }: MapCategoryNavProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
@@ -33,9 +39,15 @@ const MapCategoryNav = () => {
 
 	//fonction pour récupérer les catégories et les cartes associées
 	const fetchCategoriesWithMaps = useCallback(async () => {
-		const categories = await getAllCategoriesWithMapsInfos();
+		let categories = [];
+		if (type === "map") {
+			categories = await getAllCategoriesWithMapsInfos();
+		}
+		if (type === "storymap") {
+			categories = await getAllStorymapCategories();
+		}
 		setCategoriesWithMaps(categories ?? []);
-	}, []);
+	}, [type]);
 
 	// chargement des catégories et des cartes associées au montage du composant
 	useEffect(() => {
@@ -46,23 +58,25 @@ const MapCategoryNav = () => {
 		<section className={style.categoryMenu}>
 			<nav className={style.categoryMenuNav}>
 				<ul>
-					<div className={style.categoryNameContainer}>
-						<li
-							onMouseEnter={() => {
-								setSelectedCategory(null);
-								setSelectedExploration(true);
-							}}
-						>
-							<Link to="all/map/exploration">
-								{translation[language].button.freeExploration}
-							</Link>
-						</li>
-						<span
-							className={
-								selectedExploration ? style.selectedCategoryUnderline : ""
-							}
-						/>
-					</div>
+					{type === "map" && (
+						<div className={style.categoryNameContainer}>
+							<li
+								onMouseEnter={() => {
+									setSelectedCategory(null);
+									setSelectedExploration(true);
+								}}
+							>
+								<Link to="all/map/exploration">
+									{translation[language].button.freeExploration}
+								</Link>
+							</li>
+							<span
+								className={
+									selectedExploration ? style.selectedCategoryUnderline : ""
+								}
+							/>
+						</div>
+					)}
 					{categoriesWithMaps?.map((category) => {
 						return (
 							<div key={category.id} className={style.categoryNameContainer}>
@@ -91,13 +105,19 @@ const MapCategoryNav = () => {
 					<div>
 						<div>{selectedCategory.description_fr}</div>
 						<ul className={style.mapListContainer}>
-							{selectedCategory.maps.map((map) => {
+							{selectedCategory[`${type}s`].map((item) => {
 								return (
-									<li key={map.id} className={style.mapListItem}>
+									<li key={item.id} className={style.mapListItem}>
 										<img src={delta} alt="delta" width={30} />
-										<Link to={`${selectedCategory.id}/map/${map.id}`}>
-											{map[`name_${language}`]}
-										</Link>
+										{type === "map" ? (
+											<Link to={`${selectedCategory.id}/map/${item.id}`}>
+												{item[`name_${language}`]}
+											</Link>
+										) : (
+											<Link to={`${selectedCategory.id}/storymap/${item.id}`}>
+												{item[`title_${language}`]}
+											</Link>
+										)}
 									</li>
 								);
 							})}

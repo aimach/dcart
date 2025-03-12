@@ -4,13 +4,13 @@ import TitleAndTextComponent from "../../components/common/titleAndText/TitleAnd
 // import des hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import du style
-import style from "./categoryMenuPage.module.scss";
+import style from "./mapCategoryMenuPage.module.scss";
 
 /**
  * Page de navigation qui présente toutes les catégories et les cartes associées
  * @returns TitleAndTextComponent | MapCategoryNav
  */
-const CategoryMenuPage = () => {
+const MapCategoryMenuPage = () => {
 	// Récupération des données externes (context, store, params, etc.)
 	const { translation, language } = useTranslation();
 
@@ -23,10 +23,10 @@ const CategoryMenuPage = () => {
 				/>
 			</div>
 			<div className={style.categoryMenuNavContainer}>
-				<MapCategoryNav />
+				<MapCategoryNav type="map" />
 			</div>
 		</section>
 	);
 };
 
-export default CategoryMenuPage;
+export default MapCategoryMenuPage;
