@@ -2,6 +2,7 @@
 import express from "express";
 // import des modules
 import { blockController } from "../../controllers/storymap/blockController";
+// import des validateurs
 import {
 	validateBlockArrayBody,
 	validateBlockBody,

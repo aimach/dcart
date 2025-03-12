@@ -22,8 +22,10 @@ const blockToCreateSchema = Joi.object({
 		"any.required": "Le champ storymapId est requis",
 		"string.base": "Le champ 'storymapId' doit être un uuid",
 	}),
-	typeId: Joi.string().uuid().required().messages({
-		"any.required": "Le champ typeId est requis",
+	typeId: Joi.string().uuid().optional().messages({
+		"string.base": "Le champ 'typeId' doit être un uuid",
+	}),
+	typeName: Joi.string().optional().allow(null).messages({
 		"string.base": "Le champ 'typeId' doit être un uuid",
 	}),
 	parentId: Joi.string().uuid().optional().allow(null),
