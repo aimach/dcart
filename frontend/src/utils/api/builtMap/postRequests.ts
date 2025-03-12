@@ -11,7 +11,7 @@ import type { MapInfoType } from "../../types/mapTypes";
  */
 const addFiltersToMap = async (
 	mapId: string,
-	mapFilters: { [key: string]: boolean },
+	mapFilters: Record<string, boolean>,
 ) => {
 	try {
 		const response = await apiClient(`dcart/filters/add/${mapId}`, {

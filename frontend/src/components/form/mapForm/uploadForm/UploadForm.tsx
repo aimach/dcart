@@ -1,6 +1,7 @@
 // import des bibliothèques
 import { useState } from "react";
 import { parse } from "papaparse";
+import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 // import du context
@@ -31,13 +32,18 @@ const UploadForm = () => {
 		useShallow((state) => state),
 	);
 
-	// définition d'un état pour afficher le bouton suivant si les points ont bien été uploadés
-	const [nextButtonDisplayed, setNextButtonDisplayed] = useState(false);
+	// récupération des données de l'URL
+	const { pathname } = useLocation();
+
+	// définition d'un état pour afficher le bouton suivant si les points ont bien été uploadés, qui est caché par défaut en mode création
+	const [nextButtonDisplayed, setNextButtonDisplayed] = useState(
+		pathname.includes("edit"),
+	);
 
 	// fonction pour gérer l'upload du fichier
 	const handleFileUpload = (event: ChangeEvent) => {
 		// définition de la correspondance avec les headers du csv
-		const headerMapping: { [key: string]: string } = {
+		const headerMapping: Record<string, string> = {
 			Langues: "language",
 			"Post Quem": "post_quem",
 			"Ante Quem": "ante_quem",

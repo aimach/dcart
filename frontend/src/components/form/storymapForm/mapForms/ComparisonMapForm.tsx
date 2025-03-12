@@ -58,12 +58,15 @@ const ComparisonMapForm = () => {
 	const action = searchParams.get("action");
 
 	// gestion de l'upload du fichier csv
-	const [parsedPoints, setParsedPoints] = useState<{
-		[key: string]: parsedPointType[];
-	}>({ left: [], right: [] });
+	const [parsedPoints, setParsedPoints] = useState<
+		Record<string, parsedPointType[]>
+	>({
+		left: [],
+		right: [],
+	});
 	const handleFileUpload = (event: ChangeEvent) => {
 		// définition de la correspondance avec les headers du csv
-		const headerMapping: { [key: string]: string } = {
+		const headerMapping: Record<string, string> = {
 			Région: "great_region",
 			"Sous-région": "sub_region",
 			Site: "site",

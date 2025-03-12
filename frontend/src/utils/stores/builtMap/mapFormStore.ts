@@ -2,7 +2,11 @@
 import { create } from "zustand";
 // import des types
 import type { Map as LeafletMap } from "leaflet";
-import type { MapFilterType, MapInfoType, PointType } from "../types/mapTypes";
+import type {
+	MapFilterType,
+	MapInfoType,
+	PointType,
+} from "../../types/mapTypes";
 
 type State = {
 	step: number;

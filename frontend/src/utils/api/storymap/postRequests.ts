@@ -160,7 +160,7 @@ const uploadParsedPointsForSimpleMap = async (
  */
 const uploadParsedPointsForComparisonMap = async (
 	simpleMapInfos: blockType,
-	parsedPoints: { [key: string]: parsedPointType[] },
+	parsedPoints: Record<string, parsedPointType[]>,
 	storymapId: string,
 	typeName: string,
 	action: string,

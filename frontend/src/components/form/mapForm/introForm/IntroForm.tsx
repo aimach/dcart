@@ -40,6 +40,15 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 		useShallow((state) => state),
 	);
 
+	// définition d'un état pour savoir si les données sont chargées
+	const [dataLoaded, setDataLoaded] = useState(false);
+
+	// définition de la fonction de soumission du formulaire (ajout des données au store et passage à l'étape suivante)
+	const onSubmit: SubmitHandler<MapInfoType> = (data) => {
+		setMapInfos({ ...mapInfos, ...data });
+		incrementStep(step);
+	};
+
 	// import des services du formulaire
 	const {
 		register,
@@ -49,15 +58,6 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 	} = useForm<MapInfoType>({
 		defaultValues: mapInfos ?? {},
 	});
-
-	// définition d'un état pour savoir si les données sont chargées
-	const [dataLoaded, setDataLoaded] = useState(false);
-
-	// définition de la fonction de soumission du formulaire (ajout des données au store et passage à l'étape suivante)
-	const onSubmit: SubmitHandler<MapInfoType> = (data) => {
-		setMapInfos({ ...mapInfos, ...data });
-		incrementStep(step);
-	};
 
 	// à chaque changement dans les inputs, mise à jour du store avec les informations des inputs
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -81,7 +81,7 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 			);
 
 			for (const input of inputs) {
-				if (input.name === "categoryId") {
+				if (input.name === "category") {
 					input.options = formatedCategoryOptions;
 				}
 			}
@@ -106,6 +106,15 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 									{...register(input.name as keyof MapInfoType, {
 										required: input.required.value,
 									})}
+									value={
+										mapInfos
+											? ((
+													mapInfos[
+														input.name as keyof MapInfoType
+													] as CategoryType
+												).id as string)
+											: ""
+									}
 								>
 									{input.options?.map((option) => {
 										return (

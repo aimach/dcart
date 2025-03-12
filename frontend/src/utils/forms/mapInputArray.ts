@@ -49,7 +49,7 @@ const firstStepInputs: InputType[] = [
 	{
 		label_fr: "Catégorie de la carte",
 		label_en: "Map category",
-		name: "categoryId",
+		name: "category",
 		type: "select",
 		options: [{ value: "0", label: "Choisir une catégorie" }],
 		required: {

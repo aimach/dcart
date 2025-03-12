@@ -35,7 +35,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 	const navigationList = getMenuPageMenuList(translation, language);
 
 	// déclaration d'un état pour le style des éléments du menu
-	const [isLongLine, setIsLongLine] = useState<{ [key: string]: boolean }>({
+	const [isLongLine, setIsLongLine] = useState<Record<string, boolean>>({
 		home: false,
 		maps: false,
 		storymaps: false,

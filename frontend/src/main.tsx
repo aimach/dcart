@@ -51,6 +51,7 @@ if (rootElement) {
 							<Route path="maps">
 								<Route index element={<BackofficeMapPage />} />
 								<Route path="create" element={<BOMapFormPage />} />
+								<Route path="edit/:mapId" element={<BOMapFormPage />} />
 							</Route>
 							<Route path="storymaps">
 								<Route index element={<BackofficeStorymapPage />} />

@@ -61,7 +61,7 @@ const SimpleMapForm = () => {
 	const [parsedPoints, setParsedPoints] = useState<parsedPointType[]>([]);
 	const handleFileUpload = (event: ChangeEvent) => {
 		// définition de la correspondance avec les headers du csv
-		const headerMapping: { [key: string]: string } = {
+		const headerMapping: Record<string, string> = {
 			Région: "great_region",
 			"Sous-région": "sub_region",
 			Site: "site",

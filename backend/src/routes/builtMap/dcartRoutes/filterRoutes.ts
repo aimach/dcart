@@ -16,3 +16,10 @@ filterRoutes.post(
 	validateFilterBody,
 	dcartControllers.addFiltersToMap,
 );
+
+// modification d'un ou des filtres d'une carte
+filterRoutes.put(
+	"/update/:mapId",
+	validateFilterBody,
+	dcartControllers.updateFiltersToMap,
+);

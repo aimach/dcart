@@ -30,10 +30,12 @@ const mapContentSchema = Joi.object({
 	isActive: Joi.boolean().optional(),
 	createdAt: Joi.date().optional(),
 	updatedAt: Joi.date().optional(),
-	categoryId: Joi.string().uuid().optional(), // pour la création de la carte
-	category: Joi.object({
-		id: Joi.string().uuid().required(),
-	}).optional(),
+	category: Joi.alternatives(
+		Joi.object({
+			id: Joi.string().uuid().required(),
+		}).optional(),
+		Joi.string().optional(),
+	),
 	filters: Joi.array()
 		.items(
 			Joi.object({
