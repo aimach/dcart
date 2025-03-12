@@ -3,7 +3,7 @@ import express from "express";
 // import des controllers
 import { dcartControllers } from "../../../controllers/builtMap/dcartControllers";
 // import des validateurs
-import { validateFilterBody } from "../../../utils/validator/filter";
+import { validateFilterBody } from "../../../utils/validator/builtMap/filter";
 
 export const filterRoutes = express.Router();
 

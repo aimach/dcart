@@ -3,7 +3,7 @@ import express from "express";
 // import des controllers
 import { dcartControllers } from "../../../controllers/builtMap/dcartControllers";
 // import des validateurs
-import { validateMapContentBody } from "../../../utils/validator/mapContent";
+import { validateMapContentBody } from "../../../utils/validator/builtMap/mapContent";
 
 export const mapRoutes = express.Router();
 
