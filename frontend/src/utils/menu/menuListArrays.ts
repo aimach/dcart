@@ -22,7 +22,7 @@ const getHomePageMenuList = (
 		id: "storymaps",
 		title: translation[language].navigation.discover,
 		onClickFunction: undefined,
-		route: "/storymaps",
+		route: "storymaps/categories",
 	},
 ];
 
@@ -52,7 +52,7 @@ const getMenuPageMenuList = (
 		id: "storymaps",
 		title: translation[language].navigation.storymaps,
 		onClickFunction: undefined,
-		route: "/storymaps",
+		route: "storymaps/categories",
 	},
 ];
 
@@ -81,7 +81,7 @@ const getVisitorNavigationList = (
 		id: "storymaps",
 		title: translation[language].navigation.storymaps,
 		onClickFunction: undefined,
-		route: "/storymaps",
+		route: "storymaps/categories",
 	},
 ];
 

@@ -11,7 +11,7 @@ import MapPage from "./pages/MapPage/MapPage.tsx";
 import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.tsx";
 import BackofficeStorymapPage from "./pages/BackOffice/BOStorymapPage/BackofficeStorymapPage.tsx";
 import BackofficeTranslationPage from "./pages/BackOffice/BOTranslationPage/BackofficeTranslationPage.tsx";
-import CategoryMenuPage from "./pages/CategoryMenuPage/CategoryMenuPage.tsx";
+import CategoryMenuPage from "./pages/MapCategoryMenuPage/MapCategoryMenuPage.tsx";
 import BOMapFormPage from "./pages/BackOffice/BOMapFormPage.tsx/BOMapFormPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
@@ -21,6 +21,8 @@ import "./index.css";
 import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
 import StorymapBuilderPage from "./pages/BackOffice/BOStorymapPage/storymapBuilder/StorymapBuilderPage.tsx";
 import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
+import MapCategoryMenuPage from "./pages/MapCategoryMenuPage/MapCategoryMenuPage.tsx";
+import StorymapCategoryMenuPage from "./pages/StorymapCategoryMenuPage/StorymapCategoryMenuPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -33,15 +35,18 @@ if (rootElement) {
 						<Route element={<NavigationLayout />}>
 							<Route index element={<App />} />
 							<Route path="maps/categories">
-								<Route index element={<CategoryMenuPage />} />
+								<Route index element={<MapCategoryMenuPage />} />
 								<Route path=":categoryId">
 									<Route path="map/:mapId" element={<MapPage />} />
 								</Route>
 							</Route>
 							<Route path="storymaps/categories">
-								<Route index element={<CategoryMenuPage />} />
+								<Route index element={<StorymapCategoryMenuPage />} />
 								<Route path=":categoryId">
-									<Route path="storymaps/:mapId" element={<MapPage />} />
+									<Route
+										path="storymap/:storymapId"
+										element={<StorymapPage />}
+									/>
 								</Route>
 							</Route>
 						</Route>
