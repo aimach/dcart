@@ -8,6 +8,7 @@ type StorymapType = {
 	description_fr: string;
 	image_url?: string;
 	author?: string;
+	isActive: boolean;
 	publishedAt: string;
 	blocks?: BlockContentType[];
 };

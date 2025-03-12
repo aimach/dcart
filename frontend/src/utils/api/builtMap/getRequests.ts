@@ -83,7 +83,7 @@ const getAllGreatRegions = async () => {
  */
 const getAllMapsInfos = async () => {
 	try {
-		const response = await apiClient.get("/dcart/maps/all?isActive=false");
+		const response = await apiClient.get("/dcart/maps/all");
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des cartes :", error);

@@ -54,9 +54,13 @@ export const validateStorymapContentToEditBody = (
 	res: Response,
 	next: NextFunction,
 ) => {
-	const { error } = storymapToEditSchema.validate(req.body);
-	if (error) {
-		res.status(422).send({ erreur: error.details[0].message });
+	let validation: undefined | Joi.ValidationResult;
+	// si ce n'est pas la requête pour mettre à jour le statut de la storymap (qui n'a pas de body)
+	if (!req.query.isActive) {
+		validation = storymapToEditSchema.validate(req.body);
+	}
+	if (validation?.error) {
+		res.status(422).send({ erreur: validation.error.details[0].message });
 	} else {
 		next();
 	}

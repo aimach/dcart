@@ -21,6 +21,25 @@ const updateMap = async (body: MapInfoType) => {
 };
 
 /**
+ * Envoie une requête PUT pour mettre à jour une carte
+ * @param body - Les informations de la carte à mettre à jour
+ * @returns {Promise} - La réponse de la requête
+ */
+const updateMapActiveStatus = async (mapId: string, status: boolean) => {
+	try {
+		const response = await apiClient(`dcart/maps/${mapId}?isActive=${status}`, {
+			method: "PUT",
+		});
+		return response;
+	} catch (error) {
+		console.error(
+			"Erreur lors de la mise à jour du statut de la carte :",
+			error,
+		);
+	}
+};
+
+/**
  * Envoie une requête PUT avec la liste des filtres à ajouter/modifier à une carte
  * @param mapId - L'id de la carte
  * @param mapFilters - La liste des filtres à ajouter/modifier à la carte
@@ -44,4 +63,4 @@ const updateFiltersToMap = async (
 	}
 };
 
-export { updateMap, updateFiltersToMap };
+export { updateMap, updateFiltersToMap, updateMapActiveStatus };

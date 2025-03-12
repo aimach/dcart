@@ -88,7 +88,7 @@ type MapType = {
 	locationId: number;
 	ante: number;
 	post: number;
-	isActive: true;
+	isActive: boolean;
 	createdAt: string;
 	updatedAt: string;
 	filters: FilterType[];

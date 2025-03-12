@@ -13,7 +13,7 @@ mapRoutes.get("/:mapId", dcartControllers.getMapContent);
 // créer une nouvelle carte
 mapRoutes.post("/", validateMapContentBody, dcartControllers.createMap);
 
-// supprimer carte
+// mettre à jour la carte
 mapRoutes.put("/:mapId", dcartControllers.updateMap);
 
 // supprimer carte

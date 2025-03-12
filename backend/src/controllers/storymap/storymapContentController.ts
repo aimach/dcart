@@ -115,6 +115,22 @@ export const storymapContentControllers = {
 				return;
 			}
 
+			if (req.query.isActive) {
+				const updatedStorymap = await dcartDataSource
+					.getRepository(Storymap)
+					.create({
+						...storymapToUpdate,
+						isActive: req.query.isActive === "true",
+					});
+
+				const newStorymap = await dcartDataSource
+					.getRepository(Storymap)
+					.save(updatedStorymap);
+
+				res.status(200).send(newStorymap);
+				return;
+			}
+
 			const updatedStorymap = await dcartDataSource
 				.getRepository(Storymap)
 				.create({

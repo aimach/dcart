@@ -27,6 +27,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 	const [allStorymapsInfos, setAllStorymapsInfos] = useState<MapType[]>([]);
 
 	// chargement des informations des cartes au montage du composant
+	// biome-ignore lint/correctness/useExhaustiveDependencies: permet de recharger les données à chaque changement sur la page (suppression, changement de statut)
 	useEffect(() => {
 		// fonction pour charger les informations des cartes
 		const fetchAllMapsInfos = async () => {

@@ -17,9 +17,16 @@
     }
 
     &Title {
+        @include m.flexbox(flex, column, wrap, flex-start, flex-start);
+        gap: v.$space-s;
         flex: 1;
 
-        >p {
+        >h4 {
+            font-weight: v.$font-weight-bold;
+            font-size: v.$font-size-l;
+        }
+
+        >p:first-of-type {
             font-style: italic;
         }
     }

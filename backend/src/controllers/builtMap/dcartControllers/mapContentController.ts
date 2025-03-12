@@ -14,10 +14,17 @@ export const mapContentController = {
 			const { mapId } = req.params;
 
 			if (mapId === "all") {
-				const isActive = req.query.isActive === "true";
+				if (req.query.isActive) {
+					const isActive = req.query.isActive === "true";
+					const allMaps = await dcartDataSource
+						.getRepository(MapContent)
+						.find({ where: { isActive }, relations: ["filters", "category"] });
+					res.status(200).send(allMaps);
+					return;
+				}
 				const allMaps = await dcartDataSource
 					.getRepository(MapContent)
-					.find({ where: { isActive }, relations: ["filters", "category"] });
+					.find({ relations: ["filters", "category"] });
 				res.status(200).send(allMaps);
 				return;
 			}
@@ -78,6 +85,16 @@ export const mapContentController = {
 
 			if (!mapToUpdate) {
 				res.status(404).send("Carte non trouvée.");
+				return;
+			}
+
+			// si c'est la mise à jour du statut de la carte
+			if (req.query.isActive) {
+				mapToUpdate.isActive = req.query.isActive === "true";
+				const updatedMap = await dcartDataSource
+					.getRepository(MapContent)
+					.save(mapToUpdate);
+				res.status(200).send(updatedMap);
 				return;
 			}
 
