@@ -44,7 +44,7 @@ export const validateBlockBody = (
 	}
 };
 
-const blockToEditSchema = Joi.object({
+export const blockToEditSchema = Joi.object({
 	id: Joi.string().uuid().required(),
 	content1_fr: Joi.string().required(),
 	content1_en: Joi.string().required(),

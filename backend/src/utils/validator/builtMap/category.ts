@@ -3,7 +3,7 @@ import Joi from "joi";
 // import des types
 import type { Request, Response, NextFunction } from "express";
 
-const categorySchema = Joi.object({
+export const categorySchema = Joi.object({
 	id: Joi.string().uuid().optional().allow(null),
 	name_fr: Joi.string().required(),
 	name_en: Joi.string().required(),
