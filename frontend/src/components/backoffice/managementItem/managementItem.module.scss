@@ -1,0 +1,59 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.managementItem {
+    width: 70vw;
+    height: 100px;
+    padding: v.$space-m;
+    color: v.$color-black-chocolate;
+    border-radius: v.$border-radius-rounded;
+    border: 1px solid v.$color-umber;
+    background-color: v.$color-grullo-light;
+    @include m.flexbox(flex, row, nowrap, space-between, center);
+    transition: transform 0.1s ease-in-out;
+
+    &:hover {
+        transform: scale(1.01);
+    }
+
+    &Title {
+        @include m.flexbox(flex, column, wrap, flex-start, flex-start);
+        gap: v.$space-s;
+        flex: 1;
+
+        >h4 {
+            font-weight: v.$font-weight-bold;
+            font-size: v.$font-size-l;
+        }
+
+        >p:first-of-type {
+            font-style: italic;
+        }
+    }
+
+    &TitleAndImage {
+        @include m.flexbox(flex, row, wrap, center, center);
+        gap: v.$space-m;
+
+        >img,
+        svg {
+            width: 100px;
+        }
+    }
+
+
+    &Icons {
+        @include m.flexbox(flex, row, wrap, center, center);
+        gap: v.$space-m;
+
+        >svg {
+            color: v.$color-black-chocolate;
+            cursor: pointer;
+        }
+
+
+    }
+
+
+
+}

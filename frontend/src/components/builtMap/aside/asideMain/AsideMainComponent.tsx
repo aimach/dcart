@@ -16,6 +16,7 @@ import {
 // import des types
 import type { DivinityType } from "../../../../utils/types/mapTypes";
 import type { OptionType } from "../../../../utils/types/commonTypes";
+import type { FilterType } from "../../../../utils/types/filterTypes";
 // import du style
 import style from "./asideMainComponent.module.scss";
 
@@ -36,10 +37,12 @@ const AsideMainComponent = () => {
 	// --- RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
 	let locationOptions: OptionType[] = [];
 	// si le filtre de localisation est activé, utilisation du hook useMemo
-	if (mapInfos?.filters?.some((filter) => filter.type === "location")) {
+	if (
+		mapInfos?.filters?.some((filter: FilterType) => filter.type === "location")
+	) {
 		locationOptions = useMemo(() => {
 			// récupération de toutes les localités depuis la liste des points
-			const allLocationsFromPoints: { [key: string]: string }[] =
+			const allLocationsFromPoints: Record<string, string>[] =
 				getAllLocationsFromPoints(allPoints);
 
 			// récupération de la clé du champ en fonction du niveau de localisation (grande région / sous région)
@@ -100,7 +103,11 @@ const AsideMainComponent = () => {
 	useEffect(() => {
 		if (mapInfos && allPoints) {
 			// si le filtre des éléments est activé, on récupère les options
-			if (mapInfos.filters?.some((filter) => filter.type === "element")) {
+			if (
+				mapInfos.filters?.some(
+					(filter: FilterType) => filter.type === "element",
+				)
+			) {
 				fetchElementOptions();
 			}
 		}

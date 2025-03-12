@@ -1,13 +1,14 @@
 import type { FormType } from "./formTypes";
 
 type StorymapType = {
-	id: number;
+	id: string;
 	title_en: string;
 	title_fr: string;
 	description_en: string;
 	description_fr: string;
 	image_url?: string;
 	author?: string;
+	isActive: boolean;
 	publishedAt: string;
 	blocks?: BlockContentType[];
 };

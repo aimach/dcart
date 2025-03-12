@@ -98,7 +98,7 @@ const getTypeIcon = (typeName: string) => {
  * @returns
  */
 const normalizeBody = (body: blockType, keys: string[]) => {
-	return keys.reduce((acc: { [key: string]: string | null }, key) => {
+	return keys.reduce((acc: Record<string, string | null>, key) => {
 		// biome-ignore lint/suspicious/noPrototypeBuiltins: <explanation>
 		const value = body.hasOwnProperty(key)
 			? (body[key as keyof blockType] as string)
@@ -108,9 +108,7 @@ const normalizeBody = (body: blockType, keys: string[]) => {
 	}, body);
 };
 
-const addPanelToPoints = (points: {
-	[key: string]: parsedPointType[];
-}) => {
+const addPanelToPoints = (points: Record<string, parsedPointType[]>) => {
 	return Object.keys(points).reduce((acc: parsedPointType[][], key) => {
 		const newPoints = points[key].map((point) => {
 			return {

@@ -107,7 +107,7 @@ const getAllElementsFromPoints = (points: PointType[]) => {
  * @returns {Record<string, string>[]} - Le tableau des lieux
  */
 const getAllLocationsFromPoints = (points: PointType[]) => {
-	const allLocations: { [key: string]: string }[] = [];
+	const allLocations: Record<string, string>[] = [];
 	points.map((point) => {
 		if (
 			allLocations.find((loc) => loc.sous_region_fr === point.sous_region_fr)

@@ -16,6 +16,22 @@ export const storymapContentControllers = {
 	// récupère une storymap par son id
 	getStorymapById: async (req: Request, res: Response): Promise<void> => {
 		try {
+			if (req.params.id === "all") {
+				const allStorymaps = await dcartDataSource
+					.getRepository(Storymap)
+					.createQueryBuilder("storymap")
+					.leftJoinAndSelect("storymap.category", "category")
+					.leftJoinAndSelect("storymap.blocks", "block")
+					.leftJoinAndSelect("block.points", "point")
+					.leftJoinAndSelect("block.type", "type")
+					.leftJoinAndSelect("block.children", "child")
+					.leftJoinAndSelect("child.type", "child_type")
+					.leftJoinAndSelect("child.points", "step_point")
+					.orderBy("block.position", "ASC")
+					.getMany();
+				res.status(200).send(allStorymaps);
+				return;
+			}
 			const storymapInfos = await dcartDataSource
 				.getRepository(Storymap)
 				.createQueryBuilder("storymap")
@@ -99,6 +115,22 @@ export const storymapContentControllers = {
 				return;
 			}
 
+			if (req.query.isActive) {
+				const updatedStorymap = await dcartDataSource
+					.getRepository(Storymap)
+					.create({
+						...storymapToUpdate,
+						isActive: req.query.isActive === "true",
+					});
+
+				const newStorymap = await dcartDataSource
+					.getRepository(Storymap)
+					.save(updatedStorymap);
+
+				res.status(200).send(newStorymap);
+				return;
+			}
+
 			const updatedStorymap = await dcartDataSource
 				.getRepository(Storymap)
 				.create({
@@ -112,6 +144,30 @@ export const storymapContentControllers = {
 				.save(updatedStorymap);
 
 			res.status(200).send(newStorymap);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	// supprime une storymap
+	deleteStorymap: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { storymapId } = req.params;
+
+			const storymapToDelete = await dcartDataSource
+				.getRepository(Storymap)
+				.findOne({
+					where: { id: storymapId },
+				});
+
+			if (!storymapToDelete) {
+				res.status(404).send("Storymap non trouvée.");
+				return;
+			}
+
+			await dcartDataSource.getRepository(Storymap).delete(storymapId);
+
+			res.status(200).send("Storymap supprimée.");
 		} catch (error) {
 			handleError(res, error as Error);
 		}

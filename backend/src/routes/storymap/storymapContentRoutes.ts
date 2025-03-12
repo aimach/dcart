@@ -2,6 +2,11 @@
 import express from "express";
 // import des modules
 import { storymapContentControllers } from "../../controllers/storymap/storymapContentController";
+// import des validateurs
+import {
+	validateStorymapContentBody,
+	validateStorymapContentToEditBody,
+} from "../../utils/validator/storymap/storymapContent";
 
 export const storymapContentRoutes = express.Router();
 
@@ -9,10 +14,21 @@ export const storymapContentRoutes = express.Router();
 storymapContentRoutes.get("/:id", storymapContentControllers.getStorymapById);
 
 // crée une nouvelle storymap
-storymapContentRoutes.post("/", storymapContentControllers.createNewStorymap);
+storymapContentRoutes.post(
+	"/",
+	validateStorymapContentBody,
+	storymapContentControllers.createNewStorymap,
+);
 
 // met à jour une storymap
 storymapContentRoutes.put(
 	"/:storymapId",
+	validateStorymapContentToEditBody,
 	storymapContentControllers.updateStorymap,
+);
+
+// supprime une storymap
+storymapContentRoutes.delete(
+	"/:storymapId",
+	storymapContentControllers.deleteStorymap,
 );

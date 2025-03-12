@@ -1,0 +1,16 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.managementContainer {
+    &Title {
+        margin: v.$space-xl auto;
+        font-size: v.$font-size-xxxl;
+        text-align: center;
+    }
+
+    &List {
+        @include m.flexbox(flex, row, wrap, center, center);
+        gap: v.$space-xl;
+        width: 100%;
+    }
+}

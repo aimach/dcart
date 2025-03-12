@@ -3,7 +3,7 @@ import express from "express";
 // import des controllers
 import { dcartControllers } from "../../../controllers/builtMap/dcartControllers";
 // import des validateurs
-import { validateMapContentBody } from "../../../utils/validator/mapContent";
+import { validateMapContentBody } from "../../../utils/validator/builtMap/mapContent";
 
 export const mapRoutes = express.Router();
 
@@ -12,3 +12,9 @@ mapRoutes.get("/:mapId", dcartControllers.getMapContent);
 
 // créer une nouvelle carte
 mapRoutes.post("/", validateMapContentBody, dcartControllers.createMap);
+
+// mettre à jour la carte
+mapRoutes.put("/:mapId", dcartControllers.updateMap);
+
+// supprimer carte
+mapRoutes.delete("/:mapId", dcartControllers.deleteMap);

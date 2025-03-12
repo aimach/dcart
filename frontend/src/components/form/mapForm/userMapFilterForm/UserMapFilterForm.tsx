@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
-import { useNavigate } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 // import des custom hooks
@@ -24,6 +24,10 @@ import type { MapInfoType } from "../../../../utils/types/mapTypes";
 import type { ChangeEvent, FormEventHandler } from "react";
 // import du style
 import style from "../introForm/introForm.module.scss";
+import {
+	updateFiltersToMap,
+	updateMap,
+} from "../../../../utils/api/builtMap/putRequests";
 
 /**
  * Formulaire de la troisième étape : définition des filtres utilisateur pour la carte
@@ -49,13 +53,32 @@ const UserMapFilterForm = () => {
 	);
 
 	// au montage du composant, récupération de tous les filtres utilisateurs de la BDD
+	// si en mode édition, mise à jour des filtres de la carte
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const fetchUserMapFilterTypes = async () => {
 			const allFilterTypes = await getUserFilters();
 			setUserMapFilterTypes(allFilterTypes);
+
+			// si en mode édition, mise à jour des filtres de la carte
+			if (mapInfos?.filters) {
+				const newFilters = allFilterTypes
+					.filter((filterType: FilterType) => filterType.type !== "time")
+					.map((filter: FilterType) => {
+						const index = mapInfos.filters?.findIndex((mapFilter) => {
+							return mapFilter.type === filter.type;
+						});
+						if (index !== -1) {
+							return { [filter.type]: true };
+						}
+						return { [filter.type]: false };
+					});
+				const newFiltersObject = Object.assign({}, ...newFilters);
+				setMapFilters(newFiltersObject);
+			}
 		};
 		fetchUserMapFilterTypes();
-	}, []);
+	}, [mapInfos?.filters]);
 
 	// fonction qui gère le changement de valeur des checkbox
 	const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {
@@ -73,22 +96,45 @@ const UserMapFilterForm = () => {
 
 	// fonction qui gère la soumission du formulaire
 	const navigate = useNavigate();
+	const { pathname } = useLocation();
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
-		// création de la nouvelle carte avec les données stockées dans le store
-		const newMap = await createNewMap(mapInfos as MapInfoType);
-		// si la carte a bien été créée, ajout des filtres utilisateurs à la carte ou retour à la page des cartes
-		if (newMap) {
-			if (noFilterChecked(mapFilters)) {
+		if (pathname.includes("edit")) {
+			// mise à jour de la carte
+			const updatedMapResponse = await updateMap(mapInfos as MapInfoType);
+			// mise à jour des filtres
+			const updatedFiltersResponse = await updateFiltersToMap(
+				mapInfos?.id as string,
+				mapFilters,
+			);
+			if (
+				updatedMapResponse?.status === 200 &&
+				updatedFiltersResponse?.status === 200
+			) {
+				resetMapInfos();
+				resetMapFilters();
+				resetAllPoints();
 				navigate("/backoffice/maps");
-			} else {
-				const response = await addFiltersToMap(newMap.id as string, mapFilters);
-				if (response?.status === 201) {
-					// réinitialisation des données du store
-					resetMapInfos();
-					resetMapFilters();
-					resetAllPoints();
+			}
+		} else if (pathname.includes("create")) {
+			// création de la nouvelle carte avec les données stockées dans le store
+			const newMap = await createNewMap(mapInfos as MapInfoType);
+			// si la carte a bien été créée, ajout des filtres utilisateurs à la carte ou retour à la page des cartes
+			if (newMap) {
+				if (noFilterChecked(mapFilters)) {
 					navigate("/backoffice/maps");
+				} else {
+					const response = await addFiltersToMap(
+						newMap.id as string,
+						mapFilters,
+					);
+					if (response?.status === 201) {
+						// réinitialisation des données du store
+						resetMapInfos();
+						resetMapFilters();
+						resetAllPoints();
+						navigate("/backoffice/maps");
+					}
 				}
 			}
 		}
