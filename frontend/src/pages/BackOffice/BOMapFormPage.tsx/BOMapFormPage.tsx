@@ -16,13 +16,16 @@ import style from "./BOMapFormPage.module.scss";
  */
 const BOMapFormPage = () => {
 	// récupération des données des stores
-	const { step, setStep, resetMapInfos } = useMapFormStore((state) => state);
+	const { step, setStep, resetMapInfos, setAllPoints } = useMapFormStore(
+		(state) => state,
+	);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setStep(1);
 		// reset des informations de la carte au cas où l'utilisateur revient sur la page
 		resetMapInfos();
+		setAllPoints([]);
 	}, []);
 
 	return (
