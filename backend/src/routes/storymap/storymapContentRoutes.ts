@@ -7,6 +7,7 @@ import {
 	validateStorymapContentBody,
 	validateStorymapContentToEditBody,
 } from "../../utils/validator/storymap/storymapContent";
+import { authenticateUser } from "../../middlewares/authenticate";
 
 export const storymapContentRoutes = express.Router();
 
@@ -16,6 +17,7 @@ storymapContentRoutes.get("/:id", storymapContentControllers.getStorymapById);
 // crée une nouvelle storymap
 storymapContentRoutes.post(
 	"/",
+	authenticateUser,
 	validateStorymapContentBody,
 	storymapContentControllers.createNewStorymap,
 );
@@ -23,6 +25,7 @@ storymapContentRoutes.post(
 // met à jour une storymap
 storymapContentRoutes.put(
 	"/:storymapId",
+	authenticateUser,
 	validateStorymapContentToEditBody,
 	storymapContentControllers.updateStorymap,
 );
@@ -30,5 +33,6 @@ storymapContentRoutes.put(
 // supprime une storymap
 storymapContentRoutes.delete(
 	"/:storymapId",
+	authenticateUser,
 	storymapContentControllers.deleteStorymap,
 );

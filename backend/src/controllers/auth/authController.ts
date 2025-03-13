@@ -113,7 +113,6 @@ export const authController = {
 
 	isAuthenticated: async (req: Request, res: Response): Promise<void> => {
 		try {
-			console.log(req.cookies);
 			const { jwt } = req.cookies;
 
 			const decodedToken = jwtService.verifyToken(jwt) as jwt.JwtPayload;

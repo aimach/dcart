@@ -7,6 +7,7 @@ import {
 	validateBlockArrayBody,
 	validateBlockBody,
 } from "../../utils/validator/storymap/block";
+import { authenticateUser } from "../../middlewares/authenticate";
 
 export const blockRoutes = express.Router();
 
@@ -14,17 +15,28 @@ export const blockRoutes = express.Router();
 blockRoutes.get("/:blockId", blockController.getBlockInfos);
 
 // crée un nouveau bloc
-blockRoutes.post("/", validateBlockBody, blockController.createNewBlock);
+blockRoutes.post(
+	"/",
+	authenticateUser,
+	validateBlockBody,
+	blockController.createNewBlock,
+);
 
 // met à jour un bloc
-blockRoutes.put("/:blockId", validateBlockBody, blockController.updateBlock);
+blockRoutes.put(
+	"/:blockId",
+	authenticateUser,
+	validateBlockBody,
+	blockController.updateBlock,
+);
 
 // met à jour la position du bloc
 blockRoutes.put(
 	"/position/update",
+	authenticateUser,
 	validateBlockArrayBody,
 	blockController.updateBlocksPosition,
 );
 
 // supprime un bloc
-blockRoutes.delete("/:blockId", blockController.deleteBlock);
+blockRoutes.delete("/:blockId", authenticateUser, blockController.deleteBlock);

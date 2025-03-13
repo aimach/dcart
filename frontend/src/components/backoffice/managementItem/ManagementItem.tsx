@@ -50,7 +50,6 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 
 	// fonction déclenchée lors du clic sur l'icone de publication
 	const handlePublicationClick = async (type: string, status: boolean) => {
-		console.log(type);
 		if (type === "map") {
 			await updateMapActiveStatus(itemInfos.id, status);
 		}
