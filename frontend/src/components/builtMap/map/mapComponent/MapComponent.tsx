@@ -142,7 +142,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 								<div className={style.modalContent}>
 									<div className={style.modalTitleSection}>
 										<img src={delta} alt="decoration" width={30} />
-										<h3>{(mapInfos as MapInfoType)[`name_${language}`]}</h3>
+										<h3>{(mapInfos as MapInfoType)[`title_${language}`]}</h3>
 										<img src={delta} alt="decoration" width={30} />
 									</div>
 									<p>{(mapInfos as MapInfoType)[`description_${language}`]}</p>

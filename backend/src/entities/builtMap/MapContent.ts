@@ -24,11 +24,11 @@ export class MapContent extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
 	id!: string;
 
-	@Column({ type: "varchar" })
-	name_fr!: string;
+	@Column({ type: "varchar", length: 255, nullable: false })
+	title_fr!: string;
 
-	@Column({ type: "varchar" })
-	name_en!: string;
+	@Column({ type: "varchar", length: 255, nullable: false })
+	title_en!: string;
 
 	@Column({ type: "text", nullable: true })
 	description_fr?: string | null;

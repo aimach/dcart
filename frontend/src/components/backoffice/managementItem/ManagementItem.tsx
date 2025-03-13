@@ -73,11 +73,7 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 						<ImageOff />
 					))}
 				<div className={style.managementItemTitle}>
-					<h4>
-						{type === "map"
-							? (itemInfos as MapType)[`name_${language}`]
-							: (itemInfos as StorymapType)[`title_${language}`]}
-					</h4>
+					<h4>{(itemInfos as StorymapType)[`title_${language}`]}</h4>
 					<p>{itemInfos[`description_${language}`]}</p>
 					<p>{itemInfos.isActive ? "Publiée" : "Non publiée"}</p>
 				</div>

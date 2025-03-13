@@ -32,8 +32,8 @@ type CategoryType = {
 	description_en?: string;
 	maps: {
 		id: string;
-		name_fr: string;
-		name_en: string;
+		title_fr: string;
+		title_en: string;
 		locationType: string;
 	}[];
 };
@@ -65,8 +65,8 @@ type MapFilterType = {
 
 type MapInfoType = {
 	id?: string;
-	name_en: string;
-	name_fr: string;
+	title_en: string;
+	title_fr: string;
 	description_en: string;
 	description_fr: string;
 	category: string | CategoryType;
@@ -76,8 +76,8 @@ type MapInfoType = {
 
 type MapType = {
 	id: string;
-	name_fr: string;
-	name_en: string;
+	title_fr: string;
+	title_en: string;
 	description_fr: string;
 	description_en: string;
 	elementNb: number;

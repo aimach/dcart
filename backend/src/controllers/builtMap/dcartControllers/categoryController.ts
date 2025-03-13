@@ -50,13 +50,13 @@ export const categoryController = {
 					.innerJoin("category.maps", "map") // Exclure les catégories sans cartes
 					.select([
 						"category.id",
-						"category.name_fr",
-						"category.name_en",
+						"category.title_fr",
+						"category.title_en",
 						"category.description_fr",
 						"category.description_en",
 						"map.id",
-						"map.name_fr",
-						"map.name_en",
+						"map.title_fr",
+						"map.title_en",
 						"map.description_fr",
 						"map.description_en",
 					])
@@ -88,8 +88,8 @@ export const categoryController = {
 					"category.description_fr",
 					"category.description_en",
 					"map.id",
-					"map.name_fr",
-					"map.name_en",
+					"map.title_fr",
+					"map.title_en",
 					"map.description_fr",
 					"map.description_en",
 				])

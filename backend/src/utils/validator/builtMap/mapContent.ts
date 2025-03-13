@@ -5,11 +5,11 @@ import type { Request, Response, NextFunction } from "express";
 
 const mapContentSchema = Joi.object({
 	id: Joi.string().uuid().optional(),
-	name_fr: Joi.string().required().messages({
+	title_fr: Joi.string().required().messages({
 		"any.required": "Le nom en français est requis",
 		"string.base": "Le nom en français doit être une chaîne de caractères",
 	}),
-	name_en: Joi.string().required().messages({
+	title_en: Joi.string().required().messages({
 		"any.required": "Le nom en anglais est requis",
 		"string.base": "Le nom en anglais doit être une chaîne de caractères",
 	}),
