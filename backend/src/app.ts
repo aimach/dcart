@@ -20,7 +20,6 @@ const PORT = process.env.APP_PORT;
 
 // middleware
 app.use(express.json());
-app.use(passport.initialize());
 app.use(cookieParser());
 app.use(
 	cors({

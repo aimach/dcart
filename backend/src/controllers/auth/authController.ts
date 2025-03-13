@@ -12,7 +12,7 @@ export const authController = {
 	// cette route existe pour l'instant pour les besoins de développement mais sera supprimée lors de la mise en prod
 	register: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { username, password } = req.body;
+			const { pseudo, username, password } = req.body;
 
 			if (!username || !password) {
 				res.status(400).json({
@@ -22,7 +22,7 @@ export const authController = {
 			}
 
 			const hashedPassword = await argon2.hash(password);
-			const user = User.create({ username, password: hashedPassword });
+			const user = User.create({ username, pseudo, password: hashedPassword });
 			await user.save();
 
 			res.status(201).json({
@@ -64,8 +64,12 @@ export const authController = {
 
 			// on génére le jwt, on le stocke dans les cookies et on envoie la réponse
 			const token = jwtService.generateToken((user as User).id);
-			res.cookie("jwt", token, { httpOnly: true });
-			res.status(200).json({ message: "Connexion réussie", token });
+			res.cookie("jwt", token, {
+				httpOnly: true,
+				sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
+				secure: process.env.NODE_ENV === "production",
+			});
+			res.status(200).json({ message: "Connexion réussie" });
 		} catch (error) {
 			res.status(500).json({ message: "Erreur serveur", error: error });
 		}
@@ -73,9 +77,10 @@ export const authController = {
 
 	isAuthenticated: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const token = req.cookies.jwt;
+			console.log(req.cookies);
+			const { jwt } = req.cookies;
 
-			const decodedToken = jwtService.verifyToken(token) as jwt.JwtPayload;
+			const decodedToken = jwtService.verifyToken(jwt) as jwt.JwtPayload;
 
 			res.status(200).json({
 				message: "Utilisateur connecté",

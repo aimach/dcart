@@ -5,21 +5,19 @@ import { useNavigate } from "react-router";
 import { verifyAuthentification } from "../utils/api/authAPI";
 
 type AuthContextType = {
-	isAuthenticated: boolean | undefined;
-	setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean | undefined>>;
+	isAuthenticated: boolean;
+	setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const AuthContext = createContext<AuthContextType>({
-	isAuthenticated: undefined,
+	isAuthenticated: false,
 	setIsAuthenticated: () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean | undefined>(
-		undefined,
-	);
+	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 	const navigate = useNavigate();
 
 	// fonction de vérification de l'authentification

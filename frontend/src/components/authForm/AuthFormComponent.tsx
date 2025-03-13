@@ -1,15 +1,19 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
 // import des types
 import type { User } from "../../utils/types/userTypes";
 // import des services
 import { loginUser } from "../../utils/api/authAPI";
+import { AuthContext } from "../../context/AuthContext";
 
 /**
  * Composant de formulaire d'authentification
  */
 const AuthFormComponent = () => {
+	// récupération des données d'authentification
+	const { setIsAuthenticated } = useContext(AuthContext);
+
 	// définition du state pour les données du formulaire
 	const [userAuthInformations, setUserAuthInformations] = useState<User>({
 		username: "",
@@ -26,6 +30,7 @@ const AuthFormComponent = () => {
 	const navigate = useNavigate();
 	const handleConnectionButtonClick = async () => {
 		const isLogged = await loginUser(userAuthInformations);
+		setIsAuthenticated(isLogged as boolean);
 		if (isLogged) navigate("/backoffice");
 	};
 
