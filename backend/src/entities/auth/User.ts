@@ -6,9 +6,12 @@ export class User extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
 	id!: number;
 
-	@Column("varchar")
+	@Column({ type: "varchar", length: 255, nullable: false })
 	username!: string;
 
-	@Column("varchar")
+	@Column({ type: "varchar", nullable: false })
 	password!: string;
+
+	@Column({ type: "enum", enum: ["user", "writer", "admin"], default: "user" })
+	status!: string;
 }

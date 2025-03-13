@@ -1,7 +1,7 @@
 // import des bibliothèques
 import argon2 from "argon2";
 // import des entités
-import { User } from "../../entities/builtMap/User";
+import { User } from "../../entities/auth/User";
 // import des services
 import { jwtService } from "../../utils/jwt";
 // import des types

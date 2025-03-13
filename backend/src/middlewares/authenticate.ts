@@ -2,7 +2,7 @@
 import passport from "passport";
 // import des types
 import type { Request, Response, NextFunction } from "express";
-import type { User } from "../entities/builtMap/User";
+import type { User } from "../entities/auth/User";
 
 export const authenticateJwt = (
 	req: Request,

@@ -17,6 +17,7 @@ export const dcartDataSource = new DataSource({
 	entities: [
 		`${__dirname}/../entities/builtMap/*.ts`,
 		`${__dirname}/../entities/storymap/*.ts`,
+		`${__dirname}/../entities/auth/*.ts`,
 	],
 });
 
