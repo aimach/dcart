@@ -3,7 +3,7 @@ import { useState, createContext, useEffect } from "react";
 import { useNavigate } from "react-router";
 import axios from "axios";
 // import des services
-import { refreshToken } from "../utils/api/authAPI";
+import { getProfile, refreshToken } from "../utils/api/authAPI";
 
 type AuthContextType = {
 	isAuthenticated: boolean;
@@ -31,15 +31,12 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 				axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
 
 				// Récupérer les infos de l'utilisateur
-				const response = await axios.get("http://localhost:6001/auth/profile", {
-					headers: {
-						Authorization: `Bearer ${newAccessToken}`,
-					},
-				});
+				const response = await getProfile(newAccessToken);
+				if (response.status === 200) {
+					setIsAuthenticated(true); // L'utilisateur est connecté
+				}
 			} catch (error) {
 				setIsAuthenticated(false); // L'utilisateur n'est pas connecté
-			} finally {
-				setIsAuthenticated(true);
 			}
 		};
 		checkAuthentication();
