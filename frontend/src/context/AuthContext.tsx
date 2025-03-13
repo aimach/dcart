@@ -32,7 +32,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 
 				// Récupérer les infos de l'utilisateur
 				const response = await getProfile(newAccessToken);
-				if (response.status === 200) {
+				if (response.user) {
 					setIsAuthenticated(true); // L'utilisateur est connecté
 				}
 			} catch (error) {

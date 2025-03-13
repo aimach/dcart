@@ -1,23 +1,28 @@
 // import des bibliothèques
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 // import des composants
 import NavComponent from "../common/NavComponent";
 import ImageWithLink from "../common/ImageWithLink";
+import ButtonComponent from "../common/button/ButtonComponent";
+// import du context
+import { AuthContext } from "../../context/AuthContext";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
+// import des services
+import { logoutUser } from "../../utils/api/authAPI";
+import {
+	getBackofficeNavigationList,
+	getTranslationNavigationList,
+	getVisitorNavigationList,
+} from "../../utils/menu/menuListArrays";
 // import des types
-import type { Dispatch, SetStateAction } from "react";
+import { useContext, type Dispatch, type SetStateAction } from "react";
 // import du style
 import style from "./header.module.scss";
 // import des images
 import MAPLogo from "../../assets/map_logo.png";
 // import des icônes
 import { MenuIcon } from "lucide-react";
-import {
-	getBackofficeNavigationList,
-	getTranslationNavigationList,
-	getVisitorNavigationList,
-} from "../../utils/menu/menuListArrays";
 
 interface HeaderComponentProps {
 	type: "visitor" | "backoffice";
@@ -31,11 +36,23 @@ interface HeaderComponentProps {
  * @returns ImageWithLink | NavComponent
  */
 const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
+	// récupération des données de connexion
+	const { isAuthenticated } = useContext(AuthContext);
+
 	// récupération des données de traduction
 	const { language, translation, setLanguage } = useTranslation();
 
 	// récupération de l'url de la page en cours pour savoir si l'utilisateur est sur la page d'accueil
 	const { pathname } = useLocation();
+
+	// fonction de déconnexion de l'utilisateur
+	const navigate = useNavigate();
+	const handleLogoutClick = async () => {
+		const isLoggedOut = await logoutUser();
+		if (isLoggedOut) {
+			navigate("/");
+		}
+	};
 
 	return (
 		<header className={style.header}>
@@ -67,6 +84,11 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 			)}
 
 			<div className={style.headerLastSection}>
+				{isAuthenticated && !pathname.includes("backoffice") && (
+					<Link to="/backoffice">
+						{translation[language].navigation.backoffice}
+					</Link>
+				)}
 				{type === "visitor" && (
 					<>
 						<NavComponent
@@ -82,6 +104,14 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 						/>
 						<MenuIcon onClick={() => setMenuIsOpen(true)} />
 					</>
+				)}
+				{isAuthenticated && pathname.includes("backoffice") && (
+					<ButtonComponent
+						type="button"
+						color="gold"
+						textContent="deconnexion"
+						onClickFunction={handleLogoutClick}
+					/>
 				)}
 			</div>
 		</header>

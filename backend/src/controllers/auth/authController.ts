@@ -162,15 +162,18 @@ export const authController = {
 		}
 	},
 
-	logout: async (req: Request, res: Response) => {
+	logout: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { refreshToken } = req.cookies;
 
 			// si le refreshToken n'existe pas, ne rien faire
-			if (!refreshToken) return res.status(204).send();
+			if (!refreshToken) {
+				res.status(204).send();
+				return;
+			}
 
 			// suppressino du Refresh Token en base
-			await dcartDataSource.getRepository("RefreshToken").delete({
+			await dcartDataSource.getRepository(RefreshToken).delete({
 				token: refreshToken,
 			});
 

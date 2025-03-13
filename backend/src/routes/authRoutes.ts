@@ -13,6 +13,9 @@ authRoutes.post("/register", dcartControllers.register);
 // connexion
 authRoutes.post("/login", validateLoginBody, dcartControllers.login);
 
+// déconnexion de l'utilisateur
+authRoutes.get("/logout", dcartControllers.logout);
+
 // récupération du profile
 authRoutes.get("/profile", authenticateUser, dcartControllers.getProfile);
 

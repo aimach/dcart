@@ -45,6 +45,23 @@ const loginUser = async (body: User) => {
 };
 
 /**
+ * Fonction de déconnexion de l'utilisateur
+ */
+const logoutUser = async () => {
+	try {
+		const response = await apiClient.get("/auth/logout", {
+			withCredentials: true,
+		});
+		if (response.status === 200) {
+			return true;
+		}
+		return false;
+	} catch (error) {
+		console.error("Erreur lors de la déconnexion de l'utilisateur :", error);
+	}
+};
+
+/**
  * Fonction de rafraichissement du token d'accès
  * @returns le nouveau token d'accès
  */
@@ -61,4 +78,4 @@ const refreshToken = async () => {
 	}
 };
 
-export { loginUser, getProfile, refreshToken };
+export { loginUser, logoutUser, getProfile, refreshToken };
