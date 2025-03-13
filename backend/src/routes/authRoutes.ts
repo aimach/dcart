@@ -14,3 +14,6 @@ authRoutes.post("/login", validateLoginBody, dcartControllers.login);
 
 // vérification que l'utilisation est connecté
 authRoutes.get("/verification", dcartControllers.isAuthenticated);
+
+// génération d'un nouveau token d'accès
+authRoutes.post("/refresh-token", dcartControllers.refreshToken);

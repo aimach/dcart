@@ -8,6 +8,7 @@ import { jwtService } from "../../utils/jwt";
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
 import { dcartDataSource } from "../../dataSource/dataSource";
+import { RefreshToken } from "../../entities/auth/RefreshToken";
 
 export const authController = {
 	// cette route existe pour l'instant pour les besoins de développement mais sera supprimée lors de la mise en prod
@@ -68,9 +69,9 @@ export const authController = {
 			const refreshToken = jwtService.generateRefreshToken((user as User).id);
 
 			// stockage du refreshToken dans la BDD
-			await dcartDataSource.getRepository("RefreshToken").save({
+			await dcartDataSource.getRepository(RefreshToken).save({
 				token: refreshToken,
-				userId: (user as User).id,
+				user: user,
 			});
 
 			// stockage du refreshToken dans les cookies et de l'accessToken dans la réponse

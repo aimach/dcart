@@ -17,17 +17,11 @@ export const loginUser = async (body: User) => {
 	}
 };
 
-export const verifyAuthentification = async () => {
-	try {
-		const verifyAuthenticiationResponse = await apiClient.get(
-			"/auth/verification",
-			{
-				withCredentials: true,
-			},
-		);
-		if (verifyAuthenticiationResponse.data.userId) return true;
-		return false;
-	} catch (error) {
-		console.log("error", error);
-	}
+export const refreshToken = async () => {
+	const response = await apiClient.post(
+		"/auth/refresh-token",
+		{},
+		{ withCredentials: true },
+	);
+	return response.data.accessToken;
 };

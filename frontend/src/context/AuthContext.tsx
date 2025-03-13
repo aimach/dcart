@@ -1,8 +1,9 @@
 // import des bibliothèques
 import { useState, createContext, useEffect } from "react";
 import { useNavigate } from "react-router";
+import axios from "axios";
 // import des services
-import { verifyAuthentification } from "../utils/api/authAPI";
+import { refreshToken } from "../utils/api/authAPI";
 
 type AuthContextType = {
 	isAuthenticated: boolean;
@@ -20,18 +21,22 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
 	const navigate = useNavigate();
 
-	// fonction de vérification de l'authentification
-	const checkAuthentication = async () => {
-		const isAuthenticatedBoolean = await verifyAuthentification();
-		setIsAuthenticated(isAuthenticatedBoolean as boolean);
-	};
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		// on vérifie une première fois
+		// fonction de vérification de l'authentification
+		const checkAuthentication = async () => {
+			try {
+				// génération d'un nouveau token d'accès
+				const newAccessToken = await refreshToken();
+				axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
+			} catch (error) {
+				setIsAuthenticated(false); // L'utilisateur n'est pas connecté
+			} finally {
+				setIsAuthenticated(true);
+			}
+		};
 		checkAuthentication();
-	}, [navigate]); // on vérifie à chaque changement de page
-
+	}, [navigate]);
 	return (
 		<AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
 			{children}

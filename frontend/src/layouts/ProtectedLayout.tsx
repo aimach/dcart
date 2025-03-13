@@ -6,7 +6,6 @@ import HeaderComponent from "../components/header/Header";
 import AppMenuComponent from "../components/menu/AppMenuComponent";
 // import du contexte
 import { AuthContext } from "../context/AuthContext";
-import { verifyAuthentification } from "../utils/api/authAPI";
 
 /**
  * Layout de la partie backoffice, qui vérifie si l'utilisateur est connecté
@@ -16,14 +15,11 @@ import { verifyAuthentification } from "../utils/api/authAPI";
 const ProtectedLayout = () => {
 	const { isAuthenticated } = useContext(AuthContext);
 	const navigate = useNavigate();
-	console.log(isAuthenticated);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: ignore "navigate" dans le tableau de dépendances
 	useEffect(() => {
 		const checkAuthentication = async () => {
-			const isLogged = await verifyAuthentification();
-			console.log(isLogged);
-			if (!isLogged) {
+			if (!isAuthenticated) {
 				navigate("/");
 			}
 		};
