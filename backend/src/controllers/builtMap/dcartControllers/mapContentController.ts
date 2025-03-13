@@ -46,8 +46,8 @@ export const mapContentController = {
 	createMap: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const {
-				name_en,
-				name_fr,
+				title_en,
+				title_fr,
 				description_en,
 				description_fr,
 				category,
@@ -55,8 +55,8 @@ export const mapContentController = {
 			} = req.body;
 
 			const newMap = dcartDataSource.getRepository(MapContent).create({
-				name_en,
-				name_fr,
+				title_en,
+				title_fr,
 				description_en,
 				description_fr,
 				category: category,

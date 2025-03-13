@@ -5,7 +5,7 @@ const firstStepInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en français",
 		label_en: "Map name in french",
-		name: "name_fr",
+		name: "title_fr",
 		type: "text",
 		required: {
 			value: true,
@@ -18,7 +18,7 @@ const firstStepInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en anglais",
 		label_en: "Map name in english",
-		name: "name_en",
+		name: "title_en",
 		type: "text",
 		required: {
 			value: true,
@@ -66,7 +66,7 @@ const mapInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en français",
 		label_en: "Map name in french",
-		name: "name_fr",
+		name: "title_fr",
 		type: "text",
 		required: {
 			value: true,
@@ -79,7 +79,7 @@ const mapInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en anglais",
 		label_en: "Map name in english",
-		name: "name_en",
+		name: "title_en",
 		type: "text",
 		required: {
 			value: true,
