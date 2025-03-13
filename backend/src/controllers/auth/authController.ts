@@ -64,6 +64,11 @@ export const authController = {
 				return;
 			}
 
+			// si un token existe déjà dans la BDD, on le supprime
+			await dcartDataSource.getRepository(RefreshToken).delete({
+				user: user,
+			});
+
 			// génération des tokens
 			const accessToken = jwtService.generateAccessToken((user as User).id);
 			const refreshToken = jwtService.generateRefreshToken((user as User).id);

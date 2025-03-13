@@ -20,7 +20,7 @@ const ProtectedLayout = () => {
 	useEffect(() => {
 		const checkAuthentication = async () => {
 			if (!isAuthenticated) {
-				navigate("/");
+				navigate("/authentification");
 			}
 		};
 		checkAuthentication();
