@@ -7,6 +7,7 @@ import { jwtService } from "../../utils/jwt";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
+import { dcartDataSource } from "../../dataSource/dataSource";
 
 export const authController = {
 	// cette route existe pour l'instant pour les besoins de développement mais sera supprimée lors de la mise en prod
@@ -48,28 +49,37 @@ export const authController = {
 		try {
 			const { username, password } = req.body;
 
-			// on vérifie que l'utilisateur existe dans la BDD, sinon on envoie un message d'erreur
+			// vérification de la présence de l'utilisateur dans la BDD, sinon message d'erreur
 			const user = await User.findOneBy({ username });
 			if (!user) {
 				res.status(404).json({ message: "Utilisateur non trouvé." }).end;
 				return;
 			}
 
-			// on vérifie que le mot de passe correspond, sinon on envoie un message d'erreur
+			// vérification que le mot de passe correspond, sinon message d'erreur
 			const isMatch = await argon2.verify((user as User).password, password);
 			if (!isMatch) {
 				res.status(401).json({ message: "Mot de passe incorrect." });
 				return;
 			}
 
-			// on génére le jwt, on le stocke dans les cookies et on envoie la réponse
-			const token = jwtService.generateToken((user as User).id);
-			res.cookie("jwt", token, {
+			// génération des tokens
+			const accessToken = jwtService.generateAccessToken((user as User).id);
+			const refreshToken = jwtService.generateRefreshToken((user as User).id);
+
+			// stockage du refreshToken dans la BDD
+			await dcartDataSource.getRepository("RefreshToken").save({
+				token: refreshToken,
+				userId: (user as User).id,
+			});
+
+			// stockage du refreshToken dans les cookies et de l'accessToken dans la réponse
+			res.cookie("refreshToken", refreshToken, {
 				httpOnly: true,
 				sameSite: process.env.NODE_ENV === "production" ? "none" : "lax",
 				secure: process.env.NODE_ENV === "production",
 			});
-			res.status(200).json({ message: "Connexion réussie" });
+			res.status(200).json({ message: "Connexion réussie", accessToken });
 		} catch (error) {
 			res.status(500).json({ message: "Erreur serveur", error: error });
 		}
@@ -94,6 +104,57 @@ export const authController = {
 			} else {
 				res.status(500).json({ message: "Erreur serveur", error: error });
 			}
+		}
+	},
+
+	refreshToken: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { refreshToken } = req.cookies;
+			if (!refreshToken) {
+				res.status(403).json({ message: "Non autorisé" });
+				return;
+			}
+
+			// vérification si le token est en base
+			const tokenInDB = await dcartDataSource
+				.getRepository("RefreshToken")
+				.count({
+					where: { token: refreshToken },
+				});
+
+			if (tokenInDB === 0) {
+				res.status(403).json({ message: "Refresh token invalide" });
+				return;
+			}
+
+			// vérification du token
+			const decoded = jwtService.verifyToken(refreshToken) as jwt.JwtPayload;
+			const newAccessToken = jwtService.generateAccessToken(decoded.userId);
+
+			res.json({ accessToken: newAccessToken });
+		} catch (error) {
+			res.status(403).json({ message: "Refresh token invalide" });
+		}
+	},
+
+	logout: async (req: Request, res: Response) => {
+		try {
+			const { refreshToken } = req.cookies;
+
+			// si le refreshToken n'existe pas, ne rien faire
+			if (!refreshToken) return res.status(204).send();
+
+			// suppressino du Refresh Token en base
+			await dcartDataSource.getRepository("RefreshToken").delete({
+				token: refreshToken,
+			});
+
+			// clear le cookie
+			res.clearCookie("refreshToken");
+
+			res.status(200).json({ message: "Déconnecté avec succès" });
+		} catch (error) {
+			res.status(500).json({ message: "Erreur serveur" });
 		}
 	},
 };

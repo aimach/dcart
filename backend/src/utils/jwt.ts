@@ -4,8 +4,14 @@ import jwt from "jsonwebtoken";
 const secretJWtKey = process.env.JWT_SECRET;
 
 export const jwtService = {
-	generateToken: (userId: number) => {
-		return jwt.sign({ userId }, secretJWtKey as string, { expiresIn: "2h" });
+	// génère un token d'accès (15 minutes)
+	generateAccessToken: (userId: number) => {
+		return jwt.sign({ userId }, secretJWtKey as string, { expiresIn: "15m" });
+	},
+
+	// génère un token de rafraichissement (7 jours)
+	generateRefreshToken: (userId: number) => {
+		return jwt.sign({ userId }, secretJWtKey as string, { expiresIn: "7d" });
 	},
 
 	verifyToken: (token: string) => {
