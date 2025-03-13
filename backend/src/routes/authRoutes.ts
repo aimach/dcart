@@ -3,6 +3,7 @@ import express from "express";
 // import des modules
 import { dcartControllers } from "../controllers/builtMap/dcartControllers";
 import { validateLoginBody } from "../utils/validator/login";
+import { authenticateUser } from "../middlewares/authenticate";
 
 export const authRoutes = express.Router();
 
@@ -11,6 +12,9 @@ authRoutes.post("/register", dcartControllers.register);
 
 // connexion
 authRoutes.post("/login", validateLoginBody, dcartControllers.login);
+
+// récupération du profile
+authRoutes.get("/profile", authenticateUser, dcartControllers.getProfile);
 
 // vérification que l'utilisation est connecté
 authRoutes.get("/verification", dcartControllers.isAuthenticated);

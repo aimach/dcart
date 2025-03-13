@@ -28,17 +28,14 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 			try {
 				// génération d'un nouveau token d'accès
 				const newAccessToken = await refreshToken();
+				axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
 
 				// Récupérer les infos de l'utilisateur
-				// axios.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-				// const response = await axios.get(
-				// 	"http://localhost:6001/api/auth/profile",
-				// 	{
-				// 		headers: {
-				// 			Authorization: `Bearer ${newAccessToken}`,
-				// 		},
-				// 	},
-				// );
+				const response = await axios.get("http://localhost:6001/auth/profile", {
+					headers: {
+						Authorization: `Bearer ${newAccessToken}`,
+					},
+				});
 			} catch (error) {
 				setIsAuthenticated(false); // L'utilisateur n'est pas connecté
 			} finally {
@@ -46,7 +43,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 			}
 		};
 		checkAuthentication();
-	}, [navigate]);
+	}, [navigate]); // on laisse navigate le temps de production
 	return (
 		<AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
 			{children}
