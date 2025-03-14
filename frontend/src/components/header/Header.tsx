@@ -37,7 +37,7 @@ interface HeaderComponentProps {
  */
 const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	// récupération des données de connexion
-	const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
+	const { token, setToken } = useContext(AuthContext);
 
 	// récupération des données de traduction
 	const { language, translation, setLanguage } = useTranslation();
@@ -50,7 +50,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	const handleLogoutClick = async () => {
 		const isLoggedOut = await logoutUser();
 		if (isLoggedOut) {
-			setIsAuthenticated(false);
+			setToken(null);
 			navigate("/");
 		}
 	};
@@ -85,7 +85,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 			)}
 
 			<div className={style.headerLastSection}>
-				{isAuthenticated && !pathname.includes("backoffice") && (
+				{token && !pathname.includes("backoffice") && (
 					<Link to="/backoffice">
 						{translation[language].navigation.backoffice}
 					</Link>
@@ -106,7 +106,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 						<MenuIcon onClick={() => setMenuIsOpen(true)} />
 					</>
 				)}
-				{isAuthenticated && pathname.includes("backoffice") && (
+				{token && pathname.includes("backoffice") && (
 					<ButtonComponent
 						type="button"
 						color="gold"

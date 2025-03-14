@@ -4,7 +4,7 @@ import { useNavigate } from "react-router";
 // import des types
 import type { User } from "../../utils/types/userTypes";
 // import des services
-import { loginUser, getProfile } from "../../utils/api/authAPI";
+import { loginUser } from "../../utils/api/authAPI";
 import { AuthContext } from "../../context/AuthContext";
 import { apiClient } from "../../utils/api/apiClient";
 
@@ -13,7 +13,7 @@ import { apiClient } from "../../utils/api/apiClient";
  */
 const AuthFormComponent = () => {
 	// récupération des données d'authentification
-	const { setIsAuthenticated } = useContext(AuthContext);
+	const { setToken } = useContext(AuthContext);
 
 	// définition du state pour les données du formulaire
 	const [userAuthInformations, setUserAuthInformations] = useState<User>({
@@ -31,15 +31,10 @@ const AuthFormComponent = () => {
 	const navigate = useNavigate();
 	const handleConnectionButtonClick = async () => {
 		const loginUserResponse = await loginUser(userAuthInformations);
-		setIsAuthenticated(loginUserResponse.accessToken as boolean);
+		setToken(loginUserResponse.accessToken as string);
 		if (loginUserResponse.accessToken) {
 			// stocker le token d'accès dans les headers de l'apiClient
 			apiClient.defaults.headers.common.Authorization = `Bearer ${loginUserResponse.accessToken}`;
-			// Récupérer les infos de l'utilisateur
-			const response = await getProfile(loginUserResponse.accessToken);
-			if (response.user) {
-				setIsAuthenticated(true); // L'utilisateur est connecté
-			}
 			navigate("/backoffice");
 		}
 	};

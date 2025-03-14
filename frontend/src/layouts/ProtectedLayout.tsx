@@ -13,18 +13,18 @@ import { AuthContext } from "../context/AuthContext";
  * @returns HeaderComponent
  */
 const ProtectedLayout = () => {
-	const { isAuthenticated } = useContext(AuthContext);
+	const { token } = useContext(AuthContext);
 	const navigate = useNavigate();
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: ignore "navigate" dans le tableau de dépendances
 	useEffect(() => {
 		const checkAuthentication = async () => {
-			if (!isAuthenticated) {
+			if (!token) {
 				navigate("/authentification");
 			}
 		};
 		checkAuthentication();
-	}, [isAuthenticated]);
+	}, [token]);
 
 	// définition de l'état pour l'affichage du menu
 	const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);

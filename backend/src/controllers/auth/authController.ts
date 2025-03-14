@@ -136,28 +136,6 @@ export const authController = {
 		}
 	},
 
-	refreshTokenInMiddleware: async (
-		req: Request,
-		res: Response,
-	): Promise<string | undefined> => {
-		try {
-			const { refreshToken } = req.cookies;
-
-			if (!refreshToken) {
-				res.status(403).json({ message: "Non autorisé" });
-				return;
-			}
-
-			// vérification du token
-			const decoded = jwtService.verifyToken(refreshToken) as jwt.JwtPayload;
-			const newAccessToken = jwtService.generateAccessToken(decoded.userId);
-
-			return newAccessToken;
-		} catch (error) {
-			res.status(403).json({ message: "Refresh token invalide" });
-		}
-	},
-
 	logout: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { refreshToken } = req.cookies;

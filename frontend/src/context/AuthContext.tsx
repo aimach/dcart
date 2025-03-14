@@ -1,47 +1,84 @@
 // import des bibliothèques
-import { useState, createContext, useEffect } from "react";
+import { useState, createContext, useEffect, useLayoutEffect } from "react";
 
 // import des services
-import { getProfile, refreshAccessToken } from "../utils/api/authAPI";
+import { refreshAccessToken } from "../utils/api/authAPI";
 import { apiClient } from "../utils/api/apiClient";
 
 type AuthContextType = {
-	isAuthenticated: boolean;
-	setIsAuthenticated: React.Dispatch<React.SetStateAction<boolean>>;
+	token: string | null;
+	setToken: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export const AuthContext = createContext<AuthContextType>({
-	isAuthenticated: false,
-	setIsAuthenticated: () => {},
+	token: null,
+	setToken: () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
-	const [isAuthenticated, setIsAuthenticated] = useState<boolean>(false);
+	const [token, setToken] = useState<string | null>(null);
 
 	useEffect(() => {
-		// fonction de vérification de l'authentification
-		const checkAuthentication = async () => {
+		const fetchProfile = async () => {
 			try {
-				// génération d'un nouveau token d'accès
-				const newAccessToken = await refreshAccessToken();
-				// ajout de ce token dans les headers de l'apiClient
-				apiClient.defaults.headers.common.Authorization = `Bearer ${newAccessToken}`;
-
-				// Récupérer les infos de l'utilisateur
-				const response = await getProfile(newAccessToken);
-				if (response.user) {
-					setIsAuthenticated(true); // L'utilisateur est connecté
+				const response = await refreshAccessToken();
+				console.log(response);
+				if (response) {
+					setToken(response.accessToken);
 				}
-			} catch (error) {
-				setIsAuthenticated(false); // L'utilisateur n'est pas connecté
+			} catch {
+				setToken(null);
 			}
 		};
-		checkAuthentication();
-	}, []); // on laisse navigate le temps de production
+		fetchProfile();
+	}, []);
+
+	useLayoutEffect(() => {
+		const authInterceptor = apiClient.interceptors.request.use((config) => {
+			config.headers.Authorization =
+				// @ts-ignore
+				!config._retry && token
+					? `Bearer ${token}`
+					: config.headers.Authorization;
+			return config;
+		});
+
+		return () => {
+			apiClient.interceptors.request.eject(authInterceptor);
+		};
+	}, [token]);
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useLayoutEffect(() => {
+		const refreshInterceptor = apiClient.interceptors.response.use(
+			(response) => response,
+			async (error) => {
+				const originalRequest = error.config;
+				if (error.response.status === 401) {
+					try {
+						const accessToken = await refreshAccessToken();
+						setToken(accessToken);
+						originalRequest.headers.Authorization = `Bearer ${accessToken}`;
+						originalRequest._retry = true;
+						return apiClient(originalRequest);
+					} catch {
+						setToken(null);
+					}
+				}
+
+				return Promise.reject(error);
+			},
+		);
+
+		return () => {
+			apiClient.interceptors.response.eject(refreshInterceptor);
+		};
+	}, [token]);
+
 	return (
-		<AuthContext.Provider value={{ isAuthenticated, setIsAuthenticated }}>
+		<AuthContext.Provider value={{ token, setToken }}>
 			{children}
 		</AuthContext.Provider>
 	);
