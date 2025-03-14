@@ -37,7 +37,7 @@ interface HeaderComponentProps {
  */
 const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	// récupération des données de connexion
-	const { isAuthenticated } = useContext(AuthContext);
+	const { isAuthenticated, setIsAuthenticated } = useContext(AuthContext);
 
 	// récupération des données de traduction
 	const { language, translation, setLanguage } = useTranslation();
@@ -50,6 +50,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	const handleLogoutClick = async () => {
 		const isLoggedOut = await logoutUser();
 		if (isLoggedOut) {
+			setIsAuthenticated(false);
 			navigate("/");
 		}
 	};

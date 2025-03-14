@@ -19,8 +19,5 @@ authRoutes.get("/logout", dcartControllers.logout);
 // récupération du profile
 authRoutes.get("/profile", authenticateUser, dcartControllers.getProfile);
 
-// vérification que l'utilisation est connecté
-authRoutes.get("/verification", dcartControllers.isAuthenticated);
-
 // génération d'un nouveau token d'accès
 authRoutes.post("/refresh-token", dcartControllers.refreshToken);

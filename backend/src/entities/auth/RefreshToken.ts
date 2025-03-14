@@ -6,6 +6,8 @@ import {
 	OneToOne,
 	JoinColumn,
 	PrimaryGeneratedColumn,
+	CreateDateColumn,
+	UpdateDateColumn,
 } from "typeorm";
 // import des entités
 import { User } from "./User";
@@ -21,4 +23,10 @@ export class RefreshToken extends BaseEntity {
 	@OneToOne(() => User)
 	@JoinColumn()
 	user!: User;
+
+	@CreateDateColumn({ type: "timestamptz" })
+	createdAt!: Date;
+
+	@UpdateDateColumn({ type: "timestamptz" })
+	updatedAt!: Date;
 }

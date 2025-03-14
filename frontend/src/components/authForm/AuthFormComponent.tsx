@@ -4,8 +4,9 @@ import { useNavigate } from "react-router";
 // import des types
 import type { User } from "../../utils/types/userTypes";
 // import des services
-import { loginUser } from "../../utils/api/authAPI";
+import { loginUser, getProfile } from "../../utils/api/authAPI";
 import { AuthContext } from "../../context/AuthContext";
+import { apiClient } from "../../utils/api/apiClient";
 
 /**
  * Composant de formulaire d'authentification
@@ -29,9 +30,18 @@ const AuthFormComponent = () => {
 	// fonction de gestion du bouton "Se connecter"
 	const navigate = useNavigate();
 	const handleConnectionButtonClick = async () => {
-		const isLogged = await loginUser(userAuthInformations);
-		setIsAuthenticated(isLogged as boolean);
-		if (isLogged) navigate("/backoffice");
+		const loginUserResponse = await loginUser(userAuthInformations);
+		setIsAuthenticated(loginUserResponse.accessToken as boolean);
+		if (loginUserResponse.accessToken) {
+			// stocker le token d'accès dans les headers de l'apiClient
+			apiClient.defaults.headers.common.Authorization = `Bearer ${loginUserResponse.accessToken}`;
+			// Récupérer les infos de l'utilisateur
+			const response = await getProfile(loginUserResponse.accessToken);
+			if (response.user) {
+				setIsAuthenticated(true); // L'utilisateur est connecté
+			}
+			navigate("/backoffice");
+		}
 	};
 
 	return (

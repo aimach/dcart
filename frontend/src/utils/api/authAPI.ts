@@ -36,7 +36,7 @@ const loginUser = async (body: User) => {
 			withCredentials: true,
 		});
 		if (loginUserResponse.status === 200) {
-			return true;
+			return loginUserResponse.data;
 		}
 		return false;
 	} catch (error) {
@@ -65,7 +65,7 @@ const logoutUser = async () => {
  * Fonction de rafraichissement du token d'accès
  * @returns le nouveau token d'accès
  */
-const refreshToken = async () => {
+const refreshAccessToken = async () => {
 	try {
 		const response = await apiClient.post(
 			"/auth/refresh-token",
@@ -78,4 +78,4 @@ const refreshToken = async () => {
 	}
 };
 
-export { loginUser, logoutUser, getProfile, refreshToken };
+export { loginUser, logoutUser, getProfile, refreshAccessToken };
