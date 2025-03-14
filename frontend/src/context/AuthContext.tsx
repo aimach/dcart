@@ -1,6 +1,5 @@
 // import des bibliothèques
 import { useState, createContext, useEffect, useLayoutEffect } from "react";
-
 // import des services
 import { refreshAccessToken } from "../utils/api/authAPI";
 import { apiClient } from "../utils/api/apiClient";
@@ -24,7 +23,6 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 		const fetchProfile = async () => {
 			try {
 				const response = await refreshAccessToken();
-				console.log(response);
 				if (response) {
 					setToken(response.accessToken);
 				}
@@ -56,6 +54,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 			(response) => response,
 			async (error) => {
 				const originalRequest = error.config;
+
 				if (error.response.status === 401) {
 					try {
 						const accessToken = await refreshAccessToken();

@@ -1,12 +1,12 @@
 // import des bibliothèques
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
+// import du contexte
+import { AuthContext } from "../../context/AuthContext";
 // import des types
 import type { User } from "../../utils/types/userTypes";
 // import des services
 import { loginUser } from "../../utils/api/authAPI";
-import { AuthContext } from "../../context/AuthContext";
-import { apiClient } from "../../utils/api/apiClient";
 
 /**
  * Composant de formulaire d'authentification
@@ -33,8 +33,6 @@ const AuthFormComponent = () => {
 		const loginUserResponse = await loginUser(userAuthInformations);
 		setToken(loginUserResponse.accessToken as string);
 		if (loginUserResponse.accessToken) {
-			// stocker le token d'accès dans les headers de l'apiClient
-			apiClient.defaults.headers.common.Authorization = `Bearer ${loginUserResponse.accessToken}`;
 			navigate("/backoffice");
 		}
 	};
