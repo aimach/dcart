@@ -86,7 +86,6 @@ export const storymapContentControllers = {
 
 	// crée une nouvelle storymap
 	createNewStorymap: async (req: Request, res: Response): Promise<void> => {
-		console.log(req.body);
 		try {
 			const newStorymap = dcartDataSource.getRepository(Storymap).create({
 				...req.body,

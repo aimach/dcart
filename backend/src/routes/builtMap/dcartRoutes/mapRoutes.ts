@@ -4,6 +4,7 @@ import express from "express";
 import { dcartControllers } from "../../../controllers/builtMap/dcartControllers";
 // import des validateurs
 import { validateMapContentBody } from "../../../utils/validator/builtMap/mapContent";
+import { authenticateUser } from "../../../middlewares/authenticate";
 
 export const mapRoutes = express.Router();
 
@@ -11,10 +12,15 @@ export const mapRoutes = express.Router();
 mapRoutes.get("/:mapId", dcartControllers.getMapContent);
 
 // créer une nouvelle carte
-mapRoutes.post("/", validateMapContentBody, dcartControllers.createMap);
+mapRoutes.post(
+	"/",
+	validateMapContentBody,
+	authenticateUser,
+	dcartControllers.createMap,
+);
 
 // mettre à jour la carte
-mapRoutes.put("/:mapId", dcartControllers.updateMap);
+mapRoutes.put("/:mapId", authenticateUser, dcartControllers.updateMap);
 
 // supprimer carte
-mapRoutes.delete("/:mapId", dcartControllers.deleteMap);
+mapRoutes.delete("/:mapId", authenticateUser, dcartControllers.deleteMap);

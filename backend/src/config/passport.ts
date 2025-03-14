@@ -4,7 +4,7 @@ import { Strategy as LocalStrategy } from "passport-local";
 import { Strategy as JwtStrategy, ExtractJwt } from "passport-jwt";
 import argon2 from "argon2";
 // import des entités
-import { User } from "../entities/User";
+import { User } from "../entities/auth/User";
 // import des type
 import type { StrategyOptionsWithoutRequest } from "passport-jwt";
 

@@ -1,6 +1,8 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
+// import du contexte
+import { AuthContext } from "../../context/AuthContext";
 // import des types
 import type { User } from "../../utils/types/userTypes";
 // import des services
@@ -10,6 +12,9 @@ import { loginUser } from "../../utils/api/authAPI";
  * Composant de formulaire d'authentification
  */
 const AuthFormComponent = () => {
+	// récupération des données d'authentification
+	const { setToken } = useContext(AuthContext);
+
 	// définition du state pour les données du formulaire
 	const [userAuthInformations, setUserAuthInformations] = useState<User>({
 		username: "",
@@ -25,8 +30,11 @@ const AuthFormComponent = () => {
 	// fonction de gestion du bouton "Se connecter"
 	const navigate = useNavigate();
 	const handleConnectionButtonClick = async () => {
-		const isLogged = await loginUser(userAuthInformations);
-		if (isLogged) navigate("/backoffice");
+		const loginUserResponse = await loginUser(userAuthInformations);
+		setToken(loginUserResponse.accessToken as string);
+		if (loginUserResponse.accessToken) {
+			navigate("/backoffice");
+		}
 	};
 
 	return (

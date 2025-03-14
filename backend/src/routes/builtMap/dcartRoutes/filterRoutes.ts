@@ -4,6 +4,7 @@ import express from "express";
 import { dcartControllers } from "../../../controllers/builtMap/dcartControllers";
 // import des validateurs
 import { validateFilterBody } from "../../../utils/validator/builtMap/filter";
+import { authenticateUser } from "../../../middlewares/authenticate";
 
 export const filterRoutes = express.Router();
 
@@ -13,6 +14,7 @@ filterRoutes.get("/:filterId", dcartControllers.getFilters);
 // ajoute un ou des filtres à une carte
 filterRoutes.post(
 	"/add/:mapId",
+	authenticateUser,
 	validateFilterBody,
 	dcartControllers.addFiltersToMap,
 );
@@ -20,6 +22,7 @@ filterRoutes.post(
 // modification d'un ou des filtres d'une carte
 filterRoutes.put(
 	"/update/:mapId",
+	authenticateUser,
 	validateFilterBody,
 	dcartControllers.updateFiltersToMap,
 );

@@ -1,8 +1,9 @@
 // import des bibliothèques
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { Outlet, useNavigate } from "react-router";
 // import des composants
 import HeaderComponent from "../components/header/Header";
+import AppMenuComponent from "../components/menu/AppMenuComponent";
 // import du contexte
 import { AuthContext } from "../context/AuthContext";
 
@@ -12,19 +13,27 @@ import { AuthContext } from "../context/AuthContext";
  * @returns HeaderComponent
  */
 const ProtectedLayout = () => {
-	const { isAuthenticated } = useContext(AuthContext);
+	const { token } = useContext(AuthContext);
 	const navigate = useNavigate();
 
-	// commenté le temps du développement du backoffice
 	// biome-ignore lint/correctness/useExhaustiveDependencies: ignore "navigate" dans le tableau de dépendances
-	// useEffect(() => {
-	// 	if (!isAuthenticated) {
-	// 		navigate("/");
-	// 	}
-	// }, [isAuthenticated]);
-	return (
+	useEffect(() => {
+		const checkAuthentication = async () => {
+			if (!token) {
+				navigate("/authentification");
+			}
+		};
+		checkAuthentication();
+	}, [token]);
+
+	// définition de l'état pour l'affichage du menu
+	const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
+
+	return menuIsOpen ? (
+		<AppMenuComponent setMenuIsOpen={setMenuIsOpen} />
+	) : (
 		<div>
-			<HeaderComponent type={"backoffice"} />
+			<HeaderComponent type={"backoffice"} setMenuIsOpen={setMenuIsOpen} />
 			<main>
 				<Outlet />
 			</main>

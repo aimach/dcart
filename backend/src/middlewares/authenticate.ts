@@ -1,23 +1,24 @@
-// import des bibliothèques
-import passport from "passport";
+// import des services
+import { jwtService } from "../utils/jwt";
 // import des types
 import type { Request, Response, NextFunction } from "express";
-import type { User } from "../entities/builtMap/User";
+import type jwt from "jsonwebtoken";
 
-export const authenticateJwt = (
+export const authenticateUser = (
 	req: Request,
 	res: Response,
 	next: NextFunction,
 ) => {
-	passport.authenticate(
-		"jwt",
-		{ session: false },
-		(error: Error, user: User | null) => {
-			if (error) return res.status(500).json({ message: "Erreur du serveur" });
-			if (!user) return res.status(401).json({ message: "Accès non autorisé" });
+	const authHeader = req.headers.authorization;
 
-			req.user = user;
-			next();
-		},
-	);
+	// récupération du token après "Bearer"
+	const token = authHeader?.split(" ")[1];
+
+	try {
+		const decoded = jwtService.verifyToken(token as string) as jwt.JwtPayload;
+		req.user = decoded;
+		next();
+	} catch (error) {
+		res.status(401).json({ message: "Token invalide ou expiré" });
+	}
 };
