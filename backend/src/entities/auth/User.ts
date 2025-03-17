@@ -7,6 +7,7 @@ import {
 	OneToMany,
 } from "typeorm";
 import { MapContent } from "../builtMap/MapContent";
+import { Storymap } from "../storymap/Storymap";
 
 @Entity()
 export class User extends BaseEntity {
@@ -40,4 +41,16 @@ export class User extends BaseEntity {
 		(mapContent) => mapContent.modifier,
 	)
 	updatedMaps!: MapContent[];
+
+	@OneToMany(
+		() => Storymap,
+		(storymap) => storymap.creator,
+	)
+	createdStorymaps!: Storymap[];
+
+	@OneToMany(
+		() => Storymap,
+		(storymap) => storymap.modifier,
+	)
+	updatedStorymaps!: Storymap[];
 }
