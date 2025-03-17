@@ -12,11 +12,20 @@ export const categoryController = {
 			const { id } = req.params;
 
 			if (id === "all") {
+				if (req.query.isActive) {
+					const allCategories = await dcartDataSource
+						.getRepository(Category)
+						.createQueryBuilder("category")
+						.leftJoinAndSelect("category.storymaps", "storymaps")
+						.where("storymaps.isActive = :isActive", { isActive: true })
+						.getMany();
+					res.status(200).send(allCategories);
+					return;
+				}
 				const allCategories = await dcartDataSource
 					.getRepository(Category)
 					.createQueryBuilder("category")
 					.leftJoinAndSelect("category.storymaps", "storymaps")
-					.where("storymaps.isActive = :isActive", { isActive: true })
 					.getMany();
 				res.status(200).send(allCategories);
 				return;

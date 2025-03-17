@@ -11,6 +11,7 @@ import type {
 	BlockInterface,
 	GroupedPoint,
 } from "../../utils/types/storymapTypes";
+import type jwt from "jsonwebtoken";
 
 export const storymapContentControllers = {
 	// récupère une storymap par son id
@@ -27,6 +28,20 @@ export const storymapContentControllers = {
 					.leftJoinAndSelect("block.children", "child")
 					.leftJoinAndSelect("child.type", "child_type")
 					.leftJoinAndSelect("child.points", "step_point")
+					.leftJoinAndSelect("storymap.creator", "creator")
+					.leftJoinAndSelect("storymap.modifier", "modifier")
+					.select([
+						"storymap",
+						"category",
+						"block",
+						"point",
+						"type",
+						"child",
+						"child_type",
+						"step_point",
+						"creator.pseudo",
+						"modifier.pseudo",
+					])
 					.orderBy("block.position", "ASC")
 					.getMany();
 				res.status(200).send(allStorymaps);
@@ -42,6 +57,20 @@ export const storymapContentControllers = {
 				.leftJoinAndSelect("block.children", "child")
 				.leftJoinAndSelect("child.type", "child_type")
 				.leftJoinAndSelect("child.points", "step_point")
+				.leftJoinAndSelect("storymap.creator", "creator")
+				.leftJoinAndSelect("storymap.modifier", "modifier")
+				.select([
+					"storymap",
+					"category",
+					"block",
+					"point",
+					"type",
+					"child",
+					"child_type",
+					"step_point",
+					"creator.pseudo",
+					"modifier.pseudo",
+				])
 				.where("storymap.id = :id", { id: req.params.id })
 				.orderBy("block.position", "ASC")
 				.getOne();
@@ -87,9 +116,12 @@ export const storymapContentControllers = {
 	// crée une nouvelle storymap
 	createNewStorymap: async (req: Request, res: Response): Promise<void> => {
 		try {
+			const { userId } = req.user as jwt.JwtPayload;
+
 			const newStorymap = dcartDataSource.getRepository(Storymap).create({
 				...req.body,
 				category: req.body.category_id,
+				creator: userId,
 			});
 			await dcartDataSource.getRepository(Storymap).save(newStorymap);
 			res.status(201).send(newStorymap);
@@ -113,6 +145,9 @@ export const storymapContentControllers = {
 				res.status(404).send("Storymap non trouvée.");
 				return;
 			}
+
+			const { userId } = req.user as jwt.JwtPayload;
+			storymapToUpdate.modifier = userId;
 
 			if (req.query.isActive) {
 				const updatedStorymap = await dcartDataSource

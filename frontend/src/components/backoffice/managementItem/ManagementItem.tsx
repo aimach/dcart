@@ -83,9 +83,7 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 					<h4>{(itemInfos as StorymapType)[`title_${language}`]}</h4>
 					<p>{itemInfos[`description_${language}`]}</p>
 					<p>{itemInfos.isActive ? "Publiée" : "Non publiée"}</p>
-					<p className={style.greyAndItalic}>
-						{type === "map" && creationAndModificationString}
-					</p>
+					<p className={style.greyAndItalic}>{creationAndModificationString}</p>
 				</div>
 			</div>
 			<div className={style.managementItemIcons}>
