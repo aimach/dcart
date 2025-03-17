@@ -1,5 +1,12 @@
 // import des bibliothèques
-import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
+import {
+	Entity,
+	PrimaryGeneratedColumn,
+	Column,
+	BaseEntity,
+	OneToMany,
+} from "typeorm";
+import { MapContent } from "../builtMap/MapContent";
 
 @Entity()
 export class User extends BaseEntity {
@@ -21,4 +28,16 @@ export class User extends BaseEntity {
 		default: "visitor",
 	})
 	status!: string;
+
+	@OneToMany(
+		() => MapContent,
+		(mapContent) => mapContent.creator,
+	)
+	createdMaps!: MapContent[];
+
+	@OneToMany(
+		() => MapContent,
+		(mapContent) => mapContent.modifier,
+	)
+	updatedMaps!: MapContent[];
 }
