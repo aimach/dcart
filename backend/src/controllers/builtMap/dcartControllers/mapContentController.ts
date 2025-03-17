@@ -19,13 +19,39 @@ export const mapContentController = {
 					const isActive = req.query.isActive === "true";
 					const allMaps = await dcartDataSource
 						.getRepository(MapContent)
-						.find({ where: { isActive }, relations: ["filters", "category"] });
+						.createQueryBuilder("map")
+						.leftJoinAndSelect("map.category", "category")
+						.leftJoinAndSelect("map.creator", "creator")
+						.leftJoinAndSelect("map.modifier", "modifier")
+						.leftJoinAndSelect("map.filters", "filters")
+						.select([
+							"map",
+							"filters",
+							"category",
+							"creator.pseudo",
+							"modifier.pseudo",
+						])
+						.where("map.isActive = :isActive", { isActive })
+						.getMany();
+
 					res.status(200).send(allMaps);
 					return;
 				}
 				const allMaps = await dcartDataSource
 					.getRepository(MapContent)
-					.find({ relations: ["filters", "category"] });
+					.createQueryBuilder("map")
+					.leftJoinAndSelect("map.category", "category")
+					.leftJoinAndSelect("map.creator", "creator")
+					.leftJoinAndSelect("map.modifier", "modifier")
+					.leftJoinAndSelect("map.filters", "filters")
+					.select([
+						"map",
+						"filters",
+						"category",
+						"creator.pseudo",
+						"modifier.pseudo",
+					])
+					.getMany();
 				res.status(200).send(allMaps);
 				return;
 			}
