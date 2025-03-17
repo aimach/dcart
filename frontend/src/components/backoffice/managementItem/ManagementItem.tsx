@@ -3,6 +3,7 @@ import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
 import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
 import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
+import { getCreationAndModificationString } from "../../../utils/functions/map";
 // import des types
 import { useNavigate } from "react-router";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
@@ -21,7 +22,7 @@ type ManagementItemProps = {
 
 const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 	// récupération des données de traduction
-	const { language } = useTranslation();
+	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
 	const { setMapInfos } = useMapFormStore();
@@ -59,6 +60,13 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 		setReload(!reload);
 	};
 
+	// affichage des informations de création ou de modification
+	const creationAndModificationString = getCreationAndModificationString(
+		itemInfos,
+		translation,
+		language,
+	);
+
 	return (
 		<li className={style.managementItem} key={itemInfos.id}>
 			<div className={style.managementItemTitleAndImage}>
@@ -75,6 +83,9 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 					<h4>{(itemInfos as StorymapType)[`title_${language}`]}</h4>
 					<p>{itemInfos[`description_${language}`]}</p>
 					<p>{itemInfos.isActive ? "Publiée" : "Non publiée"}</p>
+					<p className={style.greyAndItalic}>
+						{type === "map" && creationAndModificationString}
+					</p>
 				</div>
 			</div>
 			<div className={style.managementItemIcons}>

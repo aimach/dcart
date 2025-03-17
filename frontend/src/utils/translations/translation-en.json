@@ -36,7 +36,10 @@
 		"semitic": "Semitic",
 		"previous": "Previous",
 		"next": "Next",
-		"back": "Back"
+		"back": "Back",
+		"createdOn": "Created on",
+		"updatedOn": "Updated on",
+		"by": "by"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",

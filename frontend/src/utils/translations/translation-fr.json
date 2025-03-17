@@ -36,7 +36,10 @@
 		"semitic": "Sémitique",
 		"previous": "Précédent",
 		"next": "Suivant",
-		"back": "Retour"
+		"back": "Retour",
+		"createdOn": "Créé le",
+		"updatedOn": "Modifié le",
+		"by": "par"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",

@@ -92,6 +92,13 @@ type MapType = {
 	createdAt: string;
 	updatedAt: string;
 	filters: FilterType[];
+	category: CategoryType;
+	creator: {
+		pseudo: string;
+	};
+	modifier: {
+		pseudo: string;
+	};
 };
 
 type MenuTabType = "results" | "filters" | "infos";
