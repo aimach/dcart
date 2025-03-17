@@ -11,6 +11,7 @@ import { dcartRoutes } from "./routes/builtMap/dcartRoutes";
 import { mapRoutes } from "./routes/builtMap/mapRoutes";
 import { authRoutes } from "./routes/authRoutes";
 import { storymapRoutes } from "./routes/storymap";
+import { sessionRoutes } from "./routes/sessionRoutes";
 
 // on charge les variables d'environnement
 dotenv.config();
@@ -44,9 +45,10 @@ mapDataSource
 	);
 
 // Définition des préfixes des routes
+app.use("/auth", authRoutes);
+app.use("/session", sessionRoutes);
 app.use("/dcart", dcartRoutes);
 app.use("/map", mapRoutes);
-app.use("/auth", authRoutes);
 app.use("/storymap", storymapRoutes);
 
 // Démarrage du serveur

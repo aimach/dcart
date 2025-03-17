@@ -6,10 +6,9 @@ import {
 	OneToOne,
 	JoinColumn,
 	Column,
+	CreateDateColumn,
 } from "typeorm";
 // import des entités
-import { MapContent } from "../builtMap/MapContent";
-import { Storymap } from "../storymap/Storymap";
 import { User } from "../auth/User";
 
 @Entity()
@@ -21,14 +20,9 @@ export class UpdateSession extends BaseEntity {
 	@JoinColumn()
 	user!: User;
 
-	@Column({ type: "timestamptz", nullable: false })
+	@CreateDateColumn({ type: "timestamptz", nullable: false })
 	createdAt!: Date;
 
-	@OneToOne(() => MapContent)
-	@JoinColumn()
-	map!: MapContent;
-
-	@OneToOne(() => Storymap)
-	@JoinColumn()
-	storymap!: Storymap;
+	@Column({ type: "uuid", nullable: false })
+	itemId!: string;
 }
