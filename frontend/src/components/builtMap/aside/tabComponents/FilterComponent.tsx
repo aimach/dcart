@@ -41,15 +41,23 @@ const FilterComponent = ({
 		useShallow((state) => state),
 	);
 	const { mapFilters } = useMapAsideMenuStore();
-	const { userFilters, resetUserFilters, isReset, setIsReset } =
-		useMapFiltersStore(
-			useShallow((state) => ({
-				userFilters: state.userFilters,
-				resetUserFilters: state.resetUserFilters,
-				isReset: state.isReset,
-				setIsReset: state.setIsReset,
-			})),
-		);
+	const {
+		userFilters,
+		resetUserFilters,
+		isReset,
+		setIsReset,
+		setNbFilters,
+		resetNbFilters,
+	} = useMapFiltersStore(
+		useShallow((state) => ({
+			userFilters: state.userFilters,
+			resetUserFilters: state.resetUserFilters,
+			isReset: state.isReset,
+			setIsReset: state.setIsReset,
+			setNbFilters: state.setNbFilters,
+			resetNbFilters: state.resetNbFilters,
+		})),
+	);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -69,14 +77,20 @@ const FilterComponent = ({
 	);
 
 	// fonction pour gérer le clic sur le bouton de filtre
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	const handleFilterButton = useCallback(() => {
 		fetchAllPoints("filter");
-	}, [fetchAllPoints]);
+		const nbFilters = Object.keys(userFilters).filter(
+			(key) => userFilters[key as keyof typeof userFilters],
+		);
+		setNbFilters(nbFilters.length);
+	}, [userFilters, fetchAllPoints]);
 
 	// fonction pour gérer le reset des filtres
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	const resetFilters = useCallback(() => {
 		resetUserFilters();
+		resetNbFilters();
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");

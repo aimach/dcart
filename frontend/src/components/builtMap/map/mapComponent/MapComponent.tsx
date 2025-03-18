@@ -65,13 +65,14 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		resetSelectedMarker,
 		tileLayerURL,
 	} = useMapStore(useShallow((state) => state));
-	const { userFilters, resetUserFilters, isReset, setIsReset } =
+	const { userFilters, resetUserFilters, isReset, setIsReset, resetNbFilters } =
 		useMapFiltersStore(
 			useShallow((state) => ({
 				userFilters: state.userFilters,
 				resetUserFilters: state.resetUserFilters,
 				isReset: state.isReset,
 				setIsReset: state.setIsReset,
+				resetNbFilters: state.resetNbFilters,
 			})),
 		);
 	const { setSelectedTabMenu } = useMapAsideMenuStore(
@@ -151,6 +152,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 	};
 	const resetFiltersAndFetchPoints = () => {
 		resetUserFilters();
+		resetNbFilters();
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
