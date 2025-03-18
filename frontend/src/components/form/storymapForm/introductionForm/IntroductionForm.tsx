@@ -63,8 +63,6 @@ const IntroductionForm = () => {
 		fetchAllCategoriesAndCreateOptions();
 	}, [language]);
 
-	console.log(inputs);
-
 	// -- MODE MODIFICATION --
 	// récupération de l'id de la storymap
 	const { storymapId } = useParams();

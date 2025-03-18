@@ -23,6 +23,7 @@ import StorymapBuilderPage from "./pages/BackOffice/BOStorymapPage/storymapBuild
 import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
 import MapCategoryMenuPage from "./pages/MapCategoryMenuPage/MapCategoryMenuPage.tsx";
 import StorymapCategoryMenuPage from "./pages/StorymapCategoryMenuPage/StorymapCategoryMenuPage.tsx";
+import { SessionProvider } from "./context/SessionContext.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -31,52 +32,57 @@ if (rootElement) {
 		<BrowserRouter>
 			<TranslationProvider>
 				<AuthProvider>
-					<Routes>
-						<Route element={<NavigationLayout />}>
-							<Route index element={<App />} />
-							<Route path="maps/categories">
-								<Route index element={<MapCategoryMenuPage />} />
-								<Route path=":categoryId">
-									<Route path="map/:mapId" element={<MapPage />} />
+					<SessionProvider>
+						<Routes>
+							<Route element={<NavigationLayout />}>
+								<Route index element={<App />} />
+								<Route path="maps/categories">
+									<Route index element={<MapCategoryMenuPage />} />
+									<Route path=":categoryId">
+										<Route path="map/:mapId" element={<MapPage />} />
+									</Route>
 								</Route>
-							</Route>
-							<Route path="storymaps/categories">
-								<Route index element={<StorymapCategoryMenuPage />} />
-								<Route path=":categoryId">
-									<Route
-										path="storymap/:storymapId"
-										element={<StorymapPage />}
-									/>
+								<Route path="storymaps/categories">
+									<Route index element={<StorymapCategoryMenuPage />} />
+									<Route path=":categoryId">
+										<Route
+											path="storymap/:storymapId"
+											element={<StorymapPage />}
+										/>
+									</Route>
 								</Route>
-							</Route>
-						</Route>
-						<Route path="authentification" element={<AuthentificationPage />} />
-						<Route path="backoffice" element={<ProtectedLayout />}>
-							<Route index element={<BOHomePage />} />
-							<Route path="maps">
-								<Route index element={<BackofficeMapPage />} />
-								<Route path="create" element={<BOMapFormPage />} />
-								<Route path="edit/:mapId" element={<BOMapFormPage />} />
-							</Route>
-							<Route path="storymaps">
-								<Route index element={<BackofficeStorymapPage />} />
-								<Route path="create" element={<StorymapIntroPage />} />
-								<Route
-									path="build/:storymapId"
-									element={<StorymapBuilderPage />}
-								/>
-								<Route
-									path="edit/:storymapId"
-									element={<StorymapIntroPage />}
-								/>
-								<Route path="view/:storymapId" element={<StorymapPage />} />
 							</Route>
 							<Route
-								path="translation"
-								element={<BackofficeTranslationPage />}
+								path="authentification"
+								element={<AuthentificationPage />}
 							/>
-						</Route>
-					</Routes>
+							<Route path="backoffice" element={<ProtectedLayout />}>
+								<Route index element={<BOHomePage />} />
+								<Route path="maps">
+									<Route index element={<BackofficeMapPage />} />
+									<Route path="create" element={<BOMapFormPage />} />
+									<Route path="edit/:mapId" element={<BOMapFormPage />} />
+								</Route>
+								<Route path="storymaps">
+									<Route index element={<BackofficeStorymapPage />} />
+									<Route path="create" element={<StorymapIntroPage />} />
+									<Route
+										path="build/:storymapId"
+										element={<StorymapBuilderPage />}
+									/>
+									<Route
+										path="edit/:storymapId"
+										element={<StorymapIntroPage />}
+									/>
+									<Route path="view/:storymapId" element={<StorymapPage />} />
+								</Route>
+								<Route
+									path="translation"
+									element={<BackofficeTranslationPage />}
+								/>
+							</Route>
+						</Routes>
+					</SessionProvider>
 				</AuthProvider>
 			</TranslationProvider>
 		</BrowserRouter>,

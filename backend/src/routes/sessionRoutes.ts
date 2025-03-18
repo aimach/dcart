@@ -6,6 +6,9 @@ import { authenticateUser } from "../middlewares/authenticate";
 
 export const sessionRoutes = express.Router();
 
+// récupération d'une session
+sessionRoutes.get("/:itemId", authenticateUser, sessionController.getSession);
+
 // création d'une session
 sessionRoutes.post(
 	"/:type/:itemId",
@@ -14,15 +17,14 @@ sessionRoutes.post(
 );
 
 // mise à jour d'une session
-sessionRoutes.put(
-	"/:type/:itemId",
-	authenticateUser,
-	sessionController.updateSession,
-);
+sessionRoutes.put("/", authenticateUser, sessionController.updateSession);
 
 // suppression d'une session
-sessionRoutes.delete(
-	"/:itemId",
+sessionRoutes.delete("/", authenticateUser, sessionController.deleteSession);
+
+// vérifie qu'une session est en cours
+sessionRoutes.post(
+	"/ping",
 	authenticateUser,
-	sessionController.deleteSession,
+	sessionController.handleSessionPing,
 );

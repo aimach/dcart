@@ -1,9 +1,12 @@
+// import des bibliothèques
+import { useState, useEffect, useContext } from "react";
 // import des services
 import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
 import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
 import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
 import { getCreationAndModificationString } from "../../../utils/functions/map";
+import { createSession, getSessionById } from "../../../utils/api/sessionAPI";
 // import des types
 import { useNavigate } from "react-router";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
@@ -13,7 +16,8 @@ import type { StorymapType } from "../../../utils/types/storymapTypes";
 // import du style
 import style from "./managementItem.module.scss";
 // import des icônes
-import { Eye, EyeOff, ImageOff, Pen, Trash } from "lucide-react";
+import { Eye, EyeOff, ImageOff, Pen, PenOff, Trash } from "lucide-react";
+import { SessionContext } from "../../../context/SessionContext";
 
 type ManagementItemProps = {
 	itemInfos: MapType | StorymapType;
@@ -24,9 +28,25 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
+	// récupération des données du contexte
+	const { setSession } = useContext(SessionContext);
+
 	// récupération des données des stores
 	const { setMapInfos } = useMapFormStore();
 	const { openDeleteModal, setIdToDelete, reload, setReload } = useModalStore();
+
+	// au montage du composant, vérification des sessions en cours
+	const [isModifiedByAnotherUser, setIsModifiedByAnotherUser] =
+		useState<boolean>(false);
+	useEffect(() => {
+		const checkSession = async () => {
+			const sessionResponse = await getSessionById(itemInfos.id);
+			if (sessionResponse?.status === 200) {
+				setIsModifiedByAnotherUser(true);
+			}
+		};
+		checkSession();
+	}, [itemInfos.id]);
 
 	// fonction déclenchée lors du clic sur l'icone de suppression
 	const handleDeleteClick = (idToDelete: string) => {
@@ -42,9 +62,17 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 			const allMapInfos = await getOneMapInfos(idToModify);
 			setMapInfos(allMapInfos);
 			if (allMapInfos) {
+				// création d'une session de modification
+				const session = await createSession(type, idToModify);
+				setSession(session);
+				// redirection vers la page de modification de carte
 				navigate(`/backoffice/maps/edit/${idToModify}`);
 			}
 		} else {
+			// création d'une session de modification
+			const session = await createSession(type, idToModify);
+			setSession(session);
+			// redirection vers la page de modification de storymap
 			navigate(`/backoffice/storymaps/build/${idToModify}`);
 		}
 	};
@@ -87,7 +115,12 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 				</div>
 			</div>
 			<div className={style.managementItemIcons}>
-				<Pen onClick={() => handleModifyClick(itemInfos.id)} />
+				{isModifiedByAnotherUser ? (
+					<PenOff />
+				) : (
+					<Pen onClick={() => handleModifyClick(itemInfos.id)} />
+				)}
+
 				<Trash onClick={() => handleDeleteClick(itemInfos.id)} />
 				{itemInfos.isActive ? (
 					<EyeOff onClick={() => handlePublicationClick(type, false)} />

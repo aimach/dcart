@@ -2,7 +2,7 @@
 import { create } from "zustand";
 // import des types
 import type { Map as LeafletMap } from "leaflet";
-import type { MapInfoType, PointType } from "../types/mapTypes";
+import type { MapInfoType, PointType } from "../../types/mapTypes";
 
 type State = {
 	map: LeafletMap | null;
