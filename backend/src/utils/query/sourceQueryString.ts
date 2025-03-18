@@ -230,14 +230,17 @@ sources_with_attestations AS (
   ${queryIncludedElements}
 ),
 
--- on enlève les doublons des sources
+-- on enlève les doublons des sources et on classe les attestations par id
 sources_without_duplicate AS (
-	SELECT 
-    source.id as source_id,
-		json_agg(DISTINCT sources_with_attestations.attestations) as sources
-    FROM source
-	JOIN sources_with_attestations ON source.id = sources_with_attestations.source_id 
-	GROUP BY source.id
+  SELECT 
+    source.id AS source_id,
+    json_agg(attestations ORDER BY attestations->>'attestation_id') AS sources
+  FROM (
+    SELECT DISTINCT sources_with_attestations.source_id, sources_with_attestations.attestations
+    FROM sources_with_attestations
+  ) AS subquery
+  JOIN source ON source.id = subquery.source_id
+  GROUP BY source.id
 )
 
 -- on regroupe les sources par localité et on récupère les métadonnées
@@ -254,10 +257,6 @@ SELECT
 	json_agg(
     DISTINCT jsonb_build_object(
       'source_id', sources_without_duplicate.source_id,
-      'support_fr', type_support.nom_fr,
-      'materiau_fr', materiau.nom_fr,
-      'support_en', type_support.nom_en,
-      'materiau_en', materiau.nom_en,
       'attestations', sources_without_duplicate.sources,
       'post_quem', datation.post_quem,
       'ante_quem', datation.ante_quem
