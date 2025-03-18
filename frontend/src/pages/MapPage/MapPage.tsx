@@ -15,6 +15,8 @@ import { useMapStore } from "../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../utils/stores/builtMap/mapAsideMenuStore";
 // import du style
 import style from "./mapPage.module.scss";
+import UserMapFilterForm from "../../components/form/mapForm/userMapFilterForm/UserMapFilterForm";
+import { useMapFiltersStore } from "../../utils/stores/builtMap/mapFiltersStore";
 
 /**
  * Page de la carte
@@ -80,8 +82,10 @@ const MapPage = () => {
 		setPanelDisplayed(false);
 	}, [mapId]);
 
+	const { isReset } = useMapFiltersStore();
+
 	return (
-		<section className={style.mapSection}>
+		<section className={style.mapSection} key={isReset ? "reset" : "filter"}>
 			{/* <MapMenuNav categoryId={categoryId as string} /> */}
 			<section className={style.mapSectionMain}>
 				{panelDisplayed ? (

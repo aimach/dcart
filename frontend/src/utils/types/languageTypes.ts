@@ -59,6 +59,7 @@ type LanguageObject = {
 	mapPage: {
 		introduction: string;
 		noResult: string;
+		enlargeYourSearch: string;
 		aside: {
 			filters: string;
 			sources: string;

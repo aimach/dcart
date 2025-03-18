@@ -82,8 +82,6 @@ const FilterComponent = ({
 		fetchAllPoints("reset");
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
-	console.log(mapFilters);
-
 	return (
 		<div className={style.resultContainer}>
 			<div>

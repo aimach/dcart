@@ -57,6 +57,7 @@
 	"mapPage": {
 		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
 		"noResult": "No result",
+		"enlargeYourSearch": "Expand your search or reset all filters.",
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
