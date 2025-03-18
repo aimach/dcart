@@ -29,7 +29,6 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
 
 	useEffect(() => {
 		if (session) {
-			console.log("Session dans le timeout :", session);
 			const startTime = new Date(session.createdAt).getTime();
 			const now = Date.now();
 			const timeoutDuration = startTime + 29 * 60 * 1000 - now; // 29 minutes après la création de la session
@@ -70,7 +69,6 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
 		const sendPing = async (session: Record<string, string>) => {
 			await pingSession(session);
 		};
-		console.log("Session dans le ping :", session);
 		if (session) {
 			// premier envoi
 			sendPing(session);
