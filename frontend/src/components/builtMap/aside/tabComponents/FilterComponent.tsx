@@ -98,6 +98,7 @@ const FilterComponent = ({
 
 	return (
 		<div className={style.resultContainer}>
+			<div>Rappel</div>
 			<div>
 				{mapFilters.length > 0 &&
 					mapFilters.map((filter) => {

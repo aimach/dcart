@@ -28,13 +28,16 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 	const { mapId } = useParams();
 
 	// récupération des données des stores
-	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
-		useShallow((state) => ({
-			userFilters: state.userFilters,
-			setUserFilters: state.setUserFilters,
-			isReset: state.isReset,
-		})),
-	);
+	const { userFilters, setUserFilters, isReset, nbFilters, setNbFilters } =
+		useMapFiltersStore(
+			useShallow((state) => ({
+				userFilters: state.userFilters,
+				setUserFilters: state.setUserFilters,
+				isReset: state.isReset,
+				nbFilters: state.nbFilters,
+				setNbFilters: state.setNbFilters,
+			})),
+		);
 	const { setAllPoints, setMapReady, setSelectedMarker } = useMapStore(
 		useShallow((state) => ({
 			setAllPoints: state.setAllPoints,
@@ -56,7 +59,16 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		minValue: number;
 		maxValue: number;
 	}) => {
-		setUserFilters({ ...userFilters, ante: e.maxValue, post: e.minValue });
+		const newUserFilters = {
+			...userFilters,
+			ante: e.maxValue,
+			post: e.minValue,
+		};
+		setUserFilters(newUserFilters);
+		const nbFilters = Object.keys(newUserFilters).filter(
+			(key) => newUserFilters[key as keyof typeof userFilters],
+		);
+		setNbFilters(nbFilters.length);
 	};
 
 	// fonction qui met à jour les bornes temporelles dans le selecteur de temps et charge les points
