@@ -40,7 +40,7 @@ const FilterComponent = ({
 	const { mapInfos, setAllPoints, setMapReady } = useMapStore(
 		useShallow((state) => state),
 	);
-	const mapFilters = useMapAsideMenuStore((state) => state.mapFilters);
+	const { mapFilters } = useMapAsideMenuStore();
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(
 			useShallow((state) => ({
@@ -82,41 +82,50 @@ const FilterComponent = ({
 		fetchAllPoints("reset");
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
-	return mapFilters.length ? (
+	console.log(mapFilters);
+
+	return (
 		<div className={style.resultContainer}>
 			<div>
-				{mapFilters.map((filter) => {
-					if (filter.type === "location") {
-						return (
-							<div className={style.filterContainer}>
-								<h4>{translation[language].mapPage.aside.location}</h4>
-								<LocationFilterComponent
-									key={filter.id}
-									locationOptions={locationOptions}
-								/>
-							</div>
-						);
-					}
-					if (filter.type === "element") {
-						return (
-							<div className={style.filterContainer}>
-								<h4>{translation[language].mapPage.aside.element}</h4>
-								<ElementFilterComponent
-									key={filter.id}
-									elementOptions={elementOptions}
-								/>
-							</div>
-						);
-					}
-					if (filter.type === "language") {
-						return (
-							<div className={style.filterContainer}>
-								<h4>{translation[language].mapPage.aside.language}</h4>
-								<LanguageFilterComponent key={filter.id} />
-							</div>
-						);
-					}
-				})}
+				{mapFilters.length > 0 &&
+					mapFilters.map((filter) => {
+						if (filter.type === "location") {
+							return (
+								<div className={style.filterContainer}>
+									<h4>{translation[language].mapPage.aside.location}</h4>
+									<LocationFilterComponent
+										key={filter.id}
+										locationOptions={locationOptions}
+									/>
+								</div>
+							);
+						}
+						if (filter.type === "element") {
+							return (
+								<div className={style.filterContainer}>
+									<h4>{translation[language].mapPage.aside.element}</h4>
+									<ElementFilterComponent
+										key={filter.id}
+										elementOptions={elementOptions}
+									/>
+								</div>
+							);
+						}
+						if (filter.type === "language") {
+							return (
+								<div className={style.filterContainer}>
+									<h4>{translation[language].mapPage.aside.language}</h4>
+									<LanguageFilterComponent key={filter.id} />
+								</div>
+							);
+						}
+					})}
+				{mapFilters.length === 0 && (
+					<div className={style.filterContainer}>
+						<h4>{translation[language].mapPage.aside.language}</h4>
+						<LanguageFilterComponent />
+					</div>
+				)}
 			</div>
 			<div className={style.filterButtonContainer}>
 				<button
@@ -135,8 +144,6 @@ const FilterComponent = ({
 				</button>
 			</div>
 		</div>
-	) : (
-		<div>{translation[language].mapPage.aside.noFilter}</div>
 	);
 };
 

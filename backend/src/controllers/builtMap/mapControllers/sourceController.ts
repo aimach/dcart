@@ -59,11 +59,20 @@ export const sourceController = {
 					);
 				}
 
+				let queryLanguage = "";
+				if (req.query.greek === "false") {
+					queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
+				}
+				if (req.query.semitic === "false") {
+					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
+				}
+
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQueryWithoutDetails(
 					queryLocalisation,
 					queryDatation,
 					queryIncludedElements,
+					queryLanguage,
 				);
 				results = await mapDataSource.query(sqlQuery);
 			} else {

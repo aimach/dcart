@@ -11,6 +11,7 @@ export const getSourcesQueryWithoutDetails = (
 	queryLocalisation: string,
 	queryDatation: string,
 	queryIncludedElements: string,
+	queryLanguage: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -127,6 +128,7 @@ WHERE localisation_source.latitude IS NOT NULL
 AND localisation_source.longitude IS NOT NULL 
 AND attestation.id_etat_fiche = 4 
 ${queryLocalisation} 
+${queryLanguage} 
 ${queryDatation} -- ajouter ici le filtre des dates
 GROUP BY 
   localisation_source.latitude,
