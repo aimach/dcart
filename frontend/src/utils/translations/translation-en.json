@@ -75,7 +75,7 @@
 			"originalVersion": "Original version",
 			"agents": "Agents",
 			"noAgent": "No agent",
-			"noDesignation": "agent with no designation"
+			"noDesignation": "unspecified"
 		}
 	},
 	"backoffice": {

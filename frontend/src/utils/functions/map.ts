@@ -100,7 +100,7 @@ const getSanitizedAgent = (
 	language: Language,
 ) => {
 	if (!agentElement.designation) {
-		return `(${translation[language].mapPage.aside.noDesignation})`;
+		return translation[language].mapPage.aside.noDesignation;
 	}
 
 	const sanitizedAgent = DOMPurify.sanitize(agentElement.designation);

@@ -116,8 +116,9 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		if (bounds.length === 0) {
 			setIsModalOpen(true);
 		}
+
 		// si des points sont affichés, ajustement des limites de la carte
-		if (bounds.length && map) {
+		if (bounds.length > 0 && map) {
 			map.fitBounds(bounds);
 		}
 
@@ -125,7 +126,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		const timeMarkers = getPointsTimeMarkers(allPoints);
 		const isDisabled = !timeMarkers.post && !timeMarkers.ante;
 		setTimeFilterIsDisabled(isDisabled);
-	}, [bounds]);
+	}, [map, bounds]);
 
 	// génération des uuid() pour les keys des composants (se régénère seulement si allPoints change)
 	const allMemoizedPoints = useMemo(
@@ -140,7 +141,6 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 	// fonction pour mettre à jour les filtres et les points si pas de résultats
 	const fetchAllPoints = async (type: "filter" | "reset") => {
 		setMapReady(false);
-
 		const mapId = mapInfos?.id ?? "exploration";
 		const points = await getAllPointsByMapId(
 			mapId,
