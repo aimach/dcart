@@ -10,6 +10,14 @@ type StorymapType = {
 	author?: string;
 	isActive: boolean;
 	publishedAt: string;
+	createdAt: string;
+	updatedAt: string;
+	creator: {
+		pseudo: string;
+	};
+	modifier: {
+		pseudo: string;
+	};
 	blocks?: BlockContentType[];
 };
 

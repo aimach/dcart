@@ -7,8 +7,10 @@ import type {
 	PointType,
 	AgentType,
 	ParsedPointType,
+	MapType,
 } from "../types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
+import type { StorymapType } from "../types/storymapTypes";
 
 /**
  * Fonction qui retourne un tableau d'agents sans doublons, établis à partir de la désignation
@@ -136,6 +138,47 @@ const zoomOnMarkerOnClick = (map: LeafletMap, point: PointType) => {
 	map.flyTo([point.latitude, point.longitude], 10);
 };
 
+/**
+ * Fonction qui renvoie une chaîne de caractère affichant la date de création et le créateur, ainsi que, le cas échénant, la date de modification et le modificateur
+ * @param {MapType | StorymapType} itemInfos - Les informations de la carte ou du récit
+ * @param {TranslationType} translation - Les traductions
+ * @param {Language} language - La langue
+ */
+const getCreationAndModificationString = (
+	itemInfos: MapType | StorymapType,
+	translation: TranslationType,
+	language: Language,
+) => {
+	const creationDate = new Date(itemInfos.createdAt).toLocaleDateString(
+		language,
+		{
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		},
+	);
+
+	let string = `${translation[language].common.createdOn} ${creationDate} ${translation[language].common.by} ${
+		itemInfos.creator.pseudo
+	}`;
+
+	if (itemInfos.modifier) {
+		const modificationDate = new Date(itemInfos.updatedAt).toLocaleDateString(
+			language,
+			{
+				year: "numeric",
+				month: "long",
+				day: "numeric",
+			},
+		);
+
+		string += ` - ${translation[language].common.updatedOn} ${modificationDate} ${translation[language].common.by} ${
+			itemInfos.modifier.pseudo
+		}`;
+	}
+	return string;
+};
+
 export {
 	getAgentsArrayWithoutDuplicates,
 	getAllAttestationsIdsFromParsedPoints,
@@ -144,4 +187,5 @@ export {
 	getSanitizedAgent,
 	isSelectedMarker,
 	zoomOnMarkerOnClick,
+	getCreationAndModificationString,
 };

@@ -3,7 +3,7 @@
 
 .managementItem {
     width: 70vw;
-    height: 100px;
+    height: 150px;
     padding: v.$space-m;
     color: v.$color-black-chocolate;
     border-radius: v.$border-radius-rounded;
@@ -38,6 +38,12 @@
         >img,
         svg {
             width: 100px;
+        }
+
+        .greyAndItalic {
+            font-style: italic;
+            color: v.$color-umber;
+            font-size: v.$font-size-xs;
         }
     }
 

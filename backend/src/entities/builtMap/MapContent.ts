@@ -9,9 +9,11 @@ import {
 	ManyToOne,
 	ManyToMany,
 	JoinTable,
+	OneToMany,
 } from "typeorm";
 import { Category } from "./Category";
 import { Filter } from "./Filter";
+import { User } from "../auth/User";
 
 enum location {
 	SUBREGION = "subRegion",
@@ -51,6 +53,18 @@ export class MapContent extends BaseEntity {
 
 	@UpdateDateColumn({ type: "timestamptz" })
 	updatedAt!: Date;
+
+	@ManyToOne(
+		() => User,
+		(user) => user.createdMaps,
+	)
+	creator!: User;
+
+	@ManyToOne(
+		() => User,
+		(user) => user.updatedMaps,
+	)
+	modifier!: User;
 
 	@ManyToOne(
 		() => Category,

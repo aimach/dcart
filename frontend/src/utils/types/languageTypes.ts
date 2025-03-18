@@ -39,6 +39,9 @@ type LanguageObject = {
 		previous: string;
 		next: string;
 		back: string;
+		createdOn: string;
+		updatedOn: string;
+		by: string;
 	};
 	modal: {
 		firstContent: string;

@@ -12,6 +12,7 @@ import {
 // import des entités
 import { Block } from "./Block";
 import { Category } from "../builtMap/Category";
+import { User } from "../auth/User";
 
 @Entity()
 export class Storymap extends BaseEntity {
@@ -48,6 +49,18 @@ export class Storymap extends BaseEntity {
 
 	@UpdateDateColumn({ type: "timestamptz" })
 	updatedAt!: Date;
+
+	@ManyToOne(
+		() => User,
+		(user) => user.createdStorymaps,
+	)
+	creator!: User;
+
+	@ManyToOne(
+		() => User,
+		(user) => user.updatedStorymaps,
+	)
+	modifier!: User;
 
 	@OneToMany(
 		() => Block,

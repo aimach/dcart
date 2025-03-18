@@ -65,21 +65,24 @@ export const getBlockComponentFromType = (
 };
 
 const StorymapPage = () => {
-	const [storymapInfos, setStorymapInfos] = useState<StorymapType | null>(null);
+	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
-	const fetchStorymapInfos = async () => {
-		try {
-			const response = await getStorymapInfosAndBlocks(storymapId as string);
-			setStorymapInfos(response);
-		} catch (error) {
-			console.error(error);
-		}
-	};
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	// déclaration d'un état pour stocker les informations de la storymap
+	const [storymapInfos, setStorymapInfos] = useState<StorymapType | null>(null);
+
+	// au montage du composant, récupération des informations de la storymap
 	useEffect(() => {
+		const fetchStorymapInfos = async () => {
+			try {
+				const response = await getStorymapInfosAndBlocks(storymapId as string);
+				setStorymapInfos(response);
+			} catch (error) {
+				console.error(error);
+			}
+		};
 		fetchStorymapInfos();
-	}, []);
+	}, [storymapId]);
 
 	return (
 		storymapInfos && (

@@ -6,6 +6,7 @@ import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
+import type jwt from "jsonwebtoken";
 
 export const mapContentController = {
 	// récupérer les données de toutes les cartes ou d'une carte en particulier
@@ -18,13 +19,39 @@ export const mapContentController = {
 					const isActive = req.query.isActive === "true";
 					const allMaps = await dcartDataSource
 						.getRepository(MapContent)
-						.find({ where: { isActive }, relations: ["filters", "category"] });
+						.createQueryBuilder("map")
+						.leftJoinAndSelect("map.category", "category")
+						.leftJoinAndSelect("map.creator", "creator")
+						.leftJoinAndSelect("map.modifier", "modifier")
+						.leftJoinAndSelect("map.filters", "filters")
+						.select([
+							"map",
+							"filters",
+							"category",
+							"creator.pseudo",
+							"modifier.pseudo",
+						])
+						.where("map.isActive = :isActive", { isActive })
+						.getMany();
+
 					res.status(200).send(allMaps);
 					return;
 				}
 				const allMaps = await dcartDataSource
 					.getRepository(MapContent)
-					.find({ relations: ["filters", "category"] });
+					.createQueryBuilder("map")
+					.leftJoinAndSelect("map.category", "category")
+					.leftJoinAndSelect("map.creator", "creator")
+					.leftJoinAndSelect("map.modifier", "modifier")
+					.leftJoinAndSelect("map.filters", "filters")
+					.select([
+						"map",
+						"filters",
+						"category",
+						"creator.pseudo",
+						"modifier.pseudo",
+					])
+					.getMany();
 				res.status(200).send(allMaps);
 				return;
 			}
@@ -54,6 +81,8 @@ export const mapContentController = {
 				attestationIds,
 			} = req.body;
 
+			const { userId } = req.user as jwt.JwtPayload;
+
 			const newMap = dcartDataSource.getRepository(MapContent).create({
 				title_en,
 				title_fr,
@@ -61,6 +90,7 @@ export const mapContentController = {
 				description_fr,
 				category: category,
 				attestationIds,
+				creator: userId,
 			});
 
 			await dcartDataSource.getRepository(MapContent).save(newMap);
@@ -76,6 +106,8 @@ export const mapContentController = {
 		try {
 			const { mapId } = req.params;
 
+			const { userId } = req.user as jwt.JwtPayload;
+
 			const mapToUpdate = await dcartDataSource
 				.getRepository(MapContent)
 				.findOne({
@@ -87,6 +119,9 @@ export const mapContentController = {
 				res.status(404).send("Carte non trouvée.");
 				return;
 			}
+
+			// ajout de l'id du modificateur
+			mapToUpdate.modifier = userId;
 
 			// si c'est la mise à jour du statut de la carte
 			if (req.query.isActive) {
