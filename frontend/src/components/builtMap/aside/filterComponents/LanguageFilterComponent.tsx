@@ -20,7 +20,7 @@ const LanguageFilterComponent = () => {
 	function handleChangeCheckbox(checked: boolean, name: string) {
 		const newLanguageFiltersObject = {
 			...userFilters,
-			[name]: checked,
+			[name]: !checked,
 		};
 		setUserFilters(newLanguageFiltersObject);
 	}
@@ -33,7 +33,7 @@ const LanguageFilterComponent = () => {
 					type="checkbox"
 					id="greek"
 					name="greek"
-					checked={userFilters.greek}
+					checked={!userFilters.greek}
 					onChange={(event) =>
 						handleChangeCheckbox(event.target.checked, event.target.name)
 					}
@@ -46,7 +46,7 @@ const LanguageFilterComponent = () => {
 					type="checkbox"
 					id="semitic"
 					name="semitic"
-					checked={userFilters.semitic}
+					checked={!userFilters.semitic}
 					onChange={(event) =>
 						handleChangeCheckbox(event.target.checked, event.target.name)
 					}

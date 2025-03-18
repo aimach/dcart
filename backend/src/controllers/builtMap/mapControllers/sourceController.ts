@@ -60,10 +60,10 @@ export const sourceController = {
 				}
 
 				let queryLanguage = "";
-				if (req.query.greek === "false") {
+				if (req.query.greek === "true") {
 					queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
 				}
-				if (req.query.semitic === "false") {
+				if (req.query.semitic === "true") {
 					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
 				}
 
@@ -118,10 +118,10 @@ export const sourceController = {
 				}
 
 				let queryLanguage = "";
-				if (req.query.greek === "false") {
+				if (req.query.greek === "true") {
 					queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
 				}
-				if (req.query.semitic === "false") {
+				if (req.query.semitic === "true") {
 					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
 				}
 

@@ -1,4 +1,5 @@
 // import des types
+import { UserFilterType } from "../types/filterTypes";
 import type { Language, TranslationType } from "../types/languageTypes";
 import type { MenuTabType, PointType } from "../types/mapTypes";
 
@@ -154,28 +155,38 @@ const getAsideNavigationList = (
 	language: Language,
 	allPoints: PointType[],
 	setSelectedTabMenu: (setSelectedTabMenu: MenuTabType) => void,
-) => [
-	{
-		id: "results",
-		title: `${allPoints.length} ${translation[language].button.result}${
-			allPoints.length > 1 ? "s" : ""
-		}`,
-		onClickFunction: () => setSelectedTabMenu("results"),
-		route: undefined,
-	},
-	{
-		id: "filters",
-		title: translation[language].button.filters,
-		onClickFunction: () => setSelectedTabMenu("filters"),
-		route: undefined,
-	},
-	{
-		id: "infos",
-		title: translation[language].button.selection,
-		onClickFunction: () => setSelectedTabMenu("infos"),
-		route: undefined,
-	},
-];
+	userFilters: UserFilterType,
+) => {
+	const nbFilters = Object.keys(userFilters).filter(
+		(key) => userFilters[key as keyof typeof userFilters],
+	);
+	console.log(nbFilters);
+
+	return [
+		{
+			id: "results",
+			title: `${allPoints.length} ${translation[language].button.result}${
+				allPoints.length > 1 ? "s" : ""
+			}`,
+			onClickFunction: () => setSelectedTabMenu("results"),
+			route: undefined,
+		},
+		{
+			id: "filters",
+			title: `${translation[language].button.filters} ${
+				nbFilters.length > 0 ? `(${nbFilters.length})` : ""
+			}`,
+			onClickFunction: () => setSelectedTabMenu("filters"),
+			route: undefined,
+		},
+		{
+			id: "infos",
+			title: translation[language].button.selection,
+			onClickFunction: () => setSelectedTabMenu("infos"),
+			route: undefined,
+		},
+	];
+};
 
 export {
 	getHomePageMenuList,

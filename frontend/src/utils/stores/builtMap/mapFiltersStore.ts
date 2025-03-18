@@ -1,7 +1,7 @@
 // import des bibliothèques
 import { create } from "zustand";
 // import des types
-import type { UserFilterType } from "../types/filterTypes";
+import type { UserFilterType } from "../../types/filterTypes";
 
 type State = {
 	userFilters: UserFilterType;
@@ -19,8 +19,8 @@ const emptyUserFilters: UserFilterType = {
 	ante: undefined,
 	elementId: undefined,
 	locationId: undefined,
-	greek: true,
-	semitic: true,
+	greek: false,
+	semitic: false,
 };
 
 export const useMapFiltersStore = create<State & Action>((set) => ({
