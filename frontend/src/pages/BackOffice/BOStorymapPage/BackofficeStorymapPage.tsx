@@ -1,7 +1,5 @@
 // import des composants
 import ManagementContainer from "../../../components/backoffice/managementContainer/ManagementContainer";
-import ModalComponent from "../../../components/common/modal/ModalComponent";
-import DeleteStorymapContent from "../../../components/common/modal/DeleteStorymapContent";
 // import des services
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import du style
@@ -12,16 +10,17 @@ import style from "./backofficeStorymapPage.module.scss";
  */
 const BackofficeStorymapPage = () => {
 	// récupération des données des stores
-	const { isDeleteModalOpen, closeDeleteModal } = useModalStore();
+	const { isDeleteModalOpen } = useModalStore();
+
 	return (
-		<section className={style.backofficeManagementPageContainer}>
-			{isDeleteModalOpen && (
-				<ModalComponent onClose={() => closeDeleteModal()} isDemo={false}>
-					<DeleteStorymapContent />
-				</ModalComponent>
-			)}
-			<ManagementContainer type="storymap" key={isDeleteModalOpen.toString()} />
-		</section>
+		<>
+			<section className={style.backofficeManagementPageContainer}>
+				<ManagementContainer
+					type="storymap"
+					key={isDeleteModalOpen.toString()}
+				/>
+			</section>
+		</>
 	);
 };
 

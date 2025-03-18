@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useContext, useState } from "react";
 import { useSearchParams } from "react-router";
 import {
 	DndContext,
@@ -30,6 +30,8 @@ import ModalComponent from "../../../../components/common/modal/ModalComponent";
 import DeleteBlockModalContent from "../../../../components/common/modal/DeleteBlockModalContent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import des contextes
+import { SessionContext } from "../../../../context/SessionContext";
 // import des services
 import { useShallow } from "zustand/shallow";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
@@ -42,6 +44,7 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import style from "./storymapBuilderPage.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
+import StayConnectedContent from "../../../../components/common/modal/StayConnectedContent";
 
 /**
  * Page contenant un panel avec la liste des blocs de la storymap et des formulaires pour ajouter de nouveaux blocs
@@ -49,6 +52,9 @@ import { ChevronLeft } from "lucide-react";
 const StorymapBuilderPage = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
+
+	// récupération des données du contexte
+	const { isTimeoutReached } = useContext(SessionContext);
 
 	// récupération des données des stores
 	const { formType, updateFormType } = useBuilderStore(
@@ -126,6 +132,11 @@ const StorymapBuilderPage = () => {
 			{isDeleteModalOpen && (
 				<ModalComponent onClose={() => closeDeleteModal()} isDemo={false}>
 					<DeleteBlockModalContent />
+				</ModalComponent>
+			)}
+			{isTimeoutReached && (
+				<ModalComponent onClose={() => closeDeleteModal()} isDemo={false}>
+					<StayConnectedContent />
 				</ModalComponent>
 			)}
 			<section className={style.storymapBuilderPanelSection}>
