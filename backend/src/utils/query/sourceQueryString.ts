@@ -139,7 +139,8 @@ GROUP BY
   grande_region.nom_en,
   sous_region.id,
   sous_region.nom_fr, 
-  sous_region.nom_en`;
+  sous_region.nom_en
+ORDER BY grande_region_fr, sous_region_fr, localisation_source.nom_ville`;
 };
 
 /**
@@ -288,7 +289,8 @@ GROUP BY
   grande_region.nom_en,
   sous_region.id,
   sous_region.nom_fr, 
-  sous_region.nom_en`;
+  sous_region.nom_en
+  ORDER BY grande_region_fr, sous_region_fr, localisation_source.nom_ville`;
 };
 
 /**
