@@ -69,11 +69,11 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 				navigate(`/backoffice/maps/edit/${idToModify}`);
 			}
 		} else {
+			// redirection vers la page de modification de storymap
+			navigate(`/backoffice/storymaps/build/${idToModify}`);
 			// création d'une session de modification
 			const session = await createSession(type, idToModify);
 			setSession(session);
-			// redirection vers la page de modification de storymap
-			navigate(`/backoffice/storymaps/build/${idToModify}`);
 		}
 	};
 

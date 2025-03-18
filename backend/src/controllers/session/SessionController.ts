@@ -123,7 +123,7 @@ export const sessionController = {
 				.getRepository(UpdateSession)
 				.delete({ user: userId });
 
-			res.status(201).json({
+			res.status(200).json({
 				message: "Session supprimée",
 			});
 		} catch (error) {

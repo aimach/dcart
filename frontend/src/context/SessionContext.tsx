@@ -3,7 +3,6 @@ import { useState, createContext, useEffect } from "react";
 import { useLocation } from "react-router";
 // import des services
 import { deleteSession, pingSession } from "../utils/api/sessionAPI";
-import { apiClient } from "../utils/api/apiClient";
 
 type SessionContextType = {
 	session: Record<string, string> | null;
@@ -55,10 +54,15 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
 			setSession(null);
 			await deleteSession();
 		};
-		if (!location.pathname.includes("/maps/edit/")) {
+		const allowedPaths = ["/maps/edit", "/storymaps/build"];
+
+		if (
+			session &&
+			!allowedPaths.some((path) => location.pathname.includes(path))
+		) {
 			deleteSessionAfterNavigation();
 		}
-	}, [location]);
+	}, [session, location]);
 
 	// vérification des sessions actives et suppression si besoin (si l'utilisateur a quitté l'application)
 	useEffect(() => {

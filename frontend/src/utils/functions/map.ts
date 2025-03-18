@@ -10,7 +10,7 @@ import type {
 	MapType,
 } from "../types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
-import { StorymapType } from "../types/storymapTypes";
+import type { StorymapType } from "../types/storymapTypes";
 
 /**
  * Fonction qui retourne un tableau d'agents sans doublons, établis à partir de la désignation
@@ -175,9 +175,8 @@ const getCreationAndModificationString = (
 		string += ` - ${translation[language].common.updatedOn} ${modificationDate} ${translation[language].common.by} ${
 			itemInfos.modifier.pseudo
 		}`;
-
-		return string;
 	}
+	return string;
 };
 
 export {
