@@ -14,6 +14,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 
 interface ElementFilterComponentProps {
 	elementOptions: OptionType[];
+	setElementNameValues: (values: string[]) => void;
 }
 
 /**
@@ -24,18 +25,15 @@ interface ElementFilterComponentProps {
  */
 const ElementFilterComponent = ({
 	elementOptions,
+	setElementNameValues,
 }: ElementFilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
 	// récupération des données des filtres depuis le store
-	const {
-		userFilters,
-		setUserFilters,
-		isReset,
-		setLocationNames,
-		setElementNames,
-	} = useMapFiltersStore(useShallow((state) => state));
+	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
+		useShallow((state) => state),
+	);
 
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {
@@ -59,8 +57,7 @@ const ElementFilterComponent = ({
 						"elementId",
 						setUserFilters,
 						userFilters,
-						setLocationNames,
-						setElementNames,
+						setElementNameValues,
 					)
 				}
 				placeholder={translation[language].mapPage.aside.searchForElement}

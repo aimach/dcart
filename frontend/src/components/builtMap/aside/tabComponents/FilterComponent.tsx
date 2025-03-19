@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 // import des composants
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
@@ -41,15 +41,27 @@ const FilterComponent = ({
 		useShallow((state) => state),
 	);
 	const { mapFilters } = useMapAsideMenuStore();
-	const { userFilters, resetUserFilters, isReset, setIsReset } =
-		useMapFiltersStore(
-			useShallow((state) => ({
-				userFilters: state.userFilters,
-				resetUserFilters: state.resetUserFilters,
-				isReset: state.isReset,
-				setIsReset: state.setIsReset,
-			})),
-		);
+	const {
+		userFilters,
+		resetUserFilters,
+		isReset,
+		setIsReset,
+		setLocationNames,
+		setElementNames,
+	} = useMapFiltersStore(
+		useShallow((state) => ({
+			userFilters: state.userFilters,
+			resetUserFilters: state.resetUserFilters,
+			isReset: state.isReset,
+			setIsReset: state.setIsReset,
+			setLocationNames: state.setLocationNames,
+			setElementNames: state.setElementNames,
+		})),
+	);
+
+	// initiation d'états pour récupérer les valeurs des lieux et éléments
+	const [locationNameValues, setLocationNameValues] = useState<string[]>([]);
+	const [elementNameValues, setElementNameValues] = useState<string[]>([]);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -67,6 +79,13 @@ const FilterComponent = ({
 		},
 		[mapInfos, setAllPoints, setMapReady, userFilters],
 	);
+
+	// fonction pour gérer le clic sur le bouton de filtre
+	const handleFilterButton = () => {
+		fetchAllPoints("filter");
+		setLocationNames(locationNameValues);
+		setElementNames(elementNameValues);
+	};
 
 	// fonction pour gérer le reset des filtres
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -89,6 +108,7 @@ const FilterComponent = ({
 									<LocationFilterComponent
 										key={filter.id}
 										locationOptions={locationOptions}
+										setLocationNameValues={setLocationNameValues}
 									/>
 								</div>
 							);
@@ -100,6 +120,7 @@ const FilterComponent = ({
 									<ElementFilterComponent
 										key={filter.id}
 										elementOptions={elementOptions}
+										setElementNameValues={setElementNameValues}
 									/>
 								</div>
 							);
@@ -124,7 +145,7 @@ const FilterComponent = ({
 				<button
 					className={style.filterButton}
 					type="button"
-					onClick={() => fetchAllPoints("filter")}
+					onClick={handleFilterButton}
 				>
 					{translation[language].button.filter}
 				</button>

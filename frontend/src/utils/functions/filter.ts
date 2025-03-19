@@ -239,20 +239,14 @@ const onMultiSelectChange = (
 	key: string,
 	setUserFilters: (filters: UserFilterType) => void,
 	userFilters: UserFilterType,
-	setLocationNames: (names: string[]) => void,
-	setElementNames: (names: string[]) => void,
+	setValuesFunction: (names: string[]) => void,
 ) => {
 	// stockage des valeurs dans le store pour les afficher dans le rappel de la carte
 	const newValues = (selectedOptions as MultiValue<OptionType>).map(
 		(option) => option.label,
 	);
 
-	if (key === "locationId") {
-		setLocationNames(newValues);
-	}
-	if (key === "elementId") {
-		setElementNames(newValues);
-	}
+	setValuesFunction(newValues);
 
 	const elementValuesString = selectedOptions
 		.map((option) => option.value)
