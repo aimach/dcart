@@ -1,6 +1,6 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
@@ -19,8 +19,10 @@ import type {
 	MapInfoType,
 } from "../../../../utils/types/mapTypes";
 import type { TranslationType } from "../../../../utils/types/languageTypes";
+import type Quill from "quill";
 // import du style
 import style from "./introForm.module.scss";
+import EditorComponent from "../../storymapForm/wysiwygBlock/EditorComponent";
 
 type IntroFormProps = {
 	inputs: InputType[];
@@ -51,6 +53,7 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 
 	// import des services du formulaire
 	const {
+		control,
 		register,
 		handleSubmit,
 		watch,
@@ -89,6 +92,8 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 		};
 		getCategoryOptions();
 	}, [language]);
+
+	const quillRef = useRef<Quill | null>(null);
 
 	return (
 		dataLoaded && (
@@ -160,24 +165,31 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 							</div>
 						);
 					}
-					if (input.type === "textarea") {
+					if (input.type === "wysiwyg") {
 						return (
 							<div key={input.name} className={style.commonFormInputContainer}>
 								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-								<textarea
-									{...register(input.name as keyof MapInfoType, {
-										required: input.required.value,
-									})}
-								/>
-
-								{input.required.value &&
-									errors[input.name as keyof FieldErrors<MapInfoType>] && (
-										<ErrorComponent
-											message={
-												input.required.message?.[
-													language as keyof TranslationType
-												] as string
+								<Controller
+									name={input.name as keyof InputType}
+									control={control}
+									render={({ field: { onChange } }) => (
+										<EditorComponent
+											ref={quillRef}
+											onChange={onChange}
+											defaultValue={
+												(mapInfos as MapInfoType)
+													? (mapInfos as MapInfoType)[
+															`${input.name}` as keyof typeof mapInfos
+														]
+													: null
 											}
+										/>
+									)}
+								/>
+								{input.required.value &&
+									errors[input.name as keyof InputType] && (
+										<ErrorComponent
+											message={input.required.message?.[language] as string}
 										/>
 									)}
 							</div>

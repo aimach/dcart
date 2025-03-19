@@ -69,6 +69,8 @@ const CommonForm = ({
 		}
 	}, [defaultValues]);
 
+	const quillRef = useRef<Quill | null>(null);
+
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
@@ -119,7 +121,6 @@ const CommonForm = ({
 					);
 				}
 				if (input.type === "wysiwyg") {
-					const quillRef = useRef<Quill | null>(null);
 					return (
 						<div key={input.name} className={style.commonFormInputContainer}>
 							<label htmlFor={input.name}>{input[`label_${language}`]}</label>

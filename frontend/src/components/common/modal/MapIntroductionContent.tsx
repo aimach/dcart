@@ -1,19 +1,21 @@
 // import des bibliothèques
+import { useMemo } from "react";
 import { useParams } from "react-router";
+import DOMPurify from "dompurify";
 // import des composants
 import SearchFormComponent from "../../builtMap/map/searchFormComponent/SearchFormComponent";
+import ButtonComponent from "../button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useMapStore } from "../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { MapInfoType } from "../../../utils/types/mapTypes";
+import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./modalComponent.module.scss";
-import type { Dispatch, SetStateAction } from "react";
 // import des images
 import delta from "../../../assets/delta.png";
-import ButtonComponent from "../button/ButtonComponent";
 
 interface MapIntroductionContentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -33,6 +35,12 @@ const MapIntroductionContent = ({
 
 	// récupération des données des stores
 	const { mapInfos } = useMapStore();
+
+	const sanitizedDescription = useMemo(() => {
+		return DOMPurify.sanitize(
+			(mapInfos as MapInfoType)[`description_${language}`],
+		);
+	}, [mapInfos, language]);
 
 	return (
 		<>
@@ -54,7 +62,9 @@ const MapIntroductionContent = ({
 								className={style.modalImage}
 							/>
 						)}
-						<p>{(mapInfos as MapInfoType)[`description_${language}`]}</p>
+						<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+							dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+						/>
 					</div>
 					<ButtonComponent
 						type="button"

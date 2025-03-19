@@ -13,7 +13,6 @@
         overflow-x: hidden;
 
         >form {
-            height: calc(100vh - 200px);
             @include m.flexbox(flex, column, nowrap, space-between, flex-start);
             margin: v.$space-s 0
         }
