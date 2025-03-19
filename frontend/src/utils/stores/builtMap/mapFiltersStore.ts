@@ -8,6 +8,7 @@ type State = {
 	isReset: boolean;
 	locationNames: string[];
 	elementNames: string[];
+	languageValues: Record<string, boolean>;
 };
 
 type Action = {
@@ -16,6 +17,8 @@ type Action = {
 	setIsReset: (isReset: boolean) => void;
 	setLocationNames: (locationNames: string[]) => void;
 	setElementNames: (elementNames: string[]) => void;
+	setLanguageValues: (languageValues: Record<string, boolean>) => void;
+	resetLanguageValues: () => void;
 };
 
 const emptyUserFilters: UserFilterType = {
@@ -41,4 +44,8 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 	setLocationNames: (locationNames) => set(() => ({ locationNames })),
 	elementNames: [],
 	setElementNames: (elementNames) => set(() => ({ elementNames })),
+	languageValues: { greek: false, semitic: false },
+	setLanguageValues: (languageValues) => set(() => ({ languageValues })),
+	resetLanguageValues: () =>
+		set(() => ({ languageValues: { greek: false, semitic: false } })),
 }));

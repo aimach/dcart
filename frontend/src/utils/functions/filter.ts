@@ -286,8 +286,7 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
 	let filtersChecked = 0;
 	for (const filter in userFilters) {
 		if (
-			filter !== "elementId" &&
-			filter !== "locationId" &&
+			(filter === "post" || filter === "ante") &&
 			userFilters[filter as keyof UserFilterType]
 		) {
 			filtersChecked += 1;
@@ -301,14 +300,15 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
  * @param {UserFilterType} userFilters - Les filtres de la carte en construction
  * @param {string[]} locationNames - Les noms des localités sélectionnées
  * @param {string[]} elementNames - Les noms des éléments sélectionnés
- * @param {TranslationType} translation - Les objets de traduction
- * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @param {Record<string, boolean>} languageValues - Un objet contenant les booléens des langues sélectionnées
+ * @param {TranslationType} translationObject - Les objets de traduction
  * @returns {Array} - Un tableau de strings
  */
 const displayFiltersTags = (
 	userFilters: UserFilterType,
 	locationNames: string[],
 	elementNames: string[],
+	languageValues: Record<string, boolean>,
 	translationObject: LanguageObject,
 ) => {
 	const stringArray = [];
@@ -320,11 +320,11 @@ const displayFiltersTags = (
 		stringArray.push(`${translationObject.common.before} ${userFilters.ante}`);
 
 	// affichage des langues
-	if (userFilters.greek && userFilters.semitic) {
+	if (languageValues.greek && languageValues.semitic) {
 		stringArray.push(translationObject.mapPage.noGreekOrSemitic);
-	} else if (userFilters.greek) {
+	} else if (languageValues.greek) {
 		stringArray.push(translationObject.mapPage.onlySemitic);
-	} else if (userFilters.semitic) {
+	} else if (languageValues.semitic) {
 		stringArray.push(translationObject.mapPage.onlyGreek);
 	}
 

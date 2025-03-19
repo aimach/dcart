@@ -48,16 +48,9 @@ const FilterComponent = ({
 		setIsReset,
 		setLocationNames,
 		setElementNames,
-	} = useMapFiltersStore(
-		useShallow((state) => ({
-			userFilters: state.userFilters,
-			resetUserFilters: state.resetUserFilters,
-			isReset: state.isReset,
-			setIsReset: state.setIsReset,
-			setLocationNames: state.setLocationNames,
-			setElementNames: state.setElementNames,
-		})),
-	);
+		setLanguageValues,
+		resetLanguageValues,
+	} = useMapFiltersStore(useShallow((state) => state));
 
 	// initiation d'états pour récupérer les valeurs des lieux et éléments
 	const [locationNameValues, setLocationNameValues] = useState<string[]>([]);
@@ -85,6 +78,10 @@ const FilterComponent = ({
 		fetchAllPoints("filter");
 		setLocationNames(locationNameValues);
 		setElementNames(elementNameValues);
+		setLanguageValues({
+			greek: userFilters.greek,
+			semitic: userFilters.semitic,
+		});
 	};
 
 	// fonction pour gérer le reset des filtres
@@ -94,6 +91,9 @@ const FilterComponent = ({
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
+		setLocationNames([]);
+		setElementNames([]);
+		resetLanguageValues();
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
 	return (

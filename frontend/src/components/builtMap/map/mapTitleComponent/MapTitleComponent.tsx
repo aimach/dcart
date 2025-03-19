@@ -1,16 +1,12 @@
-// import des bibliothèques
-// import des composants
 // import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import des services
 import {
 	displayFiltersTags,
-	noFilterChecked,
 	noUserFilterChecked,
 } from "../../../../utils/functions/filter";
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
-// import des services
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-// import des types
 // import du style
 import style from "./mapTitleComponent.module.scss";
 
@@ -24,18 +20,20 @@ const MapTitleComponent = () => {
 	// récupération des données du store
 	const { mapInfos } = useMapStore();
 
-	const { userFilters, locationNames, elementNames } = useMapFiltersStore();
+	const { userFilters, locationNames, elementNames, languageValues } =
+		useMapFiltersStore();
 
 	const filtersDetails = displayFiltersTags(
 		userFilters,
 		locationNames,
 		elementNames,
+		languageValues,
 		translation[language],
 	);
 
 	return (
 		<div className={style.mapTitleContainer}>
-			<h2>{mapInfos?.[`title_${language}`]}</h2>
+			<h2>{mapInfos ? mapInfos[`title_${language}`] : "Exploration"}</h2>
 			<div>
 				{!noUserFilterChecked(userFilters) &&
 					`${translation[language].mapPage.aside.filters} : `}
