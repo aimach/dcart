@@ -21,6 +21,9 @@ const mapContentSchema = Joi.object({
 		"string.base":
 			"La description en anglais doit être une chaîne de caractères",
 	}),
+	image_url: Joi.string().optional().allow("").messages({
+		"string.base": "Le lien de l'image doit être une chaîne de caractères",
+	}),
 	attestationIds: Joi.string().required().messages({
 		"any.required": "La liste des id des attestations est requise",
 		"string.base":

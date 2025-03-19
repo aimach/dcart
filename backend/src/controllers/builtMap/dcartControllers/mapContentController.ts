@@ -77,6 +77,7 @@ export const mapContentController = {
 				title_fr,
 				description_en,
 				description_fr,
+				image_url,
 				category,
 				attestationIds,
 			} = req.body;
@@ -88,6 +89,7 @@ export const mapContentController = {
 				title_fr,
 				description_en,
 				description_fr,
+				image_url,
 				category: category,
 				attestationIds,
 				creator: userId,

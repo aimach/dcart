@@ -69,6 +69,7 @@ type MapInfoType = {
 	title_fr: string;
 	description_en: string;
 	description_fr: string;
+	image_url?: string;
 	category: string | CategoryType;
 	attestationIds: string;
 	filters?: Record<string, string>[];

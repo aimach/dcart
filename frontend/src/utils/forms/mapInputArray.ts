@@ -47,6 +47,15 @@ const firstStepInputs: InputType[] = [
 		},
 	},
 	{
+		label_fr: "Image accompagnant la description",
+		label_en: "Image accompanying the description",
+		name: "image_url",
+		type: "text",
+		required: {
+			value: false,
+		},
+	},
+	{
 		label_fr: "Catégorie de la carte",
 		label_en: "Map category",
 		name: "category",
