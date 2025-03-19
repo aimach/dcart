@@ -13,9 +13,11 @@ import {
 	getQueryStringForIncludedElements,
 	getQueryStringForLanguage,
 } from "../../../utils/query/filtersQueryString";
+import { sortSourcesByDate } from "../../../utils/functions/builtMap";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
+import type { PointType } from "../../../utils/types/mapTypes";
 
 export const sourceController = {
 	// récupérer toutes les sources à partir de l'id de la carte
@@ -136,8 +138,15 @@ export const sourceController = {
 
 				results = await mapDataSource.query(sqlQuery);
 			}
+			// on trie les sources de chaque point par date
+			const sortedResults = results.map((point: PointType) => {
+				return {
+					...point,
+					sources: sortSourcesByDate(point.sources),
+				};
+			});
 
-			res.status(200).json(results);
+			res.status(200).json(sortedResults);
 		} catch (error) {
 			handleError(res, error as Error);
 		}
