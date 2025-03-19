@@ -57,6 +57,9 @@ export class MapContent extends BaseEntity {
 	@UpdateDateColumn({ type: "timestamptz" })
 	updatedAt!: Date;
 
+	@Column({ type: "date", nullable: false })
+	uploadPointsLastDate!: Date;
+
 	@Column({ type: "uuid", default: null, nullable: true })
 	relatedStorymap?: string | null;
 
