@@ -7,13 +7,10 @@ import {
 	ZoomControl,
 } from "react-leaflet";
 import { v4 as uuidv4 } from "uuid";
-import { useParams } from "react-router";
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
 import ModalComponent from "../../../common/modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
-import ResetControl from "../controls/ResetControlComponent";
-import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
 import TimeFilterComponent from "../../aside/filterComponents/TimeFilterComponent";
 import TileLayerChoiceComponent from "../tileLayerChoice/TileLayerChoiceComponent";
 // import des custom hooks
@@ -26,17 +23,17 @@ import { useShallow } from "zustand/shallow";
 import { getPointsTimeMarkers } from "../../../../utils/functions/filter";
 // import des types
 import type { LatLngTuple } from "leaflet";
-import type { MapInfoType, PointType } from "../../../../utils/types/mapTypes";
+import type { PointType } from "../../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 // import des images
-import delta from "../../../../assets/delta.png";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
 import MapTitleComponent from "../mapTitleComponent/MapTitleComponent";
+import MapIntroductionContent from "../../../common/modal/MapIntroductionContent";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -50,9 +47,6 @@ interface MapComponentProps {
 const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
-
-	// récupération de l'id de la carte en cours
-	const { mapId } = useParams();
 
 	// récupération des données du store
 	const {
@@ -167,19 +161,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 							onClose={() => setIsModalOpen(false)}
 							isDemo={false}
 						>
-							{mapId === "exploration" && (
-								<SearchFormComponent setIsModalOpen={setIsModalOpen} />
-							)}
-							{mapInfos && (
-								<div className={style.modalContent}>
-									<div className={style.modalTitleSection}>
-										<img src={delta} alt="decoration" width={30} />
-										<h3>{(mapInfos as MapInfoType)[`title_${language}`]}</h3>
-										<img src={delta} alt="decoration" width={30} />
-									</div>
-									<p>{(mapInfos as MapInfoType)[`description_${language}`]}</p>
-								</div>
-							)}
+							<MapIntroductionContent setIsModalOpen={setIsModalOpen} />
 						</ModalComponent>
 					)}
 					{mapReady && isModalOpen && allMemoizedPoints.length === 0 && (
