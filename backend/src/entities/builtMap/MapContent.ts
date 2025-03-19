@@ -54,6 +54,9 @@ export class MapContent extends BaseEntity {
 	@UpdateDateColumn({ type: "timestamptz" })
 	updatedAt!: Date;
 
+	@Column({ type: "uuid", default: null, nullable: true })
+	relatedStorymap?: string | null;
+
 	@ManyToOne(
 		() => User,
 		(user) => user.createdMaps,
