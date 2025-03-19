@@ -36,6 +36,7 @@ import "./mapComponent.css";
 import delta from "../../../../assets/delta.png";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
+import MapTitleComponent from "../mapTitleComponent/MapTitleComponent";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -65,14 +66,13 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		resetSelectedMarker,
 		tileLayerURL,
 	} = useMapStore(useShallow((state) => state));
-	const { userFilters, resetUserFilters, isReset, setIsReset, resetNbFilters } =
+	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(
 			useShallow((state) => ({
 				userFilters: state.userFilters,
 				resetUserFilters: state.resetUserFilters,
 				isReset: state.isReset,
 				setIsReset: state.setIsReset,
-				resetNbFilters: state.resetNbFilters,
 			})),
 		);
 	const { setSelectedTabMenu } = useMapAsideMenuStore(
@@ -152,7 +152,6 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 	};
 	const resetFiltersAndFetchPoints = () => {
 		resetUserFilters();
-		resetNbFilters();
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
@@ -211,6 +210,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 						maxZoom={11}
 						ref={setMap}
 					>
+						<MapTitleComponent />
 						{mapReady && (
 							<>
 								<TileLayer
@@ -228,7 +228,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 											/>
 										);
 									})}
-								<ZoomControl position="topright" />
+								<ZoomControl position="bottomright" />
 								<ScaleControl position="bottomright" />
 								{/* <ResetControl mapBounds={bounds} /> */}
 							</>

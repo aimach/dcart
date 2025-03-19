@@ -30,9 +30,13 @@ const LocationFilterComponent = ({
 	const { translation, language } = useTranslation();
 
 	// récupération des données depuis le store
-	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
-		useShallow((state) => state),
-	);
+	const {
+		userFilters,
+		setUserFilters,
+		isReset,
+		setLocationNames,
+		setElementNames,
+	} = useMapFiltersStore(useShallow((state) => state));
 
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {
@@ -56,6 +60,8 @@ const LocationFilterComponent = ({
 						"locationId",
 						setUserFilters,
 						userFilters,
+						setLocationNames,
+						setElementNames,
 					)
 				}
 				placeholder={translation[language].mapPage.aside.searchForLocation}

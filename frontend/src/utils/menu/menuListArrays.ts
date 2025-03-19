@@ -155,7 +155,6 @@ const getAsideNavigationList = (
 	language: Language,
 	allPoints: PointType[],
 	setSelectedTabMenu: (setSelectedTabMenu: MenuTabType) => void,
-	nbFilters: number,
 ) => {
 	return [
 		{
@@ -168,9 +167,7 @@ const getAsideNavigationList = (
 		},
 		{
 			id: "filters",
-			title: `${translation[language].button.filters} ${
-				nbFilters > 0 ? `(${nbFilters})` : ""
-			}`,
+			title: translation[language].button.filters,
 			onClickFunction: () => setSelectedTabMenu("filters"),
 			route: undefined,
 		},

@@ -7,7 +7,7 @@ import type {
 	GreatRegionType,
 	TimeMarkersType,
 } from "../types/mapTypes";
-import type { MultiValue, SingleValue } from "react-select";
+import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
 
@@ -27,7 +27,7 @@ const alreadyTwoFiltersChecked = (mapFilters: MapFilterType) => {
 };
 
 /**
- * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
+ * Fonction qui créé les options pour le select du filtre temporel
  * @param {TimeMarkersType} timeMarkers - Les bornes temporelles
  * @returns {string[]} - Un tableau avec la liste des options temporelles
  */
@@ -239,10 +239,25 @@ const onMultiSelectChange = (
 	key: string,
 	setUserFilters: (filters: UserFilterType) => void,
 	userFilters: UserFilterType,
+	setLocationNames: (names: string[]) => void,
+	setElementNames: (names: string[]) => void,
 ) => {
+	// stockage des valeurs dans le store pour les afficher dans le rappel de la carte
+	const newValues = (selectedOptions as MultiValue<OptionType>).map(
+		(option) => option.label,
+	);
+
+	if (key === "locationId") {
+		setLocationNames(newValues);
+	}
+	if (key === "elementId") {
+		setElementNames(newValues);
+	}
+
 	const elementValuesString = selectedOptions
 		.map((option) => option.value)
 		.join("|");
+
 	setUserFilters({
 		...userFilters,
 		[key]: elementValuesString,
@@ -250,7 +265,7 @@ const onMultiSelectChange = (
 };
 
 /**
- * Fonction qui vérifie si aucun filtre n'est sélectionné
+ * Fonction qui vérifie si aucun filtre de la carte n'est sélectionné par l'utilisateur lors de la création ou modification
  * @param {MapFilterType} mapFilters - Les filtres de la carte en construction
  * @returns {boolean} - Un booléen
  */
@@ -262,6 +277,58 @@ const noFilterChecked = (mapFilters: MapFilterType) => {
 		}
 	}
 	return filtersChecked === 0;
+};
+
+/**
+ * Fonction qui vérifie si aucun filtre n'est sélectionné par l'utilisateur
+ * @param {UserFilterType} userFilters - Les filtres de la carte en construction
+ * @returns {boolean} - Un booléen
+ */
+const noUserFilterChecked = (userFilters: UserFilterType) => {
+	let filtersChecked = 0;
+	for (const filter in userFilters) {
+		if (userFilters[filter as keyof UserFilterType]) {
+			filtersChecked += 1;
+		}
+	}
+	return filtersChecked === 0;
+};
+
+/**
+ * Fonction qui vérifie si aucun filtre n'est sélectionné par l'utilisateur
+ * @param {UserFilterType} userFilters - Les filtres de la carte en construction
+ * @param {string[]} locationNames - Les noms des localités sélectionnées
+ * @param {string[]} elementNames - Les noms des éléments sélectionnés
+ * @returns {Array} - Un tableau de strings
+ */
+const displayFiltersTags = (
+	userFilters: UserFilterType,
+	locationNames: string[],
+	elementNames: string[],
+) => {
+	const stringArray = [];
+
+	// affichage des dates
+	if (userFilters.post) stringArray.push(`après ${userFilters.post}`);
+	if (userFilters.ante) stringArray.push(`avant ${userFilters.ante}`);
+
+	// affichage des langues
+	if (userFilters.greek && userFilters.semitic) {
+		stringArray.push("ni en grec, ni en sémitique ");
+	} else if (userFilters.greek) {
+		stringArray.push("uniquement en sémitique");
+	} else if (userFilters.semitic) {
+		stringArray.push("uniquement en grec");
+	}
+
+	// affichage des lieux
+	if (locationNames.length) stringArray.push(`en ${locationNames.join(", ")}`);
+
+	// affichage des éléments
+	if (elementNames.length)
+		stringArray.push(`avec les éléments : ${elementNames.join(", ")}`);
+
+	return stringArray;
 };
 
 export {
@@ -277,4 +344,6 @@ export {
 	handleMultiSelectChange,
 	onMultiSelectChange,
 	noFilterChecked,
+	noUserFilterChecked,
+	displayFiltersTags,
 };

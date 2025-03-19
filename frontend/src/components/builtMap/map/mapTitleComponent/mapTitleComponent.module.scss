@@ -1,0 +1,18 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.mapTitleContainer {
+    position: absolute;
+    top: 5px;
+    right: 10px;
+    z-index: 400;
+    padding: v.$space-s;
+    background-color: white;
+    color: v.$color-dark-lava;
+    border-radius: v.$border-radius-base;
+    border: 1px solid v.$color-grullo;
+
+    >h2 {
+        font-size: v.$font-size-l;
+    }
+}

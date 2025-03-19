@@ -28,7 +28,6 @@ const AsideHeader = () => {
 		})),
 	);
 	const allPoints = useMapStore((state) => state.allPoints);
-	const { nbFilters } = useMapFiltersStore();
 
 	return (
 		<NavComponent
@@ -39,7 +38,6 @@ const AsideHeader = () => {
 				language,
 				allPoints,
 				setSelectedTabMenu,
-				nbFilters,
 			)}
 			selectedElement={selectedTabMenu}
 			liClasseName={style.liActive}

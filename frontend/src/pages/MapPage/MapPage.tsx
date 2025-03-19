@@ -15,6 +15,7 @@ import { useMapStore } from "../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../utils/stores/builtMap/mapAsideMenuStore";
 // import du style
 import style from "./mapPage.module.scss";
+import MapMenuNav from "../../components/builtMap/map/mapMenuNav/MapMenuNav";
 
 /**
  * Page de la carte
@@ -31,6 +32,7 @@ const MapPage = () => {
 	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
 	const mapStore = useMapStore(
 		useShallow((state) => ({
+			mapInfos: state.mapInfos,
 			setMapInfos: state.setMapInfos,
 			allPoints: state.allPoints,
 			setAllPoints: state.setAllPoints,
@@ -82,7 +84,6 @@ const MapPage = () => {
 
 	return (
 		<section className={style.mapSection}>
-			{/* <MapMenuNav categoryId={categoryId as string} /> */}
 			<section className={style.mapSectionMain}>
 				{panelDisplayed ? (
 					<AsideContainer
