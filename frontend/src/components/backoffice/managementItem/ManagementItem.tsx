@@ -1,5 +1,6 @@
 // import des bibliothèques
-import { useState, useEffect, useContext } from "react";
+import { useState, useEffect, useContext, useMemo } from "react";
+import DOMPurify from "dompurify";
 // import des services
 import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
@@ -95,6 +96,15 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 		language,
 	);
 
+	const sanitizedDescription = useMemo(() => {
+		const shortDescription = DOMPurify.sanitize(
+			itemInfos[`description_${language}`],
+		).slice(0, 300);
+		return shortDescription.length < 300
+			? shortDescription
+			: `${shortDescription}...`;
+	}, [itemInfos, language]);
+
 	return (
 		<li className={style.managementItem} key={itemInfos.id}>
 			<div className={style.managementItemTitleAndImage}>
@@ -109,7 +119,9 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 					))}
 				<div className={style.managementItemTitle}>
 					<h4>{(itemInfos as StorymapType)[`title_${language}`]}</h4>
-					<p>{itemInfos[`description_${language}`]}</p>
+					<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+						dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+					/>
 					<p>{itemInfos.isActive ? "Publiée" : "Non publiée"}</p>
 					<p className={style.greyAndItalic}>{creationAndModificationString}</p>
 				</div>

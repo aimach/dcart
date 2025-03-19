@@ -93,6 +93,7 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 		getCategoryOptions();
 	}, [language]);
 
+	// WYSIWYG
 	const quillRef = useRef<Quill | null>(null);
 
 	return (
@@ -170,8 +171,12 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 							<div key={input.name} className={style.commonFormInputContainer}>
 								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
 								<Controller
-									name={input.name as keyof InputType}
+									name={input.name as keyof MapInfoType}
 									control={control}
+									rules={{
+										required: input.required.value,
+										maxLength: 1000,
+									}}
 									render={({ field: { onChange } }) => (
 										<EditorComponent
 											ref={quillRef}
@@ -187,11 +192,15 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 									)}
 								/>
 								{input.required.value &&
-									errors[input.name as keyof InputType] && (
+									errors[input.name as keyof MapInfoType]?.type ===
+										"required" && (
 										<ErrorComponent
 											message={input.required.message?.[language] as string}
 										/>
 									)}
+								{errors[input.name as keyof MapInfoType] &&
+									errors[input.name as keyof MapInfoType]?.type ===
+										"maxLength" && <ErrorComponent message="1000 char. max" />}
 							</div>
 						);
 					}

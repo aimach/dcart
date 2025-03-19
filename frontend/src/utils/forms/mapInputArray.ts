@@ -34,7 +34,11 @@ const firstStepInputs: InputType[] = [
 		name: "description_fr",
 		type: "wysiwyg",
 		required: {
-			value: false,
+			value: true,
+			message: {
+				fr: "La description en français est requise",
+				en: "The description in french is required",
+			},
 		},
 	},
 	{
@@ -43,7 +47,11 @@ const firstStepInputs: InputType[] = [
 		name: "description_en",
 		type: "wysiwyg",
 		required: {
-			value: false,
+			value: true,
+			message: {
+				fr: "La description en anglais est requise",
+				en: "The description in english is required",
+			},
 		},
 	},
 	{

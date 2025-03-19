@@ -12,6 +12,7 @@ import DOMPurify from "dompurify";
 // import des composants
 import ModalComponent from "../../../common/modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -27,7 +28,6 @@ import style from "./demoMapComponent.module.scss";
 import "./demoMapComponent.css";
 // import des images
 import delta from "../../../../assets/delta.png";
-import ButtonComponent from "../../../common/button/ButtonComponent";
 
 interface DemoMapComponentProps {
 	showModal: boolean;
