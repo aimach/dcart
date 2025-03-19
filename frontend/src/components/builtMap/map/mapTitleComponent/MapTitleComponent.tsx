@@ -30,6 +30,7 @@ const MapTitleComponent = () => {
 		userFilters,
 		locationNames,
 		elementNames,
+		translation[language],
 	);
 
 	return (

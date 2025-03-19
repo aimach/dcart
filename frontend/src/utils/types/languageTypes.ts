@@ -42,6 +42,9 @@ type LanguageObject = {
 		createdOn: string;
 		updatedOn: string;
 		by: string;
+		after: string;
+		before: string;
+		in: string;
 	};
 	modal: {
 		firstContent: string;
@@ -60,6 +63,10 @@ type LanguageObject = {
 		introduction: string;
 		noResult: string;
 		enlargeYourSearch: string;
+		noGreekOrSemitic: string;
+		onlySemitic: string;
+		onlyGreek: string;
+		withElements: string;
 		aside: {
 			filters: string;
 			sources: string;

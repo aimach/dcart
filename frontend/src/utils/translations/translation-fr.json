@@ -39,7 +39,10 @@
 		"back": "Retour",
 		"createdOn": "Créé le",
 		"updatedOn": "Modifié le",
-		"by": "par"
+		"by": "par",
+		"after": "après",
+		"before": "avant",
+		"in": "en"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",
@@ -58,6 +61,10 @@
 		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
 		"noResult": "Aucun résultat",
 		"enlargeYourSearch": "Elargissez votre recherche ou réinitialisez tous les filtres.",
+		"noGreekOrSemitic": "ni en grec, ni en sémitique",
+		"onlySemitic": "uniquement en sémitique",
+		"onlyGreek": "uniquement en grec",
+		"withElements": "avec les éléments",
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",

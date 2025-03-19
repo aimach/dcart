@@ -1,5 +1,9 @@
 // import des types
-import type { TranslationType } from "../types/languageTypes";
+import type {
+	Language,
+	LanguageObject,
+	TranslationType,
+} from "../types/languageTypes";
 import type {
 	PointType,
 	ElementType,
@@ -281,7 +285,11 @@ const noFilterChecked = (mapFilters: MapFilterType) => {
 const noUserFilterChecked = (userFilters: UserFilterType) => {
 	let filtersChecked = 0;
 	for (const filter in userFilters) {
-		if (userFilters[filter as keyof UserFilterType]) {
+		if (
+			filter !== "elementId" &&
+			filter !== "locationId" &&
+			userFilters[filter as keyof UserFilterType]
+		) {
 			filtersChecked += 1;
 		}
 	}
@@ -293,34 +301,44 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
  * @param {UserFilterType} userFilters - Les filtres de la carte en construction
  * @param {string[]} locationNames - Les noms des localités sélectionnées
  * @param {string[]} elementNames - Les noms des éléments sélectionnés
+ * @param {TranslationType} translation - Les objets de traduction
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
  * @returns {Array} - Un tableau de strings
  */
 const displayFiltersTags = (
 	userFilters: UserFilterType,
 	locationNames: string[],
 	elementNames: string[],
+	translationObject: LanguageObject,
 ) => {
 	const stringArray = [];
 
 	// affichage des dates
-	if (userFilters.post) stringArray.push(`après ${userFilters.post}`);
-	if (userFilters.ante) stringArray.push(`avant ${userFilters.ante}`);
+	if (userFilters.post)
+		stringArray.push(`${translationObject.common.after} ${userFilters.post}`);
+	if (userFilters.ante)
+		stringArray.push(`${translationObject.common.before} ${userFilters.ante}`);
 
 	// affichage des langues
 	if (userFilters.greek && userFilters.semitic) {
-		stringArray.push("ni en grec, ni en sémitique ");
+		stringArray.push(translationObject.mapPage.noGreekOrSemitic);
 	} else if (userFilters.greek) {
-		stringArray.push("uniquement en sémitique");
+		stringArray.push(translationObject.mapPage.onlySemitic);
 	} else if (userFilters.semitic) {
-		stringArray.push("uniquement en grec");
+		stringArray.push(translationObject.mapPage.onlyGreek);
 	}
 
 	// affichage des lieux
-	if (locationNames.length) stringArray.push(`en ${locationNames.join(", ")}`);
+	if (locationNames.length)
+		stringArray.push(
+			`${translationObject.common.in} ${locationNames.join(", ")}`,
+		);
 
 	// affichage des éléments
 	if (elementNames.length)
-		stringArray.push(`avec les éléments : ${elementNames.join(", ")}`);
+		stringArray.push(
+			`${translationObject.mapPage.withElements}  : ${elementNames.join(", ")}`,
+		);
 
 	return stringArray;
 };
