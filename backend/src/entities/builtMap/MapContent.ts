@@ -38,6 +38,9 @@ export class MapContent extends BaseEntity {
 	@Column({ type: "text", nullable: true })
 	description_en?: string | null;
 
+	@Column({ type: "text", nullable: true })
+	image_url!: string | null;
+
 	@Column({ type: "text" })
 	attestationIds!: string;
 
