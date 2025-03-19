@@ -118,7 +118,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		}
 
 		// si des points sont affichés, ajustement des limites de la carte
-		if (bounds.length > 0 && map) {
+		if (bounds.length && map) {
 			map.fitBounds(bounds);
 		}
 
@@ -126,7 +126,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		const timeMarkers = getPointsTimeMarkers(allPoints);
 		const isDisabled = !timeMarkers.post && !timeMarkers.ante;
 		setTimeFilterIsDisabled(isDisabled);
-	}, [map, bounds]);
+	}, [bounds]);
 
 	// génération des uuid() pour les keys des composants (se régénère seulement si allPoints change)
 	const allMemoizedPoints = useMemo(
