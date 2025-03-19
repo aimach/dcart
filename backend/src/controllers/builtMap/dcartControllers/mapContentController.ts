@@ -84,6 +84,9 @@ export const mapContentController = {
 
 			const { userId } = req.user as jwt.JwtPayload;
 
+			// récupération de la date actuelle
+			const currentDate = new Date();
+
 			const newMap = dcartDataSource.getRepository(MapContent).create({
 				title_en,
 				title_fr,
@@ -93,6 +96,7 @@ export const mapContentController = {
 				category: category,
 				attestationIds,
 				creator: userId,
+				uploadPointsLastDate: currentDate,
 			});
 
 			await dcartDataSource.getRepository(MapContent).save(newMap);
@@ -142,6 +146,12 @@ export const mapContentController = {
 					where: { id: req.body.category.id },
 				});
 			req.body.category = newCategory;
+
+			// si les ids des attestations ont été modifiés, mise à jour du champ lastUploadPointsDate
+			if (req.body.attestationIds !== mapToUpdate.attestationIds) {
+				const currentDate = new Date();
+				req.body.uploadPointsLastDate = currentDate;
+			}
 
 			const updatedMap = await dcartDataSource
 				.getRepository(MapContent)

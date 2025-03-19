@@ -92,6 +92,7 @@ type MapType = {
 	isActive: boolean;
 	createdAt: string;
 	updatedAt: string;
+	uploadPointsLastDate: string;
 	filters: FilterType[];
 	category: CategoryType;
 	creator: {

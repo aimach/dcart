@@ -176,6 +176,16 @@ const getCreationAndModificationString = (
 			itemInfos.modifier.pseudo
 		}`;
 	}
+
+	if (itemInfos.uploadPointsLastDate) {
+		string += ` - ${translation[language].common.lastUpdloadOn} ${new Date(
+			itemInfos.uploadPointsLastDate,
+		).toLocaleDateString(language, {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		})}`;
+	}
 	return string;
 };
 

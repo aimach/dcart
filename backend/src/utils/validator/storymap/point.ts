@@ -17,7 +17,7 @@ const pointSchema = Joi.object({
 	title_en: Joi.string().optional().allow(null),
 	title_fr: Joi.string().optional().allow(null),
 	translation_fr: Joi.string().required(),
-	transliteration: Joi.string().required(),
+	transliteration: Joi.string().optional().allow(null),
 });
 
 const parsedPointsSchema = Joi.object({

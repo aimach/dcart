@@ -12,6 +12,7 @@ type StorymapType = {
 	publishedAt: string;
 	createdAt: string;
 	updatedAt: string;
+	uploadPointsLastDate: string;
 	creator: {
 		pseudo: string;
 	};

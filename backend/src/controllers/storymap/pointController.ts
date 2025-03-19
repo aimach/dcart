@@ -7,6 +7,7 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 import type { pane } from "../../entities/storymap/Point";
 import type { PointType } from "../../utils/types/storymapTypes";
+import { Storymap } from "../../entities/storymap/Storymap";
 
 export const pointController = {
 	// crée de nouveaux points
@@ -22,7 +23,7 @@ export const pointController = {
 
 			const block = await dcartDataSource
 				.getRepository(Block)
-				.findOne({ where: { id: blockId as string } });
+				.findOne({ where: { id: blockId as string }, relations: ["storymap"] });
 
 			if (!block) {
 				res.status(404).send("Bloc de type carte non trouvé");
@@ -46,6 +47,21 @@ export const pointController = {
 			);
 
 			await dcartDataSource.getRepository(Point).save(newPoints);
+
+			// mise à jour du champ lastUploadPointsDate dans la storymap
+			const storymapToUpdate = await dcartDataSource
+				.getRepository(Storymap)
+				.findOne({
+					where: { id: block.storymap.id },
+				});
+
+			if (!storymapToUpdate) {
+				res.status(404).send("Storymap non trouvée");
+				return;
+			}
+
+			storymapToUpdate.uploadPointsLastDate = new Date();
+			await dcartDataSource.getRepository(Storymap).save(storymapToUpdate);
 
 			res
 				.status(201)

@@ -42,6 +42,7 @@ type LanguageObject = {
 		back: string;
 		createdOn: string;
 		updatedOn: string;
+		lastUpdloadOn: string;
 		by: string;
 		after: string;
 		before: string;
