@@ -28,6 +28,7 @@ type LanguageObject = {
 		doughnut: string;
 		bar: string;
 		resetFilter: string;
+		discover: string;
 	};
 	common: {
 		between: string;

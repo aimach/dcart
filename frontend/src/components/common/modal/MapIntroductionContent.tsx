@@ -13,6 +13,7 @@ import style from "./modalComponent.module.scss";
 import type { Dispatch, SetStateAction } from "react";
 // import des images
 import delta from "../../../assets/delta.png";
+import ButtonComponent from "../button/ButtonComponent";
 
 interface MapIntroductionContentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -25,7 +26,7 @@ const MapIntroductionContent = ({
 	setIsModalOpen,
 }: MapIntroductionContentProps) => {
 	// récupération des données de traduction
-	const { language } = useTranslation();
+	const { translation, language } = useTranslation();
 
 	// récupération de l'id de la carte en cours
 	const { mapId } = useParams();
@@ -55,6 +56,12 @@ const MapIntroductionContent = ({
 						)}
 						<p>{(mapInfos as MapInfoType)[`description_${language}`]}</p>
 					</div>
+					<ButtonComponent
+						type="button"
+						color="gold"
+						textContent={translation[language].button.discover}
+						onClickFunction={() => setIsModalOpen(false)}
+					/>
 				</div>
 			)}
 		</>

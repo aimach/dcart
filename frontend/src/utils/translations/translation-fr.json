@@ -25,7 +25,8 @@
 		"activity": "Activité",
 		"doughnut": "Donut",
 		"bar": "Barre",
-		"resetFilter": "Réinitialiser les filtres"
+		"resetFilter": "Réinitialiser les filtres",
+		"discover": "Découvrir"
 	},
 	"common": {
 		"between": "entre",
