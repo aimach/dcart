@@ -137,7 +137,9 @@
 				"step": "the step",
 				"csv": "Add a CSV file with map markers",
 				"forLeftPane": "for the left pane",
-				"forRightPane": "for the right pane"
+				"forRightPane": "for the right pane",
+				"uploadTableFr": "Add a CSV file with a table in French",
+				"uploadTableEn": "Add a CSV file with a table in English"
 			}
 		}
 	}

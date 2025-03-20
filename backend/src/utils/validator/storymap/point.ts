@@ -3,7 +3,8 @@ import Joi from "joi";
 // import des types
 import type { Request, Response, NextFunction } from "express";
 
-const pointSchema = Joi.object({
+export const pointSchema = Joi.object({
+	id: Joi.string().uuid().optional(),
 	color: Joi.string().optional().allow(null),
 	description_en: Joi.string().optional().allow(null),
 	description_fr: Joi.string().optional().allow(null),

@@ -16,6 +16,9 @@ import { updateBlock } from "../../../../utils/api/storymap/postRequests";
 // import des types
 import type { ChangeEvent } from "react";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
+// import du style
+import style from "../mapForms/mapForms.module.scss";
+// import des icônes
 import { ChevronRight } from "lucide-react";
 
 export type tableInputsType = {
@@ -94,17 +97,14 @@ const TableForm = () => {
 				typeName: "table",
 			});
 		} else if (action === "edit") {
-			await updateBlock(
-				{
-					...block,
-					...data,
-					content2_fr: JSON.stringify(csvContentLang1),
-					content2_en: JSON.stringify(csvContentLang2),
-					storymapId,
-					typeName: "table",
-				},
-				block?.id.toString() as string,
-			);
+			const blockContent = { ...block, ...data, storymapId, typeName: "table" };
+			if (csvContentLang1.length > 0) {
+				blockContent.content2_fr = JSON.stringify(csvContentLang1);
+			}
+			if (csvContentLang2.length > 0) {
+				blockContent.content2_en = JSON.stringify(csvContentLang2);
+			}
+			await updateBlock(blockContent, block?.id.toString() as string);
 		}
 		// réinitialisation des données
 		setReload(!reload);
@@ -115,9 +115,12 @@ const TableForm = () => {
 	return (
 		<>
 			<FormTitleComponent action={action as string} translationKey="table" />
-			<form onSubmit={handleSubmit(handlePointSubmit)}>
+			<form
+				onSubmit={handleSubmit(handlePointSubmit)}
+				className={style.mapFormContainer}
+			>
 				{tableInputs.map((input) => (
-					<div key={input.name}>
+					<div key={input.name} className={style.mapFormInputContainer}>
 						<label htmlFor={input.name}>{input[`label_${language}`]}</label>
 						<input
 							{...register(input.name as keyof tableInputsType, {
@@ -133,30 +136,41 @@ const TableForm = () => {
 							)}
 					</div>
 				))}
-				<div>
+				<div className={style.mapFormUploadInputContainer}>
 					<label htmlFor="tableLang1">
-						{translation[language].backoffice.storymapFormPage.form.csv}
+						{
+							translation[language].backoffice.storymapFormPage.form
+								.uploadTableFr
+						}
 					</label>
 					<input
-						id="point"
+						id="tableLang1"
 						type="file"
 						accept=".csv"
 						onChange={(event) => handleFileUpload(event, 1)}
 					/>
 				</div>
-				<div>
+				<div className={style.mapFormUploadInputContainer}>
 					<label htmlFor="tableLang2">
-						{translation[language].backoffice.storymapFormPage.form.csv}
+						{
+							translation[language].backoffice.storymapFormPage.form
+								.uploadTableEn
+						}
 					</label>
 					<input
-						id="point"
+						id="tableLang2"
 						type="file"
 						accept=".csv"
 						onChange={(event) => handleFileUpload(event, 2)}
 					/>
 				</div>
 				<button type="submit">
-					Suivant <ChevronRight />
+					{
+						translation[language].backoffice.storymapFormPage.form[
+							action as string
+						]
+					}{" "}
+					<ChevronRight />
 				</button>
 			</form>
 		</>

@@ -140,6 +140,8 @@ type LanguageObject = {
 				csv: string;
 				forLeftPane: string;
 				forRightPane: string;
+				uploadTableFr: string;
+				uploadTableEn: string;
 			};
 		};
 	};

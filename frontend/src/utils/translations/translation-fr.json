@@ -137,7 +137,9 @@
 				"step": "l'étape",
 				"csv": "Ajouter un CSV avec les points",
 				"forLeftPane": "pour le panel de gauche",
-				"forRightPane": "pour le panel de droite"
+				"forRightPane": "pour le panel de droite",
+				"uploadTableFr": "Ajouter un CSV avec un tableau en français",
+				"uploadTableEn": "Ajouter un CSV avec un tableau en anglais"
 			}
 		}
 	}
