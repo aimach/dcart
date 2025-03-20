@@ -10,6 +10,8 @@ type StorymapType = {
 	author?: string;
 	isActive: boolean;
 	publishedAt: string;
+	lang1: { name: string };
+	lang2: { name: string };
 	createdAt: string;
 	updatedAt: string;
 	uploadPointsLastDate: string;

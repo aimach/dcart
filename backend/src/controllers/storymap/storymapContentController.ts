@@ -59,6 +59,8 @@ export const storymapContentControllers = {
 				.leftJoinAndSelect("child.points", "step_point")
 				.leftJoinAndSelect("storymap.creator", "creator")
 				.leftJoinAndSelect("storymap.modifier", "modifier")
+				.leftJoinAndSelect("storymap.lang1", "lang1")
+				.leftJoinAndSelect("storymap.lang2", "lang2")
 				.select([
 					"storymap",
 					"category",
@@ -70,6 +72,8 @@ export const storymapContentControllers = {
 					"step_point",
 					"creator.pseudo",
 					"modifier.pseudo",
+					"lang1.name",
+					"lang2.name",
 				])
 				.where("storymap.id = :id", { id: req.params.id })
 				.orderBy("block.position", "ASC")

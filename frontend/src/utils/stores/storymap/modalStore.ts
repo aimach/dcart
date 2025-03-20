@@ -1,6 +1,5 @@
 // import des bibliothèques
 import { create } from "zustand";
-// import des types
 
 type State = {
 	isDeleteModalOpen: boolean;

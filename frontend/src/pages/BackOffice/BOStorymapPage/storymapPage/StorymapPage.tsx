@@ -15,6 +15,7 @@ import ImageBlock from "../../../../components/storymap/blocks/imageBlock/ImageB
 import LayoutBlock from "../../../../components/storymap/blocks/layoutBlock/LayoutBlock";
 import TitleBlock from "../../../../components/storymap/blocks/titleBlock/TitleBlock";
 import SimpleMapBlock from "../../../../components/storymap/blocks/simpleMapBlock/SimpleMapBlock";
+import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
 // import des services
 import { getStorymapInfosAndBlocks } from "../../../../utils/api/storymap/getRequests";
 // import des types
@@ -25,7 +26,6 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
-import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -90,9 +90,17 @@ const StorymapPage = () => {
 	return (
 		storymapInfos && (
 			<>
-				<Link to={`/backoffice/storymaps/build/${storymapId}`}>
-					Modifier la storymap
-				</Link>
+				<div>
+					<Link to={`/backoffice/storymaps/build/${storymapId}`}>
+						Modifier la storymap
+					</Link>
+					<div>
+						<ul>
+							<li>{storymapInfos.lang1.name}</li>
+							{storymapInfos.lang2.name && <li>{storymapInfos.lang2.name}</li>}
+						</ul>
+					</div>
+				</div>
 				<section className={style.storymapContainer}>
 					<StorymapIntroduction
 						introductionContent={storymapInfos as StorymapType}
