@@ -88,17 +88,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 										position={[point.latitude, point.longitude]}
 										icon={icon}
 									>
-										<Popup>
-											{point.attestations.map((attestation, index: number) => {
-												return (
-													// biome-ignore lint/suspicious/noArrayIndexKey: no other choice
-													<p key={index}>
-														{attestation.extraction} -{" "}
-														{attestation.translation_fr}
-													</p>
-												);
-											})}
-										</Popup>
+										<Popup>{point.attestations[0].location}</Popup>
 									</Marker>
 								);
 							})

@@ -67,7 +67,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 				icon: icon,
 			})
 				.addTo(comparisonMap)
-				.bindPopup(point.pane);
+				.bindPopup(point.attestations[0].location as string);
 		});
 
 		// on créé un point miniature sur le pane opposé

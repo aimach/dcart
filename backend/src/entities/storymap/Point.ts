@@ -32,7 +32,7 @@ export class Point extends BaseEntity {
 	sub_region!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	site!: string | null;
+	location!: string | null;
 
 	@Column({ type: "text", nullable: true })
 	extraction!: string | null;

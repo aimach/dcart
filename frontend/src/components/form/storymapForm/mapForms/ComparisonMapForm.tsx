@@ -69,7 +69,7 @@ const ComparisonMapForm = () => {
 		const headerMapping: Record<string, string> = {
 			Région: "great_region",
 			"Sous-région": "sub_region",
-			Site: "site",
+			Lieu: "location",
 			Latitude: "latitude",
 			Longitude: "longitude",
 			"Extrait avec restitution": "extraction",
