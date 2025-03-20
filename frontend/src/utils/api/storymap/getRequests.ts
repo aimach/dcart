@@ -87,43 +87,21 @@ const getAllBlockTypes = async () => {
 	}
 };
 
-/**
- * Fonction de suppression d'un bloc
- * @param blockId  - l'id du bloc à supprimer
- */
-const deleteBlock = async (blockId: string) => {
-	try {
-		await apiClient.delete(`/storymap/blocks/${blockId}`);
-	} catch (error) {
-		console.error("Erreur lors de la suppression du bloc :", error);
-	}
-};
+// ----------- LANGUAGES
 
 /**
- * Fonction de suppression d'une carte
- * @param mapId  - l'id de la carte à supprimer
- * @returns le statut de la requête
+ * Fonction pour récupérer toutes les catégories des storymaps
+ * @returns Un tableau de catégories
  */
-const deleteMap = async (mapId: string) => {
+const getAllStorymapLanguages = async () => {
 	try {
-		const response = await apiClient.delete(`/dcart/maps/${mapId}`);
-		return response.status;
+		const response = await apiClient.get("/storymap/languages/all");
+		return response.data;
 	} catch (error) {
-		console.error("Erreur lors de la suppression de la carte :", error);
-	}
-};
-
-/**
- * Fonction de suppression d'une storymap
- * @param storymapId  - l'id de la storymap à supprimer
- * @returns le statut de la requête
- */
-const deleteStorymap = async (storymapId: string) => {
-	try {
-		const response = await apiClient.delete(`/storymap/storymap/${storymapId}`);
-		return response.status;
-	} catch (error) {
-		console.error("Erreur lors de la suppression de la storymap :", error);
+		console.error(
+			"Erreur lors du chargement des langues des storymaps :",
+			error,
+		);
 	}
 };
 
@@ -133,7 +111,5 @@ export {
 	getAllBlockTypes,
 	updateBlocksPosition,
 	getBlockInfos,
-	deleteBlock,
-	deleteMap,
-	deleteStorymap,
+	getAllStorymapLanguages,
 };

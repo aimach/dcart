@@ -2,7 +2,7 @@
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
-import { deleteStorymap } from "../../../utils/api/storymap/getRequests";
+import { deleteStorymap } from "../../../utils/api/storymap/deleteRequests";
 // import du style
 import style from "./modalComponent.module.scss";
 

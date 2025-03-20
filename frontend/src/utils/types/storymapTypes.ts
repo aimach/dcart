@@ -78,6 +78,11 @@ type CategoryType = {
 	description_fr: string;
 };
 
+type StorymapLanguageType = {
+	id: string;
+	name: string;
+};
+
 export type {
 	StorymapType,
 	BlockContentType,
@@ -85,4 +90,5 @@ export type {
 	GroupedTyped,
 	TypeType,
 	CategoryType,
+	StorymapLanguageType,
 };

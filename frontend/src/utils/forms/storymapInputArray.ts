@@ -87,6 +87,30 @@ const storymapInputs: InputType[] = [
 		},
 	},
 	{
+		label_fr: "Langue 1",
+		label_en: "Language 1",
+		name: "lang1",
+		type: "select",
+		options: [],
+		required: {
+			value: true,
+			message: {
+				fr: "La langue est requise",
+				en: "The language is required",
+			},
+		},
+	},
+	{
+		label_fr: "Langue 2",
+		label_en: "Language 2",
+		name: "lang2",
+		type: "select",
+		options: [],
+		required: {
+			value: false,
+		},
+	},
+	{
 		label_fr: "Date de publication",
 		label_en: "Publication date",
 		name: "publishedAt",
