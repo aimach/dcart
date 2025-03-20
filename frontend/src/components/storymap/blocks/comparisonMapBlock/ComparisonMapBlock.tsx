@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import L from "leaflet";
 // import du context
@@ -16,6 +16,7 @@ import type {
 } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./comparisonMapBloc.module.scss";
+import "./comparisonMapBloc.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-side-by-side";
 
@@ -27,7 +28,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 	// on récupère le language
 	const { language } = useTranslation();
 
-	const mapName = `comparison-map-${uuidv4}`;
+	const mapName = useMemo(() => `comparison-map-${uuidv4}`, []);
 
 	useEffect(() => {
 		const position: L.LatLngExpression = [33.39, 35.55];
