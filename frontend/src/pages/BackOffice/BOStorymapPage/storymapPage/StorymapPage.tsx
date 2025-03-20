@@ -25,6 +25,7 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
+import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -48,6 +49,8 @@ export const getBlockComponentFromType = (
 			return <QuoteBlock key={key} blockContent={block} />;
 		case "layout":
 			return <LayoutBlock key={key} blockContent={block} />;
+		case "table":
+			return <TableBlock key={key} blockContent={block} />;
 		case "simple_map": {
 			const mapName = `simple-map-${uuidv4()}`;
 			return (

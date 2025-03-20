@@ -14,7 +14,6 @@ import { useShallow } from "zustand/shallow";
 import { createBlock } from "../../../../utils/api/storymap/postRequests";
 import { updateBlock } from "../../../../utils/api/storymap/postRequests";
 // import des types
-import type { SubmitHandler } from "react-hook-form";
 import type { ChangeEvent } from "react";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import { ChevronRight } from "lucide-react";
@@ -50,34 +49,13 @@ const TableForm = () => {
 	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
 
-	// fonction appelée lors de la soumission du formulaire
-	const onSubmit: SubmitHandler<tableInputsType> = async (data) => {
-		if (action === "create") {
-			await createBlock({
-				...data,
-				storymapId,
-				typeName: "table",
-			});
-		} else if (action === "edit") {
-			await updateBlock(
-				{
-					...block,
-					...data,
-					storymapId,
-					typeName: "table",
-				},
-				block?.id.toString() as string,
-			);
-		}
-		// réinitialisation des données
-		setReload(!reload);
-		updateFormType("blockChoice");
-		setSearchParams(undefined);
-	};
-
 	// gestion de l'upload du fichier csv
-	const [csvContent, setCsvContent] = useState<string[][]>([]);
-	const handleFileUpload = (event: ChangeEvent<HTMLInputElement>) => {
+	const [csvContentLang1, setCsvContentLang1] = useState<string[][]>([]);
+	const [csvContentLang2, setCsvContentLang2] = useState<string[][]>([]);
+	const handleFileUpload = (
+		event: ChangeEvent<HTMLInputElement>,
+		langNb: number,
+	) => {
 		const file = event.target.files?.[0];
 		if (file) {
 			const reader = new FileReader();
@@ -85,7 +63,11 @@ const TableForm = () => {
 				const text = e.target?.result as string;
 				const parsed = parse(text, { skipEmptyLines: true });
 				if (parsed.data) {
-					setCsvContent(parsed.data as string[][]);
+					if (langNb === 1) {
+						setCsvContentLang1(parsed.data as string[][]);
+					} else {
+						setCsvContentLang2(parsed.data as string[][]);
+					}
 				}
 			};
 			reader.readAsText(file);
@@ -103,12 +85,11 @@ const TableForm = () => {
 
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: tableInputsType) => {
-		console.log(data);
 		if (action === "create") {
 			await createBlock({
 				...data,
-				content2_fr: JSON.stringify(csvContent),
-				content2_en: JSON.stringify(csvContent),
+				content2_fr: JSON.stringify(csvContentLang1),
+				content2_en: JSON.stringify(csvContentLang2),
 				storymapId,
 				typeName: "table",
 			});
@@ -117,8 +98,8 @@ const TableForm = () => {
 				{
 					...block,
 					...data,
-					content2_fr: JSON.stringify(csvContent),
-					content2_en: JSON.stringify(csvContent),
+					content2_fr: JSON.stringify(csvContentLang1),
+					content2_en: JSON.stringify(csvContentLang2),
 					storymapId,
 					typeName: "table",
 				},
@@ -153,14 +134,25 @@ const TableForm = () => {
 					</div>
 				))}
 				<div>
-					<label htmlFor="points">
+					<label htmlFor="tableLang1">
 						{translation[language].backoffice.storymapFormPage.form.csv}
 					</label>
 					<input
 						id="point"
 						type="file"
 						accept=".csv"
-						onChange={handleFileUpload}
+						onChange={(event) => handleFileUpload(event, 1)}
+					/>
+				</div>
+				<div>
+					<label htmlFor="tableLang2">
+						{translation[language].backoffice.storymapFormPage.form.csv}
+					</label>
+					<input
+						id="point"
+						type="file"
+						accept=".csv"
+						onChange={(event) => handleFileUpload(event, 2)}
 					/>
 				</div>
 				<button type="submit">
