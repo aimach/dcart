@@ -13,6 +13,7 @@ import {
 import { Block } from "./Block";
 import { Category } from "../builtMap/Category";
 import { User } from "../auth/User";
+import { Language } from "./Language";
 
 @Entity()
 export class Storymap extends BaseEntity {
@@ -20,16 +21,16 @@ export class Storymap extends BaseEntity {
 	id!: string;
 
 	@Column({ type: "varchar", length: 255, nullable: false })
-	title_fr!: string;
+	title_lang1!: string;
 
 	@Column({ type: "varchar", length: 255, nullable: false })
-	title_en!: string;
+	title_lang2!: string;
 
 	@Column({ type: "text", nullable: false })
-	description_fr!: string;
+	description_lang1!: string;
 
 	@Column({ type: "text", nullable: false })
-	description_en!: string;
+	description_lang2!: string;
 
 	@Column({ type: "text", nullable: true })
 	image_url!: string | null;
@@ -43,7 +44,7 @@ export class Storymap extends BaseEntity {
 	@Column({ type: "date", nullable: true })
 	uploadPointsLastDate?: Date;
 
-	// booléen si la carte est active ou non (càd, publiée)
+	// booléen si la carte est publiée ou non
 	@Column({ type: "boolean", default: false })
 	isActive!: boolean;
 
@@ -78,4 +79,10 @@ export class Storymap extends BaseEntity {
 		{ onDelete: "SET NULL" },
 	)
 	category!: Category;
+
+	@ManyToOne(() => Language, { nullable: false })
+	lang1!: Language;
+
+	@ManyToOne(() => Language, { nullable: true })
+	lang2?: Language;
 }
