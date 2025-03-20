@@ -103,4 +103,4 @@ const getFlagEmoji = (language: string) => {
 	}
 };
 
-export { createCategoryOptions, createLanguageOptions };
+export { createCategoryOptions, createLanguageOptions, getFlagEmoji };

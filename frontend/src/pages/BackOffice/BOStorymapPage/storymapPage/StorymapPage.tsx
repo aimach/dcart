@@ -1,6 +1,6 @@
 // import des bibiliothèques
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { Link, useLocation, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import StorymapIntroduction from "../../../../components/storymap/blocks/storymapIntroduction/StorymapIntroduction";
@@ -26,6 +26,7 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
+import { getFlagEmoji } from "../../../../utils/functions/storymap";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -71,6 +72,9 @@ const StorymapPage = () => {
 	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
 
+	// récupération de l'ur
+	const location = useLocation();
+
 	// récupération des données des stores
 	const { setSelectedLanguage } = useStorymapLanguageStore();
 
@@ -93,28 +97,30 @@ const StorymapPage = () => {
 	return (
 		storymapInfos && (
 			<>
-				<div>
-					<Link to={`/backoffice/storymaps/build/${storymapId}`}>
-						Modifier la storymap
-					</Link>
+				<div className={style.storymapHeaderContainer}>
 					<div>
-						<ul>
-							<li
-								onClick={() => setSelectedLanguage("lang1")}
-								onKeyUp={() => setSelectedLanguage("lang1")}
-							>
-								{storymapInfos.lang1.name}
-							</li>
-							{storymapInfos.lang2.name && (
-								<li
-									onClick={() => setSelectedLanguage("lang2")}
-									onKeyUp={() => setSelectedLanguage("lang2")}
-								>
-									{storymapInfos.lang2.name}
-								</li>
-							)}
-						</ul>
+						{location.pathname.includes("storymaps/view/") && (
+							<Link to={`/backoffice/storymaps/build/${storymapId}`}>
+								Modifier la storymap
+							</Link>
+						)}
 					</div>
+					<ul className={style.languageSelectionContainer}>
+						<li
+							onClick={() => setSelectedLanguage("lang1")}
+							onKeyUp={() => setSelectedLanguage("lang1")}
+						>
+							{getFlagEmoji(storymapInfos.lang1.name)}
+						</li>
+						{storymapInfos.lang2.name && (
+							<li
+								onClick={() => setSelectedLanguage("lang2")}
+								onKeyUp={() => setSelectedLanguage("lang2")}
+							>
+								{getFlagEmoji(storymapInfos.lang2.name)}
+							</li>
+						)}
+					</ul>
 				</div>
 				<section className={style.storymapContainer}>
 					<StorymapIntroduction
