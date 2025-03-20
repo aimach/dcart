@@ -18,7 +18,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type linkFormInputs = {
-	content1_fr: string;
+	content1_lang1: string;
 };
 
 /**
@@ -49,7 +49,7 @@ const LinkForm = () => {
 		if (action === "create") {
 			await createBlock({
 				...data,
-				content1_en: data.content1_fr,
+				content1_lang2: data.content1_lang1,
 				storymapId,
 				typeName: "link",
 			});
@@ -58,7 +58,7 @@ const LinkForm = () => {
 				{
 					...block,
 					...data,
-					content1_en: data.content1_fr,
+					content1_lang2: data.content1_lang1,
 					storymapId,
 					typeName: "link",
 				},

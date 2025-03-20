@@ -18,10 +18,10 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type imageInputsType = {
-	content1_fr: string;
-	content1_en: string;
-	content2_fr: string;
-	content2_en: string;
+	content1_lang1: string;
+	content1_lang2: string;
+	content2_lang1: string;
+	content2_lang2: string;
 };
 
 interface ImageFormProps {
@@ -57,7 +57,7 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
 		if (action === "create") {
 			await createBlock({
 				...data,
-				content1_en: data.content1_fr, // permet de ne pas avoir 2 inputs pour la même information
+				content1_lang2: data.content1_lang1, // permet de ne pas avoir 2 inputs pour la même information
 				parentId,
 				storymapId,
 				typeName: "image",
@@ -67,7 +67,7 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
 				{
 					...block,
 					...data,
-					content1_en: data.content1_fr, // permet de ne pas avoir 2 inputs pour la même information
+					content1_lang2: data.content1_lang1, // permet de ne pas avoir 2 inputs pour la même information
 					parentId,
 					storymapId,
 					typeName: "image",

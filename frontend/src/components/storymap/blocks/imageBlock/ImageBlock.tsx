@@ -16,10 +16,10 @@ const ImageBlock = ({ blockContent }: ImageBlockProps) => {
 	return (
 		<section className={style.imageSection}>
 			<img
-				src={blockContent[`content1_${language}`]}
-				alt={blockContent[`content2_${language}`]}
+				src={blockContent.content1_lang1}
+				alt={blockContent.content2_lang1}
 			/>
-			<p>{blockContent[`content2_${language}`]}</p>
+			<p>{blockContent.content2_lang1}</p>
 		</section>
 	);
 };

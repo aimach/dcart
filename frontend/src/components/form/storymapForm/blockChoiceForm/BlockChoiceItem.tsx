@@ -38,8 +38,8 @@ const BlockChoiceItem = ({ blockType }: BlockChoiceItemProps) => {
 	const handleBlockChoiceClick = async (blockType: TypeType) => {
 		if (blockType.name === "separator") {
 			await createBlock({
-				content1_fr: "",
-				content1_en: "",
+				content1_lang1: "",
+				content1_lang2: "",
 				storymapId,
 				typeName: "separator",
 			});

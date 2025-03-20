@@ -18,34 +18,31 @@ const TextBlock = ({ blockContent }: TextBlockProps) => {
 
 	// on nettoie le contenu
 
-	const sanitizedText = DOMPurify.sanitize(
-		blockContent[`content1_${language}`],
-		{
-			ALLOWED_TAGS: [
-				"p",
-				"b",
-				"i",
-				"u",
-				"strong",
-				"em",
-				"a",
-				"ul",
-				"ol",
-				"li",
-				"br",
-				"span",
-				"h1",
-				"h2",
-				"h3",
-				"h4",
-				"h5",
-				"h6",
-				"blockquote",
-				"pre",
-			],
-			ALLOWED_ATTR: ["href", "target", "rel", "class", "style"],
-		},
-	);
+	const sanitizedText = DOMPurify.sanitize(blockContent.content1_lang1, {
+		ALLOWED_TAGS: [
+			"p",
+			"b",
+			"i",
+			"u",
+			"strong",
+			"em",
+			"a",
+			"ul",
+			"ol",
+			"li",
+			"br",
+			"span",
+			"h1",
+			"h2",
+			"h3",
+			"h4",
+			"h5",
+			"h6",
+			"blockquote",
+			"pre",
+		],
+		ALLOWED_ATTR: ["href", "target", "rel", "class", "style"],
+	});
 
 	return (
 		<section className={style.textBlockContainer}>

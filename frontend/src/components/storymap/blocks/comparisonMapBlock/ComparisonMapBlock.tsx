@@ -89,9 +89,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 	return (
 		<>
 			<div id={mapName} />
-			{blockContent.content1_fr && (
-				<p>{blockContent[`content1_${language}`]}</p>
-			)}
+			{blockContent.content1_lang1 && <p>{blockContent.content1_lang1}</p>}
 		</>
 	);
 };

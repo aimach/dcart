@@ -25,10 +25,10 @@ import style from "./mapForms.module.scss";
 import { ChevronRight } from "lucide-react";
 
 export type comparisonMapInputsType = {
-	content1_fr: string;
-	content1_en: string;
-	content2_fr: string;
-	content2_en: string;
+	content1_lang1: string;
+	content1_lang2: string;
+	content2_lang1: string;
+	content2_lang2: string;
 };
 
 /**

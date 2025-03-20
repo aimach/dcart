@@ -16,10 +16,10 @@ type InputType = {
 
 type blockType = {
 	id?: string;
-	content1_fr: string;
-	content1_en?: string;
-	content2_fr?: string | null;
-	content2_en?: string | null;
+	content1_lang1: string;
+	content1_lang2?: string;
+	content2_lang1?: string | null;
+	content2_lang2?: string | null;
 	parentId?: string | null;
 	storymapId?: string;
 	typeId?: string;

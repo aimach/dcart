@@ -23,9 +23,9 @@ import StepForm from "./StepForm";
 import style from "./mapForms.module.scss";
 
 export type scrollMapInputsType = {
-	content1_fr: string;
-	content1_en: string;
-	content2_fr: string;
+	content1_lang1: string;
+	content1_lang2: string;
+	content2_lang1: string;
 };
 
 /**

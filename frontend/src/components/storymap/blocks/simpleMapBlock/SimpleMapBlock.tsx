@@ -100,7 +100,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 					</>
 				</MapContainer>
 			</div>
-			<h4 className={style.mapTitle}>{blockContent[`content1_${language}`]}</h4>
+			<h4 className={style.mapTitle}>{blockContent.content1_lang1}</h4>
 		</>
 	);
 };

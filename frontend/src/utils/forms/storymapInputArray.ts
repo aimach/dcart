@@ -139,7 +139,7 @@ const titleInput: InputType[] = [
 	{
 		label_fr: "Titre en français",
 		label_en: "Title in french",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -152,7 +152,7 @@ const titleInput: InputType[] = [
 	{
 		label_fr: "Titre en anglais",
 		label_en: "Title in english",
-		name: "content1_en",
+		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
@@ -168,7 +168,7 @@ const subtitleInputs: InputType[] = [
 	{
 		label_fr: "Titre en français",
 		label_en: "Title in french",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -181,7 +181,7 @@ const subtitleInputs: InputType[] = [
 	{
 		label_fr: "Titre en anglais",
 		label_en: "Title in english",
-		name: "content1_en",
+		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
@@ -197,7 +197,7 @@ const textInputs: InputType[] = [
 	{
 		label_fr: "Texte en français",
 		label_en: "Texte in french",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "wysiwyg",
 		required: {
 			value: true,
@@ -210,7 +210,7 @@ const textInputs: InputType[] = [
 	{
 		label_fr: "Texte en anglais",
 		label_en: "Text in english",
-		name: "content1_en",
+		name: "content1_lang2",
 		type: "wysiwyg",
 		required: {
 			value: true,
@@ -226,7 +226,7 @@ const linkInputs: InputType[] = [
 	{
 		label_fr: "Lien",
 		label_en: "Link",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -239,7 +239,7 @@ const quoteInputs: InputType[] = [
 	{
 		label_fr: "Citation en français",
 		label_en: "Quote in french",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -252,7 +252,7 @@ const quoteInputs: InputType[] = [
 	{
 		label_fr: "Citation en anglais",
 		label_en: "Quote in english",
-		name: "content1_en",
+		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
@@ -265,7 +265,7 @@ const quoteInputs: InputType[] = [
 	{
 		label_fr: "Source en français",
 		label_en: "Source in french",
-		name: "content2_fr",
+		name: "content2_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -278,7 +278,7 @@ const quoteInputs: InputType[] = [
 	{
 		label_fr: "Source en anglais",
 		label_en: "Source in english",
-		name: "content2_en",
+		name: "content2_lang2",
 		type: "text",
 		required: {
 			value: true,
@@ -294,7 +294,7 @@ const imageInputs: InputType[] = [
 	{
 		label_fr: "Lien de l'image",
 		label_en: "Link of the image",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -307,7 +307,7 @@ const imageInputs: InputType[] = [
 	{
 		label_fr: "Légende de l'image en français",
 		label_en: "Image legend in french",
-		name: "content2_fr",
+		name: "content2_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -320,7 +320,7 @@ const imageInputs: InputType[] = [
 	{
 		label_fr: "Légende de l'image en anglais",
 		label_en: "Image legend in english",
-		name: "content2_en",
+		name: "content2_lang2",
 		type: "text",
 		required: {
 			value: true,
@@ -336,7 +336,7 @@ const simpleMapInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en français",
 		label_en: "Map name in french",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -349,7 +349,7 @@ const simpleMapInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en anglais",
 		label_en: "Map name in english",
-		name: "content1_en",
+		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
@@ -362,7 +362,7 @@ const simpleMapInputs: InputType[] = [
 	{
 		label_fr: "Fond de carte",
 		label_en: "Map background tiles",
-		name: "content2_fr",
+		name: "content2_lang1",
 		type: "select",
 		options: tileOptions,
 		required: {
@@ -379,7 +379,7 @@ const comparisonMapInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en français",
 		label_en: "Map name in french",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -392,7 +392,7 @@ const comparisonMapInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en anglais",
 		label_en: "Map name in english",
-		name: "content1_en",
+		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
@@ -405,7 +405,7 @@ const comparisonMapInputs: InputType[] = [
 	{
 		label_fr: "Fond de carte pour le panel de gauche",
 		label_en: "Map background tiles for the left panel",
-		name: "content2_fr",
+		name: "content2_lang1",
 		type: "select",
 		options: tileOptions,
 		required: {
@@ -419,7 +419,7 @@ const comparisonMapInputs: InputType[] = [
 	{
 		label_fr: "Fond de carte pour le panel de droite",
 		label_en: "Map background tiles for the right panel",
-		name: "content2_en",
+		name: "content2_lang2",
 		type: "select",
 		options: tileOptions,
 		required: {
@@ -436,7 +436,7 @@ const scrollMapInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en français",
 		label_en: "Map name in french",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -449,7 +449,7 @@ const scrollMapInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en anglais",
 		label_en: "Map name in english",
-		name: "content1_en",
+		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
@@ -462,7 +462,7 @@ const scrollMapInputs: InputType[] = [
 	{
 		label_fr: "Fond de carte",
 		label_en: "Map background tiles",
-		name: "content2_fr",
+		name: "content2_lang1",
 		type: "select",
 		options: tileOptions,
 		required: {
@@ -479,7 +479,7 @@ const stepInputs: InputType[] = [
 	{
 		label_fr: "Titre en français",
 		label_en: "Title in french",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -492,7 +492,7 @@ const stepInputs: InputType[] = [
 	{
 		label_fr: "Titre en anglais",
 		label_en: "Title in english",
-		name: "content1_en",
+		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
@@ -505,7 +505,7 @@ const stepInputs: InputType[] = [
 	{
 		label_fr: "Description en français",
 		label_en: "Description in french",
-		name: "content2_fr",
+		name: "content2_lang1",
 		type: "text",
 		required: {
 			value: false,
@@ -514,7 +514,7 @@ const stepInputs: InputType[] = [
 	{
 		label_fr: "Description en anglais",
 		label_en: "Description in english",
-		name: "content2_en",
+		name: "content2_lang2",
 		type: "text",
 		required: {
 			value: false,
@@ -526,7 +526,7 @@ const tableInputs: InputType[] = [
 	{
 		label_fr: "Titre du tableau en français",
 		label_en: "Table title in french",
-		name: "content1_fr",
+		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -539,7 +539,7 @@ const tableInputs: InputType[] = [
 	{
 		label_fr: "Titre du tableau en anglais",
 		label_en: "Table title in english",
-		name: "content1_en",
+		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,

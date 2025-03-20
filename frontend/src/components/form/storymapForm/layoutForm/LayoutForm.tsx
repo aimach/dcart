@@ -52,8 +52,8 @@ const LayoutForm = () => {
 	const handleClick = async (position: string) => {
 		if (action === "create") {
 			const response = await createBlock({
-				content1_fr: position,
-				content1_en: position,
+				content1_lang1: position,
+				content1_lang2: position,
 				storymapId,
 				typeName: "layout",
 			});
@@ -61,8 +61,8 @@ const LayoutForm = () => {
 		} else if (action === "edit") {
 			const response = await updateBlock(
 				{
-					content1_fr: position,
-					content1_en: position,
+					content1_lang1: position,
+					content1_lang2: position,
 					storymapId,
 					typeName: "layout",
 				},

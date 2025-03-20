@@ -14,9 +14,7 @@ const LinkBlock = ({ blockContent }: LinkBlockProps) => {
 	const { language } = useTranslation();
 
 	return (
-		<a href={blockContent[`content2_${language}`]}>
-			{blockContent[`content1_${language}`]}
-		</a>
+		<a href={blockContent.content2_lang1}>{blockContent.content1_lang1}</a>
 	);
 };
 

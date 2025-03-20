@@ -16,13 +16,9 @@ const TitleBlock = ({ blockContent }: TitleBlockProps) => {
 	return (
 		<section className={style.titleSection}>
 			{blockContent.type.name === "title" ? (
-				<h3 className={style.titleStyle}>
-					{blockContent[`content1_${language}`]}
-				</h3>
+				<h3 className={style.titleStyle}>{blockContent.content1_lang1}</h3>
 			) : (
-				<h4 className={style.subtitleStyle}>
-					{blockContent[`content1_${language}`]}
-				</h4>
+				<h4 className={style.subtitleStyle}>{blockContent.content1_lang1}</h4>
 			)}
 		</section>
 	);

@@ -18,8 +18,8 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type subtitleInputsType = {
-	content1_fr: string;
-	content1_en: string;
+	content1_lang1: string;
+	content1_lang2: string;
 };
 
 /**

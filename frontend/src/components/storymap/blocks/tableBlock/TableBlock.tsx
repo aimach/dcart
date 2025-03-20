@@ -19,7 +19,7 @@ const TableBlock = ({ blockContent }: TableBlockProps) => {
 	// au montage du tableau, transformation de la chaîne de caractère en variable manipulable
 	const [tableContent, setTableContent] = useState<string[][]>([]);
 	useEffect(() => {
-		const content = blockContent[`content2_${language}`];
+		const content = blockContent.content2_lang1;
 		try {
 			if (content) {
 				setTableContent(JSON.parse(content));
@@ -44,7 +44,7 @@ const TableBlock = ({ blockContent }: TableBlockProps) => {
 					))}
 				</tbody>
 			</table>
-			<p>{blockContent[`content1_${language}`]}</p>
+			<p>{blockContent.content1_lang1}</p>
 		</section>
 	);
 };

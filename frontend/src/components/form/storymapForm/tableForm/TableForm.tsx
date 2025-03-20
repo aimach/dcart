@@ -22,8 +22,8 @@ import style from "../mapForms/mapForms.module.scss";
 import { ChevronRight } from "lucide-react";
 
 export type tableInputsType = {
-	content1_fr: string;
-	content1_en: string;
+	content1_lang1: string;
+	content1_lang2: string;
 };
 
 /**
