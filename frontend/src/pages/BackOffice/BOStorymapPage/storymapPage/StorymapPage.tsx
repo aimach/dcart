@@ -1,7 +1,6 @@
 // import des bibiliothèques
 import { useEffect, useState } from "react";
 import { Link, useParams } from "react-router";
-
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import StorymapIntroduction from "../../../../components/storymap/blocks/storymapIntroduction/StorymapIntroduction";
@@ -17,6 +16,7 @@ import TitleBlock from "../../../../components/storymap/blocks/titleBlock/TitleB
 import SimpleMapBlock from "../../../../components/storymap/blocks/simpleMapBlock/SimpleMapBlock";
 import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
 // import des services
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getStorymapInfosAndBlocks } from "../../../../utils/api/storymap/getRequests";
 // import des types
 import type {
@@ -71,6 +71,9 @@ const StorymapPage = () => {
 	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
 
+	// récupération des données des stores
+	const { setSelectedLanguage } = useStorymapLanguageStore();
+
 	// déclaration d'un état pour stocker les informations de la storymap
 	const [storymapInfos, setStorymapInfos] = useState<StorymapType | null>(null);
 
@@ -96,8 +99,20 @@ const StorymapPage = () => {
 					</Link>
 					<div>
 						<ul>
-							<li>{storymapInfos.lang1.name}</li>
-							{storymapInfos.lang2.name && <li>{storymapInfos.lang2.name}</li>}
+							<li
+								onClick={() => setSelectedLanguage("lang1")}
+								onKeyUp={() => setSelectedLanguage("lang1")}
+							>
+								{storymapInfos.lang1.name}
+							</li>
+							{storymapInfos.lang2.name && (
+								<li
+									onClick={() => setSelectedLanguage("lang2")}
+									onKeyUp={() => setSelectedLanguage("lang2")}
+								>
+									{storymapInfos.lang2.name}
+								</li>
+							)}
 						</ul>
 					</div>
 				</div>

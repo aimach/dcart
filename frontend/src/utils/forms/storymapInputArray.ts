@@ -25,34 +25,58 @@ const tileOptions = [
 
 const storymapInputs: InputType[] = [
 	{
-		label_fr: "Titre en français",
-		label_en: "Title in french",
+		label_fr: "Langue 1",
+		label_en: "Language 1",
+		name: "lang1",
+		type: "select",
+		options: [],
+		required: {
+			value: true,
+			message: {
+				fr: "La langue est requise",
+				en: "The language is required",
+			},
+		},
+	},
+	{
+		label_fr: "Langue 2",
+		label_en: "Language 2",
+		name: "lang2",
+		type: "select",
+		options: [],
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Titre en langue 1",
+		label_en: "Title in language 1",
 		name: "title_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en français est requis",
-				en: "The title in french is required",
+				fr: "Le titre en langue 1 est requis",
+				en: "The title in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Titre en anglais",
-		label_en: "Title in english",
+		label_fr: "Titre en langue 2",
+		label_en: "Title in language 2",
 		name: "title_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en anglais est requis",
-				en: "The title in english is required",
+				fr: "Le titre en langue 2 est requis",
+				en: "The title in language 2 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Description en français",
-		label_en: "Description in french",
+		label_fr: "Description en langue 1",
+		label_en: "Description in language 1",
 		name: "description_lang1",
 		type: "text",
 		required: {
@@ -60,8 +84,8 @@ const storymapInputs: InputType[] = [
 		},
 	},
 	{
-		label_fr: "Description en anglais",
-		label_en: "Description in english",
+		label_fr: "Description en langue 2",
+		label_en: "Description in language 2",
 		name: "description_lang2",
 		type: "text",
 		required: {
@@ -86,30 +110,7 @@ const storymapInputs: InputType[] = [
 			value: false,
 		},
 	},
-	{
-		label_fr: "Langue 1",
-		label_en: "Language 1",
-		name: "lang1",
-		type: "select",
-		options: [],
-		required: {
-			value: true,
-			message: {
-				fr: "La langue est requise",
-				en: "The language is required",
-			},
-		},
-	},
-	{
-		label_fr: "Langue 2",
-		label_en: "Language 2",
-		name: "lang2",
-		type: "select",
-		options: [],
-		required: {
-			value: false,
-		},
-	},
+
 	{
 		label_fr: "Date de publication",
 		label_en: "Publication date",

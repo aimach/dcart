@@ -19,6 +19,7 @@ import style from "./managementItem.module.scss";
 // import des icônes
 import { Eye, EyeOff, ImageOff, Pen, PenOff, Trash } from "lucide-react";
 import { SessionContext } from "../../../context/SessionContext";
+import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
 
 type ManagementItemProps = {
 	itemInfos: MapType | StorymapType;
@@ -35,6 +36,7 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 	// récupération des données des stores
 	const { setMapInfos } = useMapFormStore();
 	const { openDeleteModal, setIdToDelete, reload, setReload } = useModalStore();
+	const { selectedLanguage } = useStorymapLanguageStore();
 
 	// au montage du composant, vérification des sessions en cours
 	const [isModifiedByAnotherUser, setIsModifiedByAnotherUser] =
@@ -98,7 +100,7 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 
 	const sanitizedDescription = useMemo(() => {
 		const shortDescription = DOMPurify.sanitize(
-			itemInfos[`description_${language}`],
+			itemInfos[`description_${selectedLanguage}`],
 		).slice(0, 300);
 		return shortDescription.length < 300
 			? shortDescription
@@ -112,13 +114,13 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 					((itemInfos as StorymapType).image_url ? (
 						<img
 							src={(itemInfos as StorymapType).image_url}
-							alt={(itemInfos as StorymapType)[`title_${language}`]}
+							alt={(itemInfos as StorymapType)[`title_${selectedLanguage}`]}
 						/>
 					) : (
 						<ImageOff />
 					))}
 				<div className={style.managementItemTitle}>
-					<h4>{(itemInfos as StorymapType)[`title_${language}`]}</h4>
+					<h4>{(itemInfos as StorymapType)[`title_${selectedLanguage}`]}</h4>
 					<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
 						dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
 					/>

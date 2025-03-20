@@ -1,5 +1,5 @@
 // import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
@@ -10,16 +10,16 @@ interface ImageBlockProps {
 }
 
 const ImageBlock = ({ blockContent }: ImageBlockProps) => {
-	// on récupère le language
-	const { language } = useTranslation();
+	// récupération des données des stores
+	const { selectedLanguage } = useStorymapLanguageStore();
 
 	return (
 		<section className={style.imageSection}>
 			<img
-				src={blockContent.content1_lang1}
-				alt={blockContent.content2_lang1}
+				src={blockContent[`content1_${selectedLanguage}`]}
+				alt={blockContent[`content2_${selectedLanguage}`]}
 			/>
-			<p>{blockContent.content2_lang1}</p>
+			<p>{blockContent[`content2_${selectedLanguage}`]}</p>
 		</section>
 	);
 };
