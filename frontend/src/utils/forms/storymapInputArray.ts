@@ -498,6 +498,35 @@ const stepInputs: InputType[] = [
 	},
 ];
 
+const tableInputs: InputType[] = [
+	{
+		label_fr: "Titre du tableau en français",
+		label_en: "Table title in french",
+		name: "content1_fr",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en français est requis",
+				en: "The title in french is required",
+			},
+		},
+	},
+	{
+		label_fr: "Titre du tableau en anglais",
+		label_en: "Table title in english",
+		name: "content1_en",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le titre en anglais est requis",
+				en: "The title in english is required",
+			},
+		},
+	},
+];
+
 export {
 	storymapInputs,
 	titleInput,
@@ -510,4 +539,5 @@ export {
 	scrollMapInputs,
 	stepInputs,
 	imageInputs,
+	tableInputs,
 };

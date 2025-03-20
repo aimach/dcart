@@ -120,6 +120,7 @@ type LanguageObject = {
 				comparison_map: string;
 				scroll_map: string;
 				separator: string;
+				table: string;
 			};
 			form: {
 				create: string;

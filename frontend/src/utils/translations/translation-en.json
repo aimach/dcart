@@ -117,7 +117,8 @@
 				"simple_map": "Simple map",
 				"comparison_map": "Comparison map",
 				"scroll_map": "Scroll map",
-				"separator": "Separator"
+				"separator": "Separator",
+				"table": "Table"
 			},
 			"form": {
 				"create": "Create",

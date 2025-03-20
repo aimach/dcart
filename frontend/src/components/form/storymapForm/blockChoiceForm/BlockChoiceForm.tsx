@@ -49,7 +49,8 @@ const BlockChoiceForm = () => {
 						blockType.name === "text" ||
 						blockType.name === "quote" ||
 						blockType.name === "layout" ||
-						blockType.name === "separator",
+						blockType.name === "separator" ||
+						blockType.name === "table",
 				)
 				.map((blockType: TypeType) => (
 					<BlockChoiceItem key={blockType.id} blockType={blockType} />

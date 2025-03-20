@@ -117,7 +117,8 @@
 				"simple_map": "Carte simple",
 				"comparison_map": "Carte de comparaison",
 				"scroll_map": "Carte déroulante",
-				"separator": "Séparateur"
+				"separator": "Séparateur",
+				"table": "Tableau"
 			},
 			"form": {
 				"create": "Créer",

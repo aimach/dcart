@@ -50,7 +50,8 @@ type FormType =
 	| "simple_map"
 	| "comparison_map"
 	| "scroll_map"
-	| "separator";
+	| "separator"
+	| "table";
 
 type storymapInputsType = {
 	title_fr: string;

@@ -28,6 +28,8 @@ import LayoutForm from "../../../../components/form/storymapForm/layoutForm/Layo
 import PanelSection from "../../../../components/storymap/panel/PanelSection";
 import ModalComponent from "../../../../components/common/modal/ModalComponent";
 import DeleteBlockModalContent from "../../../../components/common/modal/DeleteBlockModalContent";
+import TableForm from "../../../../components/form/storymapForm/tableForm/TableForm";
+import StayConnectedContent from "../../../../components/common/modal/StayConnectedContent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des contextes
@@ -44,7 +46,6 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import style from "./storymapBuilderPage.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
-import StayConnectedContent from "../../../../components/common/modal/StayConnectedContent";
 
 /**
  * Page contenant un panel avec la liste des blocs de la storymap et des formulaires pour ajouter de nouveaux blocs
@@ -92,6 +93,9 @@ const StorymapBuilderPage = () => {
 			break;
 		case "layout":
 			formComponent = <LayoutForm />;
+			break;
+		case "table":
+			formComponent = <TableForm />;
 			break;
 		case "simple_map":
 			formComponent = <SimpleMapForm />;
