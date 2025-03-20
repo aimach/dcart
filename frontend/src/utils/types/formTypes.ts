@@ -54,10 +54,10 @@ type FormType =
 	| "table";
 
 type storymapInputsType = {
-	title_fr: string;
-	title_en: string;
-	description_fr: string;
-	description_en: string;
+	title_lang1: string;
+	title_lang2: string;
+	description_lang1: string;
+	description_lang2: string;
 	img_url: string;
 	author: string;
 	publication_date: string;

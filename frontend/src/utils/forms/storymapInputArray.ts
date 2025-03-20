@@ -27,7 +27,7 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Titre en français",
 		label_en: "Title in french",
-		name: "title_fr",
+		name: "title_lang1",
 		type: "text",
 		required: {
 			value: true,
@@ -40,7 +40,7 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Titre en anglais",
 		label_en: "Title in english",
-		name: "title_en",
+		name: "title_lang2",
 		type: "text",
 		required: {
 			value: true,
@@ -53,7 +53,7 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Description en français",
 		label_en: "Description in french",
-		name: "description_fr",
+		name: "description_lang1",
 		type: "text",
 		required: {
 			value: false,
@@ -62,7 +62,7 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Description en anglais",
 		label_en: "Description in english",
-		name: "description_en",
+		name: "description_lang2",
 		type: "text",
 		required: {
 			value: false,
