@@ -1,5 +1,6 @@
 import { defineConfig } from "vite";
 import react from "@vitejs/plugin-react";
+import path from "node:path";
 
 // https://vite.dev/config/
 export default defineConfig({
@@ -20,6 +21,14 @@ export default defineConfig({
 			scss: {
 				additionalData: `@use "src/styles/variable" as *; @use "src/styles/mixin" as *;`,
 			},
+		},
+	},
+	resolve: {
+		alias: {
+			"leaflet-side-by-side": path.resolve(
+				__dirname,
+				"src/utils/patch-library/leaflet-side-by-side.js",
+			),
 		},
 	},
 });

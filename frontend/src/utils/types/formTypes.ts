@@ -31,7 +31,7 @@ type parsedPointType = {
 	longitude: number;
 	great_region: string | null;
 	sub_region: string | null;
-	site: string | null;
+	location: string | null;
 	extraction: string | null;
 	transliteration: string | null;
 	translation_fr: string | null;
@@ -50,7 +50,8 @@ type FormType =
 	| "simple_map"
 	| "comparison_map"
 	| "scroll_map"
-	| "separator";
+	| "separator"
+	| "table";
 
 type storymapInputsType = {
 	title_fr: string;

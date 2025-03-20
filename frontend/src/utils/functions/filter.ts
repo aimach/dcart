@@ -1,5 +1,9 @@
 // import des types
-import type { TranslationType } from "../types/languageTypes";
+import type {
+	Language,
+	LanguageObject,
+	TranslationType,
+} from "../types/languageTypes";
 import type {
 	PointType,
 	ElementType,
@@ -7,7 +11,7 @@ import type {
 	GreatRegionType,
 	TimeMarkersType,
 } from "../types/mapTypes";
-import type { MultiValue, SingleValue } from "react-select";
+import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
 
@@ -27,7 +31,7 @@ const alreadyTwoFiltersChecked = (mapFilters: MapFilterType) => {
 };
 
 /**
- * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
+ * Fonction qui créé les options pour le select du filtre temporel
  * @param {TimeMarkersType} timeMarkers - Les bornes temporelles
  * @returns {string[]} - Un tableau avec la liste des options temporelles
  */
@@ -239,10 +243,19 @@ const onMultiSelectChange = (
 	key: string,
 	setUserFilters: (filters: UserFilterType) => void,
 	userFilters: UserFilterType,
+	setValuesFunction: (names: string[]) => void,
 ) => {
+	// stockage des valeurs dans le store pour les afficher dans le rappel de la carte
+	const newValues = (selectedOptions as MultiValue<OptionType>).map(
+		(option) => option.label,
+	);
+
+	setValuesFunction(newValues);
+
 	const elementValuesString = selectedOptions
 		.map((option) => option.value)
 		.join("|");
+
 	setUserFilters({
 		...userFilters,
 		[key]: elementValuesString,
@@ -250,7 +263,7 @@ const onMultiSelectChange = (
 };
 
 /**
- * Fonction qui vérifie si aucun filtre n'est sélectionné
+ * Fonction qui vérifie si aucun filtre de la carte n'est sélectionné par l'utilisateur lors de la création ou modification
  * @param {MapFilterType} mapFilters - Les filtres de la carte en construction
  * @returns {boolean} - Un booléen
  */
@@ -262,6 +275,72 @@ const noFilterChecked = (mapFilters: MapFilterType) => {
 		}
 	}
 	return filtersChecked === 0;
+};
+
+/**
+ * Fonction qui vérifie si aucun filtre n'est sélectionné par l'utilisateur
+ * @param {UserFilterType} userFilters - Les filtres de la carte en construction
+ * @returns {boolean} - Un booléen
+ */
+const noUserFilterChecked = (userFilters: UserFilterType) => {
+	let filtersChecked = 0;
+	for (const filter in userFilters) {
+		if (
+			(filter === "post" || filter === "ante") &&
+			userFilters[filter as keyof UserFilterType]
+		) {
+			filtersChecked += 1;
+		}
+	}
+	return filtersChecked === 0;
+};
+
+/**
+ * Fonction qui vérifie si aucun filtre n'est sélectionné par l'utilisateur
+ * @param {UserFilterType} userFilters - Les filtres de la carte en construction
+ * @param {string[]} locationNames - Les noms des localités sélectionnées
+ * @param {string[]} elementNames - Les noms des éléments sélectionnés
+ * @param {Record<string, boolean>} languageValues - Un objet contenant les booléens des langues sélectionnées
+ * @param {TranslationType} translationObject - Les objets de traduction
+ * @returns {Array} - Un tableau de strings
+ */
+const displayFiltersTags = (
+	userFilters: UserFilterType,
+	locationNames: string[],
+	elementNames: string[],
+	languageValues: Record<string, boolean>,
+	translationObject: LanguageObject,
+) => {
+	const stringArray = [];
+
+	// affichage des dates
+	if (userFilters.post)
+		stringArray.push(`${translationObject.common.after} ${userFilters.post}`);
+	if (userFilters.ante)
+		stringArray.push(`${translationObject.common.before} ${userFilters.ante}`);
+
+	// affichage des langues
+	if (languageValues.greek && languageValues.semitic) {
+		stringArray.push(translationObject.mapPage.noGreekOrSemitic);
+	} else if (languageValues.greek) {
+		stringArray.push(translationObject.mapPage.onlySemitic);
+	} else if (languageValues.semitic) {
+		stringArray.push(translationObject.mapPage.onlyGreek);
+	}
+
+	// affichage des lieux
+	if (locationNames.length)
+		stringArray.push(
+			`${translationObject.common.in} ${locationNames.join(", ")}`,
+		);
+
+	// affichage des éléments
+	if (elementNames.length)
+		stringArray.push(
+			`${translationObject.mapPage.withElements}  : ${elementNames.join(", ")}`,
+		);
+
+	return stringArray;
 };
 
 export {
@@ -277,4 +356,6 @@ export {
 	handleMultiSelectChange,
 	onMultiSelectChange,
 	noFilterChecked,
+	noUserFilterChecked,
+	displayFiltersTags,
 };

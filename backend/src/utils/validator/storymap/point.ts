@@ -3,7 +3,8 @@ import Joi from "joi";
 // import des types
 import type { Request, Response, NextFunction } from "express";
 
-const pointSchema = Joi.object({
+export const pointSchema = Joi.object({
+	id: Joi.string().uuid().optional(),
 	color: Joi.string().optional().allow(null),
 	description_en: Joi.string().optional().allow(null),
 	description_fr: Joi.string().optional().allow(null),
@@ -12,12 +13,12 @@ const pointSchema = Joi.object({
 	latitude: Joi.number().precision(6).optional().allow(null),
 	longitude: Joi.number().precision(6).optional().allow(null),
 	pane: Joi.string().optional().allow(null),
-	site: Joi.string().optional().allow(null),
+	location: Joi.string().optional().allow(null),
 	sub_region: Joi.string().optional().allow(null),
 	title_en: Joi.string().optional().allow(null),
 	title_fr: Joi.string().optional().allow(null),
 	translation_fr: Joi.string().required(),
-	transliteration: Joi.string().required(),
+	transliteration: Joi.string().optional().allow(null),
 });
 
 const parsedPointsSchema = Joi.object({

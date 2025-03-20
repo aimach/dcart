@@ -3,6 +3,7 @@
 
 .modal {
     &Content {
+
         >p {
             font-size: v.$font-size-m;
         }
@@ -17,13 +18,32 @@
 
 
         >img:first-of-type {
+            padding-top: v.$space-s;
             rotate: 90deg;
         }
 
         >img:last-of-type {
+            padding-top: v.$space-s;
             rotate: -90deg;
         }
 
+    }
+
+    &ImageAndTextSection {
+        margin-top: v.$space-xl;
+
+        >img {
+            width: 50%;
+            float: left;
+            margin-right: v.$space-s;
+            margin-bottom: v.$space-s;
+            border-radius: v.$border-radius-base;
+        }
+
+        >p {
+            text-align: justify;
+            font-size: v.$font-size-s;
+        }
     }
 }
 

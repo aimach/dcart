@@ -19,6 +19,7 @@ import {
 	Minus,
 	ShieldQuestion,
 	SquareMenu,
+	Table,
 } from "lucide-react";
 
 /**
@@ -86,6 +87,8 @@ const getTypeIcon = (typeName: string) => {
 			return <Minus />;
 		case "step":
 			return <SquareMenu />;
+		case "table":
+			return <Table />;
 		default:
 			return <ShieldQuestion />;
 	}

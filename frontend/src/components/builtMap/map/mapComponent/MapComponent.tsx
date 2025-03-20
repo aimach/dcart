@@ -7,13 +7,10 @@ import {
 	ZoomControl,
 } from "react-leaflet";
 import { v4 as uuidv4 } from "uuid";
-import { useParams } from "react-router";
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
 import ModalComponent from "../../../common/modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
-import ResetControl from "../controls/ResetControlComponent";
-import SearchFormComponent from "../searchFormComponent/SearchFormComponent";
 import TimeFilterComponent from "../../aside/filterComponents/TimeFilterComponent";
 import TileLayerChoiceComponent from "../tileLayerChoice/TileLayerChoiceComponent";
 // import des custom hooks
@@ -26,14 +23,17 @@ import { useShallow } from "zustand/shallow";
 import { getPointsTimeMarkers } from "../../../../utils/functions/filter";
 // import des types
 import type { LatLngTuple } from "leaflet";
-import type { MapInfoType, PointType } from "../../../../utils/types/mapTypes";
+import type { PointType } from "../../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 // import des images
-import delta from "../../../../assets/delta.png";
+import ButtonComponent from "../../../common/button/ButtonComponent";
+import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
+import MapTitleComponent from "../mapTitleComponent/MapTitleComponent";
+import MapIntroductionContent from "../../../common/modal/MapIntroductionContent";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -48,24 +48,27 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	// récupération de l'id de la carte en cours
-	const { mapId } = useParams();
-
 	// récupération des données du store
 	const {
 		map,
 		setMap,
 		mapInfos,
 		allPoints,
+		setAllPoints,
 		mapReady,
+		setMapReady,
 		resetSelectedMarker,
 		tileLayerURL,
 	} = useMapStore(useShallow((state) => state));
-	const { resetUserFilters } = useMapFiltersStore(
-		useShallow((state) => ({
-			resetUserFilters: state.resetUserFilters,
-		})),
-	);
+	const { userFilters, resetUserFilters, isReset, setIsReset } =
+		useMapFiltersStore(
+			useShallow((state) => ({
+				userFilters: state.userFilters,
+				resetUserFilters: state.resetUserFilters,
+				isReset: state.isReset,
+				setIsReset: state.setIsReset,
+			})),
+		);
 	const { setSelectedTabMenu } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
@@ -88,9 +91,9 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 
 	// réinitialisation des filtres utilisateur si la modale est ouverte (s'exécute quand l'utilisateur change de carte)
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
-		resetUserFilters();
-	}, [isModalOpen]);
+	// useEffect(() => {
+	// 	resetUserFilters();
+	// }, [isModalOpen]);
 
 	const [timeFilterIsDisabled, setTimeFilterIsDisabled] =
 		useState<boolean>(false);
@@ -104,6 +107,10 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
+		if (bounds.length === 0) {
+			setIsModalOpen(true);
+		}
+
 		// si des points sont affichés, ajustement des limites de la carte
 		if (bounds.length && map) {
 			map.fitBounds(bounds);
@@ -125,29 +132,57 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		[allPoints],
 	);
 
+	// fonction pour mettre à jour les filtres et les points si pas de résultats
+	const fetchAllPoints = async (type: "filter" | "reset") => {
+		setMapReady(false);
+		const mapId = mapInfos?.id ?? "exploration";
+		const points = await getAllPointsByMapId(
+			mapId,
+			type === "filter" ? userFilters : null,
+		);
+
+		setAllPoints(points);
+		setMapReady(true);
+	};
+	const resetFiltersAndFetchPoints = () => {
+		resetUserFilters();
+		setIsReset(!isReset);
+		// on recharge les points de la carte
+		fetchAllPoints("reset");
+	};
+
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
 			<div className="built-map" id="built-map">
 				<section className="leaflet-container">
-					{isModalOpen && (
+					{isModalOpen && allMemoizedPoints.length > 0 && (
 						<ModalComponent
 							onClose={() => setIsModalOpen(false)}
 							isDemo={false}
 						>
-							{mapId === "exploration" && (
-								<SearchFormComponent setIsModalOpen={setIsModalOpen} />
-							)}
-							{mapInfos && (
-								<div className={style.modalContent}>
-									<div className={style.modalTitleSection}>
-										<img src={delta} alt="decoration" width={30} />
-										<h3>{(mapInfos as MapInfoType)[`title_${language}`]}</h3>
-										<img src={delta} alt="decoration" width={30} />
-									</div>
-									<p>{(mapInfos as MapInfoType)[`description_${language}`]}</p>
-								</div>
-							)}
+							<MapIntroductionContent setIsModalOpen={setIsModalOpen} />
+						</ModalComponent>
+					)}
+					{mapReady && isModalOpen && allMemoizedPoints.length === 0 && (
+						<ModalComponent
+							onClose={() => setIsModalOpen(false)}
+							isDemo={false}
+						>
+							{translation[language].mapPage.noResult}
+							<br />
+							{translation[language].mapPage.enlargeYourSearch}
+
+							<br />
+							<ButtonComponent
+								type="button"
+								color="brown"
+								textContent={translation[language].button.resetFilter}
+								onClickFunction={() => {
+									setIsModalOpen(false);
+									resetFiltersAndFetchPoints();
+								}}
+							/>
 						</ModalComponent>
 					)}
 					<MapContainer
@@ -157,6 +192,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 						maxZoom={11}
 						ref={setMap}
 					>
+						<MapTitleComponent />
 						{mapReady && (
 							<>
 								<TileLayer
@@ -164,7 +200,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 									url={tileLayerURL}
 								/>
-								{allMemoizedPoints.length ? (
+								{allMemoizedPoints.length &&
 									allMemoizedPoints.map((point: PointType) => {
 										return (
 											<MarkerComponent
@@ -173,11 +209,8 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 												setPanelDisplayed={setPanelDisplayed}
 											/>
 										);
-									})
-								) : (
-									<div>{translation[language].mapPage.noResult}</div>
-								)}
-								<ZoomControl position="topright" />
+									})}
+								<ZoomControl position="bottomright" />
 								<ScaleControl position="bottomright" />
 								{/* <ResetControl mapBounds={bounds} /> */}
 							</>

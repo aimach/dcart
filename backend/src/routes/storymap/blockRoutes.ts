@@ -6,6 +6,7 @@ import { blockController } from "../../controllers/storymap/blockController";
 import {
 	validateBlockArrayBody,
 	validateBlockBody,
+	validateEditBlockBody,
 } from "../../utils/validator/storymap/block";
 import { authenticateUser } from "../../middlewares/authenticate";
 
@@ -26,7 +27,7 @@ blockRoutes.post(
 blockRoutes.put(
 	"/:blockId",
 	authenticateUser,
-	validateBlockBody,
+	validateEditBlockBody,
 	blockController.updateBlock,
 );
 
@@ -34,7 +35,6 @@ blockRoutes.put(
 blockRoutes.put(
 	"/position/update",
 	authenticateUser,
-	validateBlockArrayBody,
 	blockController.updateBlocksPosition,
 );
 

@@ -38,6 +38,9 @@ export class MapContent extends BaseEntity {
 	@Column({ type: "text", nullable: true })
 	description_en?: string | null;
 
+	@Column({ type: "text", nullable: true })
+	image_url!: string | null;
+
 	@Column({ type: "text" })
 	attestationIds!: string;
 
@@ -53,6 +56,12 @@ export class MapContent extends BaseEntity {
 
 	@UpdateDateColumn({ type: "timestamptz" })
 	updatedAt!: Date;
+
+	@Column({ type: "date", nullable: false })
+	uploadPointsLastDate!: Date;
+
+	@Column({ type: "uuid", default: null, nullable: true })
+	relatedStorymap?: string | null;
 
 	@ManyToOne(
 		() => User,

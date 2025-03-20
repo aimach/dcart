@@ -178,7 +178,7 @@ const uploadParsedPointsForComparisonMap = async (
 				storymapId,
 				typeName,
 			});
-			mapId = newMapInfos?.data.id;
+			mapId = newMapInfos?.id;
 
 			// chargement des points pour les 2 panels
 			for (const parsedPoints of parsedPointsWithPanel) {

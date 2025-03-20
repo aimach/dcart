@@ -1,6 +1,3 @@
-// import des types
-import type { FilterType } from "./filterTypes";
-
 type AgentType = {
 	genres: [
 		{
@@ -69,38 +66,9 @@ type MapInfoType = {
 	title_fr: string;
 	description_en: string;
 	description_fr: string;
-	image_url?: string;
 	category: string | CategoryType;
 	attestationIds: string;
 	filters?: Record<string, string>[];
-};
-
-type MapType = {
-	id: string;
-	title_fr: string;
-	title_en: string;
-	description_fr: string;
-	description_en: string;
-	elementNb: number;
-	elementOperator: string;
-	divinityNb: number;
-	divinityOperator: string;
-	locationType: string;
-	locationId: number;
-	ante: number;
-	post: number;
-	isActive: boolean;
-	createdAt: string;
-	updatedAt: string;
-	uploadPointsLastDate: string;
-	filters: FilterType[];
-	category: CategoryType;
-	creator: {
-		pseudo: string;
-	};
-	modifier: {
-		pseudo: string;
-	};
 };
 
 type MenuTabType = "results" | "filters" | "infos";
@@ -150,7 +118,6 @@ type TimeMarkersType = {
 };
 
 export type {
-	MapType,
 	PointType,
 	SourceType,
 	AttestationType,

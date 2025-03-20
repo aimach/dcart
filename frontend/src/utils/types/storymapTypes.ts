@@ -12,6 +12,7 @@ type StorymapType = {
 	publishedAt: string;
 	createdAt: string;
 	updatedAt: string;
+	uploadPointsLastDate: string;
 	creator: {
 		pseudo: string;
 	};
@@ -42,7 +43,7 @@ type PointType = {
 	longitude: number;
 	great_region: string | null;
 	sub_region: string | null;
-	site: string | null;
+	location: string | null;
 	extraction: string | null;
 	transliteration: string | null;
 	translation_fr: string | null;

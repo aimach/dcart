@@ -1,0 +1,26 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.tableSection {
+    margin: 0 auto;
+
+    >p {
+        font-style: italic;
+        margin: v.$space-s 0;
+        text-align: center;
+    }
+}
+
+.tableBlock {
+    border: 1px solid v.$color-black-chocolate;
+
+    td {
+        border: 1px solid v.$color-black-chocolate;
+        padding: v.$space-s;
+    }
+
+    >tbody>tr:first-child>td {
+        background-color: v.$color-grullo-light;
+        padding: v.$space-s;
+    }
+}

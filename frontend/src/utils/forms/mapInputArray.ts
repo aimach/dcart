@@ -32,16 +32,33 @@ const firstStepInputs: InputType[] = [
 		label_fr: "Description de la carte en français",
 		label_en: "Map description in french",
 		name: "description_fr",
-		type: "textarea",
+		type: "wysiwyg",
 		required: {
-			value: false,
+			value: true,
+			message: {
+				fr: "La description en français est requise",
+				en: "The description in french is required",
+			},
 		},
 	},
 	{
 		label_fr: "Description de la carte en anglais",
 		label_en: "Map description in english",
 		name: "description_en",
-		type: "textarea",
+		type: "wysiwyg",
+		required: {
+			value: true,
+			message: {
+				fr: "La description en anglais est requise",
+				en: "The description in english is required",
+			},
+		},
+	},
+	{
+		label_fr: "Image accompagnant la description",
+		label_en: "Image accompanying the description",
+		name: "image_url",
+		type: "text",
 		required: {
 			value: false,
 		},

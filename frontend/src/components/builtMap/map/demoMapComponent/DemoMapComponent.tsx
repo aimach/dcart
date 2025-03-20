@@ -8,9 +8,11 @@ import {
 	Marker,
 } from "react-leaflet";
 import { v4 as uuidv4 } from "uuid";
+import DOMPurify from "dompurify";
 // import des composants
 import ModalComponent from "../../../common/modal/ModalComponent";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -39,7 +41,7 @@ interface DemoMapComponentProps {
  */
 const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 	// récupération des données de la langue
-	const { language } = useTranslation();
+	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
 	const { map, setMap, mapInfos, setAllPoints, allPoints } = useMapFormStore(
@@ -85,6 +87,13 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 		[allPoints],
 	);
 
+	const sanitizedDescription = useMemo(() => {
+		if (!mapInfos) return "";
+		return DOMPurify.sanitize(
+			(mapInfos as MapInfoType)[`description_${language}`],
+		);
+	}, [mapInfos, language]);
+
 	return (
 		<div className="demo-map" id="demo-map">
 			<section className="demo-leaflet-container">
@@ -97,7 +106,23 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 									<h3>{(mapInfos as MapInfoType)[`title_${language}`]}</h3>
 									<img src={delta} alt="decoration" width={30} />
 								</div>
-								<p>{(mapInfos as MapInfoType)[`description_${language}`]}</p>
+								<div className={style.modalImageAndTextSection}>
+									{mapInfos.image_url && (
+										<img
+											src={mapInfos.image_url}
+											alt="map"
+											className={style.modalImage}
+										/>
+									)}
+									<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+										dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+									/>
+								</div>
+								<ButtonComponent
+									type="button"
+									color="gold"
+									textContent={translation[language].button.discover}
+								/>
 							</div>
 						)}
 					</ModalComponent>

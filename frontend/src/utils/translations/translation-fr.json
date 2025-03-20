@@ -25,7 +25,8 @@
 		"activity": "Activité",
 		"doughnut": "Donut",
 		"bar": "Barre",
-		"resetFilter": "Réinitialiser les filtres"
+		"resetFilter": "Réinitialiser les filtres",
+		"discover": "Découvrir"
 	},
 	"common": {
 		"between": "entre",
@@ -39,7 +40,11 @@
 		"back": "Retour",
 		"createdOn": "Créé le",
 		"updatedOn": "Modifié le",
-		"by": "par"
+		"lastUpdloadOn": "Dernière mise à jour des points le",
+		"by": "par",
+		"after": "après",
+		"before": "avant",
+		"in": "en"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",
@@ -57,6 +62,11 @@
 	"mapPage": {
 		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
 		"noResult": "Aucun résultat",
+		"enlargeYourSearch": "Elargissez votre recherche ou réinitialisez tous les filtres.",
+		"noGreekOrSemitic": "ni en grec, ni en sémitique",
+		"onlySemitic": "uniquement en sémitique",
+		"onlyGreek": "uniquement en grec",
+		"withElements": "avec les éléments",
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",
@@ -74,7 +84,7 @@
 			"originalVersion": "Version originale",
 			"agents": "Agents",
 			"noAgent": "Pas d'agent",
-			"noDesignation": "agent sans désignation"
+			"noDesignation": "non précisé"
 		}
 	},
 	"backoffice": {
@@ -107,7 +117,8 @@
 				"simple_map": "Carte simple",
 				"comparison_map": "Carte de comparaison",
 				"scroll_map": "Carte déroulante",
-				"separator": "Séparateur"
+				"separator": "Séparateur",
+				"table": "Tableau"
 			},
 			"form": {
 				"create": "Créer",
@@ -126,7 +137,9 @@
 				"step": "l'étape",
 				"csv": "Ajouter un CSV avec les points",
 				"forLeftPane": "pour le panel de gauche",
-				"forRightPane": "pour le panel de droite"
+				"forRightPane": "pour le panel de droite",
+				"uploadTableFr": "Ajouter un CSV avec un tableau en français",
+				"uploadTableEn": "Ajouter un CSV avec un tableau en anglais"
 			}
 		}
 	}

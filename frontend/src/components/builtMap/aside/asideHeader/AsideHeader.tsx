@@ -10,6 +10,7 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import du style
 import style from "./asideHeader.module.scss";
 import { getAsideNavigationList } from "../../../../utils/menu/menuListArrays";
+import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 
 /**
  * Affiche les onglets de navigation du panel latéral

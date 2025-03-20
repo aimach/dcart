@@ -57,13 +57,9 @@ export const blockToEditSchema = Joi.object({
 		id: Joi.string().uuid().required(),
 		name: Joi.string().required(),
 	}).required(),
-	points: Joi.array()
-		.items(
-			Joi.object({
-				id: Joi.string().uuid().required(),
-			}),
-		)
-		.optional(),
+	typeName: Joi.string().optional().allow(null).messages({
+		"string.base": "Le champ 'typeId' doit être un uuid",
+	}),
 	children: Joi.array()
 		.items(
 			Joi.object({
@@ -71,7 +67,25 @@ export const blockToEditSchema = Joi.object({
 			}),
 		)
 		.optional(),
+	storymapId: Joi.string().uuid().required().messages({
+		"any.required": "Le champ storymapId est requis",
+		"string.base": "Le champ 'storymapId' doit être un uuid",
+	}),
+	parentId: Joi.string().uuid().optional().allow(null),
 });
+
+export const validateEditBlockBody = (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	const { error } = blockToEditSchema.validate(req.body);
+	if (error) {
+		res.status(422).send({ erreur: error.details[0].message });
+	} else {
+		next();
+	}
+};
 
 const blockArraySchema = Joi.object({
 	blocks: Joi.array().items(blockToEditSchema).required(),

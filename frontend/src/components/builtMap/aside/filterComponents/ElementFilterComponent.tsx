@@ -14,6 +14,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 
 interface ElementFilterComponentProps {
 	elementOptions: OptionType[];
+	setElementNameValues: (values: string[]) => void;
 }
 
 /**
@@ -24,6 +25,7 @@ interface ElementFilterComponentProps {
  */
 const ElementFilterComponent = ({
 	elementOptions,
+	setElementNameValues,
 }: ElementFilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
@@ -55,6 +57,7 @@ const ElementFilterComponent = ({
 						"elementId",
 						setUserFilters,
 						userFilters,
+						setElementNameValues,
 					)
 				}
 				placeholder={translation[language].mapPage.aside.searchForElement}

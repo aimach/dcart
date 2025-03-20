@@ -100,7 +100,7 @@ const getSanitizedAgent = (
 	language: Language,
 ) => {
 	if (!agentElement.designation) {
-		return `(${translation[language].mapPage.aside.noDesignation})`;
+		return translation[language].mapPage.aside.noDesignation;
 	}
 
 	const sanitizedAgent = DOMPurify.sanitize(agentElement.designation);
@@ -175,6 +175,16 @@ const getCreationAndModificationString = (
 		string += ` - ${translation[language].common.updatedOn} ${modificationDate} ${translation[language].common.by} ${
 			itemInfos.modifier.pseudo
 		}`;
+	}
+
+	if (itemInfos.uploadPointsLastDate) {
+		string += ` - ${translation[language].common.lastUpdloadOn} ${new Date(
+			itemInfos.uploadPointsLastDate,
+		).toLocaleDateString(language, {
+			year: "numeric",
+			month: "long",
+			day: "numeric",
+		})}`;
 	}
 	return string;
 };

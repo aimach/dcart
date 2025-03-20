@@ -40,6 +40,9 @@ export class Storymap extends BaseEntity {
 	@Column({ type: "varchar", length: 255, nullable: true })
 	publishedAt!: string | null;
 
+	@Column({ type: "date", nullable: true })
+	uploadPointsLastDate?: Date;
+
 	// booléen si la carte est active ou non (càd, publiée)
 	@Column({ type: "boolean", default: false })
 	isActive!: boolean;

@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useCallback } from "react";
+import { useCallback, useState } from "react";
 // import des composants
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
@@ -40,16 +40,21 @@ const FilterComponent = ({
 	const { mapInfos, setAllPoints, setMapReady } = useMapStore(
 		useShallow((state) => state),
 	);
-	const mapFilters = useMapAsideMenuStore((state) => state.mapFilters);
-	const { userFilters, resetUserFilters, isReset, setIsReset } =
-		useMapFiltersStore(
-			useShallow((state) => ({
-				userFilters: state.userFilters,
-				resetUserFilters: state.resetUserFilters,
-				isReset: state.isReset,
-				setIsReset: state.setIsReset,
-			})),
-		);
+	const { mapFilters } = useMapAsideMenuStore();
+	const {
+		userFilters,
+		resetUserFilters,
+		isReset,
+		setIsReset,
+		setLocationNames,
+		setElementNames,
+		setLanguageValues,
+		resetLanguageValues,
+	} = useMapFiltersStore(useShallow((state) => state));
+
+	// initiation d'états pour récupérer les valeurs des lieux et éléments
+	const [locationNameValues, setLocationNameValues] = useState<string[]>([]);
+	const [elementNameValues, setElementNameValues] = useState<string[]>([]);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -69,9 +74,15 @@ const FilterComponent = ({
 	);
 
 	// fonction pour gérer le clic sur le bouton de filtre
-	const handleFilterButton = useCallback(() => {
+	const handleFilterButton = () => {
 		fetchAllPoints("filter");
-	}, [fetchAllPoints]);
+		setLocationNames(locationNameValues);
+		setElementNames(elementNameValues);
+		setLanguageValues({
+			greek: userFilters.greek,
+			semitic: userFilters.semitic,
+		});
+	};
 
 	// fonction pour gérer le reset des filtres
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -80,43 +91,55 @@ const FilterComponent = ({
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
+		setLocationNames([]);
+		setElementNames([]);
+		resetLanguageValues();
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
-	return mapFilters.length ? (
+	return (
 		<div className={style.resultContainer}>
 			<div>
-				{mapFilters.map((filter) => {
-					if (filter.type === "location") {
-						return (
-							<div className={style.filterContainer}>
-								<h4>{translation[language].mapPage.aside.location}</h4>
-								<LocationFilterComponent
-									key={filter.id}
-									locationOptions={locationOptions}
-								/>
-							</div>
-						);
-					}
-					if (filter.type === "element") {
-						return (
-							<div className={style.filterContainer}>
-								<h4>{translation[language].mapPage.aside.element}</h4>
-								<ElementFilterComponent
-									key={filter.id}
-									elementOptions={elementOptions}
-								/>
-							</div>
-						);
-					}
-					if (filter.type === "language") {
-						return (
-							<div className={style.filterContainer}>
-								<h4>{translation[language].mapPage.aside.language}</h4>
-								<LanguageFilterComponent key={filter.id} />
-							</div>
-						);
-					}
-				})}
+				{mapFilters.length > 0 &&
+					mapFilters.map((filter) => {
+						if (filter.type === "location") {
+							return (
+								<div className={style.filterContainer}>
+									<h4>{translation[language].mapPage.aside.location}</h4>
+									<LocationFilterComponent
+										key={filter.id}
+										locationOptions={locationOptions}
+										setLocationNameValues={setLocationNameValues}
+									/>
+								</div>
+							);
+						}
+						if (filter.type === "element") {
+							return (
+								<div className={style.filterContainer}>
+									<h4>{translation[language].mapPage.aside.element}</h4>
+									<ElementFilterComponent
+										key={filter.id}
+										elementOptions={elementOptions}
+										setElementNameValues={setElementNameValues}
+									/>
+								</div>
+							);
+						}
+						if (filter.type === "language") {
+							return (
+								<div className={style.filterContainer}>
+									<h4>{translation[language].mapPage.aside.language}</h4>
+									<LanguageFilterComponent key={filter.id} />
+								</div>
+							);
+						}
+					})}
+				{mapFilters.length === 0 && (
+					<div className={style.filterContainer}>
+						<h4>{translation[language].mapPage.aside.language}</h4>
+						<LanguageFilterComponent />
+					</div>
+				)}
 			</div>
 			<div className={style.filterButtonContainer}>
 				<button
@@ -135,8 +158,6 @@ const FilterComponent = ({
 				</button>
 			</div>
 		</div>
-	) : (
-		<div>{translation[language].mapPage.aside.noFilter}</div>
 	);
 };
 

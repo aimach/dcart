@@ -28,6 +28,7 @@ type LanguageObject = {
 		doughnut: string;
 		bar: string;
 		resetFilter: string;
+		discover: string;
 	};
 	common: {
 		between: string;
@@ -41,7 +42,11 @@ type LanguageObject = {
 		back: string;
 		createdOn: string;
 		updatedOn: string;
+		lastUpdloadOn: string;
 		by: string;
+		after: string;
+		before: string;
+		in: string;
 	};
 	modal: {
 		firstContent: string;
@@ -59,6 +64,11 @@ type LanguageObject = {
 	mapPage: {
 		introduction: string;
 		noResult: string;
+		enlargeYourSearch: string;
+		noGreekOrSemitic: string;
+		onlySemitic: string;
+		onlyGreek: string;
+		withElements: string;
 		aside: {
 			filters: string;
 			sources: string;
@@ -110,6 +120,7 @@ type LanguageObject = {
 				comparison_map: string;
 				scroll_map: string;
 				separator: string;
+				table: string;
 			};
 			form: {
 				create: string;
@@ -129,6 +140,8 @@ type LanguageObject = {
 				csv: string;
 				forLeftPane: string;
 				forRightPane: string;
+				uploadTableFr: string;
+				uploadTableEn: string;
 			};
 		};
 	};

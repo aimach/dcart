@@ -35,7 +35,7 @@ cite,
 code,
 del,
 dfn,
-em,
+// em, // commenté pour le WYSIWYG
 img,
 ins,
 kbd,
@@ -44,9 +44,9 @@ s,
 samp,
 small,
 strike,
-strong,
-sub,
-sup,
+// strong, // commenté pour le WYSIWYG
+// sub, // commenté pour le WYSIWYG
+// sup, // commenté pour le WYSIWYG
 tt,
 var,
 b,
@@ -56,9 +56,9 @@ center,
 dl,
 dt,
 dd,
-ol,
-ul,
-li,
+// ol, // commenté pour le WYSIWYG
+// ul, // commenté pour le WYSIWYG
+// li, // commenté pour le WYSIWYG
 fieldset,
 form,
 label,
@@ -126,10 +126,11 @@ body {
 	line-height: 1;
 }
 
-ol,
-ul {
-	list-style: none;
-}
+// commenté pour le WYSIWYG
+// ol,
+// ul {
+// 	list-style: none;
+// }
 
 blockquote,
 q {

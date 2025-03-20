@@ -56,7 +56,12 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		minValue: number;
 		maxValue: number;
 	}) => {
-		setUserFilters({ ...userFilters, ante: e.maxValue, post: e.minValue });
+		const newUserFilters = {
+			...userFilters,
+			ante: e.maxValue,
+			post: e.minValue,
+		};
+		setUserFilters(newUserFilters);
 	};
 
 	// fonction qui met à jour les bornes temporelles dans le selecteur de temps et charge les points

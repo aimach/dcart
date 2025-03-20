@@ -15,6 +15,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 
 interface LocationFilterComponentProps {
 	locationOptions: OptionType[];
+	setLocationNameValues: (values: string[]) => void;
 }
 
 /**
@@ -25,6 +26,7 @@ interface LocationFilterComponentProps {
  */
 const LocationFilterComponent = ({
 	locationOptions,
+	setLocationNameValues,
 }: LocationFilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
@@ -56,6 +58,7 @@ const LocationFilterComponent = ({
 						"locationId",
 						setUserFilters,
 						userFilters,
+						setLocationNameValues,
 					)
 				}
 				placeholder={translation[language].mapPage.aside.searchForLocation}

@@ -1,12 +1,12 @@
 /* cette classe est INDISPENSABLE pour afficher la carte (avoir au minmum la height de défini) */
 
-[id*="comparison-map-"] {
+div[id*="comparison-map-"] {
 	height: 70vh;
 	width: 80vw;
 }
 
 /* Spécificer l'id de la carte permet de s'assurer que ça ne s'applique que container leaflet de cette carte */
-[id*="comparison-map-"] .leaflet-container {
+div[id*="comparison-map-"] .leaflet-container {
 	height: 70vh;
 	width: 80vw;
 }

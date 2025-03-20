@@ -25,7 +25,8 @@
 		"activity": "Activity",
 		"doughnut": "Doughnut",
 		"bar": "Bar",
-		"resetFilter": "Reset filters"
+		"resetFilter": "Reset filters",
+		"discover": "Discover"
 	},
 	"common": {
 		"between": "between",
@@ -39,7 +40,11 @@
 		"back": "Back",
 		"createdOn": "Created on",
 		"updatedOn": "Updated on",
-		"by": "by"
+		"lastUpdloadOn": "Last upload of points on",
+		"by": "by",
+		"after": "after",
+		"before": "before",
+		"in": "in"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
@@ -57,6 +62,11 @@
 	"mapPage": {
 		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
 		"noResult": "No result",
+		"enlargeYourSearch": "Expand your search or reset all filters.",
+		"noGreekOrSemitic": "neither in greek, neither in semitic",
+		"onlySemitic": "only in semitic",
+		"onlyGreek": "only in greek",
+		"withElements": "with elements",
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
@@ -74,7 +84,7 @@
 			"originalVersion": "Original version",
 			"agents": "Agents",
 			"noAgent": "No agent",
-			"noDesignation": "agent with no designation"
+			"noDesignation": "unspecified"
 		}
 	},
 	"backoffice": {
@@ -107,7 +117,8 @@
 				"simple_map": "Simple map",
 				"comparison_map": "Comparison map",
 				"scroll_map": "Scroll map",
-				"separator": "Separator"
+				"separator": "Separator",
+				"table": "Table"
 			},
 			"form": {
 				"create": "Create",
@@ -126,7 +137,9 @@
 				"step": "the step",
 				"csv": "Add a CSV file with map markers",
 				"forLeftPane": "for the left pane",
-				"forRightPane": "for the right pane"
+				"forRightPane": "for the right pane",
+				"uploadTableFr": "Add a CSV file with a table in French",
+				"uploadTableEn": "Add a CSV file with a table in English"
 			}
 		}
 	}

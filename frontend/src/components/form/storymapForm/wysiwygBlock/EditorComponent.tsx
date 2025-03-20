@@ -60,6 +60,7 @@ const EditorComponent = forwardRef(
 				quill.root.innerHTML = defaultValue;
 			}
 
+			const counter = document.querySelector("#counter");
 			quill.on("text-change", () => {
 				onChange(quill.root.innerHTML);
 			});
@@ -72,7 +73,12 @@ const EditorComponent = forwardRef(
 			};
 		}, [ref]);
 
-		return <div ref={containerRef} />;
+		return (
+			<>
+				<div ref={containerRef} />
+				<div id="counter" />
+			</>
+		);
 	},
 );
 
