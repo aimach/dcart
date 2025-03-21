@@ -98,7 +98,8 @@
 			"languageFilter": "Language filter (greek or semitic)",
 			"epithetFilter": "Epithet filter",
 			"noFilter": "I don't want to add a filter",
-			"create": "Create"
+			"create": "Create",
+			"uploadPointsHelp": "Help for create a CSV file"
 		},
 		"storymapFormPage": {
 			"preview": "Preview",

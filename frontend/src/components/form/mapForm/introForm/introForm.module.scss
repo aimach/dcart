@@ -62,3 +62,10 @@
     }
 
 }
+
+.helpContainer {
+    >a {
+        @include m.flexbox(flex, row, nowrap, space-center, center);
+        gap: v.$space-xs;
+    }
+}

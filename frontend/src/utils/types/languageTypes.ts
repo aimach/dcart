@@ -101,6 +101,7 @@ type LanguageObject = {
 			epithetFilter: string;
 			noFilter: string;
 			create: string;
+			uploadPointsHelp: string;
 		};
 		storymapFormPage: {
 			preview: string;

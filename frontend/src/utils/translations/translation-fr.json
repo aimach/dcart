@@ -98,7 +98,9 @@
 			"languageFilter": "Filtre de la langue (grec ou sémitique)",
 			"epithetFilter": "Filtre avec les épithètes",
 			"noFilter": "Je ne souhaite pas ajouter de filtre",
-			"create": "Créer"
+			"create": "Créer",
+			"downloadExample": "Télécharger un exemple de fichier CSV",
+			"uploadPointsHelp": "Aide à la préparation du CSV"
 		},
 		"storymapFormPage": {
 			"preview": "Aperçu",
