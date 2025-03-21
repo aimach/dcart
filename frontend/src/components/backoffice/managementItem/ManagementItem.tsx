@@ -105,20 +105,19 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 		return shortDescription.length < 300
 			? shortDescription
 			: `${shortDescription}...`;
-	}, [itemInfos, language]);
+	}, [itemInfos, selectedLanguage]);
 
 	return (
 		<li className={style.managementItem} key={itemInfos.id}>
 			<div className={style.managementItemTitleAndImage}>
-				{type === "storymap" &&
-					((itemInfos as StorymapType).image_url ? (
-						<img
-							src={(itemInfos as StorymapType).image_url}
-							alt={(itemInfos as StorymapType)[`title_${selectedLanguage}`]}
-						/>
-					) : (
-						<ImageOff />
-					))}
+				{(itemInfos as StorymapType).image_url ? (
+					<img
+						src={(itemInfos as StorymapType).image_url}
+						alt={(itemInfos as StorymapType)[`title_${selectedLanguage}`]}
+					/>
+				) : (
+					<ImageOff />
+				)}
 				<div className={style.managementItemTitle}>
 					<h4>{(itemInfos as StorymapType)[`title_${selectedLanguage}`]}</h4>
 					<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
