@@ -23,7 +23,7 @@ import type { ChangeEvent } from "react";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, CircleHelp } from "lucide-react";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -62,25 +62,23 @@ const SimpleMapForm = () => {
 	const handleFileUpload = (event: ChangeEvent) => {
 		// définition de la correspondance avec les headers du csv
 		const headerMapping: Record<string, string> = {
-			Région: "great_region",
-			"Sous-région": "sub_region",
 			Lieu: "location",
 			Latitude: "latitude",
 			Longitude: "longitude",
-			"Extrait avec restitution": "extraction",
-			Translittération: "transliteration",
-			Traductions: "translation_fr",
 		};
 
 		const file = (event.target as HTMLInputElement).files?.[0];
 		// si le fichier existe bien, il est parsé et les points sont stockés dans un état
 		if (file) {
+			// @ts-ignore : l'erreur de type sur File, le fichier est bien de type File (problème de typage avec l'utilisation de l'option skipFirstNLines)
 			parse(file, {
 				header: true,
 				transformHeader: (header) => headerMapping[header] || header,
 				skipEmptyLines: true,
+				skipFirstNLines: 2,
 				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
 				complete: (result: ParseResult<parsedPointType>) => {
+					console.log(result.data);
 					setParsedPoints(result.data);
 				},
 				error: (error) => {
@@ -179,6 +177,16 @@ const SimpleMapForm = () => {
 						accept=".csv"
 						onChange={handleFileUpload}
 					/>
+				</div>
+				<div className={style.helpContainer}>
+					<a
+						href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-storymaps-carte-simple-1bd4457ff83180d3ab96f4b50bc0800b?pvs=4"
+						target="_blank"
+						rel="noreferrer"
+					>
+						<CircleHelp color="grey" />
+						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
+					</a>
 				</div>
 				<button type="submit">
 					Suivant <ChevronRight />

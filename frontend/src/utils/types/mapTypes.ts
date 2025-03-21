@@ -108,12 +108,7 @@ type MenuTabType = "results" | "filters" | "infos";
 type ParsedPointType = {
 	latitude: number;
 	longitude: number;
-	great_region: string;
-	sub_region: string;
-	language: string;
-	post_quem: number;
-	ante_quem: number;
-	formula: string;
+	site: string;
 	id: number;
 };
 
