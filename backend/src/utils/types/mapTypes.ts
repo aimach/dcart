@@ -67,7 +67,7 @@ type MapInfoType = {
 	description_en: string;
 	description_fr: string;
 	category: string | CategoryType;
-	attestationIds: string;
+	attestations: AttestationType[];
 	filters?: Record<string, string>[];
 };
 

@@ -24,11 +24,11 @@ const mapContentSchema = Joi.object({
 	image_url: Joi.string().optional().allow("").messages({
 		"string.base": "Le lien de l'image doit être une chaîne de caractères",
 	}),
-	attestationIds: Joi.string().required().messages({
-		"any.required": "La liste des id des attestations est requise",
-		"string.base":
-			"La liste des id des attestations doit être une chaîne de caractères",
-	}),
+	// attestationIds: Joi.string().required().messages({
+	// 	"any.required": "La liste des id des attestations est requise",
+	// 	"string.base":
+	// 		"La liste des id des attestations doit être une chaîne de caractères",
+	// }),
 	divinityIds: Joi.string().optional().allow("").allow(null),
 	isActive: Joi.boolean().optional(),
 	createdAt: Joi.date().optional(),

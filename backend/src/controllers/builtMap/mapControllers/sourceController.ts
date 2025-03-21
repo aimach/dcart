@@ -86,7 +86,9 @@ export const sourceController = {
 					res.status(404).send({ Erreur: "Carte non trouvée" });
 				}
 
-				const { attestationIds } = mapInfos as MapContent;
+				let { attestationIds } = mapInfos as any;
+				// en attendant d'avoir implanté la feature attestations
+				attestationIds = "";
 
 				// on prépare les query des filtres
 				let queryLocalisation = "";

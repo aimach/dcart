@@ -24,10 +24,12 @@ export const mapContentController = {
 						.leftJoinAndSelect("map.creator", "creator")
 						.leftJoinAndSelect("map.modifier", "modifier")
 						.leftJoinAndSelect("map.filters", "filters")
+						.leftJoinAndSelect("map.attestations", "attestations")
 						.select([
 							"map",
 							"filters",
 							"category",
+							"attestations",
 							"creator.pseudo",
 							"modifier.pseudo",
 						])
@@ -44,10 +46,12 @@ export const mapContentController = {
 					.leftJoinAndSelect("map.creator", "creator")
 					.leftJoinAndSelect("map.modifier", "modifier")
 					.leftJoinAndSelect("map.filters", "filters")
+					.leftJoinAndSelect("map.attestations", "attestations")
 					.select([
 						"map",
 						"filters",
 						"category",
+						"attestations",
 						"creator.pseudo",
 						"modifier.pseudo",
 					])
@@ -58,7 +62,10 @@ export const mapContentController = {
 
 			const mapInfos = await dcartDataSource
 				.getRepository(MapContent)
-				.find({ where: { id: mapId }, relations: ["filters", "category"] });
+				.find({
+					where: { id: mapId },
+					relations: ["filters", "category", "attestations"],
+				});
 			if (!mapInfos) {
 				res.status(404).send({ Erreur: "Carte non trouvée" });
 			} else {
@@ -79,7 +86,6 @@ export const mapContentController = {
 				description_fr,
 				image_url,
 				category,
-				attestationIds,
 			} = req.body;
 
 			const { userId } = req.user as jwt.JwtPayload;
@@ -94,7 +100,6 @@ export const mapContentController = {
 				description_fr,
 				image_url,
 				category: category,
-				attestationIds,
 				creator: userId,
 				uploadPointsLastDate: currentDate,
 			});
@@ -148,10 +153,10 @@ export const mapContentController = {
 			req.body.category = newCategory;
 
 			// si les ids des attestations ont été modifiés, mise à jour du champ lastUploadPointsDate
-			if (req.body.attestationIds !== mapToUpdate.attestationIds) {
-				const currentDate = new Date();
-				req.body.uploadPointsLastDate = currentDate;
-			}
+			// if (req.body.attestationIds !== mapToUpdate.attestationIds) {
+			// 	const currentDate = new Date();
+			// 	req.body.uploadPointsLastDate = currentDate;
+			// }
 
 			const updatedMap = await dcartDataSource
 				.getRepository(MapContent)

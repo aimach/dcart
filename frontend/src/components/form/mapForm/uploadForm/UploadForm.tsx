@@ -1,6 +1,5 @@
 // import des bibliothèques
-import { useState } from "react";
-import { parse } from "papaparse";
+import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
@@ -9,18 +8,17 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
-import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
+import PointSetUploadForm from "../pointSetUploadForm/PointSetUploadForm";
+import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
 // import des types
-import type { ChangeEvent, FormEventHandler } from "react";
-import type { ParseResult } from "papaparse";
-import type {
-	MapInfoType,
-	ParsedPointType,
-} from "../../../../utils/types/mapTypes";
+import type { FormEventHandler } from "react";
+import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des images
 import { CircleHelp } from "lucide-react";
+import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -42,65 +40,33 @@ const UploadForm = () => {
 		pathname.includes("edit"),
 	);
 
-	// fonction pour gérer l'upload du fichier
-	const handleFileUpload = (event: ChangeEvent) => {
-		// définition de la correspondance avec les headers du csv
-		const headerMapping: Record<string, string> = {
-			ID: "id",
-		};
-
-		const file = (event.target as HTMLInputElement).files?.[0];
-
-		// s'il existe bien un fichier, les données sont parsées et les points sont ajoutés à la carte de démonstration
-		if (file) {
-			// @ts-ignore : l'erreur de type sur File, le fichier est bien de type File (problème de typage avec l'utilisation de l'option skipFirstNLines)
-			parse(file, {
-				header: true,
-				transformHeader: (header) => headerMapping[header] || header,
-				skipEmptyLines: true,
-				dynamicTyping: true, // option qui permet d'avoir les chiffres et booléens en tant que tels
-				skipFirstNLines: 2,
-				complete: (result: ParseResult<ParsedPointType>) => {
-					// récupération des ids des attestations
-					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
-						result.data,
-					);
-					// ajout des ids des attestations au store
-					setMapInfos({
-						...mapInfos,
-						attestationIds: allAttestationsIds,
-					} as MapInfoType);
-					// affichage du bouton "Suivant"
-					setNextButtonDisplayed(true);
-				},
-				error: (error) => {
-					console.error("Erreur lors de la lecture du fichier :", error);
-				},
-			});
+	// fonction pour gérer la soumission du formulaire (passage à l'étape suivante)
+	const [pointSet, setPointSet] = useState<PointSetType | null>(null);
+	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
+		event.preventDefault();
+		const newPointSet = await createPointSet(pointSet as PointSetType);
+		if (newPointSet?.status === 201) {
+			setIsAlreadyAPointSet(true);
+			const mapWithPointSet = await getOneMapInfos(mapInfos?.id as string);
+			setMapInfos(mapWithPointSet);
 		}
 	};
 
-	// fonction pour gérer la soumission du formulaire (passage à l'étape suivante)
-	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
-		event.preventDefault();
-		setStep(3);
-	};
+	const [isAlreadyAPointSet, setIsAlreadyAPointSet] = useState(false);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: uniquement au montage
+	useEffect(() => {
+		if (mapInfos?.attestations) {
+			setIsAlreadyAPointSet(true);
+		}
+		if (mapInfos?.attestations || isAlreadyAPointSet) {
+			setNextButtonDisplayed(true);
+		}
+	}, []);
 
 	return (
 		<>
 			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
 				<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
-				<div className={style.commonFormInputContainer}>
-					<label htmlFor="points">
-						{translation[language].backoffice.mapFormPage.uploadPoints}
-					</label>
-					<input
-						id="point"
-						type="file"
-						accept=".csv"
-						onChange={handleFileUpload}
-					/>
-				</div>
 				<div className={style.helpContainer}>
 					<a
 						href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9?pvs=4"
@@ -111,10 +77,31 @@ const UploadForm = () => {
 						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
 					</a>
 				</div>
-				<NavigationButtonComponent
-					step={step}
-					nextButtonDisplayed={nextButtonDisplayed}
-				/>
+				{mapInfos?.attestations && (
+					<>
+						<div>
+							Jeux de points :
+							{mapInfos.attestations.map((pointSet) => (
+								<p key={pointSet.id}>{pointSet.name}</p>
+							))}
+						</div>
+						<ButtonComponent
+							type="button"
+							color="brown"
+							textContent="Ajouter un nouveau jeu de points"
+							onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
+						/>
+					</>
+				)}
+				{!isAlreadyAPointSet && (
+					<PointSetUploadForm pointSet={pointSet} setPointSet={setPointSet} />
+				)}
+				{isAlreadyAPointSet && (
+					<NavigationButtonComponent
+						step={step}
+						nextButtonDisplayed={nextButtonDisplayed}
+					/>
+				)}
 			</form>
 		</>
 	);

@@ -23,6 +23,9 @@ import type Quill from "quill";
 // import du style
 import style from "./introForm.module.scss";
 import EditorComponent from "../../storymapForm/wysiwygBlock/EditorComponent";
+import { useLocation } from "react-router";
+import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
+import { updateMap } from "../../../../utils/api/builtMap/putRequests";
 
 type IntroFormProps = {
 	inputs: InputType[];
@@ -34,8 +37,9 @@ type IntroFormProps = {
  * @returns ErrorComponent | NavigationButtonComponent
  */
 const IntroForm = ({ inputs }: IntroFormProps) => {
-	// récupération des données de la langue
 	const { translation, language } = useTranslation();
+
+	const { pathname } = useLocation();
 
 	// récupération des données des stores
 	const { mapInfos, setMapInfos, step, incrementStep } = useMapFormStore(
@@ -46,9 +50,21 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 	const [dataLoaded, setDataLoaded] = useState(false);
 
 	// définition de la fonction de soumission du formulaire (ajout des données au store et passage à l'étape suivante)
-	const onSubmit: SubmitHandler<MapInfoType> = (data) => {
-		setMapInfos({ ...mapInfos, ...data });
-		incrementStep(step);
+	const onSubmit: SubmitHandler<MapInfoType> = async (data) => {
+		if (pathname.includes("create")) {
+			const newMapResponse = await createNewMap({ ...mapInfos, ...data });
+			if (newMapResponse?.status === 201) {
+				setMapInfos(newMapResponse.data);
+				incrementStep(step);
+			}
+		} else if (pathname.includes("edit")) {
+			// mise à jour de la carte
+			const updatedMapResponse = await updateMap(mapInfos as MapInfoType);
+			if (updatedMapResponse?.status === 200) {
+				setMapInfos(updatedMapResponse.data);
+				incrementStep(step);
+			}
+		}
 	};
 
 	// import des services du formulaire

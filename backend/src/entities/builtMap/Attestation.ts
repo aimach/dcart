@@ -4,7 +4,6 @@ import {
 	PrimaryGeneratedColumn,
 	Column,
 	BaseEntity,
-	OneToMany,
 	ManyToOne,
 } from "typeorm";
 // import des entités
@@ -36,6 +35,7 @@ export class Attestation extends BaseEntity {
 	@ManyToOne(
 		() => MapContent,
 		(MapContent) => MapContent.attestations,
+		{ cascade: true, onDelete: "CASCADE" },
 	)
 	map!: MapContent;
 }
