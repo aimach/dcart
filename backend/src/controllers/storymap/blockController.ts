@@ -49,10 +49,10 @@ export const blockController = {
 	createNewBlock: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const {
-				content1_fr,
-				content1_en,
-				content2_fr,
-				content2_en,
+				content1_lang1,
+				content1_lang2,
+				content2_lang1,
+				content2_lang2,
 				parentId,
 				storymapId,
 				typeName,
@@ -89,10 +89,10 @@ export const blockController = {
 				(blockType.name === "image" || blockType.name === "text") && parentId;
 
 			const newBlock = dcartDataSource.getRepository(Block).create({
-				content1_fr,
-				content1_en,
-				content2_fr,
-				content2_en,
+				content1_lang1,
+				content1_lang2,
+				content2_lang1,
+				content2_lang2,
 				position: isLayoutChild ? null : position.max + 1,
 				parent: parentId,
 				storymap: storymapId,
@@ -121,15 +121,20 @@ export const blockController = {
 				return;
 			}
 
-			const { content1_fr, content1_en, content2_fr, content2_en, parentId } =
-				req.body;
+			const {
+				content1_lang1,
+				content1_lang2,
+				content2_lang1,
+				content2_lang2,
+				parentId,
+			} = req.body;
 
 			const updatedBlock = await dcartDataSource.getRepository(Block).create({
 				...blockToUpdate,
-				content1_fr,
-				content1_en,
-				content2_fr,
-				content2_en,
+				content1_lang1,
+				content1_lang2,
+				content2_lang1,
+				content2_lang2,
 				parent: parentId,
 			});
 

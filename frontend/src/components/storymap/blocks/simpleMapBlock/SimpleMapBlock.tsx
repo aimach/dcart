@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	MapContainer,
 	TileLayer,
@@ -8,13 +8,12 @@ import {
 	Marker,
 	Popup,
 } from "react-leaflet";
-// import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import {
 	getIcon,
 	getBackGroundColorClassName,
 } from "../../../../utils/functions/icons";
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
 import type {
@@ -34,8 +33,9 @@ interface SimpleMapBlockProps {
 const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
-	// on récupère les informations du context
-	const { language } = useTranslation();
+	// récupération des données des stores
+	const { selectedLanguage } = useStorymapLanguageStore();
+
 	const [map, setMap] = useState<LeafletMap | null>(null);
 
 	const points = blockContent.groupedPoints as GroupedTyped[];
@@ -67,7 +67,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 					<>
 						<TileLayer
 							attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-							url={blockContent.content2_fr}
+							url={blockContent[`content2_${selectedLanguage}`]}
 						/>
 
 						{points.length ? (
@@ -100,7 +100,9 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 					</>
 				</MapContainer>
 			</div>
-			<h4 className={style.mapTitle}>{blockContent[`content1_${language}`]}</h4>
+			<h4 className={style.mapTitle}>
+				{blockContent[`content1_${selectedLanguage}`]}
+			</h4>
 		</>
 	);
 };

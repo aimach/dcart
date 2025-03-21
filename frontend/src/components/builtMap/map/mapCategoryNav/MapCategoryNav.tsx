@@ -111,11 +111,11 @@ const MapCategoryNav = ({ type }: MapCategoryNavProps) => {
 										<img src={delta} alt="delta" width={30} />
 										{type === "map" ? (
 											<Link to={`${selectedCategory.id}/map/${item.id}`}>
-												{item[`title_${language}`]}
+												{item.title_lang1}
 											</Link>
 										) : (
 											<Link to={`${selectedCategory.id}/storymap/${item.id}`}>
-												{item[`title_${language}`]}
+												{item.title_lang1}
 											</Link>
 										)}
 									</li>

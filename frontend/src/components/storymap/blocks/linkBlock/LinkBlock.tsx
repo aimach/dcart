@@ -1,5 +1,5 @@
 // import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
@@ -10,12 +10,12 @@ interface LinkBlockProps {
 }
 
 const LinkBlock = ({ blockContent }: LinkBlockProps) => {
-	// on récupère le language
-	const { language } = useTranslation();
+	// récupération des données des stores
+	const { selectedLanguage } = useStorymapLanguageStore();
 
 	return (
-		<a href={blockContent[`content2_${language}`]}>
-			{blockContent[`content1_${language}`]}
+		<a href={blockContent[`content2_${selectedLanguage}`]}>
+			{blockContent[`content1_${selectedLanguage}`]}
 		</a>
 	);
 };

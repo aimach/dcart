@@ -1,5 +1,5 @@
 // import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
@@ -10,18 +10,18 @@ interface TitleBlockProps {
 }
 
 const TitleBlock = ({ blockContent }: TitleBlockProps) => {
-	// on récupère le language
-	const { language } = useTranslation();
+	// récupération des données des stores
+	const { selectedLanguage } = useStorymapLanguageStore();
 
 	return (
 		<section className={style.titleSection}>
 			{blockContent.type.name === "title" ? (
 				<h3 className={style.titleStyle}>
-					{blockContent[`content1_${language}`]}
+					{blockContent[`content1_${selectedLanguage}`]}
 				</h3>
 			) : (
 				<h4 className={style.subtitleStyle}>
-					{blockContent[`content1_${language}`]}
+					{blockContent[`content1_${selectedLanguage}`]}
 				</h4>
 			)}
 		</section>

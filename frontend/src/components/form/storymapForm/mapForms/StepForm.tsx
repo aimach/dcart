@@ -24,10 +24,11 @@ import type { ChangeEvent } from "react";
 import style from "./mapForms.module.scss";
 
 export type stepInputsType = {
-	content1_fr: string;
-	content1_en: string;
-	content2_fr: string;
-	content2_en: string;
+	content1_lang1: string;
+	content1_lang2: string;
+	content2_lang1: string;
+	content2_lang2: string;
+	s;
 };
 
 interface StepFormProps {
@@ -129,10 +130,10 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 			stepAction === "edit"
 				? (block as stepInputsType)
 				: {
-						content1_fr: "",
-						content1_en: "",
-						content2_fr: "",
-						content2_en: "",
+						content1_lang1: "",
+						content1_lang2: "",
+						content2_lang1: "",
+						content2_lang2: "",
 					};
 		// NB : ne fonctionne pas juste avec {}
 		reset(defaultValues);

@@ -21,16 +21,16 @@ export class Block extends BaseEntity {
 	id!: string;
 
 	@Column({ type: "text", nullable: false })
-	content1_fr!: string;
+	content1_lang1!: string;
 
 	@Column({ type: "text", nullable: false })
-	content1_en!: string;
+	content1_lang2!: string;
 
 	@Column({ type: "text", nullable: true })
-	content2_fr!: string | null;
+	content2_lang1!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	content2_en!: string | null;
+	content2_lang2!: string | null;
 
 	@Column({ type: "int", nullable: true })
 	position!: number | null;

@@ -9,7 +9,8 @@ interface LayoutBlockProps {
 }
 
 const LayoutBlock = ({ blockContent }: LayoutBlockProps) => {
-	const textSide = blockContent.content1_en;
+	// import des données du store
+	const textSide = blockContent.content1_lang2;
 
 	return (
 		<section className={`${style.layoutSection} ${style[textSide]}`}>

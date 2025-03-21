@@ -1,5 +1,5 @@
 // import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
@@ -10,11 +10,13 @@ interface QuoteBlockProps {
 }
 
 const QuoteBlock = ({ blockContent }: QuoteBlockProps) => {
-	const { language } = useTranslation();
+	// import des données des stores
+	const { selectedLanguage } = useStorymapLanguageStore();
+
 	return (
 		<div className={style.quoteBlockContainer}>
-			<p>{blockContent[`content1_${language}`]}</p>
-			<p>{blockContent[`content2_${language}`]}</p>
+			<p>{blockContent[`content1_${selectedLanguage}`]}</p>
+			<p>{blockContent[`content2_${selectedLanguage}`]}</p>
 		</div>
 	);
 };

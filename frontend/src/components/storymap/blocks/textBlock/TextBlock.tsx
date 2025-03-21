@@ -1,25 +1,23 @@
 // import des bibiliothèques
 import DOMPurify from "dompurify";
-// import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./textBlock.module.scss";
 import "quill/dist/quill.snow.css";
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 
 interface TextBlockProps {
 	blockContent: BlockContentType;
 }
 
 const TextBlock = ({ blockContent }: TextBlockProps) => {
-	// on récupère le language
-	const { language } = useTranslation();
+	// récupération des données des stores
+	const { selectedLanguage } = useStorymapLanguageStore();
 
-	// on nettoie le contenu
-
+	// nettoyage du texte avec DOMPurify
 	const sanitizedText = DOMPurify.sanitize(
-		blockContent[`content1_${language}`],
+		blockContent[`content1_${selectedLanguage}`],
 		{
 			ALLOWED_TAGS: [
 				"p",

@@ -18,6 +18,7 @@ const ScrolledSection = ({
 	steps,
 	currentPoint,
 }: ScrolledSectionProps) => {
+	// import des données de traduction
 	const { language } = useTranslation();
 
 	return (
@@ -29,8 +30,7 @@ const ScrolledSection = ({
 							<div
 								id={point.id.toString()}
 								style={{
-									opacity:
-										(currentPoint as number) === (point.id as number) ? 1 : 0.2,
+									opacity: currentPoint === point.id ? 1 : 0.2,
 								}}
 							>
 								<div className={style.infoElement}>

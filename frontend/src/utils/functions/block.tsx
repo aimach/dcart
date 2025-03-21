@@ -26,10 +26,10 @@ import {
  * Tableau des clés requises pour un bloc
  */
 const requiredBlockKeys: string[] = [
-	"content1_fr",
-	"content1_en",
-	"content2_fr",
-	"content2_en",
+	"content1_lang1",
+	"content1_lang2",
+	"content2_lang1",
+	"content2_lang2",
 	"parentId",
 	"storymapId",
 	"typeName",
@@ -40,18 +40,21 @@ const requiredBlockKeys: string[] = [
  * @param block - le bloc dont on veut l'aperçu
  * @param language - la langue de l'utilisateur
  */
-const getPreviewText = (block: BlockContentType, language: Language) => {
+const getPreviewText = (
+	block: BlockContentType,
+	selectedLanguage: "lang1" | "lang2",
+) => {
 	if (block.type.name === "text") {
 		const sanitizedText = DOMPurify.sanitize(
-			block[`content1_${language}`],
+			block[`content1_${selectedLanguage}`],
 		).slice(0, 20);
 		// biome-ignore lint/security/noDangerouslySetInnerHtml: texte est nettoyé avec DOMPurify
 		return <p dangerouslySetInnerHTML={{ __html: sanitizedText }} />;
 	}
 	if (block.type.name !== "layout") {
-		return block[`content1_${language}`].length > 20
-			? `${block[`content1_${language}`].slice(0, 20)}...`
-			: block[`content1_${language}`];
+		return block[`content1_${selectedLanguage}`].length > 20
+			? `${block[`content1_${selectedLanguage}`].slice(0, 20)}...`
+			: block[`content1_${selectedLanguage}`];
 	}
 	return "";
 };

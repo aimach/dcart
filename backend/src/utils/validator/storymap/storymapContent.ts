@@ -7,13 +7,15 @@ import { blockToEditSchema } from "./block";
 import { categorySchema } from "../builtMap/category";
 
 const storymapContentSchema = Joi.object({
-	title_fr: Joi.string().max(255).required(),
-	title_en: Joi.string().max(255).required(),
-	description_fr: Joi.string().optional().allow(null),
-	description_en: Joi.string().optional().allow(null),
+	title_lang1: Joi.string().max(255).required(),
+	title_lang2: Joi.string().max(255).required(),
+	description_lang1: Joi.string().optional().allow(null),
+	description_lang2: Joi.string().optional().allow(null),
 	image_url: Joi.string().optional().allow(null),
 	author: Joi.string().max(255).optional().allow(null),
 	publishedAt: Joi.string().optional().allow(null),
+	lang1: Joi.string().uuid().required(),
+	lang2: Joi.string().uuid().required(),
 	createdAt: Joi.date().optional(),
 	updatedAt: Joi.date().optional(),
 	blocks: Joi.array().items(blockToEditSchema).min(0).optional(),
@@ -35,10 +37,10 @@ export const validateStorymapContentBody = (
 
 const storymapToEditSchema = Joi.object({
 	id: Joi.string().uuid().required(),
-	title_fr: Joi.string().max(255).required(),
-	title_en: Joi.string().max(255).required(),
-	description_fr: Joi.string().optional().allow(null),
-	description_en: Joi.string().optional().allow(null),
+	title_lang1: Joi.string().max(255).required(),
+	title_lang2: Joi.string().max(255).required(),
+	description_lang1: Joi.string().optional().allow(null),
+	description_lang2: Joi.string().optional().allow(null),
 	image_url: Joi.string().optional().allow(null),
 	author: Joi.string().max(255).optional().allow(null),
 	publishedAt: Joi.string().optional().allow(null),

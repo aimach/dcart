@@ -2,13 +2,12 @@
 import { useEffect, useMemo } from "react";
 import { v4 as uuidv4 } from "uuid";
 import L from "leaflet";
-// import du context
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import {
 	getIcon,
 	getLittleCircleIcon,
 } from "../../../../utils/functions/icons";
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type {
 	BlockContentType,
@@ -25,8 +24,8 @@ interface ComparisonMapBlockProps {
 }
 
 const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
-	// on récupère le language
-	const { language } = useTranslation();
+	// récupération des données des stores
+	const { selectedLanguage } = useStorymapLanguageStore();
 
 	const mapName = useMemo(() => `comparison-map-${uuidv4}`, []);
 
@@ -42,12 +41,12 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 		const attribution =
 			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-		const rightLayer = L.tileLayer(blockContent.content2_en, {
+		const rightLayer = L.tileLayer(blockContent.content1_lang2, {
 			pane: "right",
 			attribution,
 		}).addTo(comparisonMap);
 
-		const leftLayer = L.tileLayer(blockContent.content2_fr, {
+		const leftLayer = L.tileLayer(blockContent.content2_lang1, {
 			pane: "left",
 			attribution,
 		}).addTo(comparisonMap);
@@ -89,8 +88,8 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 	return (
 		<>
 			<div id={mapName} />
-			{blockContent.content1_fr && (
-				<p>{blockContent[`content1_${language}`]}</p>
+			{blockContent[`content1_${selectedLanguage}`] && (
+				<p>{blockContent[`content1_${selectedLanguage}`]}</p>
 			)}
 		</>
 	);

@@ -8,6 +8,7 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import {
 	getAllStorymapCategories,
+	getAllStorymapLanguages,
 	getStorymapInfosAndBlocks,
 } from "../../../../utils/api/storymap/getRequests";
 import { storymapInputs } from "../../../../utils/forms/storymapInputArray";
@@ -17,13 +18,19 @@ import {
 } from "../../../../utils/api/storymap/postRequests";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
-import type { CategoryType } from "../../../../utils/types/storymapTypes";
+import type {
+	CategoryType,
+	StorymapLanguageType,
+} from "../../../../utils/types/storymapTypes";
 import type {
 	InputType,
 	storymapInputsType,
 	allInputsType,
 } from "../../../../utils/types/formTypes";
-import { createCategoryOptions } from "../../../../utils/functions/storymap";
+import {
+	createCategoryOptions,
+	createLanguageOptions,
+} from "../../../../utils/functions/storymap";
 
 /**
  * Formulaire d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.
@@ -43,7 +50,7 @@ const IntroductionForm = () => {
 	// définition d'un état pour les inputs du formulaire
 	const [inputs, setInputs] = useState<InputType[]>(storymapInputs);
 
-	// au montage du composant, récupération des catégories pour le select/options
+	// au montage du composant, récupération des catégories et des langues pour les select/options
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const fetchAllCategoriesAndCreateOptions = async () => {
@@ -60,7 +67,19 @@ const IntroductionForm = () => {
 				console.error(error);
 			}
 		};
+		const fetchAllLanguagesAndCreateOptions = async () => {
+			try {
+				const allLanguages: StorymapLanguageType[] =
+					await getAllStorymapLanguages();
+				// création des options pour le select des catégories
+				const newInputs = createLanguageOptions(allLanguages, inputs);
+				setInputs(newInputs);
+			} catch (error) {
+				console.error(error);
+			}
+		};
 		fetchAllCategoriesAndCreateOptions();
+		fetchAllLanguagesAndCreateOptions();
 	}, [language]);
 
 	// -- MODE MODIFICATION --

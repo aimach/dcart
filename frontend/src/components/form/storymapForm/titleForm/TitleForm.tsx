@@ -16,8 +16,8 @@ import type { SubmitHandler } from "react-hook-form";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type titleInputsType = {
-	content1_fr: string;
-	content1_en: string;
+	content1_lang1: string;
+	content1_lang2: string;
 };
 
 /**

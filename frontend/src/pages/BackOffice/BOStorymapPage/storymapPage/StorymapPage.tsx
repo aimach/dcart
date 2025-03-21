@@ -1,7 +1,6 @@
 // import des bibiliothèques
 import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
-
+import { Link, useLocation, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import StorymapIntroduction from "../../../../components/storymap/blocks/storymapIntroduction/StorymapIntroduction";
@@ -15,7 +14,9 @@ import ImageBlock from "../../../../components/storymap/blocks/imageBlock/ImageB
 import LayoutBlock from "../../../../components/storymap/blocks/layoutBlock/LayoutBlock";
 import TitleBlock from "../../../../components/storymap/blocks/titleBlock/TitleBlock";
 import SimpleMapBlock from "../../../../components/storymap/blocks/simpleMapBlock/SimpleMapBlock";
+import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
 // import des services
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getStorymapInfosAndBlocks } from "../../../../utils/api/storymap/getRequests";
 // import des types
 import type {
@@ -25,7 +26,7 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
-import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
+import { getFlagEmoji } from "../../../../utils/functions/storymap";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -71,6 +72,12 @@ const StorymapPage = () => {
 	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
 
+	// récupération de l'ur
+	const location = useLocation();
+
+	// récupération des données des stores
+	const { setSelectedLanguage } = useStorymapLanguageStore();
+
 	// déclaration d'un état pour stocker les informations de la storymap
 	const [storymapInfos, setStorymapInfos] = useState<StorymapType | null>(null);
 
@@ -90,9 +97,31 @@ const StorymapPage = () => {
 	return (
 		storymapInfos && (
 			<>
-				<Link to={`/backoffice/storymaps/build/${storymapId}`}>
-					Modifier la storymap
-				</Link>
+				<div className={style.storymapHeaderContainer}>
+					<div>
+						{location.pathname.includes("storymaps/view/") && (
+							<Link to={`/backoffice/storymaps/build/${storymapId}`}>
+								Modifier la storymap
+							</Link>
+						)}
+					</div>
+					<ul className={style.languageSelectionContainer}>
+						<li
+							onClick={() => setSelectedLanguage("lang1")}
+							onKeyUp={() => setSelectedLanguage("lang1")}
+						>
+							{getFlagEmoji(storymapInfos.lang1.name)}
+						</li>
+						{storymapInfos.lang2.name && (
+							<li
+								onClick={() => setSelectedLanguage("lang2")}
+								onKeyUp={() => setSelectedLanguage("lang2")}
+							>
+								{getFlagEmoji(storymapInfos.lang2.name)}
+							</li>
+						)}
+					</ul>
+				</div>
 				<section className={style.storymapContainer}>
 					<StorymapIntroduction
 						introductionContent={storymapInfos as StorymapType}

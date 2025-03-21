@@ -3,7 +3,7 @@ import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import { useBuilderStore } from "../../../utils/stores/storymap/builderStore";
-import { deleteBlock } from "../../../utils/api/storymap/getRequests";
+import { deleteBlock } from "../../../utils/api/storymap/deleteRequests";
 // import des types
 // import du style
 import style from "./modalComponent.module.scss";

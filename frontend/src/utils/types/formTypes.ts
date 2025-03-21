@@ -16,10 +16,10 @@ type InputType = {
 
 type blockType = {
 	id?: string;
-	content1_fr: string;
-	content1_en?: string;
-	content2_fr?: string | null;
-	content2_en?: string | null;
+	content1_lang1: string;
+	content1_lang2?: string;
+	content2_lang1?: string | null;
+	content2_lang2?: string | null;
 	parentId?: string | null;
 	storymapId?: string;
 	typeId?: string;
@@ -54,10 +54,10 @@ type FormType =
 	| "table";
 
 type storymapInputsType = {
-	title_fr: string;
-	title_en: string;
-	description_fr: string;
-	description_en: string;
+	title_lang1: string;
+	title_lang2: string;
+	description_lang1: string;
+	description_lang2: string;
 	img_url: string;
 	author: string;
 	publication_date: string;

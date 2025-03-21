@@ -1,7 +1,7 @@
 // import des bibiliothèques
 import { useEffect, useState } from "react";
-// import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import des services
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
@@ -13,13 +13,13 @@ interface TableBlockProps {
 }
 
 const TableBlock = ({ blockContent }: TableBlockProps) => {
-	// récupération des données de traduction
-	const { language } = useTranslation();
+	// récupération des données des stores
+	const { selectedLanguage } = useStorymapLanguageStore();
 
 	// au montage du tableau, transformation de la chaîne de caractère en variable manipulable
 	const [tableContent, setTableContent] = useState<string[][]>([]);
 	useEffect(() => {
-		const content = blockContent[`content2_${language}`];
+		const content = blockContent[`content2_${selectedLanguage}`];
 		try {
 			if (content) {
 				setTableContent(JSON.parse(content));
@@ -27,7 +27,7 @@ const TableBlock = ({ blockContent }: TableBlockProps) => {
 		} catch (error) {
 			console.error("Erreur de parsing JSON:", error);
 		}
-	}, [blockContent, language]);
+	}, [blockContent, selectedLanguage]);
 
 	return (
 		<section className={style.tableSection}>
@@ -44,7 +44,7 @@ const TableBlock = ({ blockContent }: TableBlockProps) => {
 					))}
 				</tbody>
 			</table>
-			<p>{blockContent[`content1_${language}`]}</p>
+			<p>{blockContent[`content1_${selectedLanguage}`]}</p>
 		</section>
 	);
 };

@@ -2,14 +2,16 @@ import type { FormType } from "./formTypes";
 
 type StorymapType = {
 	id: string;
-	title_en: string;
-	title_fr: string;
-	description_en: string;
-	description_fr: string;
+	title_lang2: string;
+	title_lang1: string;
+	description_lang2: string;
+	description_lang1: string;
 	image_url?: string;
 	author?: string;
 	isActive: boolean;
 	publishedAt: string;
+	lang1: { name: string };
+	lang2: { name: string };
 	createdAt: string;
 	updatedAt: string;
 	uploadPointsLastDate: string;
@@ -28,10 +30,10 @@ type BlockContentType = {
 	type: TypeType;
 	id_parent: number;
 	position?: number;
-	content1_en: string;
-	content1_fr: string;
-	content2_en: string;
-	content2_fr: string;
+	content1_lang2: string;
+	content1_lang1: string;
+	content2_lang1: string;
+	content2_lang2: string;
 	points?: PointType[];
 	groupedPoints?: GroupedTyped[];
 	children: BlockContentType[];
@@ -78,6 +80,11 @@ type CategoryType = {
 	description_fr: string;
 };
 
+type StorymapLanguageType = {
+	id: string;
+	name: string;
+};
+
 export type {
 	StorymapType,
 	BlockContentType,
@@ -85,4 +92,5 @@ export type {
 	GroupedTyped,
 	TypeType,
 	CategoryType,
+	StorymapLanguageType,
 };

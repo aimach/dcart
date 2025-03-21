@@ -1,5 +1,5 @@
-// import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import des services
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { StorymapType } from "../../../../utils/types/storymapTypes";
 // import du style
@@ -12,8 +12,8 @@ interface StorymapIntroductionProps {
 const StorymapIntroduction = ({
 	introductionContent,
 }: StorymapIntroductionProps) => {
-	// on récupère le language
-	const { language } = useTranslation();
+	// récupération des données des stores
+	const { selectedLanguage } = useStorymapLanguageStore();
 
 	return (
 		<section
@@ -21,8 +21,8 @@ const StorymapIntroduction = ({
 			style={{ backgroundImage: `url(${introductionContent.image_url})` }}
 		>
 			<div className={style.contentContainer}>
-				<h2>{introductionContent[`title_${language}`]}</h2>
-				<p>{introductionContent[`description_${language}`]}</p>
+				<h2>{introductionContent[`title_${selectedLanguage}`]}</h2>
+				<p>{introductionContent[`description_${selectedLanguage}`]}</p>
 				{introductionContent.author && <p>{introductionContent.author}</p>}
 				{introductionContent.publishedAt && (
 					<p>{introductionContent.publishedAt}</p>

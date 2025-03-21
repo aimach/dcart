@@ -138,8 +138,8 @@
 				"csv": "Add a CSV file with map markers",
 				"forLeftPane": "for the left pane",
 				"forRightPane": "for the right pane",
-				"uploadTableFr": "Add a CSV file with a table in French",
-				"uploadTableEn": "Add a CSV file with a table in English"
+				"uploadTableFr": "Add a CSV file with a table in language 1",
+				"uploadTableEn": "Add a CSV file with a table in language 2"
 			}
 		}
 	}

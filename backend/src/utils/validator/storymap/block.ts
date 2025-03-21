@@ -5,16 +5,16 @@ import type { Request, Response, NextFunction } from "express";
 
 const blockToCreateSchema = Joi.object({
 	id: Joi.string().uuid().optional(),
-	content1_fr: Joi.string().required().messages({
-		"any.required": "Le champ content1_fr est requis",
-		"string.base": "'content1_fr' doit être une chaîne de caractères",
+	content1_lang1: Joi.string().required().messages({
+		"any.required": "Le champ 'content1_lang1' est requis",
+		"string.base": "'content1_lang1' doit être une chaîne de caractères",
 	}),
-	content1_en: Joi.string().required().messages({
-		"any.required": "Le champ content2_fr est requis",
-		"string.base": "'content2_fr' doit être une chaîne de caractères",
+	content1_lang2: Joi.string().required().messages({
+		"any.required": "Le champ 'content2_lang1' est requis",
+		"string.base": "'content2_lang1' doit être une chaîne de caractères",
 	}),
-	content2_fr: Joi.string().optional().allow("").allow(null),
-	content2_en: Joi.string().optional().allow("").allow(null),
+	content2_lang1: Joi.string().optional().allow("").allow(null),
+	content2_lang2: Joi.string().optional().allow("").allow(null),
 	position: Joi.number().integer().optional().allow(null),
 	createdAt: Joi.date().optional(),
 	updatedAt: Joi.date().optional(),
@@ -46,10 +46,10 @@ export const validateBlockBody = (
 
 export const blockToEditSchema = Joi.object({
 	id: Joi.string().uuid().required(),
-	content1_fr: Joi.string().required(),
-	content1_en: Joi.string().required(),
-	content2_fr: Joi.string().optional().allow(null),
-	content2_en: Joi.string().optional().allow(null),
+	content1_lang1: Joi.string().required(),
+	content1_lang2: Joi.string().required(),
+	content2_lang1: Joi.string().optional().allow(null),
+	content2_lang2: Joi.string().optional().allow(null),
 	position: Joi.number().integer().required(),
 	createdAt: Joi.date().iso().required(),
 	updatedAt: Joi.date().iso().required(),

@@ -11,6 +11,7 @@ import { useBuilderStore } from "../../../utils/stores/storymap/builderStore";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import { useShallow } from "zustand/shallow";
 import { getPreviewText, getTypeIcon } from "../../../utils/functions/block";
+import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { BlockContentType } from "../../../utils/types/storymapTypes";
 // import du style
@@ -45,6 +46,7 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 			updateBlockContent: state.updateBlockContent,
 		})),
 	);
+	const { selectedLanguage } = useStorymapLanguageStore();
 
 	// récupération de l'icône correspondant au type de bloc
 	const icon = getTypeIcon(block.type ? block.type.name : type);
@@ -60,7 +62,8 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 
 	// définition du texte de l'aperçu
 
-	const previewText = type === "layout" ? "" : getPreviewText(block, language);
+	const previewText =
+		type === "layout" ? "" : getPreviewText(block, selectedLanguage);
 
 	// définition du style du container titre (icone + type de bloc)
 	const titleStyle = {
