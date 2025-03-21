@@ -91,18 +91,18 @@ const TableForm = () => {
 		if (action === "create") {
 			await createBlock({
 				...data,
-				content2_fr: JSON.stringify(csvContentLang1),
-				content2_en: JSON.stringify(csvContentLang2),
+				content2_lang1: JSON.stringify(csvContentLang1),
+				content2_lang2: JSON.stringify(csvContentLang2),
 				storymapId,
 				typeName: "table",
 			});
 		} else if (action === "edit") {
 			const blockContent = { ...block, ...data, storymapId, typeName: "table" };
 			if (csvContentLang1.length > 0) {
-				blockContent.content2_fr = JSON.stringify(csvContentLang1);
+				blockContent.content2_lang1 = JSON.stringify(csvContentLang1);
 			}
 			if (csvContentLang2.length > 0) {
-				blockContent.content2_en = JSON.stringify(csvContentLang2);
+				blockContent.content2_lang2 = JSON.stringify(csvContentLang2);
 			}
 			await updateBlock(blockContent, block?.id.toString() as string);
 		}

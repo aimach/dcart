@@ -138,28 +138,28 @@ const storymapInputs: InputType[] = [
 
 const titleInput: InputType[] = [
 	{
-		label_fr: "Titre en français",
-		label_en: "Title in french",
+		label_fr: "Titre en langue 1",
+		label_en: "Title in language 1",
 		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en français est requis",
-				en: "The title in french is required",
+				fr: "Le titre en langue 1 est requis",
+				en: "The title in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Titre en anglais",
-		label_en: "Title in english",
+		label_fr: "Titre en langue 2",
+		label_en: "Title in language 2",
 		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en anglais est requis",
-				en: "The title in english is required",
+				fr: "Le titre en langue 2 est requis",
+				en: "The title in language 2 is required",
 			},
 		},
 	},
@@ -167,28 +167,28 @@ const titleInput: InputType[] = [
 
 const subtitleInputs: InputType[] = [
 	{
-		label_fr: "Titre en français",
-		label_en: "Title in french",
+		label_fr: "Titre en langue 1",
+		label_en: "Title in language 1",
 		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en français est requis",
-				en: "The title in french is required",
+				fr: "Le titre en langue 1 est requis",
+				en: "The title in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Titre en anglais",
-		label_en: "Title in english",
+		label_fr: "Titre en langue 2",
+		label_en: "Title in language 2",
 		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en anglais est requis",
-				en: "The title in english is required",
+				fr: "Le titre en langue 2 est requis",
+				en: "The title in language 2 is required",
 			},
 		},
 	},
@@ -196,28 +196,28 @@ const subtitleInputs: InputType[] = [
 
 const textInputs: InputType[] = [
 	{
-		label_fr: "Texte en français",
-		label_en: "Texte in french",
+		label_fr: "Texte en langue 1",
+		label_en: "Texte in language 1",
 		name: "content1_lang1",
 		type: "wysiwyg",
 		required: {
 			value: true,
 			message: {
-				fr: "Le texte en français est requis",
-				en: "The text in french is required",
+				fr: "Le texte en langue 1 est requis",
+				en: "The text in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Texte en anglais",
-		label_en: "Text in english",
+		label_fr: "Texte en langue 2",
+		label_en: "Text in language 2",
 		name: "content1_lang2",
 		type: "wysiwyg",
 		required: {
 			value: true,
 			message: {
-				fr: "Le texte en anglais est requis",
-				en: "The text in english is required",
+				fr: "Le texte en langue 2 est requis",
+				en: "The text in language 2 is required",
 			},
 		},
 	},
@@ -238,54 +238,54 @@ const linkInputs: InputType[] = [
 
 const quoteInputs: InputType[] = [
 	{
-		label_fr: "Citation en français",
-		label_en: "Quote in french",
+		label_fr: "Citation en langue 1",
+		label_en: "Quote in language 1",
 		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "La citation en français est requise",
-				en: "The quote in french is required",
+				fr: "La citation en langue 1 est requise",
+				en: "The quote in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Citation en anglais",
-		label_en: "Quote in english",
+		label_fr: "Citation en langue 2",
+		label_en: "Quote in language 2",
 		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "La citation en anglais est requise",
-				en: "The quote in english is required",
+				fr: "La citation en langue 2 est requise",
+				en: "The quote in language 2 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Source en français",
-		label_en: "Source in french",
+		label_fr: "Source en langue 1",
+		label_en: "Source in language 1",
 		name: "content2_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "La source en français est requise",
-				en: "The source in french is required",
+				fr: "La source en langue 1 est requise",
+				en: "The source in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Source en anglais",
-		label_en: "Source in english",
+		label_fr: "Source en langue 2",
+		label_en: "Source in language 2",
 		name: "content2_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "La source en anglais est requise",
-				en: "The source in english is required",
+				fr: "La source en langue 2 est requise",
+				en: "The source in language 2 is required",
 			},
 		},
 	},
@@ -306,28 +306,28 @@ const imageInputs: InputType[] = [
 		},
 	},
 	{
-		label_fr: "Légende de l'image en français",
-		label_en: "Image legend in french",
+		label_fr: "Légende de l'image en langue 1",
+		label_en: "Image legend in language 1",
 		name: "content2_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "La légende de l'image en français est requise",
-				en: "The image legend in french is required",
+				fr: "La légende de l'image en langue 1 est requise",
+				en: "The image legend in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Légende de l'image en anglais",
-		label_en: "Image legend in english",
+		label_fr: "Légende de l'image en langue 2",
+		label_en: "Image legend in language 2",
 		name: "content2_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "La légende de l'image en anglais est requise",
-				en: "The image legend in english is required",
+				fr: "La légende de l'image en langue 2 est requise",
+				en: "The image legend in language 2 is required",
 			},
 		},
 	},
@@ -335,28 +335,28 @@ const imageInputs: InputType[] = [
 
 const simpleMapInputs: InputType[] = [
 	{
-		label_fr: "Nom de la carte en français",
-		label_en: "Map name in french",
+		label_fr: "Nom de la carte en langue 1",
+		label_en: "Map name in language 1",
 		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le nom de la carte en français est requis",
-				en: "The map name in french is required",
+				fr: "Le nom de la carte en langue 1 est requis",
+				en: "The map name in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Nom de la carte en anglais",
-		label_en: "Map name in english",
+		label_fr: "Nom de la carte en langue 2",
+		label_en: "Map name in language 2",
 		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le nom de la carte en anglais est requis",
-				en: "The map name in english is required",
+				fr: "Le nom de la carte en langue 2 est requis",
+				en: "The map name in language 2 is required",
 			},
 		},
 	},
@@ -378,28 +378,28 @@ const simpleMapInputs: InputType[] = [
 
 const comparisonMapInputs: InputType[] = [
 	{
-		label_fr: "Nom de la carte en français",
-		label_en: "Map name in french",
+		label_fr: "Nom de la carte en langue 1",
+		label_en: "Map name in language 1",
 		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le nom de la carte en français est requis",
-				en: "The map name in french is required",
+				fr: "Le nom de la carte en langue 1 est requis",
+				en: "The map name in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Nom de la carte en anglais",
-		label_en: "Map name in english",
+		label_fr: "Nom de la carte en langue 2",
+		label_en: "Map name in language 2",
 		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le nom de la carte en anglais est requis",
-				en: "The map name in english is required",
+				fr: "Le nom de la carte en langue 2 est requis",
+				en: "The map name in language 2 is required",
 			},
 		},
 	},
@@ -435,28 +435,28 @@ const comparisonMapInputs: InputType[] = [
 
 const scrollMapInputs: InputType[] = [
 	{
-		label_fr: "Nom de la carte en français",
-		label_en: "Map name in french",
+		label_fr: "Nom de la carte en langue 1",
+		label_en: "Map name in language 1",
 		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le nom de la carte en français est requis",
-				en: "The map name in french is required",
+				fr: "Le nom de la carte en langue 1 est requis",
+				en: "The map name in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Nom de la carte en anglais",
-		label_en: "Map name in english",
+		label_fr: "Nom de la carte en langue 2",
+		label_en: "Map name in language 2",
 		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le nom de la carte en anglais est requis",
-				en: "The map name in english is required",
+				fr: "Le nom de la carte en langue 2 est requis",
+				en: "The map name in language 2 is required",
 			},
 		},
 	},
@@ -478,34 +478,34 @@ const scrollMapInputs: InputType[] = [
 
 const stepInputs: InputType[] = [
 	{
-		label_fr: "Titre en français",
-		label_en: "Title in french",
+		label_fr: "Titre en langue 1",
+		label_en: "Title in language 1",
 		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en français est requis",
-				en: "The title in french is required",
+				fr: "Le titre en langue 1 est requis",
+				en: "The title in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Titre en anglais",
-		label_en: "Title in english",
+		label_fr: "Titre en langue 2",
+		label_en: "Title in language 2",
 		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en anglais est requis",
-				en: "The title in english is required",
+				fr: "Le titre en langue 2 est requis",
+				en: "The title in language 2 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Description en français",
-		label_en: "Description in french",
+		label_fr: "Description en langue 1",
+		label_en: "Description in language 1",
 		name: "content2_lang1",
 		type: "text",
 		required: {
@@ -513,8 +513,8 @@ const stepInputs: InputType[] = [
 		},
 	},
 	{
-		label_fr: "Description en anglais",
-		label_en: "Description in english",
+		label_fr: "Description en langue 2",
+		label_en: "Description in language 2",
 		name: "content2_lang2",
 		type: "text",
 		required: {
@@ -525,28 +525,28 @@ const stepInputs: InputType[] = [
 
 const tableInputs: InputType[] = [
 	{
-		label_fr: "Titre du tableau en français",
-		label_en: "Table title in french",
+		label_fr: "Titre du tableau en langue 1",
+		label_en: "Table title in language 1",
 		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en français est requis",
-				en: "The title in french is required",
+				fr: "Le titre en langue 1 est requis",
+				en: "The title in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Titre du tableau en anglais",
-		label_en: "Table title in english",
+		label_fr: "Titre du tableau en langue 2",
+		label_en: "Table title in language 2",
 		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en anglais est requis",
-				en: "The title in english is required",
+				fr: "Le titre en langue 2 est requis",
+				en: "The title in language 2 is required",
 			},
 		},
 	},
