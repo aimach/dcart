@@ -78,7 +78,6 @@ const SimpleMapForm = () => {
 				skipFirstNLines: 2,
 				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
 				complete: (result: ParseResult<parsedPointType>) => {
-					console.log(result.data);
 					setParsedPoints(result.data);
 				},
 				error: (error) => {
