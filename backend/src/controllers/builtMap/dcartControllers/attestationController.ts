@@ -70,4 +70,27 @@ export const attestationController = {
 			handleError(res, error as Error);
 		}
 	},
+
+	// supprimer un jeu d'attestations
+	deleteAttestationList: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { id } = req.params;
+
+			const attestationListToDelete = await dcartDataSource
+				.getRepository(Attestation)
+				.findOne({ where: { id } });
+
+			if (!attestationListToDelete) {
+				res.status(404).json("Le jeu d'attestations n'existe pas");
+				return;
+			}
+
+			await dcartDataSource
+				.getRepository(Attestation)
+				.remove(attestationListToDelete);
+			res.status(200).json("Le jeu d'attestations a bien été supprimé");
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
 };

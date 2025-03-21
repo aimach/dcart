@@ -16,9 +16,10 @@ import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des images
-import { CircleHelp } from "lucide-react";
+import { CircleHelp, X } from "lucide-react";
 import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -28,7 +29,7 @@ const UploadForm = () => {
 	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
-	const { mapInfos, setMapInfos, step, setStep } = useMapFormStore(
+	const { mapInfos, setMapInfos, step } = useMapFormStore(
 		useShallow((state) => state),
 	);
 
@@ -63,6 +64,12 @@ const UploadForm = () => {
 		}
 	}, []);
 
+	const handleDeletePointSet = async (pointSetId: string) => {
+		await deletePointSet(pointSetId as string);
+		const newMapInfos = await getOneMapInfos(mapInfos?.id as string);
+		setMapInfos(newMapInfos);
+	};
+
 	return (
 		<>
 			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
@@ -82,7 +89,13 @@ const UploadForm = () => {
 						<div>
 							Jeux de points :
 							{mapInfos.attestations.map((pointSet) => (
-								<p key={pointSet.id}>{pointSet.name}</p>
+								<div key={pointSet.id}>
+									<p>{pointSet.name}</p>
+									<X
+										onClick={() => handleDeletePointSet(pointSet.id)}
+										onKeyDown={() => handleDeletePointSet(pointSet.id)}
+									/>
+								</div>
 							))}
 						</div>
 						<ButtonComponent

@@ -54,7 +54,7 @@ const NavigationButtonComponent = ({
 				</button>
 			)}
 
-			{step > 2 && nextButtonDisplayed && (
+			{step !== 2 && nextButtonDisplayed && (
 				<button type="submit">
 					{step <= 2
 						? translation[language].common.next
