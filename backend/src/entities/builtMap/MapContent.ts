@@ -14,6 +14,7 @@ import {
 import { Category } from "./Category";
 import { Filter } from "./Filter";
 import { User } from "../auth/User";
+import { Attestation } from "./Attestation";
 
 enum location {
 	SUBREGION = "subRegion",
@@ -41,9 +42,6 @@ export class MapContent extends BaseEntity {
 	@Column({ type: "text", nullable: true })
 	image_url!: string | null;
 
-	@Column({ type: "text" })
-	attestationIds!: string;
-
 	@Column({ type: "text", nullable: true })
 	divinityIds?: string | null;
 
@@ -62,6 +60,12 @@ export class MapContent extends BaseEntity {
 
 	@Column({ type: "uuid", default: null, nullable: true })
 	relatedStorymap?: string | null;
+
+	@OneToMany(
+		() => Attestation,
+		(attestation) => attestation.map,
+	)
+	attestations!: Attestation[];
 
 	@ManyToOne(
 		() => User,
