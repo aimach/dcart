@@ -1,7 +1,7 @@
 // import de bibliothèques
 import { Scrollama, Step } from "react-scrollama";
-// import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import des services
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
@@ -18,8 +18,7 @@ const ScrolledSection = ({
 	steps,
 	currentPoint,
 }: ScrolledSectionProps) => {
-	// import des données de traduction
-	const { language } = useTranslation();
+	const { selectedLanguage } = useStorymapLanguageStore();
 
 	return (
 		<>
@@ -34,8 +33,8 @@ const ScrolledSection = ({
 								}}
 							>
 								<div className={style.infoElement}>
-									<p>{point[`content1_${language}`]}</p>
-									<p>{point[`content2_${language}`]}</p>
+									<p>{point[`content1_${selectedLanguage}`]}</p>
+									<p>{point[`content2_${selectedLanguage}`]}</p>
 								</div>
 							</div>
 						</Step>

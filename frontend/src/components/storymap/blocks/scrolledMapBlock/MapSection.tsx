@@ -1,6 +1,12 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
-import { MapContainer, TileLayer, ScaleControl, Marker } from "react-leaflet";
+import {
+	MapContainer,
+	TileLayer,
+	ScaleControl,
+	Marker,
+	Popup,
+} from "react-leaflet";
 // import des services
 import {
 	getIcon,
@@ -108,7 +114,9 @@ const MapSection = ({
 											scrollToStep(point.blockId as string);
 										},
 									}}
-								/>
+								>
+									<Popup>{point.attestations[0].location}</Popup>
+								</Marker>
 							);
 						})
 					) : (
