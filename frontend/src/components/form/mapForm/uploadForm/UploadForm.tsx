@@ -19,12 +19,14 @@ import type {
 } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
+// import des images
+import { CircleHelp } from "lucide-react";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
  */
 const UploadForm = () => {
-	// récupération des données de la langue
+	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
@@ -44,14 +46,6 @@ const UploadForm = () => {
 	const handleFileUpload = (event: ChangeEvent) => {
 		// définition de la correspondance avec les headers du csv
 		const headerMapping: Record<string, string> = {
-			Langues: "language",
-			"Post Quem": "post_quem",
-			"Ante Quem": "ante_quem",
-			Région: "great_region",
-			"Sous-région": "sub_region",
-			Latitude: "latitude",
-			Longitude: "longitude",
-			Formule: "formula",
 			ID: "id",
 		};
 
@@ -93,24 +87,36 @@ const UploadForm = () => {
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className={style.commonFormContainer}>
-			<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
-			<div className={style.commonFormInputContainer}>
-				<label htmlFor="points">
-					{translation[language].backoffice.mapFormPage.uploadPoints}
-				</label>
-				<input
-					id="point"
-					type="file"
-					accept=".csv"
-					onChange={handleFileUpload}
+		<>
+			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
+				<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
+				<div className={style.commonFormInputContainer}>
+					<label htmlFor="points">
+						{translation[language].backoffice.mapFormPage.uploadPoints}
+					</label>
+					<input
+						id="point"
+						type="file"
+						accept=".csv"
+						onChange={handleFileUpload}
+					/>
+				</div>
+				<div className={style.helpContainer}>
+					<a
+						href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9?pvs=4"
+						target="_blank"
+						rel="noreferrer"
+					>
+						<CircleHelp color="grey" />
+						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
+					</a>
+				</div>
+				<NavigationButtonComponent
+					step={step}
+					nextButtonDisplayed={nextButtonDisplayed}
 				/>
-			</div>
-			<NavigationButtonComponent
-				step={step}
-				nextButtonDisplayed={nextButtonDisplayed}
-			/>
-		</form>
+			</form>
+		</>
 	);
 };
 
