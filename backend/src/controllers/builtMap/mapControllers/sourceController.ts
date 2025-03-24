@@ -18,6 +18,7 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type { PointType } from "../../../utils/types/mapTypes";
+import { Attestation } from "../../../entities/builtMap/Attestation";
 
 export const sourceController = {
 	// récupérer toutes les sources à partir de l'id de la carte
@@ -78,17 +79,19 @@ export const sourceController = {
 				);
 				results = await mapDataSource.query(sqlQuery);
 			} else {
+				console.log(mapId);
 				// on récupère les informations de la carte
 				const mapInfos = await dcartDataSource
 					.getRepository(MapContent)
-					.findOneBy({ id: mapId });
+					.findOne({ where: { id: mapId }, relations: ["attestations"] });
 				if (!mapInfos) {
 					res.status(404).send({ Erreur: "Carte non trouvée" });
 				}
 
-				let { attestationIds } = mapInfos as any;
-				// en attendant d'avoir implanté la feature attestations
-				attestationIds = "";
+				const { attestations } = mapInfos as MapContent;
+				const allAttestations = attestations
+					.map((attestation: Attestation) => attestation.attestationIds)
+					.join(", ");
 
 				// on prépare les query des filtres
 				let queryLocalisation = "";
@@ -131,7 +134,7 @@ export const sourceController = {
 
 				// on récupère le texte de la requête SQL
 				const sqlQuery = getSourcesQueryWithDetails(
-					attestationIds,
+					allAttestations,
 					queryLocalisation,
 					queryDatation,
 					queryLanguage,

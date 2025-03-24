@@ -46,6 +46,7 @@ const MapPage = () => {
 	// fonction pour récupérer les points de la carte en cours
 	const fetchAllPoints = useCallback(async () => {
 		const points = await getAllPointsByMapId(mapId as string, null);
+		console.log(points);
 		mapStore.setAllPoints(points);
 		mapStore.setMapReady(true);
 	}, [mapId, mapStore]);

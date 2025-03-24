@@ -92,8 +92,10 @@ const UploadForm = () => {
 								<div key={pointSet.id}>
 									<p>{pointSet.name}</p>
 									<X
-										onClick={() => handleDeletePointSet(pointSet.id)}
-										onKeyDown={() => handleDeletePointSet(pointSet.id)}
+										onClick={() => handleDeletePointSet(pointSet.id as string)}
+										onKeyDown={() =>
+											handleDeletePointSet(pointSet.id as string)
+										}
 									/>
 								</div>
 							))}
