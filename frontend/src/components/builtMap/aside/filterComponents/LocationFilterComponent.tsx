@@ -39,10 +39,10 @@ const LocationFilterComponent = ({
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {
 		return getSelectDefaultValues(
-			userFilters.elementId as string,
+			userFilters.locationId as string,
 			locationOptions,
 		);
-	}, [userFilters.elementId, locationOptions]);
+	}, [userFilters.locationId, locationOptions]);
 
 	return (
 		<div>
