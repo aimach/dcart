@@ -75,7 +75,6 @@ const UploadForm = () => {
 	};
 
 	const handleIsLayeredChange = async (isLayered: string) => {
-		console.log(isLayered);
 		const result = await updateMap({
 			...(mapInfos as MapInfoType),
 			isLayered: isLayered === "true",

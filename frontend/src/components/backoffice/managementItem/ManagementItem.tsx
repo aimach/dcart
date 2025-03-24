@@ -63,7 +63,6 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 		if (type === "map") {
 			// mise à jour des informations de la carte dans le store
 			const allMapInfos = await getOneMapInfos(idToModify);
-			console.log(allMapInfos);
 			setMapInfos(allMapInfos);
 			if (allMapInfos) {
 				// création d'une session de modification
