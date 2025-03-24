@@ -26,16 +26,23 @@ const ResultComponent = () => {
 	const { language } = useTranslation();
 
 	// récupération des données des stores
-	const { map, allResults, allLayers, selectedMarker, setSelectedMarker } =
-		useMapStore(
-			useShallow((state) => ({
-				map: state.map,
-				allResults: state.allResults,
-				allLayers: state.allLayers,
-				selectedMarker: state.selectedMarker,
-				setSelectedMarker: state.setSelectedMarker,
-			})),
-		);
+	const {
+		map,
+		mapInfos,
+		allResults,
+		allLayers,
+		selectedMarker,
+		setSelectedMarker,
+	} = useMapStore(
+		useShallow((state) => ({
+			map: state.map,
+			mapInfos: state.mapInfos,
+			allResults: state.allResults,
+			allLayers: state.allLayers,
+			selectedMarker: state.selectedMarker,
+			setSelectedMarker: state.setSelectedMarker,
+		})),
+	);
 	const { setSelectedTabMenu } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
@@ -64,9 +71,9 @@ const ResultComponent = () => {
 				};
 			})
 			.filter((point: PointType) =>
-				allLayers.includes(point.layerName as string),
+				mapInfos ? allLayers.includes(point.layerName as string) : point,
 			);
-	}, [allResults, selectedMarker, allLayers]);
+	}, [allResults, selectedMarker, allLayers, mapInfos]);
 
 	return (
 		<div className={style.resultContainer}>

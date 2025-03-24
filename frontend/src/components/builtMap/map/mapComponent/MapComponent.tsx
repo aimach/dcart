@@ -54,6 +54,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		mapInfos,
 		allPoints,
 		setAllPoints,
+		setAllResults,
 		addLayer,
 		removeLayer,
 		mapReady,
@@ -141,8 +142,8 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 			mapId,
 			type === "filter" ? userFilters : null,
 		);
-
 		setAllPoints(points);
+		setAllResults(points);
 		setMapReady(true);
 	};
 	const resetFiltersAndFetchPoints = () => {

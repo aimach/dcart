@@ -35,13 +35,15 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 			isReset: state.isReset,
 		})),
 	);
-	const { setAllPoints, setMapReady, setSelectedMarker } = useMapStore(
-		useShallow((state) => ({
-			setAllPoints: state.setAllPoints,
-			setMapReady: state.setMapReady,
-			setSelectedMarker: state.setSelectedMarker,
-		})),
-	);
+	const { setAllPoints, setAllResults, setMapReady, setSelectedMarker } =
+		useMapStore(
+			useShallow((state) => ({
+				setAllPoints: state.setAllPoints,
+				setAllResults: state.setAllResults,
+				setMapReady: state.setMapReady,
+				setSelectedMarker: state.setSelectedMarker,
+			})),
+		);
 
 	// ATTENTION : l'utilisation de setUserFilters entraînait malheureusement une boucle infinie, réglée grâce à l'usage d'un state indépendant
 	const [timeValues, setTimeValues] = useState<{ ante: number; post: number }>({
@@ -85,6 +87,7 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 			post: e.minValue,
 		});
 		setAllPoints(points);
+		setAllResults(points);
 		setSelectedMarker(undefined);
 		setMapReady(true);
 	};

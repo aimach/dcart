@@ -37,7 +37,7 @@ const FilterComponent = ({
 	const { translation, language } = useTranslation();
 
 	// récupération des données depuis les stores
-	const { mapInfos, setAllPoints, setMapReady } = useMapStore(
+	const { mapInfos, setAllPoints, setAllResults, setMapReady } = useMapStore(
 		useShallow((state) => state),
 	);
 	const { mapFilters } = useMapAsideMenuStore();
@@ -68,9 +68,10 @@ const FilterComponent = ({
 			);
 
 			setAllPoints(points);
+			setAllResults(points);
 			setMapReady(true);
 		},
-		[mapInfos, setAllPoints, setMapReady, userFilters],
+		[mapInfos, setAllPoints, setMapReady, userFilters, setAllResults],
 	);
 
 	// fonction pour gérer le clic sur le bouton de filtre
