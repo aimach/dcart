@@ -26,14 +26,16 @@ const ResultComponent = () => {
 	const { language } = useTranslation();
 
 	// récupération des données des stores
-	const { map, allPoints, selectedMarker, setSelectedMarker } = useMapStore(
-		useShallow((state) => ({
-			map: state.map,
-			allPoints: state.allPoints,
-			selectedMarker: state.selectedMarker,
-			setSelectedMarker: state.setSelectedMarker,
-		})),
-	);
+	const { map, allResults, allLayers, selectedMarker, setSelectedMarker } =
+		useMapStore(
+			useShallow((state) => ({
+				map: state.map,
+				allResults: state.allResults,
+				allLayers: state.allLayers,
+				selectedMarker: state.selectedMarker,
+				setSelectedMarker: state.setSelectedMarker,
+			})),
+		);
 	const { setSelectedTabMenu } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
@@ -52,15 +54,19 @@ const ResultComponent = () => {
 
 	// fonction de calcul de la classe CSS pour chaque point (sélectionné ou non)
 	const resultsWithSelectedPoint = useMemo(() => {
-		return allPoints.map((point: PointType) => {
-			const isSelected = isSelectedMarker(selectedMarker as PointType, point);
-			return {
-				...point,
-				isSelected,
-				selectedClassName: isSelected ? style.isSelected : undefined,
-			};
-		});
-	}, [allPoints, selectedMarker]);
+		return allResults
+			.map((point: PointType) => {
+				const isSelected = isSelectedMarker(selectedMarker as PointType, point);
+				return {
+					...point,
+					isSelected,
+					selectedClassName: isSelected ? style.isSelected : undefined,
+				};
+			})
+			.filter((point: PointType) =>
+				allLayers.includes(point.layerName as string),
+			);
+	}, [allResults, selectedMarker, allLayers]);
 
 	return (
 		<div className={style.resultContainer}>

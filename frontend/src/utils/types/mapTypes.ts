@@ -129,6 +129,7 @@ type PointType = {
 	isSelected?: boolean;
 	color?: string;
 	shape?: string;
+	layerName?: string;
 };
 
 type SourceType = {

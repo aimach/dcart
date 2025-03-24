@@ -148,6 +148,7 @@ export const sourceController = {
 								sources: sortSourcesByDate(point.sources),
 								color: attestation.color,
 								shape: attestation.icon?.name,
+								layerName: attestation.name,
 							};
 						});
 					}),

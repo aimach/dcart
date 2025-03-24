@@ -15,7 +15,7 @@ import { useMapStore } from "../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../utils/stores/builtMap/mapAsideMenuStore";
 // import du style
 import style from "./mapPage.module.scss";
-import MapMenuNav from "../../components/builtMap/map/mapMenuNav/MapMenuNav";
+import { PointSetType } from "../../utils/types/mapTypes";
 
 /**
  * Page de la carte
@@ -36,6 +36,9 @@ const MapPage = () => {
 			setMapInfos: state.setMapInfos,
 			allPoints: state.allPoints,
 			setAllPoints: state.setAllPoints,
+			setAllResults: state.setAllResults,
+			allLayers: state.allLayers,
+			setAllLayers: state.setAllLayers,
 			setIncludedElementId: state.setIncludedElementId,
 			mapReady: state.mapReady,
 			setMapReady: state.setMapReady,
@@ -47,6 +50,7 @@ const MapPage = () => {
 	const fetchAllPoints = useCallback(async () => {
 		const points = await getAllPointsByMapId(mapId as string, null);
 		mapStore.setAllPoints(points);
+		mapStore.setAllResults(points);
 		mapStore.setMapReady(true);
 	}, [mapId, mapStore]);
 
@@ -64,6 +68,11 @@ const MapPage = () => {
 				// sinon on charge les informations de la carte
 				mapStore.setIncludedElementId(mapInfos.divinityIds);
 				mapStore.setMapInfos(mapInfos);
+				mapStore.setAllLayers(
+					mapInfos.attestations.map(
+						(attestation: PointSetType) => attestation.name as string,
+					),
+				);
 				setMapFilters(mapInfos.filters);
 			}
 		},

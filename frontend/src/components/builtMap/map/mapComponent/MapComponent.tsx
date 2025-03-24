@@ -54,6 +54,10 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		mapInfos,
 		allPoints,
 		setAllPoints,
+		allLayers,
+		addLayer,
+		removeLayer,
+		setAllLayers,
 		mapReady,
 		setMapReady,
 		resetSelectedMarker,
@@ -149,6 +153,20 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
 	};
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		if (!map) return;
+
+		map.on("overlayremove", (e) => {
+			const layerName = e.name;
+			removeLayer(layerName);
+		});
+		map.on("overlayadd", (e) => {
+			const layerName = e.name;
+			addLayer(layerName);
+		});
+	}, [map]);
 
 	return (
 		<>

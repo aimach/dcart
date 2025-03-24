@@ -8,6 +8,8 @@ type State = {
 	map: LeafletMap | null;
 	mapInfos: MapInfoType | null;
 	allPoints: PointType[];
+	allResults: PointType[];
+	allLayers: string[];
 	selectedMarker: PointType | undefined;
 	includedElementId: string | undefined;
 	mapReady: boolean;
@@ -18,6 +20,8 @@ type Action = {
 	setMap: (map: LeafletMap | null) => void;
 	setMapInfos: (mapInfo: MapInfoType | null) => void;
 	setAllPoints: (allPoints: PointType[]) => void;
+	setAllResults: (allResults: PointType[]) => void;
+	setAllLayers: (allLayers: string[]) => void;
 	setSelectedMarker: (selectedMarker: PointType | undefined) => void;
 	resetSelectedMarker: () => void;
 	setIncludedElementId: (includedElementId: string | undefined) => void;
@@ -33,6 +37,16 @@ export const useMapStore = create<State & Action>((set) => ({
 	setMapInfos: (mapInfos) => set(() => ({ mapInfos })),
 	allPoints: [],
 	setAllPoints: (allPoints) => set(() => ({ allPoints })),
+	allResults: [],
+	setAllResults: (allResults) => set(() => ({ allResults })),
+	allLayers: [],
+	setAllLayers: (allLayers) => set(() => ({ allLayers })),
+	addLayer: (layer: string) =>
+		set((state) => ({ allLayers: [...state.allLayers, layer] })),
+	removeLayer: (layer: string) =>
+		set((state) => ({
+			allLayers: state.allLayers.filter((l) => l !== layer),
+		})),
 	selectedMarker: undefined,
 	setSelectedMarker: (selectedMarker) => set(() => ({ selectedMarker })),
 	resetSelectedMarker: () => set(() => ({ selectedMarker: undefined })),
