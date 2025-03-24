@@ -127,6 +127,7 @@ type PointType = {
 	selectedClassName?: string;
 	isSelected?: boolean;
 	color?: string;
+	shape?: string;
 };
 
 type SourceType = {

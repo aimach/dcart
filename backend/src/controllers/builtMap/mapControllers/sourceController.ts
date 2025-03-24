@@ -82,7 +82,11 @@ export const sourceController = {
 				// on récupère les informations de la carte
 				const mapInfos = await dcartDataSource
 					.getRepository(MapContent)
-					.findOne({ where: { id: mapId }, relations: ["attestations"] });
+					.createQueryBuilder("map")
+					.leftJoinAndSelect("map.attestations", "attestations")
+					.leftJoinAndSelect("attestations.icon", "icon")
+					.where("map.id = :id", { id: mapId })
+					.getOne();
 				if (!mapInfos) {
 					res.status(404).send({ Erreur: "Carte non trouvée" });
 				}
@@ -143,6 +147,7 @@ export const sourceController = {
 								...point,
 								sources: sortSourcesByDate(point.sources),
 								color: attestation.color,
+								shape: attestation.icon?.name,
 							};
 						});
 					}),

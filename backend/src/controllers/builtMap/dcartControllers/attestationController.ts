@@ -36,8 +36,7 @@ export const attestationController = {
 	// créer une liste d'attestation
 	createAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { mapId } = req.params;
-			const { name, attestationIds, color, icon } = req.body;
+			const { icon, mapId } = req.body;
 
 			const mapToAddAttestations = await dcartDataSource
 				.getRepository(MapContent)
@@ -57,14 +56,9 @@ export const attestationController = {
 				return;
 			}
 
-			const newAttestation = new Attestation();
-			newAttestation.name = name;
-			newAttestation.attestationIds = attestationIds;
-			newAttestation.color = color;
-			newAttestation.icon = iconToAdd;
-			newAttestation.map = mapToAddAttestations;
-
-			await dcartDataSource.getRepository(Attestation).save(newAttestation);
+			const newAttestation = await dcartDataSource
+				.getRepository(Attestation)
+				.save({ ...req.body, icon: iconToAdd, map: mapToAddAttestations });
 			res.status(201).json(newAttestation);
 		} catch (error) {
 			handleError(res, error as Error);
