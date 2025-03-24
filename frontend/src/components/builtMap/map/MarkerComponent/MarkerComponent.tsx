@@ -64,6 +64,7 @@ const MarkerComponent = ({
 		style,
 		backgroundColorClassName,
 		point.sources.length.toString(),
+		point.color as string,
 	);
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur
