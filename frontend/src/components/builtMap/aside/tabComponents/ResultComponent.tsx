@@ -59,9 +59,11 @@ const ResultComponent = () => {
 		[map, setSelectedMarker, setSelectedTabMenu],
 	);
 
-	// fonction de calcul de la classe CSS pour chaque point (sélectionné ou non)
-	const resultsWithSelectedPoint = useMemo(() => {
-		return allResults
+	const filteredResultsWithSelectedPoint = useMemo(() => {
+		const newResults = allResults
+			.filter((point: PointType) =>
+				mapInfos ? allLayers.includes(point.layerName as string) : point,
+			)
 			.map((point: PointType) => {
 				const isSelected = isSelectedMarker(selectedMarker as PointType, point);
 				return {
@@ -69,15 +71,16 @@ const ResultComponent = () => {
 					isSelected,
 					selectedClassName: isSelected ? style.isSelected : undefined,
 				};
-			})
-			.filter((point: PointType) =>
-				mapInfos ? allLayers.includes(point.layerName as string) : point,
-			);
+			});
+		return newResults;
 	}, [allResults, selectedMarker, allLayers, mapInfos]);
 
 	return (
-		<div className={style.resultContainer}>
-			{resultsWithSelectedPoint.map((result: PointType) => {
+		<div
+			className={style.resultContainer}
+			key={filteredResultsWithSelectedPoint.length}
+		>
+			{filteredResultsWithSelectedPoint.map((result: PointType) => {
 				return (
 					<div
 						key={`${result.latitude}-${result.longitude}`}
