@@ -71,8 +71,9 @@ type MapInfoType = {
 	description_fr: string;
 	image_url?: string;
 	category: string | CategoryType;
-	attestationIds: string;
+	attestations: PointSetType[];
 	filters?: Record<string, string>[];
+	isLayered: boolean;
 };
 
 type MapType = {
@@ -126,6 +127,9 @@ type PointType = {
 	sources: SourceType[];
 	selectedClassName?: string;
 	isSelected?: boolean;
+	color?: string;
+	shape?: string;
+	layerName?: string;
 };
 
 type SourceType = {
@@ -144,6 +148,21 @@ type TimeMarkersType = {
 	ante: number;
 };
 
+type MapIconType = {
+	id?: string;
+	name: string;
+	svg_code: string;
+};
+
+type PointSetType = {
+	id?: string;
+	name: string;
+	attestationIds: string;
+	color?: string;
+	icon?: string;
+	mapId: string;
+};
+
 export type {
 	MapType,
 	PointType,
@@ -159,4 +178,6 @@ export type {
 	CategoryType,
 	ParsedPointType,
 	MapFilterType,
+	MapIconType,
+	PointSetType,
 };

@@ -30,6 +30,7 @@
 .selectedBackgroundColor {
   background-color: v.$color-grullo-light;
   border: 2px solid v.$color-dark-lava;
+  border-radius: 50%;
 
   >div {
     color: v.$color-black-chocolate !important;

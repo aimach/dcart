@@ -218,6 +218,19 @@ const getUserFilters = async () => {
 	}
 };
 
+/**
+ * Récupère la liste des icônes de la BDD
+ * @returns {Promise} - Les icônes
+ */
+const getAllIcons = async () => {
+	try {
+		const response = await apiClient.get("/dcart/icons/all");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des icônes :", error);
+	}
+};
+
 export {
 	getAllAttestationsFromSourceId,
 	getAllCategories,
@@ -232,4 +245,5 @@ export {
 	getOneMapInfos,
 	getTimeMarkers,
 	getUserFilters,
+	getAllIcons,
 };

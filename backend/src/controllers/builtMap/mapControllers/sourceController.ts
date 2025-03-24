@@ -18,6 +18,7 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type { PointType } from "../../../utils/types/mapTypes";
+import type { Attestation } from "../../../entities/builtMap/Attestation";
 
 export const sourceController = {
 	// récupérer toutes les sources à partir de l'id de la carte
@@ -81,12 +82,14 @@ export const sourceController = {
 				// on récupère les informations de la carte
 				const mapInfos = await dcartDataSource
 					.getRepository(MapContent)
-					.findOneBy({ id: mapId });
+					.createQueryBuilder("map")
+					.leftJoinAndSelect("map.attestations", "attestations")
+					.leftJoinAndSelect("attestations.icon", "icon")
+					.where("map.id = :id", { id: mapId })
+					.getOne();
 				if (!mapInfos) {
 					res.status(404).send({ Erreur: "Carte non trouvée" });
 				}
-
-				const { attestationIds } = mapInfos as MapContent;
 
 				// on prépare les query des filtres
 				let queryLocalisation = "";
@@ -127,26 +130,32 @@ export const sourceController = {
 					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
 				}
 
-				// on récupère le texte de la requête SQL
-				const sqlQuery = getSourcesQueryWithDetails(
-					attestationIds,
-					queryLocalisation,
-					queryDatation,
-					queryLanguage,
-					queryIncludedElements,
+				const { attestations } = mapInfos as MapContent;
+				results = await Promise.all(
+					attestations.map(async (attestation: Attestation) => {
+						const sqlQuery = getSourcesQueryWithDetails(
+							attestation.attestationIds,
+							queryLocalisation,
+							queryDatation,
+							queryLanguage,
+							queryIncludedElements,
+						);
+						const queryResults = await mapDataSource.query(sqlQuery);
+						// on trie les sources de chaque point par date
+						return queryResults.map((point: PointType) => {
+							return {
+								...point,
+								sources: sortSourcesByDate(point.sources),
+								color: attestation.color,
+								shape: attestation.icon?.name,
+								layerName: attestation.name,
+							};
+						});
+					}),
 				);
-
-				results = await mapDataSource.query(sqlQuery);
 			}
-			// on trie les sources de chaque point par date
-			const sortedResults = results.map((point: PointType) => {
-				return {
-					...point,
-					sources: sortSourcesByDate(point.sources),
-				};
-			});
 
-			res.status(200).json(sortedResults);
+			res.status(200).json(results.flat());
 		} catch (error) {
 			handleError(res, error as Error);
 		}

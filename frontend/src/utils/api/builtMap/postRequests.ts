@@ -1,7 +1,7 @@
 // import des serivces
 import { apiClient } from "../apiClient";
 // import des types
-import type { MapInfoType } from "../../types/mapTypes";
+import type { MapInfoType, PointSetType } from "../../types/mapTypes";
 
 /**
  * Envoie une requête POST avec la liste des filtres à ajouter à une carte
@@ -35,10 +35,27 @@ const createNewMap = async (body: MapInfoType) => {
 			method: "POST",
 			data: JSON.stringify(body),
 		});
-		return newMap.data;
+		return newMap;
 	} catch (error) {
 		console.error("Erreur lors de la création de la carte :", error);
 	}
 };
 
-export { createNewMap, addFiltersToMap };
+/**
+ * Envoie une requête POST pour créer une nouvelle carte
+ * @param body - Les informations de la carte à créer
+ * @returns {Promise} - La réponse de la création de la carte
+ */
+const createPointSet = async (body: PointSetType) => {
+	try {
+		const newPointSet = await apiClient("dcart/attestations", {
+			method: "POST",
+			data: JSON.stringify(body),
+		});
+		return newPointSet;
+	} catch (error) {
+		console.error("Erreur lors de la création du jeu d'attestations :", error);
+	}
+};
+
+export { createNewMap, addFiltersToMap, createPointSet };

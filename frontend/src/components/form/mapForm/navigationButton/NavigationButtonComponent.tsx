@@ -28,7 +28,9 @@ const NavigationButtonComponent = ({
 	const { translation, language } = useTranslation();
 
 	// récupération des données du store
-	const { decrementStep } = useMapFormStore(useShallow((state) => state));
+	const { decrementStep, incrementStep } = useMapFormStore(
+		useShallow((state) => state),
+	);
 
 	return (
 		<div className={style.navigationButtonContainer}>
@@ -41,8 +43,18 @@ const NavigationButtonComponent = ({
 					<ChevronLeft /> {translation[language].common.previous}
 				</button>
 			)}
+			{step === 2 && nextButtonDisplayed && (
+				<button
+					type="button"
+					onClick={() => incrementStep(step)}
+					onKeyUp={() => incrementStep(step)}
+				>
+					{translation[language].common.next}
+					<ChevronRight />
+				</button>
+			)}
 
-			{nextButtonDisplayed && (
+			{step !== 2 && nextButtonDisplayed && (
 				<button type="submit">
 					{step <= 2
 						? translation[language].common.next

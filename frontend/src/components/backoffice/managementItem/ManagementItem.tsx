@@ -99,13 +99,16 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 	);
 
 	const sanitizedDescription = useMemo(() => {
-		const shortDescription = DOMPurify.sanitize(
-			itemInfos[`description_${selectedLanguage}`],
-		).slice(0, 300);
+		const shortDescription =
+			type === "map"
+				? (itemInfos as MapType)[`description_${language}`]
+				: DOMPurify.sanitize(
+						(itemInfos as StorymapType)[`description_${selectedLanguage}`],
+					).slice(0, 300);
 		return shortDescription.length < 300
 			? shortDescription
 			: `${shortDescription}...`;
-	}, [itemInfos, selectedLanguage]);
+	}, [itemInfos, selectedLanguage, language, type]);
 
 	return (
 		<li className={style.managementItem} key={itemInfos.id}>
@@ -119,7 +122,11 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 					<ImageOff />
 				)}
 				<div className={style.managementItemTitle}>
-					<h4>{(itemInfos as StorymapType)[`title_${selectedLanguage}`]}</h4>
+					<h4>
+						{type === "map"
+							? (itemInfos as MapType)[`title_${language}`]
+							: (itemInfos as StorymapType)[`title_${selectedLanguage}`]}
+					</h4>
 					<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
 						dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
 					/>

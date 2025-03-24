@@ -10,9 +10,13 @@ import { v4 as uuidv4 } from "uuid";
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
 import ModalComponent from "../../../common/modal/ModalComponent";
-import MarkerComponent from "../MarkerComponent/MarkerComponent";
 import TimeFilterComponent from "../../aside/filterComponents/TimeFilterComponent";
 import TileLayerChoiceComponent from "../tileLayerChoice/TileLayerChoiceComponent";
+import MapTitleComponent from "../mapTitleComponent/MapTitleComponent";
+import MapIntroductionContent from "../../../common/modal/MapIntroductionContent";
+import SimpleLayerComponent from "../simpleLayerComponent/SimpleLayerComponent";
+import MultipleLayerComponent from "../multipleLayerComponent/MultipleLayerComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -21,19 +25,14 @@ import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAside
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
 import { getPointsTimeMarkers } from "../../../../utils/functions/filter";
+import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { LatLngTuple } from "leaflet";
-import type { PointType } from "../../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
-// import des images
-import ButtonComponent from "../../../common/button/ButtonComponent";
-import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
-import MapTitleComponent from "../mapTitleComponent/MapTitleComponent";
-import MapIntroductionContent from "../../../common/modal/MapIntroductionContent";
 
 interface MapComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -55,6 +54,10 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		mapInfos,
 		allPoints,
 		setAllPoints,
+		allLayers,
+		addLayer,
+		removeLayer,
+		setAllLayers,
 		mapReady,
 		setMapReady,
 		resetSelectedMarker,
@@ -151,6 +154,20 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		fetchAllPoints("reset");
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		if (!map) return;
+
+		map.on("overlayremove", (e) => {
+			const layerName = e.name;
+			removeLayer(layerName);
+		});
+		map.on("overlayadd", (e) => {
+			const layerName = e.name;
+			addLayer(layerName);
+		});
+	}, [map]);
+
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
@@ -200,16 +217,17 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 									url={tileLayerURL}
 								/>
-								{allMemoizedPoints.length &&
-									allMemoizedPoints.map((point: PointType) => {
-										return (
-											<MarkerComponent
-												key={point.key}
-												point={point}
-												setPanelDisplayed={setPanelDisplayed}
-											/>
-										);
-									})}
+								{!mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
+									<SimpleLayerComponent
+										allMemoizedPoints={allMemoizedPoints}
+										setPanelDisplayed={setPanelDisplayed}
+									/>
+								)}
+								{mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
+									<MultipleLayerComponent
+										setPanelDisplayed={setPanelDisplayed}
+									/>
+								)}
 								<ZoomControl position="bottomright" />
 								<ScaleControl position="bottomright" />
 								{/* <ResetControl mapBounds={bounds} /> */}

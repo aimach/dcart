@@ -154,13 +154,17 @@ const getAsideNavigationList = (
 	translation: TranslationType,
 	language: Language,
 	allPoints: PointType[],
+	allLayers: string[],
 	setSelectedTabMenu: (setSelectedTabMenu: MenuTabType) => void,
 ) => {
+	const allPointsLength = allPoints.filter((point) =>
+		allLayers.includes(point.layerName as string),
+	).length;
 	return [
 		{
 			id: "results",
-			title: `${allPoints.length} ${translation[language].button.result}${
-				allPoints.length > 1 ? "s" : ""
+			title: `${allPointsLength} ${translation[language].button.result}${
+				allPointsLength > 1 ? "s" : ""
 			}`,
 			onClickFunction: () => setSelectedTabMenu("results"),
 			route: undefined,

@@ -100,41 +100,31 @@ const UserMapFilterForm = () => {
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
 		if (pathname.includes("edit")) {
-			// mise à jour de la carte
-			const updatedMapResponse = await updateMap(mapInfos as MapInfoType);
 			// mise à jour des filtres
 			const updatedFiltersResponse = await updateFiltersToMap(
 				mapInfos?.id as string,
 				mapFilters,
 			);
-			if (
-				updatedMapResponse?.status === 200 &&
-				updatedFiltersResponse?.status === 200
-			) {
+			if (updatedFiltersResponse?.status === 200) {
 				resetMapInfos();
 				resetMapFilters();
 				resetAllPoints();
 				navigate("/backoffice/maps");
 			}
 		} else if (pathname.includes("create")) {
-			// création de la nouvelle carte avec les données stockées dans le store
-			const newMap = await createNewMap(mapInfos as MapInfoType);
-			// si la carte a bien été créée, ajout des filtres utilisateurs à la carte ou retour à la page des cartes
-			if (newMap) {
-				if (noFilterChecked(mapFilters)) {
+			if (noFilterChecked(mapFilters)) {
+				navigate("/backoffice/maps");
+			} else {
+				const response = await addFiltersToMap(
+					mapInfos?.id as string,
+					mapFilters,
+				);
+				if (response?.status === 201) {
+					// réinitialisation des données du store
+					resetMapInfos();
+					resetMapFilters();
+					resetAllPoints();
 					navigate("/backoffice/maps");
-				} else {
-					const response = await addFiltersToMap(
-						newMap.id as string,
-						mapFilters,
-					);
-					if (response?.status === 201) {
-						// réinitialisation des données du store
-						resetMapInfos();
-						resetMapFilters();
-						resetAllPoints();
-						navigate("/backoffice/maps");
-					}
 				}
 			}
 		}

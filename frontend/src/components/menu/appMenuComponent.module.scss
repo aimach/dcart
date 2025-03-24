@@ -14,6 +14,8 @@
         >ul {
             @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
             gap: v.$space-xxxl;
+            list-style-type: none;
+            padding-left: 0;
 
             >li {
                 @include m.flexbox(flex, row, nowrap, flex-start, center);

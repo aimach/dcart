@@ -52,7 +52,7 @@ const MarkerComponent = ({
 	let backgroundColorClassName = null;
 	if (selectedMarker && isSelectedMarker(selectedMarker, point)) {
 		backgroundColorClassName = "selectedBackgroundColor";
-	} else {
+	} else if (point.shape === "circle" && !point.color) {
 		backgroundColorClassName = getBackGroundColorClassName(
 			point.sources.length,
 		);
@@ -64,6 +64,8 @@ const MarkerComponent = ({
 		style,
 		backgroundColorClassName,
 		point.sources.length.toString(),
+		point.color,
+		point.shape,
 	);
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur
