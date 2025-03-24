@@ -28,7 +28,10 @@ const getLittleIcon = (
 	if (!backgroundColor && (shape === "circle" || !shape)) {
 		classNameString = `${style.circleBrownIcon} ${style[customClassName as string]}`;
 	}
-	const borderStyle = backgroundColor ? "border: 1px solid black;" : "";
+	const borderStyle =
+		backgroundColor && customClassName !== "selectedBackgroundColor"
+			? "border: 1px solid black;"
+			: "";
 	return L.divIcon({
 		className: classNameString,
 		html: `<div style="display:flex; justify-content:center; align-items:center; width: 25px; height: 25px; color: #DED6CE; ${borderStyle} ${shapeStyle} ${backgroundColorStyle}">${content}</div>`,
@@ -65,7 +68,10 @@ const getMediumIcon = (
 	if (!backgroundColor && (shape === "circle" || !shape)) {
 		classNameString = `${style.circleBrownIcon} ${style[customClassName as string]}`;
 	}
-	const borderStyle = backgroundColor ? "border: 1px solid black;" : "";
+	const borderStyle =
+		backgroundColor && customClassName !== "selectedBackgroundColor"
+			? "border: 1px solid black;"
+			: "";
 	return L.divIcon({
 		className: classNameString,
 		html: `<div style="display:flex; justify-content:center; align-items:center; width: 35px; height: 35px; color: #DED6CE; ${borderStyle} ${shapeStyle} ${backgroundColorStyle}">${content}</div>`,
@@ -102,7 +108,10 @@ const getDarkIcon = (
 	if (!backgroundColor && (shape === "circle" || !shape)) {
 		classNameString = `${style.circleBrownIcon} ${style[customClassName as string]}`;
 	}
-	const borderStyle = backgroundColor ? "border: 1px solid black;" : "";
+	const borderStyle =
+		backgroundColor && customClassName !== "selectedBackgroundColor"
+			? "border: 1px solid black;"
+			: "";
 	return L.divIcon({
 		className: classNameString,
 		html: `<div style="display:flex; justify-content:center; align-items:center; width: 45px; height: 45px; color: #DED6CE;${borderStyle} ${shapeStyle} ${backgroundColorStyle}">${content}</div>`,
