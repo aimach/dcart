@@ -49,6 +49,10 @@ export class MapContent extends BaseEntity {
 	@Column({ type: "boolean", default: false })
 	isActive!: boolean;
 
+	// booléen si les points de la carte s'affichent en couches
+	@Column({ type: "boolean", default: false })
+	isLayered!: boolean;
+
 	@CreateDateColumn({ type: "timestamptz" })
 	createdAt!: Date;
 

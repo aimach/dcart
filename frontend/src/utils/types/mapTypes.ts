@@ -73,6 +73,7 @@ type MapInfoType = {
 	category: string | CategoryType;
 	attestations: PointSetType[];
 	filters?: Record<string, string>[];
+	isLayered: boolean;
 };
 
 type MapType = {

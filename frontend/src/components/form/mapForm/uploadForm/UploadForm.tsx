@@ -12,7 +12,10 @@ import PointSetUploadForm from "../pointSetUploadForm/PointSetUploadForm";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
 // import des types
 import type { FormEventHandler } from "react";
-import type { PointSetType } from "../../../../utils/types/mapTypes";
+import type {
+	MapInfoType,
+	PointSetType,
+} from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des images
@@ -20,6 +23,7 @@ import { CircleHelp, X } from "lucide-react";
 import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
+import { updateMap } from "../../../../utils/api/builtMap/putRequests";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -70,6 +74,15 @@ const UploadForm = () => {
 		setMapInfos(newMapInfos);
 	};
 
+	const handleIsLayeredChange = async (isLayered: string) => {
+		console.log(isLayered);
+		const result = await updateMap({
+			...(mapInfos as MapInfoType),
+			isLayered: isLayered === "true",
+		});
+		setMapInfos(result?.data);
+	};
+
 	return (
 		<>
 			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
@@ -100,6 +113,21 @@ const UploadForm = () => {
 								</div>
 							))}
 						</div>
+						{mapInfos?.attestations.length > 1 && (
+							<div className={style.commonFormInputContainer}>
+								<label htmlFor="isLayered">
+									Les points doivent être sur différents calques
+								</label>
+								<input
+									id="isLayered"
+									name="isLayered"
+									type="checkbox"
+									onChange={(event) =>
+										handleIsLayeredChange(event.target.checked.toString())
+									}
+								/>
+							</div>
+						)}
 						<ButtonComponent
 							type="button"
 							color="brown"

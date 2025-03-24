@@ -60,12 +60,10 @@ export const mapContentController = {
 				return;
 			}
 
-			const mapInfos = await dcartDataSource
-				.getRepository(MapContent)
-				.find({
-					where: { id: mapId },
-					relations: ["filters", "category", "attestations"],
-				});
+			const mapInfos = await dcartDataSource.getRepository(MapContent).find({
+				where: { id: mapId },
+				relations: ["filters", "category", "attestations"],
+			});
 			if (!mapInfos) {
 				res.status(404).send({ Erreur: "Carte non trouvée" });
 			} else {

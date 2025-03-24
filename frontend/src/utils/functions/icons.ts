@@ -11,7 +11,7 @@ import L from "leaflet";
  */
 const getLittleIcon = (
 	style: CSSModuleClasses,
-	customClassName: string,
+	customClassName: string | null,
 	content: string,
 	backgroundColor?: string,
 	shape?: string,
@@ -24,9 +24,9 @@ const getLittleIcon = (
 	if (shape === "circle") {
 		shapeStyle = "border-radius: 50%;";
 	}
-	let classNameString = `${style[customClassName]}`;
+	let classNameString = `${style[customClassName as string]}`;
 	if (!backgroundColor && shape === "circle") {
-		classNameString = `${style.circleBrownIcon} ${style[customClassName]}`;
+		classNameString = `${style.circleBrownIcon} ${style[customClassName as string]}`;
 	}
 	const borderStyle =
 		customClassName === "selectedBackgroundColor"
@@ -51,7 +51,7 @@ const getLittleIcon = (
  */
 const getMediumIcon = (
 	style: CSSModuleClasses,
-	customClassName: string,
+	customClassName: string | null,
 	content: string,
 	backgroundColor?: string,
 	shape?: string,
@@ -64,9 +64,9 @@ const getMediumIcon = (
 	if (shape === "circle") {
 		shapeStyle = "border-radius: 50%;";
 	}
-	let classNameString = `${style[customClassName]}`;
+	let classNameString = `${style[customClassName as string]}`;
 	if (!backgroundColor && shape === "circle") {
-		classNameString = `${style.circleBrownIcon} ${style[customClassName]}`;
+		classNameString = `${style.circleBrownIcon} ${style[customClassName as string]}`;
 	}
 	const borderStyle =
 		customClassName === "selectedBackgroundColor"
@@ -91,7 +91,7 @@ const getMediumIcon = (
  */
 const getDarkIcon = (
 	style: CSSModuleClasses,
-	customClassName: string,
+	customClassName: string | null,
 	content: string,
 	backgroundColor?: string,
 	shape?: string,
@@ -104,9 +104,9 @@ const getDarkIcon = (
 	if (shape === "circle") {
 		shapeStyle = "border-radius: 50%;";
 	}
-	let classNameString = `${style[customClassName]}`;
+	let classNameString = `${style[customClassName as string]}`;
 	if (!backgroundColor && shape === "circle") {
-		classNameString = `${style.circleBrownIcon} ${style[customClassName]}`;
+		classNameString = `${style.circleBrownIcon} ${style[customClassName as string]}`;
 	}
 	const borderStyle =
 		customClassName === "selectedBackgroundColor"
@@ -133,7 +133,7 @@ const getDarkIcon = (
 const getIcon = (
 	sourcesNb: number,
 	style: CSSModuleClasses,
-	customClassName: string,
+	customClassName: string | null,
 	content: string,
 	backgroundColor?: string,
 	shape?: string,
