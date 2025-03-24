@@ -8,6 +8,9 @@
   >ul {
     height: v.$space-xl;
     @include m.flexbox(flex, row, nowrap, space-around, center);
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
 
     >li {
       width: 33%;
