@@ -1,0 +1,34 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+
+.itemTableRow {
+    >td {
+        text-align: left;
+        background-color: v.$background-color-base;
+        padding: v.$space-l 0;
+        border-bottom: v.$border-width-m solid v.$color-grullo;
+        max-width: 100px;
+
+
+    }
+
+    >td:last-of-type {
+        text-align: center;
+
+        >svg {
+            cursor: pointer;
+            margin-right: v.$space-s;
+            background-color: v.$background-color-soft;
+            border-radius: v.$border-radius-base;
+            border: v.$border-width-m solid v.$color-neutral-80;
+            padding: 5px;
+            transition: scale 0.2s;
+            color: v.$color-dark-lava;
+        }
+
+        >svg:hover {
+            scale: 1.1;
+        }
+    }
+}

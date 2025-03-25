@@ -3,7 +3,7 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 // import des composants
 import ButtonComponent from "../../common/button/ButtonComponent";
-import ManagementItem from "../managementItem/ManagementItem";
+import ItemTableComponent from "../itemTable/ItemTableComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -66,28 +66,33 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 					resetMapInfos();
 				}}
 			/>
-			<section className={style.managementContainerList}>
-				{type === "map" ? (
-					<ul className={style.managementContainerList}>
-						{allMapsInfos.map((map) => (
-							<ManagementItem
-								key={map.id}
-								itemInfos={map as MapType}
-								type="map"
-							/>
-						))}
-					</ul>
-				) : (
-					<ul className={style.managementContainerList}>
-						{allStorymapsInfos.map((storymap) => (
-							<ManagementItem
-								key={storymap.id}
-								itemInfos={storymap as MapType}
-								type="storymap"
-							/>
-						))}
-					</ul>
-				)}
+			<section className={style.managementContainer}>
+				<table className={style.managementTable}>
+					<thead>
+						<tr>
+							<th scope="col">Image</th>
+							<th scope="col">Nom</th>
+							<th scope="col">Description</th>
+							<th scope="col">Statut</th>
+							<th scope="col">Date de création</th>
+							<th scope="col">Date de modification</th>
+							<th scope="col">Liens rapides</th>
+						</tr>
+					</thead>
+					<tbody>
+						{type === "map"
+							? allMapsInfos.map((map) => (
+									<ItemTableComponent key={map.id} itemInfos={map} type="map" />
+								))
+							: allStorymapsInfos.map((storymap) => (
+									<ItemTableComponent
+										key={storymap.id}
+										itemInfos={storymap}
+										type="storymap"
+									/>
+								))}
+					</tbody>
+				</table>
 			</section>
 		</>
 	);

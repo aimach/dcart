@@ -1,0 +1,161 @@
+// import des bibliothèques
+import { useContext, useEffect, useMemo, useState } from "react";
+import DOMPurify from "dompurify";
+import truncate from "truncate-html";
+// import des composants
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
+// import des services
+import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
+import { createSession, getSessionById } from "../../../utils/api/sessionAPI";
+// import des types
+import type { MapType } from "../../../utils/types/mapTypes";
+import type { StorymapType } from "../../../utils/types/storymapTypes";
+// import du style
+import style from "./itemTableComponent.module.scss";
+// import des icônes
+import { Eye, EyeOff, ImageOff, Pen, PenOff, Trash } from "lucide-react";
+import { SessionContext } from "../../../context/SessionContext";
+import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
+import { useModalStore } from "../../../utils/stores/storymap/modalStore";
+import { useNavigate } from "react-router";
+import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
+import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
+import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
+
+type ItemTableComponentProps = {
+	itemInfos: MapType | StorymapType;
+	type: "map" | "storymap";
+};
+
+const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
+	const { language } = useTranslation();
+	const { selectedLanguage } = useStorymapLanguageStore();
+
+	const { setSession } = useContext(SessionContext);
+
+	const { setMapInfos } = useMapFormStore();
+	const { openDeleteModal, setIdToDelete, reload, setReload } = useModalStore();
+
+	const sanitizedDescription = useMemo(() => {
+		const shortDescription =
+			type === "map"
+				? DOMPurify.sanitize((itemInfos as MapType)[`description_${language}`])
+				: DOMPurify.sanitize(
+						(itemInfos as StorymapType)[`description_${selectedLanguage}`],
+					);
+
+		return shortDescription.length > 100
+			? truncate(shortDescription, 100, { ellipsis: "…" })
+			: shortDescription;
+	}, [itemInfos, selectedLanguage, language, type]);
+
+	const [isModifiedByAnotherUser, setIsModifiedByAnotherUser] =
+		useState<boolean>(false);
+	useEffect(() => {
+		const checkSession = async () => {
+			const sessionResponse = await getSessionById(itemInfos.id);
+			if (sessionResponse?.data.sessionExists) {
+				setIsModifiedByAnotherUser(true);
+			}
+		};
+		checkSession();
+	}, [itemInfos.id]);
+
+	// fonction déclenchée lors du clic sur l'icone de suppression
+	const handleDeleteClick = (idToDelete: string) => {
+		setIdToDelete(idToDelete);
+		openDeleteModal();
+	};
+
+	// fonction déclenchée lors du clic sur l'icone de modification
+	const navigate = useNavigate();
+	const handleModifyClick = async (idToModify: string) => {
+		if (type === "map") {
+			// mise à jour des informations de la carte dans le store
+			const allMapInfos = await getOneMapInfos(idToModify);
+			setMapInfos(allMapInfos);
+			if (allMapInfos) {
+				navigate(`/backoffice/maps/edit/${idToModify}`);
+				const session = await createSession(type, idToModify);
+				setSession(session);
+			}
+		} else {
+			navigate(`/backoffice/storymaps/build/${idToModify}`);
+			const session = await createSession(type, idToModify);
+			setSession(session);
+		}
+	};
+
+	// fonction déclenchée lors du clic sur l'icone de publication
+	const handlePublicationClick = async (type: string, status: boolean) => {
+		if (type === "map") {
+			await updateMapActiveStatus(itemInfos.id, status);
+		}
+		if (type === "storymap") {
+			await updateStorymapStatus(itemInfos.id, status);
+		}
+		setReload(!reload);
+	};
+	return (
+		<tr key={itemInfos.id} className={style.itemTableRow}>
+			<td>
+				{(itemInfos as StorymapType).image_url ? (
+					<img
+						src={(itemInfos as StorymapType).image_url}
+						alt={(itemInfos as StorymapType)[`title_${selectedLanguage}`]}
+						width={100}
+					/>
+				) : (
+					<ImageOff />
+				)}
+			</td>
+			<td>
+				{type === "map"
+					? (itemInfos as MapType)[`title_${language}`]
+					: (itemInfos as StorymapType)[`title_${selectedLanguage}`]}
+			</td>
+			<td>
+				<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+					dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+				/>
+			</td>
+			<td>{itemInfos.isActive ? "Publiée" : "Non publiée"}</td>
+			<td>
+				{new Date(itemInfos.createdAt).toLocaleDateString(language, {
+					year: "numeric",
+					month: "long",
+					day: "numeric",
+				})}
+			</td>
+			<td>
+				{itemInfos.modifier
+					? new Date(itemInfos.updatedAt).toLocaleDateString(language, {
+							year: "numeric",
+							month: "long",
+							day: "numeric",
+						})
+					: ""}
+			</td>
+			<td>
+				{itemInfos.isActive ? (
+					<EyeOff onClick={() => handlePublicationClick(type, false)} />
+				) : (
+					<Eye onClick={() => handlePublicationClick(type, true)} />
+				)}
+				{isModifiedByAnotherUser ? (
+					<PenOff />
+				) : (
+					<Pen onClick={() => handleModifyClick(itemInfos.id)} />
+				)}
+
+				<Trash
+					color="#9d2121"
+					onClick={() => handleDeleteClick(itemInfos.id)}
+				/>
+			</td>
+		</tr>
+	);
+};
+
+export default ItemTableComponent;
