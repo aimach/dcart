@@ -22,6 +22,7 @@ import { useNavigate } from "react-router";
 import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
 import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
 import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
+import TagComponent from "../../common/tag/TagComponent";
 
 type ItemTableComponentProps = {
 	itemInfos: MapType | StorymapType;
@@ -100,27 +101,35 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 	return (
 		<tr key={itemInfos.id} className={style.itemTableRow}>
 			<td>
-				{(itemInfos as StorymapType).image_url ? (
-					<img
-						src={(itemInfos as StorymapType).image_url}
-						alt={(itemInfos as StorymapType)[`title_${selectedLanguage}`]}
-						width={100}
-					/>
-				) : (
-					<ImageOff />
-				)}
+				<div>
+					{(itemInfos as StorymapType).image_url ? (
+						<img
+							src={(itemInfos as StorymapType).image_url}
+							alt={(itemInfos as StorymapType)[`title_${selectedLanguage}`]}
+							width={100}
+						/>
+					) : (
+						<ImageOff />
+					)}
+				</div>
 			</td>
 			<td>
 				{type === "map"
 					? (itemInfos as MapType)[`title_${language}`]
 					: (itemInfos as StorymapType)[`title_${selectedLanguage}`]}
-			</td>
-			<td>
 				<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
 					dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+					className={style.descriptionCell}
 				/>
 			</td>
-			<td>{itemInfos.isActive ? "Publiée" : "Non publiée"}</td>
+
+			<td>
+				{itemInfos.isActive ? (
+					<TagComponent text="publiée" color="green" />
+				) : (
+					<TagComponent text="non publiée" color="red" />
+				)}
+			</td>
 			<td>
 				{new Date(itemInfos.createdAt).toLocaleDateString(language, {
 					year: "numeric",
@@ -136,6 +145,11 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 							day: "numeric",
 						})
 					: ""}
+			</td>
+			<td>
+				{itemInfos.modifier
+					? itemInfos.modifier.pseudo
+					: itemInfos.creator.pseudo}
 			</td>
 			<td>
 				{itemInfos.isActive ? (

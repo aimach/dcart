@@ -71,11 +71,11 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 					<thead>
 						<tr>
 							<th scope="col">Image</th>
-							<th scope="col">Nom</th>
-							<th scope="col">Description</th>
+							<th scope="col">Nom/Description</th>
 							<th scope="col">Statut</th>
 							<th scope="col">Date de création</th>
 							<th scope="col">Date de modification</th>
+							<th scope="col">Dernière édition par</th>
 							<th scope="col">Liens rapides</th>
 						</tr>
 					</thead>
