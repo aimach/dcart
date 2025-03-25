@@ -30,11 +30,23 @@
         font-weight: v.$font-weight-bold;
     }
 
-    >label {
-        font-size: v.$font-size-m;
-        font-weight: v.$font-weight-bold;
+    .labelContainer {
         width: 50%;
+
+        >label {
+            font-size: v.$font-size-m;
+            font-weight: v.$font-weight-bold;
+        }
+
+        >p {
+            width: 80%;
+            padding-top: v.$space-xs;
+            font-size: v.$font-size-s;
+            font-weight: v.$font-weight-light;
+            color: v.$color-grullo;
+        }
     }
+
 
     >input,
     textarea,

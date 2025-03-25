@@ -123,7 +123,12 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 					if (input.type === "select") {
 						return (
 							<div key={input.name} className={style.commonFormInputContainer}>
-								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<div className={style.labelContainer}>
+									<label htmlFor={input.name}>
+										{input[`label_${language}`]}
+									</label>
+									<p>{input[`description_${language}`]}</p>
+								</div>
 								<select
 									{...register(input.name as keyof MapInfoType, {
 										required: input.required.value,
@@ -162,7 +167,12 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 					if (input.type === "text") {
 						return (
 							<div key={input.name} className={style.commonFormInputContainer}>
-								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<div className={style.labelContainer}>
+									<label htmlFor={input.name}>
+										{input[`label_${language}`]}
+									</label>
+									<p>{input[`description_${language}`]}</p>
+								</div>
 								<input
 									{...register(input.name as keyof MapInfoType, {
 										required: input.required.value,
@@ -185,7 +195,12 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 					if (input.type === "wysiwyg") {
 						return (
 							<div key={input.name} className={style.commonFormInputContainer}>
-								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<div className={style.labelContainer}>
+									<label htmlFor={input.name}>
+										{input[`label_${language}`]}
+									</label>
+									<p>{input[`description_${language}`]}</p>
+								</div>
 								<Controller
 									name={input.name as keyof MapInfoType}
 									control={control}

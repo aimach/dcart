@@ -5,6 +5,8 @@ import type { BlockContentType } from "./storymapTypes";
 type InputType = {
 	label_fr: string;
 	label_en: string;
+	description_fr?: string;
+	description_en?: string;
 	name: string;
 	type: string;
 	options?: OptionType[];
