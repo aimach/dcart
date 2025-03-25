@@ -88,6 +88,11 @@
 		}
 	},
 	"backoffice": {
+		"authPage": {
+			"login": "Log in",
+			"username": "Username",
+			"password": "Password"
+		},
 		"mapFormPage": {
 			"addMapIntro": "Add map information",
 			"addMapPoints": "Add map points",

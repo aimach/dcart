@@ -1,18 +1,25 @@
 // import des bibliothèques
 import { useContext, useState } from "react";
 import { useNavigate } from "react-router";
+// import des composants
+import ButtonComponent from "../common/button/ButtonComponent";
+// import des custom hooks
+import { useTranslation } from "../../utils/hooks/useTranslation";
 // import du contexte
 import { AuthContext } from "../../context/AuthContext";
 // import des types
 import type { User } from "../../utils/types/userTypes";
 // import des services
 import { loginUser } from "../../utils/api/authAPI";
+// import du style
+import style from "./authFormComponent.module.scss";
 
 /**
  * Composant de formulaire d'authentification
  */
 const AuthFormComponent = () => {
-	// récupération des données d'authentification
+	const { language, translation } = useTranslation();
+
 	const { setToken } = useContext(AuthContext);
 
 	// définition du state pour les données du formulaire
@@ -38,10 +45,12 @@ const AuthFormComponent = () => {
 	};
 
 	return (
-		<>
+		<section className={style.authFormContainer}>
 			<form>
 				<div>
-					<label htmlFor="username">Nom d'utilisateur : </label>
+					<label htmlFor="username">
+						{translation[language].backoffice.authPage.username}
+					</label>
 					<input
 						type="text"
 						name="username"
@@ -54,7 +63,9 @@ const AuthFormComponent = () => {
 					/>
 				</div>
 				<div>
-					<label htmlFor="password">Mot de passe : </label>
+					<label htmlFor="password">
+						{translation[language].backoffice.authPage.password}
+					</label>
 					<input
 						type="password"
 						name="password"
@@ -67,10 +78,13 @@ const AuthFormComponent = () => {
 					/>
 				</div>
 			</form>
-			<button type="button" onClick={handleConnectionButtonClick}>
-				Se connecter
-			</button>
-		</>
+			<ButtonComponent
+				type="button"
+				color="brown"
+				textContent={translation[language].backoffice.authPage.login}
+				onClickFunction={handleConnectionButtonClick}
+			/>
+		</section>
 	);
 };
 
