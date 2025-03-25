@@ -52,7 +52,7 @@ const MarkerComponent = ({
 	let backgroundColorClassName = null;
 	if (selectedMarker && isSelectedMarker(selectedMarker, point)) {
 		backgroundColorClassName = "selectedBackgroundColor";
-	} else if (point.shape === "circle" && !point.color) {
+	} else if ((point.shape === "circle" || !point.shape) && !point.color) {
 		backgroundColorClassName = getBackGroundColorClassName(
 			point.sources.length,
 		);

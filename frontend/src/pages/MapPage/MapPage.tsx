@@ -13,9 +13,10 @@ import {
 import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../utils/stores/builtMap/mapAsideMenuStore";
+// import des types
+import type { PointSetType } from "../../utils/types/mapTypes";
 // import du style
 import style from "./mapPage.module.scss";
-import { PointSetType } from "../../utils/types/mapTypes";
 
 /**
  * Page de la carte

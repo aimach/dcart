@@ -37,6 +37,7 @@ const MapIntroductionContent = ({
 	const { mapInfos } = useMapStore();
 
 	const sanitizedDescription = useMemo(() => {
+		if (!mapInfos) return "";
 		return DOMPurify.sanitize(
 			(mapInfos as MapInfoType)[`description_${language}`],
 		);

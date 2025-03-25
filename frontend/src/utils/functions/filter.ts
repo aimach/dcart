@@ -314,10 +314,14 @@ const displayFiltersTags = (
 	const stringArray = [];
 
 	// affichage des dates
-	if (userFilters.post)
-		stringArray.push(`${translationObject.common.after} ${userFilters.post}`);
-	if (userFilters.ante)
-		stringArray.push(`${translationObject.common.before} ${userFilters.ante}`);
+	if (userFilters.post !== -1000 || userFilters.ante !== 400) {
+		if (userFilters.post)
+			stringArray.push(`${translationObject.common.after} ${userFilters.post}`);
+		if (userFilters.ante)
+			stringArray.push(
+				`${translationObject.common.before} ${userFilters.ante}`,
+			);
+	}
 
 	// affichage des langues
 	if (languageValues.greek && languageValues.semitic) {

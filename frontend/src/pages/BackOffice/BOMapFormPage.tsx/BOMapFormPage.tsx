@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { useContext, useEffect } from "react";
+import { useLocation } from "react-router";
 // import des composants
 import IntroForm from "../../../components/form/mapForm/introForm/IntroForm";
 import DemoMapComponent from "../../../components/builtMap/map/demoMapComponent/DemoMapComponent";
@@ -19,6 +20,8 @@ import StayConnectedContent from "../../../components/common/modal/StayConnected
  * Page du formulaire de création de carte
  */
 const BOMapFormPage = () => {
+	const { pathname } = useLocation();
+
 	// récupération des données des stores
 	const { step, setStep, setAllPoints } = useMapFormStore((state) => state);
 	const { closeDeleteModal } = useModalStore();

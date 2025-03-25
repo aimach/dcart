@@ -44,7 +44,7 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 	useEffect(() => {
 		const checkSession = async () => {
 			const sessionResponse = await getSessionById(itemInfos.id);
-			if (sessionResponse?.status === 200) {
+			if (sessionResponse?.data.sessionExists) {
 				setIsModifiedByAnotherUser(true);
 			}
 		};
@@ -65,16 +65,12 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 			const allMapInfos = await getOneMapInfos(idToModify);
 			setMapInfos(allMapInfos);
 			if (allMapInfos) {
-				// création d'une session de modification
+				navigate(`/backoffice/maps/edit/${idToModify}`);
 				const session = await createSession(type, idToModify);
 				setSession(session);
-				// redirection vers la page de modification de carte
-				navigate(`/backoffice/maps/edit/${idToModify}`);
 			}
 		} else {
-			// redirection vers la page de modification de storymap
 			navigate(`/backoffice/storymaps/build/${idToModify}`);
-			// création d'une session de modification
 			const session = await createSession(type, idToModify);
 			setSession(session);
 		}

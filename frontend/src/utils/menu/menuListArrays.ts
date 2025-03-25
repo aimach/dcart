@@ -1,7 +1,7 @@
 // import des types
 import { UserFilterType } from "../types/filterTypes";
 import type { Language, TranslationType } from "../types/languageTypes";
-import type { MenuTabType, PointType } from "../types/mapTypes";
+import type { MapInfoType, MenuTabType, PointType } from "../types/mapTypes";
 
 /**
  * Génère le tableau des éléments de la barre de navigation de la page d'accueil
@@ -156,10 +156,12 @@ const getAsideNavigationList = (
 	allPoints: PointType[],
 	allLayers: string[],
 	setSelectedTabMenu: (setSelectedTabMenu: MenuTabType) => void,
+	mapInfos: MapInfoType | null,
 ) => {
-	const allPointsLength = allPoints.filter((point) =>
-		allLayers.includes(point.layerName as string),
-	).length;
+	const allPointsLength = mapInfos
+		? allPoints.filter((point) => allLayers.includes(point.layerName as string))
+				.length
+		: allPoints.length;
 	return [
 		{
 			id: "results",

@@ -25,13 +25,13 @@ const getLittleIcon = (
 		shapeStyle = "border-radius: 50%;";
 	}
 	let classNameString = `${style[customClassName as string]}`;
-	if (!backgroundColor && shape === "circle") {
+	if (!backgroundColor && (shape === "circle" || !shape)) {
 		classNameString = `${style.circleBrownIcon} ${style[customClassName as string]}`;
 	}
 	const borderStyle =
-		customClassName === "selectedBackgroundColor"
-			? ""
-			: "border: 1px solid black;";
+		backgroundColor && customClassName !== "selectedBackgroundColor"
+			? "border: 1px solid black;"
+			: "";
 	return L.divIcon({
 		className: classNameString,
 		html: `<div style="display:flex; justify-content:center; align-items:center; width: 25px; height: 25px; color: #DED6CE; ${borderStyle} ${shapeStyle} ${backgroundColorStyle}">${content}</div>`,
@@ -65,13 +65,13 @@ const getMediumIcon = (
 		shapeStyle = "border-radius: 50%;";
 	}
 	let classNameString = `${style[customClassName as string]}`;
-	if (!backgroundColor && shape === "circle") {
+	if (!backgroundColor && (shape === "circle" || !shape)) {
 		classNameString = `${style.circleBrownIcon} ${style[customClassName as string]}`;
 	}
 	const borderStyle =
-		customClassName === "selectedBackgroundColor"
-			? ""
-			: "border: 1px solid black;";
+		backgroundColor && customClassName !== "selectedBackgroundColor"
+			? "border: 1px solid black;"
+			: "";
 	return L.divIcon({
 		className: classNameString,
 		html: `<div style="display:flex; justify-content:center; align-items:center; width: 35px; height: 35px; color: #DED6CE; ${borderStyle} ${shapeStyle} ${backgroundColorStyle}">${content}</div>`,
@@ -105,13 +105,13 @@ const getDarkIcon = (
 		shapeStyle = "border-radius: 50%;";
 	}
 	let classNameString = `${style[customClassName as string]}`;
-	if (!backgroundColor && shape === "circle") {
+	if (!backgroundColor && (shape === "circle" || !shape)) {
 		classNameString = `${style.circleBrownIcon} ${style[customClassName as string]}`;
 	}
 	const borderStyle =
-		customClassName === "selectedBackgroundColor"
-			? ""
-			: "border: 1px solid black;";
+		backgroundColor && customClassName !== "selectedBackgroundColor"
+			? "border: 1px solid black;"
+			: "";
 	return L.divIcon({
 		className: classNameString,
 		html: `<div style="display:flex; justify-content:center; align-items:center; width: 45px; height: 45px; color: #DED6CE;${borderStyle} ${shapeStyle} ${backgroundColorStyle}">${content}</div>`,

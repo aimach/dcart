@@ -7,10 +7,9 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useShallow } from "zustand/shallow";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+import { getAsideNavigationList } from "../../../../utils/menu/menuListArrays";
 // import du style
 import style from "./asideHeader.module.scss";
-import { getAsideNavigationList } from "../../../../utils/menu/menuListArrays";
-import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 
 /**
  * Affiche les onglets de navigation du panel latéral
@@ -27,7 +26,7 @@ const AsideHeader = () => {
 			setSelectedTabMenu: state.setSelectedTabMenu,
 		})),
 	);
-	const { allPoints, allLayers } = useMapStore();
+	const { mapInfos, allPoints, allLayers } = useMapStore();
 
 	return (
 		<NavComponent
@@ -39,6 +38,7 @@ const AsideHeader = () => {
 				allPoints,
 				allLayers,
 				setSelectedTabMenu,
+				mapInfos,
 			)}
 			selectedElement={selectedTabMenu}
 			liClasseName={style.liActive}

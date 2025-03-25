@@ -99,6 +99,7 @@
 			"epithetFilter": "Epithet filter",
 			"noFilter": "I don't want to add a filter",
 			"create": "Create",
+			"edit": "Edit",
 			"uploadPointsHelp": "Help for create a CSV file"
 		},
 		"storymapFormPage": {

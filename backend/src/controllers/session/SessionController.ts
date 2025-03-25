@@ -30,13 +30,15 @@ export const sessionController = {
 				.findOne({ where: { itemId } });
 
 			if (!session) {
-				res.status(404).json({
-					message: "Session non trouvée",
+				res.status(200).json({
+					sessionExists: false,
+					message: "Aucune session trouvée",
 				});
 				return;
 			}
 
 			res.status(200).json({
+				sessionExists: true,
 				message: "Session trouvée",
 			});
 		} catch (error) {

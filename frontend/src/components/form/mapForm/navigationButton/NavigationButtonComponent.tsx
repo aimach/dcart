@@ -1,3 +1,5 @@
+// import des bibliothèques
+import { useLocation } from "react-router";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -26,6 +28,8 @@ const NavigationButtonComponent = ({
 }: NavigationButtonComponentProps) => {
 	// récupération des données de la langue
 	const { translation, language } = useTranslation();
+
+	const { pathname } = useLocation();
 
 	// récupération des données du store
 	const { decrementStep, incrementStep } = useMapFormStore(
@@ -58,7 +62,9 @@ const NavigationButtonComponent = ({
 				<button type="submit">
 					{step <= 2
 						? translation[language].common.next
-						: translation[language].backoffice.mapFormPage.create}{" "}
+						: translation[language].backoffice.mapFormPage[
+								pathname.includes("create") ? "create" : "edit"
+							]}{" "}
 					<ChevronRight />
 				</button>
 			)}

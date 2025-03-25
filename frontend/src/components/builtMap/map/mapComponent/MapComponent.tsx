@@ -54,10 +54,9 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		mapInfos,
 		allPoints,
 		setAllPoints,
-		allLayers,
+		setAllResults,
 		addLayer,
 		removeLayer,
-		setAllLayers,
 		mapReady,
 		setMapReady,
 		resetSelectedMarker,
@@ -94,9 +93,11 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 
 	// réinitialisation des filtres utilisateur si la modale est ouverte (s'exécute quand l'utilisateur change de carte)
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	// useEffect(() => {
-	// 	resetUserFilters();
-	// }, [isModalOpen]);
+	useEffect(() => {
+		if (isModalOpen && allPoints.length > 0) {
+			resetUserFilters();
+		}
+	}, [isModalOpen, allPoints]);
 
 	const [timeFilterIsDisabled, setTimeFilterIsDisabled] =
 		useState<boolean>(false);
@@ -143,8 +144,8 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 			mapId,
 			type === "filter" ? userFilters : null,
 		);
-
 		setAllPoints(points);
+		setAllResults(points);
 		setMapReady(true);
 	};
 	const resetFiltersAndFetchPoints = () => {
@@ -237,7 +238,9 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 				</section>
 				{mapReady && (
 					<section className={style.mapBottomSection}>
-						<TimeFilterComponent disabled={timeFilterIsDisabled} />
+						{allPoints.length > 0 && (
+							<TimeFilterComponent disabled={timeFilterIsDisabled} />
+						)}
 						<TileLayerChoiceComponent />
 					</section>
 				)}

@@ -26,16 +26,23 @@ const ResultComponent = () => {
 	const { language } = useTranslation();
 
 	// récupération des données des stores
-	const { map, allResults, allLayers, selectedMarker, setSelectedMarker } =
-		useMapStore(
-			useShallow((state) => ({
-				map: state.map,
-				allResults: state.allResults,
-				allLayers: state.allLayers,
-				selectedMarker: state.selectedMarker,
-				setSelectedMarker: state.setSelectedMarker,
-			})),
-		);
+	const {
+		map,
+		mapInfos,
+		allResults,
+		allLayers,
+		selectedMarker,
+		setSelectedMarker,
+	} = useMapStore(
+		useShallow((state) => ({
+			map: state.map,
+			mapInfos: state.mapInfos,
+			allResults: state.allResults,
+			allLayers: state.allLayers,
+			selectedMarker: state.selectedMarker,
+			setSelectedMarker: state.setSelectedMarker,
+		})),
+	);
 	const { setSelectedTabMenu } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
@@ -52,25 +59,43 @@ const ResultComponent = () => {
 		[map, setSelectedMarker, setSelectedTabMenu],
 	);
 
-	// fonction de calcul de la classe CSS pour chaque point (sélectionné ou non)
-	const resultsWithSelectedPoint = useMemo(() => {
-		return allResults
-			.map((point: PointType) => {
+	const filteredResultsWithSelectedPoint = useMemo(() => {
+		// filtre les points qui ne sont pas dans les calques sélectionnés
+		const allResultsFiltered = allResults.filter((point: PointType) =>
+			mapInfos ? allLayers.includes(point.layerName as string) : point,
+		);
+		// ajoute la classe "isSelected" aux points sélectionnés
+		const allResultsFilteredWithCSS = allResultsFiltered.map(
+			(point: PointType) => {
 				const isSelected = isSelectedMarker(selectedMarker as PointType, point);
 				return {
 					...point,
 					isSelected,
 					selectedClassName: isSelected ? style.isSelected : undefined,
 				};
-			})
-			.filter((point: PointType) =>
-				allLayers.includes(point.layerName as string),
+			},
+		);
+		const allResultsInAlphaOrder = allResultsFilteredWithCSS.sort((a, b) => {
+			if (
+				a[`sous_region_${language}`] === b[`sous_region_${language}`] &&
+				!a.nom_ville &&
+				!b.nom_ville
+			) {
+				return a.nom_ville.localeCompare(b.nom_ville);
+			}
+			return a[`sous_region_${language}`].localeCompare(
+				b[`sous_region_${language}`],
 			);
-	}, [allResults, selectedMarker, allLayers]);
+		});
+		return allResultsInAlphaOrder;
+	}, [allResults, selectedMarker, allLayers, mapInfos, language]);
 
 	return (
-		<div className={style.resultContainer}>
-			{resultsWithSelectedPoint.map((result: PointType) => {
+		<div
+			className={style.resultContainer}
+			key={filteredResultsWithSelectedPoint.length}
+		>
+			{filteredResultsWithSelectedPoint.map((result: PointType) => {
 				return (
 					<div
 						key={`${result.latitude}-${result.longitude}`}

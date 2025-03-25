@@ -99,6 +99,7 @@
 			"epithetFilter": "Filtre avec les épithètes",
 			"noFilter": "Je ne souhaite pas ajouter de filtre",
 			"create": "Créer",
+			"edit": "Modifier",
 			"downloadExample": "Télécharger un exemple de fichier CSV",
 			"uploadPointsHelp": "Aide à la préparation du CSV"
 		},

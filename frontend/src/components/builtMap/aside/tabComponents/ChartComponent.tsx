@@ -62,9 +62,9 @@ const ChartComponent = () => {
 
 	// mise à jour des labels et données en fonction du type de données, du marqueur sélectionné et de la langue
 	useEffect(() => {
+		if (!selectedMarker?.sources[0].attestations) return;
 		let labels = [];
 		let dataSets = [];
-
 		switch (dataType) {
 			case "epithet":
 				({ labels, dataSets } = getEpithetLabelsAndNb(

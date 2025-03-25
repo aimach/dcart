@@ -1,6 +1,7 @@
+// import des bibliothèques
+import axios from "axios";
 // import des services
 import { apiClient } from "./apiClient";
-// import des types
 
 /**
  * Fonction de création d'une session de modification
@@ -56,10 +57,19 @@ const getSessionById = async (itemId: string) => {
 		});
 		return response;
 	} catch (error) {
-		console.error(
-			"Erreur lors de la récupération d'une session de modification :",
-			error,
-		);
+		if (axios.isAxiosError(error)) {
+			if (error.response?.status === 404) {
+				// Cas attendu : utilisateur non connecté, on ignore
+				return;
+			}
+			console.error(
+				"Erreur lors de la récupération d'une session de modification :",
+				error,
+			);
+		} else {
+			// Erreur non axios (ex: problème JS)
+			console.error("Erreur inattendue :", error);
+		}
 	}
 };
 
