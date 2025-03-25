@@ -44,7 +44,9 @@
 		"by": "par",
 		"after": "après",
 		"before": "avant",
-		"in": "en"
+		"in": "en",
+		"map": "carte",
+		"storymap": "storymap"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",
@@ -88,6 +90,7 @@
 		}
 	},
 	"backoffice": {
+		"createA": "Créer une",
 		"authPage": {
 			"login": "Se connecter",
 			"username": "Nom d'utilisateur",

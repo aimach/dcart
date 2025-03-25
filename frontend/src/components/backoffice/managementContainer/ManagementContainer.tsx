@@ -4,6 +4,8 @@ import { useNavigate } from "react-router";
 // import des composants
 import ButtonComponent from "../../common/button/ButtonComponent";
 import ManagementItem from "../managementItem/ManagementItem";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import {
 	getAllMapsInfos,
@@ -22,6 +24,8 @@ type ManagementContainerProps = {
 
 const ManagementContainer = ({ type }: ManagementContainerProps) => {
 	const navigate = useNavigate();
+
+	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
 	const { reload } = useModalStore();
@@ -51,15 +55,12 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 		}
 	}, [type, reload]);
 
-	const textKey = type === "map" ? "cartes" : "storymaps";
-
 	return (
 		<>
-			<h2 className={style.managementContainerTitle}>Gestion des {textKey}</h2>
 			<ButtonComponent
 				type="button"
 				color="gold"
-				textContent={`Créer une ${textKey.slice(0, -1)}`}
+				textContent={`+ ${translation[language].backoffice.createA} ${translation[language].common[type]}`}
 				onClickFunction={() => {
 					navigate(`/backoffice/${type}s/create`);
 					resetMapInfos();

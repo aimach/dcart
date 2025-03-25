@@ -47,6 +47,8 @@ type LanguageObject = {
 		after: string;
 		before: string;
 		in: string;
+		map: string;
+		storymap: string;
 	};
 	modal: {
 		firstContent: string;
@@ -90,6 +92,7 @@ type LanguageObject = {
 		};
 	};
 	backoffice: {
+		createA: string;
 		authPage: {
 			login: string;
 			username: string;

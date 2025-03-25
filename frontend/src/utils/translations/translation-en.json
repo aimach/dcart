@@ -44,7 +44,9 @@
 		"by": "by",
 		"after": "after",
 		"before": "before",
-		"in": "in"
+		"in": "in",
+		"map": "map",
+		"storymap": "storymap"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
@@ -88,6 +90,7 @@
 		}
 	},
 	"backoffice": {
+		"createA": "Create a",
 		"authPage": {
 			"login": "Log in",
 			"username": "Username",
