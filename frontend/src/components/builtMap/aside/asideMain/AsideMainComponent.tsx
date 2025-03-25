@@ -37,10 +37,13 @@ const AsideMainComponent = () => {
 	// --- RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
 	let locationOptions: OptionType[] = [];
 	// si le filtre de localisation est activé, utilisation du hook useMemo
-	if (
-		mapInfos?.filters?.some((filter: FilterType) => filter.type === "location")
-	) {
-		locationOptions = useMemo(() => {
+
+	locationOptions = useMemo(() => {
+		if (
+			(mapInfos?.filters as FilterType[])?.some(
+				(filter) => filter.type === "location",
+			)
+		) {
 			// récupération de toutes les localités depuis la liste des points
 			const allLocationsFromPoints: Record<string, string>[] =
 				getAllLocationsFromPoints(allPoints);
@@ -61,8 +64,9 @@ const AsideMainComponent = () => {
 							? 1
 							: 0,
 				);
-		}, [allPoints, language]);
-	}
+		}
+		return [];
+	}, [allPoints, language, mapInfos]);
 
 	// --- RECUPERATION DES OPTIONS D'ELEMENTS POUR LES FILTRES
 	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
@@ -104,8 +108,8 @@ const AsideMainComponent = () => {
 		if (mapInfos && allPoints) {
 			// si le filtre des éléments est activé, on récupère les options
 			if (
-				mapInfos.filters?.some(
-					(filter: FilterType) => filter.type === "element",
+				(mapInfos.filters as FilterType[])?.some(
+					(filter) => filter.type === "element",
 				)
 			) {
 				fetchElementOptions();
