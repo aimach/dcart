@@ -104,7 +104,7 @@ const FilterComponent = ({
 					mapFilters.map((filter) => {
 						if (filter.type === "location") {
 							return (
-								<div className={style.filterContainer}>
+								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.location}</h4>
 									<LocationFilterComponent
 										key={filter.id}
@@ -116,7 +116,7 @@ const FilterComponent = ({
 						}
 						if (filter.type === "element") {
 							return (
-								<div className={style.filterContainer}>
+								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.element}</h4>
 									<ElementFilterComponent
 										key={filter.id}
@@ -128,7 +128,7 @@ const FilterComponent = ({
 						}
 						if (filter.type === "language") {
 							return (
-								<div className={style.filterContainer}>
+								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.language}</h4>
 									<LanguageFilterComponent key={filter.id} />
 								</div>

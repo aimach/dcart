@@ -17,7 +17,7 @@ const LayerControlComponent = ({
 	setPanelDisplayed,
 }: LayerControlComponentProps) => {
 	return (
-		<LayersControl.Overlay name={layer.name} checked>
+		<LayersControl.Overlay name={layer.name} key={layer.name} checked>
 			<LayerGroup key={layer.name}>
 				{layer.attestations.map((point) => {
 					return (
