@@ -46,8 +46,8 @@ const AuthFormComponent = () => {
 
 	return (
 		<section className={style.authFormContainer}>
-			<form>
-				<div>
+			<form className={style.authForm}>
+				<div className={style.commonFormInputContainer}>
 					<label htmlFor="username">
 						{translation[language].backoffice.authPage.username}
 					</label>
@@ -62,7 +62,7 @@ const AuthFormComponent = () => {
 						required
 					/>
 				</div>
-				<div>
+				<div className={style.commonFormInputContainer}>
 					<label htmlFor="password">
 						{translation[language].backoffice.authPage.password}
 					</label>
