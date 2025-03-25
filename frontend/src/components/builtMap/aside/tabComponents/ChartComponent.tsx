@@ -64,7 +64,7 @@ const ChartComponent = () => {
 	useEffect(() => {
 		let labels = [];
 		let dataSets = [];
-
+		if (!selectedMarker) return;
 		switch (dataType) {
 			case "epithet":
 				({ labels, dataSets } = getEpithetLabelsAndNb(

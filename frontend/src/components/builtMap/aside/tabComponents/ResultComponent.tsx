@@ -60,20 +60,35 @@ const ResultComponent = () => {
 	);
 
 	const filteredResultsWithSelectedPoint = useMemo(() => {
-		const newResults = allResults
-			.filter((point: PointType) =>
-				mapInfos ? allLayers.includes(point.layerName as string) : point,
-			)
-			.map((point: PointType) => {
+		// filtre les points qui ne sont pas dans les calques sélectionnés
+		const allResultsFiltered = allResults.filter((point: PointType) =>
+			mapInfos ? allLayers.includes(point.layerName as string) : point,
+		);
+		// ajoute la classe "isSelected" aux points sélectionnés
+		const allResultsFilteredWithCSS = allResultsFiltered.map(
+			(point: PointType) => {
 				const isSelected = isSelectedMarker(selectedMarker as PointType, point);
 				return {
 					...point,
 					isSelected,
 					selectedClassName: isSelected ? style.isSelected : undefined,
 				};
-			});
-		return newResults;
-	}, [allResults, selectedMarker, allLayers, mapInfos]);
+			},
+		);
+		const allResultsInAlphaOrder = allResultsFilteredWithCSS.sort((a, b) => {
+			if (
+				a[`sous_region_${language}`] === b[`sous_region_${language}`] &&
+				!a.nom_ville &&
+				!b.nom_ville
+			) {
+				return a.nom_ville.localeCompare(b.nom_ville);
+			}
+			return a[`sous_region_${language}`].localeCompare(
+				b[`sous_region_${language}`],
+			);
+		});
+		return allResultsInAlphaOrder;
+	}, [allResults, selectedMarker, allLayers, mapInfos, language]);
 
 	return (
 		<div
