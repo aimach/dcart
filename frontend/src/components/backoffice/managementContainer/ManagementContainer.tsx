@@ -59,7 +59,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 			<ButtonComponent
 				type="button"
 				color="gold"
-				textContent={`Créer une ${textKey}`}
+				textContent={`Créer une ${textKey.slice(0, -1)}`}
 				onClickFunction={() => {
 					navigate(`/backoffice/${type}s/create`);
 					resetMapInfos();

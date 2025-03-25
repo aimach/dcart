@@ -20,15 +20,11 @@ const DeleteBlockModalContent = () => {
 	const { block, updateBlockContent, reload, setReload } = useBuilderStore();
 
 	// fonction pour supprimer un block (suppression de la BDD, fermeture du modal et rechargement des composants)
-	const handleBlockDelete = (blockId: string) => {
-		try {
-			deleteBlock(blockId);
-			updateBlockContent(null);
-			closeDeleteModal();
-			setReload(!reload);
-		} catch (error) {
-			console.error(error);
-		}
+	const handleBlockDelete = async (blockId: string) => {
+		await deleteBlock(blockId);
+		updateBlockContent(null);
+		closeDeleteModal();
+		setReload(!reload);
 	};
 
 	return (
