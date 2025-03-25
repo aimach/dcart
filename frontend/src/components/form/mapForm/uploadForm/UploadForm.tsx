@@ -51,6 +51,7 @@ const UploadForm = () => {
 		event.preventDefault();
 		const newPointSet = await createPointSet(pointSet as PointSetType);
 		if (newPointSet?.status === 201) {
+			console.log("je suis dans le if");
 			setIsAlreadyAPointSet(true);
 			const mapWithPointSet = await getOneMapInfos(mapInfos?.id as string);
 			setMapInfos(mapWithPointSet);
@@ -66,7 +67,7 @@ const UploadForm = () => {
 		if (mapInfos?.attestations || isAlreadyAPointSet) {
 			setNextButtonDisplayed(true);
 		}
-	}, []);
+	}, [mapInfos]);
 
 	const handleDeletePointSet = async (pointSetId: string) => {
 		await deletePointSet(pointSetId as string);
