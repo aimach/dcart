@@ -91,7 +91,8 @@
 		"authPage": {
 			"login": "Log in",
 			"username": "Username",
-			"password": "Password"
+			"password": "Password",
+			"requiredField": "Required field"
 		},
 		"mapFormPage": {
 			"addMapIntro": "Add map information",

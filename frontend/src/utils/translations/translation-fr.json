@@ -91,7 +91,8 @@
 		"authPage": {
 			"login": "Se connecter",
 			"username": "Nom d'utilisateur",
-			"password": "Mot de passe"
+			"password": "Mot de passe",
+			"requiredField": "Ce champ est requis"
 		},
 		"mapFormPage": {
 			"addMapIntro": "Ajouter les informations de la carte",

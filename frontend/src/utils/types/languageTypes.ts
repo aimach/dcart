@@ -94,6 +94,7 @@ type LanguageObject = {
 			login: string;
 			username: string;
 			password: string;
+			requiredField: string;
 		};
 		mapFormPage: {
 			addMapIntro: string;

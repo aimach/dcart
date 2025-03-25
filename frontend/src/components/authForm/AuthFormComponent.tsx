@@ -1,18 +1,19 @@
 // import des bibliothèques
-import { useContext, useState } from "react";
+import { useContext } from "react";
 import { useNavigate } from "react-router";
-// import des composants
-import ButtonComponent from "../common/button/ButtonComponent";
+import { useForm } from "react-hook-form";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import du contexte
 import { AuthContext } from "../../context/AuthContext";
-// import des types
-import type { User } from "../../utils/types/userTypes";
 // import des services
 import { loginUser } from "../../utils/api/authAPI";
+// import des types
+import type { User } from "../../utils/types/userTypes";
 // import du style
 import style from "./authFormComponent.module.scss";
+import type { SubmitHandler } from "react-hook-form";
+import ErrorComponent from "../form/errorComponent/ErrorComponent";
 
 /**
  * Composant de formulaire d'authentification
@@ -22,45 +23,43 @@ const AuthFormComponent = () => {
 
 	const { setToken } = useContext(AuthContext);
 
-	// définition du state pour les données du formulaire
-	const [userAuthInformations, setUserAuthInformations] = useState<User>({
-		username: "",
-		password: "",
-	});
-
-	// fonction de gestion du changement dans l'input
-	const handleUserAuthInformationsChange = (id: string, value: string) => {
-		const newUser = { ...userAuthInformations, [id]: value };
-		setUserAuthInformations(newUser);
-	};
-
 	// fonction de gestion du bouton "Se connecter"
 	const navigate = useNavigate();
-	const handleConnectionButtonClick = async () => {
-		const loginUserResponse = await loginUser(userAuthInformations);
+	const handleConnectionButtonClick: SubmitHandler<User> = async (data) => {
+		const loginUserResponse = await loginUser(data);
 		setToken(loginUserResponse.accessToken as string);
 		if (loginUserResponse.accessToken) {
 			navigate("/backoffice");
 		}
 	};
 
+	// import des services du formulaire
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<User>();
+
 	return (
 		<section className={style.authFormContainer}>
-			<form className={style.authForm}>
+			<form
+				className={style.authForm}
+				onSubmit={handleSubmit(handleConnectionButtonClick)}
+			>
 				<div className={style.commonFormInputContainer}>
 					<label htmlFor="username">
 						{translation[language].backoffice.authPage.username}
 					</label>
 					<input
 						type="text"
-						name="username"
 						id="username"
-						value={userAuthInformations.username}
-						onChange={(event) =>
-							handleUserAuthInformationsChange("username", event.target.value)
-						}
-						required
+						{...register("username", { required: true })}
 					/>
+					{errors.username && (
+						<ErrorComponent
+							message={translation[language].backoffice.authPage.requiredField}
+						/>
+					)}
 				</div>
 				<div className={style.commonFormInputContainer}>
 					<label htmlFor="password">
@@ -68,22 +67,19 @@ const AuthFormComponent = () => {
 					</label>
 					<input
 						type="password"
-						name="password"
 						id="password"
-						value={userAuthInformations.password}
-						onChange={(event) =>
-							handleUserAuthInformationsChange("password", event.target.value)
-						}
-						required
+						{...register("password", { required: true })}
 					/>
+					{errors.password && (
+						<ErrorComponent
+							message={translation[language].backoffice.authPage.requiredField}
+						/>
+					)}
 				</div>
+				<button type="submit">
+					{translation[language].backoffice.authPage.login}
+				</button>
 			</form>
-			<ButtonComponent
-				type="button"
-				color="brown"
-				textContent={translation[language].backoffice.authPage.login}
-				onClickFunction={handleConnectionButtonClick}
-			/>
 		</section>
 	);
 };

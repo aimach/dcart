@@ -12,6 +12,10 @@
     gap: v.$space-l;
     width: 30vw;
     min-width: 200px;
+
+    >button {
+        @include m.buttonStyle(v.$color-dark-lava, v.$color-neutral-100, v.$space-s);
+    }
 }
 
 .commonFormInputContainer {
@@ -36,4 +40,6 @@
             outline: v.$border-width-m solid v.$color-umber;
         }
     }
+
+
 }
