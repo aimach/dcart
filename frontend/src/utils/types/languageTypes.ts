@@ -90,6 +90,12 @@ type LanguageObject = {
 		};
 	};
 	backoffice: {
+		authPage: {
+			login: string;
+			username: string;
+			password: string;
+			requiredField: string;
+		};
 		mapFormPage: {
 			addMapIntro: string;
 			addMapPoints: string;

@@ -1,5 +1,7 @@
 @use "./variable" as v;
 
+@use "sass:color";
+
 // SOURCES
 // https://dev.to/alemesa/10-awesome-sass-scss-mixins-5ci2
 // https://www.barrage.net/blog/technology/top-8-sass-mixins
@@ -124,6 +126,6 @@ $desktop: 1280;
   transition: background-color 0.3s ease;
 
   &:hover {
-    background-color: darken($bg-color, 10%);
+    background-color: color.adjust($bg-color, $lightness: 10%);
   }
 }
