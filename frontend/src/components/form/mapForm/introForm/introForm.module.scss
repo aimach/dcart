@@ -4,7 +4,6 @@
 .commonFormContainer {
     @include m.flexbox(flex, column, nowrap, center, flex-start);
     gap: v.$space-l;
-    width: 50vw;
     padding: v.$space-xxl;
 
     >h4 {
@@ -20,9 +19,11 @@
 }
 
 .commonFormInputContainer {
-    @include m.flexbox(flex, column, nowrap, center, flex-start);
+    @include m.flexbox(flex, row, nowrap, center, flex-start);
     gap: v.$space-s;
     width: 100%;
+    padding-bottom: v.$space-s;
+    border-bottom: v.$border-width-m solid v.$color-grullo-light;
 
     >h4 {
         font-size: v.$font-size-l;
@@ -32,12 +33,13 @@
     >label {
         font-size: v.$font-size-m;
         font-weight: v.$font-weight-bold;
+        width: 50%;
     }
 
     >input,
     textarea,
     select {
-        width: 100%;
+        width: 50%;
         padding: v.$space-s;
         border: v.$border-width-m solid v.$color-grullo-light;
         border-radius: v.$border-radius-rounded;
@@ -54,7 +56,7 @@
 .userFilterInputContainer {
     @include m.flexbox(flex, row, nowrap, space-between, flex-start);
     gap: v.$space-s;
-    width: 100%;
+    width: 50%;
 
     >label {
         font-size: v.$font-size-m;

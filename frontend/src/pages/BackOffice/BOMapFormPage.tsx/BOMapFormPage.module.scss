@@ -23,3 +23,21 @@
         right: 0;
     }
 }
+
+.mapFormPageContainer {
+    @include m.flexbox(flex, row, nowrap, space-between, flex-start);
+    height: calc(100vh - v.$main-header-height);
+}
+
+.mapFormAside {
+    width: 20vw;
+    border: 1px solid black;
+    height: 100%;
+}
+
+.mapFormContent {
+    border: 1px solid black;
+    width: 80vw;
+    height: 100%;
+    overflow-y: scroll;
+}
