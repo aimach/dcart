@@ -5,7 +5,6 @@ import { useLocation } from "react-router";
 import { SessionContext } from "../../../context/SessionContext";
 // import des composants
 import IntroForm from "../../../components/form/mapForm/introForm/IntroForm";
-import DemoMapComponent from "../../../components/builtMap/map/demoMapComponent/DemoMapComponent";
 import UploadForm from "../../../components/form/mapForm/uploadForm/UploadForm";
 import UserMapFilterForm from "../../../components/form/mapForm/userMapFilterForm/UserMapFilterForm";
 import StayConnectedContent from "../../../components/common/modal/StayConnectedContent";
@@ -18,6 +17,7 @@ import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import du style
 import style from "./BOMapFormPage.module.scss";
+// import des icônes
 import { FileText, Filter, MapPin } from "lucide-react";
 
 /**

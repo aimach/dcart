@@ -46,7 +46,6 @@ const PanelSection = ({ blockList, setBlockList }: PanelSectionProps) => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		console.log(reload);
 		const fetchStorymapInfos = async () => {
 			const response = await getStorymapInfosAndBlocks(storymapId as string);
 			setStorymapInfos(response);

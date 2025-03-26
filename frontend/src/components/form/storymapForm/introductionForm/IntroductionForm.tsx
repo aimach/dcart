@@ -31,6 +31,8 @@ import {
 	createCategoryOptions,
 	createLanguageOptions,
 } from "../../../../utils/functions/storymap";
+// import du style
+import style from "./introductionForm.module.scss";
 
 /**
  * Formulaire d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.

@@ -4,3 +4,47 @@
 .storymapIntroContainer {
     @include m.flexbox(flex, column, nowrap, center, center);
 }
+
+.BOStorymapFormPageContainer {
+    @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
+    height: calc(100vh - v.$main-header-height);
+}
+
+.storymapFormAside {
+    width: 20vw;
+    height: 100%;
+    background-color: v.$background-color-soft;
+    padding-top: v.$space-l;
+
+    >ul {
+
+        list-style-type: none;
+        @include m.flexbox(flex, column, nowrap, space-between, flex-start);
+        gap: v.$space-l;
+
+        >li {
+            @include m.flexbox(flex, row, nowrap, center, center);
+            gap: v.$space-s;
+            cursor: pointer;
+
+        }
+    }
+
+    .isSelected {
+        font-weight: v.$font-weight-bold;
+        font-size: v.$font-size-l;
+        color: v.$color-umber;
+        padding-left: v.$space-l;
+    }
+
+    .disabled {
+        color: v.$color-neutral-60;
+        cursor: not-allowed;
+    }
+}
+
+.storymapFormContent {
+    width: 80vw;
+    height: 100%;
+    overflow-y: scroll;
+}
