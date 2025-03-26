@@ -85,7 +85,7 @@ const UploadForm = () => {
 
 	return (
 		<>
-			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
+			<div>
 				<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
 				<div className={style.helpContainer}>
 					<a
@@ -97,55 +97,58 @@ const UploadForm = () => {
 						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
 					</a>
 				</div>
-				{mapInfos?.attestations && (
-					<>
-						<div>
-							Jeux de points :
-							{mapInfos.attestations.map((pointSet) => (
-								<div key={pointSet.id}>
-									<p>{pointSet.name}</p>
-									<X
-										onClick={() => handleDeletePointSet(pointSet.id as string)}
-										onKeyDown={() =>
-											handleDeletePointSet(pointSet.id as string)
-										}
-									/>
-								</div>
-							))}
-						</div>
-						{mapInfos?.attestations.length > 1 && (
-							<div className={style.commonFormInputContainer}>
-								<label htmlFor="isLayered">
-									Les points doivent être sur différents calques
-								</label>
-								<input
-									id="isLayered"
-									name="isLayered"
-									type="checkbox"
-									onChange={(event) =>
-										handleIsLayeredChange(event.target.checked.toString())
-									}
+			</div>
+
+			{!isAlreadyAPointSet && (
+				<PointSetUploadForm
+					pointSet={pointSet}
+					setPointSet={setPointSet}
+					handleSubmit={handleSubmit}
+				/>
+			)}
+			{mapInfos?.attestations && (
+				<>
+					<div className={style.commonFormInputContainer}>
+						Jeux de points :
+						{mapInfos.attestations.map((pointSet) => (
+							<div key={pointSet.id}>
+								<p>{pointSet.name}</p>
+								<X
+									onClick={() => handleDeletePointSet(pointSet.id as string)}
+									onKeyDown={() => handleDeletePointSet(pointSet.id as string)}
 								/>
 							</div>
-						)}
-						<ButtonComponent
-							type="button"
-							color="brown"
-							textContent="Ajouter un nouveau jeu de points"
-							onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
-						/>
-					</>
-				)}
-				{!isAlreadyAPointSet && (
-					<PointSetUploadForm pointSet={pointSet} setPointSet={setPointSet} />
-				)}
-				{isAlreadyAPointSet && (
-					<NavigationButtonComponent
-						step={step}
-						nextButtonDisplayed={nextButtonDisplayed}
+						))}
+					</div>
+					{mapInfos?.attestations.length > 1 && (
+						<div className={style.commonFormInputContainer}>
+							<label htmlFor="isLayered">
+								Les points doivent être sur différents calques
+							</label>
+							<input
+								id="isLayered"
+								name="isLayered"
+								type="checkbox"
+								onChange={(event) =>
+									handleIsLayeredChange(event.target.checked.toString())
+								}
+							/>
+						</div>
+					)}
+					<ButtonComponent
+						type="button"
+						color="brown"
+						textContent="Ajouter un nouveau jeu de points"
+						onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
 					/>
-				)}
-			</form>
+				</>
+			)}
+			{isAlreadyAPointSet && (
+				<NavigationButtonComponent
+					step={step}
+					nextButtonDisplayed={nextButtonDisplayed}
+				/>
+			)}
 		</>
 	);
 };

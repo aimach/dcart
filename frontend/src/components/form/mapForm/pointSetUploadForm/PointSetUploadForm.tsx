@@ -1,4 +1,5 @@
 // import des bibliothèques
+import { useEffect, useState } from "react";
 import { parse } from "papaparse";
 // import des composants
 // import des custom hooks
@@ -7,8 +8,9 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
+import { getAllIcons } from "../../../../utils/api/builtMap/getRequests";
 // import des types
-import { useEffect, useState, type ChangeEvent } from "react";
+import type { FormEvent, ChangeEvent } from "react";
 import type { ParseResult } from "papaparse";
 import type {
 	MapIconType,
@@ -18,16 +20,17 @@ import type {
 } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
-import { getAllIcons } from "../../../../utils/api/builtMap/getRequests";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
 	setPointSet: (pointSet: PointSetType) => void;
+	handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 }
 
 const PointSetUploadForm = ({
 	pointSet,
 	setPointSet,
+	handleSubmit,
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
@@ -88,10 +91,13 @@ const PointSetUploadForm = ({
 
 	return (
 		allIcons.length && (
-			<>
-				<div>
-					<div className={style.commonFormInputContainer}>
+			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
+				<div className={style.commonFormInputContainer}>
+					<div className={style.labelContainer}>
 						<label htmlFor="name">Nom du jeu de points</label>
+						<p>Description</p>
+					</div>
+					<div className={style.inputContainer}>
 						<input
 							id="name"
 							name="name"
@@ -104,10 +110,15 @@ const PointSetUploadForm = ({
 							}
 						/>
 					</div>
-					<div className={style.commonFormInputContainer}>
+				</div>
+				<div className={style.commonFormInputContainer}>
+					<div className={style.labelContainer}>
 						<label htmlFor="attestationIds">
 							{translation[language].backoffice.mapFormPage.uploadPoints}
 						</label>
+						<p>Description</p>
+					</div>
+					<div className={style.inputContainer}>
 						<input
 							id="attestationIds"
 							name="attestationIds"
@@ -116,8 +127,13 @@ const PointSetUploadForm = ({
 							onChange={handleFileUpload}
 						/>
 					</div>
-					<div className={style.commonFormInputContainer}>
+				</div>
+				<div className={style.commonFormInputContainer}>
+					<div className={style.labelContainer}>
 						<label htmlFor="color">Couleur des points</label>
+						<p>Description</p>
+					</div>
+					<div className={style.inputContainer}>
 						<input
 							id="color"
 							name="color"
@@ -130,7 +146,13 @@ const PointSetUploadForm = ({
 							}
 						/>
 					</div>
-					<div className={style.commonFormInputContainer}>
+				</div>
+				<div className={style.commonFormInputContainer}>
+					<div className={style.labelContainer}>
+						<label htmlFor="color">Icône des points</label>
+						<p>Description</p>
+					</div>
+					<div className={style.inputContainer}>
 						<select
 							name="iconId"
 							id="iconId"
@@ -153,7 +175,7 @@ const PointSetUploadForm = ({
 				<button type="submit" className={style.commonFormButton}>
 					Ajouter
 				</button>
-			</>
+			</form>
 		)
 	);
 };
