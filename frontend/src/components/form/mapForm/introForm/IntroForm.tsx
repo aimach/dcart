@@ -129,38 +129,40 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 									</label>
 									<p>{input[`description_${language}`]}</p>
 								</div>
-								<select
-									{...register(input.name as keyof MapInfoType, {
-										required: input.required.value,
-									})}
-									value={
-										mapInfos
-											? ((
-													mapInfos[
-														input.name as keyof MapInfoType
-													] as CategoryType
-												).id as string)
-											: ""
-									}
-								>
-									{input.options?.map((option) => {
-										return (
-											<option key={option.value} value={option.value}>
-												{option.label}
-											</option>
-										);
-									})}
-								</select>
-
-								{errors[input.name as keyof FieldErrors<MapInfoType>] && (
-									<ErrorComponent
-										message={
-											input.required.message?.[
-												language as keyof TranslationType
-											] as string
+								<div className={style.inputContainer}>
+									<select
+										{...register(input.name as keyof MapInfoType, {
+											required: input.required.value,
+										})}
+										value={
+											mapInfos
+												? ((
+														mapInfos[
+															input.name as keyof MapInfoType
+														] as CategoryType
+													).id as string)
+												: ""
 										}
-									/>
-								)}
+									>
+										{input.options?.map((option) => {
+											return (
+												<option key={option.value} value={option.value}>
+													{option.label}
+												</option>
+											);
+										})}
+									</select>
+
+									{errors[input.name as keyof FieldErrors<MapInfoType>] && (
+										<ErrorComponent
+											message={
+												input.required.message?.[
+													language as keyof TranslationType
+												] as string
+											}
+										/>
+									)}
+								</div>
 							</div>
 						);
 					}
@@ -173,22 +175,23 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 									</label>
 									<p>{input[`description_${language}`]}</p>
 								</div>
-								<input
-									{...register(input.name as keyof MapInfoType, {
-										required: input.required.value,
-									})}
-								/>
-
-								{input.required.value &&
-									errors[input.name as keyof FieldErrors<MapInfoType>] && (
-										<ErrorComponent
-											message={
-												input.required.message?.[
-													language as keyof TranslationType
-												] as string
-											}
-										/>
-									)}
+								<div className={style.inputContainer}>
+									<input
+										{...register(input.name as keyof MapInfoType, {
+											required: input.required.value,
+										})}
+									/>
+									{input.required.value &&
+										errors[input.name as keyof FieldErrors<MapInfoType>] && (
+											<ErrorComponent
+												message={
+													input.required.message?.[
+														language as keyof TranslationType
+													] as string
+												}
+											/>
+										)}
+								</div>
 							</div>
 						);
 					}
@@ -201,37 +204,41 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 									</label>
 									<p>{input[`description_${language}`]}</p>
 								</div>
-								<Controller
-									name={input.name as keyof MapInfoType}
-									control={control}
-									rules={{
-										required: input.required.value,
-										maxLength: 1000,
-									}}
-									render={({ field: { onChange } }) => (
-										<EditorComponent
-											ref={quillRef}
-											onChange={onChange}
-											defaultValue={
-												(mapInfos as MapInfoType)
-													? (mapInfos as MapInfoType)[
-															`${input.name}` as keyof typeof mapInfos
-														]
-													: null
-											}
-										/>
-									)}
-								/>
-								{input.required.value &&
-									errors[input.name as keyof MapInfoType]?.type ===
-										"required" && (
-										<ErrorComponent
-											message={input.required.message?.[language] as string}
-										/>
-									)}
-								{errors[input.name as keyof MapInfoType] &&
-									errors[input.name as keyof MapInfoType]?.type ===
-										"maxLength" && <ErrorComponent message="1000 char. max" />}
+								<div className={style.inputContainer}>
+									<Controller
+										name={input.name as keyof MapInfoType}
+										control={control}
+										rules={{
+											required: input.required.value,
+											maxLength: 1000,
+										}}
+										render={({ field: { onChange } }) => (
+											<EditorComponent
+												ref={quillRef}
+												onChange={onChange}
+												defaultValue={
+													(mapInfos as MapInfoType)
+														? (mapInfos as MapInfoType)[
+																`${input.name}` as keyof typeof mapInfos
+															]
+														: null
+												}
+											/>
+										)}
+									/>
+									{input.required.value &&
+										errors[input.name as keyof MapInfoType]?.type ===
+											"required" && (
+											<ErrorComponent
+												message={input.required.message?.[language] as string}
+											/>
+										)}
+									{errors[input.name as keyof MapInfoType] &&
+										errors[input.name as keyof MapInfoType]?.type ===
+											"maxLength" && (
+											<ErrorComponent message="1000 char. max" />
+										)}
+								</div>
 							</div>
 						);
 					}

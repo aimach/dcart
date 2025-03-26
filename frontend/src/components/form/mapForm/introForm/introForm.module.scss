@@ -47,21 +47,27 @@
         }
     }
 
-
-    >input,
-    textarea,
-    select {
+    .inputContainer {
         width: 50%;
-        padding: v.$space-s;
-        border: v.$border-width-m solid v.$color-grullo-light;
-        border-radius: v.$border-radius-rounded;
-        font-size: v.$font-size-m;
-        font-family: "Vollkorn";
+        @include m.flexbox(flex, column, nowrap, space-between, flex-start);
+        gap: v.$space-s;
 
-        &:focus {
-            outline: v.$border-width-m solid v.$color-umber;
+        >input,
+        textarea,
+        select {
+            width: 100%;
+            padding: v.$space-s;
+            border: v.$border-width-m solid v.$color-grullo-light;
+            border-radius: v.$border-radius-rounded;
+            font-size: v.$font-size-m;
+            font-family: "Vollkorn";
+
+            &:focus {
+                outline: v.$border-width-m solid v.$color-umber;
+            }
         }
     }
+
 
 }
 
