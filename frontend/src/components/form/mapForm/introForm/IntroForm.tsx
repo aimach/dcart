@@ -1,15 +1,19 @@
 // import des bibliothèques
 import { useEffect, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
+import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
+import EditorComponent from "../../storymapForm/wysiwygBlock/EditorComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { getAllCategories } from "../../../../utils/api/builtMap/getRequests";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
+import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
+import { updateMap } from "../../../../utils/api/builtMap/putRequests";
 // import des types
 import type { FieldErrors, SubmitHandler } from "react-hook-form";
 import type { InputType } from "../../../../utils/types/formTypes";
@@ -20,15 +24,13 @@ import type {
 } from "../../../../utils/types/mapTypes";
 import type { TranslationType } from "../../../../utils/types/languageTypes";
 import type Quill from "quill";
+import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./introForm.module.scss";
-import EditorComponent from "../../storymapForm/wysiwygBlock/EditorComponent";
-import { useLocation } from "react-router";
-import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
-import { updateMap } from "../../../../utils/api/builtMap/putRequests";
 
 type IntroFormProps = {
 	inputs: InputType[];
+	setIsMapCreated: Dispatch<SetStateAction<boolean>>;
 };
 
 /**
@@ -36,7 +38,7 @@ type IntroFormProps = {
  * @param inputs la liste des inputs du formulaire
  * @returns ErrorComponent | NavigationButtonComponent
  */
-const IntroForm = ({ inputs }: IntroFormProps) => {
+const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 	const { translation, language } = useTranslation();
 
 	const { pathname } = useLocation();
@@ -55,6 +57,7 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 			const newMapResponse = await createNewMap({ ...mapInfos, ...data });
 			if (newMapResponse?.status === 201) {
 				setMapInfos(newMapResponse.data);
+				setIsMapCreated(true);
 				incrementStep(step);
 			}
 		} else if (pathname.includes("edit")) {

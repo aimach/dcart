@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useLocation } from "react-router";
 // import du contexte
 import { SessionContext } from "../../../context/SessionContext";
@@ -18,6 +18,7 @@ import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import du style
 import style from "./BOMapFormPage.module.scss";
+import { FileText, Filter, MapPin } from "lucide-react";
 
 /**
  * Page du formulaire de création de carte
@@ -25,18 +26,26 @@ import style from "./BOMapFormPage.module.scss";
 const BOMapFormPage = () => {
 	const { translation, language } = useTranslation();
 
+	const { pathname } = useLocation();
+
 	// récupération des données des stores
-	const { step, setStep, setAllPoints } = useMapFormStore((state) => state);
+	const { step, setStep } = useMapFormStore((state) => state);
 	const { closeDeleteModal } = useModalStore();
 
 	// récupération des données du contexte
 	const { isTimeoutReached } = useContext(SessionContext);
 
+	const [isMapCreated, setIsMapCreated] = useState(false);
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setStep(1);
-		// reset des informations de la carte au cas où l'utilisateur revient sur la page
-		setAllPoints([]);
+		if (pathname.includes("create")) {
+			setIsMapCreated(false);
+		}
+		if (pathname.includes("edit")) {
+			setIsMapCreated(true);
+		}
 	}, []);
 
 	return (
@@ -48,19 +57,43 @@ const BOMapFormPage = () => {
 			)}
 			<aside className={style.mapFormAside}>
 				<ul>
-					<li onClick={() => setStep(1)} onKeyUp={() => setStep(1)}>
+					<li
+						onClick={() => setStep(1)}
+						onKeyUp={() => setStep(1)}
+						className={step === 1 ? style.isSelected : ""}
+					>
+						<FileText />
 						{translation[language].backoffice.mapFormPage.aside.informations}
 					</li>
-					<li onClick={() => setStep(2)} onKeyUp={() => setStep(2)}>
+					<li
+						onClick={!isMapCreated ? undefined : () => setStep(2)}
+						onKeyUp={!isMapCreated ? undefined : () => setStep(2)}
+						className={`${!isMapCreated && style.disabled} ${
+							step === 2 && style.isSelected
+						}`}
+					>
+						<MapPin />
 						{translation[language].backoffice.mapFormPage.aside.pointSets}
 					</li>
-					<li onClick={() => setStep(3)} onKeyUp={() => setStep(3)}>
+					<li
+						onClick={!isMapCreated ? undefined : () => setStep(3)}
+						onKeyUp={!isMapCreated ? undefined : () => setStep(3)}
+						className={`${!isMapCreated && style.disabled} ${
+							step === 3 && style.isSelected
+						}`}
+					>
+						{<Filter />}
 						{translation[language].backoffice.mapFormPage.aside.filters}
 					</li>
 				</ul>
 			</aside>
 			<section className={style.mapFormContent}>
-				{step === 1 && <IntroForm inputs={firstStepInputs} />}
+				{step === 1 && (
+					<IntroForm
+						inputs={firstStepInputs}
+						setIsMapCreated={setIsMapCreated}
+					/>
+				)}
 				{step === 2 && <UploadForm />}
 				{step === 3 && <UserMapFilterForm />}
 			</section>

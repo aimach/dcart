@@ -170,8 +170,9 @@ const getFilterLabel = (
 			};
 		default:
 			return {
-				label: translation[language as keyof TranslationType].backoffice
-					.mapFormPage.noFilter as string,
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.noFilter.label,
 				description: "",
 			};
 	}
