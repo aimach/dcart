@@ -10,6 +10,8 @@ import UploadForm from "../../../components/form/mapForm/uploadForm/UploadForm";
 import UserMapFilterForm from "../../../components/form/mapForm/userMapFilterForm/UserMapFilterForm";
 import StayConnectedContent from "../../../components/common/modal/StayConnectedContent";
 import ModalComponent from "../../../components/common/modal/ModalComponent";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { firstStepInputs } from "../../../utils/forms/mapInputArray";
 import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
@@ -21,7 +23,7 @@ import style from "./BOMapFormPage.module.scss";
  * Page du formulaire de création de carte
  */
 const BOMapFormPage = () => {
-	const { pathname } = useLocation();
+	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
 	const { step, setStep, setAllPoints } = useMapFormStore((state) => state);
@@ -47,13 +49,13 @@ const BOMapFormPage = () => {
 			<aside className={style.mapFormAside}>
 				<ul>
 					<li onClick={() => setStep(1)} onKeyUp={() => setStep(1)}>
-						Informations
+						{translation[language].backoffice.mapFormPage.aside.informations}
 					</li>
 					<li onClick={() => setStep(2)} onKeyUp={() => setStep(2)}>
-						Jeux de points
+						{translation[language].backoffice.mapFormPage.aside.pointSets}
 					</li>
 					<li onClick={() => setStep(3)} onKeyUp={() => setStep(3)}>
-						Filtres associés
+						{translation[language].backoffice.mapFormPage.aside.filters}
 					</li>
 				</ul>
 			</aside>
@@ -62,14 +64,6 @@ const BOMapFormPage = () => {
 				{step === 2 && <UploadForm />}
 				{step === 3 && <UserMapFilterForm />}
 			</section>
-			{/* <section className={style.BOmapFormPageContainer}>
-				<div>
-					{step === 1 && <IntroForm inputs={firstStepInputs} />}
-					{step === 2 && <UploadForm />}
-					{step === 3 && <UserMapFilterForm />}
-				</div>
-				<DemoMapComponent showModal={step === 1} />
-			</section> */}
 		</section>
 	);
 };

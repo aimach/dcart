@@ -139,17 +139,21 @@ const UserMapFilterForm = () => {
 				{alreadyTwoFiltersChecked(mapFilters) && (
 					<div className={style.alertContainer}>
 						<CircleAlert color="#9d2121" />
-						<p>Maximum atteint !</p>
+						<p>{translation[language].alert.maxReached}</p>
 					</div>
 				)}
 				{userMapFilterTypes.map((filter: FilterType) => {
-					const label = getFilterLabel(filter.type, translation, language);
+					const { label, description } = getFilterLabel(
+						filter.type,
+						translation,
+						language,
+					);
 					if (filter.type !== "time") {
 						return (
 							<div key={filter.type} className={style.commonFormInputContainer}>
 								<div className={style.labelContainer}>
 									<label htmlFor={filter.type}>{label}</label>
-									<p>description</p>
+									<p>{description}</p>
 								</div>
 								<div className={style.inputContainer}>
 									<input
@@ -167,9 +171,14 @@ const UserMapFilterForm = () => {
 				<div className={style.commonFormInputContainer}>
 					<div className={style.labelContainer}>
 						<label htmlFor="noFilter">
-							{translation[language].backoffice.mapFormPage.noFilter}
+							{translation[language].backoffice.mapFormPage.noFilter.label}
 						</label>
-						<p>description</p>
+						<p>
+							{
+								translation[language].backoffice.mapFormPage.noFilter
+									.description
+							}
+						</p>
 					</div>
 					<div className={style.inputContainer}>
 						<input

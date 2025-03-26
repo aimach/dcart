@@ -90,6 +90,7 @@ const IntroForm = ({ inputs }: IntroFormProps) => {
 	// au montage du composant, et si le language change, récupération des catégories pour le select/options
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
+		setDataLoaded(false);
 		const getCategoryOptions = async () => {
 			const allCategories = await getAllCategories();
 			const formatedCategoryOptions: OptionType[] = allCategories.map(

@@ -118,10 +118,30 @@ const UploadForm = () => {
 					<table className={style.pointSetTable}>
 						<thead>
 							<tr>
-								<th scope="col">Nom du jeu</th>
-								<th scope="col">Couleur</th>
-								<th scope="col">Icône</th>
-								<th scope="col">Supprimer</th>
+								<th scope="col">
+									{
+										translation[language].backoffice.mapFormPage.pointSetTable
+											.name
+									}
+								</th>
+								<th scope="col">
+									{
+										translation[language].backoffice.mapFormPage.pointSetTable
+											.color
+									}
+								</th>
+								<th scope="col">
+									{
+										translation[language].backoffice.mapFormPage.pointSetTable
+											.icon
+									}
+								</th>
+								<th scope="col">
+									{
+										translation[language].backoffice.mapFormPage.pointSetTable
+											.delete
+									}
+								</th>
 							</tr>
 						</thead>
 						<tbody>

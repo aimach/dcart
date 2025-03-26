@@ -144,16 +144,36 @@ const getFilterLabel = (
 ) => {
 	switch (filterType) {
 		case "location":
-			return translation[language as keyof TranslationType].backoffice
-				.mapFormPage.locationFilter;
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.locationFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.locationFilter.description,
+			};
 		case "language":
-			return translation[language as keyof TranslationType].backoffice
-				.mapFormPage.languageFilter;
+			return {
+				label: translation[language as keyof TranslationType].backoffice
+					.mapFormPage.languageFilter.label as string,
+				description: translation[language as keyof TranslationType].backoffice
+					.mapFormPage.languageFilter.description as string,
+			};
 		case "element":
-			return translation[language as keyof TranslationType].backoffice
-				.mapFormPage.epithetFilter;
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.epithetFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.epithetFilter.description,
+			};
 		default:
-			break;
+			return {
+				label: translation[language as keyof TranslationType].backoffice
+					.mapFormPage.noFilter as string,
+				description: "",
+			};
 	}
 };
 

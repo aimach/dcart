@@ -89,8 +89,18 @@ const PointSetUploadForm = ({
 			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
 				<div className={style.commonFormInputContainer}>
 					<div className={style.labelContainer}>
-						<label htmlFor="name">Nom du jeu de points</label>
-						<p>Description</p>
+						<label htmlFor="name">
+							{
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.pointSetName.label
+							}
+						</label>
+						<p>
+							{
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.pointSetName.description
+							}
+						</p>
 					</div>
 					<div className={style.inputContainer}>
 						<input
@@ -109,9 +119,18 @@ const PointSetUploadForm = ({
 				<div className={style.commonFormInputContainer}>
 					<div className={style.labelContainer}>
 						<label htmlFor="attestationIds">
-							{translation[language].backoffice.mapFormPage.uploadPoints}
+							{
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.attestationIds.label
+							}
 						</label>
-						<p>Description</p>
+						<p>
+							{" "}
+							{
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.attestationIds.description
+							}
+						</p>
 					</div>
 					<div className={style.inputContainer}>
 						<input
@@ -125,8 +144,19 @@ const PointSetUploadForm = ({
 				</div>
 				<div className={style.commonFormInputContainer}>
 					<div className={style.labelContainer}>
-						<label htmlFor="color">Couleur des points</label>
-						<p>Description</p>
+						<label htmlFor="color">
+							{
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.pointColor.label
+							}
+						</label>
+						<p>
+							{" "}
+							{
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.pointColor.description
+							}
+						</p>
 					</div>
 					<div className={style.inputContainer}>
 						<input
@@ -144,8 +174,18 @@ const PointSetUploadForm = ({
 				</div>
 				<div className={style.commonFormInputContainer}>
 					<div className={style.labelContainer}>
-						<label htmlFor="color">Icône des points</label>
-						<p>Description</p>
+						<label htmlFor="color">
+							{
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.pointIcon.label
+							}
+						</label>
+						<p>
+							{
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.pointIcon.description
+							}
+						</p>
 					</div>
 					<div className={style.inputContainer}>
 						<select
@@ -158,7 +198,12 @@ const PointSetUploadForm = ({
 								} as PointSetType)
 							}
 						>
-							<option value="">Choisir une icône</option>
+							<option value="">
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.chooseIcon
+								}
+							</option>
 							{allIcons.map((icon) => (
 								<option key={icon.id} value={icon.id}>
 									{icon.name}
@@ -168,7 +213,7 @@ const PointSetUploadForm = ({
 					</div>
 				</div>
 				<button type="submit" className={style.commonFormButton}>
-					Ajouter
+					{translation[language].button.add}
 				</button>
 			</form>
 		)

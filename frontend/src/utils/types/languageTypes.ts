@@ -14,6 +14,9 @@ type LanguageObject = {
 		explore: string;
 		discover: string;
 	};
+	alert: {
+		maxReached: string;
+	};
 	button: {
 		freeExploration: string;
 		result: string;
@@ -29,6 +32,7 @@ type LanguageObject = {
 		bar: string;
 		resetFilter: string;
 		discover: string;
+		add: string;
 	};
 	common: {
 		between: string;
@@ -100,15 +104,45 @@ type LanguageObject = {
 			requiredField: string;
 		};
 		mapFormPage: {
+			aside: {
+				informations: string;
+				pointSets: string;
+				filters: string;
+			};
+			pointSetTable: {
+				name: string;
+				color: string;
+				icon: string;
+				delete: string;
+			};
+			pointSetForm: {
+				pointSetName: {
+					label: string;
+					description: string;
+				};
+				attestationIds: {
+					label: string;
+					description: string;
+				};
+				pointColor: {
+					label: string;
+					description: string;
+				};
+				pointIcon: {
+					label: string;
+					description: string;
+				};
+				chooseIcon: string;
+			};
 			addMapIntro: string;
 			addMapPoints: string;
 			uploadPoints: string;
 			addFilters: string;
 			filterIntroduction: string;
-			locationFilter: string;
-			languageFilter: string;
-			epithetFilter: string;
-			noFilter: string;
+			locationFilter: { label: string; description: string };
+			languageFilter: { label: string; description: string };
+			epithetFilter: { label: string; description: string };
+			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;
 			uploadPointsHelp: string;
