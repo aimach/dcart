@@ -1,6 +1,8 @@
 @use '../../../../styles/mixin' as m;
 @use '../../../../styles/variable' as v;
 
+@use "sass:color";
+
 .commonFormContainer {
     @include m.flexbox(flex, column, nowrap, center, flex-start);
     gap: v.$space-l;
@@ -154,4 +156,21 @@
     width: 100%;
     margin: v.$space-l 0;
     text-align: center;
+}
+
+.filterIntroductionContainer {
+    @include m.flexbox(flex, row, nowrap, space-center, center);
+    gap: v.$space-s;
+    background-color: v.$background-color-soft;
+    padding: v.$space-l;
+    border-radius: v.$border-radius-rounded;
+}
+
+.alertContainer {
+    color: v.$color-error;
+    @include m.flexbox(flex, row, nowrap, space-center, center);
+    gap: v.$space-s;
+    background-color: color.adjust(v.$color-error, $lightness: 60%);
+    padding: v.$space-l;
+    border-radius: v.$border-radius-rounded;
 }
