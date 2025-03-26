@@ -82,7 +82,7 @@ const CommonForm = ({
 						<div key={input.name} className={style.commonFormInputContainer}>
 							<div className={style.labelContainer}>
 								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-								<p>description</p>
+								<p>{input[`description_${language}`] ?? ""}</p>
 							</div>
 							<div className={style.inputContainer}>
 								<select
@@ -111,7 +111,7 @@ const CommonForm = ({
 						<div key={input.name} className={style.commonFormInputContainer}>
 							<div className={style.labelContainer}>
 								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-								<p>description</p>
+								<p>{input[`description_${language}`] ?? ""}</p>
 							</div>
 							<div className={style.inputContainer}>
 								<input
@@ -135,7 +135,7 @@ const CommonForm = ({
 						<div key={input.name} className={style.commonFormInputContainer}>
 							<div className={style.labelContainer}>
 								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-								<p>description</p>
+								<p>{input[`description_${language}`] ?? ""}</p>
 							</div>
 							<div className={style.inputContainer}>
 								<Controller
