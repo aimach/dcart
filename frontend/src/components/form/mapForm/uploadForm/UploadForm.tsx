@@ -128,8 +128,8 @@ const UploadForm = () => {
 							{mapInfos.attestations.map((pointSet) => (
 								<tr key={pointSet.id} className={style.pointSetTableRow}>
 									<td>{pointSet.name}</td>
-									<td>{pointSet.color}</td>
-									<td>{pointSet.icon}</td>
+									<td>{pointSet.color ?? "pas de couleur définie"}</td>
+									<td>{pointSet.icon ? pointSet.icon.name : "pas d'icône"}</td>
 									<td>
 										<X
 											onClick={() =>
