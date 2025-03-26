@@ -62,11 +62,6 @@ const PointSetUploadForm = ({
 					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
 						result.data,
 					);
-					// ajout des ids des attestations au store
-					setMapInfos({
-						...mapInfos,
-						attestationIds: allAttestationsIds,
-					} as MapInfoType);
 					setPointSet({
 						...pointSet,
 						attestationIds: allAttestationsIds,

@@ -3,13 +3,17 @@ import { useEffect, useState } from "react";
 import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import PointSetUploadForm from "../pointSetUploadForm/PointSetUploadForm";
+import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
+import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
+import { updateMap } from "../../../../utils/api/builtMap/putRequests";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -20,10 +24,6 @@ import type {
 import style from "../introForm/introForm.module.scss";
 // import des images
 import { CircleHelp, X } from "lucide-react";
-import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
-import ButtonComponent from "../../../common/button/ButtonComponent";
-import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
-import { updateMap } from "../../../../utils/api/builtMap/putRequests";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -51,7 +51,6 @@ const UploadForm = () => {
 		event.preventDefault();
 		const newPointSet = await createPointSet(pointSet as PointSetType);
 		if (newPointSet?.status === 201) {
-			console.log("je suis dans le if");
 			setIsAlreadyAPointSet(true);
 			const mapWithPointSet = await getOneMapInfos(mapInfos?.id as string);
 			setMapInfos(mapWithPointSet);
@@ -84,8 +83,8 @@ const UploadForm = () => {
 	};
 
 	return (
-		<>
-			<div>
+		<div>
+			<div className={style.titleAndHelpContainer}>
 				<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
 				<div className={style.helpContainer}>
 					<a
@@ -98,6 +97,14 @@ const UploadForm = () => {
 					</a>
 				</div>
 			</div>
+			{isAlreadyAPointSet && (
+				<ButtonComponent
+					type="button"
+					color="brown"
+					textContent="Ajouter un nouveau jeu de points"
+					onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
+				/>
+			)}
 
 			{!isAlreadyAPointSet && (
 				<PointSetUploadForm
@@ -108,23 +115,38 @@ const UploadForm = () => {
 			)}
 			{mapInfos?.attestations && (
 				<>
-					<div className={style.commonFormInputContainer}>
-						Jeux de points :
-						{mapInfos.attestations.map((pointSet) => (
-							<div key={pointSet.id}>
-								<p>{pointSet.name}</p>
-								<X
-									onClick={() => handleDeletePointSet(pointSet.id as string)}
-									onKeyDown={() => handleDeletePointSet(pointSet.id as string)}
-								/>
-							</div>
-						))}
-					</div>
+					<table className={style.pointSetTable}>
+						<thead>
+							<tr>
+								<th scope="col">Nom du jeu</th>
+								<th scope="col">Couleur</th>
+								<th scope="col">Icône</th>
+								<th scope="col">Supprimer</th>
+							</tr>
+						</thead>
+						<tbody>
+							{mapInfos.attestations.map((pointSet) => (
+								<tr key={pointSet.id} className={style.pointSetTableRow}>
+									<td>{pointSet.name}</td>
+									<td>{pointSet.color}</td>
+									<td>{pointSet.icon}</td>
+									<td>
+										<X
+											onClick={() =>
+												handleDeletePointSet(pointSet.id as string)
+											}
+											onKeyDown={() =>
+												handleDeletePointSet(pointSet.id as string)
+											}
+											color="#9d2121"
+										/>
+									</td>
+								</tr>
+							))}
+						</tbody>
+					</table>
 					{mapInfos?.attestations.length > 1 && (
-						<div className={style.commonFormInputContainer}>
-							<label htmlFor="isLayered">
-								Les points doivent être sur différents calques
-							</label>
+						<div className={style.isLayeredContainer}>
 							<input
 								id="isLayered"
 								name="isLayered"
@@ -133,14 +155,11 @@ const UploadForm = () => {
 									handleIsLayeredChange(event.target.checked.toString())
 								}
 							/>
+							<label htmlFor="isLayered">
+								Les points doivent être sur différents calques
+							</label>
 						</div>
 					)}
-					<ButtonComponent
-						type="button"
-						color="brown"
-						textContent="Ajouter un nouveau jeu de points"
-						onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
-					/>
 				</>
 			)}
 			{isAlreadyAPointSet && (
@@ -149,7 +168,7 @@ const UploadForm = () => {
 					nextButtonDisplayed={nextButtonDisplayed}
 				/>
 			)}
-		</>
+		</div>
 	);
 };
 
