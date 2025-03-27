@@ -188,13 +188,16 @@ const getBackGroundColorClassName = (sourcesNb: number) => {
 	return "lightBackgroundColor";
 };
 
-const getCircleIcon = (sourcesNb: number, color: string) => {
-	const customColor = getColorDependingOnNb(sourcesNb, color);
-	const customSize = getShapeDependingOnNb(sourcesNb);
-	const customTextColor = tinycolor(customColor).isDark() ? "white" : "black";
+const getCircleIcon = (
+	sourcesNb: number,
+	customColor: string,
+	customSize: number,
+	customTextColor: string,
+) => {
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="45" fill=${customColor} stroke="#ffffff" stroke-width="5" />
+      <circle cx="50" cy="50" r="45" fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}
+ stroke-width="5" />
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill=${customTextColor} font-family="Arial, sans-serif">
         ${sourcesNb.toString()}
       </text>
@@ -202,13 +205,16 @@ const getCircleIcon = (sourcesNb: number, color: string) => {
   `;
 };
 
-const getSquareIcon = (sourcesNb: number, color: string) => {
-	const customColor = getColorDependingOnNb(sourcesNb, color);
-	const customSize = getShapeDependingOnNb(sourcesNb);
-	const customTextColor = tinycolor(customColor).isDark() ? "white" : "black";
+const getSquareIcon = (
+	sourcesNb: number,
+	customColor: string,
+	customSize: number,
+	customTextColor: string,
+) => {
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
-      <rect x="5" y="5" width="90" height="90" fill=${customColor} stroke="#ffffff" stroke-width="5"/>
+      <rect x="5" y="5" width="90" height="90" fill=${customColor}         stroke=${tinycolor(customColor).darken(10).toString()}
+ stroke-width="5"/>
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill=${customTextColor} font-family="Arial, sans-serif">
         ${sourcesNb.toString()}
       </text>
@@ -216,13 +222,16 @@ const getSquareIcon = (sourcesNb: number, color: string) => {
   `;
 };
 
-const getTriangleIcon = (sourcesNb: number, color: string) => {
-	const customColor = getColorDependingOnNb(sourcesNb, color);
-	const customSize = getShapeDependingOnNb(sourcesNb);
-	const customTextColor = tinycolor(customColor).isDark() ? "white" : "black";
+const getTriangleIcon = (
+	sourcesNb: number,
+	customColor: string,
+	customSize: number,
+	customTextColor: string,
+) => {
 	return `
      <svg xmlns="http://www.w3.org/2000/svg" width=${customSize}  height=${customSize}  viewBox="0 0 100 100">
-      <polygon points="50,10 90,90 10,90" fill=${customColor} stroke="#ffffff" stroke-width="5" />
+      <polygon points="50,10 90,90 10,90" fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}
+ stroke-width="5" />
       <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="35" fill=${customTextColor} font-family="Arial, sans-serif">
        ${sourcesNb.toString()}
       </text>
@@ -230,16 +239,17 @@ const getTriangleIcon = (sourcesNb: number, color: string) => {
   `;
 };
 
-const getDiamondIcon = (sourcesNb: number, color: string) => {
-	const customColor = getColorDependingOnNb(sourcesNb, color);
-	const customSize = getShapeDependingOnNb(sourcesNb);
-	const customTextColor = tinycolor(customColor).isDark() ? "white" : "black";
-
+const getDiamondIcon = (
+	sourcesNb: number,
+	customColor: string,
+	customSize: number,
+	customTextColor: string,
+) => {
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <polygon 
         points="50,5 95,50 50,95 5,50" 
         fill=${customColor}
-        stroke="#ffffff"
+        stroke=${tinycolor(customColor).darken(10).toString()}
         stroke-width="5"
       />
       <text 
@@ -262,18 +272,33 @@ const getShapedDivContent = (
 	color: string,
 	sourcesNb: number,
 ) => {
+	const customColor = getColorDependingOnNb(sourcesNb, color);
+	const customSize = getShapeDependingOnNb(sourcesNb);
+	const customTextColor = tinycolor(customColor).isDark()
+		? tinycolor(color).brighten(40).toString()
+		: tinycolor(color).darken(40).toString();
 	switch (shape) {
 		case "circle":
-			return getCircleIcon(sourcesNb, color);
+			return getCircleIcon(sourcesNb, customColor, customSize, customTextColor);
 		case "square":
-			return getSquareIcon(sourcesNb, color);
+			return getSquareIcon(sourcesNb, customColor, customSize, customTextColor);
 		case "triangle":
-			return getTriangleIcon(sourcesNb, color);
+			return getTriangleIcon(
+				sourcesNb,
+				customColor,
+				customSize,
+				customTextColor,
+			);
 		case "diamond":
-			return getDiamondIcon(sourcesNb, color);
+			return getDiamondIcon(
+				sourcesNb,
+				customColor,
+				customSize,
+				customTextColor,
+			);
 
 		default:
-			return getCircleIcon(sourcesNb, color);
+			return getCircleIcon(sourcesNb, customColor, customSize, customTextColor);
 	}
 };
 
@@ -309,7 +334,7 @@ const getColorDependingOnNb = (sourcesNb: number, color: string) => {
 	if (sourcesNb >= 10 && sourcesNb < 50) {
 		customColor = tinycolor(color).darken(10).toString();
 	} else if (sourcesNb >= 50) {
-		customColor = tinycolor(color).darken(20).toString();
+		customColor = tinycolor(color).darken(15).toString();
 	}
 	return customColor;
 };
@@ -324,9 +349,25 @@ const getShapeDependingOnNb = (sourcesNb: number): number => {
 	return customSize;
 };
 
+const getShapeForLayerName = (shape: string, name: string, color: string) => {
+	switch (shape) {
+		case "circle":
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${color} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
+		case "square":
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${color} stroke="#ffffff" stroke-width="5"/></svg> ${name}`;
+		case "triangle":
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20"  height="20"  viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${color} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
+		case "diamond":
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${color} stroke="#ffffff" stroke-width="5"/></svg> ${name}`;
+		default:
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${color} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
+	}
+};
+
 export {
 	getIcon,
 	getBackGroundColorClassName,
 	getLittleCircleIcon,
 	getShapedDivContent,
+	getShapeForLayerName,
 };

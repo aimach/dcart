@@ -8,6 +8,7 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { PointType } from "../../../../utils/types/mapTypes";
+import { getShapeForLayerName } from "../../../../utils/functions/icons";
 
 type MultipleLayerComponentProps = {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -19,12 +20,20 @@ const MultipleLayerComponent = ({
 	const { allResults } = useMapStore();
 
 	const layersWithAttestationsArray = useMemo(() => {
-		const layersArray: { name: string; attestations: PointType[] }[] = [];
+		const layersArray: {
+			name: string;
+			attestations: PointType[];
+			shape: string | null;
+			color: string | null;
+		}[] = [];
+
 		allResults.map((result: PointType) => {
 			if (!layersArray.some((layer) => layer.name === result.layerName)) {
 				layersArray.push({
 					name: result.layerName as string,
 					attestations: [result],
+					shape: result.shape ?? null,
+					color: result.color ?? null,
 				});
 			} else {
 				const layer = layersArray.find(
@@ -35,7 +44,12 @@ const MultipleLayerComponent = ({
 				}
 			}
 		});
-		return layersArray;
+		return layersArray.map((layer) => {
+			return {
+				...layer,
+				name: getShapeForLayerName(layer.shape, layer.name, layer.color),
+			};
+		});
 	}, [allResults]);
 
 	return (
