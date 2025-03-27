@@ -54,7 +54,7 @@ if (rootElement) {
 								path="authentification"
 								element={<AuthentificationPage />}
 							/>
-							<Route path="backoffice" element={<NavigationLayout />}>
+							<Route path="backoffice" element={<ProtectedLayout />}>
 								<Route index element={<BOHomePage />} />
 								<Route path="maps">
 									<Route index element={<BackofficeMapPage />} />
