@@ -50,7 +50,9 @@
 		"before": "before",
 		"in": "in",
 		"map": "map",
-		"storymap": "storymap"
+		"storymap": "storymap",
+		"published": "published",
+		"noPublished": "not published"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
@@ -95,6 +97,15 @@
 	},
 	"backoffice": {
 		"createA": "Create a",
+		"managementTable": {
+			"image": "Image",
+			"name": "Name/Description",
+			"status": "Status",
+			"createdOn": "Creation date",
+			"updatedOn": "Modification date",
+			"lastUploadBy": "Last upload by",
+			"links": "Quick links"
+		},
 		"authPage": {
 			"login": "Log in",
 			"username": "Username",
@@ -163,6 +174,7 @@
 			"textContent": "Text content and layout",
 			"mediaContent": "Media content",
 			"mapsContent": "Maps content",
+			"backToEdit": "Back to edit",
 			"types": {
 				"title": "Title",
 				"subtitle": "Subtitle",
@@ -196,7 +208,12 @@
 				"forLeftPane": "for the left pane",
 				"forRightPane": "for the right pane",
 				"uploadTableFr": "Add a CSV file with a table in language 1",
-				"uploadTableEn": "Add a CSV file with a table in language 2"
+				"uploadTableEn": "Add a CSV file with a table in language 2",
+				"imageToLeft": "Image on the left",
+				"imageToRight": "Image on the right",
+				"scrollMapStepList": "List of steps for the scroll map",
+				"addStep": "Add this step",
+				"modifyStep": "Modify this step"
 			}
 		}
 	}

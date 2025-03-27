@@ -22,7 +22,7 @@ import type { ChangeEvent } from "react";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, ChevronRight, CircleHelp } from "lucide-react";
+import { ChevronLeft, CircleHelp } from "lucide-react";
 
 export type comparisonMapInputsType = {
 	content1_lang1: string;
@@ -112,8 +112,6 @@ const ComparisonMapForm = () => {
 	} = useForm<comparisonMapInputsType>({
 		defaultValues: block as comparisonMapInputsType,
 	});
-
-	console.log(parsedPoints);
 
 	return (
 		<>

@@ -60,7 +60,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 			<ButtonComponent
 				type="button"
 				color="gold"
-				textContent={`+ ${translation[language].backoffice.createA} ${translation[language].common[type]}`}
+				textContent={`+ ${translation[language].backoffice.createA} ${translation[language].common[type === "map" ? "map" : "storymap"]}`}
 				onClickFunction={() => {
 					navigate(`/backoffice/${type}s/create`);
 					resetMapInfos();
@@ -70,13 +70,27 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 				<table className={style.managementTable}>
 					<thead>
 						<tr>
-							<th scope="col">Image</th>
-							<th scope="col">Nom/Description</th>
-							<th scope="col">Statut</th>
-							<th scope="col">Date de création</th>
-							<th scope="col">Date de modification</th>
-							<th scope="col">Dernière édition par</th>
-							<th scope="col">Liens rapides</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.image}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.name}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.status}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.createdOn}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.updatedOn}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.lastUploadBy}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.links}
+							</th>
 						</tr>
 					</thead>
 					<tbody>

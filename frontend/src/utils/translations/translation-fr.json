@@ -50,7 +50,9 @@
 		"before": "avant",
 		"in": "en",
 		"map": "carte",
-		"storymap": "storymap"
+		"storymap": "storymap",
+		"published": "publiée",
+		"noPublished": "non publiée"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",
@@ -95,6 +97,15 @@
 	},
 	"backoffice": {
 		"createA": "Créer une",
+		"managementTable": {
+			"image": "Image",
+			"name": "Nom/Description",
+			"status": "Statut",
+			"createdOn": "Date de création",
+			"updatedOn": "Date de modification",
+			"lastUploadBy": "Dernière mise par",
+			"links": "Liens rapides"
+		},
 		"authPage": {
 			"login": "Se connecter",
 			"username": "Nom d'utilisateur",
@@ -164,6 +175,7 @@
 			"textContent": "Contenu textuel et de mise en page",
 			"mediaContent": "Contenu multimédia",
 			"mapsContent": "Contenu cartographique",
+			"backToEdit": "Retour à l'édition",
 			"types": {
 				"title": "Titre",
 				"subtitle": "Sous-titre",
@@ -197,7 +209,12 @@
 				"forLeftPane": "pour le panel de gauche",
 				"forRightPane": "pour le panel de droite",
 				"uploadTableFr": "Ajouter un CSV avec un tableau en langue 1",
-				"uploadTableEn": "Ajouter un CSV avec un tableau en langue 2"
+				"uploadTableEn": "Ajouter un CSV avec un tableau en langue 2",
+				"imageToLeft": "Image à gauche",
+				"imageToRight": "Image à droite",
+				"scrollMapStepList": "Liste des étapes de la carte déroulante",
+				"addStep": "Ajouter cette étape",
+				"modifyStep": "Modifier cette étape"
 			}
 		}
 	}

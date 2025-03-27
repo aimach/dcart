@@ -5,7 +5,8 @@ import { useParams, useSearchParams } from "react-router";
 import ImageForm from "../imageForm/imageForm";
 import TextForm from "../textForm/TextForm";
 import FormTitleComponent from "../common/FormTitleComponent";
-// import du context
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
@@ -14,10 +15,7 @@ import {
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
 // import des types
-import type {
-	BlockContentType,
-	StorymapType,
-} from "../../../../utils/types/storymapTypes";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./layoutForm.module.scss";
 // import des icônes
@@ -27,6 +25,8 @@ import { LayoutList } from "lucide-react";
  * Formulaire pour la création d'un bloc de type "layout"
  */
 const LayoutForm = () => {
+	const { translation, language } = useTranslation();
+
 	const { block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
@@ -111,11 +111,17 @@ const LayoutForm = () => {
 						<div className={style.layoutFormButtonContainer}>
 							<button type="button" onClick={() => handleClick("left")}>
 								<LayoutList />
-								Image à gauche
+								{
+									translation[language].backoffice.storymapFormPage.form
+										.imageToLeft
+								}
 							</button>
 							<button type="button" onClick={() => handleClick("right")}>
 								<LayoutList />
-								Image à droite
+								{
+									translation[language].backoffice.storymapFormPage.form
+										.imageToRight
+								}
 							</button>
 						</div>
 					</div>

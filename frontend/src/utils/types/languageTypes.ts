@@ -53,6 +53,8 @@ type LanguageObject = {
 		in: string;
 		map: string;
 		storymap: string;
+		published: string;
+		noPublished: string;
 	};
 	modal: {
 		firstContent: string;
@@ -97,6 +99,15 @@ type LanguageObject = {
 	};
 	backoffice: {
 		createA: string;
+		managementTable: {
+			image: string;
+			name: string;
+			status: string;
+			createdOn: string;
+			updatedOn: string;
+			lastUploadBy: string;
+			links: string;
+		};
 		authPage: {
 			login: string;
 			username: string;
@@ -153,6 +164,7 @@ type LanguageObject = {
 			textContent: string;
 			mediaContent: string;
 			mapsContent: string;
+			backToEdit: string;
 			types: {
 				title: string;
 				subtitle: string;
@@ -187,6 +199,11 @@ type LanguageObject = {
 				forRightPane: string;
 				uploadTableFr: string;
 				uploadTableEn: string;
+				imageToLeft: string;
+				imageToRight: string;
+				scrollMapStepList: string;
+				addStep: string;
+				modifyStep: string;
 			};
 		};
 	};

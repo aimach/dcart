@@ -79,10 +79,10 @@ const CommonForm = ({
 				"category_id",
 				(defaultValues as storymapInputsType).category_id as string,
 			);
-			setValue("lang1", (defaultValues as StorymapType).lang1.id as string);
-			if ((defaultValues as StorymapType).lang2) {
+			if ((defaultValues as StorymapType).lang1)
+				setValue("lang1", (defaultValues as StorymapType).lang1.id as string);
+			if ((defaultValues as StorymapType).lang2)
 				setValue("lang2", (defaultValues as StorymapType).lang2.id as string);
-			}
 		}
 	}, [defaultValues]);
 

@@ -25,6 +25,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./mapForms.module.scss";
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 
 interface StepPanelProps {
 	scrollMapId: string | null;
@@ -36,6 +37,7 @@ interface StepPanelProps {
  * @returns DraggableBlock
  */
 const StepPanel = ({ scrollMapId }: StepPanelProps) => {
+	const { translation, language } = useTranslation();
 	// récupération des données des stores
 	const { reload } = useBuilderStore();
 
@@ -77,7 +79,12 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 
 	return (
 		<section ref={setNodeRef} className={style.stepPanelSection}>
-			<h4>Liste des étapes de la carte déroulante</h4>
+			<h4>
+				{
+					translation[language].backoffice.storymapFormPage.form
+						.scrollMapStepList
+				}
+			</h4>
 			<DndContext
 				sensors={sensors}
 				collisionDetection={closestCenter}

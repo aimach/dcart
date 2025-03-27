@@ -199,8 +199,9 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					</button>
 					<button type="submit">
 						{stepAction === "create"
-							? "Ajouter cette étape"
-							: "Modifier cette étape"}
+							? translation[language].backoffice.storymapFormPage.form.addStep
+							: translation[language].backoffice.storymapFormPage.form
+									.modifyStep}
 					</button>
 				</div>
 			</form>

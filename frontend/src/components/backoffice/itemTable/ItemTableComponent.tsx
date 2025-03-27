@@ -30,7 +30,7 @@ type ItemTableComponentProps = {
 };
 
 const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
-	const { language } = useTranslation();
+	const { translation, language } = useTranslation();
 	const { selectedLanguage } = useStorymapLanguageStore();
 
 	const { setSession } = useContext(SessionContext);
@@ -125,9 +125,15 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 
 			<td>
 				{itemInfos.isActive ? (
-					<TagComponent text="publiée" color="green" />
+					<TagComponent
+						text={translation[language].common.published}
+						color="green"
+					/>
 				) : (
-					<TagComponent text="non publiée" color="red" />
+					<TagComponent
+						text={translation[language].common.noPublished}
+						color="red"
+					/>
 				)}
 			</td>
 			<td>

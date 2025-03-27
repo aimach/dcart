@@ -16,6 +16,8 @@ import TitleBlock from "../../../../components/storymap/blocks/titleBlock/TitleB
 import SimpleMapBlock from "../../../../components/storymap/blocks/simpleMapBlock/SimpleMapBlock";
 import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
 import ButtonComponent from "../../../../components/common/button/ButtonComponent";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getStorymapInfosAndBlocks } from "../../../../utils/api/storymap/getRequests";
@@ -72,6 +74,8 @@ export const getBlockComponentFromType = (
 };
 
 const StorymapPage = () => {
+	const { translation, language } = useTranslation();
+
 	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
 
@@ -106,7 +110,9 @@ const StorymapPage = () => {
 						{location.pathname.includes("storymaps/view/") && (
 							<ButtonComponent
 								type="route"
-								textContent="Retour à la modification"
+								textContent={
+									translation[language].backoffice.storymapFormPage.backToEdit
+								}
 								color="gold"
 								link={`/backoffice/storymaps/${storymapId}`}
 								onClickFunction={() => updateFormType("blockChoice")}
