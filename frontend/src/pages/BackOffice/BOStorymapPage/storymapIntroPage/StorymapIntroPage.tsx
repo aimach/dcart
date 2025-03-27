@@ -45,9 +45,6 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./storymapIntroPage.module.scss";
-// import des icônes
-import { ChevronLeft } from "lucide-react";
-import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 
 /**
  * Page d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.
@@ -68,9 +65,6 @@ const StorymapIntroPage = () => {
 		})),
 	);
 	const { isDeleteModalOpen, closeDeleteModal } = useModalStore();
-
-	// récupération des paramètres de l'url
-	const [_, setSearchParams] = useSearchParams();
 
 	const { storymapId } = useParams();
 

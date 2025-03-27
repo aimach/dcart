@@ -19,7 +19,7 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du style
 import style from "../mapForms/mapForms.module.scss";
 // import des icônes
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export type tableInputsType = {
 	content1_lang1: string;
@@ -163,14 +163,26 @@ const TableForm = () => {
 						onChange={(event) => handleFileUpload(event, 2)}
 					/>
 				</div>
-				<button type="submit">
-					{
-						translation[language].backoffice.storymapFormPage.form[
-							action as string
-						]
-					}{" "}
-					<ChevronRight />
-				</button>
+				<div className={style.formButtonNavigation}>
+					<button
+						type="button"
+						onClick={() => {
+							updateFormType("blockChoice");
+							setSearchParams(undefined);
+						}}
+					>
+						<ChevronLeft />
+						{translation[language].common.back}
+					</button>
+					<button type="submit">
+						{
+							translation[language].backoffice.storymapFormPage.form[
+								action === "create" ? "create" : "edit"
+							]
+						}
+						<ChevronRight />
+					</button>
+				</div>
 			</form>
 		</>
 	);

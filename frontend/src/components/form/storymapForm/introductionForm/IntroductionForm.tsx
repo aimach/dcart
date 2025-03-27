@@ -32,8 +32,6 @@ import {
 	createCategoryOptions,
 	createLanguageOptions,
 } from "../../../../utils/functions/storymap";
-import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
-import { useShallow } from "zustand/shallow";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -112,20 +110,19 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 
 	return (
 		<>
+			{storymapId === "create" && (
+				<CommonForm
+					onSubmit={onSubmit as SubmitHandler<allInputsType>}
+					inputs={inputs}
+					action="create"
+				/>
+			)}
 			{storymapId !== "create" && storymapInfos && (
 				<CommonForm
 					onSubmit={onSubmit as SubmitHandler<allInputsType>}
 					inputs={inputs}
 					defaultValues={storymapInfos as StorymapType}
 					action="edit"
-				/>
-			)}
-
-			{storymapId === "create" && (
-				<CommonForm
-					onSubmit={onSubmit as SubmitHandler<allInputsType>}
-					inputs={inputs}
-					action="create"
 				/>
 			)}
 		</>
