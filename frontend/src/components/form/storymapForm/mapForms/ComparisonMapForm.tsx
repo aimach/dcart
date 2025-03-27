@@ -22,7 +22,7 @@ import type { ChangeEvent } from "react";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronRight, CircleHelp } from "lucide-react";
+import { ChevronLeft, ChevronRight, CircleHelp } from "lucide-react";
 
 export type comparisonMapInputsType = {
 	content1_lang1: string;
@@ -112,6 +112,8 @@ const ComparisonMapForm = () => {
 	} = useForm<comparisonMapInputsType>({
 		defaultValues: block as comparisonMapInputsType,
 	});
+
+	console.log(parsedPoints);
 
 	return (
 		<>
@@ -206,13 +208,28 @@ const ComparisonMapForm = () => {
 						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
 					</a>
 				</div>
-				<button
-					type="submit"
-					disabled={!parsedPoints.left && !parsedPoints.right}
-				>
-					Suivant
-					<ChevronRight />
-				</button>
+				<div className={style.formButtonNavigation}>
+					<button
+						type="button"
+						onClick={() => {
+							updateFormType("blockChoice");
+							setSearchParams(undefined);
+						}}
+					>
+						<ChevronLeft />
+						{translation[language].common.back}
+					</button>
+					<button
+						type="submit"
+						disabled={
+							parsedPoints.left.length === 0 || parsedPoints.right.length === 0
+						}
+					>
+						{action === "create"
+							? translation[language].backoffice.storymapFormPage.form.create
+							: translation[language].backoffice.storymapFormPage.form.edit}
+					</button>
+				</div>
 			</form>
 		</>
 	);

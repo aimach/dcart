@@ -1,23 +1,18 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
-import { Link, useParams } from "react-router";
+import { useEffect } from "react";
+import { useParams } from "react-router";
 import { useDroppable } from "@dnd-kit/core";
 // import des composants
 import MemoDraggableBlock from "./DraggableBlock";
-// import des custom hooks
-import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { getStorymapInfosAndBlocks } from "../../../utils/api/storymap/getRequests";
 import { useBuilderStore } from "../../../utils/stores/storymap/builderStore";
+import { useShallow } from "zustand/shallow";
 // import des types
-import type {
-	BlockContentType,
-	StorymapType,
-} from "../../../utils/types/storymapTypes";
+import type { BlockContentType } from "../../../utils/types/storymapTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./panelSection.module.scss";
-import { useShallow } from "zustand/shallow";
 
 interface PanelSectionProps {
 	blockList: BlockContentType[];

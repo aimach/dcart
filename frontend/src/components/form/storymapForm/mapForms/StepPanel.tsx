@@ -27,7 +27,7 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import style from "./mapForms.module.scss";
 
 interface StepPanelProps {
-	scrollMapId: string;
+	scrollMapId: string | null;
 }
 
 /**
@@ -46,10 +46,10 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const fetchScrollMapInfos = async () => {
-			const response = await getBlockInfos(scrollMapId);
+			const response = await getBlockInfos(scrollMapId as string);
 			setScrollMapBlocks(response.children);
 		};
-		fetchScrollMapInfos();
+		if (scrollMapId) fetchScrollMapInfos();
 	}, [reload]);
 
 	// -- DRAG AND DROP --
@@ -76,7 +76,8 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 	});
 
 	return (
-		scrollMapBlocks && (
+		<section ref={setNodeRef} className={style.stepPanelSection}>
+			<h4>Liste des étapes de la carte déroulante</h4>
 			<DndContext
 				sensors={sensors}
 				collisionDetection={closestCenter}
@@ -86,8 +87,8 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 					items={scrollMapBlocks.map((b) => b.id)}
 					strategy={verticalListSortingStrategy}
 				>
-					<section ref={setNodeRef} className={style.stepPanelSection}>
-						{scrollMapBlocks.map((block, index) => (
+					{scrollMapBlocks.length > 0 &&
+						scrollMapBlocks.map((block, index) => (
 							<MemoDraggableBlock
 								block={block}
 								key={block.id}
@@ -95,10 +96,9 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 								index={index}
 							/>
 						))}
-					</section>
 				</SortableContext>
 			</DndContext>
-		)
+		</section>
 	);
 };
 

@@ -1,9 +1,9 @@
 // import des bibliothèques
 import { create } from "zustand";
 // import des types
-import type { FormType } from "../utils/types/formTypes";
-import type { BlockContentType } from "../utils/types/storymapTypes";
-import { StorymapType } from "../../types/storymapTypes";
+import type { FormType } from "../../types/formTypes";
+import type { BlockContentType } from "../../types/storymapTypes";
+import type { StorymapType } from "../../types/storymapTypes";
 
 type State = {
 	formType: FormType;

@@ -21,6 +21,8 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import StepForm from "./StepForm";
 // import du style
 import style from "./mapForms.module.scss";
+// import des icônes
+import { ChevronLeft } from "lucide-react";
 
 export type scrollMapInputsType = {
 	content1_lang1: string;
@@ -33,11 +35,12 @@ export type scrollMapInputsType = {
  */
 const ScrollMapForm = () => {
 	// récupération des données de traduction
-	const { language } = useTranslation();
+	const { translation, language } = useTranslation();
 
-	const { block, reload, setReload } = useBuilderStore(
+	const { block, updateFormType, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
+			updateFormType: state.updateFormType,
 			reload: state.reload,
 			setReload: state.setReload,
 		})),
@@ -49,7 +52,9 @@ const ScrollMapForm = () => {
 	const { storymapId } = useParams();
 
 	// génération d'un id pour le bloc de type "scroll_map"
-	const [scrollMapId, setScrollMapId] = useState<string | null>(null);
+	const [scrollMapId, setScrollMapId] = useState<string | null>(
+		block?.id ?? null,
+	);
 
 	// fonction appelée lors de la soumission du formulaire (création ou édition d'un bloc de type "scroll_map")
 	const handleScrollMapSubmit = async (data: scrollMapInputsType) => {
@@ -87,76 +92,93 @@ const ScrollMapForm = () => {
 	});
 
 	return (
-		<>
-			<FormTitleComponent
-				action={action as string}
-				translationKey="scroll_map"
-			/>
-			{!scrollMapId ? (
-				<form
-					onSubmit={handleSubmit(handleScrollMapSubmit)}
-					className={style.mapFormContainer}
-				>
-					{scrollMapInputs.map((input) => {
-						if (input.type === "text") {
-							return (
-								<div key={input.name} className={style.mapFormInputContainer}>
-									<label htmlFor={input.name}>
-										{input[`label_${language}`]}
-									</label>
-									<input
-										{...register(input.name as keyof scrollMapInputsType, {
-											required: input.required.value,
-										})}
-									/>
-
-									{errors[input.name as keyof scrollMapInputsType] && (
-										<ErrorComponent
-											message={input.required.message?.[language] as string}
+		<section className={style.scrollMapFormContainer}>
+			<StepPanel scrollMapId={scrollMapId} />
+			<section>
+				<FormTitleComponent
+					action={action as string}
+					translationKey="scroll_map"
+				/>
+				{!scrollMapId || action === "edit" ? (
+					<form
+						onSubmit={handleSubmit(handleScrollMapSubmit)}
+						className={style.mapFormContainer}
+					>
+						{scrollMapInputs.map((input) => {
+							if (input.type === "text") {
+								return (
+									<div key={input.name} className={style.mapFormInputContainer}>
+										<label htmlFor={input.name}>
+											{input[`label_${language}`]}
+										</label>
+										<input
+											{...register(input.name as keyof scrollMapInputsType, {
+												required: input.required.value,
+											})}
 										/>
-									)}
-								</div>
-							);
-						}
-						if (input.type === "select") {
-							return (
-								<div key={input.name} className={style.mapFormInputContainer}>
-									<label htmlFor={input.name}>
-										{input[`label_${language}`]}
-									</label>
-									<select
-										{...register(input.name as keyof scrollMapInputsType, {
-											required: input.required.value,
-										})}
-									>
-										{input.options?.map((option) => (
-											<option key={option.value} value={option.value}>
-												{option.label}
-											</option>
-										))}
-									</select>
 
-									{errors[input.name as keyof scrollMapInputsType] && (
-										<ErrorComponent
-											message={input.required.message?.[language] as string}
-										/>
-									)}
-								</div>
-							);
-						}
-					})}
+										{errors[input.name as keyof scrollMapInputsType] && (
+											<ErrorComponent
+												message={input.required.message?.[language] as string}
+											/>
+										)}
+									</div>
+								);
+							}
+							if (input.type === "select") {
+								return (
+									<div key={input.name} className={style.mapFormInputContainer}>
+										<label htmlFor={input.name}>
+											{input[`label_${language}`]}
+										</label>
+										<select
+											{...register(input.name as keyof scrollMapInputsType, {
+												required: input.required.value,
+											})}
+										>
+											{input.options?.map((option) => (
+												<option key={option.value} value={option.value}>
+													{option.label}
+												</option>
+											))}
+										</select>
 
-					<button type="submit">
-						{action === "create" ? "Créer" : "Modifier"}
-					</button>
-				</form>
-			) : (
-				<div className={style.stepFormContainer}>
-					<StepForm parentBlockId={scrollMapId} />
-					<StepPanel scrollMapId={scrollMapId} />
-				</div>
-			)}
-		</>
+										{errors[input.name as keyof scrollMapInputsType] && (
+											<ErrorComponent
+												message={input.required.message?.[language] as string}
+											/>
+										)}
+									</div>
+								);
+							}
+						})}
+						<div className={style.formButtonNavigation}>
+							<button
+								type="button"
+								onClick={() => {
+									updateFormType("blockChoice");
+									setSearchParams(undefined);
+								}}
+							>
+								<ChevronLeft />
+								{translation[language].common.back}
+							</button>
+							<button type="submit">
+								{
+									translation[language].backoffice.storymapFormPage.form[
+										action === "create" ? "create" : "edit"
+									]
+								}
+							</button>
+						</div>
+					</form>
+				) : (
+					<div className={style.stepFormContainer}>
+						<StepForm parentBlockId={scrollMapId} />
+					</div>
+				)}
+			</section>
+		</section>
 	);
 };
 
