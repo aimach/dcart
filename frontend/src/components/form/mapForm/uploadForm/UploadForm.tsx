@@ -174,6 +174,7 @@ const UploadForm = () => {
 								onChange={(event) =>
 									handleIsLayeredChange(event.target.checked.toString())
 								}
+								defaultChecked={mapInfos.isLayered}
 							/>
 							<label htmlFor="isLayered">
 								Les points doivent être sur différents calques

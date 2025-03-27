@@ -15,7 +15,6 @@ import type { Map as LeafletMap } from "leaflet";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./markerComponent.module.scss";
-import L from "leaflet";
 
 interface MarkerComponentProps {
 	point: PointType;
