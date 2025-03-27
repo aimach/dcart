@@ -1,0 +1,8 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.formTitle {
+    font-size: v.$font-size-xxl;
+    text-align: center;
+    margin: v.$space-l;
+}

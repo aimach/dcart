@@ -20,7 +20,7 @@ const createStorymap = async (body: storymapInputsType) => {
 			method: "POST",
 			data: JSON.stringify(body),
 		});
-		return response.data.id;
+		return response.data;
 	} catch (error) {
 		console.error("Erreur lors de la création de la storymap :", error);
 	}

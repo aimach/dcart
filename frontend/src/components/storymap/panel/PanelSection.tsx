@@ -17,8 +17,7 @@ import type {
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./panelSection.module.scss";
-// import des icônes
-import { Pen } from "lucide-react";
+import { useShallow } from "zustand/shallow";
 
 interface PanelSectionProps {
 	blockList: BlockContentType[];
@@ -32,17 +31,12 @@ interface PanelSectionProps {
  * @returns DraggableBlock
  */
 const PanelSection = ({ blockList, setBlockList }: PanelSectionProps) => {
-	// récupération des données de traduction
-	const { translation, language } = useTranslation();
-
 	// récupération des données des stores
-	const { formType, reload } = useBuilderStore();
+	const { formType, reload, storymapInfos, setStorymapInfos } = useBuilderStore(
+		useShallow((state) => state),
+	);
 
-	// récupération de l'id de la storymap en cours
 	const { storymapId } = useParams();
-
-	// au montage du composant, au changement de formulaire ou au rechargement, récupération des informations de la storymap et de ses blocs
-	const [storymapInfos, setStorymapInfos] = useState<StorymapType | null>(null);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
@@ -63,32 +57,15 @@ const PanelSection = ({ blockList, setBlockList }: PanelSectionProps) => {
 	return (
 		storymapInfos &&
 		blockList && (
-			<>
-				<div className={style.buttonContainer}>
-					<Link
-						to={`/backoffice/storymaps/view/${(storymapInfos as StorymapType).id}`}
-					>
-						<button type="button" className={style.previewButton}>
-							{translation[language].backoffice.storymapFormPage.preview}
-						</button>
-					</Link>
-				</div>
-				<div ref={setNodeRef}>
-					<div>
-						Introduction{" "}
-						<Link to={`/backoffice/storymaps/edit/${storymapId}`}>
-							<Pen size={20} style={{ cursor: "pointer" }} />
-						</Link>
-					</div>
-					{blockList.map((block) => (
-						<MemoDraggableBlock
-							key={block.id}
-							block={block}
-							type={block.type.name === "layout" ? "layout" : "block"}
-						/>
-					))}
-				</div>
-			</>
+			<div ref={setNodeRef} className={style.panelSectionContainer}>
+				{blockList.map((block) => (
+					<MemoDraggableBlock
+						key={block.id}
+						block={block}
+						type={block.type.name === "layout" ? "layout" : "block"}
+					/>
+				))}
+			</div>
 		)
 	);
 };

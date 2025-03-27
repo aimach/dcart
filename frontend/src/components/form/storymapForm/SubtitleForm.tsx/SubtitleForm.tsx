@@ -14,7 +14,10 @@ import {
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import FormTitleComponent from "../common/FormTitleComponent";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type subtitleInputsType = {
@@ -36,21 +39,17 @@ const SubtitleForm = () => {
 		})),
 	);
 
-	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
-
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
+
+	const { storymapId } = useParams();
 
 	// fonction appelée lors de la soumission du formulaire
 	const onSubmit: SubmitHandler<subtitleInputsType> = async (data) => {
 		if (action === "create") {
 			await createBlock({
 				...data,
-				storymapId,
+				storymapId: storymapId,
 				typeName: "subtitle",
 			});
 		} else if (action === "edit") {
@@ -58,7 +57,7 @@ const SubtitleForm = () => {
 				{
 					...block,
 					...data,
-					storymapId,
+					storymapId: storymapId,
 					typeName: "subtitle",
 				},
 				block?.id.toString() as string,

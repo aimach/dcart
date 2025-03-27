@@ -20,7 +20,9 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./commonForm.module.scss";
 // import des icônes
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
+import { useSearchParams } from "react-router";
 
 type CommonFormProps = {
 	onSubmit: SubmitHandler<allInputsType>;
@@ -46,6 +48,10 @@ const CommonForm = ({
 }: CommonFormProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
+
+	const { updateFormType } = useBuilderStore();
+
+	const [_, setSearchParams] = useSearchParams();
 
 	// import des sevice de formulaire
 	const {
@@ -166,13 +172,24 @@ const CommonForm = ({
 					);
 				}
 			})}
-
-			<button type="submit">
-				{action === "create"
-					? translation[language].backoffice.storymapFormPage.form.create
-					: translation[language].backoffice.storymapFormPage.form.edit}
-				<ChevronRight />
-			</button>
+			<div className={style.commonFormContainerButton}>
+				<button
+					type="button"
+					onClick={() => {
+						updateFormType("blockChoice");
+						setSearchParams(undefined);
+					}}
+				>
+					<ChevronLeft />
+					{translation[language].common.back}
+				</button>
+				<button type="submit">
+					{action === "create"
+						? translation[language].backoffice.storymapFormPage.form.create
+						: translation[language].backoffice.storymapFormPage.form.edit}
+					<ChevronRight />
+				</button>
+			</div>
 		</form>
 	);
 };

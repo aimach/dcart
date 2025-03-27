@@ -35,7 +35,6 @@ const ScrollMapForm = () => {
 	// récupération des données de traduction
 	const { language } = useTranslation();
 
-	// récupération des données des stores
 	const { block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
@@ -44,14 +43,10 @@ const ScrollMapForm = () => {
 		})),
 	);
 
-	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
-
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
+
+	const { storymapId } = useParams();
 
 	// génération d'un id pour le bloc de type "scroll_map"
 	const [scrollMapId, setScrollMapId] = useState<string | null>(null);

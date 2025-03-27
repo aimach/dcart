@@ -38,7 +38,6 @@ const ComparisonMapForm = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	// récupération des données des stores
 	const { updateFormType, block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
@@ -48,14 +47,10 @@ const ComparisonMapForm = () => {
 		})),
 	);
 
-	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
-
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
+
+	const { storymapId } = useParams();
 
 	// gestion de l'upload du fichier csv
 	const [parsedPoints, setParsedPoints] = useState<

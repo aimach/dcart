@@ -14,7 +14,10 @@ import {
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
 // import des types
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./layoutForm.module.scss";
 // import des icônes
@@ -24,23 +27,19 @@ import { LayoutList } from "lucide-react";
  * Formulaire pour la création d'un bloc de type "layout"
  */
 const LayoutForm = () => {
-	// récupération des données des stores
 	const { block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
+			updateFormType: state.updateFormType,
 			reload: state.reload,
 			setReload: state.setReload,
 		})),
 	);
 
-	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
-
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
+
+	const { storymapId } = useParams();
 
 	// déclération d'un état pour gérer les étapes du formulaire (layout, text, image)
 	const [step, setStep] = useState(1);
@@ -54,7 +53,7 @@ const LayoutForm = () => {
 			const response = await createBlock({
 				content1_lang1: position,
 				content1_lang2: position,
-				storymapId,
+				storymapId: storymapId,
 				typeName: "layout",
 			});
 			setLayoutBlockId(response?.id.toString());
@@ -63,7 +62,7 @@ const LayoutForm = () => {
 				{
 					content1_lang1: position,
 					content1_lang2: position,
-					storymapId,
+					storymapId: storymapId,
 					typeName: "layout",
 				},
 				block?.id.toString() as string,
@@ -87,10 +86,14 @@ const LayoutForm = () => {
 	useEffect(() => {
 		if (action === "edit") {
 			setTextDefaultValues(
-				block?.children.find((child) => child.type.name === "text"),
+				block?.children.find(
+					(child: BlockContentType) => child.type.name === "text",
+				),
 			);
 			setImageDefaultValues(
-				block?.children.find((child) => child.type.name === "image"),
+				block?.children.find(
+					(child: BlockContentType) => child.type.name === "image",
+				),
 			);
 		}
 	}, [action]);

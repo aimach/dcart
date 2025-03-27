@@ -22,6 +22,9 @@ type StorymapType = {
 		pseudo: string;
 	};
 	blocks?: BlockContentType[];
+	img_url: string;
+	publication_date?: string;
+	category_id?: string;
 };
 
 type BlockContentType = {

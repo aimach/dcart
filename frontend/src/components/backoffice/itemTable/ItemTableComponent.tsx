@@ -82,7 +82,7 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 				setSession(session);
 			}
 		} else {
-			navigate(`/backoffice/storymaps/build/${idToModify}`);
+			navigate(`/backoffice/storymaps/${idToModify}`);
 			const session = await createSession(type, idToModify);
 			setSession(session);
 		}

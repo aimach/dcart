@@ -100,7 +100,7 @@ const StorymapPage = () => {
 				<div className={style.storymapHeaderContainer}>
 					<div>
 						{location.pathname.includes("storymaps/view/") && (
-							<Link to={`/backoffice/storymaps/build/${storymapId}`}>
+							<Link to={`/backoffice/storymaps/${storymapId}`}>
 								Modifier la storymap
 							</Link>
 						)}

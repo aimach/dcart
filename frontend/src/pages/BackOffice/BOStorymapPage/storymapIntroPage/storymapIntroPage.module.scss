@@ -12,9 +12,11 @@
 
 .storymapFormAside {
     width: 20vw;
+    min-width: 250px;
     height: 100%;
     background-color: v.$background-color-soft;
     padding-top: v.$space-l;
+    text-align: center;
 
     >ul {
 
@@ -40,6 +42,16 @@
     .disabled {
         color: v.$color-neutral-60;
         cursor: not-allowed;
+    }
+
+    .buttonContainer {
+        width: 100%;
+        margin-bottom: v.$space-s;
+
+        .previewButton {
+            @include m.buttonStyle(v.$color-dark-lava, v.$color-neutral-100);
+        }
+
     }
 }
 

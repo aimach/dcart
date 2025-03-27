@@ -60,11 +60,6 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 						.name as keyof typeof translation.en.backoffice.storymapFormPage.types
 				];
 
-	// définition du texte de l'aperçu
-
-	const previewText =
-		type === "layout" ? "" : getPreviewText(block, selectedLanguage);
-
 	// définition du style du container titre (icone + type de bloc)
 	const titleStyle = {
 		display: "flex",
@@ -111,6 +106,15 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,
+		display: "flex",
+		justifyContent: "space-between",
+		border: "1px solid #e0e0e0",
+		borderRadius: "5px",
+		margin: "10px",
+		padding: "10px",
+		backgroundColor: "white",
+		width: "80%",
+		cursor: "grab",
 	};
 
 	return (
@@ -120,8 +124,6 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 					{icon}
 					{titleText}
 				</div>
-				<p>{previewText}</p>
-
 				<div style={actionContainerStyle}>
 					<Pen
 						onMouseDown={handleEditClick}
