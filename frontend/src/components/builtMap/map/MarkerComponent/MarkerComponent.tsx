@@ -2,14 +2,10 @@
 import { Marker, Tooltip } from "react-leaflet";
 // import des services
 import {
-	getBackGroundColorClassName,
 	isSelectedMarker,
 	zoomOnMarkerOnClick,
 } from "../../../../utils/functions/map";
-import {
-	getIcon,
-	getShapedDivContent,
-} from "../../../../utils/functions/icons";
+import { getIcon } from "../../../../utils/functions/icons";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
@@ -51,11 +47,6 @@ const MarkerComponent = ({
 
 	const keyPoint = `${point.latitude}-${point.longitude}`;
 
-	// génération d'un nom de classe à partir du nombre de sources
-	// if (selectedMarker && isSelectedMarker(selectedMarker, point)) {
-	// 	backgroundColorClassName = "selectedBackgroundColor";
-	// }
-
 	// fonction pour gérer le clic sur un marker par l'utilisateur
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
 		// ouverture de l'onglet "infos"
@@ -66,7 +57,11 @@ const MarkerComponent = ({
 		setSelectedMarker(point);
 	};
 
-	const customIcon = getIcon(point, style);
+	const customIcon = getIcon(
+		point,
+		style,
+		selectedMarker ? isSelectedMarker(selectedMarker, point) : false,
+	);
 
 	return (
 		<Marker

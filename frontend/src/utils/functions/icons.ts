@@ -271,12 +271,20 @@ const getShapedDivContent = (
 	shape: string,
 	color: string,
 	sourcesNb: number,
+	isSelected: boolean,
 ) => {
-	const customColor = getColorDependingOnNb(sourcesNb, color);
-	const customSize = getShapeDependingOnNb(sourcesNb);
-	const customTextColor = tinycolor(customColor).isDark()
+	let customSize = getShapeDependingOnNb(sourcesNb);
+	let customColor = getColorDependingOnNb(sourcesNb, color);
+	let customTextColor = tinycolor(customColor).isDark()
 		? tinycolor(color).brighten(40).toString()
 		: tinycolor(color).darken(40).toString();
+
+	if (isSelected) {
+		customColor = "white";
+		customTextColor = tinycolor(color).darken(40).toString();
+		customSize = 60;
+	}
+
 	switch (shape) {
 		case "circle":
 			return getCircleIcon(sourcesNb, customColor, customSize, customTextColor);
@@ -302,7 +310,11 @@ const getShapedDivContent = (
 	}
 };
 
-const getIcon = (point: PointType, style: CSSModuleClasses) => {
+const getIcon = (
+	point: PointType,
+	style: CSSModuleClasses,
+	isSelected: boolean,
+) => {
 	let customIcon = getDefaultIcon(
 		point.sources.length,
 		style,
@@ -311,7 +323,12 @@ const getIcon = (point: PointType, style: CSSModuleClasses) => {
 	);
 	if (point.shape && point.color) {
 		customIcon = L.divIcon({
-			html: getShapedDivContent(point.shape, point.color, point.sources.length),
+			html: getShapedDivContent(
+				point.shape,
+				point.color,
+				point.sources.length,
+				isSelected,
+			),
 			className: "",
 			iconSize: [8, 8],
 			iconAnchor: [16, 4],
@@ -320,7 +337,12 @@ const getIcon = (point: PointType, style: CSSModuleClasses) => {
 
 	if (point.shape && !point.color) {
 		customIcon = L.divIcon({
-			html: getShapedDivContent(point.shape, "#AD9A85", point.sources.length),
+			html: getShapedDivContent(
+				point.shape,
+				"#AD9A85",
+				point.sources.length,
+				isSelected,
+			),
 			className: "",
 			iconSize: [8, 8],
 			iconAnchor: [14, 4],
@@ -349,18 +371,26 @@ const getShapeDependingOnNb = (sourcesNb: number): number => {
 	return customSize;
 };
 
-const getShapeForLayerName = (shape: string, name: string, color: string) => {
+const getShapeForLayerName = (
+	shape: string | null,
+	name: string,
+	color: string | null,
+) => {
+	let defaultColor = color;
+	if (!color) {
+		defaultColor = "#AD9A85";
+	}
 	switch (shape) {
 		case "circle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${color} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
 		case "square":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${color} stroke="#ffffff" stroke-width="5"/></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${defaultColor} stroke="#ffffff" stroke-width="5"/></svg> ${name}`;
 		case "triangle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20"  height="20"  viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${color} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20"  height="20"  viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${defaultColor} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
 		case "diamond":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${color} stroke="#ffffff" stroke-width="5"/></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${defaultColor} stroke="#ffffff" stroke-width="5"/></svg> ${name}`;
 		default:
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${color} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
 	}
 };
 
