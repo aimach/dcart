@@ -64,6 +64,8 @@ type storymapInputsType = {
 	author: string;
 	publication_date: string;
 	category_id: string;
+	lang1: string;
+	lang2: string;
 };
 
 type allInputsType = storymapInputsType | BlockContentType;

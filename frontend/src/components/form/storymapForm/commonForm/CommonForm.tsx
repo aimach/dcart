@@ -16,7 +16,10 @@ import type {
 } from "../../../../utils/types/formTypes";
 
 import type Quill from "quill";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./commonForm.module.scss";
 // import des icônes
@@ -27,7 +30,11 @@ import { useSearchParams } from "react-router";
 type CommonFormProps = {
 	onSubmit: SubmitHandler<allInputsType>;
 	inputs: InputType[];
-	defaultValues?: storymapInputsType | BlockContentType | undefined;
+	defaultValues?:
+		| storymapInputsType
+		| BlockContentType
+		| undefined
+		| StorymapType;
 	action?: string;
 };
 
@@ -70,8 +77,12 @@ const CommonForm = ({
 		if (defaultValues) {
 			setValue(
 				"category_id",
-				(defaultValues as storymapInputsType).category_id,
+				(defaultValues as storymapInputsType).category_id as string,
 			);
+			setValue("lang1", (defaultValues as StorymapType).lang1.id as string);
+			if ((defaultValues as StorymapType).lang2) {
+				setValue("lang2", (defaultValues as StorymapType).lang2.id as string);
+			}
 		}
 	}, [defaultValues]);
 

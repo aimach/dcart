@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams, useLocation } from "react-router";
+import { useNavigate, useParams } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
 // import des custom hooks
@@ -103,7 +103,20 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 			setStorymapInfos(newStorymap);
 			navigate(`/backoffice/storymaps/${newStorymap.id}`);
 		} else {
-			await updateStorymap(data, storymapInfos?.id as string);
+			const bodyWithoutUselessData = {
+				id: storymapInfos?.id,
+				title_lang1: data.title_lang1,
+				title_lang2: data.title_lang2,
+				description_lang1: data.description_lang1,
+				description_lang2: data.description_lang2,
+				category_id: data.category_id,
+				img_url: data.img_url,
+				author: data.author,
+				lang1: data.lang1,
+				lang2: data.lang2,
+				publication_date: data.publication_date,
+			};
+			await updateStorymap(bodyWithoutUselessData, storymapInfos?.id as string);
 		}
 		setStep(2);
 	};
