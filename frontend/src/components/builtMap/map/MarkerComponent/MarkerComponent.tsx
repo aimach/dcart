@@ -51,43 +51,10 @@ const MarkerComponent = ({
 
 	const keyPoint = `${point.latitude}-${point.longitude}`;
 
-	let customIcon = getIcon(
-		point.sources.length,
-		style,
-		getBackGroundColorClassName(point.sources.length),
-		point.sources.length.toString(),
-	);
-	if (point.shape && point.color) {
-		customIcon = L.divIcon({
-			html: getShapedDivContent(
-				point.shape,
-				point.color,
-				point.sources.length.toString(),
-			),
-			className: "",
-			iconSize: [8, 8],
-			iconAnchor: [4, 4],
-		});
-	}
-
-	if (point.shape && !point.color) {
-		customIcon = L.divIcon({
-			html: getShapedDivContent(
-				point.shape,
-				"#AD9A85",
-				point.sources.length.toString(),
-			),
-			className: "",
-			iconSize: [8, 8],
-			iconAnchor: [4, 4],
-		});
-	}
-
 	// génération d'un nom de classe à partir du nombre de sources
-	let backgroundColorClassName = null;
-	if (selectedMarker && isSelectedMarker(selectedMarker, point)) {
-		backgroundColorClassName = "selectedBackgroundColor";
-	}
+	// if (selectedMarker && isSelectedMarker(selectedMarker, point)) {
+	// 	backgroundColorClassName = "selectedBackgroundColor";
+	// }
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
@@ -98,6 +65,8 @@ const MarkerComponent = ({
 		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
 		setSelectedMarker(point);
 	};
+
+	const customIcon = getIcon(point, style);
 
 	return (
 		<Marker
