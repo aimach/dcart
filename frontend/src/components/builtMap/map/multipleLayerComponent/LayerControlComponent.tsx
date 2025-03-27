@@ -10,11 +10,13 @@ import type { Dispatch, SetStateAction } from "react";
 type LayerControlComponentProps = {
 	layer: { name: string; attestations: PointType[] };
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
+	duplicatesCoordinates: string[];
 };
 
 const LayerControlComponent = ({
 	layer,
 	setPanelDisplayed,
+	duplicatesCoordinates,
 }: LayerControlComponentProps) => {
 	return (
 		<LayersControl.Overlay name={layer.name} key={layer.name} checked>
@@ -25,6 +27,7 @@ const LayerControlComponent = ({
 							key={point.key}
 							point={point}
 							setPanelDisplayed={setPanelDisplayed}
+							duplicatesCoordinates={duplicatesCoordinates}
 						/>
 					);
 				})}

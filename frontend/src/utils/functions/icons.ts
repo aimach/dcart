@@ -169,8 +169,8 @@ const getDefaultIcon = (
 const getLittleCircleIcon = (style: CSSModuleClasses) => {
 	return L.divIcon({
 		className: style.littleCircle,
-		iconSize: [8, 8], // Dimensions du conteneur
-		iconAnchor: [4, 4], // Centre du marqueur
+		iconSize: [8, 8],
+		iconAnchor: [16, 4],
 	});
 };
 
@@ -213,7 +213,7 @@ const getSquareIcon = (
 ) => {
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
-      <rect x="5" y="5" width="90" height="90" fill=${customColor}         stroke=${tinycolor(customColor).darken(10).toString()}
+      <rect x="5" y="5" width="90" height="90" fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}
  stroke-width="5"/>
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill=${customTextColor} font-family="Arial, sans-serif">
         ${sourcesNb.toString()}
@@ -345,7 +345,7 @@ const getIcon = (
 			),
 			className: "",
 			iconSize: [8, 8],
-			iconAnchor: [14, 4],
+			iconAnchor: [16, 4],
 		});
 	}
 	return customIcon;

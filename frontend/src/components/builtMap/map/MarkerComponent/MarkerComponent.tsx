@@ -11,7 +11,7 @@ import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAside
 import { useShallow } from "zustand/shallow";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
-import type { Map as LeafletMap } from "leaflet";
+import type { LatLngExpression, Map as LeafletMap } from "leaflet";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./markerComponent.module.scss";
@@ -19,6 +19,7 @@ import style from "./markerComponent.module.scss";
 interface MarkerComponentProps {
 	point: PointType;
 	setPanelDisplayed?: Dispatch<SetStateAction<boolean>>;
+	duplicatesCoordinates: string[];
 }
 
 /**
@@ -31,20 +32,29 @@ interface MarkerComponentProps {
 const MarkerComponent = ({
 	point,
 	setPanelDisplayed,
+	duplicatesCoordinates,
 }: MarkerComponentProps) => {
 	// récupération des données des stores
-	const { selectedMarker, setSelectedMarker, map } = useMapStore(
+	const { selectedMarker, setSelectedMarker, map, allLayers } = useMapStore(
 		useShallow((state) => ({
 			selectedMarker: state.selectedMarker,
 			setSelectedMarker: state.setSelectedMarker,
 			map: state.map,
+			allLayers: state.allLayers,
 		})),
 	);
 	const setSelectedTabMenu = useMapAsideMenuStore(
 		(state) => state.setSelectedTabMenu,
 	);
 
+	let position: LatLngExpression = [point.latitude, point.longitude];
 	const keyPoint = `${point.latitude}-${point.longitude}`;
+	if (duplicatesCoordinates.includes(keyPoint)) {
+		const layerIndex = allLayers.findIndex(
+			(layer) => layer === point.layerName,
+		);
+		position = [point.latitude, point.longitude + 0.012 * layerIndex];
+	}
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
@@ -65,7 +75,7 @@ const MarkerComponent = ({
 	return (
 		<Marker
 			key={keyPoint}
-			position={[point.latitude, point.longitude]}
+			position={position}
 			icon={customIcon}
 			eventHandlers={{
 				click: () => handleMarkerOnClick(map as LeafletMap, point),

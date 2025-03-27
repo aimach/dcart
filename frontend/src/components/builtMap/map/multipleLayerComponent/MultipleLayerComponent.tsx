@@ -19,6 +19,15 @@ const MultipleLayerComponent = ({
 }: MultipleLayerComponentProps) => {
 	const { allResults } = useMapStore();
 
+	const duplicatesCoordinates = useMemo(() => {
+		const pointsKeys = allResults.map(
+			(result) => `${result.latitude}-${result.longitude}`,
+		);
+		return pointsKeys.filter(
+			(item, index) => pointsKeys.indexOf(item) !== index,
+		);
+	}, [allResults]);
+
 	const layersWithAttestationsArray = useMemo(() => {
 		const layersArray: {
 			name: string;
@@ -60,6 +69,7 @@ const MultipleLayerComponent = ({
 						key={layer.name}
 						layer={layer}
 						setPanelDisplayed={setPanelDisplayed}
+						duplicatesCoordinates={duplicatesCoordinates}
 					/>
 				);
 			})}
