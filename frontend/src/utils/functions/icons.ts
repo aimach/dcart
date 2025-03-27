@@ -184,4 +184,59 @@ const getBackGroundColorClassName = (sourcesNb: number) => {
 	return "lightBackgroundColor";
 };
 
-export { getIcon, getBackGroundColorClassName, getLittleCircleIcon };
+const getCircleIcon = (sourcesNb: string, color: string) => {
+	return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 100 100">
+      <circle cx="50" cy="50" r="45" fill=${color} stroke="#ffffff" stroke-width="5" />
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill="white" font-family="Arial, sans-serif">
+        ${sourcesNb}
+      </text>
+    </svg>
+  `;
+};
+
+const getSquareIcon = (sourcesNb: string, color: string) => {
+	return `
+    <svg xmlns="http://www.w3.org/2000/svg" width="32" height="32" viewBox="0 0 100 100">
+      <rect x="5" y="5" width="90" height="90" fill=${color} stroke="#ffffff" stroke-width="5"/>
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill="white" font-family="Arial, sans-serif">
+        ${sourcesNb}
+      </text>
+    </svg>
+  `;
+};
+
+const getTriangleIcon = (sourcesNb: string, color: string) => {
+	return `
+     <svg xmlns="http://www.w3.org/2000/svg" width="40" height="40" viewBox="0 0 100 100">
+      <polygon points="50,10 90,90 10,90" fill=${color} stroke="#ffffff" stroke-width="5" />
+      <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="35" fill="white" font-family="Arial, sans-serif">
+       ${sourcesNb}
+      </text>
+    </svg>
+  `;
+};
+
+const getShapedDivContent = (
+	shape: string,
+	color: string,
+	sourcesNb: string,
+) => {
+	if (shape === "circle") {
+		return getCircleIcon(sourcesNb, color);
+	}
+	if (shape === "square") {
+		return getSquareIcon(sourcesNb, color);
+	}
+	if (shape === "triangle") {
+		return getTriangleIcon(sourcesNb, color);
+	}
+	return getCircleIcon(sourcesNb, color);
+};
+
+export {
+	getIcon,
+	getBackGroundColorClassName,
+	getLittleCircleIcon,
+	getShapedDivContent,
+};

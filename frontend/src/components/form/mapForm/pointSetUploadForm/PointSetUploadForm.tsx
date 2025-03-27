@@ -36,9 +36,7 @@ const PointSetUploadForm = ({
 	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
-	const { mapInfos, setMapInfos } = useMapFormStore(
-		useShallow((state) => state),
-	);
+	const { mapInfos } = useMapFormStore(useShallow((state) => state));
 
 	// fonction pour gérer l'upload du fichier
 	const handleFileUpload = (event: ChangeEvent) => {
@@ -198,7 +196,7 @@ const PointSetUploadForm = ({
 								} as PointSetType)
 							}
 						>
-							<option value="">
+							<option value="null">
 								{
 									translation[language].backoffice.mapFormPage.pointSetForm
 										.chooseIcon

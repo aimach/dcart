@@ -47,9 +47,16 @@ export const attestationController = {
 				return;
 			}
 
-			const iconToAdd = await dcartDataSource
-				.getRepository(Icon)
-				.findOne({ where: { id: icon } });
+			let iconToAdd = null;
+			if (!icon) {
+				iconToAdd = await dcartDataSource
+					.getRepository(Icon)
+					.findOne({ where: { name: "circle" } });
+			} else {
+				iconToAdd = await dcartDataSource
+					.getRepository(Icon)
+					.findOne({ where: { id: icon } });
+			}
 
 			if (!iconToAdd) {
 				res.status(404).json("L'icône n'existe pas");

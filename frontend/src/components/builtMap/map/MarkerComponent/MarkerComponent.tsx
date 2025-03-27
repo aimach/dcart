@@ -6,7 +6,10 @@ import {
 	isSelectedMarker,
 	zoomOnMarkerOnClick,
 } from "../../../../utils/functions/map";
-import { getIcon } from "../../../../utils/functions/icons";
+import {
+	getIcon,
+	getShapedDivContent,
+} from "../../../../utils/functions/icons";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
@@ -16,6 +19,7 @@ import type { Map as LeafletMap } from "leaflet";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./markerComponent.module.scss";
+import L from "leaflet";
 
 interface MarkerComponentProps {
 	point: PointType;
@@ -45,28 +49,45 @@ const MarkerComponent = ({
 		(state) => state.setSelectedTabMenu,
 	);
 
-	// création d'une clé pour chaque point (pas besoin de la mémoiser car les points ne changent pas)
 	const keyPoint = `${point.latitude}-${point.longitude}`;
+
+	let customIcon = getIcon(
+		point.sources.length,
+		style,
+		getBackGroundColorClassName(point.sources.length),
+		point.sources.length.toString(),
+	);
+	if (point.shape && point.color) {
+		customIcon = L.divIcon({
+			html: getShapedDivContent(
+				point.shape,
+				point.color,
+				point.sources.length.toString(),
+			),
+			className: "",
+			iconSize: [8, 8],
+			iconAnchor: [4, 4],
+		});
+	}
+
+	if (point.shape && !point.color) {
+		customIcon = L.divIcon({
+			html: getShapedDivContent(
+				point.shape,
+				"#AD9A85",
+				point.sources.length.toString(),
+			),
+			className: "",
+			iconSize: [8, 8],
+			iconAnchor: [4, 4],
+		});
+	}
 
 	// génération d'un nom de classe à partir du nombre de sources
 	let backgroundColorClassName = null;
 	if (selectedMarker && isSelectedMarker(selectedMarker, point)) {
 		backgroundColorClassName = "selectedBackgroundColor";
-	} else if ((point.shape === "circle" || !point.shape) && !point.color) {
-		backgroundColorClassName = getBackGroundColorClassName(
-			point.sources.length,
-		);
 	}
-
-	// génération d'une icone adaptée au nombre de sources (pas besoin de mémoiser car peu complexe)
-	const customIcon = getIcon(
-		point.sources.length,
-		style,
-		backgroundColorClassName,
-		point.sources.length.toString(),
-		point.color,
-		point.shape,
-	);
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
