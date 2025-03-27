@@ -14,7 +14,10 @@ import {
 } from "../../../../utils/api/storymap/postRequests";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type textInputsType = {
@@ -32,7 +35,6 @@ interface TextFormProps {
  * Formulaire pour la création d'un bloc de type "text"
  */
 const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
-	// récupération des données des stores
 	const { updateFormType, block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
@@ -42,14 +44,10 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 		})),
 	);
 
-	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
-
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
+
+	const { storymapId } = useParams();
 
 	// fonction appelée lors de la soumission du formulaire
 	const onSubmit: SubmitHandler<textInputsType> = async (data) => {
@@ -57,7 +55,7 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 			await createBlock({
 				...data,
 				parentId,
-				storymapId,
+				storymapId: storymapId,
 				typeName: "text",
 			});
 		} else if (action === "edit") {
@@ -66,7 +64,7 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 					...block,
 					...data,
 					parentId,
-					storymapId,
+					storymapId: storymapId,
 					typeName: "text",
 				},
 				defaultValues ? defaultValues.id : (block?.id.toString() as string),
@@ -78,7 +76,6 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 			setStep?.(3); // passage à l'étape suivante (formulaire image)
 		} else {
 			updateFormType("blockChoice");
-			setSearchParams(undefined);
 		}
 	};
 

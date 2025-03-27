@@ -19,7 +19,7 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du style
 import style from "../mapForms/mapForms.module.scss";
 // import des icônes
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 export type tableInputsType = {
 	content1_lang1: string;
@@ -30,10 +30,8 @@ export type tableInputsType = {
  * Formulaire pour la création d'un bloc de type "title"
  */
 const TableForm = () => {
-	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	// récupération des données des stores
 	const { updateFormType, block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
@@ -43,14 +41,10 @@ const TableForm = () => {
 		})),
 	);
 
-	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
-
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
+
+	const { storymapId } = useParams();
 
 	// gestion de l'upload du fichier csv
 	const [csvContentLang1, setCsvContentLang1] = useState<string[][]>([]);
@@ -93,11 +87,16 @@ const TableForm = () => {
 				...data,
 				content2_lang1: JSON.stringify(csvContentLang1),
 				content2_lang2: JSON.stringify(csvContentLang2),
-				storymapId,
+				storymapId: storymapId,
 				typeName: "table",
 			});
 		} else if (action === "edit") {
-			const blockContent = { ...block, ...data, storymapId, typeName: "table" };
+			const blockContent = {
+				...block,
+				...data,
+				storymapId: storymapId,
+				typeName: "table",
+			};
 			if (csvContentLang1.length > 0) {
 				blockContent.content2_lang1 = JSON.stringify(csvContentLang1);
 			}
@@ -164,14 +163,26 @@ const TableForm = () => {
 						onChange={(event) => handleFileUpload(event, 2)}
 					/>
 				</div>
-				<button type="submit">
-					{
-						translation[language].backoffice.storymapFormPage.form[
-							action as string
-						]
-					}{" "}
-					<ChevronRight />
-				</button>
+				<div className={style.formButtonNavigation}>
+					<button
+						type="button"
+						onClick={() => {
+							updateFormType("blockChoice");
+							setSearchParams(undefined);
+						}}
+					>
+						<ChevronLeft />
+						{translation[language].common.back}
+					</button>
+					<button type="submit">
+						{
+							translation[language].backoffice.storymapFormPage.form[
+								action === "create" ? "create" : "edit"
+							]
+						}
+						<ChevronRight />
+					</button>
+				</div>
 			</form>
 		</>
 	);

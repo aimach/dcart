@@ -72,8 +72,8 @@ export const storymapContentControllers = {
 					"step_point",
 					"creator.pseudo",
 					"modifier.pseudo",
-					"lang1.name",
-					"lang2.name",
+					"lang1",
+					"lang2",
 				])
 				.where("storymap.id = :id", { id: req.params.id })
 				.orderBy("block.position", "ASC")

@@ -5,6 +5,10 @@ const firstStepInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en français",
 		label_en: "Map name in french",
+		description_fr:
+			"Le nom de la carte sera affiché dans la liste des cartes et dans la modale d'introduction lorsque l'utilisateur ouvrira la carte.",
+		description_en:
+			"The map name will be displayed in the map list and in the introduction modal when the user opens the map.",
 		name: "title_fr",
 		type: "text",
 		required: {
@@ -18,6 +22,10 @@ const firstStepInputs: InputType[] = [
 	{
 		label_fr: "Nom de la carte en anglais",
 		label_en: "Map name in english",
+		description_fr:
+			"Le nom de la carte sera affiché dans la liste des cartes et dans la modale d'introduction lorsque l'utilisateur ouvrira la carte.",
+		description_en:
+			"The map name will be displayed in the map list and in the introduction modal when the user opens the map.",
 		name: "title_en",
 		type: "text",
 		required: {
@@ -32,6 +40,10 @@ const firstStepInputs: InputType[] = [
 		label_fr: "Description de la carte en français",
 		label_en: "Map description in french",
 		name: "description_fr",
+		description_fr:
+			"La description de la carte sera affichée dans la modale d'introduction lorsque l'utilisateur ouvrira la carte.",
+		description_en:
+			"The map description will be displayed in the introduction modal when the user opens the map.",
 		type: "wysiwyg",
 		required: {
 			value: true,
@@ -44,6 +56,10 @@ const firstStepInputs: InputType[] = [
 	{
 		label_fr: "Description de la carte en anglais",
 		label_en: "Map description in english",
+		description_fr:
+			"La description de la carte sera affichée dans la modale d'introduction lorsque l'utilisateur ouvrira la carte.",
+		description_en:
+			"The map description will be displayed in the introduction modal when the user opens the map.",
 		name: "description_en",
 		type: "wysiwyg",
 		required: {
@@ -57,6 +73,10 @@ const firstStepInputs: InputType[] = [
 	{
 		label_fr: "Image accompagnant la description",
 		label_en: "Image accompanying the description",
+		description_fr:
+			"L'image sera affichée dans la modale d'introduction lorsque l'utilisateur ouvrira la carte.",
+		description_en:
+			"The image will be displayed in the introduction modal when the user opens the map.",
 		name: "image_url",
 		type: "text",
 		required: {
@@ -66,6 +86,10 @@ const firstStepInputs: InputType[] = [
 	{
 		label_fr: "Catégorie de la carte",
 		label_en: "Map category",
+		description_fr:
+			"La catégorie dans laquelle l'utilisateur pourra retrouver la carte.",
+		description_en:
+			"The category in which the user will be able to find the map.",
 		name: "category",
 		type: "select",
 		options: [{ value: "0", label: "Choisir une catégorie" }],

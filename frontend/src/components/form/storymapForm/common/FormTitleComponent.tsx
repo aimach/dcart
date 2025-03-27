@@ -1,5 +1,7 @@
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import du style
+import style from "./formTitleComponent.module.scss";
 
 type FormTitleComponentProps = {
 	action: string;
@@ -19,7 +21,7 @@ const FormTitleComponent = ({
 	const { translation, language } = useTranslation();
 
 	return (
-		<h3>
+		<h3 className={style.formTitle}>
 			{
 				translation[language].backoffice.storymapFormPage.form[
 					action === "create" ? "create" : "edit"

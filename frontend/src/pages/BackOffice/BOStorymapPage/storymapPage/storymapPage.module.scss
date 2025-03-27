@@ -11,6 +11,7 @@
 .storymapHeaderContainer {
     @include m.flexbox(flex, row, nowrap, space-between, center);
     margin: 0 v.$space-xl;
+    height: 100px;
 }
 
 .languageSelectionContainer {

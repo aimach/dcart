@@ -159,7 +159,7 @@ type PointSetType = {
 	name: string;
 	attestationIds: string;
 	color?: string;
-	icon?: string;
+	icon?: { id: string; name: string; svg_code: string } | string;
 	mapId: string;
 };
 

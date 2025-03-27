@@ -12,6 +12,9 @@
 		"discover": "DECOUVRIR",
 		"explore": "EXPLORER"
 	},
+	"alert": {
+		"maxReached": "Nombre maximum de filtres atteint"
+	},
 	"button": {
 		"freeExploration": "Exploration libre",
 		"result": "résultat",
@@ -26,7 +29,8 @@
 		"doughnut": "Donut",
 		"bar": "Barre",
 		"resetFilter": "Réinitialiser les filtres",
-		"discover": "Découvrir"
+		"discover": "Découvrir",
+		"add": "Ajouter"
 	},
 	"common": {
 		"between": "entre",
@@ -44,7 +48,11 @@
 		"by": "par",
 		"after": "après",
 		"before": "avant",
-		"in": "en"
+		"in": "en",
+		"map": "carte",
+		"storymap": "storymap",
+		"published": "publiée",
+		"noPublished": "non publiée"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",
@@ -88,6 +96,16 @@
 		}
 	},
 	"backoffice": {
+		"createA": "Créer une",
+		"managementTable": {
+			"image": "Image",
+			"name": "Nom/Description",
+			"status": "Statut",
+			"createdOn": "Date de création",
+			"updatedOn": "Date de modification",
+			"lastUploadBy": "Dernière mise par",
+			"links": "Liens rapides"
+		},
 		"authPage": {
 			"login": "Se connecter",
 			"username": "Nom d'utilisateur",
@@ -95,15 +113,57 @@
 			"requiredField": "Ce champ est requis"
 		},
 		"mapFormPage": {
+			"aside": {
+				"informations": "Informations",
+				"pointSets": "Jeu de points",
+				"filters": "Filtres associés"
+			},
+			"pointSetTable": {
+				"name": "Nom du jeu",
+				"color": "Couleur",
+				"icon": "Icône",
+				"delete": "Supprimer"
+			},
+			"pointSetForm": {
+				"pointSetName": {
+					"label": "Nom du jeu de points",
+					"description": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques."
+				},
+				"attestationIds": {
+					"label": "Charger les points",
+					"description": "Charger les points de la carte"
+				},
+				"pointColor": {
+					"label": "Couleur des points",
+					"description": "Si une couleur est sélectionnée, les points s'afficheront dans cette couleur. Sinon, ils seront affichés en marron."
+				},
+				"pointIcon": {
+					"label": "Forme de l'icône des points",
+					"description": "Si aucune forme n'est sélectionnée, les points s'afficheront sous la forme de cercles."
+				},
+				"chooseIcon": "Choisissez une icône"
+			},
 			"addMapIntro": "Ajouter les informations de la carte",
 			"addMapPoints": "Ajouter les points de la carte",
 			"uploadPoints": "Charger les points",
 			"addFilters": "Ajouter des filtres",
 			"filterIntroduction": "Il est possible d'ajouter jusqu'2 filtres par carte, en plus du filtre temporel toujours affiché.",
-			"locationFilter": "Filtre du lieu",
-			"languageFilter": "Filtre de la langue (grec ou sémitique)",
-			"epithetFilter": "Filtre avec les épithètes",
-			"noFilter": "Je ne souhaite pas ajouter de filtre",
+			"locationFilter": {
+				"label": "Filtre du lieu",
+				"description": "Affiche un select/options avec la liste des sous-régions de l'ensemble des attestations affichées"
+			},
+			"languageFilter": {
+				"label": "Filtre de la langue (grec ou sémitique)",
+				"description": "Affiche deux checkbox avec un choix 'grec' et un choix 'sémitique'."
+			},
+			"epithetFilter": {
+				"label": "Filtre avec les épithètes",
+				"description": "Affiche un select/options avec la liste des épithètes de l'ensemble des éléments des attestations affichées"
+			},
+			"noFilter": {
+				"label": "Je ne souhaite pas ajouter de filtre",
+				"description": "Aucun filtre ne sera ajouté à la carte"
+			},
 			"create": "Créer",
 			"edit": "Modifier",
 			"downloadExample": "Télécharger un exemple de fichier CSV",
@@ -115,6 +175,7 @@
 			"textContent": "Contenu textuel et de mise en page",
 			"mediaContent": "Contenu multimédia",
 			"mapsContent": "Contenu cartographique",
+			"backToEdit": "Retour à l'édition",
 			"types": {
 				"title": "Titre",
 				"subtitle": "Sous-titre",
@@ -148,7 +209,12 @@
 				"forLeftPane": "pour le panel de gauche",
 				"forRightPane": "pour le panel de droite",
 				"uploadTableFr": "Ajouter un CSV avec un tableau en langue 1",
-				"uploadTableEn": "Ajouter un CSV avec un tableau en langue 2"
+				"uploadTableEn": "Ajouter un CSV avec un tableau en langue 2",
+				"imageToLeft": "Image à gauche",
+				"imageToRight": "Image à droite",
+				"scrollMapStepList": "Liste des étapes de la carte déroulante",
+				"addStep": "Ajouter cette étape",
+				"modifyStep": "Modifier cette étape"
 			}
 		}
 	}

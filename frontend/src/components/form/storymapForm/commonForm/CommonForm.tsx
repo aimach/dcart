@@ -16,16 +16,25 @@ import type {
 } from "../../../../utils/types/formTypes";
 
 import type Quill from "quill";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./commonForm.module.scss";
 // import des icônes
-import { ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
+import { useSearchParams } from "react-router";
 
 type CommonFormProps = {
 	onSubmit: SubmitHandler<allInputsType>;
 	inputs: InputType[];
-	defaultValues?: storymapInputsType | BlockContentType | undefined;
+	defaultValues?:
+		| storymapInputsType
+		| BlockContentType
+		| undefined
+		| StorymapType;
 	action?: string;
 };
 
@@ -47,6 +56,10 @@ const CommonForm = ({
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
+	const { updateFormType } = useBuilderStore();
+
+	const [_, setSearchParams] = useSearchParams();
+
 	// import des sevice de formulaire
 	const {
 		control,
@@ -64,8 +77,12 @@ const CommonForm = ({
 		if (defaultValues) {
 			setValue(
 				"category_id",
-				(defaultValues as storymapInputsType).category_id,
+				(defaultValues as storymapInputsType).category_id as string,
 			);
+			if ((defaultValues as StorymapType).lang1)
+				setValue("lang1", (defaultValues as StorymapType).lang1.id as string);
+			if ((defaultValues as StorymapType).lang2)
+				setValue("lang2", (defaultValues as StorymapType).lang2.id as string);
 		}
 	}, [defaultValues]);
 
@@ -80,84 +97,110 @@ const CommonForm = ({
 				if (input.type === "select") {
 					return (
 						<div key={input.name} className={style.commonFormInputContainer}>
-							<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-							<select
-								{...register(input.name as keyof allInputsType, {
-									required: input.required.value,
-								})}
-							>
-								{input.options?.map((option) => (
-									<option key={option.value} value={option.value}>
-										{option.label}
-									</option>
-								))}
-							</select>
+							<div className={style.labelContainer}>
+								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<p>{input[`description_${language}`] ?? ""}</p>
+							</div>
+							<div className={style.inputContainer}>
+								<select
+									{...register(input.name as keyof allInputsType, {
+										required: input.required.value,
+									})}
+								>
+									{input.options?.map((option) => (
+										<option key={option.value} value={option.value}>
+											{option.label}
+										</option>
+									))}
+								</select>
 
-							{errors[input.name as keyof allInputsType] && (
-								<ErrorComponent
-									message={input.required.message?.[language] as string}
-								/>
-							)}
+								{errors[input.name as keyof allInputsType] && (
+									<ErrorComponent
+										message={input.required.message?.[language] as string}
+									/>
+								)}
+							</div>
 						</div>
 					);
 				}
 				if (input.type === "text") {
 					return (
 						<div key={input.name} className={style.commonFormInputContainer}>
-							<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-							<input
-								{...register(input.name as keyof storymapInputsType, {
-									required: input.required.value,
-								})}
-							/>
+							<div className={style.labelContainer}>
+								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<p>{input[`description_${language}`] ?? ""}</p>
+							</div>
+							<div className={style.inputContainer}>
+								<input
+									{...register(input.name as keyof storymapInputsType, {
+										required: input.required.value,
+									})}
+								/>
 
-							{input.required.value &&
-								errors[input.name as keyof allInputsType] && (
-									<ErrorComponent
-										message={input.required.message?.[language] as string}
-									/>
-								)}
+								{input.required.value &&
+									errors[input.name as keyof allInputsType] && (
+										<ErrorComponent
+											message={input.required.message?.[language] as string}
+										/>
+									)}
+							</div>{" "}
 						</div>
 					);
 				}
 				if (input.type === "wysiwyg") {
 					return (
 						<div key={input.name} className={style.commonFormInputContainer}>
-							<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-							<Controller
-								name={input.name as keyof allInputsType}
-								control={control}
-								render={({ field: { onChange } }) => (
-									<EditorComponent
-										ref={quillRef}
-										onChange={onChange}
-										defaultValue={
-											defaultValues
-												? defaultValues[
-														`${input.name}` as keyof typeof defaultValues
-													]
-												: null
-										}
-									/>
-								)}
-							/>
-							{input.required.value &&
-								errors[input.name as keyof allInputsType] && (
-									<ErrorComponent
-										message={input.required.message?.[language] as string}
-									/>
-								)}
+							<div className={style.labelContainer}>
+								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<p>{input[`description_${language}`] ?? ""}</p>
+							</div>
+							<div className={style.inputContainer}>
+								<Controller
+									name={input.name as keyof allInputsType}
+									control={control}
+									render={({ field: { onChange } }) => (
+										<EditorComponent
+											ref={quillRef}
+											onChange={onChange}
+											defaultValue={
+												defaultValues
+													? defaultValues[
+															`${input.name}` as keyof typeof defaultValues
+														]
+													: null
+											}
+										/>
+									)}
+								/>
+								{input.required.value &&
+									errors[input.name as keyof allInputsType] && (
+										<ErrorComponent
+											message={input.required.message?.[language] as string}
+										/>
+									)}
+							</div>
 						</div>
 					);
 				}
 			})}
-
-			<button type="submit">
-				{action === "create"
-					? translation[language].backoffice.storymapFormPage.form.create
-					: translation[language].backoffice.storymapFormPage.form.edit}{" "}
-				<ChevronRight />
-			</button>
+			<div className={style.commonFormContainerButton}>
+				<button
+					type="button"
+					onClick={() => {
+						updateFormType("blockChoice");
+						setSearchParams(undefined);
+					}}
+				>
+					<ChevronLeft />
+					{translation[language].common.back}
+				</button>
+				<button type="submit">
+					{action === "create"
+						? translation[language].backoffice.storymapFormPage.form.create
+						: translation[language].backoffice.storymapFormPage.form.edit}
+					<ChevronRight />
+				</button>
+			</div>
 		</form>
 	);
 };

@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
-import { Link, useNavigate, useParams, useLocation } from "react-router";
+import { useNavigate, useParams } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
 // import des custom hooks
@@ -21,6 +21,7 @@ import type { SubmitHandler } from "react-hook-form";
 import type {
 	CategoryType,
 	StorymapLanguageType,
+	StorymapType,
 } from "../../../../utils/types/storymapTypes";
 import type {
 	InputType,
@@ -32,20 +33,18 @@ import {
 	createLanguageOptions,
 } from "../../../../utils/functions/storymap";
 
+type IntroductionFormProps = {
+	setStep: (step: number) => void;
+};
+
 /**
  * Formulaire d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.
+ * @param {setStep} props - la fonction pour changer d'étape
  * @returns CommonForm
  */
-const IntroductionForm = () => {
+const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	// importation des données de traduction
 	const { language } = useTranslation();
-
-	// récupération de l'action en cours (création ou modification)
-	const location = useLocation();
-	const isEditForm = location.pathname.includes("edit");
-	const isCreateForm = location.pathname.includes("create");
-
-	const navigate = useNavigate();
 
 	// définition d'un état pour les inputs du formulaire
 	const [inputs, setInputs] = useState<InputType[]>(storymapInputs);
@@ -83,13 +82,8 @@ const IntroductionForm = () => {
 	}, [language]);
 
 	// -- MODE MODIFICATION --
-	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
-
-	// définition d'un état pour stocker les informations de la storymap
-	const [storymapInfos, setStorymapInfos] = useState<storymapInputsType | null>(
-		null,
-	);
+	const [storymapInfos, setStorymapInfos] = useState<StorymapType | null>(null);
 
 	// récupération des données de la storymap
 	useEffect(() => {
@@ -97,43 +91,51 @@ const IntroductionForm = () => {
 			const response = await getStorymapInfosAndBlocks(storymapId as string);
 			setStorymapInfos({ ...response, category_id: response.category.id });
 		};
-		if (storymapId) {
-			fetchStorymapInfos(storymapId);
+		if (storymapId !== "create") {
+			fetchStorymapInfos(storymapId as string);
 		}
 	}, [storymapId]);
-
 	// définition de la fonction de soumission du formulaire (création ou mise à jour de la storymap)
+	const navigate = useNavigate();
 	const onSubmit: SubmitHandler<storymapInputsType> = async (data) => {
-		if (isCreateForm) {
-			const newStorymapId = await createStorymap(data);
-			navigate(`/backoffice/storymaps/build/${newStorymapId}`);
+		if (storymapId === "create") {
+			const newStorymap = await createStorymap(data);
+			setStorymapInfos(newStorymap);
+			navigate(`/backoffice/storymaps/${newStorymap.id}`);
 		} else {
-			await updateStorymap(data, storymapId as string);
-			navigate(`/backoffice/storymaps/build/${storymapId}`);
+			const bodyWithoutUselessData = {
+				id: storymapInfos?.id,
+				title_lang1: data.title_lang1,
+				title_lang2: data.title_lang2,
+				description_lang1: data.description_lang1,
+				description_lang2: data.description_lang2,
+				category_id: data.category_id,
+				img_url: data.img_url,
+				author: data.author,
+				lang1: data.lang1,
+				lang2: data.lang2,
+				publication_date: data.publication_date,
+			};
+			await updateStorymap(bodyWithoutUselessData, storymapInfos?.id as string);
 		}
+		setStep(2);
 	};
 
 	return (
 		<>
-			{isEditForm && storymapInfos && (
-				<>
-					<Link to={`/backoffice/storymaps/build/${storymapId}`}>
-						Retour aux blocs
-					</Link>
-					<CommonForm
-						onSubmit={onSubmit as SubmitHandler<allInputsType>}
-						inputs={inputs}
-						defaultValues={storymapInfos}
-						action="edit"
-					/>
-				</>
-			)}
-
-			{isCreateForm && (
+			{storymapId === "create" && (
 				<CommonForm
 					onSubmit={onSubmit as SubmitHandler<allInputsType>}
 					inputs={inputs}
 					action="create"
+				/>
+			)}
+			{storymapId !== "create" && storymapInfos && (
+				<CommonForm
+					onSubmit={onSubmit as SubmitHandler<allInputsType>}
+					inputs={inputs}
+					defaultValues={storymapInfos as StorymapType}
+					action="edit"
 				/>
 			)}
 		</>

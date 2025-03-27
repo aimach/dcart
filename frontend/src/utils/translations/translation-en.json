@@ -12,6 +12,9 @@
 		"discover": "DISCOVER",
 		"explore": "EXPLORE"
 	},
+	"alert": {
+		"maxReached": "Maximum number of filters reached"
+	},
 	"button": {
 		"freeExploration": "Free exploration",
 		"result": "result",
@@ -26,7 +29,8 @@
 		"doughnut": "Doughnut",
 		"bar": "Bar",
 		"resetFilter": "Reset filters",
-		"discover": "Discover"
+		"discover": "Discover",
+		"add": "Add"
 	},
 	"common": {
 		"between": "between",
@@ -44,7 +48,11 @@
 		"by": "by",
 		"after": "after",
 		"before": "before",
-		"in": "in"
+		"in": "in",
+		"map": "map",
+		"storymap": "storymap",
+		"published": "published",
+		"noPublished": "not published"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
@@ -88,6 +96,16 @@
 		}
 	},
 	"backoffice": {
+		"createA": "Create a",
+		"managementTable": {
+			"image": "Image",
+			"name": "Name/Description",
+			"status": "Status",
+			"createdOn": "Creation date",
+			"updatedOn": "Modification date",
+			"lastUploadBy": "Last upload by",
+			"links": "Quick links"
+		},
 		"authPage": {
 			"login": "Log in",
 			"username": "Username",
@@ -95,15 +113,57 @@
 			"requiredField": "Required field"
 		},
 		"mapFormPage": {
+			"aside": {
+				"informations": "Informations",
+				"pointSets": "Point sets",
+				"filters": "Associated filters"
+			},
+			"pointSetTable": {
+				"name": "Name of the set",
+				"color": "Color",
+				"icon": "Icon",
+				"delete": "Delete"
+			},
+			"pointSetForm": {
+				"pointSetName": {
+					"label": "Point set name",
+					"description": "If you choose to display point sets on different layers, the user will see the point set name in the layer list."
+				},
+				"attestationIds": {
+					"label": "Load points",
+					"description": "Load the map's points"
+				},
+				"pointColor": {
+					"label": "Point color",
+					"description": "If a color is selected, the points will be displayed in that color. Otherwise, they will appear in brown."
+				},
+				"pointIcon": {
+					"label": "Point icon shape",
+					"description": "If no shape is selected, the points will be displayed as circles."
+				},
+				"chooseIcon": "Choose an icon"
+			},
 			"addMapIntro": "Add map information",
 			"addMapPoints": "Add map points",
 			"uploadPoints": "Upload points",
 			"addFilters": "Add user filters to the map",
 			"filterIntroduction": "It is possible to add up to 2 filters per card, in addition to the time filter which is always displayed.",
-			"locationFilter": "Location filter",
-			"languageFilter": "Language filter (greek or semitic)",
-			"epithetFilter": "Epithet filter",
-			"noFilter": "I don't want to add a filter",
+			"locationFilter": {
+				"label": "Location filter",
+				"description": "Displays a select/options element with the list of sub-regions from all displayed attestations"
+			},
+			"languageFilter": {
+				"label": "Language filter (Greek or Semitic)",
+				"description": "Displays two checkboxes with the options 'Greek' and 'Semitic'."
+			},
+			"epithetFilter": {
+				"label": "Epithets filter",
+				"description": "Displays a select/options element with the list of epithets from all elements of the displayed attestations"
+			},
+			"noFilter": {
+				"label": "I don't want to add a filter",
+				"description": "No filter will be added to the map."
+			},
 			"create": "Create",
 			"edit": "Edit",
 			"uploadPointsHelp": "Help for create a CSV file"
@@ -114,6 +174,7 @@
 			"textContent": "Text content and layout",
 			"mediaContent": "Media content",
 			"mapsContent": "Maps content",
+			"backToEdit": "Back to edit",
 			"types": {
 				"title": "Title",
 				"subtitle": "Subtitle",
@@ -147,7 +208,12 @@
 				"forLeftPane": "for the left pane",
 				"forRightPane": "for the right pane",
 				"uploadTableFr": "Add a CSV file with a table in language 1",
-				"uploadTableEn": "Add a CSV file with a table in language 2"
+				"uploadTableEn": "Add a CSV file with a table in language 2",
+				"imageToLeft": "Image on the left",
+				"imageToRight": "Image on the right",
+				"scrollMapStepList": "List of steps for the scroll map",
+				"addStep": "Add this step",
+				"modifyStep": "Modify this step"
 			}
 		}
 	}

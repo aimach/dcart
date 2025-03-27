@@ -27,6 +27,8 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Langue 1",
 		label_en: "Language 1",
+		description_fr: "La langue principale de la storymap",
+		description_en: "The main language of the storymap",
 		name: "lang1",
 		type: "select",
 		options: [],
@@ -41,6 +43,8 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Langue 2",
 		label_en: "Language 2",
+		description_fr: "La langue secondaire de la storymap",
+		description_en: "The secondary language of the storymap",
 		name: "lang2",
 		type: "select",
 		options: [],
@@ -51,6 +55,8 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Titre en langue 1",
 		label_en: "Title in language 1",
+		description_fr: "",
+		description_en: "",
 		name: "title_lang1",
 		type: "text",
 		required: {
@@ -64,6 +70,8 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Titre en langue 2",
 		label_en: "Title in language 2",
+		description_fr: "",
+		description_en: "",
 		name: "title_lang2",
 		type: "text",
 		required: {
@@ -77,6 +85,10 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Description en langue 1",
 		label_en: "Description in language 1",
+		description_fr:
+			"Lignes d'introduction de la storymap qui seront affichées dans le premier bloc",
+		description_en:
+			"Introduction lines of the storymap that will be displayed in the first block",
 		name: "description_lang1",
 		type: "text",
 		required: {
@@ -86,6 +98,10 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Description en langue 2",
 		label_en: "Description in language 2",
+		description_fr:
+			"Lignes d'introduction de la storymap qui seront affichées dans le premier bloc",
+		description_en:
+			"Introduction lines of the storymap that will be displayed in the first block",
 		name: "description_lang2",
 		type: "text",
 		required: {
@@ -95,6 +111,10 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "URL de l'image",
 		label_en: "Image URL",
+		description_fr:
+			"L'image de couverture de la storymap est affichée en arrière plan du titre'",
+		description_en:
+			"The cover image of the storymap is displayed in the background of the title",
 		name: "image_url",
 		type: "text",
 		required: {
@@ -104,6 +124,10 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Auteur",
 		label_en: "Author",
+		description_fr:
+			"L'auteur de la storymap, visible dans le premier bloc de la storymap (peut être différent du compteur auteur de la storymap)",
+		description_en:
+			"The author of the storymap visible in the first block of the storymap (can be different from the storymap author)",
 		name: "author",
 		type: "text",
 		required: {
@@ -114,6 +138,10 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Date de publication",
 		label_en: "Publication date",
+		description_fr:
+			"La date de publicatione est affichée, avec le nom de l'ateur, dans le premier bloc de la storymap",
+		description_en:
+			"The publication date is displayed, with the name of the author, in the first block of the storymap",
 		name: "publishedAt",
 		type: "text",
 		required: {
@@ -123,6 +151,10 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Catégorie de la storymap",
 		label_en: "Storymap category",
+		description_fr:
+			"L'utilisateur pourra accéder à la liste des storymaps de la même catégorie en cliquant sur le nom de la catégorie",
+		description_en:
+			"The user will be able to access the list of storymaps of the same category by clicking on the name of the category",
 		name: "category_id",
 		type: "select",
 		options: [],

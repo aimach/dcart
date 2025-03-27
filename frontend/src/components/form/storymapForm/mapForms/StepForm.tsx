@@ -23,7 +23,7 @@ import type { ChangeEvent } from "react";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { CircleHelp } from "lucide-react";
+import { ChevronLeft, CircleHelp } from "lucide-react";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -44,9 +44,10 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
-	const { block, reload, setReload } = useBuilderStore(
+	const { block, updateFormType, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
+			updateFormType: state.updateFormType,
 			reload: state.reload,
 			setReload: state.setReload,
 		})),
@@ -185,11 +186,24 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
 					</a>
 				</div>
-				<button type="submit">
-					{stepAction === "create"
-						? "Ajouter cette étape"
-						: "Modifier cette étape"}
-				</button>
+				<div className={style.formButtonNavigation}>
+					<button
+						type="button"
+						onClick={() => {
+							updateFormType("scroll_map");
+							setSearchParams({ action: "edit" });
+						}}
+					>
+						<ChevronLeft />
+						{translation[language].common.back}
+					</button>
+					<button type="submit">
+						{stepAction === "create"
+							? translation[language].backoffice.storymapFormPage.form.addStep
+							: translation[language].backoffice.storymapFormPage.form
+									.modifyStep}
+					</button>
+				</div>
 			</form>
 		</>
 	);

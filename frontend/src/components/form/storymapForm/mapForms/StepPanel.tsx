@@ -25,9 +25,10 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./mapForms.module.scss";
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 
 interface StepPanelProps {
-	scrollMapId: string;
+	scrollMapId: string | null;
 }
 
 /**
@@ -36,6 +37,7 @@ interface StepPanelProps {
  * @returns DraggableBlock
  */
 const StepPanel = ({ scrollMapId }: StepPanelProps) => {
+	const { translation, language } = useTranslation();
 	// récupération des données des stores
 	const { reload } = useBuilderStore();
 
@@ -46,10 +48,10 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const fetchScrollMapInfos = async () => {
-			const response = await getBlockInfos(scrollMapId);
+			const response = await getBlockInfos(scrollMapId as string);
 			setScrollMapBlocks(response.children);
 		};
-		fetchScrollMapInfos();
+		if (scrollMapId) fetchScrollMapInfos();
 	}, [reload]);
 
 	// -- DRAG AND DROP --
@@ -76,7 +78,13 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 	});
 
 	return (
-		scrollMapBlocks && (
+		<section ref={setNodeRef} className={style.stepPanelSection}>
+			<h4>
+				{
+					translation[language].backoffice.storymapFormPage.form
+						.scrollMapStepList
+				}
+			</h4>
 			<DndContext
 				sensors={sensors}
 				collisionDetection={closestCenter}
@@ -86,8 +94,8 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 					items={scrollMapBlocks.map((b) => b.id)}
 					strategy={verticalListSortingStrategy}
 				>
-					<section ref={setNodeRef} className={style.stepPanelSection}>
-						{scrollMapBlocks.map((block, index) => (
+					{scrollMapBlocks.length > 0 &&
+						scrollMapBlocks.map((block, index) => (
 							<MemoDraggableBlock
 								block={block}
 								key={block.id}
@@ -95,10 +103,9 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 								index={index}
 							/>
 						))}
-					</section>
 				</SortableContext>
 			</DndContext>
-		)
+		</section>
 	);
 };
 

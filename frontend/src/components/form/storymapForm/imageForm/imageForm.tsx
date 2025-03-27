@@ -14,7 +14,10 @@ import {
 import { useShallow } from "zustand/shallow";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type imageInputsType = {
@@ -33,7 +36,6 @@ interface ImageFormProps {
  * Formulaire pour la création d'un bloc de type "image"
  */
 const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
-	// récupération des données des stores
 	const { updateFormType, block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
@@ -43,14 +45,10 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
 		})),
 	);
 
-	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
-
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
+
+	const { storymapId } = useParams();
 
 	// fonction appelée lors de la soumission du formulaire
 	const onSubmit: SubmitHandler<imageInputsType> = async (data) => {
@@ -59,7 +57,8 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
 				...data,
 				content1_lang2: data.content1_lang1, // permet de ne pas avoir 2 inputs pour la même information
 				parentId,
-				storymapId,
+				storymapId: storymapId,
+
 				typeName: "image",
 			});
 		} else if (action === "edit") {
@@ -69,7 +68,8 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
 					...data,
 					content1_lang2: data.content1_lang1, // permet de ne pas avoir 2 inputs pour la même information
 					parentId,
-					storymapId,
+					storymapId: storymapId,
+
 					typeName: "image",
 				},
 				defaultValues ? defaultValues.id : (block?.id.toString() as string),

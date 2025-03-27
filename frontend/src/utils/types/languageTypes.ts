@@ -14,6 +14,9 @@ type LanguageObject = {
 		explore: string;
 		discover: string;
 	};
+	alert: {
+		maxReached: string;
+	};
 	button: {
 		freeExploration: string;
 		result: string;
@@ -29,6 +32,7 @@ type LanguageObject = {
 		bar: string;
 		resetFilter: string;
 		discover: string;
+		add: string;
 	};
 	common: {
 		between: string;
@@ -47,6 +51,10 @@ type LanguageObject = {
 		after: string;
 		before: string;
 		in: string;
+		map: string;
+		storymap: string;
+		published: string;
+		noPublished: string;
 	};
 	modal: {
 		firstContent: string;
@@ -90,6 +98,16 @@ type LanguageObject = {
 		};
 	};
 	backoffice: {
+		createA: string;
+		managementTable: {
+			image: string;
+			name: string;
+			status: string;
+			createdOn: string;
+			updatedOn: string;
+			lastUploadBy: string;
+			links: string;
+		};
 		authPage: {
 			login: string;
 			username: string;
@@ -97,15 +115,45 @@ type LanguageObject = {
 			requiredField: string;
 		};
 		mapFormPage: {
+			aside: {
+				informations: string;
+				pointSets: string;
+				filters: string;
+			};
+			pointSetTable: {
+				name: string;
+				color: string;
+				icon: string;
+				delete: string;
+			};
+			pointSetForm: {
+				pointSetName: {
+					label: string;
+					description: string;
+				};
+				attestationIds: {
+					label: string;
+					description: string;
+				};
+				pointColor: {
+					label: string;
+					description: string;
+				};
+				pointIcon: {
+					label: string;
+					description: string;
+				};
+				chooseIcon: string;
+			};
 			addMapIntro: string;
 			addMapPoints: string;
 			uploadPoints: string;
 			addFilters: string;
 			filterIntroduction: string;
-			locationFilter: string;
-			languageFilter: string;
-			epithetFilter: string;
-			noFilter: string;
+			locationFilter: { label: string; description: string };
+			languageFilter: { label: string; description: string };
+			epithetFilter: { label: string; description: string };
+			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;
 			uploadPointsHelp: string;
@@ -116,6 +164,7 @@ type LanguageObject = {
 			textContent: string;
 			mediaContent: string;
 			mapsContent: string;
+			backToEdit: string;
 			types: {
 				title: string;
 				subtitle: string;
@@ -150,6 +199,11 @@ type LanguageObject = {
 				forRightPane: string;
 				uploadTableFr: string;
 				uploadTableEn: string;
+				imageToLeft: string;
+				imageToRight: string;
+				scrollMapStepList: string;
+				addStep: string;
+				modifyStep: string;
 			};
 		};
 	};

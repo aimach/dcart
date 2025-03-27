@@ -2,5 +2,6 @@
 @use '../../../styles/variable' as v;
 
 .backofficeManagementPageContainer {
-    @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+    @include m.flexbox(flex, column, nowrap, flex-flex-end, flex-end);
+
 }

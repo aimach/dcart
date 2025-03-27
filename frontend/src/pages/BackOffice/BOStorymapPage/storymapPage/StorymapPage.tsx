@@ -1,6 +1,6 @@
 // import des bibiliothèques
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import StorymapIntroduction from "../../../../components/storymap/blocks/storymapIntroduction/StorymapIntroduction";
@@ -15,9 +15,13 @@ import LayoutBlock from "../../../../components/storymap/blocks/layoutBlock/Layo
 import TitleBlock from "../../../../components/storymap/blocks/titleBlock/TitleBlock";
 import SimpleMapBlock from "../../../../components/storymap/blocks/simpleMapBlock/SimpleMapBlock";
 import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
+import ButtonComponent from "../../../../components/common/button/ButtonComponent";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getStorymapInfosAndBlocks } from "../../../../utils/api/storymap/getRequests";
+import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 // import des types
 import type {
 	BlockContentType,
@@ -26,6 +30,7 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
+// import des icônes
 import { getFlagEmoji } from "../../../../utils/functions/storymap";
 
 export const getBlockComponentFromType = (
@@ -69,6 +74,8 @@ export const getBlockComponentFromType = (
 };
 
 const StorymapPage = () => {
+	const { translation, language } = useTranslation();
+
 	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
 
@@ -76,6 +83,7 @@ const StorymapPage = () => {
 	const location = useLocation();
 
 	// récupération des données des stores
+	const { updateFormType } = useBuilderStore();
 	const { setSelectedLanguage } = useStorymapLanguageStore();
 
 	// déclaration d'un état pour stocker les informations de la storymap
@@ -100,9 +108,15 @@ const StorymapPage = () => {
 				<div className={style.storymapHeaderContainer}>
 					<div>
 						{location.pathname.includes("storymaps/view/") && (
-							<Link to={`/backoffice/storymaps/build/${storymapId}`}>
-								Modifier la storymap
-							</Link>
+							<ButtonComponent
+								type="route"
+								textContent={
+									translation[language].backoffice.storymapFormPage.backToEdit
+								}
+								color="gold"
+								link={`/backoffice/storymaps/${storymapId}`}
+								onClickFunction={() => updateFormType("blockChoice")}
+							/>
 						)}
 					</div>
 					<ul className={style.languageSelectionContainer}>

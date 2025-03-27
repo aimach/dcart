@@ -10,8 +10,8 @@ type StorymapType = {
 	author?: string;
 	isActive: boolean;
 	publishedAt: string;
-	lang1: { name: string };
-	lang2: { name: string };
+	lang1: { name: string; id: string };
+	lang2: { name: string; id: string };
 	createdAt: string;
 	updatedAt: string;
 	uploadPointsLastDate: string;
@@ -22,6 +22,9 @@ type StorymapType = {
 		pseudo: string;
 	};
 	blocks?: BlockContentType[];
+	img_url: string;
+	publication_date?: string;
+	category_id?: string;
 };
 
 type BlockContentType = {

@@ -9,25 +9,20 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import { getUserFilters } from "../../../../utils/api/builtMap/getRequests";
-import {
-	addFiltersToMap,
-	createNewMap,
-} from "../../../../utils/api/builtMap/postRequests";
+import { addFiltersToMap } from "../../../../utils/api/builtMap/postRequests";
 import {
 	alreadyTwoFiltersChecked,
 	getFilterLabel,
 	noFilterChecked,
 } from "../../../../utils/functions/filter";
+import { updateFiltersToMap } from "../../../../utils/api/builtMap/putRequests";
 // import des types
 import type { FilterType } from "../../../../utils/types/filterTypes";
-import type { MapInfoType } from "../../../../utils/types/mapTypes";
 import type { ChangeEvent, FormEventHandler } from "react";
 // import du style
 import style from "../introForm/introForm.module.scss";
-import {
-	updateFiltersToMap,
-	updateMap,
-} from "../../../../utils/api/builtMap/putRequests";
+// import des icônes
+import { CircleAlert } from "lucide-react";
 
 /**
  * Formulaire de la troisième étape : définition des filtres utilisateur pour la carte
@@ -134,18 +129,33 @@ const UserMapFilterForm = () => {
 		userMapFilterTypes && (
 			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
 				<h4>{translation[language].backoffice.mapFormPage.addFilters}</h4>
-				<p>{translation[language].backoffice.mapFormPage.filterIntroduction}</p>
-				<div className={style.commonFormInputContainer}>
-					{alreadyTwoFiltersChecked(mapFilters) && <p>Maximum atteint !</p>}
-					{userMapFilterTypes.map((filter: FilterType) => {
-						const label = getFilterLabel(filter.type, translation, language);
-						if (filter.type !== "time") {
-							return (
-								<div
-									key={filter.type}
-									className={style.userFilterInputContainer}
-								>
+				<div className={style.filterIntroductionContainer}>
+					<CircleAlert />{" "}
+					<p>
+						{translation[language].backoffice.mapFormPage.filterIntroduction}
+					</p>
+				</div>
+
+				{alreadyTwoFiltersChecked(mapFilters) && (
+					<div className={style.alertContainer}>
+						<CircleAlert color="#9d2121" />
+						<p>{translation[language].alert.maxReached}</p>
+					</div>
+				)}
+				{userMapFilterTypes.map((filter: FilterType) => {
+					const { label, description } = getFilterLabel(
+						filter.type,
+						translation,
+						language,
+					);
+					if (filter.type !== "time") {
+						return (
+							<div key={filter.type} className={style.commonFormInputContainer}>
+								<div className={style.labelContainer}>
 									<label htmlFor={filter.type}>{label}</label>
+									<p>{description}</p>
+								</div>
+								<div className={style.inputContainer}>
 									<input
 										id={filter.type}
 										name={filter.type}
@@ -154,13 +164,23 @@ const UserMapFilterForm = () => {
 										onChange={(event) => handleCheckboxChange(event)}
 									/>
 								</div>
-							);
-						}
-					})}
-					<div className={style.userFilterInputContainer}>
+							</div>
+						);
+					}
+				})}
+				<div className={style.commonFormInputContainer}>
+					<div className={style.labelContainer}>
 						<label htmlFor="noFilter">
-							{translation[language].backoffice.mapFormPage.noFilter}
+							{translation[language].backoffice.mapFormPage.noFilter.label}
 						</label>
+						<p>
+							{
+								translation[language].backoffice.mapFormPage.noFilter
+									.description
+							}
+						</p>
+					</div>
+					<div className={style.inputContainer}>
 						<input
 							id="noFilter"
 							name="noFilter"
@@ -170,6 +190,7 @@ const UserMapFilterForm = () => {
 						/>
 					</div>
 				</div>
+
 				<NavigationButtonComponent step={step} nextButtonDisplayed={true} />
 			</form>
 		)

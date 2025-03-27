@@ -26,7 +26,6 @@ export type quoteInputsType = {
  * Formulaire pour la création d'un bloc de type "quote"
  */
 const QuoteForm = () => {
-	// récupération des données des stores
 	const { updateFormType, block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
@@ -36,21 +35,18 @@ const QuoteForm = () => {
 		})),
 	);
 
-	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
-
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
+
+	const { storymapId } = useParams();
 
 	// fonction appelée lors de la soumission du formulaire
 	const onSubmit: SubmitHandler<quoteInputsType> = async (data) => {
 		if (action === "create") {
 			await createBlock({
 				...data,
-				storymapId,
+				storymapId: storymapId,
+
 				typeName: "quote",
 			});
 		} else if (action === "edit") {
@@ -58,7 +54,8 @@ const QuoteForm = () => {
 				{
 					...block,
 					...data,
-					storymapId,
+					storymapId: storymapId,
+
 					typeName: "quote",
 				},
 				block?.id.toString() as string,

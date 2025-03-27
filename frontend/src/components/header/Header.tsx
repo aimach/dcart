@@ -106,14 +106,14 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 						<MenuIcon onClick={() => setMenuIsOpen(true)} />
 					</>
 				)}
-				{token && pathname.includes("backoffice") && (
+				{/* {token && pathname.includes("backoffice") && (
 					<ButtonComponent
 						type="button"
 						color="gold"
 						textContent="deconnexion"
 						onClickFunction={handleLogoutClick}
 					/>
-				)}
+				)} */}
 			</div>
 		</header>
 	);

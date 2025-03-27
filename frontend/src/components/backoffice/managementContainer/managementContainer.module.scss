@@ -2,15 +2,23 @@
 @use '../../../styles/variable' as v;
 
 .managementContainer {
-    &Title {
-        margin: v.$space-xl auto;
-        font-size: v.$font-size-xxxl;
-        text-align: center;
-    }
+    width: 90vw;
+    margin: 0 auto;
+    background-color: v.$background-color-soft;
+    border-radius: v.$border-radius-rounded;
+    padding: v.$space-l;
 
-    &List {
-        @include m.flexbox(flex, row, wrap, center, center);
-        gap: v.$space-xl;
-        width: 100%;
+}
+
+.managementTable {
+    width: 100%;
+
+    >thead {
+        border-bottom: v.$border-width-m solid v.$color-grullo;
+
+        >tr>th {
+            padding-bottom: v.$space-m;
+        }
+
     }
 }

@@ -1,10 +1,11 @@
 @use '../../../../styles/mixin' as m;
 @use '../../../../styles/variable' as v;
 
+@use "sass:color";
+
 .commonFormContainer {
     @include m.flexbox(flex, column, nowrap, center, flex-start);
     gap: v.$space-l;
-    width: 50vw;
     padding: v.$space-xxl;
 
     >h4 {
@@ -20,41 +21,62 @@
 }
 
 .commonFormInputContainer {
-    @include m.flexbox(flex, column, nowrap, center, flex-start);
+    @include m.flexbox(flex, row, nowrap, center, flex-start);
     gap: v.$space-s;
     width: 100%;
+    padding-bottom: v.$space-s;
+    border-bottom: v.$border-width-m solid v.$color-grullo-light;
 
     >h4 {
         font-size: v.$font-size-l;
         font-weight: v.$font-weight-bold;
     }
 
-    >label {
-        font-size: v.$font-size-m;
-        font-weight: v.$font-weight-bold;
-    }
+    .labelContainer {
+        width: 50%;
 
-    >input,
-    textarea,
-    select {
-        width: 100%;
-        padding: v.$space-s;
-        border: v.$border-width-m solid v.$color-grullo-light;
-        border-radius: v.$border-radius-rounded;
-        font-size: v.$font-size-m;
-        font-family: "Vollkorn";
+        >label {
+            font-size: v.$font-size-m;
+            font-weight: v.$font-weight-bold;
+        }
 
-        &:focus {
-            outline: v.$border-width-m solid v.$color-umber;
+        >p {
+            width: 80%;
+            padding-top: v.$space-xs;
+            font-size: v.$font-size-s;
+            font-weight: v.$font-weight-light;
+            color: v.$color-grullo;
         }
     }
+
+    .inputContainer {
+        width: 50%;
+        @include m.flexbox(flex, column, nowrap, space-between, flex-start);
+        gap: v.$space-s;
+
+        >input,
+        textarea,
+        select {
+            width: 100%;
+            padding: v.$space-s;
+            border: v.$border-width-m solid v.$color-grullo-light;
+            border-radius: v.$border-radius-rounded;
+            font-size: v.$font-size-m;
+            font-family: "Vollkorn";
+
+            &:focus {
+                outline: v.$border-width-m solid v.$color-umber;
+            }
+        }
+    }
+
 
 }
 
 .userFilterInputContainer {
     @include m.flexbox(flex, row, nowrap, space-between, flex-start);
     gap: v.$space-s;
-    width: 100%;
+    width: 50%;
 
     >label {
         font-size: v.$font-size-m;
@@ -63,9 +85,93 @@
 
 }
 
-.helpContainer {
-    >a {
-        @include m.flexbox(flex, row, nowrap, space-center, center);
-        gap: v.$space-xs;
+.titleAndHelpContainer {
+    @include m.flexbox(flex, row, nowrap, space-between, center);
+    margin: v.$space-l;
+
+    >h4 {
+        font-size: v.$font-size-l;
+        font-weight: v.$font-weight-bold;
     }
+
+    .helpContainer {
+        >a {
+            @include m.flexbox(flex, row, nowrap, space-center, center);
+            gap: v.$space-xs;
+        }
+    }
+}
+
+.pointSetTable {
+    width: 90%;
+    margin: v.$space-l auto;
+
+    >thead {
+        border-bottom: v.$border-width-m solid v.$color-grullo;
+
+        >tr>th {
+            padding-bottom: v.$space-m;
+            text-align: left;
+        }
+
+    }
+}
+
+.pointSetTableRow {
+    >td {
+        text-align: left;
+        background-color: v.$background-color-base;
+        padding: v.$space-l 0;
+        border-bottom: v.$border-width-m solid v.$color-grullo;
+        max-width: 100px;
+    }
+
+    >td:first-of-type {
+        div {
+            text-align: center;
+        }
+    }
+
+    >td:last-of-type {
+        text-align: center;
+
+        >svg {
+            cursor: pointer;
+            margin-right: v.$space-s;
+            background-color: v.$background-color-soft;
+            border-radius: v.$border-radius-base;
+            border: v.$border-width-m solid v.$color-neutral-80;
+            padding: 5px;
+            transition: scale 0.2s;
+            color: v.$color-dark-lava;
+
+        }
+
+        >svg:hover {
+            scale: 1.1;
+        }
+    }
+}
+
+.isLayeredContainer {
+    width: 100%;
+    margin: v.$space-l 0;
+    text-align: center;
+}
+
+.filterIntroductionContainer {
+    @include m.flexbox(flex, row, nowrap, space-center, center);
+    gap: v.$space-s;
+    background-color: v.$background-color-soft;
+    padding: v.$space-l;
+    border-radius: v.$border-radius-rounded;
+}
+
+.alertContainer {
+    color: v.$color-error;
+    @include m.flexbox(flex, row, nowrap, space-center, center);
+    gap: v.$space-s;
+    background-color: color.adjust(v.$color-error, $lightness: 60%);
+    padding: v.$space-l;
+    border-radius: v.$border-radius-rounded;
 }

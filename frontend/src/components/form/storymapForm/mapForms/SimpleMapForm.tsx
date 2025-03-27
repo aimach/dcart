@@ -23,7 +23,7 @@ import type { ChangeEvent } from "react";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronRight, CircleHelp } from "lucide-react";
+import { ChevronLeft, ChevronRight, CircleHelp } from "lucide-react";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -38,7 +38,6 @@ const SimpleMapForm = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	// récupération des données des stores
 	const { updateFormType, block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
@@ -48,14 +47,9 @@ const SimpleMapForm = () => {
 		})),
 	);
 
-	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
-
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
+	const { storymapId } = useParams();
 
 	// gestion de l'upload du fichier csv
 	const [parsedPoints, setParsedPoints] = useState<parsedPointType[]>([]);
@@ -187,9 +181,23 @@ const SimpleMapForm = () => {
 						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
 					</a>
 				</div>
-				<button type="submit">
-					Suivant <ChevronRight />
-				</button>
+				<div className={style.formButtonNavigation}>
+					<button
+						type="button"
+						onClick={() => {
+							updateFormType("blockChoice");
+							setSearchParams(undefined);
+						}}
+					>
+						<ChevronLeft />
+						{translation[language].common.back}
+					</button>
+					<button type="submit">
+						{action === "create"
+							? translation[language].backoffice.storymapFormPage.form.create
+							: translation[language].backoffice.storymapFormPage.form.edit}
+					</button>
+				</div>
 			</form>
 		</>
 	);

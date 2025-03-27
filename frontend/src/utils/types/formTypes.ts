@@ -5,6 +5,8 @@ import type { BlockContentType } from "./storymapTypes";
 type InputType = {
 	label_fr: string;
 	label_en: string;
+	description_fr?: string;
+	description_en?: string;
 	name: string;
 	type: string;
 	options?: OptionType[];
@@ -62,6 +64,8 @@ type storymapInputsType = {
 	author: string;
 	publication_date: string;
 	category_id: string;
+	lang1: string;
+	lang2: string;
 };
 
 type allInputsType = storymapInputsType | BlockContentType;

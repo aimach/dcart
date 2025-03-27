@@ -11,7 +11,6 @@ import MapPage from "./pages/MapPage/MapPage.tsx";
 import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.tsx";
 import BackofficeStorymapPage from "./pages/BackOffice/BOStorymapPage/BackofficeStorymapPage.tsx";
 import BackofficeTranslationPage from "./pages/BackOffice/BOTranslationPage/BackofficeTranslationPage.tsx";
-import CategoryMenuPage from "./pages/MapCategoryMenuPage/MapCategoryMenuPage.tsx";
 import BOMapFormPage from "./pages/BackOffice/BOMapFormPage.tsx/BOMapFormPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
@@ -19,7 +18,6 @@ import { TranslationProvider } from "./context/TranslationContext.tsx";
 // import du style
 import "./index.css";
 import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
-import StorymapBuilderPage from "./pages/BackOffice/BOStorymapPage/storymapBuilder/StorymapBuilderPage.tsx";
 import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
 import MapCategoryMenuPage from "./pages/MapCategoryMenuPage/MapCategoryMenuPage.tsx";
 import StorymapCategoryMenuPage from "./pages/StorymapCategoryMenuPage/StorymapCategoryMenuPage.tsx";
@@ -65,15 +63,7 @@ if (rootElement) {
 								</Route>
 								<Route path="storymaps">
 									<Route index element={<BackofficeStorymapPage />} />
-									<Route path="create" element={<StorymapIntroPage />} />
-									<Route
-										path="build/:storymapId"
-										element={<StorymapBuilderPage />}
-									/>
-									<Route
-										path="edit/:storymapId"
-										element={<StorymapIntroPage />}
-									/>
+									<Route path=":storymapId" element={<StorymapIntroPage />} />
 									<Route path="view/:storymapId" element={<StorymapPage />} />
 								</Route>
 								<Route

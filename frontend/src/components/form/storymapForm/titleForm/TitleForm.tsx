@@ -24,7 +24,6 @@ export type titleInputsType = {
  * Formulaire pour la création d'un bloc de type "title"
  */
 const TitleForm = () => {
-	// récupération des données des stores
 	const { updateFormType, block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
@@ -34,13 +33,9 @@ const TitleForm = () => {
 		})),
 	);
 
-	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
 
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
 
 	// fonction appelée lors de la soumission du formulaire
@@ -48,7 +43,7 @@ const TitleForm = () => {
 		if (action === "create") {
 			await createBlock({
 				...data,
-				storymapId,
+				storymapId: storymapId,
 				typeName: "title",
 			});
 		} else if (action === "edit") {
@@ -56,7 +51,7 @@ const TitleForm = () => {
 				{
 					...block,
 					...data,
-					storymapId,
+					storymapId: storymapId,
 					typeName: "title",
 				},
 				block?.id.toString() as string,

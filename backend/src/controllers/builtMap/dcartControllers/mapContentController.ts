@@ -25,11 +25,13 @@ export const mapContentController = {
 						.leftJoinAndSelect("map.modifier", "modifier")
 						.leftJoinAndSelect("map.filters", "filters")
 						.leftJoinAndSelect("map.attestations", "attestations")
+						.leftJoinAndSelect("attestations.icon", "icon")
 						.select([
 							"map",
 							"filters",
 							"category",
 							"attestations",
+							"attestations.icon",
 							"creator.pseudo",
 							"modifier.pseudo",
 						])
@@ -47,11 +49,13 @@ export const mapContentController = {
 					.leftJoinAndSelect("map.modifier", "modifier")
 					.leftJoinAndSelect("map.filters", "filters")
 					.leftJoinAndSelect("map.attestations", "attestations")
+					.leftJoinAndSelect("attestations.icon", "icon")
 					.select([
 						"map",
 						"filters",
 						"category",
 						"attestations",
+						"attestations.icon",
 						"creator.pseudo",
 						"modifier.pseudo",
 					])
@@ -60,14 +64,21 @@ export const mapContentController = {
 				return;
 			}
 
-			const mapInfos = await dcartDataSource.getRepository(MapContent).find({
-				where: { id: mapId },
-				relations: ["filters", "category", "attestations"],
-			});
+			const mapInfos = await dcartDataSource
+				.getRepository(MapContent)
+				.createQueryBuilder("map")
+				.leftJoinAndSelect("map.category", "category")
+				.leftJoinAndSelect("map.filters", "filters")
+				.leftJoinAndSelect("map.attestations", "attestations")
+				.leftJoinAndSelect("attestations.icon", "icon")
+				.select(["map", "filters", "category", "attestations", "icon"])
+				.where("map.id = :mapId", { mapId })
+				.getOne();
+
 			if (!mapInfos) {
 				res.status(404).send({ Erreur: "Carte non trouvée" });
 			} else {
-				res.status(200).send(mapInfos[0]);
+				res.status(200).send(mapInfos);
 			}
 		} catch (error) {
 			handleError(res, error as Error);

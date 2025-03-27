@@ -3,7 +3,9 @@ import { useState, useEffect } from "react";
 import { useNavigate } from "react-router";
 // import des composants
 import ButtonComponent from "../../common/button/ButtonComponent";
-import ManagementItem from "../managementItem/ManagementItem";
+import ItemTableComponent from "../itemTable/ItemTableComponent";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import {
 	getAllMapsInfos,
@@ -22,6 +24,8 @@ type ManagementContainerProps = {
 
 const ManagementContainer = ({ type }: ManagementContainerProps) => {
 	const navigate = useNavigate();
+
+	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
 	const { reload } = useModalStore();
@@ -51,42 +55,58 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 		}
 	}, [type, reload]);
 
-	const textKey = type === "map" ? "cartes" : "storymaps";
-
 	return (
 		<>
-			<h2 className={style.managementContainerTitle}>Gestion des {textKey}</h2>
 			<ButtonComponent
 				type="button"
 				color="gold"
-				textContent={`Créer une ${textKey.slice(0, -1)}`}
+				textContent={`+ ${translation[language].backoffice.createA} ${translation[language].common[type === "map" ? "map" : "storymap"]}`}
 				onClickFunction={() => {
 					navigate(`/backoffice/${type}s/create`);
 					resetMapInfos();
 				}}
 			/>
-			<section className={style.managementContainerList}>
-				{type === "map" ? (
-					<ul className={style.managementContainerList}>
-						{allMapsInfos.map((map) => (
-							<ManagementItem
-								key={map.id}
-								itemInfos={map as MapType}
-								type="map"
-							/>
-						))}
-					</ul>
-				) : (
-					<ul className={style.managementContainerList}>
-						{allStorymapsInfos.map((storymap) => (
-							<ManagementItem
-								key={storymap.id}
-								itemInfos={storymap as MapType}
-								type="storymap"
-							/>
-						))}
-					</ul>
-				)}
+			<section className={style.managementContainer}>
+				<table className={style.managementTable}>
+					<thead>
+						<tr>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.image}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.name}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.status}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.createdOn}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.updatedOn}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.lastUploadBy}
+							</th>
+							<th scope="col">
+								{translation[language].backoffice.managementTable.links}
+							</th>
+						</tr>
+					</thead>
+					<tbody>
+						{type === "map"
+							? allMapsInfos.map((map) => (
+									<ItemTableComponent key={map.id} itemInfos={map} type="map" />
+								))
+							: allStorymapsInfos.map((storymap) => (
+									<ItemTableComponent
+										key={storymap.id}
+										itemInfos={storymap}
+										type="storymap"
+									/>
+								))}
+					</tbody>
+				</table>
 			</section>
 		</>
 	);

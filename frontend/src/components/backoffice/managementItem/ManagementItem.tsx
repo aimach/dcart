@@ -70,7 +70,7 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 				setSession(session);
 			}
 		} else {
-			navigate(`/backoffice/storymaps/build/${idToModify}`);
+			navigate(`/backoffice/storymaps/${idToModify}`);
 			const session = await createSession(type, idToModify);
 			setSession(session);
 		}

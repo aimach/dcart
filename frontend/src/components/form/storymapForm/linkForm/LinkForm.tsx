@@ -14,7 +14,10 @@ import {
 } from "../../../../utils/api/storymap/postRequests";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type linkFormInputs = {
@@ -25,7 +28,6 @@ export type linkFormInputs = {
  * Formulaire pour la création d'un bloc de type "link"
  */
 const LinkForm = () => {
-	// récupération des données des stores
 	const { updateFormType, block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
@@ -35,14 +37,10 @@ const LinkForm = () => {
 		})),
 	);
 
-	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
-
-	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
-
-	// récupération de l'action à effectuer (création ou édition)
 	const action = searchParams.get("action");
+
+	const { storymapId } = useParams();
 
 	// fonction appelée lors de la soumission du formulaire
 	const onSubmit: SubmitHandler<linkFormInputs> = async (data) => {
@@ -50,7 +48,7 @@ const LinkForm = () => {
 			await createBlock({
 				...data,
 				content1_lang2: data.content1_lang1,
-				storymapId,
+				storymapId: storymapId,
 				typeName: "link",
 			});
 		} else if (action === "edit") {
@@ -59,7 +57,7 @@ const LinkForm = () => {
 					...block,
 					...data,
 					content1_lang2: data.content1_lang1,
-					storymapId,
+					storymapId: storymapId,
 					typeName: "link",
 				},
 				block?.id.toString() as string,
