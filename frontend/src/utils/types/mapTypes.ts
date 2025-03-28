@@ -74,6 +74,7 @@ type MapInfoType = {
 	attestations: PointSetType[];
 	filters?: Record<string, string>[];
 	isLayered: boolean;
+	isNbDisplayed: boolean;
 };
 
 type MapType = {

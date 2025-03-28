@@ -2,7 +2,7 @@
 import L from "leaflet";
 import tinycolor from "tinycolor2";
 // import des types
-import type { PointType } from "../types/mapTypes";
+import type { MapInfoType, PointType } from "../types/mapTypes";
 
 /**
  * Retourne une icone de taille petite
@@ -190,16 +190,16 @@ const getBackGroundColorClassName = (sourcesNb: number) => {
 
 const getCircleIcon = (
 	sourcesNb: number,
-	customColor: string,
+	customFillAndStroke: string,
 	customSize: number,
 	customTextColor: string,
+	isNbDisplayed: boolean,
 ) => {
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="45" fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}
- stroke-width="5" />
+      <circle cx="50" cy="50" r="45" ${customFillAndStroke} stroke-width="5" />
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill=${customTextColor} font-family="Arial, sans-serif">
-        ${sourcesNb.toString()}
+        ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
   `;
@@ -207,16 +207,17 @@ const getCircleIcon = (
 
 const getSquareIcon = (
 	sourcesNb: number,
-	customColor: string,
+	customFillAndStroke: string,
 	customSize: number,
 	customTextColor: string,
+	isNbDisplayed: boolean,
 ) => {
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
-      <rect x="5" y="5" width="90" height="90" fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}
+      <rect x="5" y="5" width="90" height="90" ${customFillAndStroke}
  stroke-width="5"/>
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill=${customTextColor} font-family="Arial, sans-serif">
-        ${sourcesNb.toString()}
+        ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
   `;
@@ -224,16 +225,17 @@ const getSquareIcon = (
 
 const getTriangleIcon = (
 	sourcesNb: number,
-	customColor: string,
+	customFillAndStroke: string,
 	customSize: number,
 	customTextColor: string,
+	isNbDisplayed: boolean,
 ) => {
 	return `
      <svg xmlns="http://www.w3.org/2000/svg" width=${customSize}  height=${customSize}  viewBox="0 0 100 100">
-      <polygon points="50,10 90,90 10,90" fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}
+      <polygon points="50,10 90,90 10,90" ${customFillAndStroke}
  stroke-width="5" />
       <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="35" fill=${customTextColor} font-family="Arial, sans-serif">
-       ${sourcesNb.toString()}
+        ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
   `;
@@ -241,15 +243,15 @@ const getTriangleIcon = (
 
 const getDiamondIcon = (
 	sourcesNb: number,
-	customColor: string,
+	customFillAndStroke: string,
 	customSize: number,
 	customTextColor: string,
+	isNbDisplayed: boolean,
 ) => {
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <polygon 
         points="50,5 95,50 50,95 5,50" 
-        fill=${customColor}
-        stroke=${tinycolor(customColor).darken(10).toString()}
+        ${customFillAndStroke}}
         stroke-width="5"
       />
       <text 
@@ -261,7 +263,7 @@ const getDiamondIcon = (
         fill=${customTextColor}
         font-family="Arial, sans-serif"
       >
-        ${sourcesNb.toString()}
+        ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
   `;
@@ -272,40 +274,62 @@ const getShapedDivContent = (
 	color: string,
 	sourcesNb: number,
 	isSelected: boolean,
+	isNbDisplayed: boolean,
 ) => {
 	const customSize = getShapeDependingOnNb(sourcesNb);
-	let customColor = getColorDependingOnNb(sourcesNb, color);
+	const customColor = getColorDependingOnNb(sourcesNb, color);
+	let customFillAndStroke = `fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}`;
 	let customTextColor = tinycolor(customColor).isDark()
-		? tinycolor(color).brighten(40).toString()
+		? tinycolor(color).lighten(40).toString()
 		: tinycolor(color).darken(40).toString();
 
 	if (isSelected) {
-		customColor = "white";
+		customFillAndStroke = `fill="white" stroke=${tinycolor(customColor).darken(10).toString()}`;
 		customTextColor = tinycolor(color).darken(40).toString();
 	}
 
 	switch (shape) {
 		case "circle":
-			return getCircleIcon(sourcesNb, customColor, customSize, customTextColor);
+			return getCircleIcon(
+				sourcesNb,
+				customFillAndStroke,
+				customSize,
+				customTextColor,
+				isNbDisplayed,
+			);
 		case "square":
-			return getSquareIcon(sourcesNb, customColor, customSize, customTextColor);
+			return getSquareIcon(
+				sourcesNb,
+				customFillAndStroke,
+				customSize,
+				customTextColor,
+				isNbDisplayed,
+			);
 		case "triangle":
 			return getTriangleIcon(
 				sourcesNb,
-				customColor,
+				customFillAndStroke,
 				customSize,
 				customTextColor,
+				isNbDisplayed,
 			);
 		case "diamond":
 			return getDiamondIcon(
 				sourcesNb,
-				customColor,
+				customFillAndStroke,
 				customSize,
 				customTextColor,
+				isNbDisplayed,
 			);
 
 		default:
-			return getCircleIcon(sourcesNb, customColor, customSize, customTextColor);
+			return getCircleIcon(
+				sourcesNb,
+				customFillAndStroke,
+				customSize,
+				customTextColor,
+				isNbDisplayed,
+			);
 	}
 };
 
@@ -313,6 +337,7 @@ const getIcon = (
 	point: PointType,
 	style: CSSModuleClasses,
 	isSelected: boolean,
+	isNbDisplayed: boolean,
 ) => {
 	let customIcon = getDefaultIcon(
 		point.sources.length,
@@ -327,6 +352,7 @@ const getIcon = (
 				point.color,
 				point.sources.length,
 				isSelected,
+				isNbDisplayed,
 			),
 			className: "",
 			iconSize: [8, 8],
@@ -341,6 +367,7 @@ const getIcon = (
 				"#AD9A85",
 				point.sources.length,
 				isSelected,
+				isNbDisplayed,
 			),
 			className: "",
 			iconSize: [8, 8],

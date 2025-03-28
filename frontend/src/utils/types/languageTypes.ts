@@ -150,6 +150,10 @@ type LanguageObject = {
 					description: string;
 				};
 				chooseIcon: string;
+				noDefinedColor: string;
+				noDefinedIcon: string;
+				isLayeredLabel: string;
+				isNbDisplayedLabel: string;
 			};
 			addMapIntro: string;
 			addMapPoints: string;

@@ -35,14 +35,16 @@ const MarkerComponent = ({
 	duplicatesCoordinates,
 }: MarkerComponentProps) => {
 	// récupération des données des stores
-	const { selectedMarker, setSelectedMarker, map, allLayers } = useMapStore(
-		useShallow((state) => ({
-			selectedMarker: state.selectedMarker,
-			setSelectedMarker: state.setSelectedMarker,
-			map: state.map,
-			allLayers: state.allLayers,
-		})),
-	);
+	const { selectedMarker, setSelectedMarker, map, mapInfos, allLayers } =
+		useMapStore(
+			useShallow((state) => ({
+				selectedMarker: state.selectedMarker,
+				setSelectedMarker: state.setSelectedMarker,
+				map: state.map,
+				mapInfos: state.mapInfos,
+				allLayers: state.allLayers,
+			})),
+		);
 	const setSelectedTabMenu = useMapAsideMenuStore(
 		(state) => state.setSelectedTabMenu,
 	);
@@ -70,6 +72,7 @@ const MarkerComponent = ({
 		point,
 		style,
 		selectedMarker ? isSelectedMarker(selectedMarker, point) : false,
+		mapInfos?.isNbDisplayed as boolean,
 	);
 
 	return (
