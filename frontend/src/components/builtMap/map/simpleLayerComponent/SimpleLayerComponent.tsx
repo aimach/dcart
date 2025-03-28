@@ -19,6 +19,7 @@ const SimpleLayerComponent = ({
 				key={point.key}
 				point={point}
 				setPanelDisplayed={setPanelDisplayed}
+				duplicatesCoordinates={[]}
 			/>
 		);
 	});

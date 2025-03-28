@@ -1,5 +1,6 @@
 // import des bibliothèques
-import { useCallback, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useRef } from "react";
+import DOMPurify from "dompurify";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -10,13 +11,12 @@ import {
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
+import { getShapeForLayerName } from "../../../../utils/functions/icons";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
 import type { Map as LeafletMap } from "leaflet";
 // import du style
 import style from "./tabComponent.module.scss";
-// import des icônes
-import { MapPin } from "lucide-react";
 
 /**
  * Affiche une liste des points affichés sur la carte (filtrés ou non)
@@ -72,9 +72,14 @@ const ResultComponent = () => {
 					...point,
 					isSelected,
 					selectedClassName: isSelected ? style.isSelected : undefined,
+					shapeCode: DOMPurify.sanitize(
+						getShapeForLayerName(point.shape as string, "", point.color),
+					),
 				};
 			},
 		);
+
+		// trie les résultats par sous-région puis par nom de ville
 		const allResultsInAlphaOrder = allResultsFilteredWithCSS.sort((a, b) => {
 			if (
 				a[`sous_region_${language}`] === b[`sous_region_${language}`] &&
@@ -90,6 +95,17 @@ const ResultComponent = () => {
 		return allResultsInAlphaOrder;
 	}, [allResults, selectedMarker, allLayers, mapInfos, language]);
 
+	// zoom sur le point sélectionné
+	const isSelectedRef = useRef<HTMLDivElement | null>(null);
+	useEffect(() => {
+		if (isSelectedRef.current) {
+			isSelectedRef.current.scrollIntoView({
+				behavior: "instant",
+				block: "start",
+			});
+		}
+	}, []);
+
 	return (
 		<div
 			className={style.resultContainer}
@@ -102,8 +118,13 @@ const ResultComponent = () => {
 						onClick={() => handleResultClick(result)}
 						onKeyUp={() => handleResultClick(result)}
 						className={`${style.resultDetails} ${result.selectedClassName}`}
+						ref={result.isSelected ? isSelectedRef : null}
 					>
-						<MapPin />
+						<div
+							// biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+							dangerouslySetInnerHTML={{ __html: result.shapeCode as string }}
+						/>
+
 						<p>
 							{result.nom_ville} ({result[`sous_region_${language}`]}) -{" "}
 							{result.sources.length}{" "}

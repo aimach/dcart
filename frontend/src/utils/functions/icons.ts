@@ -273,7 +273,7 @@ const getShapedDivContent = (
 	sourcesNb: number,
 	isSelected: boolean,
 ) => {
-	let customSize = getShapeDependingOnNb(sourcesNb);
+	const customSize = getShapeDependingOnNb(sourcesNb);
 	let customColor = getColorDependingOnNb(sourcesNb, color);
 	let customTextColor = tinycolor(customColor).isDark()
 		? tinycolor(color).brighten(40).toString()
@@ -282,7 +282,6 @@ const getShapedDivContent = (
 	if (isSelected) {
 		customColor = "white";
 		customTextColor = tinycolor(color).darken(40).toString();
-		customSize = 60;
 	}
 
 	switch (shape) {
@@ -372,9 +371,9 @@ const getShapeDependingOnNb = (sourcesNb: number): number => {
 };
 
 const getShapeForLayerName = (
-	shape: string | null,
+	shape: string | undefined,
 	name: string,
-	color: string | null,
+	color: string | undefined,
 ) => {
 	let defaultColor = color;
 	if (!color) {
