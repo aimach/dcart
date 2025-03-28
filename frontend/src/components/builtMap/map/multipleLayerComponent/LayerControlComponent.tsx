@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { LayersControl, LayerGroup, Marker } from "react-leaflet";
+import { LayersControl, LayerGroup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
@@ -7,6 +7,7 @@ import MarkerComponent from "../MarkerComponent/MarkerComponent";
 import type { PointType } from "../../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
+// @ts-ignore: pas de déclaration de type
 import "react-leaflet-markercluster/styles";
 
 type LayerControlComponentProps = {
@@ -20,12 +21,6 @@ const LayerControlComponent = ({
 	setPanelDisplayed,
 	duplicatesCoordinates,
 }: LayerControlComponentProps) => {
-	const points = [
-		{ id: 1, label: "Point A", lat: 48.8566, lng: 2.3522 },
-		{ id: 2, label: "Point B", lat: 48.8566, lng: 2.3522 },
-		{ id: 3, label: "Point C", lat: 48.8566, lng: 2.3522 },
-	];
-
 	return (
 		<LayersControl.Overlay name={layer.name} key={layer.name} checked>
 			<LayerGroup key={layer.name}>
@@ -33,8 +28,8 @@ const LayerControlComponent = ({
 					spiderfyOnMaxZoom={true}
 					spiderfyOnEveryZoom={true}
 					showCoverageOnHover={false}
-					disableClusteringAtZoom={18}
-					maxClusterRadius={40}
+					disableClusteringAtZoom={12}
+					maxClusterRadius={1}
 				>
 					{layer.attestations.map((point) => {
 						const pointKey = `${point.latitude}-${point.longitude}`;

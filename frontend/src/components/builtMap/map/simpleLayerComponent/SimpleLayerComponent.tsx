@@ -5,14 +5,13 @@ import L from "leaflet";
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import des services
-import { createLucideString } from "../../../../utils/functions/map";
+import { getBlendIcon } from "../../../../utils/functions/icons";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
 import { useMemo, type Dispatch, type SetStateAction } from "react";
 // import du style
 import style from "./simpleLayerChoice.module.scss";
 import "./simpleLayerChoice.css";
-import { getBlendIcon } from "../../../../utils/functions/icons";
 
 type SimpleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
