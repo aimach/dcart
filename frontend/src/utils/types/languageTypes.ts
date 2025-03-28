@@ -77,6 +77,12 @@ type LanguageObject = {
 		onlySemitic: string;
 		onlyGreek: string;
 		withElements: string;
+		shape: {
+			circle: string;
+			square: string;
+			triangle: string;
+			diamond: string;
+		};
 		aside: {
 			filters: string;
 			sources: string;

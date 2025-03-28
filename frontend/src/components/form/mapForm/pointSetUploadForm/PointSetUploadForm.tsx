@@ -204,7 +204,7 @@ const PointSetUploadForm = ({
 							</option>
 							{allIcons.map((icon) => (
 								<option key={icon.id} value={icon.id}>
-									{icon.name}
+									{translation[language].mapPage.shape[icon.name]}
 								</option>
 							))}
 						</select>
