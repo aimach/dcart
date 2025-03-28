@@ -49,13 +49,13 @@ const MarkerComponent = ({
 		(state) => state.setSelectedTabMenu,
 	);
 
-	let position: LatLngExpression = [point.latitude, point.longitude];
+	const position: LatLngExpression = [point.latitude, point.longitude];
 	const keyPoint = `${point.latitude}-${point.longitude}`;
 	if (duplicatesCoordinates.includes(keyPoint)) {
 		const layerIndex = allLayers.findIndex(
 			(layer) => layer === point.layerName,
 		);
-		position = [point.latitude, point.longitude + 0.012 * layerIndex];
+		// position = [point.latitude, point.longitude + 0.012 * layerIndex];
 	}
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur

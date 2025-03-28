@@ -1,8 +1,18 @@
+// import des bibliothèques
+import MarkerClusterGroup from "react-leaflet-markercluster";
+import L from "leaflet";
+
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
+// import des services
+import { createLucideString } from "../../../../utils/functions/map";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
-import type { Dispatch, SetStateAction } from "react";
+import { useMemo, type Dispatch, type SetStateAction } from "react";
+// import du style
+import style from "./simpleLayerChoice.module.scss";
+import "./simpleLayerChoice.css";
+import { getBlendIcon } from "../../../../utils/functions/icons";
 
 type SimpleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
@@ -13,16 +23,46 @@ const SimpleLayerComponent = ({
 	allMemoizedPoints,
 	setPanelDisplayed,
 }: SimpleLayerComponentProps) => {
-	return allMemoizedPoints.map((point: PointType) => {
-		return (
-			<MarkerComponent
-				key={point.key}
-				point={point}
-				setPanelDisplayed={setPanelDisplayed}
-				duplicatesCoordinates={[]}
-			/>
-		);
-	});
+	const allPointColorsAndShapes = useMemo(() => {
+		const seenShapeAndColor = new Set();
+		const uniqueShapeAndColor = [];
+		for (const point of allMemoizedPoints) {
+			const shapeAndColor = `${point.shape}-${point.color}`;
+			if (!seenShapeAndColor.has(shapeAndColor)) {
+				seenShapeAndColor.add(shapeAndColor);
+				uniqueShapeAndColor.push(shapeAndColor);
+			}
+		}
+		return uniqueShapeAndColor;
+	}, [allMemoizedPoints]);
+
+	const createClusterCustomIcon = () => {
+		const blendIcon = getBlendIcon(allPointColorsAndShapes);
+		return L.divIcon({
+			html: `<div class="marker-cluster-custom">${blendIcon}</div>`,
+			className: "",
+			iconSize: L.point(32, 32, true),
+		});
+	};
+	return (
+		<MarkerClusterGroup
+			spiderfyOnMaxZoom={true}
+			spiderfyOnEveryZoom={true}
+			showCoverageOnHover={false}
+			disableClusteringAtZoom={12}
+			maxClusterRadius={1}
+			iconCreateFunction={createClusterCustomIcon}
+		>
+			{allMemoizedPoints.map((point: PointType) => (
+				<MarkerComponent
+					key={point.key}
+					point={point}
+					setPanelDisplayed={setPanelDisplayed}
+					duplicatesCoordinates={[]}
+				/>
+			))}
+		</MarkerClusterGroup>
+	);
 };
 
 export default SimpleLayerComponent;

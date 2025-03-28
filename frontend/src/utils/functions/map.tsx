@@ -1,5 +1,7 @@
 // import des bibliothèques
 import DOMPurify from "dompurify";
+import * as LucideIcons from "lucide-react";
+import { renderToStaticMarkup } from "react-dom/server";
 // import des types
 import type { Language, TranslationType } from "../types/languageTypes";
 import type {
@@ -189,6 +191,30 @@ const getCreationAndModificationString = (
 	return string;
 };
 
+/**
+ * Fonction pour générer le code svg d'une icône lucide (peut être intégré dans du html)
+ * @param iconName nom de l'icône Lucide
+ * @param options taille et couleur
+ * @returns {string} - code svg de l'icône
+ */
+const createLucideString = (
+	iconName: string,
+	options?: { size?: number; color?: string },
+) => {
+	const Icon = LucideIcons[iconName as keyof typeof LucideIcons];
+
+	if (!Icon) {
+		console.warn(`Lucide icon "${iconName}" not found`);
+		return null;
+	}
+
+	const svgString = renderToStaticMarkup(
+		<Icon size={options?.size || 24} color={options?.color || "black"} />,
+	);
+
+	return svgString;
+};
+
 export {
 	getAgentsArrayWithoutDuplicates,
 	getAllAttestationsIdsFromParsedPoints,
@@ -198,4 +224,5 @@ export {
 	isSelectedMarker,
 	zoomOnMarkerOnClick,
 	getCreationAndModificationString,
+	createLucideString,
 };

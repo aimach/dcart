@@ -14,7 +14,6 @@ import type { FormEvent, ChangeEvent } from "react";
 import type { ParseResult } from "papaparse";
 import type {
 	MapIconType,
-	MapInfoType,
 	ParsedPointType,
 	PointSetType,
 } from "../../../../utils/types/mapTypes";

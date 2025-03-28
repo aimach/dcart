@@ -276,7 +276,7 @@ const getShapedDivContent = (
 	isSelected: boolean,
 	isNbDisplayed: boolean,
 ) => {
-	const customSize = getShapeDependingOnNb(sourcesNb);
+	let customSize = getShapeDependingOnNb(sourcesNb);
 	const customColor = getColorDependingOnNb(sourcesNb, color);
 	let customFillAndStroke = `fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}`;
 	let customTextColor = tinycolor(customColor).isDark()
@@ -287,6 +287,7 @@ const getShapedDivContent = (
 		customFillAndStroke = `fill="white" stroke=${tinycolor(customColor).darken(10).toString()}`;
 		customTextColor = tinycolor(color).darken(40).toString();
 	}
+	customSize = 35;
 
 	switch (shape) {
 		case "circle":
@@ -408,16 +409,27 @@ const getShapeForLayerName = (
 	}
 	switch (shape) {
 		case "circle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
 		case "square":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${defaultColor} stroke="#ffffff" stroke-width="5"/></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg> ${name}`;
 		case "triangle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20"  height="20"  viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${defaultColor} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20"  height="20"  viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
 		case "diamond":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${defaultColor} stroke="#ffffff" stroke-width="5"/></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg> ${name}`;
 		default:
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="#ffffff" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
 	}
+};
+
+const getBlendIcon = (shapeAndColorArray: string[]) => {
+	let blendIcon = "";
+	for (const shapeAndColor of shapeAndColorArray) {
+		const shape = shapeAndColor.split("-")[0];
+		const color = shapeAndColor.split("-")[1];
+		const customIcon = getShapeForLayerName(shape, "", color);
+		blendIcon += customIcon;
+	}
+	return blendIcon;
 };
 
 export {
@@ -426,4 +438,5 @@ export {
 	getLittleCircleIcon,
 	getShapedDivContent,
 	getShapeForLayerName,
+	getBlendIcon,
 };

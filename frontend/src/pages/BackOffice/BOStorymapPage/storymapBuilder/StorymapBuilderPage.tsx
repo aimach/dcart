@@ -69,8 +69,6 @@ const StorymapBuilderPage = () => {
 	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
 
-	console.log(searchParams);
-
 	// définition du formulaire à afficher
 	let formComponent: JSX.Element = <BlockChoiceForm />;
 
