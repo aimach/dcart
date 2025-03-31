@@ -137,7 +137,7 @@ const isSelectedMarker = (
  * @param {PointType} point - le point en cours
  */
 const zoomOnMarkerOnClick = (map: LeafletMap, point: PointType) => {
-	map.flyTo([point.latitude, point.longitude], 10);
+	map.flyTo([point.latitude, point.longitude], 11, { animate: false });
 };
 
 /**

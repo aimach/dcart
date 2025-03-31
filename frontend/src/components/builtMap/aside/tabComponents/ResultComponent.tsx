@@ -113,10 +113,10 @@ const ResultComponent = () => {
 			className={style.resultContainer}
 			key={filteredResultsWithSelectedPoint.length}
 		>
-			{filteredResultsWithSelectedPoint.map((result: PointType) => {
+			{filteredResultsWithSelectedPoint.map((result: PointType, index) => {
 				return (
 					<div
-						key={`${result.latitude}-${result.longitude}`}
+						key={`${result.latitude}-${result.longitude}-$${index}`}
 						onClick={() => handleResultClick(result)}
 						onKeyUp={() => handleResultClick(result)}
 						className={`${style.resultDetails} ${result.selectedClassName}`}

@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { LayerGroup, LayersControl } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
-import L from "leaflet";
+import L, { marker } from "leaflet";
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import des services
@@ -98,6 +98,20 @@ const MultipleLayerComponent = ({
 		const clusterGroup = clusterRef.current;
 		if (!clusterGroup) return;
 
+		if (selectedMarker) {
+			const tooltip = L.tooltip({
+				direction: "top",
+				offset: L.point(10, -20),
+				permanent: false,
+			})
+				.setLatLng([selectedMarker.latitude, selectedMarker.longitude])
+				.setContent(selectedMarker.nom_ville)
+				.addTo(map);
+
+			// fermer le tooltip après 2s
+			setTimeout(() => map.closeTooltip(tooltip), 2000);
+		}
+
 		const handleClusterClick = (e) => {
 			const cluster = e.layer;
 			const clusterPosition = cluster.getLatLng();
@@ -117,24 +131,17 @@ const MultipleLayerComponent = ({
 					offset: L.point(10, -20),
 				})
 				.openTooltip();
+			if (map.getZoom() > 8) {
+				cluster.spiderfy();
+			}
 		};
 
 		clusterGroup.on("clustermouseover", handleClusterClick);
 
-		if (selectedMarker) {
-			L.tooltip({
-				direction: "top",
-				offset: L.point(10, -20),
-			})
-				.setLatLng([selectedMarker.latitude, selectedMarker.longitude])
-				.setContent(selectedMarker.nom_ville)
-				.addTo(map);
-		}
-
 		return () => {
 			clusterGroup.off("clustermouseover", handleClusterClick);
 		};
-	}, [map, selectedMarker, clusterRef, allResultsWithLayerFilter]);
+	}, [map, selectedMarker, allResultsWithLayerFilter]);
 
 	return (
 		<LayersControl position="bottomright">
@@ -150,8 +157,8 @@ const MultipleLayerComponent = ({
 					createClusterCustomIcon(allPointColorsAndShapes)
 				}
 			>
-				{allResultsWithLayerFilter.map((point) => {
-					const pointKey = `${point.latitude}-${point.longitude}`;
+				{allResultsWithLayerFilter.map((point, index) => {
+					const pointKey = `${point.latitude}-${point.longitude}-${index}`;
 					return (
 						<MarkerComponent
 							key={pointKey}
