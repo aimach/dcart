@@ -18,31 +18,28 @@ import {
 import "../simpleLayerComponent/simpleLayerChoice.css";
 
 type MultipleLayerComponentProps = {
+	allMemoizedPoints: PointType[];
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 };
 
 const MultipleLayerComponent = ({
+	allMemoizedPoints,
 	setPanelDisplayed,
 }: MultipleLayerComponentProps) => {
-	const { allResults, allLayers } = useMapStore();
+	const { allLayers } = useMapStore();
 
-	const duplicatesCoordinates = useMemo(() => {
-		const pointsKeys = allResults.map(
-			(result, index) => `${result.latitude}-${result.longitude}-${index}`,
-		);
-		return pointsKeys.filter(
-			(item, index) => pointsKeys.indexOf(item) !== index,
-		);
-	}, [allResults]);
+	const duplicatesCoordinatesArray = allMemoizedPoints
+		.map((result, index) => `${result.latitude}-${result.longitude}-${index}`)
+		.filter((item, index, array) => array.indexOf(item) !== index);
 
-	const layersWithAttestationsArray = useMemo(() => {
+	const layersArrayForControl = useMemo(() => {
 		const layersArray: {
 			name: string;
 			shape: string | null;
 			color: string | null;
 		}[] = [];
 
-		allResults.map((result: PointType) => {
+		allMemoizedPoints.map((result: PointType) => {
 			if (!layersArray.some((layer) => layer.name === result.layerName)) {
 				layersArray.push({
 					name: result.layerName as string,
@@ -54,19 +51,23 @@ const MultipleLayerComponent = ({
 		return layersArray.map((layer) => {
 			return {
 				...layer,
-				name: getShapeForLayerName(layer.shape, layer.name, layer.color),
+				name: getShapeForLayerName(
+					layer.shape as string,
+					layer.name,
+					layer.color as string,
+				),
 			};
 		});
-	}, [allResults]);
+	}, [allMemoizedPoints]);
 
 	const allResultsWithLayerFilter = useMemo(() => {
-		return allResults.filter((point) => {
+		return allMemoizedPoints.filter((point) => {
 			if (
 				allLayers.some((string) => string.includes(`svg> ${point.layerName}`))
 			)
 				return point;
 		});
-	}, [allLayers, allResults]);
+	}, [allLayers, allMemoizedPoints]);
 
 	const allPointColorsAndShapes = useMemo(() => {
 		const seenShapeAndColor = new Set();
@@ -81,7 +82,7 @@ const MultipleLayerComponent = ({
 		return uniqueShapeAndColor;
 	}, [allResultsWithLayerFilter]);
 
-	const createClusterCustomIcon = () => {
+	const createClusterCustomIcon = (allPointColorsAndShapes: string[]) => {
 		const blendIcon = getBlendIcon(allPointColorsAndShapes);
 		return L.divIcon({
 			html: `<div class="marker-cluster-custom">${blendIcon}</div>`,
@@ -93,12 +94,15 @@ const MultipleLayerComponent = ({
 	return (
 		<LayersControl position="bottomright">
 			<MarkerClusterGroup
+				key={JSON.stringify(allPointColorsAndShapes)} // permet de forcer le re-render pour iconCreateFunction (sinon allPointColorsAndShapes est vide)
 				spiderfyOnMaxZoom={true}
 				spiderfyOnEveryZoom={true}
 				showCoverageOnHover={false}
 				disableClusteringAtZoom={12}
 				maxClusterRadius={1}
-				iconCreateFunction={createClusterCustomIcon}
+				iconCreateFunction={() =>
+					createClusterCustomIcon(allPointColorsAndShapes)
+				}
 			>
 				{allResultsWithLayerFilter.map((point) => {
 					const pointKey = `${point.latitude}-${point.longitude}`;
@@ -107,12 +111,12 @@ const MultipleLayerComponent = ({
 							key={pointKey}
 							point={point}
 							setPanelDisplayed={setPanelDisplayed}
-							duplicatesCoordinates={duplicatesCoordinates}
+							duplicatesCoordinates={duplicatesCoordinatesArray}
 						/>
 					);
 				})}
 			</MarkerClusterGroup>
-			{layersWithAttestationsArray.map((layer) => {
+			{layersArrayForControl.map((layer) => {
 				return (
 					<LayersControl.Overlay name={layer.name} key={layer.name} checked>
 						<LayerGroup key={layer.name} />
