@@ -169,14 +169,20 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		});
 	}, [map]);
 
+	const isIntroDisplayed =
+		sessionStorage.getItem("isIntroDisplayed") === "true";
+
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
 			<div className="built-map" id="built-map">
 				<section className="leaflet-container">
-					{isModalOpen && allMemoizedPoints.length > 0 && (
+					{!isIntroDisplayed && isModalOpen && allMemoizedPoints.length > 0 && (
 						<ModalComponent
-							onClose={() => setIsModalOpen(false)}
+							onClose={() => {
+								setIsModalOpen(false);
+								sessionStorage.setItem("isIntroDisplayed", "true");
+							}}
 							isDemo={false}
 						>
 							<MapIntroductionContent setIsModalOpen={setIsModalOpen} />
