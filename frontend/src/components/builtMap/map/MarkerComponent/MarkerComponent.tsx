@@ -2,7 +2,6 @@
 import { Marker, Tooltip } from "react-leaflet";
 // import des services
 import {
-	getBackGroundColorClassName,
 	isSelectedMarker,
 	zoomOnMarkerOnClick,
 } from "../../../../utils/functions/map";
@@ -12,7 +11,7 @@ import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAside
 import { useShallow } from "zustand/shallow";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
-import type { Map as LeafletMap } from "leaflet";
+import type { LatLngExpression, Map as LeafletMap } from "leaflet";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./markerComponent.module.scss";
@@ -20,6 +19,7 @@ import style from "./markerComponent.module.scss";
 interface MarkerComponentProps {
 	point: PointType;
 	setPanelDisplayed?: Dispatch<SetStateAction<boolean>>;
+	duplicatesCoordinates: string[];
 }
 
 /**
@@ -32,41 +32,31 @@ interface MarkerComponentProps {
 const MarkerComponent = ({
 	point,
 	setPanelDisplayed,
+	duplicatesCoordinates,
 }: MarkerComponentProps) => {
 	// récupération des données des stores
-	const { selectedMarker, setSelectedMarker, map } = useMapStore(
-		useShallow((state) => ({
-			selectedMarker: state.selectedMarker,
-			setSelectedMarker: state.setSelectedMarker,
-			map: state.map,
-		})),
-	);
+	const { selectedMarker, setSelectedMarker, map, mapInfos, allLayers } =
+		useMapStore(
+			useShallow((state) => ({
+				selectedMarker: state.selectedMarker,
+				setSelectedMarker: state.setSelectedMarker,
+				map: state.map,
+				mapInfos: state.mapInfos,
+				allLayers: state.allLayers,
+			})),
+		);
 	const setSelectedTabMenu = useMapAsideMenuStore(
 		(state) => state.setSelectedTabMenu,
 	);
 
-	// création d'une clé pour chaque point (pas besoin de la mémoiser car les points ne changent pas)
+	const position: LatLngExpression = [point.latitude, point.longitude];
 	const keyPoint = `${point.latitude}-${point.longitude}`;
-
-	// génération d'un nom de classe à partir du nombre de sources
-	let backgroundColorClassName = null;
-	if (selectedMarker && isSelectedMarker(selectedMarker, point)) {
-		backgroundColorClassName = "selectedBackgroundColor";
-	} else if ((point.shape === "circle" || !point.shape) && !point.color) {
-		backgroundColorClassName = getBackGroundColorClassName(
-			point.sources.length,
+	if (duplicatesCoordinates.includes(keyPoint)) {
+		const layerIndex = allLayers.findIndex(
+			(layer) => layer === point.layerName,
 		);
+		// position = [point.latitude, point.longitude + 0.012 * layerIndex];
 	}
-
-	// génération d'une icone adaptée au nombre de sources (pas besoin de mémoiser car peu complexe)
-	const customIcon = getIcon(
-		point.sources.length,
-		style,
-		backgroundColorClassName,
-		point.sources.length.toString(),
-		point.color,
-		point.shape,
-	);
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
@@ -78,10 +68,17 @@ const MarkerComponent = ({
 		setSelectedMarker(point);
 	};
 
+	const customIcon = getIcon(
+		point,
+		style,
+		selectedMarker ? isSelectedMarker(selectedMarker, point) : false,
+		mapInfos?.isNbDisplayed as boolean,
+	);
+
 	return (
 		<Marker
 			key={keyPoint}
-			position={[point.latitude, point.longitude]}
+			position={position}
 			icon={customIcon}
 			eventHandlers={{
 				click: () => handleMarkerOnClick(map as LeafletMap, point),

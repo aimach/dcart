@@ -77,6 +77,12 @@ type LanguageObject = {
 		onlySemitic: string;
 		onlyGreek: string;
 		withElements: string;
+		shape: {
+			circle: string;
+			square: string;
+			triangle: string;
+			diamond: string;
+		};
 		aside: {
 			filters: string;
 			sources: string;
@@ -144,6 +150,10 @@ type LanguageObject = {
 					description: string;
 				};
 				chooseIcon: string;
+				noDefinedColor: string;
+				noDefinedIcon: string;
+				isLayeredLabel: string;
+				isNbDisplayedLabel: string;
 			};
 			addMapIntro: string;
 			addMapPoints: string;

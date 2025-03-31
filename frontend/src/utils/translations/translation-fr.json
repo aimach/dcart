@@ -75,6 +75,12 @@
 		"onlySemitic": "uniquement en sémitique",
 		"onlyGreek": "uniquement en grec",
 		"withElements": "avec les éléments",
+		"shape": {
+			"circle": "rond",
+			"square": "carré",
+			"triangle": "triangle",
+			"diamond": "losange"
+		},
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",
@@ -141,7 +147,11 @@
 					"label": "Forme de l'icône des points",
 					"description": "Si aucune forme n'est sélectionnée, les points s'afficheront sous la forme de cercles."
 				},
-				"chooseIcon": "Choisissez une icône"
+				"chooseIcon": "Choisissez une icône",
+				"noDefinedColor": "Pas de couleur définie",
+				"noDefinedIcon": "Pas d'icône définie",
+				"isLayeredLabel": "Les points doivent être affichés sur un calque différent",
+				"isNbDisplayedLabel": "Afficher le nombre de sources dans le point"
 			},
 			"addMapIntro": "Ajouter les informations de la carte",
 			"addMapPoints": "Ajouter les points de la carte",

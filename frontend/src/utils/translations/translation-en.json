@@ -75,6 +75,12 @@
 		"onlySemitic": "only in semitic",
 		"onlyGreek": "only in greek",
 		"withElements": "with elements",
+		"shape": {
+			"circle": "circle",
+			"square": "square",
+			"triangle": "triangle",
+			"diamond": "diamond"
+		},
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
@@ -141,7 +147,11 @@
 					"label": "Point icon shape",
 					"description": "If no shape is selected, the points will be displayed as circles."
 				},
-				"chooseIcon": "Choose an icon"
+				"chooseIcon": "Choose an icon",
+				"noDefinedColor": "No color defined",
+				"noDefinedIcon": "No icon defined",
+				"isLayeredLabel": "Point must be displayed on a different layer",
+				"isNbDisplayedLabel": "Display the number of sources"
 			},
 			"addMapIntro": "Add map information",
 			"addMapPoints": "Add map points",

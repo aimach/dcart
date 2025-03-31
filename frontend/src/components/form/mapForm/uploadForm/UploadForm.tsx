@@ -74,10 +74,10 @@ const UploadForm = () => {
 		setMapInfos(newMapInfos);
 	};
 
-	const handleIsLayeredChange = async (isLayered: string) => {
+	const handleCheckboxChange = async (fieldName: string, boolean: string) => {
 		const result = await updateMap({
 			...(mapInfos as MapInfoType),
-			isLayered: isLayered === "true",
+			[fieldName]: boolean === "true",
 		});
 		setMapInfos(result?.data);
 	};
@@ -148,8 +148,17 @@ const UploadForm = () => {
 							{mapInfos.attestations.map((pointSet) => (
 								<tr key={pointSet.id} className={style.pointSetTableRow}>
 									<td>{pointSet.name}</td>
-									<td>{pointSet.color ?? "pas de couleur définie"}</td>
-									<td>{pointSet.icon ? pointSet.icon.name : "pas d'icône"}</td>
+									<td>
+										{pointSet.color ??
+											translation[language].backoffice.mapFormPage.pointSetForm
+												.noDefinedColor}
+									</td>
+									<td>
+										{pointSet.icon
+											? pointSet.icon.name
+											: translation[language].backoffice.mapFormPage
+													.pointSetForm.noDefinedIcon}
+									</td>
 									<td>
 										<X
 											onClick={() =>
@@ -166,18 +175,47 @@ const UploadForm = () => {
 						</tbody>
 					</table>
 					{mapInfos?.attestations.length > 1 && (
-						<div className={style.isLayeredContainer}>
-							<input
-								id="isLayered"
-								name="isLayered"
-								type="checkbox"
-								onChange={(event) =>
-									handleIsLayeredChange(event.target.checked.toString())
-								}
-							/>
-							<label htmlFor="isLayered">
-								Les points doivent être sur différents calques
-							</label>
+						<div>
+							<div className={style.isLayeredContainer}>
+								<input
+									id="isLayered"
+									name="isLayered"
+									type="checkbox"
+									onChange={(event) =>
+										handleCheckboxChange(
+											event.target.name,
+											event.target.checked.toString(),
+										)
+									}
+									defaultChecked={mapInfos.isLayered}
+								/>
+								<label htmlFor="isLayered">
+									{
+										translation[language].backoffice.mapFormPage.pointSetForm
+											.isLayeredLabel
+									}
+								</label>
+							</div>
+							<div className={style.isLayeredContainer}>
+								<input
+									id="isNbDisplayed"
+									name="isNbDisplayed"
+									type="checkbox"
+									onChange={(event) =>
+										handleCheckboxChange(
+											event.target.name,
+											event.target.checked.toString(),
+										)
+									}
+									defaultChecked={mapInfos.isNbDisplayed}
+								/>
+								<label htmlFor="isNbDisplayed">
+									{
+										translation[language].backoffice.mapFormPage.pointSetForm
+											.isNbDisplayedLabel
+									}
+								</label>
+							</div>
 						</div>
 					)}
 				</>

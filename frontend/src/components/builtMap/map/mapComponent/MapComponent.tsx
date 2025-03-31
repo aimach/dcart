@@ -226,6 +226,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 								)}
 								{mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
 									<MultipleLayerComponent
+										allMemoizedPoints={allMemoizedPoints}
 										setPanelDisplayed={setPanelDisplayed}
 									/>
 								)}

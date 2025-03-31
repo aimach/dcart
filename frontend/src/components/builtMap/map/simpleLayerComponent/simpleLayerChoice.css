@@ -1,0 +1,15 @@
+.marker-cluster-custom {
+	display: flex;
+	flex-direction: row;
+	justify-content: flex-start;
+	border: 1px solid lightgrey;
+	background-color: white;
+	border-radius: 10px;
+	min-width: 50px;
+}
+
+path.leaflet-interactive {
+	stroke: #4a3e31;
+	stroke-width: 2px;
+	stroke-dasharray: 4 2;
+}

@@ -74,6 +74,7 @@ type MapInfoType = {
 	attestations: PointSetType[];
 	filters?: Record<string, string>[];
 	isLayered: boolean;
+	isNbDisplayed: boolean;
 };
 
 type MapType = {
@@ -129,6 +130,7 @@ type PointType = {
 	isSelected?: boolean;
 	color?: string;
 	shape?: string;
+	shapeCode?: string;
 	layerName?: string;
 };
 

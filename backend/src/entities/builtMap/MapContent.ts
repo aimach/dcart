@@ -53,6 +53,10 @@ export class MapContent extends BaseEntity {
 	@Column({ type: "boolean", default: false })
 	isLayered!: boolean;
 
+	// booléen pour afficher le nombre de sources
+	@Column({ type: "boolean", default: true })
+	isNbDisplayed!: boolean;
+
 	@CreateDateColumn({ type: "timestamptz" })
 	createdAt!: Date;
 
