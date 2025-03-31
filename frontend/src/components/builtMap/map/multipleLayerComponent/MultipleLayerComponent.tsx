@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useMemo } from "react";
+import { useEffect, useMemo, useRef } from "react";
 import { LayerGroup, LayersControl } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import L from "leaflet";
@@ -7,13 +7,13 @@ import L from "leaflet";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import des services
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-// import des types
-import type { Dispatch, SetStateAction } from "react";
-import type { PointType } from "../../../../utils/types/mapTypes";
 import {
 	getBlendIcon,
 	getShapeForLayerName,
 } from "../../../../utils/functions/icons";
+// import des types
+import type { Dispatch, SetStateAction } from "react";
+import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
 
@@ -26,7 +26,7 @@ const MultipleLayerComponent = ({
 	allMemoizedPoints,
 	setPanelDisplayed,
 }: MultipleLayerComponentProps) => {
-	const { allLayers } = useMapStore();
+	const { allLayers, map, selectedMarker } = useMapStore();
 
 	const duplicatesCoordinatesArray = allMemoizedPoints
 		.map((result, index) => `${result.latitude}-${result.longitude}-${index}`)
@@ -91,10 +91,56 @@ const MultipleLayerComponent = ({
 		});
 	};
 
+	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
+
+	useEffect(() => {
+		if (!map) return;
+		const clusterGroup = clusterRef.current;
+		if (!clusterGroup) return;
+
+		const handleClusterClick = (e) => {
+			const cluster = e.layer;
+			const clusterPosition = cluster.getLatLng();
+			const pointPosition = allResultsWithLayerFilter.find(
+				(point) =>
+					point.latitude === clusterPosition.lat &&
+					point.longitude === clusterPosition.lng,
+			);
+			const tooltipContent = pointPosition
+				? pointPosition.nom_ville
+				: selectedMarker?.nom_ville;
+
+			cluster
+				.bindTooltip(tooltipContent, {
+					permanent: false,
+					direction: "top",
+					offset: L.point(10, -20),
+				})
+				.openTooltip();
+		};
+
+		clusterGroup.on("clustermouseover", handleClusterClick);
+
+		if (selectedMarker) {
+			L.tooltip({
+				direction: "top",
+				offset: L.point(10, -20),
+			})
+				.setLatLng([selectedMarker.latitude, selectedMarker.longitude])
+				.setContent(selectedMarker.nom_ville)
+				.addTo(map);
+		}
+
+		return () => {
+			clusterGroup.off("clustermouseover", handleClusterClick);
+		};
+	}, [map, selectedMarker, clusterRef, allResultsWithLayerFilter]);
+
 	return (
 		<LayersControl position="bottomright">
 			<MarkerClusterGroup
 				key={JSON.stringify(allPointColorsAndShapes)} // permet de forcer le re-render pour iconCreateFunction (sinon allPointColorsAndShapes est vide)
+				ref={clusterRef}
 				spiderfyOnMaxZoom={true}
 				spiderfyOnEveryZoom={true}
 				showCoverageOnHover={false}

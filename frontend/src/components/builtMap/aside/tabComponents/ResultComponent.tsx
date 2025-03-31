@@ -62,7 +62,9 @@ const ResultComponent = () => {
 	const filteredResultsWithSelectedPoint = useMemo(() => {
 		// filtre les points qui ne sont pas dans les calques sélectionnés
 		const allResultsFiltered = allResults.filter((point: PointType) =>
-			mapInfos ? allLayers.includes(point.layerName as string) : point,
+			mapInfos
+				? allLayers.some((string) => string.includes(`svg> ${point.layerName}`))
+				: point,
 		);
 		// ajoute la classe "isSelected" aux points sélectionnés
 		const allResultsFilteredWithCSS = allResultsFiltered.map(
