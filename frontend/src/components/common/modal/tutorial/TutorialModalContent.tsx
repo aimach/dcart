@@ -8,76 +8,95 @@ import { useState } from "react";
 import style from "./modalComponent.module.scss";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useShallow } from "zustand/shallow";
+import { modalContentArray } from "../../../../utils/menu/modalArray";
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 
 const TutorialModalContent = () => {
-	const { tutorialStep, incrementTutorialStep, decrementTutorialStep } =
-		useMapStore(useShallow((state) => state));
+	const {
+		tutorialStep,
+		incrementTutorialStep,
+		decrementTutorialStep,
+		closeTutorial,
+	} = useMapStore(useShallow((state) => state));
+	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
-	console.log(tutorialStep);
+	const handleIncrementTutorialStep = (tutorialStep: number) => {
+		if (tutorialStep < modalContentArray.length) {
+			incrementTutorialStep(tutorialStep);
+		}
+		if (tutorialStep === 5) {
+			setIsPanelDisplayed(true);
+			setSelectedTabMenu("results");
+		}
+		if (tutorialStep === 6) {
+			setSelectedTabMenu("infos");
+		}
+		if (tutorialStep === 7) {
+			setSelectedTabMenu("filters");
+		}
+	};
+	const handleDecrementTutorialStep = (tutorialStep: number) => {
+		if (tutorialStep > 1) {
+			decrementTutorialStep(tutorialStep);
+		}
+		if (tutorialStep < 7) {
+			setIsPanelDisplayed(false);
+		}
+		if (tutorialStep === 7) {
+			setSelectedTabMenu("results");
+		}
+		if (tutorialStep === 8) {
+			setSelectedTabMenu("infos");
+		}
+	};
+
 	return (
 		<div>
-			{tutorialStep === 1 && (
-				<>
-					<h4>Bienvenue sur le tutoriel de la carte</h4>
-					<p>
-						L'objectif de ce tutoriel est de vous apprendre à naviguer à travers
-						la carte. Vous pouvez passer les étapes avec les boutons de
-						navigation et quitter le tutoriel dès que vous le souhaitez.
-					</p>
-				</>
-			)}
-			{tutorialStep === 2 && (
-				<>
-					<h4>L'espace carte </h4>
-					<p>
-						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo ea
-						voluptate magni voluptates doloribus temporibus in sint, quibusdam
-						perferendis officiis odit illum! Neque, exercitationem? Accusantium
-						officia odio corporis recusandae voluptates.
-					</p>
-				</>
-			)}
-			{tutorialStep === 3 && (
-				<>
-					<h4>Informations de la carte en cours</h4>
-					<p>
-						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo ea
-						voluptate magni voluptates doloribus temporibus in sint, quibusdam
-						perferendis officiis odit illum! Neque, exercitationem? Accusantium
-						officia odio corporis recusandae voluptates.
-					</p>
-				</>
-			)}
-			{tutorialStep === 4 && (
-				<>
-					<h4>Le bas de la carte</h4>
-					<p>
-						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo ea
-						voluptate magni voluptates doloribus temporibus in sint, quibusdam
-						perferendis officiis odit illum! Neque, exercitationem? Accusantium
-						officia odio corporis recusandae voluptates.
-					</p>
-				</>
-			)}
+			{modalContentArray.map((content, index) => {
+				if (tutorialStep === index + 1) {
+					return (
+						<div key={content.title + index.toString()}>
+							<h4>{content.title}</h4>
+							<p>{content.content}</p>
+						</div>
+					);
+				}
+				return null;
+			})}
 			<div>
 				{tutorialStep > 1 && (
 					<button
 						type="button"
-						onClick={() => decrementTutorialStep(tutorialStep)}
-						onMouseDown={() => decrementTutorialStep(tutorialStep)}
+						onClick={() => handleDecrementTutorialStep(tutorialStep)}
+						onKeyDown={() => handleDecrementTutorialStep(tutorialStep)}
 					>
 						Précédent
 					</button>
 				)}
-
-				<button
-					type="button"
-					onClick={() => incrementTutorialStep(tutorialStep)}
-					onMouseDown={() => incrementTutorialStep(tutorialStep)}
-				>
-					Suivant
-				</button>
-			</div>{" "}
+				{tutorialStep < modalContentArray.length ? (
+					<button
+						type="button"
+						onClick={() => handleIncrementTutorialStep(tutorialStep)}
+						onKeyDown={() => handleIncrementTutorialStep(tutorialStep)}
+					>
+						Suivant
+					</button>
+				) : (
+					<button
+						type="button"
+						onClick={() => {
+							closeTutorial();
+							setIsPanelDisplayed(false);
+						}}
+						onKeyDown={() => {
+							closeTutorial();
+							setIsPanelDisplayed(false);
+						}}
+					>
+						Fermer
+					</button>
+				)}
+			</div>
 		</div>
 	);
 };

@@ -29,22 +29,16 @@ import { getPointsTimeMarkers } from "../../../../utils/functions/filter";
 import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { LatLngTuple } from "leaflet";
-import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 
-interface MapComponentProps {
-	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
-}
-
 /**
  * Composant de la carte
- * @param {Dispatch<SetStateAction<boolean>>} props.setPanelDisplayed - Modifie l'état d'affichage du panel latéral
  * @returns ModalComponent | MapContainer | LoaderComponent | TimeFilterComponent | TileLayerChoiceComponent
  */
-const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
+const MapComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
@@ -240,15 +234,11 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 									url={tileLayerURL}
 								/>
 								{!mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
-									<SimpleLayerComponent
-										allMemoizedPoints={allMemoizedPoints}
-										setPanelDisplayed={setPanelDisplayed}
-									/>
+									<SimpleLayerComponent allMemoizedPoints={allMemoizedPoints} />
 								)}
 								{mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
 									<MultipleLayerComponent
 										allMemoizedPoints={allMemoizedPoints}
-										setPanelDisplayed={setPanelDisplayed}
 									/>
 								)}
 								<ZoomControl position="bottomleft" />

@@ -1,17 +1,13 @@
 // import des composants
 import AsideMainComponent from "../asideMain/AsideMainComponent";
 import AsideHeader from "../asideHeader/AsideHeader";
-// import des types
-import type { Dispatch, SetStateAction } from "react";
+// import des services
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import du style
 import style from "./asideContainer.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
-
-interface AsideContainerProps {
-	panelDisplayed: boolean;
-	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
-}
 
 /**
  * Affiche le panel latéral avec la liste des points, les filtres et les informations du point sélectionné
@@ -20,24 +16,25 @@ interface AsideContainerProps {
  * @param {Dispatch<SetStateAction<boolean>>} props.setPanelDisplayed - Modifie l'état d'affichage du panel latéral
  * @returns AsideHeader | AsideMainComponent
  */
-const AsideContainer = ({
-	panelDisplayed,
-	setPanelDisplayed,
-}: AsideContainerProps) => {
+const AsideContainer = () => {
+	const { isPanelDisplayed, setIsPanelDisplayed } = useMapAsideMenuStore();
+	const { tutorialStep } = useMapStore();
+
 	// définition des classes CSS en fonction de l'état d'affichage du panel (ouvert ou fermé)
 	let asideClassNames = `${style.aside}`;
-	asideClassNames += panelDisplayed
+	asideClassNames += isPanelDisplayed
 		? ` ${style.asideOpened}`
 		: ` ${style.asideClosed}`;
+	asideClassNames += tutorialStep > 5 ? ` ${style.asideOpenedWhite}` : "";
 	return (
 		<aside className={asideClassNames}>
 			<AsideHeader />
 			<div className={style.toggleButtonContainer}>
-				{panelDisplayed ? (
+				{isPanelDisplayed ? (
 					<button
 						type="button"
 						className={style.toggleButton}
-						onClick={() => setPanelDisplayed(false)}
+						onClick={() => setIsPanelDisplayed(false)}
 					>
 						<ChevronLeft />
 					</button>

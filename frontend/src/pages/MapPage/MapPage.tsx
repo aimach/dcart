@@ -26,11 +26,9 @@ const MapPage = () => {
 	// récupération des paramètres de l'URL : l'id de la carte en cours
 	const { mapId } = useParams();
 
-	// état pour gérer l'affichage du panneau latéral
-	const [panelDisplayed, setPanelDisplayed] = useState<boolean>(true);
-
 	// récupération des données des stores
-	const setMapFilters = useMapAsideMenuStore((state) => state.setMapFilters);
+	const { setMapFilters, isPanelDisplayed, setIsPanelDisplayed } =
+		useMapAsideMenuStore();
 	const mapStore = useMapStore(
 		useShallow((state) => ({
 			mapInfos: state.mapInfos,
@@ -89,25 +87,18 @@ const MapPage = () => {
 		// réinitialisation des états si l'utilisateur vient d'une autre carte
 		mapStore.setMapReady(false);
 		mapStore.resetTileLayerURL();
-		setPanelDisplayed(false);
+		setIsPanelDisplayed(false);
 	}, [mapId]);
 
 	return (
 		<section className={style.mapSection}>
 			<section className={style.mapSectionMain}>
-				{panelDisplayed ? (
-					<AsideContainer
-						panelDisplayed={panelDisplayed}
-						setPanelDisplayed={setPanelDisplayed}
-					/>
-				) : (
-					<AsideReducedMenuComponent setPanelDisplayed={setPanelDisplayed} />
-				)}
+				{isPanelDisplayed ? <AsideContainer /> : <AsideReducedMenuComponent />}
 
 				<section
 					className={mapStore.mapReady ? undefined : style.mapSectionLoaded}
 				>
-					<MapComponent setPanelDisplayed={setPanelDisplayed} />
+					<MapComponent />
 				</section>
 			</section>
 		</section>

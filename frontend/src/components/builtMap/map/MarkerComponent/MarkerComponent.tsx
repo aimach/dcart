@@ -12,13 +12,11 @@ import { useShallow } from "zustand/shallow";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
 import type { LatLngExpression, Map as LeafletMap } from "leaflet";
-import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./markerComponent.module.scss";
 
 interface MarkerComponentProps {
 	point: PointType;
-	setPanelDisplayed?: Dispatch<SetStateAction<boolean>>;
 	duplicatesCoordinates: string[];
 }
 
@@ -26,12 +24,10 @@ interface MarkerComponentProps {
  * Composant marker de la carte
  * @param {Object} props - Les propriétés du composant
  * @param {PointType} props.point - Le point à afficher
- * @param {Function} props.setPanelDisplayed - La fonction pour afficher le panel
  * @returns
  */
 const MarkerComponent = ({
 	point,
-	setPanelDisplayed,
 	duplicatesCoordinates,
 }: MarkerComponentProps) => {
 	// récupération des données des stores
@@ -45,9 +41,7 @@ const MarkerComponent = ({
 				allLayers: state.allLayers,
 			})),
 		);
-	const setSelectedTabMenu = useMapAsideMenuStore(
-		(state) => state.setSelectedTabMenu,
-	);
+	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const position: LatLngExpression = [point.latitude, point.longitude];
 	const keyPoint = `${point.latitude}-${point.longitude}`;
@@ -62,7 +56,7 @@ const MarkerComponent = ({
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
 		// ouverture de l'onglet "infos"
 		setSelectedTabMenu("infos");
-		setPanelDisplayed?.(true);
+		setIsPanelDisplayed?.(true);
 		// zoom sur le marker
 		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
 		setSelectedMarker(point);

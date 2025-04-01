@@ -1,39 +1,29 @@
 // import des composants
 import NavComponent from "../../../common/NavComponent";
 // import des services
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 // import des types
-import type { Dispatch, SetStateAction } from "react";
 import type { NavList } from "../../../../utils/types/commonTypes";
 import type { MenuTabType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./asideReducedMenuComponent.module.scss";
 // import des icones
 import { CircleHelp, Filter, ListCollapse, MapPin } from "lucide-react";
-import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-
-interface AsideReducedMenuComponentProps {
-	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
-}
 
 /**
  * Affiche le panel latéral en version réduite, avec le lien vers les onglets
  * @param {Object} props
- * @param {Dispatch<SetStateAction<boolean>>} props.setPanelDisplayed - Modifie l'état d'affichage du panel latéral
  * @returns NavComponent
  */
-const AsideReducedMenuComponent = ({
-	setPanelDisplayed,
-}: AsideReducedMenuComponentProps) => {
+const AsideReducedMenuComponent = () => {
 	// récupération des données des stores
-	const setSelectedTabMenu = useMapAsideMenuStore(
-		(state) => state.setSelectedTabMenu,
-	);
-	const { openTutorial } = useMapStore();
+	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
+	const { openTutorial, tutorialStep, resetTutorialStep } = useMapStore();
 
 	const openMenuOnSelectedTab = (tab: MenuTabType) => {
 		setSelectedTabMenu(tab);
-		setPanelDisplayed(true);
+		setIsPanelDisplayed(true);
 	};
 
 	const reducedAsideNavList: NavList = [
@@ -58,14 +48,21 @@ const AsideReducedMenuComponent = ({
 		{
 			id: "tuto",
 			title: <CircleHelp />,
-			onClickFunction: () => openTutorial(),
+			onClickFunction: () => {
+				resetTutorialStep();
+				openTutorial();
+			},
 			route: undefined,
 		},
 	];
 	return (
 		<NavComponent
 			type="list"
-			navClassName={style.reducedAsideNav}
+			navClassName={
+				tutorialStep === 5
+					? `${style.reducedAsideNav} ${style.reducedAsideNavWhite}`
+					: style.reducedAsideNav
+			}
 			list={reducedAsideNavList}
 		/>
 	);

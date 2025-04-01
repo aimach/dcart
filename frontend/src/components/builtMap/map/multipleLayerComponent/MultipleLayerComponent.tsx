@@ -11,20 +11,18 @@ import {
 	getBlendIcon,
 	getShapeForLayerName,
 } from "../../../../utils/functions/icons";
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 // import des types
-import type { Dispatch, SetStateAction } from "react";
 import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
-	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 };
 
 const MultipleLayerComponent = ({
 	allMemoizedPoints,
-	setPanelDisplayed,
 }: MultipleLayerComponentProps) => {
 	const { allLayers, map, selectedMarker } = useMapStore();
 
@@ -163,7 +161,6 @@ const MultipleLayerComponent = ({
 						<MarkerComponent
 							key={pointKey}
 							point={point}
-							setPanelDisplayed={setPanelDisplayed}
 							duplicatesCoordinates={duplicatesCoordinatesArray}
 						/>
 					);
