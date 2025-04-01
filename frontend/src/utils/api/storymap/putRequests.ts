@@ -1,5 +1,5 @@
 // import des serivces
-import { notifyPublicationSuccess } from "../../functions/toast";
+import { notifyError, notifyPublicationSuccess } from "../../functions/toast";
 import { apiClient } from "../apiClient";
 
 /**
@@ -18,10 +18,7 @@ const updateStorymapStatus = async (storymapId: string, status: boolean) => {
 		notifyPublicationSuccess("Storymap", status);
 		return response;
 	} catch (error) {
-		console.error(
-			"Erreur lors de la mise à jour du statut de la storymap :",
-			error,
-		);
+		notifyError("Erreur lors de la mise à jour du statut de la storymap");
 	}
 };
 
