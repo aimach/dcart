@@ -1,4 +1,5 @@
 // import des services
+import { notifyDeleteSuccess, notifyError } from "../../functions/toast";
 import { apiClient } from "../apiClient";
 
 /**
@@ -8,8 +9,9 @@ import { apiClient } from "../apiClient";
 const deleteBlock = async (blockId: string) => {
 	try {
 		await apiClient.delete(`/storymap/blocks/${blockId}`);
+		notifyDeleteSuccess("Bloc", false);
 	} catch (error) {
-		console.error("Erreur lors de la suppression du bloc :", error);
+		notifyError("Erreur lors de la suppression du bloc");
 	}
 };
 
@@ -21,9 +23,10 @@ const deleteBlock = async (blockId: string) => {
 const deleteMap = async (mapId: string) => {
 	try {
 		const response = await apiClient.delete(`/dcart/maps/${mapId}`);
+		notifyDeleteSuccess("Carte", true);
 		return response.status;
 	} catch (error) {
-		console.error("Erreur lors de la suppression de la carte :", error);
+		notifyError("Erreur lors de la suppression de la carte");
 	}
 };
 
@@ -35,9 +38,10 @@ const deleteMap = async (mapId: string) => {
 const deleteStorymap = async (storymapId: string) => {
 	try {
 		const response = await apiClient.delete(`/storymap/storymap/${storymapId}`);
+		notifyDeleteSuccess("Storymap", true);
 		return response.status;
 	} catch (error) {
-		console.error("Erreur lors de la suppression de la storymap :", error);
+		notifyError("Erreur lors de la suppression de la storymap");
 	}
 };
 

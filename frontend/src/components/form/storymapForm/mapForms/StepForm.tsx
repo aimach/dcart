@@ -24,6 +24,7 @@ import type { ChangeEvent } from "react";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleHelp } from "lucide-react";
+import { notifyUploadSuccess } from "../../../../utils/functions/toast";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -87,6 +88,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
 				complete: (result: ParseResult<parsedPointType>) => {
 					setParsedPoints(result.data);
+					notifyUploadSuccess("Points");
 				},
 				error: (error) => {
 					console.error("Erreur lors de la lecture du fichier :", error);

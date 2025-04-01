@@ -9,6 +9,7 @@ import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore"
 import { getTypeIcon } from "../../../../utils/functions/block";
 // import des types
 import type { TypeType } from "../../../../utils/types/storymapTypes";
+import { notifyCreateSuccess } from "../../../../utils/functions/toast";
 
 type BlockChoiceItemProps = {
 	blockType: TypeType;
@@ -43,6 +44,7 @@ const BlockChoiceItem = ({ blockType }: BlockChoiceItemProps) => {
 				storymapId,
 				typeName: "separator",
 			});
+			notifyCreateSuccess("Bloc séparateur", false);
 			setReload(!reload);
 		} else {
 			updateFormType(blockType.name);

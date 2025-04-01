@@ -23,6 +23,10 @@ import type { ChangeEvent } from "react";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleHelp } from "lucide-react";
+import {
+	notifyError,
+	notifyUploadSuccess,
+} from "../../../../utils/functions/toast";
 
 export type comparisonMapInputsType = {
 	content1_lang1: string;
@@ -81,9 +85,10 @@ const ComparisonMapForm = () => {
 				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
 				complete: (result: ParseResult<parsedPointType>) => {
 					setParsedPoints({ ...parsedPoints, [index]: result.data });
+					notifyUploadSuccess("Points");
 				},
-				error: (error) => {
-					console.error("Erreur lors de la lecture du fichier :", error);
+				error: () => {
+					notifyError("Erreur lors de la lecture du fichier");
 				},
 			});
 		}

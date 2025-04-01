@@ -1,4 +1,5 @@
 // import des serivces
+import { notifyPublicationSuccess } from "../../functions/toast";
 import { apiClient } from "../apiClient";
 
 /**
@@ -14,6 +15,7 @@ const updateStorymapStatus = async (storymapId: string, status: boolean) => {
 				method: "PUT",
 			},
 		);
+		notifyPublicationSuccess("Storymap", status);
 		return response;
 	} catch (error) {
 		console.error(

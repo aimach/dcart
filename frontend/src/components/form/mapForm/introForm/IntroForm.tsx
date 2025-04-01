@@ -71,7 +71,6 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 			if (updatedMapResponse?.status === 200) {
 				setMapInfos(updatedMapResponse.data);
 				incrementStep(step);
-				notifyEditSuccess("Carte", true);
 			}
 		}
 	};

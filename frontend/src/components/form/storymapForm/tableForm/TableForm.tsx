@@ -20,6 +20,10 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 import style from "../mapForms/mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 export type tableInputsType = {
 	content1_lang1: string;
@@ -90,6 +94,7 @@ const TableForm = () => {
 				storymapId: storymapId,
 				typeName: "table",
 			});
+			notifyCreateSuccess("Bloc tableau", false);
 		} else if (action === "edit") {
 			const blockContent = {
 				...block,
@@ -104,6 +109,7 @@ const TableForm = () => {
 				blockContent.content2_lang2 = JSON.stringify(csvContentLang2);
 			}
 			await updateBlock(blockContent, block?.id.toString() as string);
+			notifyEditSuccess("Bloc tableau", false);
 		}
 		// réinitialisation des données
 		setReload(!reload);

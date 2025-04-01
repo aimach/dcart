@@ -24,7 +24,6 @@ const DeleteStorymapContent = () => {
 		if (responseStatus === 200) {
 			closeDeleteModal();
 			setReload(!reload);
-			notifyDeleteSuccess("Storymap", true);
 		}
 	};
 

@@ -24,7 +24,6 @@ const DeleteMapContent = () => {
 		if (responseStatus === 200) {
 			closeDeleteModal();
 			setReload(!reload);
-			notifyDeleteSuccess("Carte", true);
 		}
 	};
 

@@ -2,6 +2,11 @@
 import { apiClient } from "../apiClient";
 // import des types
 import type { MapInfoType } from "../../types/mapTypes";
+import {
+	notifyEditSuccess,
+	notifyError,
+	notifyPublicationSuccess,
+} from "../../functions/toast";
 
 /**
  * Envoie une requête PUT pour mettre à jour une carte
@@ -14,9 +19,10 @@ const updateMap = async (body: MapInfoType) => {
 			method: "PUT",
 			data: JSON.stringify(body),
 		});
+		notifyEditSuccess("Carte", false);
 		return response;
 	} catch (error) {
-		console.error("Erreur lors de la mise à jour de la carte :", error);
+		notifyError("Erreur lors de la mise à jour de la carte");
 	}
 };
 
@@ -30,12 +36,10 @@ const updateMapActiveStatus = async (mapId: string, status: boolean) => {
 		const response = await apiClient(`dcart/maps/${mapId}?isActive=${status}`, {
 			method: "PUT",
 		});
+		notifyPublicationSuccess("Carte", status);
 		return response;
 	} catch (error) {
-		console.error(
-			"Erreur lors de la mise à jour du statut de la carte :",
-			error,
-		);
+		notifyError("Erreur lors de la mise à jour du statut de la carte");
 	}
 };
 
@@ -54,12 +58,10 @@ const updateFiltersToMap = async (
 			method: "PUT",
 			data: JSON.stringify(mapFilters),
 		});
+		notifyEditSuccess("Jeu de filtres", false);
 		return response;
 	} catch (error) {
-		console.error(
-			"Erreur lors de la modification des filtres de la carte :",
-			error,
-		);
+		notifyError("Erreur lors de la modification des filtres de la carte");
 	}
 };
 

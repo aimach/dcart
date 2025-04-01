@@ -16,6 +16,10 @@ import {
 import type { SubmitHandler } from "react-hook-form";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 export type quoteInputsType = {
 	content1_lang1: string;
@@ -49,6 +53,7 @@ const QuoteForm = () => {
 
 				typeName: "quote",
 			});
+			notifyCreateSuccess("Bloc citation", false);
 		} else if (action === "edit") {
 			await updateBlock(
 				{
@@ -60,6 +65,7 @@ const QuoteForm = () => {
 				},
 				block?.id.toString() as string,
 			);
+			notifyEditSuccess("Bloc citation", false);
 		}
 		setReload(!reload);
 		updateFormType("blockChoice");

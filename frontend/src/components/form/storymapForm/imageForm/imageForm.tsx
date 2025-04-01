@@ -19,6 +19,10 @@ import type {
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 export type imageInputsType = {
 	content1_lang1: string;
@@ -61,6 +65,7 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
 
 				typeName: "image",
 			});
+			notifyCreateSuccess("Bloc image", false);
 		} else if (action === "edit") {
 			await updateBlock(
 				{
@@ -74,6 +79,7 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
 				},
 				defaultValues ? defaultValues.id : (block?.id.toString() as string),
 			);
+			notifyEditSuccess("Bloc image", false);
 		}
 		setReload(!reload);
 		updateFormType("blockChoice");

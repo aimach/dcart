@@ -14,6 +14,10 @@ import { updateBlock } from "../../../../utils/api/storymap/postRequests";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { SubmitHandler } from "react-hook-form";
 import type { allInputsType } from "../../../../utils/types/formTypes";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 export type titleInputsType = {
 	content1_lang1: string;
@@ -46,6 +50,7 @@ const TitleForm = () => {
 				storymapId: storymapId,
 				typeName: "title",
 			});
+			notifyCreateSuccess("Bloc titre", false);
 		} else if (action === "edit") {
 			await updateBlock(
 				{
@@ -56,6 +61,7 @@ const TitleForm = () => {
 				},
 				block?.id.toString() as string,
 			);
+			notifyEditSuccess("Bloc titre", false);
 		}
 		// réinitialisation des données
 		setReload(!reload);

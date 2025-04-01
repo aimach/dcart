@@ -52,7 +52,7 @@ const notifyEditSuccess = (type: string, isFeminine: boolean) => {
 const notifyDeleteSuccess = (type: string, isFeminine: boolean) => {
 	toast.error(
 		`${type} supprimé${isFeminine ? "e" : ""}`,
-		getOtionsObject("top-right", 2000, true, false, "colored"),
+		getOtionsObject("top-right", 2000, true, false, "light"),
 	);
 };
 
@@ -63,10 +63,26 @@ const notifySuccessWithCustomMessage = (message: string) => {
 	);
 };
 
+const notifyUploadSuccess = (type: string) => {
+	toast.success(
+		`${type} chargés`,
+		getOtionsObject("top-right", 2000, true, false, "light"),
+	);
+};
+
+const notifyError = (message: string) => {
+	toast.error(
+		message,
+		getOtionsObject("top-right", 2000, true, false, "colored"),
+	);
+};
+
 export {
 	notifyPublicationSuccess,
 	notifyDeleteSuccess,
 	notifyCreateSuccess,
 	notifyEditSuccess,
 	notifySuccessWithCustomMessage,
+	notifyUploadSuccess,
+	notifyError,
 };
