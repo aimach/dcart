@@ -7,7 +7,6 @@ import style from "./modalComponent.module.scss";
 
 interface ModalComponentProps {
 	onClose?: () => void;
-	isGreyBackground?: boolean;
 	children: React.ReactNode;
 }
 
@@ -19,11 +18,7 @@ interface ModalComponentProps {
  * @param {React.ReactNode} props.children - Contenu de la modale
  * @returns {JSX.Element} - Le composant ModalComponent
  */
-const ModalComponent = ({
-	onClose,
-	isGreyBackground,
-	children,
-}: ModalComponentProps) => {
+const ModalComponent = ({ onClose, children }: ModalComponentProps) => {
 	const { tutorialStep } = useMapStore();
 	return (
 		<div

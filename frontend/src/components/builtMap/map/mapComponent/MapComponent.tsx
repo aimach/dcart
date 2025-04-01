@@ -70,9 +70,10 @@ const MapComponent = () => {
 				setIsReset: state.setIsReset,
 			})),
 		);
-	const { setSelectedTabMenu } = useMapAsideMenuStore(
+	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
+			setIsPanelDisplayed: state.setIsPanelDisplayed,
 		})),
 	);
 
@@ -181,16 +182,12 @@ const MapComponent = () => {
 							onClose={() => {
 								setIsModalOpen(false);
 							}}
-							isGreyBackground={true}
 						>
 							<MapIntroductionContent setIsModalOpen={setIsModalOpen} />
 						</ModalComponent>
 					)}
 					{mapReady && isModalOpen && allMemoizedPoints.length === 0 && (
-						<ModalComponent
-							onClose={() => setIsModalOpen(false)}
-							isGreyBackground={false}
-						>
+						<ModalComponent onClose={() => setIsModalOpen(false)}>
 							{translation[language].mapPage.noResult}
 							<br />
 							{translation[language].mapPage.enlargeYourSearch}
@@ -212,8 +209,8 @@ const MapComponent = () => {
 							onClose={() => {
 								closeTutorial();
 								resetTutorialStep();
+								setIsPanelDisplayed(false);
 							}}
-							isGreyBackground={false}
 						>
 							<TutorialModalContent />
 						</ModalComponent>

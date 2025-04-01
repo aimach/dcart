@@ -16,10 +16,7 @@ const BackofficeMapPage = () => {
 	return (
 		<section className={style.backofficeManagementPageContainer}>
 			{isDeleteModalOpen && (
-				<ModalComponent
-					onClose={() => closeDeleteModal()}
-					isGreyBackground={true}
-				>
+				<ModalComponent onClose={() => closeDeleteModal()}>
 					<DeleteMapContent />
 				</ModalComponent>
 			)}

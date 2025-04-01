@@ -98,7 +98,7 @@ const DemoMapComponent = ({ showModal }: DemoMapComponentProps) => {
 		<div className="demo-map" id="demo-map">
 			<section className="demo-leaflet-container">
 				{showModal && (
-					<ModalComponent isGreyBackground={true}>
+					<ModalComponent>
 						{mapInfos && (
 							<div className={style.modalContent}>
 								<div className={style.modalTitleSection}>

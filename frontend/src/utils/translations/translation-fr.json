@@ -52,7 +52,8 @@
 		"map": "carte",
 		"storymap": "storymap",
 		"published": "publiée",
-		"noPublished": "non publiée"
+		"noPublished": "non publiée",
+		"close": "Fermer"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",

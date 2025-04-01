@@ -1,22 +1,25 @@
-// import des bibliothèques
-import { useState } from "react";
-// import des composants
-// import du context
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-// import des types
-// import du style
-import style from "./modalComponent.module.scss";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
 import { modalContentArray } from "../../../../utils/menu/modalArray";
-import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
+// import du style
+import style from "./tutorialModalContent.module.scss";
+// import des images
+import delta from "../../../../assets/delta.png";
 
 const TutorialModalContent = () => {
+	const { translation, language } = useTranslation();
+
 	const {
 		tutorialStep,
 		incrementTutorialStep,
 		decrementTutorialStep,
 		closeTutorial,
+		setSelectedMarker,
+		allPoints,
 	} = useMapStore(useShallow((state) => state));
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
@@ -29,6 +32,7 @@ const TutorialModalContent = () => {
 			setSelectedTabMenu("results");
 		}
 		if (tutorialStep === 6) {
+			setSelectedMarker(allPoints[0]);
 			setSelectedTabMenu("infos");
 		}
 		if (tutorialStep === 7) {
@@ -51,26 +55,34 @@ const TutorialModalContent = () => {
 	};
 
 	return (
-		<div>
+		<div className={style.tutorialModalContent}>
 			{modalContentArray.map((content, index) => {
 				if (tutorialStep === index + 1) {
 					return (
-						<div key={content.title + index.toString()}>
-							<h4>{content.title}</h4>
-							<p>{content.content}</p>
+						<div
+							key={content.title_fr + index.toString()}
+							className={style.contentContainer}
+						>
+							<div className={style.modalTitleSection}>
+								<img src={delta} alt="decoration" width={30} />
+								<h4>{content[`title_${language}`]}</h4>
+								<img src={delta} alt="decoration" width={30} />
+							</div>
+
+							<p>{content[`content_${language}`]}</p>
 						</div>
 					);
 				}
 				return null;
 			})}
-			<div>
+			<div className={style.buttonContainer}>
 				{tutorialStep > 1 && (
 					<button
 						type="button"
 						onClick={() => handleDecrementTutorialStep(tutorialStep)}
 						onKeyDown={() => handleDecrementTutorialStep(tutorialStep)}
 					>
-						Précédent
+						{translation[language].common.previous}
 					</button>
 				)}
 				{tutorialStep < modalContentArray.length ? (
@@ -79,7 +91,7 @@ const TutorialModalContent = () => {
 						onClick={() => handleIncrementTutorialStep(tutorialStep)}
 						onKeyDown={() => handleIncrementTutorialStep(tutorialStep)}
 					>
-						Suivant
+						{translation[language].common.next}
 					</button>
 				) : (
 					<button
@@ -87,13 +99,15 @@ const TutorialModalContent = () => {
 						onClick={() => {
 							closeTutorial();
 							setIsPanelDisplayed(false);
+							setSelectedMarker(undefined);
 						}}
 						onKeyDown={() => {
 							closeTutorial();
 							setIsPanelDisplayed(false);
+							setSelectedMarker(undefined);
 						}}
 					>
-						Fermer
+						{translation[language].common.close}
 					</button>
 				)}
 			</div>

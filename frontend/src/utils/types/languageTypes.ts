@@ -55,6 +55,7 @@ type LanguageObject = {
 		storymap: string;
 		published: string;
 		noPublished: string;
+		close: string;
 	};
 	modal: {
 		firstContent: string;
