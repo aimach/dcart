@@ -24,6 +24,11 @@ import type {
 import style from "../introForm/introForm.module.scss";
 // import des images
 import { CircleHelp, X } from "lucide-react";
+import {
+	notifyCreateSuccess,
+	notifyDeleteSuccess,
+	notifySuccessWithCustomMessage,
+} from "../../../../utils/functions/toast";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -54,6 +59,7 @@ const UploadForm = () => {
 			setIsAlreadyAPointSet(true);
 			const mapWithPointSet = await getOneMapInfos(mapInfos?.id as string);
 			setMapInfos(mapWithPointSet);
+			notifyCreateSuccess("Jeu de points", false);
 		}
 	};
 
@@ -72,6 +78,7 @@ const UploadForm = () => {
 		await deletePointSet(pointSetId as string);
 		const newMapInfos = await getOneMapInfos(mapInfos?.id as string);
 		setMapInfos(newMapInfos);
+		notifyDeleteSuccess("Jeu de points", false);
 	};
 
 	const handleCheckboxChange = async (fieldName: string, boolean: string) => {
@@ -80,6 +87,7 @@ const UploadForm = () => {
 			[fieldName]: boolean === "true",
 		});
 		setMapInfos(result?.data);
+		notifySuccessWithCustomMessage("Modification prise en compte");
 	};
 
 	return (

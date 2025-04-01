@@ -19,6 +19,10 @@ import type {
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 export type linkFormInputs = {
 	content1_lang1: string;
@@ -51,6 +55,7 @@ const LinkForm = () => {
 				storymapId: storymapId,
 				typeName: "link",
 			});
+			notifyCreateSuccess("Bloc lien", false);
 		} else if (action === "edit") {
 			await updateBlock(
 				{
@@ -62,6 +67,7 @@ const LinkForm = () => {
 				},
 				block?.id.toString() as string,
 			);
+			notifyEditSuccess("Bloc lien", false);
 		}
 		setReload(!reload);
 		updateFormType("blockChoice");

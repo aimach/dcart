@@ -20,6 +20,10 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import style from "./layoutForm.module.scss";
 // import des icônes
 import { LayoutList } from "lucide-react";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 /**
  * Formulaire pour la création d'un bloc de type "layout"
@@ -56,6 +60,7 @@ const LayoutForm = () => {
 				storymapId: storymapId,
 				typeName: "layout",
 			});
+			notifyCreateSuccess("Bloc de mise en page", false);
 			setLayoutBlockId(response?.id.toString());
 		} else if (action === "edit") {
 			const response = await updateBlock(
@@ -67,6 +72,7 @@ const LayoutForm = () => {
 				},
 				block?.id.toString() as string,
 			);
+			notifyEditSuccess("Bloc de mise en page", false);
 			setLayoutBlockId(response?.id.toString());
 			setSearchParams({ action: "edit" });
 		}

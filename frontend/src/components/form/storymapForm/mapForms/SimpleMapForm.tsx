@@ -24,6 +24,11 @@ import type { ChangeEvent } from "react";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, ChevronRight, CircleHelp } from "lucide-react";
+import {
+	notifyCreateSuccess,
+	notifyError,
+	notifyUploadSuccess,
+} from "../../../../utils/functions/toast";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -73,9 +78,10 @@ const SimpleMapForm = () => {
 				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
 				complete: (result: ParseResult<parsedPointType>) => {
 					setParsedPoints(result.data);
+					notifyUploadSuccess("Points");
 				},
-				error: (error) => {
-					console.error("Erreur lors de la lecture du fichier :", error);
+				error: () => {
+					notifyError("Erreur lors de la lecture du fichier");
 				},
 			});
 		}

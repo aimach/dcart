@@ -19,6 +19,10 @@ import type {
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 export type textInputsType = {
 	content1_lang1: string;
@@ -44,7 +48,7 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 		})),
 	);
 
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [searchParams, _] = useSearchParams();
 	const action = searchParams.get("action");
 
 	const { storymapId } = useParams();
@@ -58,6 +62,7 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 				storymapId: storymapId,
 				typeName: "text",
 			});
+			notifyCreateSuccess("Bloc texte", false);
 		} else if (action === "edit") {
 			await updateBlock(
 				{
@@ -69,6 +74,7 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 				},
 				defaultValues ? defaultValues.id : (block?.id.toString() as string),
 			);
+			notifyEditSuccess("Bloc texte", false);
 		}
 		setReload(!reload);
 		if (parentId) {

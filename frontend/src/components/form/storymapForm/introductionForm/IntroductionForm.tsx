@@ -32,6 +32,10 @@ import {
 	createCategoryOptions,
 	createLanguageOptions,
 } from "../../../../utils/functions/storymap";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -101,6 +105,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 		if (storymapId === "create") {
 			const newStorymap = await createStorymap(data);
 			setStorymapInfos(newStorymap);
+			notifyCreateSuccess("Storymap", true);
 			navigate(`/backoffice/storymaps/${newStorymap.id}`);
 		} else {
 			const bodyWithoutUselessData = {
@@ -117,6 +122,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 				publication_date: data.publication_date,
 			};
 			await updateStorymap(bodyWithoutUselessData, storymapInfos?.id as string);
+			notifyEditSuccess("Storymap", true);
 		}
 		setStep(2);
 	};

@@ -8,6 +8,11 @@ import {
 // import des types
 import type { storymapInputsType } from "../../types/formTypes";
 import type { blockType, parsedPointType } from "../../types/formTypes";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+	notifyError,
+} from "../../functions/toast";
 
 /**
  * Fonction pour insérer une nouvelle storymap dans la BDD
@@ -20,9 +25,10 @@ const createStorymap = async (body: storymapInputsType) => {
 			method: "POST",
 			data: JSON.stringify(body),
 		});
+		notifyCreateSuccess("Storymap", true);
 		return response.data;
 	} catch (error) {
-		console.error("Erreur lors de la création de la storymap :", error);
+		notifyError("Erreur lors de la création de la storymap");
 	}
 };
 
@@ -38,9 +44,10 @@ const updateStorymap = async (body: storymapInputsType, storymapId: string) => {
 			method: "PUT",
 			data: JSON.stringify(body),
 		});
+		notifyEditSuccess("Storymap", true);
 		return response.data.id;
 	} catch (error) {
-		console.error("Erreur lors de la mise à jour de la storymap :", error);
+		notifyError("Erreur lors de la mise à jour de la storymap");
 	}
 };
 
@@ -60,7 +67,7 @@ const createBlock = async (body: blockType) => {
 		});
 		return response.data;
 	} catch (error) {
-		console.error("Erreur lors de la création du bloc :", error);
+		notifyError("Erreur lors de la création du bloc");
 	}
 };
 
@@ -81,7 +88,7 @@ const updateBlock = async (body: blockType, blockId: string) => {
 		});
 		return response.data;
 	} catch (error) {
-		console.error(error);
+		notifyError("Erreur lors de la mise à jour du bloc");
 	}
 };
 
@@ -119,6 +126,8 @@ const uploadParsedPointsForSimpleMap = async (
 				method: "POST",
 				data: JSON.stringify({ parsedPoints }),
 			});
+
+			notifyCreateSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
 		}
 		if (action === "edit") {
 			// mise à jour du bloc de la carte
@@ -144,9 +153,10 @@ const uploadParsedPointsForSimpleMap = async (
 					data: JSON.stringify({ parsedPoints }),
 				});
 			}
+			notifyEditSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
 		}
 	} catch (error) {
-		console.error("Erreur lors de la création d'une carte simple :", error);
+		notifyError("Erreur lors de la création d'une carte simple");
 	}
 };
 
@@ -187,6 +197,7 @@ const uploadParsedPointsForComparisonMap = async (
 					data: JSON.stringify({ parsedPoints }),
 				});
 			}
+			notifyCreateSuccess("Carte déroulante", true);
 		}
 
 		if (action === "edit") {
@@ -218,9 +229,10 @@ const uploadParsedPointsForComparisonMap = async (
 					});
 				}
 			}
+			notifyEditSuccess("Carte déroulante", true);
 		}
 	} catch (error) {
-		console.error("Erreur lors de la création d'une carte déroulante :", error);
+		notifyError("Erreur lors de la création d'une carte déroulante");
 	}
 };
 

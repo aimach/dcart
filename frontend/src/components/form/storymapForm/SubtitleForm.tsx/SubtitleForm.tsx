@@ -19,6 +19,10 @@ import type {
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 export type subtitleInputsType = {
 	content1_lang1: string;
@@ -52,6 +56,7 @@ const SubtitleForm = () => {
 				storymapId: storymapId,
 				typeName: "subtitle",
 			});
+			notifyCreateSuccess("Bloc sous-titre", false);
 		} else if (action === "edit") {
 			await updateBlock(
 				{
@@ -62,6 +67,7 @@ const SubtitleForm = () => {
 				},
 				block?.id.toString() as string,
 			);
+			notifyEditSuccess("Bloc sous-titre", false);
 		}
 		// réinitialisation des données
 		setReload(!reload);

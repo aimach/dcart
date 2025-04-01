@@ -23,6 +23,10 @@ import StepForm from "./StepForm";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 export type scrollMapInputsType = {
 	content1_lang1: string;
@@ -65,6 +69,7 @@ const ScrollMapForm = () => {
 				typeName: "scroll_map",
 			});
 			setScrollMapId(result?.id);
+			notifyCreateSuccess("Carte déroulante", true);
 		} else if (action === "edit") {
 			await updateBlock(
 				{
@@ -76,6 +81,7 @@ const ScrollMapForm = () => {
 				block?.id.toString() as string,
 			);
 			setScrollMapId((block as BlockContentType).id);
+			notifyEditSuccess("Carte déroulante", true);
 		}
 		// mise à jour des paramètres de l'url pour faire passer l'utilisateur sur le formulaire des étapes de la carte
 		setSearchParams({ ...searchParams, stepAction: "create" });

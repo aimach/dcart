@@ -4,7 +4,7 @@ import { v4 as uuidv4 } from "uuid";
 import L from "leaflet";
 // import des services
 import {
-	getIcon,
+	getDefaultIcon,
 	getLittleCircleIcon,
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
@@ -54,7 +54,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 		// on créé les points sur chaque pane
 		(blockContent.groupedPoints as GroupedTyped[]).map((point) => {
 			// on créé une icone adaptée au nombre de sources
-			const icon = getIcon(
+			const icon = getDefaultIcon(
 				point.attestations.length,
 				style,
 				point.pane === "left" ? "red" : "blue",

@@ -1,11 +1,14 @@
 .marker-cluster-custom {
 	display: flex;
 	flex-direction: row;
-	justify-content: flex-start;
+	justify-content: center;
+	align-items: center;
+
 	border: 1px solid lightgrey;
 	background-color: white;
-	border-radius: 10px;
-	min-width: 50px;
+	border-radius: 50%;
+	width: 40px;
+	height: 40px;
 }
 
 path.leaflet-interactive {

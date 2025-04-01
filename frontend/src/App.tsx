@@ -1,4 +1,3 @@
-// import des bibliothèques
 // import des composants
 import NavComponent from "./components/common/NavComponent";
 // import des services
