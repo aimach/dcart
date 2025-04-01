@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useState, useContext } from "react";
-import { Link, useParams, useSearchParams } from "react-router";
+import { Link, useParams } from "react-router";
 import {
 	DndContext,
 	PointerSensor,

@@ -18,10 +18,9 @@ const getOtionsObject = (
 });
 
 const notifyPublicationSuccess = (type: string, status: boolean) => {
-	const typeMessage = type === "map" ? "Carte" : "Storymap";
 	if (status) {
 		toast.success(
-			`${typeMessage} publiée`,
+			`${type} publiée`,
 			getOtionsObject("top-right", 2000, true, false, "light"),
 		);
 
@@ -29,18 +28,45 @@ const notifyPublicationSuccess = (type: string, status: boolean) => {
 	}
 	if (status === false) {
 		toast.info(
-			`${typeMessage} masquée`,
+			`${type} masquée`,
 			getOtionsObject("top-right", 2000, true, false, "light"),
 		);
 		return;
 	}
 };
 
-const notifyDeleteSuccess = (type: string) => {
+const notifyCreateSuccess = (type: string, isFeminine: boolean) => {
 	toast.success(
-		`${type} supprimée`,
+		`${type} créé${isFeminine ? "e" : ""}`,
 		getOtionsObject("top-right", 2000, true, false, "light"),
 	);
 };
 
-export { notifyPublicationSuccess, notifyDeleteSuccess };
+const notifyEditSuccess = (type: string, isFeminine: boolean) => {
+	toast.success(
+		`${type} modifié${isFeminine ? "e" : ""}`,
+		getOtionsObject("top-right", 2000, true, false, "light"),
+	);
+};
+
+const notifyDeleteSuccess = (type: string, isFeminine: boolean) => {
+	toast.error(
+		`${type} supprimé${isFeminine ? "e" : ""}`,
+		getOtionsObject("top-right", 2000, true, false, "colored"),
+	);
+};
+
+const notifySuccessWithCustomMessage = (message: string) => {
+	toast.success(
+		message,
+		getOtionsObject("top-right", 2000, true, false, "light"),
+	);
+};
+
+export {
+	notifyPublicationSuccess,
+	notifyDeleteSuccess,
+	notifyCreateSuccess,
+	notifyEditSuccess,
+	notifySuccessWithCustomMessage,
+};

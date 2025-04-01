@@ -27,6 +27,10 @@ import type Quill from "quill";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./introForm.module.scss";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 type IntroFormProps = {
 	inputs: InputType[];
@@ -59,6 +63,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 				setMapInfos(newMapResponse.data);
 				setIsMapCreated(true);
 				incrementStep(step);
+				notifyCreateSuccess("Carte", true);
 			}
 		} else if (pathname.includes("edit")) {
 			// mise à jour de la carte
@@ -66,6 +71,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 			if (updatedMapResponse?.status === 200) {
 				setMapInfos(updatedMapResponse.data);
 				incrementStep(step);
+				notifyEditSuccess("Carte", true);
 			}
 		}
 	};

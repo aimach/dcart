@@ -23,6 +23,10 @@ import type { ChangeEvent, FormEventHandler } from "react";
 import style from "../introForm/introForm.module.scss";
 // import des icônes
 import { CircleAlert } from "lucide-react";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 
 /**
  * Formulaire de la troisième étape : définition des filtres utilisateur pour la carte
@@ -104,6 +108,7 @@ const UserMapFilterForm = () => {
 				resetMapInfos();
 				resetMapFilters();
 				resetAllPoints();
+				notifyEditSuccess("Jeu de filtres", false);
 				navigate("/backoffice/maps");
 			}
 		} else if (pathname.includes("create")) {
@@ -119,6 +124,7 @@ const UserMapFilterForm = () => {
 					resetMapInfos();
 					resetMapFilters();
 					resetAllPoints();
+					notifyCreateSuccess("Jeu de filtres", false);
 					navigate("/backoffice/maps");
 				}
 			}

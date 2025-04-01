@@ -98,7 +98,7 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 			await updateStorymapStatus(itemInfos.id, status);
 		}
 		setReload(!reload);
-		notifyPublicationSuccess(type, status);
+		notifyPublicationSuccess(type === "map" ? "Carte" : "Storymap", status);
 	};
 	return (
 		<tr key={itemInfos.id} className={style.itemTableRow}>
