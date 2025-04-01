@@ -176,7 +176,6 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 
 	const mapContainerClassName =
 		tutorialStep === 2 ? "built-map shadowed" : "built-map";
-	console.log(mapContainerClassName);
 
 	return (
 		<>
@@ -196,7 +195,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 					{mapReady && isModalOpen && allMemoizedPoints.length === 0 && (
 						<ModalComponent
 							onClose={() => setIsModalOpen(false)}
-							isGreyBackground={true}
+							isGreyBackground={false}
 						>
 							{translation[language].mapPage.noResult}
 							<br />
@@ -252,15 +251,21 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 										setPanelDisplayed={setPanelDisplayed}
 									/>
 								)}
-								<ZoomControl position="bottomright" />
-								<ScaleControl position="bottomright" />
+								<ZoomControl position="bottomleft" />
+								<ScaleControl position="bottomleft" />
 								{/* <ResetControl mapBounds={bounds} /> */}
 							</>
 						)}
 					</MapContainer>
 				</section>
 				{mapReady && (
-					<section className={style.mapBottomSection}>
+					<section
+						className={
+							tutorialStep === 4
+								? `${style.mapBottomSection} ${style.mapBottomSectionWhite}`
+								: style.mapBottomSection
+						}
+					>
 						{allPoints.length > 0 && (
 							<TimeFilterComponent disabled={timeFilterIsDisabled} />
 						)}

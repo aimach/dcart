@@ -13,6 +13,8 @@
     border: 1px solid v.$color-grullo;
     cursor: default;
 
+
+
     .titleAndInfoContainer {
         @include m.flexbox(flex, row, nowrap, flex-start, center);
         gap: v.$space-s;
@@ -34,4 +36,8 @@
         padding-left: 0;
         margin: 0;
     }
+}
+
+.shadowed {
+    z-index: 10000;
 }

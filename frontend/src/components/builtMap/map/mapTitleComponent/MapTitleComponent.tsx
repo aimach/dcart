@@ -21,7 +21,7 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 	const { translation, language } = useTranslation();
 
 	// récupération des données du store
-	const { mapInfos } = useMapStore();
+	const { mapInfos, tutorialStep } = useMapStore();
 
 	const { userFilters, locationNames, elementNames, languageValues } =
 		useMapFiltersStore();
@@ -35,7 +35,13 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 	);
 
 	return (
-		<div className={style.mapTitleContainer}>
+		<div
+			className={
+				tutorialStep === 3
+					? `${style.mapTitleContainer} ${style.shadowed}`
+					: style.mapTitleContainer
+			}
+		>
 			<div className={style.titleAndInfoContainer}>
 				<h2>{mapInfos ? mapInfos[`title_${language}`] : "Exploration"}</h2>
 				<Info onClick={() => setIsModalOpen(true)} />

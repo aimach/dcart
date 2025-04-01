@@ -1,3 +1,5 @@
+// import des services
+import { useMapStore } from "../../../utils/stores/builtMap/mapStore";
 // import des types
 import type React from "react";
 // import du style
@@ -22,12 +24,13 @@ const ModalComponent = ({
 	isGreyBackground,
 	children,
 }: ModalComponentProps) => {
+	const { tutorialStep } = useMapStore();
 	return (
 		<div
 			className={
-				isGreyBackground
-					? style.modalOverlay
-					: `${style.modalOverlayWhite} ${style.modalOverlay}`
+				tutorialStep === 2
+					? `${style.modalOverlayWhite} ${style.modalOverlay}`
+					: style.modalOverlay
 			}
 		>
 			<div className={style.modalContent}>

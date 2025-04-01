@@ -37,6 +37,28 @@ const TutorialModalContent = () => {
 					</p>
 				</>
 			)}
+			{tutorialStep === 3 && (
+				<>
+					<h4>Informations de la carte en cours</h4>
+					<p>
+						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo ea
+						voluptate magni voluptates doloribus temporibus in sint, quibusdam
+						perferendis officiis odit illum! Neque, exercitationem? Accusantium
+						officia odio corporis recusandae voluptates.
+					</p>
+				</>
+			)}
+			{tutorialStep === 4 && (
+				<>
+					<h4>Le bas de la carte</h4>
+					<p>
+						Lorem ipsum dolor sit, amet consectetur adipisicing elit. Illo ea
+						voluptate magni voluptates doloribus temporibus in sint, quibusdam
+						perferendis officiis odit illum! Neque, exercitationem? Accusantium
+						officia odio corporis recusandae voluptates.
+					</p>
+				</>
+			)}
 			<div>
 				{tutorialStep > 1 && (
 					<button
