@@ -29,8 +29,14 @@
 
 .mapBottomSection {
     @include m.flexbox(flex, row, nowrap, flex-start, center);
+    background-color: v.$color-neutral-100;
 
     >div:first-of-type {
         width: 70%;
+    }
+
+    &White {
+        z-index: 10000;
+        position: relative;
     }
 }

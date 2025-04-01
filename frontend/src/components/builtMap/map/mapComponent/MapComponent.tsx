@@ -17,6 +17,7 @@ import MapIntroductionContent from "../../../common/modal/MapIntroductionContent
 import SimpleLayerComponent from "../simpleLayerComponent/SimpleLayerComponent";
 import MultipleLayerComponent from "../multipleLayerComponent/MultipleLayerComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import TutorialModalContent from "../../../common/modal/tutorial/TutorialModalContent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -28,22 +29,16 @@ import { getPointsTimeMarkers } from "../../../../utils/functions/filter";
 import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { LatLngTuple } from "leaflet";
-import type { Dispatch, SetStateAction } from "react";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 
-interface MapComponentProps {
-	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
-}
-
 /**
  * Composant de la carte
- * @param {Dispatch<SetStateAction<boolean>>} props.setPanelDisplayed - Modifie l'état d'affichage du panel latéral
  * @returns ModalComponent | MapContainer | LoaderComponent | TimeFilterComponent | TileLayerChoiceComponent
  */
-const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
+const MapComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
@@ -61,6 +56,10 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		setMapReady,
 		resetSelectedMarker,
 		tileLayerURL,
+		tutorialStep,
+		isTutorialOpen,
+		closeTutorial,
+		resetTutorialStep,
 	} = useMapStore(useShallow((state) => state));
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(
@@ -71,9 +70,10 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 				setIsReset: state.setIsReset,
 			})),
 		);
-	const { setSelectedTabMenu } = useMapAsideMenuStore(
+	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
+			setIsPanelDisplayed: state.setIsPanelDisplayed,
 		})),
 	);
 
@@ -169,24 +169,25 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		});
 	}, [map]);
 
+	const mapContainerClassName =
+		tutorialStep === 2 ? "built-map shadowed" : "built-map";
+
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
-			<div className="built-map" id="built-map">
+			<div className={mapContainerClassName} id="built-map">
 				<section className="leaflet-container">
 					{isModalOpen && allMemoizedPoints.length > 0 && (
 						<ModalComponent
-							onClose={() => setIsModalOpen(false)}
-							isDemo={false}
+							onClose={() => {
+								setIsModalOpen(false);
+							}}
 						>
 							<MapIntroductionContent setIsModalOpen={setIsModalOpen} />
 						</ModalComponent>
 					)}
 					{mapReady && isModalOpen && allMemoizedPoints.length === 0 && (
-						<ModalComponent
-							onClose={() => setIsModalOpen(false)}
-							isDemo={false}
-						>
+						<ModalComponent onClose={() => setIsModalOpen(false)}>
 							{translation[language].mapPage.noResult}
 							<br />
 							{translation[language].mapPage.enlargeYourSearch}
@@ -203,6 +204,17 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 							/>
 						</ModalComponent>
 					)}
+					{isTutorialOpen && (
+						<ModalComponent
+							onClose={() => {
+								closeTutorial();
+								resetTutorialStep();
+								setIsPanelDisplayed(false);
+							}}
+						>
+							<TutorialModalContent />
+						</ModalComponent>
+					)}
 					<MapContainer
 						center={mapCenter}
 						zoomControl={false}
@@ -210,7 +222,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 						maxZoom={11}
 						ref={setMap}
 					>
-						<MapTitleComponent />
+						<MapTitleComponent setIsModalOpen={setIsModalOpen} />
 						{mapReady && (
 							<>
 								<TileLayer
@@ -219,26 +231,28 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 									url={tileLayerURL}
 								/>
 								{!mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
-									<SimpleLayerComponent
-										allMemoizedPoints={allMemoizedPoints}
-										setPanelDisplayed={setPanelDisplayed}
-									/>
+									<SimpleLayerComponent allMemoizedPoints={allMemoizedPoints} />
 								)}
 								{mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
 									<MultipleLayerComponent
 										allMemoizedPoints={allMemoizedPoints}
-										setPanelDisplayed={setPanelDisplayed}
 									/>
 								)}
-								<ZoomControl position="bottomright" />
-								<ScaleControl position="bottomright" />
+								<ZoomControl position="bottomleft" />
+								<ScaleControl position="bottomleft" />
 								{/* <ResetControl mapBounds={bounds} /> */}
 							</>
 						)}
 					</MapContainer>
 				</section>
 				{mapReady && (
-					<section className={style.mapBottomSection}>
+					<section
+						className={
+							tutorialStep === 4
+								? `${style.mapBottomSection} ${style.mapBottomSectionWhite}`
+								: style.mapBottomSection
+						}
+					>
 						{allPoints.length > 0 && (
 							<TimeFilterComponent disabled={timeFilterIsDisabled} />
 						)}

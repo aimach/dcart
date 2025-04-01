@@ -14,6 +14,12 @@
     align-items: center;
     z-index: 1001;
     /* au-dessus de 1000 sinon les contrôles de la carte sont au-dessus */
+
+    &White {
+      background: none;
+    }
+
+
   }
 
   &Content {

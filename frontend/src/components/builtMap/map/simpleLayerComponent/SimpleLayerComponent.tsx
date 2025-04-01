@@ -1,26 +1,23 @@
 // import des bibliothèques
+import { useMemo } from "react";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import L from "leaflet";
-
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import des services
 import { getBlendIcon } from "../../../../utils/functions/icons";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
-import { useMemo, type Dispatch, type SetStateAction } from "react";
 // import du style
 import style from "./simpleLayerChoice.module.scss";
 import "./simpleLayerChoice.css";
 
 type SimpleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
-	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
 };
 
 const SimpleLayerComponent = ({
 	allMemoizedPoints,
-	setPanelDisplayed,
 }: SimpleLayerComponentProps) => {
 	const allPointColorsAndShapes = useMemo(() => {
 		const seenShapeAndColor = new Set();
@@ -56,7 +53,6 @@ const SimpleLayerComponent = ({
 				<MarkerComponent
 					key={point.key}
 					point={point}
-					setPanelDisplayed={setPanelDisplayed}
 					duplicatesCoordinates={[]}
 				/>
 			))}

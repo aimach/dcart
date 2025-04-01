@@ -133,12 +133,12 @@ const StorymapIntroPage = () => {
 	return (
 		<section className={style.BOStorymapFormPageContainer}>
 			{isDeleteModalOpen && (
-				<ModalComponent onClose={() => closeDeleteModal()} isDemo={false}>
+				<ModalComponent onClose={() => closeDeleteModal()}>
 					<DeleteBlockModalContent />
 				</ModalComponent>
 			)}
 			{isTimeoutReached && (
-				<ModalComponent onClose={() => closeDeleteModal()} isDemo={false}>
+				<ModalComponent onClose={() => closeDeleteModal()}>
 					<StayConnectedContent />
 				</ModalComponent>
 			)}

@@ -11,9 +11,24 @@
     color: v.$color-dark-lava;
     border-radius: v.$border-radius-base;
     border: 1px solid v.$color-grullo;
+    cursor: default;
 
-    >h2 {
-        font-size: v.$font-size-l;
+
+
+    .titleAndInfoContainer {
+        @include m.flexbox(flex, row, nowrap, flex-start, center);
+        gap: v.$space-s;
+
+        >h2 {
+            font-size: v.$font-size-l;
+        }
+
+        >svg {
+            cursor: pointer;
+            color: v.$color-grullo;
+        }
+
+
     }
 
     ul {
@@ -21,4 +36,8 @@
         padding-left: 0;
         margin: 0;
     }
+}
+
+.shadowed {
+    z-index: 10000;
 }

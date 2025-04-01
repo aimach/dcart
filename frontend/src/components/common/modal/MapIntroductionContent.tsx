@@ -71,7 +71,9 @@ const MapIntroductionContent = ({
 						type="button"
 						color="gold"
 						textContent={translation[language].button.discover}
-						onClickFunction={() => setIsModalOpen(false)}
+						onClickFunction={() => {
+							setIsModalOpen(false);
+						}}
 					/>
 				</div>
 			)}

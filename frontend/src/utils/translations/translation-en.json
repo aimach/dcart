@@ -52,7 +52,8 @@
 		"map": "map",
 		"storymap": "storymap",
 		"published": "published",
-		"noPublished": "not published"
+		"noPublished": "not published",
+		"close": "Close"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",

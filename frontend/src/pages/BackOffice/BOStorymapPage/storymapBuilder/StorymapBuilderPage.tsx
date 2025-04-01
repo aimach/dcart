@@ -134,12 +134,12 @@ const StorymapBuilderPage = () => {
 	return (
 		<main className={style.storymapBuilderContainer}>
 			{isDeleteModalOpen && (
-				<ModalComponent onClose={() => closeDeleteModal()} isDemo={false}>
+				<ModalComponent onClose={() => closeDeleteModal()}>
 					<DeleteBlockModalContent />
 				</ModalComponent>
 			)}
 			{isTimeoutReached && (
-				<ModalComponent onClose={() => closeDeleteModal()} isDemo={false}>
+				<ModalComponent onClose={() => closeDeleteModal()}>
 					<StayConnectedContent />
 				</ModalComponent>
 			)}

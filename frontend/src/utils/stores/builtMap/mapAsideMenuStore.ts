@@ -7,12 +7,14 @@ import type { FilterType } from "../../types/filterTypes";
 type State = {
 	selectedTabMenu: MenuTabType;
 	mapFilters: FilterType[];
+	isPanelDisplayed: boolean;
 };
 
 type Action = {
 	setSelectedTabMenu: (selectedTabMenu: MenuTabType) => void;
 	setMapFilters: (mapFilters: FilterType[]) => void;
 	resetFilters: () => void;
+	setIsPanelDisplayed: (isPanelDisplayed: boolean) => void;
 };
 
 export const useMapAsideMenuStore = create<State & Action>((set) => ({
@@ -23,4 +25,7 @@ export const useMapAsideMenuStore = create<State & Action>((set) => ({
 	mapFilters: [],
 	setMapFilters: (mapFilters) => set(() => ({ mapFilters })),
 	resetFilters: () => set(() => ({ mapFilters: [] })),
+	isPanelDisplayed: false,
+	setIsPanelDisplayed: (isPanelDisplayed) =>
+		set(() => ({ isPanelDisplayed: isPanelDisplayed })),
 }));
