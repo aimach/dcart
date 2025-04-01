@@ -1,6 +1,7 @@
 // import des bibliothèques
 import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
+import { ToastContainer } from "react-toastify";
 // import des composants
 import App from "./App.tsx";
 import NavigationLayout from "./layouts/NavigationLayout.tsx";
@@ -72,6 +73,7 @@ if (rootElement) {
 								/>
 							</Route>
 						</Routes>
+						<ToastContainer />
 					</SessionProvider>
 				</AuthProvider>
 			</TranslationProvider>

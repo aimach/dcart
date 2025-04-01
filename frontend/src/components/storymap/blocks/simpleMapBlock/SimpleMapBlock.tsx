@@ -10,8 +10,8 @@ import {
 } from "react-leaflet";
 // import des services
 import {
-	getIcon,
 	getBackGroundColorClassName,
+	getDefaultIcon,
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
@@ -76,7 +76,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 								const backgroundColorClassName =
 									point.color ??
 									getBackGroundColorClassName(point.attestations.length);
-								const icon = getIcon(
+								const icon = getDefaultIcon(
 									point.attestations.length,
 									style,
 									backgroundColorClassName,

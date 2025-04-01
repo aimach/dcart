@@ -23,6 +23,7 @@ import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
 import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
 import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
 import TagComponent from "../../common/tag/TagComponent";
+import { notifyPublicationSuccess } from "../../../utils/functions/toast";
 
 type ItemTableComponentProps = {
 	itemInfos: MapType | StorymapType;
@@ -97,6 +98,7 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 			await updateStorymapStatus(itemInfos.id, status);
 		}
 		setReload(!reload);
+		notifyPublicationSuccess(type, status);
 	};
 	return (
 		<tr key={itemInfos.id} className={style.itemTableRow}>

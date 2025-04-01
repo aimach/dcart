@@ -433,6 +433,7 @@ const getBlendIcon = (shapeAndColorArray: string[]) => {
 };
 
 export {
+	getDefaultIcon,
 	getIcon,
 	getBackGroundColorClassName,
 	getLittleCircleIcon,

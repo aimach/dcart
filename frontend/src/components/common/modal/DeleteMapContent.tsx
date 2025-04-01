@@ -3,6 +3,7 @@ import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import { deleteMap } from "../../../utils/api/storymap/deleteRequests";
+import { notifyDeleteSuccess } from "../../../utils/functions/toast";
 // import du style
 import style from "./modalComponent.module.scss";
 
@@ -23,6 +24,7 @@ const DeleteMapContent = () => {
 		if (responseStatus === 200) {
 			closeDeleteModal();
 			setReload(!reload);
+			notifyDeleteSuccess("Carte");
 		}
 	};
 

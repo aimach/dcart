@@ -9,9 +9,9 @@ import {
 } from "react-leaflet";
 // import des services
 import {
-	getIcon,
 	getBackGroundColorClassName,
 	getLittleCircleIcon,
+	getDefaultIcon,
 } from "../../../../utils/functions/icons";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
@@ -97,7 +97,7 @@ const MapSection = ({
 							const backgroundColorClassName =
 								point.color ??
 								getBackGroundColorClassName(point.attestations.length);
-							const bigIcon = getIcon(
+							const bigIcon = getDefaultIcon(
 								point.attestations.length,
 								style,
 								backgroundColorClassName,
