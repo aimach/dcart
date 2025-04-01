@@ -51,7 +51,10 @@ const BOMapFormPage = () => {
 	return (
 		<section className={style.BOmapFormPageContainer}>
 			{isTimeoutReached && (
-				<ModalComponent onClose={() => closeDeleteModal()} isDemo={false}>
+				<ModalComponent
+					onClose={() => closeDeleteModal()}
+					isGreyBackground={true}
+				>
 					<StayConnectedContent />
 				</ModalComponent>
 			)}

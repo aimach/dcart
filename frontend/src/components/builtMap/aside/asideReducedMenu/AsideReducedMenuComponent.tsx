@@ -9,7 +9,8 @@ import type { MenuTabType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./asideReducedMenuComponent.module.scss";
 // import des icones
-import { Filter, ListCollapse, MapPin } from "lucide-react";
+import { CircleHelp, Filter, ListCollapse, MapPin } from "lucide-react";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 
 interface AsideReducedMenuComponentProps {
 	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
@@ -28,6 +29,7 @@ const AsideReducedMenuComponent = ({
 	const setSelectedTabMenu = useMapAsideMenuStore(
 		(state) => state.setSelectedTabMenu,
 	);
+	const { openTutorial } = useMapStore();
 
 	const openMenuOnSelectedTab = (tab: MenuTabType) => {
 		setSelectedTabMenu(tab);
@@ -51,6 +53,12 @@ const AsideReducedMenuComponent = ({
 			id: "infos",
 			title: <MapPin />,
 			onClickFunction: () => openMenuOnSelectedTab("infos"),
+			route: undefined,
+		},
+		{
+			id: "tuto",
+			title: <CircleHelp />,
+			onClickFunction: () => openTutorial(),
 			route: undefined,
 		},
 	];

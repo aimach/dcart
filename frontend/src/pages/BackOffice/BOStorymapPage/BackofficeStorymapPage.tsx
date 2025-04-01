@@ -17,7 +17,10 @@ const BackofficeStorymapPage = () => {
 	return (
 		<>
 			{isDeleteModalOpen && (
-				<ModalComponent onClose={() => closeDeleteModal()} isDemo={false}>
+				<ModalComponent
+					onClose={() => closeDeleteModal()}
+					isGreyBackground={true}
+				>
 					<DeleteStorymapContent />
 				</ModalComponent>
 			)}

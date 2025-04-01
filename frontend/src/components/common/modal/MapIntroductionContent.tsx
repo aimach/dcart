@@ -73,7 +73,6 @@ const MapIntroductionContent = ({
 						textContent={translation[language].button.discover}
 						onClickFunction={() => {
 							setIsModalOpen(false);
-							sessionStorage.setItem("isIntroDisplayed", "true");
 						}}
 					/>
 				</div>

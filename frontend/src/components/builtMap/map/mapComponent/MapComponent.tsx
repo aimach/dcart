@@ -17,6 +17,7 @@ import MapIntroductionContent from "../../../common/modal/MapIntroductionContent
 import SimpleLayerComponent from "../simpleLayerComponent/SimpleLayerComponent";
 import MultipleLayerComponent from "../multipleLayerComponent/MultipleLayerComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import TutorialModalContent from "../../../common/modal/tutorial/TutorialModalContent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -61,6 +62,10 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		setMapReady,
 		resetSelectedMarker,
 		tileLayerURL,
+		tutorialStep,
+		isTutorialOpen,
+		closeTutorial,
+		resetTutorialStep,
 	} = useMapStore(useShallow((state) => state));
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(
@@ -169,21 +174,21 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 		});
 	}, [map]);
 
-	const isIntroDisplayed =
-		sessionStorage.getItem("isIntroDisplayed") === "true";
+	const mapContainerClassName =
+		tutorialStep === 2 ? "built-map shadowed" : "built-map";
+	console.log(mapContainerClassName);
 
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
-			<div className="built-map" id="built-map">
+			<div className={mapContainerClassName} id="built-map">
 				<section className="leaflet-container">
-					{!isIntroDisplayed && isModalOpen && allMemoizedPoints.length > 0 && (
+					{isModalOpen && allMemoizedPoints.length > 0 && (
 						<ModalComponent
 							onClose={() => {
 								setIsModalOpen(false);
-								sessionStorage.setItem("isIntroDisplayed", "true");
 							}}
-							isDemo={false}
+							isGreyBackground={true}
 						>
 							<MapIntroductionContent setIsModalOpen={setIsModalOpen} />
 						</ModalComponent>
@@ -191,7 +196,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 					{mapReady && isModalOpen && allMemoizedPoints.length === 0 && (
 						<ModalComponent
 							onClose={() => setIsModalOpen(false)}
-							isDemo={false}
+							isGreyBackground={true}
 						>
 							{translation[language].mapPage.noResult}
 							<br />
@@ -209,6 +214,17 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 							/>
 						</ModalComponent>
 					)}
+					{isTutorialOpen && (
+						<ModalComponent
+							onClose={() => {
+								closeTutorial();
+								resetTutorialStep();
+							}}
+							isGreyBackground={false}
+						>
+							<TutorialModalContent />
+						</ModalComponent>
+					)}
 					<MapContainer
 						center={mapCenter}
 						zoomControl={false}
@@ -216,7 +232,7 @@ const MapComponent = ({ setPanelDisplayed }: MapComponentProps) => {
 						maxZoom={11}
 						ref={setMap}
 					>
-						<MapTitleComponent />
+						<MapTitleComponent setIsModalOpen={setIsModalOpen} />
 						{mapReady && (
 							<>
 								<TileLayer

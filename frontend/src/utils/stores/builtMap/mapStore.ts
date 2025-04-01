@@ -14,6 +14,8 @@ type State = {
 	includedElementId: string | undefined;
 	mapReady: boolean;
 	tileLayerURL: string;
+	isTutorialOpen: boolean;
+	tutorialStep: number;
 };
 
 type Action = {
@@ -30,6 +32,11 @@ type Action = {
 	setMapReady: (mapReady: boolean) => void;
 	setTileLayerURL: (tileLayerURL: string) => void;
 	resetTileLayerURL: () => void;
+	openTutorial: () => void;
+	closeTutorial: () => void;
+	incrementTutorialStep: (step: number) => void;
+	decrementTutorialStep: (step: number) => void;
+	resetTutorialStep: () => void;
 };
 
 export const useMapStore = create<State & Action>((set) => ({
@@ -65,4 +72,11 @@ export const useMapStore = create<State & Action>((set) => ({
 			tileLayerURL:
 				"https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png",
 		})),
+	isTutorialOpen: false,
+	openTutorial: () => set(() => ({ isTutorialOpen: true })),
+	closeTutorial: () => set(() => ({ isTutorialOpen: false })),
+	tutorialStep: 1,
+	incrementTutorialStep: (step) => set(() => ({ tutorialStep: step + 1 })),
+	decrementTutorialStep: (step) => set(() => ({ tutorialStep: step - 1 })),
+	resetTutorialStep: () => set(() => ({ tutorialStep: 1 })),
 }));
