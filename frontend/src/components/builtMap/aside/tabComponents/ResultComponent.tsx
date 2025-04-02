@@ -4,17 +4,13 @@ import DOMPurify from "dompurify";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import {
-	isSelectedMarker,
-	zoomOnMarkerOnClick,
-} from "../../../../utils/functions/map";
+import { isSelectedMarker } from "../../../../utils/functions/map";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
-import type { Map as LeafletMap } from "leaflet";
 // import du style
 import style from "./tabComponent.module.scss";
 
@@ -26,23 +22,16 @@ const ResultComponent = () => {
 	const { language } = useTranslation();
 
 	// récupération des données des stores
-	const {
-		map,
-		mapInfos,
-		allResults,
-		allLayers,
-		selectedMarker,
-		setSelectedMarker,
-	} = useMapStore(
-		useShallow((state) => ({
-			map: state.map,
-			mapInfos: state.mapInfos,
-			allResults: state.allResults,
-			allLayers: state.allLayers,
-			selectedMarker: state.selectedMarker,
-			setSelectedMarker: state.setSelectedMarker,
-		})),
-	);
+	const { mapInfos, allResults, allLayers, selectedMarker, setSelectedMarker } =
+		useMapStore(
+			useShallow((state) => ({
+				mapInfos: state.mapInfos,
+				allResults: state.allResults,
+				allLayers: state.allLayers,
+				selectedMarker: state.selectedMarker,
+				setSelectedMarker: state.setSelectedMarker,
+			})),
+		);
 	const { setSelectedTabMenu } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
@@ -54,9 +43,8 @@ const ResultComponent = () => {
 		(result: PointType) => {
 			setSelectedMarker(result);
 			setSelectedTabMenu("infos");
-			// zoomOnMarkerOnClick(map as LeafletMap, result as PointType);
 		},
-		[map, setSelectedMarker, setSelectedTabMenu],
+		[setSelectedMarker, setSelectedTabMenu],
 	);
 
 	const filteredResultsWithSelectedPoint = useMemo(() => {
