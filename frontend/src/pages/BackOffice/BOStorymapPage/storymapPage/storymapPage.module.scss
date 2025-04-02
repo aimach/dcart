@@ -2,7 +2,7 @@
 @use '../../../../styles/variable' as v;
 
 .storymapContainer {
-    @include m.flexbox(flex, column, nowrap, center, center);
+    @include m.flexbox(flex, column, nowrap, center, flex-start);
 
     padding: v.$font-space-xxxxl;
     gap: v.$font-space-xxxl;
