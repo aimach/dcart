@@ -11,13 +11,10 @@ import type {
 	AgentType,
 	ParsedPointType,
 	MapType,
+	MenuTabType,
+	MapInfoType,
 } from "../types/mapTypes";
-import type {
-	LatLng,
-	LatLngExpression,
-	Map as LeafletMap,
-	Point,
-} from "leaflet";
+import type { LatLng, Map as LeafletMap, Point } from "leaflet";
 import type { StorymapType } from "../types/storymapTypes";
 
 /**
@@ -260,6 +257,8 @@ const handleClusterClick = (
 	map: LeafletMap,
 	setSelectedMarker: (point: PointType) => void,
 	allResults: PointType[],
+	setSelectedTabMenu: (selectedTabMenu: MenuTabType) => void,
+	setIsPanelDisplayed: (isPanelDisplayed: boolean) => void,
 ) => {
 	const cluster = e.layer;
 	const clickedLatLng = cluster.getLatLng();
@@ -279,6 +278,8 @@ const handleClusterClick = (
 	);
 
 	setSelectedMarker(selectedPoint as PointType);
+	setSelectedTabMenu("infos");
+	setIsPanelDisplayed(true);
 
 	if (closestCluster && map.hasLayer(closestCluster)) {
 		closestCluster.spiderfy();
@@ -309,21 +310,25 @@ const handleSpiderfyPosition = (count: number, centerPt: Point) => {
 const zoomOnSelectedMarkerCluster = (
 	map: LeafletMap,
 	selectedMarker: PointType,
+	mapInfos: MapInfoType | null,
 ) => {
 	map.flyTo([selectedMarker.latitude, selectedMarker.longitude], 11, {
 		animate: false,
 	});
-	const tooltip = L.tooltip({
-		direction: "top",
-		offset: L.point(10, -20),
-		permanent: false,
-	})
-		.setLatLng([selectedMarker.latitude, selectedMarker.longitude])
-		.setContent(selectedMarker.nom_ville)
-		.addTo(map);
 
-	// fermer le tooltip après 2s
-	setTimeout(() => map.closeTooltip(tooltip), 2000);
+	if (mapInfos) {
+		const tooltip = L.tooltip({
+			direction: "top",
+			offset: L.point(10, -20),
+			permanent: false,
+		})
+			.setLatLng([selectedMarker.latitude, selectedMarker.longitude])
+			.setContent(selectedMarker.nom_ville)
+			.addTo(map);
+
+		// fermer le tooltip après 2s
+		setTimeout(() => map.closeTooltip(tooltip), 2000);
+	}
 
 	setTimeout(() => {
 		const clickedLatLng = L.latLng(

@@ -17,6 +17,7 @@ import type L from "leaflet";
 import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import "./simpleLayerChoice.css";
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 
 type SimpleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
@@ -26,6 +27,7 @@ const SimpleLayerComponent = ({
 	allMemoizedPoints,
 }: SimpleLayerComponentProps) => {
 	const { map, mapInfos, selectedMarker, setSelectedMarker } = useMapStore();
+	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
 
@@ -40,7 +42,14 @@ const SimpleLayerComponent = ({
 			handleClusterMouseOver(e, selectedMarker, allMemoizedPoints),
 		);
 		clusterGroup.on("clusterclick", (e) =>
-			handleClusterClick(e, map, setSelectedMarker, allMemoizedPoints),
+			handleClusterClick(
+				e,
+				map,
+				setSelectedMarker,
+				allMemoizedPoints,
+				setSelectedTabMenu,
+				setIsPanelDisplayed,
+			),
 		);
 
 		return () => {
@@ -48,7 +57,14 @@ const SimpleLayerComponent = ({
 				handleClusterMouseOver(e, selectedMarker, allMemoizedPoints),
 			);
 			clusterGroup.off("clusterclick", (e) =>
-				handleClusterClick(e, map, setSelectedMarker, allMemoizedPoints),
+				handleClusterClick(
+					e,
+					map,
+					setSelectedMarker,
+					allMemoizedPoints,
+					setSelectedTabMenu,
+					setIsPanelDisplayed,
+				),
 			);
 		};
 	}, [map, allMemoizedPoints, clusterRef]);
@@ -56,9 +72,9 @@ const SimpleLayerComponent = ({
 	useEffect(() => {
 		if (!map) return;
 		if (selectedMarker) {
-			zoomOnSelectedMarkerCluster(map, selectedMarker);
+			zoomOnSelectedMarkerCluster(map, selectedMarker, mapInfos);
 		}
-	}, [map, selectedMarker]);
+	}, [map, selectedMarker, mapInfos]);
 
 	// si c'est la carte 'exploration', ne pas utiliser le clustering
 	return mapInfos ? (

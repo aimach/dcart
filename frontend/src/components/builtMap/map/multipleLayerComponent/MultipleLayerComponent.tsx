@@ -21,6 +21,7 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 import type L from "leaflet";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
@@ -29,7 +30,9 @@ type MultipleLayerComponentProps = {
 const MultipleLayerComponent = ({
 	allMemoizedPoints,
 }: MultipleLayerComponentProps) => {
-	const { allLayers, map, selectedMarker, setSelectedMarker } = useMapStore();
+	const { mapInfos, allLayers, map, selectedMarker, setSelectedMarker } =
+		useMapStore();
+	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const layersArrayForControl = useMemo(() => {
 		const layersArray: {
@@ -81,7 +84,14 @@ const MultipleLayerComponent = ({
 			handleClusterMouseOver(e, selectedMarker, allResultsWithLayerFilter),
 		);
 		clusterGroup.on("clusterclick", (e) =>
-			handleClusterClick(e, map, setSelectedMarker, allResultsWithLayerFilter),
+			handleClusterClick(
+				e,
+				map,
+				setSelectedMarker,
+				allResultsWithLayerFilter,
+				setSelectedTabMenu,
+				setIsPanelDisplayed,
+			),
 		);
 
 		return () => {
@@ -94,6 +104,8 @@ const MultipleLayerComponent = ({
 					map,
 					setSelectedMarker,
 					allResultsWithLayerFilter,
+					setSelectedTabMenu,
+					setIsPanelDisplayed,
 				),
 			);
 		};
@@ -102,9 +114,9 @@ const MultipleLayerComponent = ({
 	useEffect(() => {
 		if (!map) return;
 		if (selectedMarker) {
-			zoomOnSelectedMarkerCluster(map, selectedMarker);
+			zoomOnSelectedMarkerCluster(map, selectedMarker, mapInfos);
 		}
-	}, [map, selectedMarker]);
+	}, [map, selectedMarker, mapInfos]);
 
 	return (
 		<LayersControl position="bottomright">
