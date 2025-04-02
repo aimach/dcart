@@ -17,7 +17,6 @@ import style from "./markerComponent.module.scss";
 
 interface MarkerComponentProps {
 	point: PointType;
-	duplicatesCoordinates: string[];
 }
 
 /**
@@ -26,31 +25,20 @@ interface MarkerComponentProps {
  * @param {PointType} props.point - Le point à afficher
  * @returns
  */
-const MarkerComponent = ({
-	point,
-	duplicatesCoordinates,
-}: MarkerComponentProps) => {
+const MarkerComponent = ({ point }: MarkerComponentProps) => {
 	// récupération des données des stores
-	const { selectedMarker, setSelectedMarker, map, mapInfos, allLayers } =
-		useMapStore(
-			useShallow((state) => ({
-				selectedMarker: state.selectedMarker,
-				setSelectedMarker: state.setSelectedMarker,
-				map: state.map,
-				mapInfos: state.mapInfos,
-				allLayers: state.allLayers,
-			})),
-		);
+	const { selectedMarker, setSelectedMarker, map, mapInfos } = useMapStore(
+		useShallow((state) => ({
+			selectedMarker: state.selectedMarker,
+			setSelectedMarker: state.setSelectedMarker,
+			map: state.map,
+			mapInfos: state.mapInfos,
+		})),
+	);
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const position: LatLngExpression = [point.latitude, point.longitude];
 	const keyPoint = `${point.latitude}-${point.longitude}`;
-	if (duplicatesCoordinates.includes(keyPoint)) {
-		const layerIndex = allLayers.findIndex(
-			(layer) => layer === point.layerName,
-		);
-		// position = [point.latitude, point.longitude + 0.012 * layerIndex];
-	}
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur
 	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
@@ -58,7 +46,7 @@ const MarkerComponent = ({
 		setSelectedTabMenu("infos");
 		setIsPanelDisplayed?.(true);
 		// zoom sur le marker
-		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
+		// zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
 		setSelectedMarker(point);
 	};
 
@@ -74,6 +62,7 @@ const MarkerComponent = ({
 			key={keyPoint}
 			position={position}
 			icon={customIcon}
+			{...{ colorAndShape: { color: point.color, shape: point.shape } }}
 			eventHandlers={{
 				click: () => handleMarkerOnClick(map as LeafletMap, point),
 			}}

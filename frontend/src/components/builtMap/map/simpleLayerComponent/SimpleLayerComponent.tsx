@@ -6,10 +6,10 @@ import L from "leaflet";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import des services
 import { getBlendIcon } from "../../../../utils/functions/icons";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
-import style from "./simpleLayerChoice.module.scss";
 import "./simpleLayerChoice.css";
 
 type SimpleLayerComponentProps = {
@@ -19,28 +19,20 @@ type SimpleLayerComponentProps = {
 const SimpleLayerComponent = ({
 	allMemoizedPoints,
 }: SimpleLayerComponentProps) => {
-	const allPointColorsAndShapes = useMemo(() => {
-		const seenShapeAndColor = new Set();
-		const uniqueShapeAndColor = [];
-		for (const point of allMemoizedPoints) {
-			const shapeAndColor = `${point.shape}-${point.color}`;
-			if (!seenShapeAndColor.has(shapeAndColor)) {
-				seenShapeAndColor.add(shapeAndColor);
-				uniqueShapeAndColor.push(shapeAndColor);
-			}
-		}
-		return uniqueShapeAndColor;
-	}, [allMemoizedPoints]);
+	const { mapInfos } = useMapStore();
+	const createClusterCustomIcon = (cluster) => {
+		const markers = cluster.getAllChildMarkers();
 
-	const createClusterCustomIcon = () => {
-		const blendIcon = getBlendIcon(allPointColorsAndShapes);
+		const blendIcon = getBlendIcon(markers);
 		return L.divIcon({
 			html: `<div class="marker-cluster-custom">${blendIcon}</div>`,
 			className: "",
 			iconSize: L.point(32, 32, true),
 		});
 	};
-	return (
+
+	// si c'est la carte 'exploration', ne pas utiliser le clustering
+	return mapInfos ? (
 		<MarkerClusterGroup
 			spiderfyOnMaxZoom={true}
 			spiderfyOnEveryZoom={true}
@@ -57,6 +49,16 @@ const SimpleLayerComponent = ({
 				/>
 			))}
 		</MarkerClusterGroup>
+	) : (
+		<>
+			{allMemoizedPoints.map((point: PointType) => (
+				<MarkerComponent
+					key={point.key}
+					point={point}
+					duplicatesCoordinates={[]}
+				/>
+			))}
+		</>
 	);
 };
 

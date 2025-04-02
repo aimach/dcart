@@ -1,5 +1,5 @@
 // import des bibliothèques
-import L from "leaflet";
+import L, { Marker } from "leaflet";
 import tinycolor from "tinycolor2";
 // import des types
 import type { MapInfoType, PointType } from "../types/mapTypes";
@@ -421,15 +421,16 @@ const getShapeForLayerName = (
 	}
 };
 
-const getBlendIcon = (shapeAndColorArray: string[]) => {
-	let blendIcon = "";
-	for (const shapeAndColor of shapeAndColorArray) {
-		const shape = shapeAndColor.split("-")[0];
-		const color = shapeAndColor.split("-")[1];
+const getBlendIcon = (markers: Marker[]): string | undefined => {
+	const blendIcon: string[] = [];
+	for (const marker of markers) {
+		const color = marker.options.colorAndShape.color;
+		const shape = marker.options.colorAndShape.shape;
 		const customIcon = getShapeForLayerName(shape, "", color);
-		blendIcon += customIcon;
+		blendIcon.push(customIcon);
 	}
-	return blendIcon;
+
+	return blendIcon.join("");
 };
 
 export {

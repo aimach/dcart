@@ -2,7 +2,7 @@
 import { useEffect, useMemo, useRef } from "react";
 import { LayerGroup, LayersControl } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
-import L, { marker } from "leaflet";
+import L, { LatLngExpression } from "leaflet";
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import des services
@@ -11,7 +11,6 @@ import {
 	getBlendIcon,
 	getShapeForLayerName,
 } from "../../../../utils/functions/icons";
-import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
@@ -67,21 +66,10 @@ const MultipleLayerComponent = ({
 		});
 	}, [allLayers, allMemoizedPoints]);
 
-	const allPointColorsAndShapes = useMemo(() => {
-		const seenShapeAndColor = new Set();
-		const uniqueShapeAndColor = [];
-		for (const point of allResultsWithLayerFilter) {
-			const shapeAndColor = `${point.shape}-${point.color}`;
-			if (!seenShapeAndColor.has(shapeAndColor)) {
-				seenShapeAndColor.add(shapeAndColor);
-				uniqueShapeAndColor.push(shapeAndColor);
-			}
-		}
-		return uniqueShapeAndColor;
-	}, [allResultsWithLayerFilter]);
+	const createClusterCustomIcon = (cluster) => {
+		const markers = cluster.getAllChildMarkers();
 
-	const createClusterCustomIcon = (allPointColorsAndShapes: string[]) => {
-		const blendIcon = getBlendIcon(allPointColorsAndShapes);
+		const blendIcon = getBlendIcon(markers);
 		return L.divIcon({
 			html: `<div class="marker-cluster-custom">${blendIcon}</div>`,
 			className: "",
@@ -93,8 +81,6 @@ const MultipleLayerComponent = ({
 
 	useEffect(() => {
 		if (!map) return;
-		const clusterGroup = clusterRef.current;
-		if (!clusterGroup) return;
 
 		if (selectedMarker) {
 			const tooltip = L.tooltip({
@@ -105,6 +91,9 @@ const MultipleLayerComponent = ({
 				.setLatLng([selectedMarker.latitude, selectedMarker.longitude])
 				.setContent(selectedMarker.nom_ville)
 				.addTo(map);
+			map.flyTo([selectedMarker.latitude, selectedMarker.longitude], 11, {
+				animate: false,
+			});
 
 			// fermer le tooltip après 2s
 			setTimeout(() => map.closeTooltip(tooltip), 2000);
@@ -113,13 +102,13 @@ const MultipleLayerComponent = ({
 		const handleClusterClick = (e) => {
 			const cluster = e.layer;
 			const clusterPosition = cluster.getLatLng();
-			const pointPosition = allResultsWithLayerFilter.find(
+			const point = allResultsWithLayerFilter.find(
 				(point) =>
 					point.latitude === clusterPosition.lat &&
 					point.longitude === clusterPosition.lng,
 			);
-			const tooltipContent = pointPosition
-				? pointPosition.nom_ville
+			const tooltipContent = point
+				? point.nom_ville
 				: selectedMarker?.nom_ville;
 
 			cluster
@@ -134,7 +123,14 @@ const MultipleLayerComponent = ({
 			}
 		};
 
+		const clusterGroup = clusterRef.current;
+		if (!clusterGroup) return;
 		clusterGroup.on("clustermouseover", handleClusterClick);
+		clusterGroup.on("clusterclick", (e) => {
+			map.flyTo([point?.latitude as number, point?.longitude as number], 11, {
+				animate: false,
+			});
+		});
 
 		return () => {
 			clusterGroup.off("clustermouseover", handleClusterClick);
@@ -144,16 +140,14 @@ const MultipleLayerComponent = ({
 	return (
 		<LayersControl position="bottomright">
 			<MarkerClusterGroup
-				key={JSON.stringify(allPointColorsAndShapes)} // permet de forcer le re-render pour iconCreateFunction (sinon allPointColorsAndShapes est vide)
 				ref={clusterRef}
 				spiderfyOnMaxZoom={true}
 				spiderfyOnEveryZoom={true}
 				showCoverageOnHover={false}
+				zoomToBoundsOnClick={false}
 				disableClusteringAtZoom={12}
 				maxClusterRadius={1}
-				iconCreateFunction={() =>
-					createClusterCustomIcon(allPointColorsAndShapes)
-				}
+				iconCreateFunction={createClusterCustomIcon}
 			>
 				{allResultsWithLayerFilter.map((point, index) => {
 					const pointKey = `${point.latitude}-${point.longitude}-${index}`;

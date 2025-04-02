@@ -54,7 +54,7 @@ const ResultComponent = () => {
 		(result: PointType) => {
 			setSelectedMarker(result);
 			setSelectedTabMenu("infos");
-			zoomOnMarkerOnClick(map as LeafletMap, result as PointType);
+			// zoomOnMarkerOnClick(map as LeafletMap, result as PointType);
 		},
 		[map, setSelectedMarker, setSelectedTabMenu],
 	);
