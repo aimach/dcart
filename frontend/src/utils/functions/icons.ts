@@ -1,8 +1,16 @@
 // import des bibliothèques
 import L from "leaflet";
-import tinycolor from "tinycolor2";
 // import des types
-import type { MapInfoType, PointType } from "../types/mapTypes";
+import type { PointType } from "../types/mapTypes";
+import type { MarkerOptions, Marker } from "leaflet";
+
+interface CustomMarkerOptions extends MarkerOptions {
+	colorAndShape?: {
+		color: string;
+		shape: string;
+	};
+}
+import tinycolor from "tinycolor2";
 
 /**
  * Retourne une icone de taille petite
@@ -421,15 +429,32 @@ const getShapeForLayerName = (
 	}
 };
 
-const getBlendIcon = (shapeAndColorArray: string[]) => {
-	let blendIcon = "";
-	for (const shapeAndColor of shapeAndColorArray) {
-		const shape = shapeAndColor.split("-")[0];
-		const color = shapeAndColor.split("-")[1];
+const getBlendIcon = (markers: Marker[]): string | undefined => {
+	const blendIcon: string[] = [];
+	for (const marker of markers) {
+		const color = (marker.options as CustomMarkerOptions).colorAndShape?.color;
+		const shape = (marker.options as CustomMarkerOptions).colorAndShape?.shape;
 		const customIcon = getShapeForLayerName(shape, "", color);
-		blendIcon += customIcon;
+		blendIcon.push(customIcon);
 	}
-	return blendIcon;
+
+	return blendIcon.join("");
+};
+
+/**
+ * Fonction donnée au composant MarkerCluster pour créer une icône personnalisée
+ * @param {L.MarkerCluster} cluster - Le cluster
+ * @returns
+ */
+const createClusterCustomIcon = (cluster) => {
+	const markers = cluster.getAllChildMarkers();
+
+	const blendIcon = getBlendIcon(markers);
+	return L.divIcon({
+		html: `<div class="marker-cluster-custom">${blendIcon}</div>`,
+		className: "",
+		iconSize: L.point(32, 32, true),
+	});
 };
 
 export {
@@ -440,4 +465,5 @@ export {
 	getShapedDivContent,
 	getShapeForLayerName,
 	getBlendIcon,
+	createClusterCustomIcon,
 };

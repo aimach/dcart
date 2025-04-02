@@ -2,6 +2,7 @@
 import DOMPurify from "dompurify";
 import * as LucideIcons from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
+import L from "leaflet";
 // import des types
 import type { Language, TranslationType } from "../types/languageTypes";
 import type {
@@ -10,8 +11,10 @@ import type {
 	AgentType,
 	ParsedPointType,
 	MapType,
+	MenuTabType,
+	MapInfoType,
 } from "../types/mapTypes";
-import type { Map as LeafletMap } from "leaflet";
+import type { LatLng, Map as LeafletMap, Point } from "leaflet";
 import type { StorymapType } from "../types/storymapTypes";
 
 /**
@@ -215,6 +218,147 @@ const createLucideString = (
 	return svgString;
 };
 
+/**
+ * Fonction pour gérer le survol de la souris sur un cluster
+ * @param {Event} e - L'événement de la souris
+ */
+const handleClusterMouseOver = (
+	e: L.MarkerClusterMouseEvent,
+	selectedMarker: PointType | undefined,
+	allResults: PointType[],
+) => {
+	const cluster = e.layer;
+	const clusterPosition = cluster.getLatLng();
+	const point = allResults.find(
+		(point) =>
+			point.latitude === clusterPosition.lat &&
+			point.longitude === clusterPosition.lng,
+	);
+	const tooltipContent = point ? point.nom_ville : selectedMarker?.nom_ville;
+
+	cluster
+		.bindTooltip(tooltipContent, {
+			permanent: false,
+			direction: "top",
+			offset: L.point(10, -20),
+		})
+		.openTooltip();
+};
+
+/**
+ * Fonction pour gérer le clic sur un cluster
+ * @param {Event} e - L'événement de la souris
+ * @param {Map} map - La carte en cours
+ * @param {Function} setSelectedMarker - Fonction pour mettre à jour le marker sélectionné
+ */
+
+const handleClusterClick = (
+	e: L.MarkerClusterMouseEvent,
+	map: LeafletMap,
+	setSelectedMarker: (point: PointType) => void,
+	allResults: PointType[],
+	setSelectedTabMenu: (selectedTabMenu: MenuTabType) => void,
+	setIsPanelDisplayed: (isPanelDisplayed: boolean) => void,
+) => {
+	const cluster = e.layer;
+	const clickedLatLng = cluster.getLatLng();
+	map.flyTo(cluster.getLatLng(), 11, {
+		animate: false,
+	});
+	if (map.hasLayer(cluster)) {
+	}
+
+	const closestCluster = getClosestCluster(map, clickedLatLng);
+
+	const clusterPosition = cluster.getLatLng();
+	const selectedPoint = allResults.find(
+		(point) =>
+			point.latitude === clusterPosition.lat &&
+			point.longitude === clusterPosition.lng,
+	);
+
+	setSelectedMarker(selectedPoint as PointType);
+	setSelectedTabMenu("infos");
+	setIsPanelDisplayed(true);
+
+	if (closestCluster && map.hasLayer(closestCluster)) {
+		closestCluster.spiderfy();
+	}
+};
+
+/**
+ * Fonction pour modifier la position des points lors du spiderfying
+ * @param {number} count - Le nombre de points à afficher
+ * @param {PointType} centerPt - Le point central
+ */
+const handleSpiderfyPosition = (count: number, centerPt: Point) => {
+	const positions = [];
+	const radius = 40;
+	const startAngle = Math.PI; // 180°
+	const angleStep = Math.PI / (count - 1);
+
+	for (let i = 0; i < count; i++) {
+		const angle = startAngle - i * angleStep;
+		const x = centerPt.x + radius * Math.cos(angle);
+		const y = centerPt.y + radius * Math.sin(angle);
+		positions.push({ x, y });
+	}
+
+	return positions;
+};
+
+const zoomOnSelectedMarkerCluster = (
+	map: LeafletMap,
+	selectedMarker: PointType,
+	mapInfos: MapInfoType | null,
+) => {
+	map.flyTo([selectedMarker.latitude, selectedMarker.longitude], 11, {
+		animate: false,
+	});
+
+	if (mapInfos) {
+		const tooltip = L.tooltip({
+			direction: "top",
+			offset: L.point(10, -20),
+			permanent: false,
+		})
+			.setLatLng([selectedMarker.latitude, selectedMarker.longitude])
+			.setContent(selectedMarker.nom_ville)
+			.addTo(map);
+
+		// fermer le tooltip après 2s
+		setTimeout(() => map.closeTooltip(tooltip), 2000);
+	}
+
+	setTimeout(() => {
+		const clickedLatLng = L.latLng(
+			selectedMarker.latitude,
+			selectedMarker.longitude,
+		);
+		const closestCluster = getClosestCluster(map, clickedLatLng);
+
+		if (closestCluster && map.hasLayer(closestCluster)) {
+			closestCluster.spiderfy();
+		}
+	}, 300);
+};
+
+/**
+ * Fonction pour trouver le cluster le plus proche du point cliqué
+ * @param {Map} map - La carte en cours
+
+ */
+const getClosestCluster = (map: LeafletMap, clickedLatLng: LatLng) =>
+	Object.values(map._layers)
+		.filter((layer) => layer instanceof L.MarkerCluster)
+		.reduce((closest, layer) => {
+			const dist = clickedLatLng.distanceTo(layer.getLatLng());
+			if (!closest || dist < closest.dist) {
+				return { cluster: layer, dist };
+			}
+			return closest;
+		}, null)?.cluster;
+
 export {
 	getAgentsArrayWithoutDuplicates,
 	getAllAttestationsIdsFromParsedPoints,
@@ -225,4 +369,8 @@ export {
 	zoomOnMarkerOnClick,
 	getCreationAndModificationString,
 	createLucideString,
+	handleClusterMouseOver,
+	handleClusterClick,
+	handleSpiderfyPosition,
+	zoomOnSelectedMarkerCluster,
 };

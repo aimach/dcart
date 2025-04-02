@@ -1,23 +1,19 @@
 // import des bibliothèques
 import { Marker, Tooltip } from "react-leaflet";
 // import des services
-import {
-	isSelectedMarker,
-	zoomOnMarkerOnClick,
-} from "../../../../utils/functions/map";
+import { isSelectedMarker } from "../../../../utils/functions/map";
 import { getIcon } from "../../../../utils/functions/icons";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useShallow } from "zustand/shallow";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
-import type { LatLngExpression, Map as LeafletMap } from "leaflet";
+import type { LatLngExpression } from "leaflet";
 // import du style
 import style from "./markerComponent.module.scss";
 
 interface MarkerComponentProps {
 	point: PointType;
-	duplicatesCoordinates: string[];
 }
 
 /**
@@ -26,39 +22,26 @@ interface MarkerComponentProps {
  * @param {PointType} props.point - Le point à afficher
  * @returns
  */
-const MarkerComponent = ({
-	point,
-	duplicatesCoordinates,
-}: MarkerComponentProps) => {
+const MarkerComponent = ({ point }: MarkerComponentProps) => {
 	// récupération des données des stores
-	const { selectedMarker, setSelectedMarker, map, mapInfos, allLayers } =
-		useMapStore(
-			useShallow((state) => ({
-				selectedMarker: state.selectedMarker,
-				setSelectedMarker: state.setSelectedMarker,
-				map: state.map,
-				mapInfos: state.mapInfos,
-				allLayers: state.allLayers,
-			})),
-		);
+	const { selectedMarker, setSelectedMarker, mapInfos } = useMapStore(
+		useShallow((state) => ({
+			selectedMarker: state.selectedMarker,
+			setSelectedMarker: state.setSelectedMarker,
+			mapInfos: state.mapInfos,
+		})),
+	);
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const position: LatLngExpression = [point.latitude, point.longitude];
 	const keyPoint = `${point.latitude}-${point.longitude}`;
-	if (duplicatesCoordinates.includes(keyPoint)) {
-		const layerIndex = allLayers.findIndex(
-			(layer) => layer === point.layerName,
-		);
-		// position = [point.latitude, point.longitude + 0.012 * layerIndex];
-	}
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur
-	const handleMarkerOnClick = (map: LeafletMap, point: PointType) => {
+	const handleMarkerOnClick = (point: PointType) => {
 		// ouverture de l'onglet "infos"
 		setSelectedTabMenu("infos");
 		setIsPanelDisplayed?.(true);
-		// zoom sur le marker
-		zoomOnMarkerOnClick(map as LeafletMap, point as PointType);
+
 		setSelectedMarker(point);
 	};
 
@@ -74,8 +57,9 @@ const MarkerComponent = ({
 			key={keyPoint}
 			position={position}
 			icon={customIcon}
+			{...{ colorAndShape: { color: point.color, shape: point.shape } }}
 			eventHandlers={{
-				click: () => handleMarkerOnClick(map as LeafletMap, point),
+				click: () => handleMarkerOnClick(point),
 			}}
 		>
 			<Tooltip direction="top" offset={[0, -10]}>
