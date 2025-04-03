@@ -27,10 +27,9 @@ import type Quill from "quill";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./introForm.module.scss";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
+import { notifyCreateSuccess } from "../../../../utils/functions/toast";
+import { getAllPublishedStorymaps } from "../../../../utils/api/storymap/getRequests";
+import { StorymapType } from "../../../../utils/types/storymapTypes";
 
 type IntroFormProps = {
 	inputs: InputType[];
@@ -113,9 +112,26 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 					input.options = formatedCategoryOptions;
 				}
 			}
+			true;
+		};
+		const getPublishedStorymaps = async () => {
+			const allPublishedStorymaps = await getAllPublishedStorymaps();
+			const formatedStorymapOptions: OptionType[] = allPublishedStorymaps.map(
+				(storymap: StorymapType) => ({
+					value: storymap.id,
+					label: storymap.title_lang1,
+				}),
+			);
+
+			for (const input of inputs) {
+				if (input.name === "relatedStorymap") {
+					input.options = formatedStorymapOptions;
+				}
+			}
 			setDataLoaded(true);
 		};
 		getCategoryOptions();
+		getPublishedStorymaps();
 	}, [language]);
 
 	// WYSIWYG

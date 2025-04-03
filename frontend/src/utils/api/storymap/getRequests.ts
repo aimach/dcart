@@ -20,6 +20,17 @@ const getStorymapInfosAndBlocks = async (storymapId: string) => {
 	}
 };
 
+const getAllPublishedStorymaps = async () => {
+	try {
+		const response = await apiClient.get(
+			"/storymap/storymap/all?isActive=true",
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement storymaps publiées :", error);
+	}
+};
+
 // ----------- CATEGORIES
 
 /**
@@ -112,4 +123,5 @@ export {
 	updateBlocksPosition,
 	getBlockInfos,
 	getAllStorymapLanguages,
+	getAllPublishedStorymaps,
 };

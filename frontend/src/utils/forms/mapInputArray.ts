@@ -101,6 +101,20 @@ const firstStepInputs: InputType[] = [
 			},
 		},
 	},
+	{
+		label_fr: "Storymap associée",
+		label_en: "Associated storymap",
+		description_fr:
+			"La storymap associée à la carte (affichée dans la modale d'introduction).",
+		description_en:
+			"The associated storymap to the map (displayed in the introduction modal).",
+		name: "relatedStorymap",
+		type: "select",
+		options: [{ value: "0", label: "Choisir une storymap" }],
+		required: {
+			value: false,
+		},
+	},
 ];
 
 const mapInputs: InputType[] = [

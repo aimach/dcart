@@ -18,7 +18,7 @@ export const storymapContentControllers = {
 	getStorymapById: async (req: Request, res: Response): Promise<void> => {
 		try {
 			if (req.params.id === "all") {
-				const allStorymaps = await dcartDataSource
+				const query = await dcartDataSource
 					.getRepository(Storymap)
 					.createQueryBuilder("storymap")
 					.leftJoinAndSelect("storymap.category", "category")
@@ -41,9 +41,15 @@ export const storymapContentControllers = {
 						"step_point",
 						"creator.pseudo",
 						"modifier.pseudo",
-					])
+					]);
+				if (req.query.isActive) {
+					const isActive = req.query.isActive === "true";
+					query.where("storymap.isActive = :isActive", { isActive });
+				}
+				const allStorymaps = await query
 					.orderBy("block.position", "ASC")
 					.getMany();
+
 				res.status(200).send(allStorymaps);
 				return;
 			}

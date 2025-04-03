@@ -15,33 +15,7 @@ export const mapContentController = {
 			const { mapId } = req.params;
 
 			if (mapId === "all") {
-				if (req.query.isActive) {
-					const isActive = req.query.isActive === "true";
-					const allMaps = await dcartDataSource
-						.getRepository(MapContent)
-						.createQueryBuilder("map")
-						.leftJoinAndSelect("map.category", "category")
-						.leftJoinAndSelect("map.creator", "creator")
-						.leftJoinAndSelect("map.modifier", "modifier")
-						.leftJoinAndSelect("map.filters", "filters")
-						.leftJoinAndSelect("map.attestations", "attestations")
-						.leftJoinAndSelect("attestations.icon", "icon")
-						.select([
-							"map",
-							"filters",
-							"category",
-							"attestations",
-							"attestations.icon",
-							"creator.pseudo",
-							"modifier.pseudo",
-						])
-						.where("map.isActive = :isActive", { isActive })
-						.getMany();
-
-					res.status(200).send(allMaps);
-					return;
-				}
-				const allMaps = await dcartDataSource
+				const query = await dcartDataSource
 					.getRepository(MapContent)
 					.createQueryBuilder("map")
 					.leftJoinAndSelect("map.category", "category")
@@ -58,8 +32,14 @@ export const mapContentController = {
 						"attestations.icon",
 						"creator.pseudo",
 						"modifier.pseudo",
-					])
-					.getMany();
+					]);
+
+				if (req.query.isActive) {
+					const isActive = req.query.isActive === "true";
+					query.where("map.isActive = :isActive", { isActive });
+				}
+				const allMaps = await query.getMany();
+
 				res.status(200).send(allMaps);
 				return;
 			}
