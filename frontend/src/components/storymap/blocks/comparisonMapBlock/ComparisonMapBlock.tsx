@@ -19,6 +19,7 @@ import style from "./comparisonMapBloc.module.scss";
 import "./comparisonMapBloc.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-side-by-side";
+import { getBackGroundColorClassName } from "../../../../utils/functions/map";
 
 interface ComparisonMapBlockProps {
 	blockContent: BlockContentType;
@@ -61,7 +62,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 			const icon = getDefaultIcon(
 				point.attestations.length,
 				style,
-				point.pane === "left" ? "red" : "blue",
+				getBackGroundColorClassName(point.attestations.length),
 				point.attestations.length.toString(),
 			);
 			L.marker([point.latitude, point.longitude], {
