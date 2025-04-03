@@ -102,6 +102,18 @@
   }
 }
 
+.storymapLinkContainer {
+  @include m.flexbox(flex, row, nowrap, center, center);
+  gap: v.$space-xs;
+  color: v.$color-umber;
+
+  >a {
+    font-size: v.$font-size-s;
+    text-decoration: none;
+    color: v.$color-umber !important; // forcer la couleur sinon le style de leaflet est prioritaire;
+  }
+}
+
 
 
 .demoModal {

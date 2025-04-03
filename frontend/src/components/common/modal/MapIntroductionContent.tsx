@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useMemo } from "react";
-import { useParams } from "react-router";
+import { Link, useParams } from "react-router";
 import DOMPurify from "dompurify";
 // import des composants
 import SearchFormComponent from "../../builtMap/map/searchFormComponent/SearchFormComponent";
@@ -16,6 +16,7 @@ import type { Dispatch, SetStateAction } from "react";
 import style from "./modalComponent.module.scss";
 // import des images
 import delta from "../../../assets/delta.png";
+import { ChevronRightCircle } from "lucide-react";
 
 interface MapIntroductionContentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -75,6 +76,14 @@ const MapIntroductionContent = ({
 							setIsModalOpen(false);
 						}}
 					/>
+					{mapInfos.relatedStorymap && (
+						<div className={style.storymapLinkContainer}>
+							<ChevronRightCircle />
+							<Link to={`/storymap/${mapInfos.relatedStorymap}`}>
+								{translation[language].modal.associatedStorymap}
+							</Link>
+						</div>
+					)}
 				</div>
 			)}
 		</>

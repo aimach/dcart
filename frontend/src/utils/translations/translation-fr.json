@@ -66,7 +66,8 @@
 		"no": "non",
 		"deleteBlockText": "Êtes-vous sûr de vouloir supprimer ce bloc ?",
 		"deteleStorymapText": "Êtes-vous sûr de vouloir supprimer cette storymap ?",
-		"deteleMapText": "Êtes-vous sûr de vouloir supprimer cette carte ?"
+		"deteleMapText": "Êtes-vous sûr de vouloir supprimer cette carte ?",
+		"associatedStorymap": "Voir la storymap associée"
 	},
 	"mapPage": {
 		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",

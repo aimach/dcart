@@ -69,6 +69,7 @@ type LanguageObject = {
 		deleteBlockText: string;
 		deteleStorymapText: string;
 		deteleMapText: string;
+		associatedStorymap: string;
 	};
 	mapPage: {
 		introduction: string;

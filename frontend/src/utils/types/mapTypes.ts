@@ -75,6 +75,7 @@ type MapInfoType = {
 	filters?: Record<string, string>[];
 	isLayered: boolean;
 	isNbDisplayed: boolean;
+	relatedStorymap?: string;
 };
 
 type MapType = {
