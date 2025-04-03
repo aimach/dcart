@@ -2,6 +2,7 @@
 import Joi from "joi";
 // import des types
 import type { Request, Response, NextFunction } from "express";
+import { pointSchema } from "./point";
 
 const blockToCreateSchema = Joi.object({
 	id: Joi.string().uuid().optional(),
@@ -71,6 +72,7 @@ export const blockToEditSchema = Joi.object({
 			}),
 		)
 		.optional(),
+	points: Joi.array().items(pointSchema).optional(),
 	storymapId: Joi.string().uuid().required().messages({
 		"any.required": "Le champ storymapId est requis",
 		"string.base": "Le champ 'storymapId' doit être un uuid",
