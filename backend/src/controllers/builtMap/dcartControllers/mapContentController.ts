@@ -75,6 +75,7 @@ export const mapContentController = {
 				description_fr,
 				image_url,
 				category,
+				relatedStorymap,
 			} = req.body;
 
 			const { userId } = req.user as jwt.JwtPayload;
@@ -88,6 +89,8 @@ export const mapContentController = {
 				description_en,
 				description_fr,
 				image_url,
+				relatedStorymap,
+
 				category: category,
 				creator: userId,
 				uploadPointsLastDate: currentDate,

@@ -14,6 +14,8 @@ import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore"
 import { useShallow } from "zustand/shallow";
 import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
 import { updateMap } from "../../../../utils/api/builtMap/putRequests";
+import { notifyCreateSuccess } from "../../../../utils/functions/toast";
+import { getAllPublishedStorymaps } from "../../../../utils/api/storymap/getRequests";
 // import des types
 import type { FieldErrors, SubmitHandler } from "react-hook-form";
 import type { InputType } from "../../../../utils/types/formTypes";
@@ -22,14 +24,12 @@ import type {
 	CategoryType,
 	MapInfoType,
 } from "../../../../utils/types/mapTypes";
+import type { StorymapType } from "../../../../utils/types/storymapTypes";
 import type { TranslationType } from "../../../../utils/types/languageTypes";
 import type Quill from "quill";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./introForm.module.scss";
-import { notifyCreateSuccess } from "../../../../utils/functions/toast";
-import { getAllPublishedStorymaps } from "../../../../utils/api/storymap/getRequests";
-import { StorymapType } from "../../../../utils/types/storymapTypes";
 
 type IntroFormProps = {
 	inputs: InputType[];
