@@ -1,6 +1,6 @@
 // import des bibliothèques
-import { useState, useContext } from "react";
-import { Link, useParams } from "react-router";
+import { useState, useContext, useEffect } from "react";
+import { Link, useLocation, useParams } from "react-router";
 import {
 	DndContext,
 	PointerSensor,
@@ -45,6 +45,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./storymapIntroPage.module.scss";
+import { ChevronRight, ChevronRightCircle } from "lucide-react";
 
 /**
  * Page d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.
@@ -67,6 +68,14 @@ const StorymapIntroPage = () => {
 	const { isDeleteModalOpen, closeDeleteModal } = useModalStore();
 
 	const { storymapId } = useParams();
+
+	const { state } = useLocation();
+	useEffect(() => {
+		if (!state) return;
+		if (state?.from.includes("/storymaps/view/")) {
+			setStep(2);
+		}
+	}, [state]);
 
 	// définition du formulaire à afficher
 	let formComponent: JSX.Element = <BlockChoiceForm />;
@@ -159,7 +168,7 @@ const StorymapIntroPage = () => {
 						onKeyUp={() => setStep(1)}
 						className={step === 1 ? style.isSelected : ""}
 					>
-						Introduction
+						{step === 1 && <ChevronRightCircle />} Introduction
 					</li>
 					{storymapId !== "create" && (
 						<li
@@ -173,7 +182,7 @@ const StorymapIntroPage = () => {
 							}}
 							className={step === 2 ? style.isSelected : ""}
 						>
-							Blocs
+							{step === 2 && <ChevronRightCircle />}Blocs
 						</li>
 					)}
 				</ul>

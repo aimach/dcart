@@ -6,6 +6,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import style from "./textBlock.module.scss";
 import "quill/dist/quill.snow.css";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
+import { getAllowedTags } from "../../../../utils/functions/block";
 
 interface TextBlockProps {
 	blockContent: BlockContentType;
@@ -18,31 +19,7 @@ const TextBlock = ({ blockContent }: TextBlockProps) => {
 	// nettoyage du texte avec DOMPurify
 	const sanitizedText = DOMPurify.sanitize(
 		blockContent[`content1_${selectedLanguage}`],
-		{
-			ALLOWED_TAGS: [
-				"p",
-				"b",
-				"i",
-				"u",
-				"strong",
-				"em",
-				"a",
-				"ul",
-				"ol",
-				"li",
-				"br",
-				"span",
-				"h1",
-				"h2",
-				"h3",
-				"h4",
-				"h5",
-				"h6",
-				"blockquote",
-				"pre",
-			],
-			ALLOWED_ATTR: ["href", "target", "rel", "class", "style"],
-		},
+		getAllowedTags(),
 	);
 
 	return (

@@ -257,9 +257,35 @@ const textInputs: InputType[] = [
 
 const linkInputs: InputType[] = [
 	{
+		label_fr: "Texte du lien en langue 1",
+		label_en: "Text of the link in language 1",
+		name: "content1_lang1",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le texte du lien est requis",
+				en: "The link text is required",
+			},
+		},
+	},
+	{
+		label_fr: "Texte du lien en langue 2",
+		label_en: "Text of the link in language 2",
+		name: "content1_lang2",
+		type: "text",
+		required: {
+			value: true,
+			message: {
+				fr: "Le texte du lien est requis",
+				en: "The link text is required",
+			},
+		},
+	},
+	{
 		label_fr: "Lien",
 		label_en: "Link",
-		name: "content1_lang1",
+		name: "content2_lang1",
 		type: "text",
 		required: {
 			value: true,

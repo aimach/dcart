@@ -12,7 +12,7 @@ export const pointRoutes = express.Router();
 pointRoutes.post(
 	"/:mapId",
 	authenticateUser,
-	validatePointsBody,
+	// validatePointsBody,
 	pointController.createNewPoints,
 );
 

@@ -13,12 +13,21 @@ export const pointSchema = Joi.object({
 	latitude: Joi.number().precision(6).optional().allow(null),
 	longitude: Joi.number().precision(6).optional().allow(null),
 	pane: Joi.string().optional().allow(null),
-	location: Joi.string().required(),
+	location: Joi.string().optional(),
 	sub_region: Joi.string().optional().allow(null),
 	title_en: Joi.string().optional().allow(null),
 	title_fr: Joi.string().optional().allow(null),
 	translation_fr: Joi.string().optional().allow(null),
+	translation_en: Joi.string().optional().allow(null),
 	transliteration: Joi.string().optional().allow(null),
+});
+
+export const groupedPoint = Joi.object({
+	attestations: Joi.array().items(pointSchema).optional(),
+	latitude: Joi.number().precision(6).optional().allow(null),
+	longitude: Joi.number().precision(6).optional().allow(null),
+	pane: Joi.string().optional().allow(null),
+	color: Joi.string().optional().allow(null),
 });
 
 const parsedPointsSchema = Joi.object({

@@ -13,11 +13,13 @@ import type {
 	BlockContentType,
 	GroupedTyped,
 } from "../../../../utils/types/storymapTypes";
+import type { LatLngTuple } from "leaflet";
 // import du style
 import style from "./comparisonMapBloc.module.scss";
 import "./comparisonMapBloc.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-side-by-side";
+import { getBackGroundColorClassName } from "../../../../utils/functions/map";
 
 interface ComparisonMapBlockProps {
 	blockContent: BlockContentType;
@@ -30,10 +32,13 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 	const mapName = useMemo(() => `comparison-map-${uuidv4}`, []);
 
 	useEffect(() => {
-		const position: L.LatLngExpression = [33.39, 35.55];
+		const bounds: LatLngTuple[] = blockContent.groupedPoints?.map(
+			(point) => [point.latitude, point.longitude] as LatLngTuple,
+		);
 		const comparisonMap = L.map(mapName, {
 			scrollWheelZoom: false,
-		}).setView(position, 6);
+		});
+		comparisonMap.fitBounds(bounds);
 
 		comparisonMap.createPane("left");
 		comparisonMap.createPane("right");
@@ -41,7 +46,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 		const attribution =
 			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
-		const rightLayer = L.tileLayer(blockContent.content1_lang2, {
+		const rightLayer = L.tileLayer(blockContent.content2_lang2, {
 			pane: "right",
 			attribution,
 		}).addTo(comparisonMap);
@@ -57,7 +62,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 			const icon = getDefaultIcon(
 				point.attestations.length,
 				style,
-				point.pane === "left" ? "red" : "blue",
+				getBackGroundColorClassName(point.attestations.length),
 				point.attestations.length.toString(),
 			);
 			L.marker([point.latitude, point.longitude], {

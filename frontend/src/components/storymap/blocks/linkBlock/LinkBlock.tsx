@@ -14,7 +14,11 @@ const LinkBlock = ({ blockContent }: LinkBlockProps) => {
 	const { selectedLanguage } = useStorymapLanguageStore();
 
 	return (
-		<a href={blockContent[`content2_${selectedLanguage}`]}>
+		<a
+			href={blockContent[`content2_${selectedLanguage}`]}
+			target="_blank"
+			rel="noopener noreferrer"
+		>
 			{blockContent[`content1_${selectedLanguage}`]}
 		</a>
 	);

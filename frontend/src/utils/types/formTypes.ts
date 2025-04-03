@@ -26,6 +26,7 @@ type blockType = {
 	storymapId?: string;
 	typeId?: string;
 	typeName?: string;
+	children?: blockType[];
 };
 
 type parsedPointType = {
