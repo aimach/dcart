@@ -225,7 +225,9 @@ const ComparisonMapForm = () => {
 					<button
 						type="submit"
 						disabled={
-							parsedPoints.left.length === 0 || parsedPoints.right.length === 0
+							action === "create" &&
+							(parsedPoints.left.length === 0 ||
+								parsedPoints.right.length === 0)
 						}
 					>
 						{action === "create"

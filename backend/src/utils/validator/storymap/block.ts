@@ -2,7 +2,7 @@
 import Joi from "joi";
 // import des types
 import type { Request, Response, NextFunction } from "express";
-import { pointSchema } from "./point";
+import { groupedPoint, pointSchema } from "./point";
 
 const blockToCreateSchema = Joi.object({
 	id: Joi.string().uuid().optional(),
@@ -78,7 +78,7 @@ export const blockToEditSchema = Joi.object({
 		"string.base": "Le champ 'storymapId' doit être un uuid",
 	}),
 	parentId: Joi.string().uuid().optional().allow(null),
-	groupedPoints: Joi.array().items(pointSchema).optional(),
+	groupedPoints: Joi.array().items(groupedPoint).optional(),
 });
 
 export const validateEditBlockBody = (
