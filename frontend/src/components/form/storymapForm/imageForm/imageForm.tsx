@@ -69,7 +69,6 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
 		} else if (action === "edit") {
 			await updateBlock(
 				{
-					...block,
 					...data,
 					content1_lang2: data.content1_lang1, // permet de ne pas avoir 2 inputs pour la même information
 					parentId,

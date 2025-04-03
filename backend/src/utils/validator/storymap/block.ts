@@ -55,7 +55,7 @@ export const blockToEditSchema = Joi.object({
 	content1_lang2: Joi.string().required(),
 	content2_lang1: Joi.string().optional().allow(null),
 	content2_lang2: Joi.string().optional().allow(null),
-	position: Joi.number().integer().required(),
+	position: Joi.number().integer().optional().allow(null),
 	createdAt: Joi.date().iso().required(),
 	updatedAt: Joi.date().iso().required(),
 	type: Joi.object({
@@ -78,6 +78,7 @@ export const blockToEditSchema = Joi.object({
 		"string.base": "Le champ 'storymapId' doit être un uuid",
 	}),
 	parentId: Joi.string().uuid().optional().allow(null),
+	groupedPoints: Joi.array().items(pointSchema).optional(),
 });
 
 export const validateEditBlockBody = (

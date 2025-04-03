@@ -14,10 +14,7 @@ import {
 } from "../../../../utils/api/storymap/postRequests";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
-import type {
-	BlockContentType,
-	StorymapType,
-} from "../../../../utils/types/storymapTypes";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 import {
 	notifyCreateSuccess,
@@ -66,7 +63,6 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 		} else if (action === "edit") {
 			await updateBlock(
 				{
-					...block,
 					...data,
 					parentId,
 					storymapId: storymapId,

@@ -65,6 +65,8 @@ const LayoutForm = () => {
 		} else if (action === "edit") {
 			const response = await updateBlock(
 				{
+					...block,
+					children: [],
 					content1_lang1: position,
 					content1_lang2: position,
 					storymapId: storymapId,

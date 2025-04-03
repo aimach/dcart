@@ -1,6 +1,6 @@
 // import des bibiliothèques
 import { useEffect, useState } from "react";
-import { useLocation, useParams } from "react-router";
+import { Link, useLocation, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import StorymapIntroduction from "../../../../components/storymap/blocks/storymapIntroduction/StorymapIntroduction";
@@ -108,15 +108,18 @@ const StorymapPage = () => {
 				<div className={style.storymapHeaderContainer}>
 					<div>
 						{location.pathname.includes("storymaps/view/") && (
-							<ButtonComponent
-								type="route"
-								textContent={
-									translation[language].backoffice.storymapFormPage.backToEdit
-								}
-								color="gold"
-								link={`/backoffice/storymaps/${storymapId}`}
-								onClickFunction={() => updateFormType("blockChoice")}
-							/>
+							<Link
+								to={`/backoffice/storymaps/${storymapId}`}
+								state={{ from: location.pathname }}
+							>
+								<ButtonComponent
+									type="button"
+									textContent={
+										translation[language].backoffice.storymapFormPage.backToEdit
+									}
+									color="gold"
+								/>
+							</Link>
 						)}
 					</div>
 					<ul className={style.languageSelectionContainer}>

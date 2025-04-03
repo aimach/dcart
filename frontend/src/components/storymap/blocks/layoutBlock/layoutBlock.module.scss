@@ -6,17 +6,41 @@
 }
 
 .left {
-    section:first-of-type {
+
+    >figure {
         float: left;
+        margin-right: v.$space-s;
         margin-bottom: v.$space-s;
-        margin-right: v.$space-xl;
+        @include m.flexbox(flex, column, nowrap, center, center);
+        max-width: 50%;
+
+        >img {
+            width: 80%;
+
+        }
+
+        >figcaption {
+            padding-top: v.$space-xs;
+            font-style: italic;
+        }
     }
 }
 
 .right {
-    section:first-of-type {
+    >figure {
         float: right;
+        margin-left: v.$space-s;
         margin-bottom: v.$space-s;
-        margin-left: v.$space-xl;
+        @include m.flexbox(flex, column, nowrap, center, center);
+        max-width: 50%;
+
+        >img {
+            width: 80%;
+        }
+
+        >figcaption {
+            padding-top: v.$space-xs;
+            font-style: italic;
+        }
     }
 }

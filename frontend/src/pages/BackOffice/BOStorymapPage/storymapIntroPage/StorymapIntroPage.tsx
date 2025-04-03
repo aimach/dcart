@@ -1,6 +1,6 @@
 // import des bibliothèques
-import { useState, useContext } from "react";
-import { Link, useParams } from "react-router";
+import { useState, useContext, useEffect } from "react";
+import { Link, useLocation, useParams } from "react-router";
 import {
 	DndContext,
 	PointerSensor,
@@ -67,6 +67,14 @@ const StorymapIntroPage = () => {
 	const { isDeleteModalOpen, closeDeleteModal } = useModalStore();
 
 	const { storymapId } = useParams();
+
+	const { state } = useLocation();
+	useEffect(() => {
+		if (!state) return;
+		if (state?.from.includes("/storymaps/view/")) {
+			setStep(2);
+		}
+	}, [state]);
 
 	// définition du formulaire à afficher
 	let formComponent: JSX.Element = <BlockChoiceForm />;

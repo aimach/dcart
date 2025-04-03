@@ -127,10 +127,46 @@ const addPanelToPoints = (points: Record<string, parsedPointType[]>) => {
 	}, []);
 };
 
+/**
+ * Fonction pour avoir les tags et attributs autorisés par DOMPurify
+ * @returns { ALLOWED_TAGS: string[]; ALLOWED_ATTR: string[] }
+ */
+const getAllowedTags = () => {
+	return {
+		ALLOWED_TAGS: [
+			"p",
+			"b",
+			"s",
+			"i",
+			"u",
+			"strong",
+			"em",
+			"a",
+			"ul",
+			"ol",
+			"li",
+			"sub",
+			"sup",
+			"br",
+			"span",
+			"h1",
+			"h2",
+			"h3",
+			"h4",
+			"h5",
+			"h6",
+			"blockquote",
+			"pre",
+		],
+		ALLOWED_ATTR: ["href", "target", "rel", "class", "style"],
+	};
+};
+
 export {
 	addPanelToPoints,
 	requiredBlockKeys,
 	getPreviewText,
 	getTypeIcon,
 	normalizeBody,
+	getAllowedTags,
 };
