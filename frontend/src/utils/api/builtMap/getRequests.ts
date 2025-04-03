@@ -81,9 +81,11 @@ const getAllGreatRegions = async () => {
  * Récupère les informations de toutes les cartes qui sont actives
  * @returns {Promise} - Toutes les informations des cartes actives
  */
-const getAllMapsInfos = async () => {
+const getAllMapsInfos = async (isActive: boolean) => {
 	try {
-		const response = await apiClient.get("/dcart/maps/all");
+		let url = "/dcart/maps/all";
+		if (isActive) url += "?isActive=true";
+		const response = await apiClient.get(url);
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des cartes :", error);

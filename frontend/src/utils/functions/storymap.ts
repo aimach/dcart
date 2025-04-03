@@ -1,5 +1,6 @@
 import type { InputType } from "../types/formTypes";
 import type { Language } from "../types/languageTypes";
+import { MapType } from "../types/mapTypes";
 import type {
 	CategoryType,
 	StorymapLanguageType,
@@ -46,7 +47,7 @@ const createCategoryOptions = (
  * Fonction pour créer les options du select des langues
  * @param languageArray - la liste des langues de la BDD
  * @param inputs - les inputs du formulaire
- * @returns un tableau contenant les inputs mis à jour avec la liste des options des catégories
+ * @returns un tableau contenant les inputs mis à jour avec la liste des options des langues
  */
 const createLanguageOptions = (
 	languageArray: StorymapLanguageType[],
@@ -84,6 +85,42 @@ const createLanguageOptions = (
 };
 
 /**
+ * Fonction pour créer les options du select des cartes associées
+ * @param mapArray - la liste des cartes publiées
+ * @param inputs - les inputs du formulaire
+ * @returns un tableau contenant les inputs mis à jour avec la liste des options des cartes
+ */
+const createMapOptions = (
+	mapArray: MapType[],
+	inputs: InputType[],
+	language: Language,
+) => {
+	if (mapArray.length > 0) {
+		// préparation des catégories pour les inputs
+		const mapOptionArray = mapArray.map((map) => ({
+			value: map.id,
+			label: map[`title_${language}`],
+		}));
+
+		// récupération de l'id de l'input des catégories
+		const mapInputIndex = inputs
+			.map((input) => input.name)
+			.indexOf("relatedMap");
+
+		// insertion des nouvelles données
+		inputs[mapInputIndex].options = [
+			{
+				value: "0",
+				label: "Choisissez une carte à associer",
+			},
+			...mapOptionArray,
+		];
+		return [...inputs];
+	}
+	return [];
+};
+
+/**
  * Fonction qui définit l'emoji à ajouter à l'option de langue
  * @param language - la langue
  * @returns l'emoji correspondant à la langue
@@ -103,4 +140,9 @@ const getFlagEmoji = (language: string) => {
 	}
 };
 
-export { createCategoryOptions, createLanguageOptions, getFlagEmoji };
+export {
+	createCategoryOptions,
+	createLanguageOptions,
+	getFlagEmoji,
+	createMapOptions,
+};

@@ -71,6 +71,8 @@ const CommonForm = ({
 		defaultValues: defaultValues ?? {},
 	});
 
+	console.log(defaultValues);
+
 	// si des valeurs par défaut sont passées, injection dans l'input des catégories
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
@@ -83,6 +85,13 @@ const CommonForm = ({
 				setValue("lang1", (defaultValues as StorymapType).lang1.id as string);
 			if ((defaultValues as StorymapType).lang2)
 				setValue("lang2", (defaultValues as StorymapType).lang2.id as string);
+			if ((defaultValues as StorymapType).relatedMap)
+				setValue(
+					"relatedMap",
+					(defaultValues as StorymapType).relatedMap !== ""
+						? ((defaultValues as StorymapType).relatedMap as string)
+						: "0",
+				);
 		}
 	}, [defaultValues]);
 

@@ -166,6 +166,20 @@ const storymapInputs: InputType[] = [
 			},
 		},
 	},
+	{
+		label_fr: "Carte associée à la storymap",
+		label_en: "Map associated with the storymap",
+		description_fr:
+			"L'utilisateur pourra accéder à la carte associée à la storymap via un lien en haut de la storymap. Inversement, le lien de la storymap sera affiché dans la modale d'introduction de la carte",
+		description_en:
+			"The user will be able to access the map associated with the storymap via a link at the top of the storymap. Conversely, the link to the storymap will be displayed in the introduction modal of the map",
+		name: "relatedMap",
+		type: "select",
+		options: [],
+		required: {
+			value: false,
+		},
+	},
 ];
 
 const titleInput: InputType[] = [
