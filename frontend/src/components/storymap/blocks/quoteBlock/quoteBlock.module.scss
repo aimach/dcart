@@ -3,11 +3,15 @@
 
 .quoteBlockContainer {
     width: 70vw;
-    background-color: v.$color-neutral-80;
+    background-color: v.$color-grullo-light;
 
     p:first-child {
         font-style: italic;
         font-size: v.$font-size-xxl;
+    }
+
+    p:last-child {
+        text-align: right;
     }
 
     p {
