@@ -31,6 +31,25 @@ const getAllPublishedStorymaps = async () => {
 	}
 };
 
+/**
+ * Fonction qui récupère l'id de la carte associée à la storymap ou renvoie null
+ * @param storymapId l'id de la storymap
+ * @returns {string | null} l'id de la carte associée ou null
+ */
+const getRelatedMapId = async (storymapId: string) => {
+	try {
+		const response = await apiClient.get(
+			`/dcart/maps/${storymapId}?relatedMap=true`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Erreur lors du chargement de l'id de la carte associée à la storymap :",
+			error,
+		);
+	}
+};
+
 // ----------- CATEGORIES
 
 /**
@@ -124,4 +143,5 @@ export {
 	getBlockInfos,
 	getAllStorymapLanguages,
 	getAllPublishedStorymaps,
+	getRelatedMapId,
 };

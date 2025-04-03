@@ -14,6 +14,17 @@
     height: 100px;
 }
 
+.linkAndLanguageContainer {
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$space-l;
+
+    .mapLinkContainer {
+        @include m.flexbox(flex, row, nowrap, center, center);
+        gap: v.$space-xs;
+
+    }
+}
+
 .languageSelectionContainer {
     list-style-type: none;
     padding-left: 0;

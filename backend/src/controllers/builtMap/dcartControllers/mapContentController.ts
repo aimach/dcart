@@ -14,6 +14,17 @@ export const mapContentController = {
 		try {
 			const { mapId } = req.params;
 
+			if (req.query.relatedMap) {
+				console.log("je suis dedans");
+				const relatedMap = await dcartDataSource
+					.getRepository(MapContent)
+					.findOne({
+						where: { relatedStorymap: mapId },
+					});
+				res.status(200).send(relatedMap?.id);
+				return;
+			}
+
 			if (mapId === "all") {
 				const query = await dcartDataSource
 					.getRepository(MapContent)

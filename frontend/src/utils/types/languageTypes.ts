@@ -70,6 +70,7 @@ type LanguageObject = {
 		deteleStorymapText: string;
 		deteleMapText: string;
 		associatedStorymap: string;
+		associatedMap: string;
 	};
 	mapPage: {
 		introduction: string;
