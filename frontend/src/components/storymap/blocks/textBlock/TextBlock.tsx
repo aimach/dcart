@@ -22,6 +22,7 @@ const TextBlock = ({ blockContent }: TextBlockProps) => {
 			ALLOWED_TAGS: [
 				"p",
 				"b",
+				"s",
 				"i",
 				"u",
 				"strong",
@@ -30,6 +31,8 @@ const TextBlock = ({ blockContent }: TextBlockProps) => {
 				"ul",
 				"ol",
 				"li",
+				"sub",
+				"sup",
 				"br",
 				"span",
 				"h1",
