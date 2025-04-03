@@ -24,4 +24,11 @@
     >li {
         cursor: pointer;
     }
+
+    .languageSelected {
+        padding: v.$space-xs;
+        border: v.$border-width-m solid v.$color-grullo;
+        border-radius: v.$border-radius-base;
+
+    }
 }

@@ -21,7 +21,6 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getStorymapInfosAndBlocks } from "../../../../utils/api/storymap/getRequests";
-import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 // import des types
 import type {
 	BlockContentType,
@@ -83,8 +82,7 @@ const StorymapPage = () => {
 	const location = useLocation();
 
 	// récupération des données des stores
-	const { updateFormType } = useBuilderStore();
-	const { setSelectedLanguage } = useStorymapLanguageStore();
+	const { selectedLanguage, setSelectedLanguage } = useStorymapLanguageStore();
 
 	// déclaration d'un état pour stocker les informations de la storymap
 	const [storymapInfos, setStorymapInfos] = useState<StorymapType | null>(null);
@@ -122,22 +120,28 @@ const StorymapPage = () => {
 							</Link>
 						)}
 					</div>
-					<ul className={style.languageSelectionContainer}>
-						<li
-							onClick={() => setSelectedLanguage("lang1")}
-							onKeyUp={() => setSelectedLanguage("lang1")}
-						>
-							{getFlagEmoji(storymapInfos.lang1.name)}
-						</li>
-						{storymapInfos.lang2.name && (
+					{storymapInfos.lang2.name && (
+						<ul className={style.languageSelectionContainer}>
+							<li
+								onClick={() => setSelectedLanguage("lang1")}
+								onKeyUp={() => setSelectedLanguage("lang1")}
+								className={
+									selectedLanguage === "lang1" ? style.languageSelected : ""
+								}
+							>
+								{getFlagEmoji(storymapInfos.lang1.name)}
+							</li>
 							<li
 								onClick={() => setSelectedLanguage("lang2")}
 								onKeyUp={() => setSelectedLanguage("lang2")}
+								className={
+									selectedLanguage === "lang2" ? style.languageSelected : ""
+								}
 							>
 								{getFlagEmoji(storymapInfos.lang2.name)}
 							</li>
-						)}
-					</ul>
+						</ul>
+					)}
 				</div>
 				<section className={style.storymapContainer}>
 					<StorymapIntroduction
