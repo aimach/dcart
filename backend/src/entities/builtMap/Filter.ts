@@ -14,6 +14,7 @@ export enum FilterType {
 	ELEMENT = "element",
 	LOCATION = "location",
 	LANGUAGE = "language",
+	DIVINITYNB = "divinityNb",
 }
 
 @Entity()
