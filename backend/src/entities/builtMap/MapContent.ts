@@ -95,11 +95,11 @@ export class MapContent extends BaseEntity {
 
 	@OneToMany(
 		() => FilterMapContent,
-		(filterMapContent) => filterMapContent.maps,
+		(filterMapContent) => filterMapContent.map,
 		{
 			cascade: true,
 			onDelete: "CASCADE",
 		},
 	) // cascade: true permet d'insérer directement les filtres lors de la création de la carte
-	filters?: Filter[];
+	filterMapContent?: FilterMapContent[];
 }

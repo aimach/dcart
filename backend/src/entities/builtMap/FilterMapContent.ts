@@ -25,8 +25,8 @@ export class FilterMapContent extends BaseEntity {
 	} | null;
 
 	@ManyToOne(() => MapContent)
-	maps?: MapContent[];
+	map?: MapContent;
 
 	@ManyToOne(() => Filter)
-	filters?: MapContent[];
+	filter?: MapContent;
 }
