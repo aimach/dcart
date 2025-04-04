@@ -71,8 +71,6 @@ const CommonForm = ({
 		defaultValues: defaultValues ?? {},
 	});
 
-	console.log(defaultValues);
-
 	// si des valeurs par défaut sont passées, injection dans l'input des catégories
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {

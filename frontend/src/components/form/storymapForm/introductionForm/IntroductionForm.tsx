@@ -40,6 +40,7 @@ import type {
 	allInputsType,
 } from "../../../../utils/types/formTypes";
 import type { MapType } from "../../../../utils/types/mapTypes";
+import { addStorymapLinkToMap } from "../../../../utils/api/builtMap/postRequests";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -74,8 +75,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 			const newInputs = createLanguageOptions(allLanguages, inputs);
 			setInputs(newInputs);
 		};
-		const fetchAllPublishedMaps = async () => {
-			const allMaps = await getAllMapsInfos(true);
+		const fetchAllMaps = async () => {
+			const allMaps = await getAllMapsInfos(false);
 			const newInputs = createMapOptions(allMaps, inputs, language);
 			setInputs(newInputs);
 		};
@@ -83,7 +84,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 			const relatedMap = await getRelatedMapId(storymapId as string);
 			setRelatedMapId(relatedMap);
 		};
-		fetchAllPublishedMaps();
+		fetchAllMaps();
 		fetchAllCategoriesAndCreateOptions();
 		fetchAllLanguagesAndCreateOptions();
 		if (storymapId !== "create") {
@@ -111,6 +112,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	const onSubmit: SubmitHandler<storymapInputsType> = async (data) => {
 		if (storymapId === "create") {
 			const newStorymap = await createStorymap(data);
+			await addStorymapLinkToMap(newStorymap.id, data.relatedMap as string);
 			setStorymapInfos(newStorymap);
 			notifyCreateSuccess("Storymap", true);
 			navigate(`/backoffice/storymaps/${newStorymap.id}`);
@@ -129,6 +131,10 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 				publication_date: data.publication_date,
 			};
 			await updateStorymap(bodyWithoutUselessData, storymapInfos?.id as string);
+			await addStorymapLinkToMap(
+				storymapInfos?.id as string,
+				data.relatedMap as string,
+			);
 			notifyEditSuccess("Storymap", true);
 		}
 		setStep(2);

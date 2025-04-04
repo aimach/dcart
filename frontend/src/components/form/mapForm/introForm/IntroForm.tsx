@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useEffect, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, get, useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
@@ -80,6 +80,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		register,
 		handleSubmit,
 		watch,
+		setValue,
 		formState: { errors },
 	} = useForm<MapInfoType>({
 		defaultValues: mapInfos ?? {},
@@ -109,23 +110,28 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 
 			for (const input of inputs) {
 				if (input.name === "category") {
-					input.options = formatedCategoryOptions;
+					input.options = [
+						{ value: "0", label: "Choisir une catégorie" },
+						...formatedCategoryOptions,
+					];
 				}
 			}
-			true;
 		};
 		const getPublishedStorymaps = async () => {
 			const allPublishedStorymaps = await getAllPublishedStorymaps();
 			const formatedStorymapOptions: OptionType[] = allPublishedStorymaps.map(
 				(storymap: StorymapType) => ({
 					value: storymap.id,
-					label: storymap.title_lang1,
+					label: `${storymap.title_lang1} (${storymap.isActive ? "publiée" : "non publiée"})`,
 				}),
 			);
 
 			for (const input of inputs) {
 				if (input.name === "relatedStorymap") {
-					input.options = formatedStorymapOptions;
+					input.options = [
+						{ value: "0", label: "Choisir une storymap" },
+						...formatedStorymapOptions,
+					];
 				}
 			}
 			setDataLoaded(true);
@@ -133,6 +139,21 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		getCategoryOptions();
 		getPublishedStorymaps();
 	}, [language]);
+
+	useEffect(() => {
+		if (mapInfos) {
+			if (mapInfos.category) {
+				setValue("category", (mapInfos.category as CategoryType).id);
+			} else {
+				setValue("category", "0");
+			}
+			if (mapInfos.relatedStorymap) {
+				setValue("relatedStorymap", mapInfos.relatedStorymap as string);
+			} else {
+				setValue("relatedStorymap", "0");
+			}
+		}
+	}, []);
 
 	// WYSIWYG
 	const quillRef = useRef<Quill | null>(null);
@@ -159,15 +180,6 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 										{...register(input.name as keyof MapInfoType, {
 											required: input.required.value,
 										})}
-										value={
-											mapInfos
-												? ((
-														mapInfos[
-															input.name as keyof MapInfoType
-														] as CategoryType
-													).id as string)
-												: ""
-										}
 									>
 										{input.options?.map((option) => {
 											return (

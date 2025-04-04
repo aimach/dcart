@@ -1,6 +1,6 @@
 import type { InputType } from "../types/formTypes";
 import type { Language } from "../types/languageTypes";
-import { MapType } from "../types/mapTypes";
+import type { MapType } from "../types/mapTypes";
 import type {
 	CategoryType,
 	StorymapLanguageType,
@@ -99,7 +99,7 @@ const createMapOptions = (
 		// préparation des catégories pour les inputs
 		const mapOptionArray = mapArray.map((map) => ({
 			value: map.id,
-			label: map[`title_${language}`],
+			label: `${map[`title_${language}`]} (${map.isActive ? "publiée" : "non publiée"})`,
 		}));
 
 		// récupération de l'id de l'input des catégories

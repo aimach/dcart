@@ -22,5 +22,12 @@ mapRoutes.post(
 // mettre à jour la carte
 mapRoutes.put("/:mapId", authenticateUser, dcartControllers.updateMap);
 
+// ajouter une storymap à une carte
+mapRoutes.put(
+	"/:mapId/relatedStorymap",
+	authenticateUser,
+	dcartControllers.updateStorymapLink,
+);
+
 // supprimer carte
 mapRoutes.delete("/:mapId", authenticateUser, dcartControllers.deleteMap);

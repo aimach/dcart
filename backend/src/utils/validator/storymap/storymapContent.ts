@@ -4,7 +4,6 @@ import Joi from "joi";
 import type { Request, Response, NextFunction } from "express";
 // import des schémas
 import { blockToEditSchema } from "./block";
-import { categorySchema } from "../builtMap/category";
 
 const storymapContentSchema = Joi.object({
 	title_lang1: Joi.string().max(255).required(),
@@ -20,6 +19,7 @@ const storymapContentSchema = Joi.object({
 	updatedAt: Joi.date().optional(),
 	blocks: Joi.array().items(blockToEditSchema).min(0).optional(),
 	category_id: Joi.string().uuid().required(),
+	relatedMap: Joi.string().uuid().optional().allow(null),
 });
 
 export const validateStorymapContentBody = (
