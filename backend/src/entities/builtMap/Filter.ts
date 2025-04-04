@@ -5,9 +5,12 @@ import {
 	Column,
 	BaseEntity,
 	ManyToMany,
+	OneToMany,
 } from "typeorm";
 // import des entités
-import { MapContent } from "./MapContent";
+import { FilterMapContent } from "./FilterMapContent";
+// import des types
+import type { MapContent } from "./MapContent";
 
 export enum FilterType {
 	TIME = "time",
@@ -29,6 +32,13 @@ export class Filter extends BaseEntity {
 	})
 	type?: FilterType;
 
-	@ManyToMany(() => MapContent)
+	@OneToMany(
+		() => FilterMapContent,
+		(filterMapContent) => filterMapContent.maps,
+		{
+			cascade: true,
+			onDelete: "CASCADE",
+		},
+	) // cascade: true permet d'insérer directement les filtres lors de la création de la carte
 	maps?: MapContent[];
 }
