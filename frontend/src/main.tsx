@@ -37,25 +37,18 @@ if (rootElement) {
 								<Route index element={<App />} />
 								<Route path="maps/categories">
 									<Route index element={<MapCategoryMenuPage />} />
-									<Route path=":categoryId">
-										<Route path="map/:mapId" element={<MapPage />} />
-									</Route>
 								</Route>
+								<Route path="map/:mapId" element={<MapPage />} />
 								<Route path="storymaps/categories">
 									<Route index element={<StorymapCategoryMenuPage />} />
-									<Route path=":categoryId">
-										<Route
-											path="storymap/:storymapId"
-											element={<StorymapPage />}
-										/>
-									</Route>
 								</Route>
+								<Route path="storymap/:storymapId" element={<StorymapPage />} />
 							</Route>
 							<Route
 								path="authentification"
 								element={<AuthentificationPage />}
 							/>
-							<Route path="backoffice" element={<NavigationLayout />}>
+							<Route path="backoffice" element={<ProtectedLayout />}>
 								<Route index element={<BOHomePage />} />
 								<Route path="maps">
 									<Route index element={<BackofficeMapPage />} />

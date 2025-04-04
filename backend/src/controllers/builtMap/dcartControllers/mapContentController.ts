@@ -7,6 +7,7 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
+import { Storymap } from "../../../entities/storymap/Storymap";
 
 export const mapContentController = {
 	// récupérer les données de toutes les cartes ou d'une carte en particulier
@@ -14,34 +15,18 @@ export const mapContentController = {
 		try {
 			const { mapId } = req.params;
 
-			if (mapId === "all") {
-				if (req.query.isActive) {
-					const isActive = req.query.isActive === "true";
-					const allMaps = await dcartDataSource
-						.getRepository(MapContent)
-						.createQueryBuilder("map")
-						.leftJoinAndSelect("map.category", "category")
-						.leftJoinAndSelect("map.creator", "creator")
-						.leftJoinAndSelect("map.modifier", "modifier")
-						.leftJoinAndSelect("map.filters", "filters")
-						.leftJoinAndSelect("map.attestations", "attestations")
-						.leftJoinAndSelect("attestations.icon", "icon")
-						.select([
-							"map",
-							"filters",
-							"category",
-							"attestations",
-							"attestations.icon",
-							"creator.pseudo",
-							"modifier.pseudo",
-						])
-						.where("map.isActive = :isActive", { isActive })
-						.getMany();
+			if (req.query.relatedMap) {
+				const relatedMap = await dcartDataSource
+					.getRepository(MapContent)
+					.findOne({
+						where: { relatedStorymap: mapId },
+					});
+				res.status(200).send(relatedMap?.id);
+				return;
+			}
 
-					res.status(200).send(allMaps);
-					return;
-				}
-				const allMaps = await dcartDataSource
+			if (mapId === "all") {
+				const query = await dcartDataSource
 					.getRepository(MapContent)
 					.createQueryBuilder("map")
 					.leftJoinAndSelect("map.category", "category")
@@ -58,8 +43,14 @@ export const mapContentController = {
 						"attestations.icon",
 						"creator.pseudo",
 						"modifier.pseudo",
-					])
-					.getMany();
+					]);
+
+				if (req.query.isActive) {
+					const isActive = req.query.isActive === "true";
+					query.where("map.isActive = :isActive", { isActive });
+				}
+				const allMaps = await query.getMany();
+
 				res.status(200).send(allMaps);
 				return;
 			}
@@ -95,6 +86,7 @@ export const mapContentController = {
 				description_fr,
 				image_url,
 				category,
+				relatedStorymap,
 			} = req.body;
 
 			const { userId } = req.user as jwt.JwtPayload;
@@ -108,6 +100,8 @@ export const mapContentController = {
 				description_en,
 				description_fr,
 				image_url,
+				relatedStorymap,
+
 				category: category,
 				creator: userId,
 				uploadPointsLastDate: currentDate,
@@ -161,17 +155,90 @@ export const mapContentController = {
 				});
 			req.body.category = newCategory;
 
-			// si les ids des attestations ont été modifiés, mise à jour du champ lastUploadPointsDate
-			// if (req.body.attestationIds !== mapToUpdate.attestationIds) {
-			// 	const currentDate = new Date();
-			// 	req.body.uploadPointsLastDate = currentDate;
-			// }
+			if (req.body.relatedStorymap === "0") {
+				req.body.relatedStorymap = null;
+			}
 
 			const updatedMap = await dcartDataSource
 				.getRepository(MapContent)
 				.create({
 					...mapToUpdate,
 					...req.body,
+				});
+
+			const newMap = await dcartDataSource
+				.getRepository(MapContent)
+				.save(updatedMap);
+
+			res.status(200).send(newMap);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	// met à jour l'id de la storymap associée à la carte
+	updateStorymapLink: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { mapId } = req.params;
+			const { storymapId } = req.body;
+
+			if (mapId === "0") {
+				const mapToUpdate = await dcartDataSource
+					.getRepository(MapContent)
+					.findOne({
+						where: { relatedStorymap: storymapId },
+					});
+
+				if (!mapToUpdate) {
+					res.status(404).send("Carte non trouvée.");
+					return;
+				}
+
+				const updatedMap = await dcartDataSource
+					.getRepository(MapContent)
+					.create({
+						...mapToUpdate,
+						relatedStorymap: null,
+					});
+
+				const newMap = await dcartDataSource
+					.getRepository(MapContent)
+					.save(updatedMap);
+				res.status(200).send(newMap);
+				return;
+			}
+
+			const { userId } = req.user as jwt.JwtPayload;
+
+			const mapToUpdate = await dcartDataSource
+				.getRepository(MapContent)
+				.findOne({
+					where: { id: mapId },
+				});
+
+			if (!mapToUpdate) {
+				res.status(404).send("Carte non trouvée.");
+				return;
+			}
+
+			const storymapToAdd = await dcartDataSource
+				.getRepository(Storymap)
+				.findOne({
+					where: { id: storymapId },
+				});
+			if (!storymapToAdd) {
+				res.status(404).send("Storymap non trouvée.");
+				return;
+			}
+
+			// ajout de l'id du modificateur
+			mapToUpdate.modifier = userId;
+
+			const updatedMap = await dcartDataSource
+				.getRepository(MapContent)
+				.create({
+					...mapToUpdate,
+					relatedStorymap: storymapId === "0" ? null : storymapId,
 				});
 
 			const newMap = await dcartDataSource

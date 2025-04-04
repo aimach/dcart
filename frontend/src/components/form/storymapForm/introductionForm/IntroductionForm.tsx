@@ -9,6 +9,7 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import {
 	getAllStorymapCategories,
 	getAllStorymapLanguages,
+	getRelatedMapId,
 	getStorymapInfosAndBlocks,
 } from "../../../../utils/api/storymap/getRequests";
 import { storymapInputs } from "../../../../utils/forms/storymapInputArray";
@@ -16,6 +17,16 @@ import {
 	createStorymap,
 	updateStorymap,
 } from "../../../../utils/api/storymap/postRequests";
+import { getAllMapsInfos } from "../../../../utils/api/builtMap/getRequests";
+import {
+	createCategoryOptions,
+	createLanguageOptions,
+	createMapOptions,
+} from "../../../../utils/functions/storymap";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type {
@@ -28,14 +39,8 @@ import type {
 	storymapInputsType,
 	allInputsType,
 } from "../../../../utils/types/formTypes";
-import {
-	createCategoryOptions,
-	createLanguageOptions,
-} from "../../../../utils/functions/storymap";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
+import type { MapType } from "../../../../utils/types/mapTypes";
+import { addStorymapLinkToMap } from "../../../../utils/api/builtMap/postRequests";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -52,37 +57,39 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 
 	// définition d'un état pour les inputs du formulaire
 	const [inputs, setInputs] = useState<InputType[]>(storymapInputs);
+	const [relatedMapId, setRelatedMapId] = useState<string | null>(null);
 
 	// au montage du composant, récupération des catégories et des langues pour les select/options
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const fetchAllCategoriesAndCreateOptions = async () => {
-			try {
-				const allCategories: CategoryType[] = await getAllStorymapCategories();
-				// création des options pour le select des catégories
-				const newInputs = createCategoryOptions(
-					allCategories,
-					language,
-					inputs,
-				);
-				setInputs(newInputs);
-			} catch (error) {
-				console.error(error);
-			}
+			const allCategories: CategoryType[] = await getAllStorymapCategories();
+			// création des options pour le select des catégories
+			const newInputs = createCategoryOptions(allCategories, language, inputs);
+			setInputs(newInputs);
 		};
 		const fetchAllLanguagesAndCreateOptions = async () => {
-			try {
-				const allLanguages: StorymapLanguageType[] =
-					await getAllStorymapLanguages();
-				// création des options pour le select des catégories
-				const newInputs = createLanguageOptions(allLanguages, inputs);
-				setInputs(newInputs);
-			} catch (error) {
-				console.error(error);
-			}
+			const allLanguages: StorymapLanguageType[] =
+				await getAllStorymapLanguages();
+			// création des options pour le select des catégories
+			const newInputs = createLanguageOptions(allLanguages, inputs);
+			setInputs(newInputs);
 		};
+		const fetchAllMaps = async () => {
+			const allMaps = await getAllMapsInfos(false);
+			const newInputs = createMapOptions(allMaps, inputs, language);
+			setInputs(newInputs);
+		};
+		const fetchRelatedMapId = async (storymapId: string) => {
+			const relatedMap = await getRelatedMapId(storymapId as string);
+			setRelatedMapId(relatedMap);
+		};
+		fetchAllMaps();
 		fetchAllCategoriesAndCreateOptions();
 		fetchAllLanguagesAndCreateOptions();
+		if (storymapId !== "create") {
+			fetchRelatedMapId(storymapId as string);
+		}
 	}, [language]);
 
 	// -- MODE MODIFICATION --
@@ -99,11 +106,13 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 			fetchStorymapInfos(storymapId as string);
 		}
 	}, [storymapId]);
+
 	// définition de la fonction de soumission du formulaire (création ou mise à jour de la storymap)
 	const navigate = useNavigate();
 	const onSubmit: SubmitHandler<storymapInputsType> = async (data) => {
 		if (storymapId === "create") {
 			const newStorymap = await createStorymap(data);
+			await addStorymapLinkToMap(newStorymap.id, data.relatedMap as string);
 			setStorymapInfos(newStorymap);
 			notifyCreateSuccess("Storymap", true);
 			navigate(`/backoffice/storymaps/${newStorymap.id}`);
@@ -122,6 +131,10 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 				publication_date: data.publication_date,
 			};
 			await updateStorymap(bodyWithoutUselessData, storymapInfos?.id as string);
+			await addStorymapLinkToMap(
+				storymapInfos?.id as string,
+				data.relatedMap as string,
+			);
 			notifyEditSuccess("Storymap", true);
 		}
 		setStep(2);
@@ -140,7 +153,9 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 				<CommonForm
 					onSubmit={onSubmit as SubmitHandler<allInputsType>}
 					inputs={inputs}
-					defaultValues={storymapInfos as StorymapType}
+					defaultValues={
+						{ ...storymapInfos, relatedMap: relatedMapId } as StorymapType
+					}
 					action="edit"
 				/>
 			)}

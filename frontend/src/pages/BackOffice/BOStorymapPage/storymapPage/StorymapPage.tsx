@@ -20,8 +20,10 @@ import ButtonComponent from "../../../../components/common/button/ButtonComponen
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
-import { getStorymapInfosAndBlocks } from "../../../../utils/api/storymap/getRequests";
-import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
+import {
+	getRelatedMapId,
+	getStorymapInfosAndBlocks,
+} from "../../../../utils/api/storymap/getRequests";
 // import des types
 import type {
 	BlockContentType,
@@ -32,6 +34,7 @@ import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
 // import des icônes
 import { getFlagEmoji } from "../../../../utils/functions/storymap";
+import { ChevronRightCircle } from "lucide-react";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -83,11 +86,11 @@ const StorymapPage = () => {
 	const location = useLocation();
 
 	// récupération des données des stores
-	const { updateFormType } = useBuilderStore();
-	const { setSelectedLanguage } = useStorymapLanguageStore();
+	const { selectedLanguage, setSelectedLanguage } = useStorymapLanguageStore();
 
 	// déclaration d'un état pour stocker les informations de la storymap
 	const [storymapInfos, setStorymapInfos] = useState<StorymapType | null>(null);
+	const [relatedMapId, setRelatedMapId] = useState<string | null>(null);
 
 	// au montage du composant, récupération des informations de la storymap
 	useEffect(() => {
@@ -95,6 +98,8 @@ const StorymapPage = () => {
 			try {
 				const response = await getStorymapInfosAndBlocks(storymapId as string);
 				setStorymapInfos(response);
+				const relatedMap = await getRelatedMapId(storymapId as string);
+				setRelatedMapId(relatedMap);
 			} catch (error) {
 				console.error(error);
 			}
@@ -122,22 +127,39 @@ const StorymapPage = () => {
 							</Link>
 						)}
 					</div>
-					<ul className={style.languageSelectionContainer}>
-						<li
-							onClick={() => setSelectedLanguage("lang1")}
-							onKeyUp={() => setSelectedLanguage("lang1")}
-						>
-							{getFlagEmoji(storymapInfos.lang1.name)}
-						</li>
-						{storymapInfos.lang2.name && (
-							<li
-								onClick={() => setSelectedLanguage("lang2")}
-								onKeyUp={() => setSelectedLanguage("lang2")}
-							>
-								{getFlagEmoji(storymapInfos.lang2.name)}
-							</li>
+					<div className={style.linkAndLanguageContainer}>
+						{relatedMapId && (
+							<div className={style.mapLinkContainer}>
+								<ChevronRightCircle />
+								<Link to={`/map/${relatedMapId}`}>
+									{translation[language].modal.associatedMap}
+								</Link>
+							</div>
 						)}
-					</ul>
+
+						{storymapInfos.lang2.name && (
+							<ul className={style.languageSelectionContainer}>
+								<li
+									onClick={() => setSelectedLanguage("lang1")}
+									onKeyUp={() => setSelectedLanguage("lang1")}
+									className={
+										selectedLanguage === "lang1" ? style.languageSelected : ""
+									}
+								>
+									{getFlagEmoji(storymapInfos.lang1.name)}
+								</li>
+								<li
+									onClick={() => setSelectedLanguage("lang2")}
+									onKeyUp={() => setSelectedLanguage("lang2")}
+									className={
+										selectedLanguage === "lang2" ? style.languageSelected : ""
+									}
+								>
+									{getFlagEmoji(storymapInfos.lang2.name)}
+								</li>
+							</ul>
+						)}
+					</div>
 				</div>
 				<section className={style.storymapContainer}>
 					<StorymapIntroduction

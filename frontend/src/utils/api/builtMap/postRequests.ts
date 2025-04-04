@@ -58,4 +58,24 @@ const createPointSet = async (body: PointSetType) => {
 	}
 };
 
-export { createNewMap, addFiltersToMap, createPointSet };
+/**
+ * Envoie une requête POST pour ajouter une storymap à une carte
+ * @param storymapId - L'id de la storymap
+ * @param mapId - L'id de la carte
+ * @returns {Promise} - La réponse de l'ajout de la storymap à la carte
+ */
+const addStorymapLinkToMap = async (storymapId: string, mapId: string) => {
+	try {
+		const response = await apiClient(`dcart/maps/${mapId}/relatedStorymap`, {
+			method: "PUT",
+			data: JSON.stringify({
+				storymapId,
+			}),
+		});
+		return response;
+	} catch (error) {
+		console.error("Erreur lors de l'ajout de la storymap à la carte:", error);
+	}
+};
+
+export { createNewMap, addFiltersToMap, createPointSet, addStorymapLinkToMap };

@@ -45,7 +45,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./storymapIntroPage.module.scss";
-import { ChevronRight, ChevronRightCircle } from "lucide-react";
+import { ChevronRightCircle } from "lucide-react";
 
 /**
  * Page d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.

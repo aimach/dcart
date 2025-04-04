@@ -66,7 +66,9 @@
 		"no": "no",
 		"deleteBlockText": "Are you sure you want to delete this block?",
 		"deteleStorymapText": "Are you sure you want to delete this storymap?",
-		"deteleMapText": "Are you sure you want to delete this map?"
+		"deteleMapText": "Are you sure you want to delete this map?",
+		"associatedStorymap": "See associated storymap",
+		"associatedMap": "See associated map"
 	},
 	"mapPage": {
 		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",

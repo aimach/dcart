@@ -67,6 +67,7 @@ type storymapInputsType = {
 	category_id: string;
 	lang1: string;
 	lang2: string;
+	relatedMap: string;
 };
 
 type allInputsType = storymapInputsType | BlockContentType;

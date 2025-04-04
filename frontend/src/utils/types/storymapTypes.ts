@@ -25,6 +25,7 @@ type StorymapType = {
 	img_url: string;
 	publication_date?: string;
 	category_id?: string;
+	relatedMap?: string;
 };
 
 type BlockContentType = {

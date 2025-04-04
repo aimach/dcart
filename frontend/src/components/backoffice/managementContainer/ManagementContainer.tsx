@@ -40,7 +40,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 	useEffect(() => {
 		// fonction pour charger les informations des cartes
 		const fetchAllMapsInfos = async () => {
-			const maps = await getAllMapsInfos();
+			const maps = await getAllMapsInfos(false);
 			setAllMapsInfos(maps);
 		};
 		const fetchAllStorymapsInfos = async () => {

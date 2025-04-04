@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useEffect, useRef, useState } from "react";
-import { Controller, useForm } from "react-hook-form";
+import { Controller, get, useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
@@ -14,6 +14,8 @@ import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore"
 import { useShallow } from "zustand/shallow";
 import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
 import { updateMap } from "../../../../utils/api/builtMap/putRequests";
+import { notifyCreateSuccess } from "../../../../utils/functions/toast";
+import { getAllPublishedStorymaps } from "../../../../utils/api/storymap/getRequests";
 // import des types
 import type { FieldErrors, SubmitHandler } from "react-hook-form";
 import type { InputType } from "../../../../utils/types/formTypes";
@@ -22,15 +24,12 @@ import type {
 	CategoryType,
 	MapInfoType,
 } from "../../../../utils/types/mapTypes";
+import type { StorymapType } from "../../../../utils/types/storymapTypes";
 import type { TranslationType } from "../../../../utils/types/languageTypes";
 import type Quill from "quill";
 import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./introForm.module.scss";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
 
 type IntroFormProps = {
 	inputs: InputType[];
@@ -81,6 +80,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		register,
 		handleSubmit,
 		watch,
+		setValue,
 		formState: { errors },
 	} = useForm<MapInfoType>({
 		defaultValues: mapInfos ?? {},
@@ -110,13 +110,50 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 
 			for (const input of inputs) {
 				if (input.name === "category") {
-					input.options = formatedCategoryOptions;
+					input.options = [
+						{ value: "0", label: "Choisir une catégorie" },
+						...formatedCategoryOptions,
+					];
+				}
+			}
+		};
+		const getPublishedStorymaps = async () => {
+			const allPublishedStorymaps = await getAllPublishedStorymaps();
+			const formatedStorymapOptions: OptionType[] = allPublishedStorymaps.map(
+				(storymap: StorymapType) => ({
+					value: storymap.id,
+					label: `${storymap.title_lang1} (${storymap.isActive ? "publiée" : "non publiée"})`,
+				}),
+			);
+
+			for (const input of inputs) {
+				if (input.name === "relatedStorymap") {
+					input.options = [
+						{ value: "0", label: "Choisir une storymap" },
+						...formatedStorymapOptions,
+					];
 				}
 			}
 			setDataLoaded(true);
 		};
 		getCategoryOptions();
+		getPublishedStorymaps();
 	}, [language]);
+
+	useEffect(() => {
+		if (mapInfos) {
+			if (mapInfos.category) {
+				setValue("category", (mapInfos.category as CategoryType).id);
+			} else {
+				setValue("category", "0");
+			}
+			if (mapInfos.relatedStorymap) {
+				setValue("relatedStorymap", mapInfos.relatedStorymap as string);
+			} else {
+				setValue("relatedStorymap", "0");
+			}
+		}
+	}, []);
 
 	// WYSIWYG
 	const quillRef = useRef<Quill | null>(null);
@@ -143,15 +180,6 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 										{...register(input.name as keyof MapInfoType, {
 											required: input.required.value,
 										})}
-										value={
-											mapInfos
-												? ((
-														mapInfos[
-															input.name as keyof MapInfoType
-														] as CategoryType
-													).id as string)
-												: ""
-										}
 									>
 										{input.options?.map((option) => {
 											return (
