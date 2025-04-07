@@ -10,6 +10,7 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { getAllDivinities } from "../../../../utils/api/builtMap/getRequests";
 import {
+	fetchElementOptions,
 	getAllElementsFromPoints,
 	getAllLocationsFromPoints,
 } from "../../../../utils/functions/filter";
@@ -70,37 +71,9 @@ const AsideMainComponent = () => {
 
 	// --- RECUPERATION DES OPTIONS D'ELEMENTS POUR LES FILTRES
 	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
-	// pas d'utilisation de useMemo car requête asynchrone
-	const fetchElementOptions = async () => {
-		// récupération des divinités de la BDD MAP
-		const allDivinities = await getAllDivinities();
-
-		// extraction des éléments depuis les formules des points
-		const allElements = getAllElementsFromPoints(allPoints);
-
-		// filtrage des éléments qui ne sont pas des théonymes
-		const elementsWithoutTheonyms = allElements.filter((element) => {
-			return !allDivinities.some(
-				(divinity: DivinityType) => divinity.id === element.element_id,
-			);
-		});
-
-		// formattage des options pour le select
-		const formatedElementOptions: OptionType[] = elementsWithoutTheonyms
-			.map((option) => ({
-				value: option.element_id,
-				label: option[`element_nom_${language}`],
-			}))
-			.sort((option1, option2) =>
-				option1.label < option2.label
-					? -1
-					: option1.label > option2.label
-						? 1
-						: 0,
-			);
-
-		// mise à jour des options
-		setElementOptions(formatedElementOptions);
+	const formatElementOptions = async () => {
+		const newElementOptions = await fetchElementOptions(allPoints, language, true);
+		setElementOptions(newElementOptions);
 	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -108,11 +81,11 @@ const AsideMainComponent = () => {
 		if (mapInfos && allPoints) {
 			// si le filtre des éléments est activé, on récupère les options
 			if (
-				(mapInfos.filters as FilterType[])?.some(
-					(filter) => filter.type === "element",
+				(mapInfos.filterMapContent as FilterType[])?.some(
+					(filter) => filter.filter.type === "element",
 				)
 			) {
-				fetchElementOptions();
+				formatElementOptions();
 			}
 		}
 	}, [mapInfos, allPoints]);

@@ -10,10 +10,12 @@ import type {
 	MapFilterType,
 	GreatRegionType,
 	TimeMarkersType,
+	DivinityType,
 } from "../types/mapTypes";
 import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
+import { getAllDivinities } from "../api/builtMap/getRequests";
 
 /**
  * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
@@ -408,6 +410,51 @@ const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
 	return { min, max };
 };
 
+/**
+ * Fonction qui renvoie la liste des options d'éléments pour le select
+ * @param {PointType[]} allPoints - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @param {Function} setElementOptions - La fonction pour mettre à jour les options du select
+ */
+const fetchElementOptions = async (
+	allPoints: PointType[],
+	language: Language,
+	isWithoutTheonym: boolean,
+) => {
+	// récupération des divinités de la BDD MAP
+	const allDivinities = await getAllDivinities();
+
+	// extraction des éléments depuis les formules des points
+	const allElements = getAllElementsFromPoints(allPoints);
+
+	let filteredElements = allElements;
+
+	if (isWithoutTheonym) {
+		filteredElements= allElements.filter((element) => {
+			return !allDivinities.some(
+				(divinity: DivinityType) => divinity.id === element.element_id,
+			);
+		});
+		
+	}
+
+	// formattage des options pour le select
+	const formatedElementOptions: OptionType[] = filteredElements
+		.map((option) => ({
+			value: option.element_id,
+			label: option[`element_nom_${language}`],
+		}))
+		.sort((option1, option2) =>
+			option1.label < option2.label
+				? -1
+				: option1.label > option2.label
+					? 1
+					: 0,
+		);
+
+	return formatedElementOptions;
+};
+
 export {
 	alreadyTwoFiltersChecked,
 	createTimeOptions,
@@ -424,4 +471,5 @@ export {
 	noUserFilterChecked,
 	displayFiltersTags,
 	getMinAndMaxElementNumbers,
+	fetchElementOptions,
 };
