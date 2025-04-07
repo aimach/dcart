@@ -93,10 +93,14 @@ export const sourceController = {
 
 				// on prépare les query des filtres
 				let queryLocalisation = "";
-				const maxValue = null;
-				const minValue = null;
-				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+				const maxDateValue = null;
+				const minDateValue = null;
+				let queryDatation = getQueryStringForDateFilter(
+					maxDateValue,
+					minDateValue,
+				);
 				let queryIncludedElements = "";
+				let queryDivinityNb = "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (req.query.locationId) {
@@ -109,9 +113,16 @@ export const sourceController = {
 				}
 
 				if (req.query.ante || req.query.post) {
-					const maxValue = req.query.ante ? req.query.ante.toString() : null;
-					const minValue = req.query.post ? req.query.post.toString() : null;
-					queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+					const maxDateValue = req.query.ante
+						? req.query.ante.toString()
+						: null;
+					const minDateValue = req.query.post
+						? req.query.post.toString()
+						: null;
+					queryDatation = getQueryStringForDateFilter(
+						maxDateValue,
+						minDateValue,
+					);
 				}
 
 				// ici se fait la récupération des épithètes
@@ -130,6 +141,10 @@ export const sourceController = {
 					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
 				}
 
+				if (req.query.minDivinityNb && req.query.maxDivinityNb) {
+					queryDivinityNb = `AND json_array_length(attestation_with_elements.elements) BETWEEN ${req.query.minDivinityNb} AND ${req.query.maxDivinityNb}`;
+				}
+
 				const { attestations } = mapInfos as MapContent;
 				results = await Promise.all(
 					attestations.map(async (attestation: Attestation) => {
@@ -139,6 +154,7 @@ export const sourceController = {
 							queryDatation,
 							queryLanguage,
 							queryIncludedElements,
+							queryDivinityNb,
 						);
 						const queryResults = await mapDataSource.query(sqlQuery);
 						// on trie les sources de chaque point par date
@@ -173,6 +189,7 @@ export const sourceController = {
 			// on récupère le texte de la requête SQL
 			const sqlQuery = getSourcesQueryWithDetails(
 				attestationIds,
+				"",
 				"",
 				"",
 				"",

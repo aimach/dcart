@@ -60,12 +60,12 @@ const UserMapFilterForm = () => {
 			setUserMapFilterTypes(allFilterTypes);
 
 			// si en mode édition, mise à jour des filtres de la carte
-			if (mapInfos?.filters) {
+			if (mapInfos?.filterMapContent) {
 				const newFilters = allFilterTypes
 					.filter((filterType: FilterType) => filterType.type !== "time")
 					.map((filter: FilterType) => {
-						const index = mapInfos.filters?.findIndex((mapFilter) => {
-							return mapFilter.type === filter.type;
+						const index = mapInfos.filterMapContent?.findIndex((mapFilter) => {
+							return mapFilter.filter.type === filter.type;
 						});
 						if (index !== -1) {
 							return { [filter.type]: true };
@@ -77,7 +77,7 @@ const UserMapFilterForm = () => {
 			}
 		};
 		fetchUserMapFilterTypes();
-	}, [mapInfos?.filters]);
+	}, [mapInfos?.filterMapContent]);
 
 	// fonction qui gère le changement de valeur des checkbox
 	const handleCheckboxChange = (event: ChangeEvent<HTMLInputElement>) => {

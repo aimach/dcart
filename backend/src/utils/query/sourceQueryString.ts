@@ -160,6 +160,7 @@ export const getSourcesQueryWithDetails = (
 	queryDatation: string,
 	queryLanguage: string,
 	queryIncludedElements: string,
+	queryDivinityNb: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -227,6 +228,7 @@ sources_with_attestations AS (
   JOIN formule ON formule.attestation_id = attestation.id
   LEFT JOIN agent ON agent.id_attestation = attestation.id
   WHERE attestation.id IN (${attestationIds})
+  ${queryDivinityNb}
   ${queryIncludedElements}
 ),
 

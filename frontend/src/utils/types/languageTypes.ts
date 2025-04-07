@@ -94,6 +94,7 @@ type LanguageObject = {
 			location: string;
 			element: string;
 			language: string;
+			divinityNb: string;
 			seeStat: string;
 			seeSources: string;
 			searchForLocation: string;
@@ -166,6 +167,7 @@ type LanguageObject = {
 			locationFilter: { label: string; description: string };
 			languageFilter: { label: string; description: string };
 			epithetFilter: { label: string; description: string };
+			divinityNbFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;

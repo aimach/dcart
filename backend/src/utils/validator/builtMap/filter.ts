@@ -16,6 +16,10 @@ const filterSchema = Joi.object({
 		"any.required": "Le booléen 'element' est requis",
 		"boolean.base": "'element' doit être un booléen",
 	}),
+	divinityNb: Joi.boolean().required().messages({
+		"any.required": "Le booléen 'divinityNb' est requis",
+		"boolean.base": "'divinityNb' doit être un booléen",
+	}),
 });
 
 export const validateFilterBody = (

@@ -7,6 +7,7 @@ import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
+import { FilterMapContent } from "../../../entities/builtMap/FilterMapContent";
 
 export const filterController = {
 	// récupère tous les filtres
@@ -69,8 +70,14 @@ export const filterController = {
 			}
 
 			// on ajoute les filtres à la carte
-			map.filters = newFilters;
-			await dcartDataSource.getRepository(MapContent).save(map);
+			Promise.all(
+				newFilters.map(async (filter: Filter) => {
+					await dcartDataSource.getRepository(FilterMapContent).save({
+						filter: filter,
+						mapContent: map,
+					});
+				}),
+			);
 
 			res.status(201).json({ message: "Filtres ajoutés à la carte" });
 		} catch (error) {
@@ -85,7 +92,7 @@ export const filterController = {
 
 			const map = await dcartDataSource.getRepository(MapContent).findOne({
 				where: { id: mapId },
-				relations: ["filters"],
+				relations: ["filterMapContent"],
 			});
 			if (!map) {
 				res.status(404).json({ message: "Carte non trouvée" });
@@ -112,9 +119,18 @@ export const filterController = {
 				}
 			}
 
+			// on supprime les filtres de la carte
+			await dcartDataSource.getRepository(FilterMapContent).delete({ map });
+
 			// on ajoute les filtres à la carte
-			map.filters = newFilters;
-			await dcartDataSource.getRepository(MapContent).save(map);
+			Promise.all(
+				newFilters.map(async (filter: Filter) => {
+					await dcartDataSource.getRepository(FilterMapContent).save({
+						filter: filter,
+						map: map,
+					});
+				}),
+			);
 
 			res.status(200).json({ message: "Nouveaux filtres ajoutés à la carte" });
 		} catch (error) {

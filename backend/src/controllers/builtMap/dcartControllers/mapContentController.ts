@@ -32,12 +32,14 @@ export const mapContentController = {
 					.leftJoinAndSelect("map.category", "category")
 					.leftJoinAndSelect("map.creator", "creator")
 					.leftJoinAndSelect("map.modifier", "modifier")
-					.leftJoinAndSelect("map.filters", "filters")
+					.leftJoinAndSelect("map.filterMapContent", "filterMapContent")
 					.leftJoinAndSelect("map.attestations", "attestations")
 					.leftJoinAndSelect("attestations.icon", "icon")
+					.leftJoinAndSelect("filterMapContent.filter", "filter")
 					.select([
 						"map",
-						"filters",
+						"filterMapContent",
+						"filter.type",
 						"category",
 						"attestations",
 						"attestations.icon",
@@ -59,10 +61,18 @@ export const mapContentController = {
 				.getRepository(MapContent)
 				.createQueryBuilder("map")
 				.leftJoinAndSelect("map.category", "category")
-				.leftJoinAndSelect("map.filters", "filters")
+				.leftJoinAndSelect("map.filterMapContent", "filterMapContent")
 				.leftJoinAndSelect("map.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
-				.select(["map", "filters", "category", "attestations", "icon"])
+				.leftJoinAndSelect("filterMapContent.filter", "filter")
+				.select([
+					"map",
+					"filterMapContent",
+					"filter.type",
+					"category",
+					"attestations",
+					"icon",
+				])
 				.where("map.id = :mapId", { mapId })
 				.getOne();
 
@@ -101,7 +111,6 @@ export const mapContentController = {
 				description_fr,
 				image_url,
 				relatedStorymap,
-
 				category: category,
 				creator: userId,
 				uploadPointsLastDate: currentDate,
@@ -126,7 +135,7 @@ export const mapContentController = {
 				.getRepository(MapContent)
 				.findOne({
 					where: { id: mapId },
-					relations: ["category", "filters"],
+					relations: ["category", "filterMapContent"],
 				});
 
 			if (!mapToUpdate) {

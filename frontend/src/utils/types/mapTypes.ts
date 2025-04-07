@@ -61,6 +61,7 @@ type MapFilterType = {
 	location: boolean;
 	language: boolean;
 	element: boolean;
+	divinityNb: boolean;
 };
 
 type MapInfoType = {
@@ -72,7 +73,9 @@ type MapInfoType = {
 	image_url?: string;
 	category: string | CategoryType;
 	attestations: PointSetType[];
-	filters?: Record<string, string>[];
+	filterMapContent?:
+		| Record<string, string>[]
+		| Record<string, Record<string, string>>[];
 	isLayered: boolean;
 	isNbDisplayed: boolean;
 	relatedStorymap?: string;
@@ -96,7 +99,11 @@ type MapType = {
 	createdAt: string;
 	updatedAt: string;
 	uploadPointsLastDate: string;
-	filters: FilterType[];
+	filters: {
+		id: number;
+		options: Record<string, string> | null;
+		filter: { type: string };
+	}[];
 	category: CategoryType;
 	creator: {
 		pseudo: string;

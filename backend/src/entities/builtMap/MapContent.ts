@@ -7,14 +7,14 @@ import {
 	Column,
 	BaseEntity,
 	ManyToOne,
-	ManyToMany,
-	JoinTable,
 	OneToMany,
 } from "typeorm";
 import { Category } from "./Category";
-import { Filter } from "./Filter";
 import { User } from "../auth/User";
 import { Attestation } from "./Attestation";
+import { FilterMapContent } from "./FilterMapContent";
+// import des types
+import type { Filter } from "./Filter";
 
 enum location {
 	SUBREGION = "subRegion",
@@ -93,10 +93,13 @@ export class MapContent extends BaseEntity {
 	)
 	category!: Category;
 
-	@ManyToMany(() => Filter, {
-		cascade: true,
-		onDelete: "CASCADE",
-	}) // cascade: true permet d'insérer directement les filtres lors de la création de la carte
-	@JoinTable({ name: "map_filter" })
-	filters?: Filter[];
+	@OneToMany(
+		() => FilterMapContent,
+		(filterMapContent) => filterMapContent.map,
+		{
+			cascade: true,
+			onDelete: "CASCADE",
+		},
+	) // cascade: true permet d'insérer directement les filtres lors de la création de la carte
+	filterMapContent?: FilterMapContent[];
 }
