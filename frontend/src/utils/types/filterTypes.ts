@@ -11,7 +11,8 @@ type UserFilterType = {
 	locationId?: string;
 	greek: boolean;
 	semitic: boolean;
-	divinityNb?: { min: string; max: string };
+	minDivinityNb?: string;
+	maxDivinityNb?: string;
 };
 
 export type { FilterType, UserFilterType };

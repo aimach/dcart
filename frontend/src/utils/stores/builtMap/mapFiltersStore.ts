@@ -28,7 +28,8 @@ const emptyUserFilters: UserFilterType = {
 	locationId: undefined,
 	greek: false,
 	semitic: false,
-	divinityNb: undefined,
+	minDivinityNb: undefined,
+	maxDivinityNb: undefined,
 };
 
 export const useMapFiltersStore = create<State & Action>((set, get) => ({

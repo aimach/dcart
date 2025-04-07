@@ -1,6 +1,6 @@
 // import des bibliothèques
 import MultiRangeSlider from "multi-range-slider-react";
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
@@ -25,11 +25,14 @@ const DivinityNbComponent = () => {
 	function handleRangeChange(minValue: string, maxValue: string) {
 		const newLanguageFiltersObject = {
 			...userFilters,
-			divinityNb: { min: minValue, max: maxValue },
+			minDivinityNb: minValue,
+			maxDivinityNb: maxValue,
 		};
 
 		setUserFilters(newLanguageFiltersObject);
 	}
+
+	console.log(userFilters);
 
 	return (
 		min &&
@@ -42,8 +45,8 @@ const DivinityNbComponent = () => {
 					step={1}
 					stepOnly
 					baseClassName={"multi-range-slider-custom"}
-					minValue={userFilters.divinityNb?.min ?? min}
-					maxValue={userFilters.divinityNb?.max ?? max}
+					minValue={userFilters.minDivinityNb ?? min}
+					maxValue={userFilters.maxDivinityNb ?? max}
 					labels={[]}
 					onChange={(e) => {
 						handleRangeChange(e.minValue.toString(), e.maxValue.toString());
