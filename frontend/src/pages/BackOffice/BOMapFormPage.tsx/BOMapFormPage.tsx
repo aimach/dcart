@@ -18,7 +18,8 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import du style
 import style from "./BOMapFormPage.module.scss";
 // import des icônes
-import { FileText, Filter, MapPin } from "lucide-react";
+import { FileText, Filter, ListTodo, MapPin } from "lucide-react";
+import BuiltElementFilterForm from "../../../components/form/mapForm/builtElementFilterForm/BuiltElementFilterForm";
 
 /**
  * Page du formulaire de création de carte
@@ -29,7 +30,7 @@ const BOMapFormPage = () => {
 	const { pathname } = useLocation();
 
 	// récupération des données des stores
-	const { step, setStep } = useMapFormStore((state) => state);
+	const { mapFilters, step, setStep } = useMapFormStore((state) => state);
 	const { closeDeleteModal } = useModalStore();
 
 	// récupération des données du contexte
@@ -82,9 +83,19 @@ const BOMapFormPage = () => {
 							step === 3 && style.isSelected
 						}`}
 					>
-						{<Filter />}
+						<Filter />
 						{translation[language].backoffice.mapFormPage.aside.filters}
 					</li>
+					{mapFilters.element && (
+						<li
+							onClick={() => setStep(4)}
+							onKeyUp={() => setStep(4)}
+							className={`${step === 4 && style.isSelected}`}
+						>
+							<ListTodo />
+							Construction filtre éléments
+						</li>
+					)}
 				</ul>
 			</aside>
 			<section className={style.mapFormContent}>
@@ -96,6 +107,7 @@ const BOMapFormPage = () => {
 				)}
 				{step === 2 && <UploadForm />}
 				{step === 3 && <UserMapFilterForm />}
+				{step === 4 && <BuiltElementFilterForm />}
 			</section>
 		</section>
 	);
