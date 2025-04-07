@@ -26,12 +26,29 @@ const BuiltElementFilterForm = () => {
 			<h4>Construction du filtre "Elements"</h4>
 			<div className={style.commonFormInputContainer}>
 				<div className={style.labelContainer}>
+					<label htmlFor="basic">Basique</label>
+					<p>
+						Le filtre "Elements" se présentera sous la forme d'un select/options
+						où l'utilisateur pourra parcourir la liste des options et en choisir
+						une ou plusieurs.
+					</p>
+				</div>
+				<div className={style.inputContainer}>
+					<input
+						id="basic"
+						name="builtSolution"
+						type="radio"
+						onChange={(event) => handleRadioChange(event)}
+					/>
+				</div>
+			</div>
+			<div className={style.commonFormInputContainer}>
+				<div className={style.labelContainer}>
 					<label htmlFor="automatic">Automatique</label>
 					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam
-						dignissimos, suscipit beatae, soluta accusamus, et voluptatem velit
-						officiis facilis ratione mollitia sed repudiandae? Eum vel tenetur,
-						dolores quasi vitae perferendis!
+						Le filtre "Elements" se présentera sous la forme de checkboxs à 2
+						niveaux : un premier niveau avec les théonymes et un second avec les
+						épithètes.
 					</p>
 				</div>
 				<div className={style.inputContainer}>
@@ -39,7 +56,6 @@ const BuiltElementFilterForm = () => {
 						id="automatic"
 						name="builtSolution"
 						type="radio"
-						checked=""
 						onChange={(event) => handleRadioChange(event)}
 					/>
 				</div>
@@ -48,10 +64,9 @@ const BuiltElementFilterForm = () => {
 				<div className={style.labelContainer}>
 					<label htmlFor="manual">Manuelle</label>
 					<p>
-						Lorem ipsum dolor sit amet consectetur adipisicing elit. Veniam
-						dignissimos, suscipit beatae, soluta accusamus, et voluptatem velit
-						officiis facilis ratione mollitia sed repudiandae? Eum vel tenetur,
-						dolores quasi vitae perferendis!
+						Le filtre "Elements" se présentera sous la forme de checkboxs à 2
+						niveaux : un premier niveau avec les théonymes et un second avec les
+						épithètes. Ces deux niveaux sont à construire sur-mesure ci-dessous
 					</p>
 				</div>
 				<div className={style.inputContainer}>
@@ -59,7 +74,6 @@ const BuiltElementFilterForm = () => {
 						id="manual"
 						name="builtSolution"
 						type="radio"
-						checked=""
 						onChange={(event) => handleRadioChange(event)}
 					/>
 				</div>
