@@ -399,9 +399,6 @@ const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
 						min = uniqueElementsById.length;
 					}
 					if (uniqueElementsById.length > max) {
-						if (uniqueElementsById.length > 29) {
-							console.log(point);
-						}
 						max = uniqueElementsById.length;
 					}
 				}

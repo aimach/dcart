@@ -32,8 +32,6 @@ const DivinityNbComponent = () => {
 		setUserFilters(newLanguageFiltersObject);
 	}
 
-	console.log(userFilters);
-
 	return (
 		min &&
 		max && (
