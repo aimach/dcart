@@ -8,20 +8,42 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import style from "../introForm/introForm.module.scss";
 import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putRequests";
+import { useEffect, useState } from "react";
+import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 
 const BuiltElementFilterForm = () => {
 	const { translation, language } = useTranslation();
 
-	const { mapInfos, mapFiltersOptions, setMapFiltersOptions } =
-		useMapFormStore();
+	const [selectedOption, setSelectedOption] = useState<string>("");
 
-	const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		setMapFiltersOptions({
-			...mapFiltersOptions,
-			[event.target.name]: event.target.id,
-		});
+	const { mapInfos, setMapInfos } = useMapFormStore();
+
+	useEffect(() => {
+		if (mapInfos) {
+			const elementFilter = mapInfos.filterMapContent?.find(
+				(filter) =>
+					(filter.filter as Record<string, string>).type === "element",
+			);
+			if (elementFilter) {
+				setSelectedOption(
+					(elementFilter.options as Record<string, string>).solution,
+				);
+			}
+		}
+	}, [mapInfos]);
+
+	const handleRadioChange = async (
+		event: React.ChangeEvent<HTMLInputElement>,
+	) => {
+		setSelectedOption(event.target.id);
 		// requête de modification du filtre
-		updateMapFilterOptions(mapInfos?.id as string, "element", event.target.id);
+		await updateMapFilterOptions(
+			mapInfos?.id as string,
+			"element",
+			event.target.id,
+		);
+		const newMap = await getOneMapInfos(mapInfos?.id as string);
+		setMapInfos(newMap);
 	};
 
 	return (
@@ -43,11 +65,11 @@ const BuiltElementFilterForm = () => {
 						name="element"
 						type="radio"
 						onChange={(event) => handleRadioChange(event)}
-						checked={mapFiltersOptions.element === "basic"}
+						checked={selectedOption === "basic"}
 					/>
 				</div>
 			</div>
-			<div className={style.commonFormInputContainer}>
+			{/* <div className={style.commonFormInputContainer}>
 				<div className={style.labelContainer}>
 					<label htmlFor="automatic">Automatique</label>
 					<p>
@@ -62,10 +84,10 @@ const BuiltElementFilterForm = () => {
 						name="element"
 						type="radio"
 						onChange={(event) => handleRadioChange(event)}
-						checked={mapFiltersOptions.element === "automatic"}
+						checked={selectedOption === "automatic"}
 					/>
 				</div>
-			</div>
+			</div> */}
 			<div className={style.commonFormInputContainer}>
 				<div className={style.labelContainer}>
 					<label htmlFor="manual">Manuelle</label>
@@ -81,7 +103,7 @@ const BuiltElementFilterForm = () => {
 						name="element"
 						type="radio"
 						onChange={(event) => handleRadioChange(event)}
-						checked={mapFiltersOptions.element === "manual"}
+						checked={selectedOption === "manual"}
 					/>
 				</div>
 			</div>

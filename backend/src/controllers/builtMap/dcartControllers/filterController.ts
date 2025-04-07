@@ -132,7 +132,9 @@ export const filterController = {
 				.getRepository(FilterMapContent)
 				.save(newfilterMapContent);
 
-			res.status(201).json({ message: "Option ajoutée à la carte" });
+			const newMap = res
+				.status(201)
+				.json({ message: "Option ajoutée à la carte" });
 		} catch (error) {
 			handleError(res, error as Error);
 		}
