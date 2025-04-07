@@ -176,7 +176,7 @@
 			},
 			"divinityNbFilter": {
 				"label": "Divinity number filter",
-				"description": "Displays a number input with a minimum and maximum value. The user can enter a number between the two values."
+				"description": "Displays a double slider with a minimum and maximum value, defined by the number of divinities in the set of displayed attestations"
 			},
 			"noFilter": {
 				"label": "I don't want to add a filter",
