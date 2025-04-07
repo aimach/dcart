@@ -82,7 +82,7 @@ const updateMapFilterOptions = async (
 			`dcart/filters/update/${mapId}/${filterType}`,
 			{
 				method: "PUT",
-				data: JSON.stringify({ solution: mapFiltersOptions }),
+				data: mapFiltersOptions, 
 			},
 		);
 		notifyEditSuccess("Option du filtre", true);

@@ -14,7 +14,6 @@ import {
 	getOneMapInfos,
 } from "../../../../utils/api/builtMap/getRequests";
 // import des types
-import type { MultiValue } from "react-select";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
@@ -25,6 +24,7 @@ const BuiltElementFilterForm = () => {
 
 	const [selectedOption, setSelectedOption] = useState<string>("");
 	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
+    const [filterOptions, setFilterOptions] = useState({})
 
 	const { mapInfos, setMapInfos } = useMapFormStore();
 
@@ -73,11 +73,22 @@ const BuiltElementFilterForm = () => {
 		await updateMapFilterOptions(
 			mapInfos?.id as string,
 			"element",
-			event.target.id,
+			JSON.stringify({solution: event.target.id}),
 		);
 		const newMap = await getOneMapInfos(mapInfos?.id as string);
 		setMapInfos(newMap);
 	};
+
+    const handleMultiSelectChange = async (filterOptions) => {
+        const body = {
+            solution: "manual", 
+            firstLevelIds: filterOptions.firstLevelIds.map((option: OptionType) => option.value),
+            secondLevelIds: filterOptions.secondLevelIds.map((option: OptionType) => option.value)
+        }
+      
+        await updateMapFilterOptions(mapInfos?.id as string, "element", JSON.stringify(body));
+    }
+
 
 	return elementOptions.length > 0 && (
 		<form className={style.commonFormContainer}>
@@ -152,10 +163,11 @@ const BuiltElementFilterForm = () => {
 							// defaultValue={}
 							delimiter="|"
 							isMulti
-							onChange={(newValue) => console.log(newValue)}
+							onChange={(newValue) => setFilterOptions({...filterOptions, firstLevelIds: newValue})}
 							placeholder={translation[language].mapPage.aside.searchForElement}
 							isClearable={true}
 						/>
+              
 					</div>
 					<div>
 						<p>Second niveau</p>
@@ -164,11 +176,12 @@ const BuiltElementFilterForm = () => {
 							// defaultValue={}
 							delimiter="|"
 							isMulti
-							onChange={(newValue) => console.log(newValue)}
+							onChange={(newValue) => setFilterOptions({...filterOptions, secondLevelIds: newValue})}
 							placeholder={translation[language].mapPage.aside.searchForElement}
 							isClearable={true}
 						/>
 					</div>
+                         <button type="button" onClick={() => handleMultiSelectChange(filterOptions)}>sauvegarder</button>
 				</div>
 			)}
 		</form>
