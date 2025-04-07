@@ -1,13 +1,13 @@
 // import des entités
 import { Filter } from "../../../entities/builtMap/Filter";
 import { MapContent } from "../../../entities/builtMap/MapContent";
-import type { FilterType } from "../../../entities/builtMap/Filter";
+import { FilterMapContent } from "../../../entities/builtMap/FilterMapContent";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
-import { FilterMapContent } from "../../../entities/builtMap/FilterMapContent";
+import type { FilterType } from "../../../entities/builtMap/Filter";
 
 export const filterController = {
 	// récupère tous les filtres
@@ -80,6 +80,59 @@ export const filterController = {
 			);
 
 			res.status(201).json({ message: "Filtres ajoutés à la carte" });
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	// modification des options d'un filtre d'une carte
+	updateFilterOptions: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { mapId, filterType } = req.params;
+
+			const map = await dcartDataSource.getRepository(MapContent).findOne({
+				where: { id: mapId },
+				relations: ["filterMapContent"],
+			});
+			if (!map) {
+				res.status(404).json({ message: "Carte non trouvée" });
+				return;
+			}
+
+			const filter = await dcartDataSource.getRepository(Filter).findOne({
+				where: { type: filterType as FilterType },
+			});
+			if (!filter) {
+				res.status(404).json({ message: "Filtre non trouvé" });
+				return;
+			}
+
+			const filterMapContentToUpdate = await dcartDataSource
+				.getRepository(FilterMapContent)
+				.createQueryBuilder("filterMapContent")
+				.where("filterMapContent.mapId = :mapId", { mapId: map.id })
+				.andWhere("filterMapContent.filterId = :filterId", {
+					filterId: filter.id,
+				})
+				.getOne();
+
+			if (!filterMapContentToUpdate) {
+				res.status(404).json({ message: "Ensemble filtre-carte non trouvé" });
+				return;
+			}
+
+			const newfilterMapContent = await dcartDataSource
+				.getRepository(FilterMapContent)
+				.create({
+					...filterMapContentToUpdate,
+					options: req.body,
+				});
+
+			await dcartDataSource
+				.getRepository(FilterMapContent)
+				.save(newfilterMapContent);
+
+			res.status(201).json({ message: "Option ajoutée à la carte" });
 		} catch (error) {
 			handleError(res, error as Error);
 		}

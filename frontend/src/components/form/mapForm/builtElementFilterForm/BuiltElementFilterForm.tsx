@@ -5,23 +5,27 @@
 // import des types
 // import du style
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
+import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import style from "../introForm/introForm.module.scss";
+import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putRequests";
 
 const BuiltElementFilterForm = () => {
 	const { translation, language } = useTranslation();
 
-	const handleSubmit = () => {
-		console.log("Form submitted");
-	};
+	const { mapInfos, mapFiltersOptions, setMapFiltersOptions } =
+		useMapFormStore();
 
 	const handleRadioChange = (event: React.ChangeEvent<HTMLInputElement>) => {
-		const { checked } = event.target;
-		console.log("Checkbox checked:", checked);
-		// Handle the checkbox change logic here
+		setMapFiltersOptions({
+			...mapFiltersOptions,
+			[event.target.name]: event.target.id,
+		});
+		// requête de modification du filtre
+		updateMapFilterOptions(mapInfos?.id as string, "element", event.target.id);
 	};
 
 	return (
-		<form onSubmit={handleSubmit} className={style.commonFormContainer}>
+		<form className={style.commonFormContainer}>
 			{/* <h4>{translation[language].backoffice.mapFormPage.addFilters}</h4> */}
 			<h4>Construction du filtre "Elements"</h4>
 			<div className={style.commonFormInputContainer}>
@@ -36,9 +40,10 @@ const BuiltElementFilterForm = () => {
 				<div className={style.inputContainer}>
 					<input
 						id="basic"
-						name="builtSolution"
+						name="element"
 						type="radio"
 						onChange={(event) => handleRadioChange(event)}
+						checked={mapFiltersOptions.element === "basic"}
 					/>
 				</div>
 			</div>
@@ -54,9 +59,10 @@ const BuiltElementFilterForm = () => {
 				<div className={style.inputContainer}>
 					<input
 						id="automatic"
-						name="builtSolution"
+						name="element"
 						type="radio"
 						onChange={(event) => handleRadioChange(event)}
+						checked={mapFiltersOptions.element === "automatic"}
 					/>
 				</div>
 			</div>
@@ -72,9 +78,10 @@ const BuiltElementFilterForm = () => {
 				<div className={style.inputContainer}>
 					<input
 						id="manual"
-						name="builtSolution"
+						name="element"
 						type="radio"
 						onChange={(event) => handleRadioChange(event)}
+						checked={mapFiltersOptions.element === "manual"}
 					/>
 				</div>
 			</div>

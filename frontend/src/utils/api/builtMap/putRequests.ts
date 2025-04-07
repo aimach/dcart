@@ -65,4 +65,38 @@ const updateFiltersToMap = async (
 	}
 };
 
-export { updateMap, updateFiltersToMap, updateMapActiveStatus };
+/**
+ * Envoie une requête PUT pour modifier les options d'un filtre d'une carte
+ * @param mapId - L'id de la carte
+ * @param filterType - Le type de filtre à modifier
+ * @param mapFiltersOptions - Les nouvelles options du filtre à modifier
+ * @returns la réponse de la requête
+ */
+const updateMapFilterOptions = async (
+	mapId: string,
+	filterType: string,
+	mapFiltersOptions: string,
+) => {
+	try {
+		const response = await apiClient(
+			`dcart/filters/update/${mapId}/${filterType}`,
+			{
+				method: "PUT",
+				data: JSON.stringify({ solution: mapFiltersOptions }),
+			},
+		);
+		notifyEditSuccess("Option du filtre", true);
+		return response;
+	} catch (error) {
+		notifyError(
+			"Erreur lors de la modification des options du filtre de la carte",
+		);
+	}
+};
+
+export {
+	updateMap,
+	updateFiltersToMap,
+	updateMapActiveStatus,
+	updateMapFilterOptions,
+};
