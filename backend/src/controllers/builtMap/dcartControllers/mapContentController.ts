@@ -39,7 +39,7 @@ export const mapContentController = {
 					.select([
 						"map",
 						"filterMapContent",
-						"filter",
+						"filter.type",
 						"category",
 						"attestations",
 						"attestations.icon",
@@ -65,7 +65,14 @@ export const mapContentController = {
 				.leftJoinAndSelect("map.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
 				.leftJoinAndSelect("filterMapContent.filter", "filter")
-				.select(["map", "filterMapContent", "category", "attestations", "icon"])
+				.select([
+					"map",
+					"filterMapContent",
+					"filter.type",
+					"category",
+					"attestations",
+					"icon",
+				])
 				.where("map.id = :mapId", { mapId })
 				.getOne();
 

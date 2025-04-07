@@ -72,7 +72,7 @@ type MapInfoType = {
 	image_url?: string;
 	category: string | CategoryType;
 	attestations: PointSetType[];
-	filters?: Record<string, string>[];
+	filterMapContent?: Record<string, string>[];
 	isLayered: boolean;
 	isNbDisplayed: boolean;
 	relatedStorymap?: string;
