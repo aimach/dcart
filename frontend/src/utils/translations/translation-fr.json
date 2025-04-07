@@ -173,6 +173,10 @@
 				"label": "Filtre avec les épithètes",
 				"description": "Affiche un select/options avec la liste des épithètes de l'ensemble des éléments des attestations affichées"
 			},
+			"divinityNbFilter": {
+				"label": "Filtre du nombre de divinités",
+				"description": "Affiche un champ de texte avec un nombre minimum et un nombre maximum. L'utilisateur peut entrer un nombre entre les deux valeurs."
+			},
 			"noFilter": {
 				"label": "Je ne souhaite pas ajouter de filtre",
 				"description": "Aucun filtre ne sera ajouté à la carte"

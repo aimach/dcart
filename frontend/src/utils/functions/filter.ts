@@ -168,6 +168,15 @@ const getFilterLabel = (
 					translation[language as keyof TranslationType].backoffice.mapFormPage
 						.epithetFilter.description,
 			};
+		case "divinityNb":
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.divinityNbFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.divinityNbFilter.description,
+			};
 		default:
 			return {
 				label:

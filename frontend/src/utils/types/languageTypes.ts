@@ -166,6 +166,7 @@ type LanguageObject = {
 			locationFilter: { label: string; description: string };
 			languageFilter: { label: string; description: string };
 			epithetFilter: { label: string; description: string };
+			divinityNbFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;

@@ -173,6 +173,10 @@
 				"label": "Epithets filter",
 				"description": "Displays a select/options element with the list of epithets from all elements of the displayed attestations"
 			},
+			"divinityNbFilter": {
+				"label": "Divinity number filter",
+				"description": "Displays a number input with a minimum and maximum value. The user can enter a number between the two values."
+			},
 			"noFilter": {
 				"label": "I don't want to add a filter",
 				"description": "No filter will be added to the map."
