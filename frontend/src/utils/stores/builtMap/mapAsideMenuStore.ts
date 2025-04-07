@@ -2,17 +2,26 @@
 import { create } from "zustand";
 // import des types
 import type { MenuTabType } from "../../types/mapTypes";
-import type { FilterType } from "../../types/filterTypes";
 
 type State = {
 	selectedTabMenu: MenuTabType;
-	mapFilters: FilterType[];
+	mapFilters: {
+		id: number;
+		options: Record<string, string>;
+		filter: { type: string };
+	}[];
 	isPanelDisplayed: boolean;
 };
 
 type Action = {
 	setSelectedTabMenu: (selectedTabMenu: MenuTabType) => void;
-	setMapFilters: (mapFilters: FilterType[]) => void;
+	setMapFilters: (
+		mapFilters: {
+			id: number;
+			options: Record<string, string>;
+			filter: { type: string };
+		}[],
+	) => void;
 	resetFilters: () => void;
 	setIsPanelDisplayed: (isPanelDisplayed: boolean) => void;
 };

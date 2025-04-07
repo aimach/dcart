@@ -72,7 +72,7 @@ const MapPage = () => {
 						(attestation: PointSetType) => attestation.name as string,
 					),
 				);
-				setMapFilters(mapInfos.filters);
+				setMapFilters(mapInfos.filterMapContent);
 			}
 		},
 		[mapStore, setMapFilters],

@@ -377,6 +377,40 @@ const displayFiltersTags = (
 	return stringArray;
 };
 
+/**
+ * Fonction pour récupérer le nombre minimum et maximum d'éléments dans les points
+ * @param {PointType[]} allPoints - Les points
+ * @returns {min: number, max: number} - Un objet contenant le minimum et le maximum
+ */
+const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
+	let min = 20;
+	let max = 0;
+	for (const point of allPoints) {
+		for (const sources of point.sources) {
+			for (const attestations of sources.attestations) {
+				if (attestations.elements.length > 0) {
+					const uniqueElementsById = Object.values(
+						attestations.elements.reduce((acc, element) => {
+							acc[element.element_id] = element.element_id;
+							return acc;
+						}, {}),
+					);
+					if (uniqueElementsById.length < min) {
+						min = uniqueElementsById.length;
+					}
+					if (uniqueElementsById.length > max) {
+						if (uniqueElementsById.length > 29) {
+							console.log(point);
+						}
+						max = uniqueElementsById.length;
+					}
+				}
+			}
+		}
+	}
+	return { min, max };
+};
+
 export {
 	alreadyTwoFiltersChecked,
 	createTimeOptions,
@@ -392,4 +426,5 @@ export {
 	noFilterChecked,
 	noUserFilterChecked,
 	displayFiltersTags,
+	getMinAndMaxElementNumbers,
 };

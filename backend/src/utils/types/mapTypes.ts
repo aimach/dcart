@@ -58,6 +58,7 @@ type MapFilterType = {
 	location: boolean;
 	language: boolean;
 	element: boolean;
+	divinityNb: boolean;
 };
 
 type MapInfoType = {

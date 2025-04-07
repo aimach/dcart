@@ -16,6 +16,7 @@ import { useShallow } from "zustand/shallow";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
+import DivinityNbComponent from "../filterComponents/DivinityNbFilterComponent";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
@@ -102,7 +103,7 @@ const FilterComponent = ({
 			<div>
 				{mapFilters.length > 0 &&
 					mapFilters.map((filter) => {
-						if (filter.type === "location") {
+						if (filter.filter.type === "location") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.location}</h4>
@@ -114,7 +115,7 @@ const FilterComponent = ({
 								</div>
 							);
 						}
-						if (filter.type === "element") {
+						if (filter.filter.type === "element") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.element}</h4>
@@ -126,7 +127,15 @@ const FilterComponent = ({
 								</div>
 							);
 						}
-						if (filter.type === "language") {
+						if (filter.filter.type === "divinityNb") {
+							return (
+								<div className={style.filterContainer} key={filter.id}>
+									<h4>{translation[language].mapPage.aside.divinityNb}</h4>
+									<DivinityNbComponent key={filter.id} />
+								</div>
+							);
+						}
+						if (filter.filter.type === "language") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.language}</h4>
