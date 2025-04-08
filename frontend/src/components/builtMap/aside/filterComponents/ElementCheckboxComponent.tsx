@@ -1,4 +1,5 @@
 // import des types
+import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./ElementCheckboxComponent.module.scss";
@@ -14,6 +15,7 @@ type ElementCheckboxComponentProps = {
 
 const ElementCheckboxComponent = ({ options, selected, setSelected }: ElementCheckboxComponentProps) => {
 
+    const { userFilters, setUserFilters } = useMapFiltersStore()
 
     const toggleFirstLevel = (optionId: string) => {
         const isChecked = selected[optionId]?.checked;
@@ -25,7 +27,13 @@ const ElementCheckboxComponent = ({ options, selected, setSelected }: ElementChe
             children: !isChecked ? children.map(c => c.value) : []
         };
         setSelected(newSelected);
+        const newLotIds = !isChecked ? [...userFilters.lotIds, [optionId, ...children.map(c => c.value)]] : userFilters.lotIds.filter((lot: string[]) => lot[0] !== optionId);
+        setUserFilters({
+            ...userFilters,
+            lotIds: newLotIds
+        });
     };
+
 
     const toggleSecondLevel = (optionId: string, childId: string) => {
         const group = selected[optionId] || { checked: false, children: [] };
@@ -33,12 +41,27 @@ const ElementCheckboxComponent = ({ options, selected, setSelected }: ElementChe
             ? group.children.filter(c => c !== childId)
             : [...group.children, childId];
 
-        setSelected({
+        const newSelectedValue = {
             ...selected,
             [optionId]: {
                 checked: children.length > 0,
                 children
             }
+        }
+        setSelected(newSelectedValue);
+
+        const newLotIds = Object.keys(newSelectedValue).reduce((acc: string[][], key: string) => {
+            if (newSelectedValue[key].checked) {
+                return [...acc, [key, ...newSelectedValue[key].children.map(c => c)]];
+            } else {
+                return acc;
+            }
+        }, []);
+
+
+        setUserFilters({
+            ...userFilters,
+            lotIds: newLotIds
         });
     };
 

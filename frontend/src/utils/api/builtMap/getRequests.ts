@@ -126,7 +126,12 @@ const getAllPointsByMapId = async (
 		let query = "";
 		if (params !== null) {
 			for (const [key, value] of Object.entries(params)) {
-				if (value !== undefined) {
+				if (key=== "lotIds" && value !== undefined) {
+					if (Array.isArray(value) && Array.isArray(value[0])) {
+						const lotIds = value.map((lot: string[]) => JSON.stringify(lot)).join(",");
+						queryArray.push(`lotIds=${lotIds}`);
+					} 
+				} else if (value !== undefined) {
 					queryArray.push(`${key}=${value}`);
 				}
 			}
