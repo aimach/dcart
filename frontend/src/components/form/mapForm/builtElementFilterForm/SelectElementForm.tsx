@@ -78,18 +78,19 @@ const SelectElementForm = ({ elementOptions, mapInfos }: SelectElementFormProps)
 	return lots.length > 0 && (
 		<div>
 			{lots.map((lot, index) => {
+				console.log(lot.firstLevelIds)
 				return (
 					<div key={index} >
 						<div>
 							<p>Premier niveau</p>
 							<Select
 								options={elementOptions}
-								value={lot.firstLevelIds}
+								value={lot.firstLevelIds[0]}
 								onChange={(newValue) => {
 									const current = lots[index];
 									if (!current) return;
 									const newLots = [...lots];
-									newLots[index] = { ...current, firstLevelIds: newValue };
+									newLots[index] = { ...current, firstLevelIds: [newValue] };
 									setLots(newLots);
 								}}
 								placeholder={translation[language].mapPage.aside.searchForElement}

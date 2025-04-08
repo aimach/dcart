@@ -16,9 +16,10 @@ import {
 import { sortSourcesByDate } from "../../../utils/functions/builtMap";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
-import type { Request, Response } from "express";
-import type { PointType } from "../../../utils/types/mapTypes";
+import { query, type Request, type Response } from "express";
+import type { AttestationType, ElementType, PointType, SourceType } from "../../../utils/types/mapTypes";
 import type { Attestation } from "../../../entities/builtMap/Attestation";
+import { match } from "assert";
 
 export const sourceController = {
 	// récupérer toutes les sources à partir de l'id de la carte
@@ -42,9 +43,9 @@ export const sourceController = {
 					// s'il existe des params, on remplace les valeurs par celles des params
 					queryLocalisation = req.query.locationId
 						? getQueryStringForLocalisationFilter(
-								mapId,
-								req.query.locationId as string,
-							)
+							mapId,
+							req.query.locationId as string,
+						)
 						: queryLocalisation;
 				}
 
@@ -101,14 +102,15 @@ export const sourceController = {
 				);
 				let queryIncludedElements = "";
 				let queryDivinityNb = "";
+				let queryLotIds = "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (req.query.locationId) {
 					queryLocalisation = req.query.locationId
 						? getQueryStringForLocalisationFilter(
-								mapId,
-								req.query.locationId as string,
-							)
+							mapId,
+							req.query.locationId as string,
+						)
 						: queryLocalisation;
 				}
 
@@ -155,10 +157,54 @@ export const sourceController = {
 							queryLanguage,
 							queryIncludedElements,
 							queryDivinityNb,
+							queryLotIds
 						);
+
 						const queryResults = await mapDataSource.query(sqlQuery);
+
+
+						// on trie les sources si req.query.lotIds est présent
+						let filteredResults = [];
+						if (req.query.lotIds) {
+							const lotIdsArray = (req.query.lotIds as string).split("|").map((lot) => JSON.parse(lot));
+							const attestationMatchesLot = (attestation: AttestationType, lotIdsArray: number[][]) => {
+								const elementIds = attestation.elements?.map(e => e.element_id) || [];
+								return lotIdsArray.some(lot =>
+									lot.every(id => elementIds.includes(id))
+								);
+							};
+
+							const filterPointsByValidLots = (points: PointType[], lotIdsArray: number[][]) => {
+								return points
+									.map(point => {
+										const filteredSources = point.sources
+											?.map(source => {
+												const filteredAttestations = source.attestations
+													?.filter(attestation => attestationMatchesLot(attestation, lotIdsArray));
+
+												if (filteredAttestations && filteredAttestations.length > 0) {
+													return { ...source, attestations: filteredAttestations };
+												}
+												return null;
+											})
+											.filter(source => source !== null);
+
+										if (filteredSources && filteredSources.length > 0) {
+											return { ...point, sources: filteredSources };
+										}
+										return null;
+									})
+									.filter(point => point !== null);
+							};
+
+							filteredResults = filterPointsByValidLots(queryResults, lotIdsArray);
+
+						} else {
+							filteredResults = queryResults;
+						}
+
 						// on trie les sources de chaque point par date
-						return queryResults.map((point: PointType) => {
+						const sortedResults = filteredResults.map((point: PointType) => {
 							return {
 								...point,
 								sources: sortSourcesByDate(point.sources),
@@ -167,6 +213,7 @@ export const sourceController = {
 								layerName: attestation.name,
 							};
 						});
+						return sortedResults;
 					}),
 				);
 			}
@@ -194,6 +241,7 @@ export const sourceController = {
 				"",
 				"",
 				"",
+				""
 			);
 
 			const results = await mapDataSource.query(sqlQuery);
