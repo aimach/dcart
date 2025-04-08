@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useMemo } from "react";
+import { useMemo, useState } from "react";
 import Select from "react-select";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation"; // import des services
@@ -12,6 +12,7 @@ import {
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+import ElementCheckboxComponent from "./ElementCheckboxComponent";
 
 interface ElementFilterComponentProps {
 	elementOptions: OptionType[];
@@ -52,6 +53,8 @@ const ElementFilterComponent = ({
 		}
 	}
 
+	const [selected, setSelected] = useState({});
+
 	switch (filterOptions.solution) {
 		case "basic":
 			return <div>
@@ -75,7 +78,12 @@ const ElementFilterComponent = ({
 				/>
 			</div>;
 		case "manual":
-			return <div>Manuel</div>;
+			return <div>{
+				filterOptions.checkbox.map((options: { firstLevelIds: OptionType[], secondLevelIds: OptionType[] }) => {
+					return (
+						<ElementCheckboxComponent options={options} key={options.firstLevelIds[0].value} selected={selected} setSelected={setSelected} />)
+				})
+			}</div >;
 		default:
 			return <div>
 				<Select

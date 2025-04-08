@@ -85,7 +85,6 @@ const SelectElementForm = ({ elementOptions, mapInfos }: SelectElementFormProps)
 							<Select
 								options={elementOptions}
 								value={lot.firstLevelIds}
-								isMulti
 								onChange={(newValue) => {
 									const current = lots[index];
 									if (!current) return;

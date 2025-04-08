@@ -1,5 +1,7 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
+// import des composants
+import SelectElementForm from "./SelectElementForm";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -9,14 +11,12 @@ import {
 	getAllPointsForDemoMap,
 	getOneMapInfos,
 } from "../../../../utils/api/builtMap/getRequests";
+import { fetchElementOptions } from "../../../../utils/functions/filter";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
+import type { MapInfoType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
-import { fetchElementOptions } from "../../../../utils/functions/filter";
-import ButtonComponent from "../../../common/button/ButtonComponent";
-import SelectElementForm from "./SelectElementForm";
-import { MapInfoType } from "../../../../utils/types/mapTypes";
 
 const BuiltElementFilterForm = () => {
 	const { translation, language } = useTranslation();
