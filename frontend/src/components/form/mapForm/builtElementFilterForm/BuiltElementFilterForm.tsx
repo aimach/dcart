@@ -1,9 +1,5 @@
 // import des bibliothèques
-import { useEffect, useMemo, useState } from "react";
-import Select from "react-select";
-
-// import des composants
-import MultiSelectComponent from "../../../common/multiSelect/MultiSelectComponent";
+import { useEffect, useState } from "react";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -18,18 +14,16 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
 import { fetchElementOptions } from "../../../../utils/functions/filter";
+import ButtonComponent from "../../../common/button/ButtonComponent";
+import SelectElementForm from "./SelectElementForm";
 
 const BuiltElementFilterForm = () => {
 	const { translation, language } = useTranslation();
 
 	const [selectedOption, setSelectedOption] = useState<string>("");
 	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
-    const [filterOptions, setFilterOptions] = useState({})
 
 	const { mapInfos, setMapInfos } = useMapFormStore();
-
-
-
     
     useEffect(( ) => {
         const getElementsOptionsByAttestationIds = async () => {
@@ -79,15 +73,6 @@ const BuiltElementFilterForm = () => {
 		setMapInfos(newMap);
 	};
 
-    const handleMultiSelectChange = async (filterOptions) => {
-        const body = {
-            solution: "manual", 
-            firstLevelIds: filterOptions.firstLevelIds.map((option: OptionType) => option.value),
-            secondLevelIds: filterOptions.secondLevelIds.map((option: OptionType) => option.value)
-        }
-      
-        await updateMapFilterOptions(mapInfos?.id as string, "element", JSON.stringify(body));
-    }
 
 
 	return elementOptions.length > 0 && (
@@ -155,34 +140,7 @@ const BuiltElementFilterForm = () => {
 				</div>
 			</div>
 			{selectedOption === "manual" && (
-				<div>
-					<div>
-						<p>Premier niveau</p>
-						<Select
-							options={elementOptions}
-							// defaultValue={}
-							delimiter="|"
-							isMulti
-							onChange={(newValue) => setFilterOptions({...filterOptions, firstLevelIds: newValue})}
-							placeholder={translation[language].mapPage.aside.searchForElement}
-							isClearable={true}
-						/>
-              
-					</div>
-					<div>
-						<p>Second niveau</p>
-						<Select
-							options={elementOptions}
-							// defaultValue={}
-							delimiter="|"
-							isMulti
-							onChange={(newValue) => setFilterOptions({...filterOptions, secondLevelIds: newValue})}
-							placeholder={translation[language].mapPage.aside.searchForElement}
-							isClearable={true}
-						/>
-					</div>
-                         <button type="button" onClick={() => handleMultiSelectChange(filterOptions)}>sauvegarder</button>
-				</div>
+				<SelectElementForm elementOptions={elementOptions}/>
 			)}
 		</form>
 	);
