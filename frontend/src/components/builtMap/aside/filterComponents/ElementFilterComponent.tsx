@@ -32,7 +32,7 @@ const ElementFilterComponent = ({
 	const { translation, language } = useTranslation();
 
 	// récupération des données des filtres depuis le store
-	const {mapInfos} = useMapStore();
+	const { mapInfos } = useMapStore();
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
@@ -56,48 +56,48 @@ const ElementFilterComponent = ({
 		case "basic":
 			return <div>
 				<Select
-				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-				options={elementOptions}
-				defaultValue={getDefaultValues}
-				delimiter="|"
-				isMulti
-				onChange={(newValue) =>
-					onMultiSelectChange(
-						newValue,
-						"elementId",
-						setUserFilters,
-						userFilters,
-						setElementNameValues,
-					)
-				}
-				placeholder={translation[language].mapPage.aside.searchForElement}
-				isClearable={false}
-			/>
-		</div>;
+					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
+					options={elementOptions}
+					defaultValue={getDefaultValues}
+					delimiter="|"
+					isMulti
+					onChange={(newValue) =>
+						onMultiSelectChange(
+							newValue,
+							"elementId",
+							setUserFilters,
+							userFilters,
+							setElementNameValues,
+						)
+					}
+					placeholder={translation[language].mapPage.aside.searchForElement}
+					isClearable={false}
+				/>
+			</div>;
 		case "manual":
 			return <div>Manuel</div>;
 		default:
 			return <div>
-		<Select
-				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-				options={elementOptions}
-				defaultValue={getDefaultValues}
-				delimiter="|"
-				isMulti
-				onChange={(newValue) =>
-					onMultiSelectChange(
-						newValue,
-						"elementId",
-						setUserFilters,
-						userFilters,
-						setElementNameValues,
-					)
-				}
-				placeholder={translation[language].mapPage.aside.searchForElement}
-				isClearable={false}
-			/>
-			
-		</div>
+				<Select
+					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
+					options={elementOptions}
+					defaultValue={getDefaultValues}
+					delimiter="|"
+					isMulti
+					onChange={(newValue) =>
+						onMultiSelectChange(
+							newValue,
+							"elementId",
+							setUserFilters,
+							userFilters,
+							setElementNameValues,
+						)
+					}
+					placeholder={translation[language].mapPage.aside.searchForElement}
+					isClearable={false}
+				/>
+
+			</div>
 	}
 
 };

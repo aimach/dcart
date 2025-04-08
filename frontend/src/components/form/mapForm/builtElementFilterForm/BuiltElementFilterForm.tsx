@@ -16,6 +16,7 @@ import style from "../introForm/introForm.module.scss";
 import { fetchElementOptions } from "../../../../utils/functions/filter";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import SelectElementForm from "./SelectElementForm";
+import { MapInfoType } from "../../../../utils/types/mapTypes";
 
 const BuiltElementFilterForm = () => {
 	const { translation, language } = useTranslation();
@@ -24,26 +25,26 @@ const BuiltElementFilterForm = () => {
 	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
 
 	const { mapInfos, setMapInfos } = useMapFormStore();
-    
-    useEffect(( ) => {
-        const getElementsOptionsByAttestationIds = async () => {
-            const attestationIdsArray = mapInfos?.attestations.map(
-                (attestation) => attestation.attestationIds,
-            );
-    
-            const allAttestationsIds = attestationIdsArray?.join(",").split(",");
-            const uniqueAttestationIds = new Set(allAttestationsIds);
-    
-            const allPoints = await getAllPointsForDemoMap(
-                [...uniqueAttestationIds].toString(),
-            );
-    
-            const allElementsOptions = await fetchElementOptions(allPoints, language, false);
-            setElementOptions(allElementsOptions);
-        };
-        getElementsOptionsByAttestationIds();
 
-    }, [mapInfos?.attestations, language])
+	useEffect(() => {
+		const getElementsOptionsByAttestationIds = async () => {
+			const attestationIdsArray = mapInfos?.attestations.map(
+				(attestation) => attestation.attestationIds,
+			);
+
+			const allAttestationsIds = attestationIdsArray?.join(",").split(",");
+			const uniqueAttestationIds = new Set(allAttestationsIds);
+
+			const allPoints = await getAllPointsForDemoMap(
+				[...uniqueAttestationIds].toString(),
+			);
+
+			const allElementsOptions = await fetchElementOptions(allPoints, language, false);
+			setElementOptions(allElementsOptions);
+		};
+		getElementsOptionsByAttestationIds();
+
+	}, [mapInfos?.attestations, language])
 
 	useEffect(() => {
 		if (mapInfos) {
@@ -67,7 +68,7 @@ const BuiltElementFilterForm = () => {
 		await updateMapFilterOptions(
 			mapInfos?.id as string,
 			"element",
-			JSON.stringify({solution: event.target.id}),
+			JSON.stringify({ solution: event.target.id }),
 		);
 		const newMap = await getOneMapInfos(mapInfos?.id as string);
 		setMapInfos(newMap);
@@ -140,7 +141,7 @@ const BuiltElementFilterForm = () => {
 				</div>
 			</div>
 			{selectedOption === "manual" && (
-				<SelectElementForm elementOptions={elementOptions}/>
+				<SelectElementForm elementOptions={elementOptions} mapInfos={mapInfos as MapInfoType} />
 			)}
 		</form>
 	);

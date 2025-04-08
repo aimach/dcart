@@ -74,8 +74,8 @@ type MapInfoType = {
 	category: string | CategoryType;
 	attestations: PointSetType[];
 	filterMapContent?:
-		| Record<string, string>[]
-		| Record<string, Record<string, string>>[];
+		Record<string, string>
+		| Record<string, Record<string, string>[]>;
 	isLayered: boolean;
 	isNbDisplayed: boolean;
 	relatedStorymap?: string;
