@@ -74,8 +74,8 @@ type MapInfoType = {
 	category: string | CategoryType;
 	attestations: PointSetType[];
 	filterMapContent?:
-		Record<string, string>
-		| Record<string, Record<string, string>[]>;
+	Record<string, string>
+	| Record<string, Record<string, string>[]>;
 	isLayered: boolean;
 	isNbDisplayed: boolean;
 	relatedStorymap?: string;
@@ -160,9 +160,17 @@ type TimeMarkersType = {
 
 type MapIconType = {
 	id?: string;
-	name: string;
+	name_fr: string;
+	name_en: string;
 	svg_code: string;
 };
+
+type MapColorType = {
+	id?: string;
+	name_fr: string;
+	name_en: string;
+	hex_code: string;
+}
 
 type PointSetType = {
 	id?: string;
@@ -190,4 +198,5 @@ export type {
 	MapFilterType,
 	MapIconType,
 	PointSetType,
+	MapColorType
 };

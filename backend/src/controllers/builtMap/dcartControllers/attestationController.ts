@@ -7,6 +7,7 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 import { MapContent } from "../../../entities/builtMap/MapContent";
 import { Icon } from "../../../entities/builtMap/Icon";
+import { Color } from "../../../entities/builtMap/Color";
 
 export const attestationController = {
 	// récupère toutes les attestations d'une carte
@@ -36,7 +37,7 @@ export const attestationController = {
 	// créer une liste d'attestation
 	createAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { icon, mapId } = req.body;
+			const { color, icon, mapId } = req.body;
 
 			const mapToAddAttestations = await dcartDataSource
 				.getRepository(MapContent)
@@ -51,7 +52,7 @@ export const attestationController = {
 			if (!icon) {
 				iconToAdd = await dcartDataSource
 					.getRepository(Icon)
-					.findOne({ where: { name: "circle" } });
+					.findOne({ where: { name_fr: "cercle" } });
 			} else {
 				iconToAdd = await dcartDataSource
 					.getRepository(Icon)
@@ -60,6 +61,22 @@ export const attestationController = {
 
 			if (!iconToAdd) {
 				res.status(404).json("L'icône n'existe pas");
+				return;
+			}
+
+			let colorToAdd = null;
+			if (!color) {
+				colorToAdd = await dcartDataSource
+					.getRepository(Color)
+					.findOne({ where: { name_fr: "marron" } });
+			} else {
+				colorToAdd = await dcartDataSource
+					.getRepository(Color)
+					.findOne({ where: { id: req.body.color } });
+			}
+
+			if (!colorToAdd) {
+				res.status(404).json("La couleur n'existe pas");
 				return;
 			}
 

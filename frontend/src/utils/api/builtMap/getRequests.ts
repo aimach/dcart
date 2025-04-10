@@ -126,11 +126,11 @@ const getAllPointsByMapId = async (
 		let query = "";
 		if (params !== null) {
 			for (const [key, value] of Object.entries(params)) {
-				if (key=== "lotIds" && value !== undefined) {
+				if (key === "lotIds" && value !== undefined) {
 					if (Array.isArray(value) && Array.isArray(value[0])) {
 						const lotIds = value.map((lot: string[]) => JSON.stringify(lot)).join("|");
 						queryArray.push(`lotIds=${lotIds}`);
-					} 
+					}
 				} else if (value !== undefined) {
 					queryArray.push(`${key}=${value}`);
 				}
@@ -238,6 +238,19 @@ const getAllIcons = async () => {
 	}
 };
 
+/**
+ * Récupère la liste des couleurs pour les icônes de la BDD
+ * @returns {Promise} - Les couleurs
+ */
+const getAllColors = async () => {
+	try {
+		const response = await apiClient.get("/dcart/colors/all");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des couleurs :", error);
+	}
+};
+
 export {
 	getAllAttestationsFromSourceId,
 	getAllCategories,
@@ -252,5 +265,5 @@ export {
 	getOneMapInfos,
 	getTimeMarkers,
 	getUserFilters,
-	getAllIcons,
+	getAllIcons, getAllColors
 };

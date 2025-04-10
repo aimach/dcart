@@ -8,11 +8,12 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
-import { getAllIcons } from "../../../../utils/api/builtMap/getRequests";
+import { getAllIcons, getAllColors } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { FormEvent, ChangeEvent } from "react";
 import type { ParseResult } from "papaparse";
 import type {
+	MapColorType,
 	MapIconType,
 	ParsedPointType,
 	PointSetType,
@@ -73,12 +74,18 @@ const PointSetUploadForm = ({
 	};
 
 	const [allIcons, setAllIcons] = useState<MapIconType[]>([]);
+	const [allColors, setAllColors] = useState<MapColorType[]>([]);
 	useEffect(() => {
 		const fetchAllIcons = async () => {
 			const fetchedIcons = await getAllIcons();
 			setAllIcons(fetchedIcons);
 		};
+		const fetchAllColors = async () => {
+			const fetchedColors = await getAllColors();
+			setAllColors(fetchedColors);
+		}
 		fetchAllIcons();
+		fetchAllColors();
 	}, []);
 
 	return (
@@ -141,32 +148,42 @@ const PointSetUploadForm = ({
 				</div>
 				<div className={style.commonFormInputContainer}>
 					<div className={style.labelContainer}>
-						<label htmlFor="color">
+						<label htmlFor="colorId">
 							{
 								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointColor.label
+									.pointIcon.label
 							}
 						</label>
 						<p>
-							{" "}
 							{
 								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointColor.description
+									.pointIcon.description
 							}
 						</p>
 					</div>
 					<div className={style.inputContainer}>
-						<input
-							id="color"
-							name="color"
-							type="color"
+						<select
+							name="colorId"
+							id="colorId"
 							onChange={(event) =>
 								setPointSet({
 									...pointSet,
 									color: event.target.value,
 								} as PointSetType)
 							}
-						/>
+						>
+							<option value="null">
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.chooseColor
+								}
+							</option>
+							{allColors.map((color) => (
+								<option key={color.id} value={color.id} style={{ backgroundColor: color.hex_code }}>
+									{color[`name_${language}`]}
+								</option>
+							))}
+						</select>
 					</div>
 				</div>
 				<div className={style.commonFormInputContainer}>
@@ -201,11 +218,13 @@ const PointSetUploadForm = ({
 										.chooseIcon
 								}
 							</option>
-							{allIcons.map((icon) => (
+							{allIcons.map((icon) =>
+							(
 								<option key={icon.id} value={icon.id}>
-									{translation[language].mapPage.shape[icon.name]}
+									{icon[`name_${language}`]}
 								</option>
-							))}
+							)
+							)}
 						</select>
 					</div>
 				</div>

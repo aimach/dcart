@@ -78,12 +78,6 @@
 		"onlySemitic": "uniquement en sémitique",
 		"onlyGreek": "uniquement en grec",
 		"withElements": "avec les éléments",
-		"shape": {
-			"circle": "rond",
-			"square": "carré",
-			"triangle": "triangle",
-			"diamond": "losange"
-		},
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",
@@ -152,6 +146,7 @@
 					"description": "Si aucune forme n'est sélectionnée, les points s'afficheront sous la forme de cercles."
 				},
 				"chooseIcon": "Choisissez une icône",
+				"chooseColor": "Choisissez une couleur",
 				"noDefinedColor": "Pas de couleur définie",
 				"noDefinedIcon": "Pas d'icône définie",
 				"isLayeredLabel": "Les points doivent être affichés sur un calque différent",
