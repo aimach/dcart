@@ -35,6 +35,7 @@ export const mapContentController = {
 					.leftJoinAndSelect("map.filterMapContent", "filterMapContent")
 					.leftJoinAndSelect("map.attestations", "attestations")
 					.leftJoinAndSelect("attestations.icon", "icon")
+					.leftJoinAndSelect("attestations.color", "color")
 					.leftJoinAndSelect("filterMapContent.filter", "filter")
 					.select([
 						"map",
@@ -43,6 +44,7 @@ export const mapContentController = {
 						"category",
 						"attestations",
 						"attestations.icon",
+						"attestations.color",
 						"creator.pseudo",
 						"modifier.pseudo",
 					]);
@@ -64,6 +66,7 @@ export const mapContentController = {
 				.leftJoinAndSelect("map.filterMapContent", "filterMapContent")
 				.leftJoinAndSelect("map.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
+				.leftJoinAndSelect("attestations.color", "color")
 				.leftJoinAndSelect("filterMapContent.filter", "filter")
 				.select([
 					"map",
@@ -72,6 +75,7 @@ export const mapContentController = {
 					"category",
 					"attestations",
 					"icon",
+					"color"
 				])
 				.where("map.id = :mapId", { mapId })
 				.getOne();
