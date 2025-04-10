@@ -65,7 +65,7 @@ const UserMapFilterForm = () => {
 					.filter((filterType: FilterType) => filterType.type !== "time")
 					.map((filter: FilterType) => {
 						const index = mapInfos.filterMapContent?.findIndex((mapFilter) => {
-							return mapFilter.filter.type === filter.type;
+							return mapFilter.filter?.type === filter.type;
 						});
 						if (index !== -1) {
 							return { [filter.type]: true };

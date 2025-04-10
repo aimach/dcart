@@ -157,7 +157,7 @@ const UploadForm = () => {
 								<tr key={pointSet.id} className={style.pointSetTableRow}>
 									<td>{pointSet.name}</td>
 									<td>
-										{pointSet.color ??
+										{pointSet.color ? <div style={{ backgroundColor: pointSet.color, width: 30, height: 30 }} /> :
 											translation[language].backoffice.mapFormPage.pointSetForm
 												.noDefinedColor}
 									</td>
@@ -165,7 +165,7 @@ const UploadForm = () => {
 										{pointSet.icon
 											? pointSet.icon.name
 											: translation[language].backoffice.mapFormPage
-													.pointSetForm.noDefinedIcon}
+												.pointSetForm.noDefinedIcon}
 									</td>
 									<td>
 										<X

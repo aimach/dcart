@@ -31,10 +31,10 @@ type CommonFormProps = {
 	onSubmit: SubmitHandler<allInputsType>;
 	inputs: InputType[];
 	defaultValues?:
-		| storymapInputsType
-		| BlockContentType
-		| undefined
-		| StorymapType;
+	| storymapInputsType
+	| BlockContentType
+	| undefined
+	| StorymapType;
 	action?: string;
 };
 
@@ -70,6 +70,7 @@ const CommonForm = ({
 	} = useForm<allInputsType>({
 		defaultValues: defaultValues ?? {},
 	});
+
 
 	// si des valeurs par défaut sont passées, injection dans l'input des catégories
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -172,8 +173,8 @@ const CommonForm = ({
 											defaultValue={
 												defaultValues
 													? defaultValues[
-															`${input.name}` as keyof typeof defaultValues
-														]
+													`${input.name}` as keyof typeof defaultValues
+													]
 													: null
 											}
 										/>

@@ -54,7 +54,7 @@ const BuiltElementFilterForm = () => {
 			);
 			if (elementFilter) {
 				setSelectedOption(
-					(elementFilter.options as Record<string, string>).solution,
+					(elementFilter.options as Record<string, string>)?.solution ?? "basic",
 				);
 			}
 		}

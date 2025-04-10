@@ -116,11 +116,6 @@ export const filterController = {
 				})
 				.getOne();
 
-			if (!filterMapContentToUpdate) {
-				res.status(404).json({ message: "Ensemble filtre-carte non trouvé" });
-				return;
-			}
-
 			const newfilterMapContent = await dcartDataSource
 				.getRepository(FilterMapContent)
 				.create({

@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
-import Select from "react-select";
+import Select, { MultiValue } from "react-select";
 // import des composants
 import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
@@ -78,7 +78,6 @@ const SelectElementForm = ({ elementOptions, mapInfos }: SelectElementFormProps)
 	return lots.length > 0 && (
 		<div>
 			{lots.map((lot, index) => {
-				console.log(lot.firstLevelIds)
 				return (
 					<div key={index} >
 						<div>
@@ -90,7 +89,7 @@ const SelectElementForm = ({ elementOptions, mapInfos }: SelectElementFormProps)
 									const current = lots[index];
 									if (!current) return;
 									const newLots = [...lots];
-									newLots[index] = { ...current, firstLevelIds: [newValue] };
+									newLots[index] = { ...current, firstLevelIds: [newValue as OptionType] };
 									setLots(newLots);
 								}}
 								placeholder={translation[language].mapPage.aside.searchForElement}
@@ -108,7 +107,7 @@ const SelectElementForm = ({ elementOptions, mapInfos }: SelectElementFormProps)
 									const current = lots[index];
 									if (!current) return;
 									const newLots = [...lots];
-									newLots[index] = { ...current, secondLevelIds: newValue };
+									newLots[index] = { ...current, secondLevelIds: newValue as OptionType[] };
 									setLots(newLots);
 								}} placeholder={translation[language].mapPage.aside.searchForElement}
 								isClearable={true}
@@ -116,11 +115,9 @@ const SelectElementForm = ({ elementOptions, mapInfos }: SelectElementFormProps)
 						</div>
 						<ButtonComponent type="button" color="brown" onClickFunction={() => handleMultiSelectChange(index)} textContent="Sauvegarder" />
 						<ButtonComponent type="button" color="brown" onClickFunction={() => handleDeleteMultiSelect(index)} textContent="Supprimer" />
-
 					</div>)
 
 			})}
-			{/* <ButtonComponent type="button" color="brown" onClickFunction={() => console.log("hello")} textContent="Ajouter" /> */}
 		</div>);
 };
 

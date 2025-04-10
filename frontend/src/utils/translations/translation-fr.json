@@ -113,7 +113,7 @@
 			"status": "Statut",
 			"createdOn": "Date de création",
 			"updatedOn": "Date de modification",
-			"lastUploadBy": "Dernière mise par",
+			"lastUploadBy": "Dernière modification par",
 			"links": "Liens rapides"
 		},
 		"authPage": {

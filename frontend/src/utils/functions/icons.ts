@@ -259,7 +259,7 @@ const getDiamondIcon = (
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <polygon 
         points="50,5 95,50 50,95 5,50" 
-        ${customFillAndStroke}}
+        ${customFillAndStroke}
         stroke-width="5"
       />
       <text 

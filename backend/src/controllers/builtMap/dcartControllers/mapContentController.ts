@@ -110,8 +110,8 @@ export const mapContentController = {
 				description_en,
 				description_fr,
 				image_url,
-				relatedStorymap,
-				category: category,
+				relatedStorymap: relatedStorymap === "0" || relatedStorymap === "" ? null : relatedStorymap,
+				category,
 				creator: userId,
 				uploadPointsLastDate: currentDate,
 			});
@@ -128,7 +128,6 @@ export const mapContentController = {
 	updateMap: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { mapId } = req.params;
-
 			const { userId } = req.user as jwt.JwtPayload;
 
 			const mapToUpdate = await dcartDataSource
@@ -168,16 +167,11 @@ export const mapContentController = {
 				req.body.relatedStorymap = null;
 			}
 
-			const updatedMap = await dcartDataSource
-				.getRepository(MapContent)
-				.create({
-					...mapToUpdate,
-					...req.body,
-				});
+			// à corriger après la présentation
+			delete req.body.filterMapContent;
 
-			const newMap = await dcartDataSource
-				.getRepository(MapContent)
-				.save(updatedMap);
+			const updatedMap = await dcartDataSource.getRepository(MapContent).merge(mapToUpdate, req.body);
+			const newMap = await dcartDataSource.getRepository(MapContent).save(updatedMap);
 
 			res.status(200).send(newMap);
 		} catch (error) {

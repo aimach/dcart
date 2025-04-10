@@ -27,6 +27,7 @@ import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+import { addStorymapLinkToMap } from "../../../../utils/api/builtMap/postRequests";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type {
@@ -39,8 +40,6 @@ import type {
 	storymapInputsType,
 	allInputsType,
 } from "../../../../utils/types/formTypes";
-import type { MapType } from "../../../../utils/types/mapTypes";
-import { addStorymapLinkToMap } from "../../../../utils/api/builtMap/postRequests";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -95,12 +94,15 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	// -- MODE MODIFICATION --
 	const { storymapId } = useParams();
 	const [storymapInfos, setStorymapInfos] = useState<StorymapType | null>(null);
+	const [isLoaded, setIsLoaded] = useState(false);
 
 	// récupération des données de la storymap
 	useEffect(() => {
 		const fetchStorymapInfos = async (storymapId: string) => {
+			setIsLoaded(false);
 			const response = await getStorymapInfosAndBlocks(storymapId as string);
 			setStorymapInfos({ ...response, category_id: response.category.id });
+			setIsLoaded(true);
 		};
 		if (storymapId !== "create") {
 			fetchStorymapInfos(storymapId as string);
@@ -140,6 +142,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 		setStep(2);
 	};
 
+
+
 	return (
 		<>
 			{storymapId === "create" && (
@@ -149,7 +153,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 					action="create"
 				/>
 			)}
-			{storymapId !== "create" && storymapInfos && (
+			{isLoaded && (
 				<CommonForm
 					onSubmit={onSubmit as SubmitHandler<allInputsType>}
 					inputs={inputs}

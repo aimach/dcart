@@ -39,10 +39,12 @@ const AsideMainComponent = () => {
 	let locationOptions: OptionType[] = [];
 	// si le filtre de localisation est activé, utilisation du hook useMemo
 
+
+
 	locationOptions = useMemo(() => {
 		if (
-			(mapInfos?.filters as FilterType[])?.some(
-				(filter) => filter.type === "location",
+			(mapInfos?.filterMapContent)?.some(
+				(filter) => filter.filter.type === "location",
 			)
 		) {
 			// récupération de toutes les localités depuis la liste des points
