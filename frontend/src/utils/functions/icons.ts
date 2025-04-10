@@ -2,7 +2,7 @@
 import L from "leaflet";
 // import des types
 import type { PointType } from "../types/mapTypes";
-import type { MarkerOptions, Marker } from "leaflet";
+import type { MarkerOptions, Marker, MarkerCluster } from "leaflet";
 
 interface CustomMarkerOptions extends MarkerOptions {
 	colorAndShape?: {
@@ -499,7 +499,7 @@ const getShapeForLayerName = (
 
 const getBlendIcon = (markers: Marker[]): string | undefined => {
 	if (markers.length === 2) {
-		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><clipPath id="left-half">
+		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" stroke="lightgrey" stroke-width="1"><clipPath id="left-half">
 		<rect x="0" y="0" width="20" height="40" /></clipPath><clipPath id="right-half"><rect x="20" y="0" width="20" height="40" /></clipPath>`;
 		let count = 1;
 		for (const marker of markers) {
@@ -516,19 +516,10 @@ const getBlendIcon = (markers: Marker[]): string | undefined => {
 
 	if (markers.length > 2) {
 		const markersColors = markers.map((marker) => {
-			return (marker.options as CustomMarkerOptions).colorAndShape?.color;
+			return (marker.options as CustomMarkerOptions).colorAndShape?.color as string;
 		})
-		console.log(markersColors);
-		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">`;
-		for (const [index, marker] of markers.entries()) {
-			const color = (marker.options as CustomMarkerOptions).colorAndShape?.color;
-			const shape = (marker.options as CustomMarkerOptions).colorAndShape?.shape;
-			const xAndY = getXAndYCoordinates(index);
-			const customIcon = getShapeForLayerName(shape, "", color, xAndY);
-			blendIcon += `<g>${customIcon}</g>`;
-		}
-		blendIcon += '</svg>'
-		return blendIcon;
+		const uniqueMarkersColors = [...new Set(markersColors)];
+		return generateCamembertSVG(uniqueMarkersColors);
 	};
 }
 
@@ -538,7 +529,7 @@ const getBlendIcon = (markers: Marker[]): string | undefined => {
  * @param {L.MarkerCluster} cluster - Le cluster
  * @returns
  */
-const createClusterCustomIcon = (cluster) => {
+const createClusterCustomIcon = (cluster: MarkerCluster) => {
 	const markers = cluster.getAllChildMarkers();
 
 	const blendIcon = getBlendIcon(markers);
@@ -549,19 +540,49 @@ const createClusterCustomIcon = (cluster) => {
 	});
 };
 
-const getXAndYCoordinates = (index: number) => {
-	switch (index) {
-		case 0:
-			return 'x = "0" y = "0"';
-		case 1:
-			return 'x = "20" y = "0"';
-		case 2:
-			return 'x = "0" y = "20"';
-		case 3:
-			return 'x = "20" y = "20"';
-		default:
-			break;
-	}
+
+/**
+ * Fonction pour générer un SVG de camembert
+ * @param {string[]} colors - Les couleurs des points
+ * @param {number} size - La taille du SVG
+ * @returns {string} - Le SVG généré
+ */
+function generateCamembertSVG(colors: string[], size = 40) {
+	const cx = size / 2;
+	const cy = size / 2;
+	const radius = size / 2;
+	const total = colors.length;
+	let angleStart = 0;
+	let paths = '';
+
+	for (const color of colors) {
+		const angle = (2 * Math.PI) / total;
+		const angleEnd = angleStart + angle;
+
+		const x1 = cx + radius * Math.cos(angleStart);
+		const y1 = cy + radius * Math.sin(angleStart);
+		const x2 = cx + radius * Math.cos(angleEnd);
+		const y2 = cy + radius * Math.sin(angleEnd);
+
+		const largeArc = angle > Math.PI ? 1 : 0;
+
+		const d = `
+      M ${cx} ${cy}
+      L ${x1} ${y1}
+      A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}
+      Z
+    `;
+
+		paths += `<path d="${d}" fill="${color}" />`;
+
+		angleStart = angleEnd;
+	};
+
+	return `
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" stroke="lightgrey" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+      ${paths}
+    </svg>
+  `;
 }
 
 export {
