@@ -120,7 +120,7 @@ const MultipleLayerComponent = ({
 	}, [map, selectedMarker, mapInfos]);
 
 	return (
-		<LayersControl position="bottomright">
+		<LayersControl position="bottomright" collapsed={false}>
 			<MarkerClusterGroup
 				ref={clusterRef}
 				zoomToBoundsOnClick={false}
