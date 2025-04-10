@@ -66,7 +66,7 @@ const MapCategoryNav = ({ type }: MapCategoryNavProps) => {
 									setSelectedExploration(true);
 								}}
 							>
-								<Link to="all/map/exploration">
+								<Link to="/map/exploration">
 									{translation[language].button.freeExploration}
 								</Link>
 							</li>
