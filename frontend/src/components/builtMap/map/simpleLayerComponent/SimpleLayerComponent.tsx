@@ -76,6 +76,8 @@ const SimpleLayerComponent = ({
 		}
 	}, [map, selectedMarker, mapInfos]);
 
+
+
 	// si c'est la carte 'exploration', ne pas utiliser le clustering
 	return mapInfos ? (
 		<MarkerClusterGroup

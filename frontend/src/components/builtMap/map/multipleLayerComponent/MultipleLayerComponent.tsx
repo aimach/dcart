@@ -62,6 +62,7 @@ const MultipleLayerComponent = ({
 		});
 	}, [allMemoizedPoints]);
 
+
 	const allResultsWithLayerFilter = useMemo(() => {
 		return allMemoizedPoints.filter((point) => {
 			if (

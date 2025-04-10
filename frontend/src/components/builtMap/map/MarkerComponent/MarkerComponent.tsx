@@ -45,6 +45,7 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 		setSelectedMarker(point);
 	};
 
+
 	const customIcon = getIcon(
 		point,
 		style,

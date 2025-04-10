@@ -277,6 +277,51 @@ const getDiamondIcon = (
   `;
 };
 
+const getStarIcon = (
+	sourcesNb: number,
+	customFillAndStroke: string,
+	customSize: number,
+	customTextColor: string,
+	isNbDisplayed: boolean,
+) => {
+	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
+	<defs>
+		<filter id="blur" x="-5%" y = "-5%" width="110%" height="110%" >
+			<feGaussianBlur in="SourceGraphic" stdDeviation = "0.5" />
+				</filter>
+				</defs>
+				<path d="
+				M60, 10
+				L71, 42
+				L105, 45
+				L78, 65
+				L87, 98
+				L60, 80
+				L33, 98
+				L42, 65
+				L15, 45
+				L49, 42 
+				Z"
+        ${customFillAndStroke}
+        stroke-width="5"
+      />
+      <text 
+        x="60" 
+		y="60"
+        dominant-baseline="middle" 
+        text-anchor="middle" 
+        font-size="35" 
+        fill=${customTextColor}
+        font-family="Arial, sans-serif"
+      >
+        ${isNbDisplayed ? sourcesNb.toString() : ""}
+      </text>
+    </svg>
+  `;
+
+
+};
+
 const getShapedDivContent = (
 	shape: string,
 	color: string,
@@ -324,6 +369,14 @@ const getShapedDivContent = (
 			);
 		case "diamond":
 			return getDiamondIcon(
+				sourcesNb,
+				customFillAndStroke,
+				customSize,
+				customTextColor,
+				isNbDisplayed,
+			);
+		case "star":
+			return getStarIcon(
 				sourcesNb,
 				customFillAndStroke,
 				customSize,
@@ -424,6 +477,20 @@ const getShapeForLayerName = (
 			return `<svg xmlns="http://www.w3.org/2000/svg" width="20"  height="20"  viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
 		case "diamond":
 			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg> ${name}`;
+		case "star":
+			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"  viewBox="0 0 100 100"><defs><filter id="blur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/></filter></defs><path d="
+			M60,10 
+			L71,42 
+			L105,45 
+			L78,65 
+			L87,98 
+			L60,80 
+			L33,98 
+			L42,65 
+			L15,45 
+			L49,42 
+			Z"
+			fill=${defaultColor} stroke="lightgrey" stroke-width="5"  filter="url(#blur)" stroke-linejoin="round"/></svg> ${name}`
 		default:
 			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
 	}
