@@ -179,7 +179,7 @@ const PointSetUploadForm = ({
 								}
 							</option>
 							{allColors.map((color) => (
-								<option key={color.id} value={color.id} style={{ backgroundColor: color.hex_code }}>
+								<option key={color.id} value={color.id}>
 									{color[`name_${language}`]}
 								</option>
 							))}

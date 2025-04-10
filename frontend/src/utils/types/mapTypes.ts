@@ -169,7 +169,7 @@ type MapColorType = {
 	id?: string;
 	name_fr: string;
 	name_en: string;
-	hex_code: string;
+	code_hex: string;
 }
 
 type PointSetType = {

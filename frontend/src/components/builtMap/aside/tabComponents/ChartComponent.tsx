@@ -9,7 +9,6 @@ import {
 	Tooltip,
 	Legend,
 	Title,
-	Colors,
 } from "chart.js";
 import { Doughnut, Bar } from "react-chartjs-2";
 // import des custom hooks
@@ -21,8 +20,9 @@ import {
 	getAgentActivityLabelsAndNb,
 } from "../../../../utils/functions/chart";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+import { getAllColors } from "../../../../utils/api/builtMap/getRequests";
 // import des types
-import type { PointType } from "../../../../utils/types/mapTypes";
+import type { MapColorType, PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./tabComponent.module.scss";
 // import des icônes
@@ -37,7 +37,6 @@ ChartJS.register(
 	Tooltip,
 	Legend,
 	Title,
-	Colors,
 );
 
 /**
@@ -93,6 +92,18 @@ const ChartComponent = () => {
 		setDataSets(dataSets);
 	}, [dataType, selectedMarker, language, includedElementId]);
 
+	const [colors, setColors] = useState<string[]>([]);
+	useEffect(() => {
+		const fetchAllColors = async () => {
+			const fetchedColors = await getAllColors();
+			const codeHexaArray = fetchedColors.map((color: MapColorType) =>
+				color.code_hex
+			);
+			setColors(codeHexaArray);
+		}
+		fetchAllColors();
+	}, [])
+
 	// options pour le graphique en barres
 	const barOptions = {
 		indexAxis: "x" as const,
@@ -134,19 +145,22 @@ const ChartComponent = () => {
 		},
 	};
 
+
 	// données finales pour le graphique
 	const finalData = {
 		labels,
 		datasets: [
 			{
 				data: dataSets,
+				backgroundColor: colors,
 			},
 		],
 	};
 
+
 	return (
 		labels.length &&
-		dataSets.length && (
+		dataSets.length && colors.length && (
 			<section className={style.chartContainer}>
 				<fieldset className={style.chartRadio}>
 					<ChartPie
