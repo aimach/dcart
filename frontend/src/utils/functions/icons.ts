@@ -206,7 +206,7 @@ const getCircleIcon = (
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="45" ${customFillAndStroke} stroke-width="5" />
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill=${customTextColor} font-family="Arial, sans-serif">
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${customTextColor} >
         ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
@@ -224,7 +224,7 @@ const getSquareIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <rect x="5" y="5" width="90" height="90" ${customFillAndStroke}
  stroke-width="5"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill=${customTextColor} font-family="Arial, sans-serif">
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${customTextColor} >
         ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
@@ -242,7 +242,7 @@ const getTriangleIcon = (
      <svg xmlns="http://www.w3.org/2000/svg" width=${customSize}  height=${customSize}  viewBox="0 0 100 100">
       <polygon points="50,10 90,90 10,90" ${customFillAndStroke}
  stroke-width="5" />
-      <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="35" fill=${customTextColor} font-family="Arial, sans-serif">
+      <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="50" fill=${customTextColor} >
         ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
@@ -267,9 +267,8 @@ const getDiamondIcon = (
         y="55%" 
         dominant-baseline="middle" 
         text-anchor="middle" 
-        font-size="35" 
-        fill=${customTextColor}
-        font-family="Arial, sans-serif"
+        font-size="50" 
+        fill=${customTextColor} 
       >
         ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
@@ -310,9 +309,8 @@ const getStarIcon = (
 		y="60"
         dominant-baseline="middle" 
         text-anchor="middle" 
-        font-size="35" 
+        font-size="50" 
         fill=${customTextColor}
-        font-family="Arial, sans-serif"
       >
         ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
@@ -333,11 +331,11 @@ const getShapedDivContent = (
 	const customColor = getColorDependingOnNb(sourcesNb, color);
 	let customFillAndStroke = `fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}`;
 	let customTextColor = tinycolor(customColor).isDark()
-		? tinycolor(color).lighten(40).toString()
-		: tinycolor(color).darken(40).toString();
+		? "white"
+		: "black";
 
 	if (isSelected) {
-		customFillAndStroke = `fill="white" stroke=${tinycolor(customColor).darken(10).toString()}`;
+		customFillAndStroke = `fill="white" stroke-width="10" stroke=${tinycolor(customColor).darken(10).toString()}`;
 		customTextColor = tinycolor(color).darken(40).toString();
 	}
 	customSize = 35;
