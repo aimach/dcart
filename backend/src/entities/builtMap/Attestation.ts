@@ -8,8 +8,8 @@ import {
 } from "typeorm";
 // import des entités
 import { Icon } from "./Icon";
-import { Storymap } from "../storymap/Storymap";
 import { MapContent } from "./MapContent";
+import { Color } from "./Color";
 
 @Entity()
 export class Attestation extends BaseEntity {
@@ -22,15 +22,19 @@ export class Attestation extends BaseEntity {
 	@Column({ type: "text", nullable: false })
 	attestationIds!: string;
 
-	@Column({ type: "varchar", length: 255, nullable: true })
-	color?: string;
-
 	@ManyToOne(
 		() => Icon,
 		(icon) => icon.attestations,
 		{ nullable: true },
 	)
 	icon?: Icon;
+
+	@ManyToOne(
+		() => Color,
+		(color) => color.attestations,
+		{ nullable: true },
+	)
+	color?: Color;
 
 	@ManyToOne(
 		() => MapContent,
