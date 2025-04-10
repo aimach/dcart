@@ -82,7 +82,7 @@ const MultipleLayerComponent = ({
 		if (!clusterGroup) return;
 
 		clusterGroup.on("clustermouseover", (e) =>
-			handleClusterMouseOver(e, selectedMarker, allResultsWithLayerFilter),
+			handleClusterMouseOver(e),
 		);
 		clusterGroup.on("clusterclick", (e) =>
 			handleClusterClick(
@@ -97,7 +97,7 @@ const MultipleLayerComponent = ({
 
 		return () => {
 			clusterGroup.off("clustermouseover", (e) =>
-				handleClusterMouseOver(e, selectedMarker, allResultsWithLayerFilter),
+				handleClusterMouseOver(e),
 			);
 			clusterGroup.off("clusterclick", (e) =>
 				handleClusterClick(

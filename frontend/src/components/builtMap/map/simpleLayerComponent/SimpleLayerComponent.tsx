@@ -39,7 +39,7 @@ const SimpleLayerComponent = ({
 		if (!clusterGroup) return;
 
 		clusterGroup.on("clustermouseover", (e) =>
-			handleClusterMouseOver(e, selectedMarker, allMemoizedPoints),
+			handleClusterMouseOver(e),
 		);
 		clusterGroup.on("clusterclick", (e) =>
 			handleClusterClick(
@@ -54,7 +54,7 @@ const SimpleLayerComponent = ({
 
 		return () => {
 			clusterGroup.off("clustermouseover", (e) =>
-				handleClusterMouseOver(e, selectedMarker, allMemoizedPoints),
+				handleClusterMouseOver(e),
 			);
 			clusterGroup.off("clusterclick", (e) =>
 				handleClusterClick(

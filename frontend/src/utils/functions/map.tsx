@@ -221,18 +221,12 @@ const createLucideString = (
  * @param {Event} e - L'événement de la souris
  */
 const handleClusterMouseOver = (
-	e: L.MarkerClusterMouseEvent,
-	selectedMarker: PointType | undefined,
-	allResults: PointType[],
+	e: L.MarkerClusterMouseEvent
 ) => {
 	const cluster = e.layer;
-	const clusterPosition = cluster.getLatLng();
-	const point = allResults.find(
-		(point) =>
-			point.latitude === clusterPosition.lat &&
-			point.longitude === clusterPosition.lng,
-	);
-	const tooltipContent = point ? point.nom_ville : selectedMarker?.nom_ville;
+	const clusterFirstPoint = cluster.getAllChildMarkers()[0];
+
+	const tooltipContent = clusterFirstPoint._tooltip?.options?.children;
 
 	cluster
 		.bindTooltip(tooltipContent, {

@@ -1,5 +1,5 @@
 // import des bibliothèques
-import L from "leaflet";
+import L, { icon } from "leaflet";
 // import des types
 import type { PointType } from "../types/mapTypes";
 import type { MarkerOptions, Marker, MarkerCluster } from "leaflet";
@@ -497,28 +497,33 @@ const getShapeForLayerName = (
 	}
 };
 
-const getBlendIcon = (markers: Marker[]): string | undefined => {
-	if (markers.length === 2) {
+const getBlendIconHTML = (markers: Marker[]): string | undefined => {
+
+	const markersColors = markers.map((marker) => {
+		return (marker.options as CustomMarkerOptions).colorAndShape?.color as string;
+	})
+	const uniqueMarkersColors = [...new Set(markersColors)];
+
+	if (uniqueMarkersColors.length === 1) {
+		const iconHTML = markers[0].options.icon?.options.html ?? '';
+		return iconHTML;
+	}
+
+	if (markers.length === 2 || uniqueMarkersColors.length === 2) {
+		const uniqueMarkers = getUniqueMarkersByIcon(markers);
 		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" stroke="lightgrey" stroke-width="1"><clipPath id="left-half">
 		<rect x="0" y="0" width="20" height="40" /></clipPath><clipPath id="right-half"><rect x="20" y="0" width="20" height="40" /></clipPath>`;
-		let count = 1;
-		for (const marker of markers) {
-			const side = count % 2 === 0 ? "right-half" : "left-half";
-			const color = (marker.options as CustomMarkerOptions).colorAndShape?.color;
-			const shape = (marker.options as CustomMarkerOptions).colorAndShape?.shape;
+		for (let i = 0; i < 2; i++) {
+			const side = i === 0 ? "left-half" : "right-half";
+			const color = (uniqueMarkers[i].options as CustomMarkerOptions).colorAndShape?.color;
+			const shape = (uniqueMarkers[i].options as CustomMarkerOptions).colorAndShape?.shape;
 			const customIcon = getShapeForLayerName(shape, "", color, '', false);
 			blendIcon += `<g clip-path="url(#${side})">${customIcon}</g>`;
-			count++;
 		}
 		return `${blendIcon}</svg>`;
 	}
 
-
 	if (markers.length > 2) {
-		const markersColors = markers.map((marker) => {
-			return (marker.options as CustomMarkerOptions).colorAndShape?.color as string;
-		})
-		const uniqueMarkersColors = [...new Set(markersColors)];
 		return generateCamembertSVG(uniqueMarkersColors);
 	};
 }
@@ -532,7 +537,7 @@ const getBlendIcon = (markers: Marker[]): string | undefined => {
 const createClusterCustomIcon = (cluster: MarkerCluster) => {
 	const markers = cluster.getAllChildMarkers();
 
-	const blendIcon = getBlendIcon(markers);
+	const blendIcon = getBlendIconHTML(markers);
 	return L.divIcon({
 		html: `${blendIcon} `,
 		className: "",
@@ -547,7 +552,7 @@ const createClusterCustomIcon = (cluster: MarkerCluster) => {
  * @param {number} size - La taille du SVG
  * @returns {string} - Le SVG généré
  */
-function generateCamembertSVG(colors: string[], size = 40) {
+function generateCamembertSVG(colors: string[], size = 35) {
 	const cx = size / 2;
 	const cy = size / 2;
 	const radius = size / 2;
@@ -585,6 +590,21 @@ function generateCamembertSVG(colors: string[], size = 40) {
   `;
 }
 
+/**
+ * Fonction pour obtenir un tableau de marqueurs uniques en fonction de leur icône
+ * @param markers - Le tableau de marqueurs
+ * @returns - Le tableau de marqueurs uniques
+ */
+const getUniqueMarkersByIcon = (markers: Marker[]) => {
+	const seen = new Set();
+	return markers.filter(marker => {
+		const iconHtml = ((marker.options as CustomMarkerOptions).colorAndShape?.color ?? '') + ((marker.options as CustomMarkerOptions).colorAndShape?.shape ?? '');
+		if (seen.has(iconHtml)) return false;
+		seen.add(iconHtml);
+		return true;
+	});
+};
+
 export {
 	getDefaultIcon,
 	getIcon,
@@ -592,6 +612,6 @@ export {
 	getLittleCircleIcon,
 	getShapedDivContent,
 	getShapeForLayerName,
-	getBlendIcon,
+	getBlendIconHTML,
 	createClusterCustomIcon,
 };
