@@ -461,22 +461,25 @@ const getShapeForLayerName = (
 	shape: string | undefined,
 	name: string,
 	color: string | undefined,
+	xAndY: string | undefined = "",
+	isAddingWidthAndHeight = true,
 ) => {
 	let defaultColor = color;
 	if (!color) {
 		defaultColor = "#AD9A85";
 	}
+	const size = isAddingWidthAndHeight ? 'width="20" height="20"' : '';
 	switch (shape) {
 		case "circle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
 		case "square":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg> ${name}`;
 		case "triangle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20"  height="20"  viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
 		case "diamond":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg> ${name}`;
 		case "star":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20"  viewBox="0 0 100 100"><defs><filter id="blur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/></filter></defs><path d="
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><defs><filter id="blur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/></filter></defs><path d="
 			M60,10 
 			L71,42 
 			L105,45 
@@ -490,21 +493,45 @@ const getShapeForLayerName = (
 			Z"
 			fill=${defaultColor} stroke="lightgrey" stroke-width="5"  filter="url(#blur)" stroke-linejoin="round"/></svg> ${name}`
 		default:
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
 	}
 };
 
 const getBlendIcon = (markers: Marker[]): string | undefined => {
-	const blendIcon: string[] = [];
-	for (const marker of markers) {
-		const color = (marker.options as CustomMarkerOptions).colorAndShape?.color;
-		const shape = (marker.options as CustomMarkerOptions).colorAndShape?.shape;
-		const customIcon = getShapeForLayerName(shape, "", color);
-		blendIcon.push(customIcon);
+	if (markers.length === 2) {
+		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg"><clipPath id="left-half">
+		<rect x="0" y="0" width="20" height="40" /></clipPath><clipPath id="right-half"><rect x="20" y="0" width="20" height="40" /></clipPath>`;
+		let count = 1;
+		for (const marker of markers) {
+			const side = count % 2 === 0 ? "right-half" : "left-half";
+			const color = (marker.options as CustomMarkerOptions).colorAndShape?.color;
+			const shape = (marker.options as CustomMarkerOptions).colorAndShape?.shape;
+			const customIcon = getShapeForLayerName(shape, "", color, '', false);
+			blendIcon += `<g clip-path="url(#${side})">${customIcon}</g>`;
+			count++;
+		}
+		return `${blendIcon}</svg>`;
 	}
 
-	return blendIcon.join("");
-};
+
+	if (markers.length > 2) {
+		const markersColors = markers.map((marker) => {
+			return (marker.options as CustomMarkerOptions).colorAndShape?.color;
+		})
+		console.log(markersColors);
+		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg">`;
+		for (const [index, marker] of markers.entries()) {
+			const color = (marker.options as CustomMarkerOptions).colorAndShape?.color;
+			const shape = (marker.options as CustomMarkerOptions).colorAndShape?.shape;
+			const xAndY = getXAndYCoordinates(index);
+			const customIcon = getShapeForLayerName(shape, "", color, xAndY);
+			blendIcon += `<g>${customIcon}</g>`;
+		}
+		blendIcon += '</svg>'
+		return blendIcon;
+	};
+}
+
 
 /**
  * Fonction donnée au composant MarkerCluster pour créer une icône personnalisée
@@ -516,11 +543,26 @@ const createClusterCustomIcon = (cluster) => {
 
 	const blendIcon = getBlendIcon(markers);
 	return L.divIcon({
-		html: `<div class="marker-cluster-custom">${blendIcon}</div>`,
+		html: `${blendIcon} `,
 		className: "",
 		iconSize: L.point(32, 32, true),
 	});
 };
+
+const getXAndYCoordinates = (index: number) => {
+	switch (index) {
+		case 0:
+			return 'x = "0" y = "0"';
+		case 1:
+			return 'x = "20" y = "0"';
+		case 2:
+			return 'x = "0" y = "20"';
+		case 3:
+			return 'x = "20" y = "20"';
+		default:
+			break;
+	}
+}
 
 export {
 	getDefaultIcon,
