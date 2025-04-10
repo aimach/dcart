@@ -430,19 +430,19 @@ const fetchElementOptions = async (
 	let filteredElements = allElements;
 
 	if (isWithoutTheonym) {
-		filteredElements= allElements.filter((element) => {
+		filteredElements = allElements.filter((element) => {
 			return !allDivinities.some(
 				(divinity: DivinityType) => divinity.id === element.element_id,
 			);
 		});
-		
+
 	}
 
 	// formattage des options pour le select
 	const formatedElementOptions: OptionType[] = filteredElements
 		.map((option) => ({
 			value: option.element_id,
-			label: option[`element_nom_${language}`],
+			label: `${option[`element_nom_${language}`]} (${option.etat_absolu})`,
 		}))
 		.sort((option1, option2) =>
 			option1.label < option2.label

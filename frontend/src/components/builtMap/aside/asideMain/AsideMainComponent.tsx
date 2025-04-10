@@ -8,14 +8,11 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
-import { getAllDivinities } from "../../../../utils/api/builtMap/getRequests";
 import {
 	fetchElementOptions,
-	getAllElementsFromPoints,
 	getAllLocationsFromPoints,
 } from "../../../../utils/functions/filter";
 // import des types
-import type { DivinityType } from "../../../../utils/types/mapTypes";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { FilterType } from "../../../../utils/types/filterTypes";
 // import du style
@@ -38,8 +35,6 @@ const AsideMainComponent = () => {
 	// --- RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
 	let locationOptions: OptionType[] = [];
 	// si le filtre de localisation est activé, utilisation du hook useMemo
-
-
 
 	locationOptions = useMemo(() => {
 		if (
