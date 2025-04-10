@@ -46,6 +46,7 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 	};
 
 
+
 	const customIcon = getIcon(
 		point,
 		style,
