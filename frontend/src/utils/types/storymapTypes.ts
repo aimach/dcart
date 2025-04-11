@@ -54,10 +54,10 @@ type PointType = {
 	transliteration: string | null;
 	translation_fr: string | null;
 	translation_en: string | null;
-	title_fr: string | null;
-	title_en: string | null;
-	description_en: string | null;
-	description_fr: string | null;
+	title_lang1: string | null;
+	title_lang2: string | null;
+	description_lang1: string | null;
+	description_lang2: string | null;
 	pane: string | null;
 	color: string | null;
 };

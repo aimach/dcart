@@ -64,6 +64,10 @@ const SimpleMapForm = () => {
 			Lieu: "location",
 			Latitude: "latitude",
 			Longitude: "longitude",
+			"Titre L1": "title_lang1",
+			"Titre L2": "title_lang2",
+			"Description L1": "description_lang1",
+			"Description L2": "description_lang2",
 		};
 
 		const file = (event.target as HTMLInputElement).files?.[0];
@@ -86,6 +90,7 @@ const SimpleMapForm = () => {
 			});
 		}
 	};
+
 
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: simpleMapInputsType) => {

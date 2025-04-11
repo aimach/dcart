@@ -50,13 +50,13 @@ export class Point extends BaseEntity {
 	title_lang1!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	title_2!: string | null;
+	title_lang2!: string | null;
 
 	@Column({ type: "text", nullable: true })
 	description_lang1!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	description_2!: string | null;
+	description_lang2!: string | null;
 
 	@Column({ type: "text", nullable: true })
 	color!: string | null;

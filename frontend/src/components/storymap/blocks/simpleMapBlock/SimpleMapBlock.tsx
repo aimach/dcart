@@ -40,6 +40,8 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 
 	const points = blockContent.groupedPoints as GroupedTyped[];
 
+
+
 	// on met à jour les limites de la carte
 	const bounds: LatLngTuple[] = [];
 	useEffect(() => {
@@ -82,13 +84,16 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 									backgroundColorClassName,
 									point.attestations.length.toString(),
 								);
+
 								return (
 									<Marker
 										key={`${point.latitude}-${point.longitude}`}
 										position={[point.latitude, point.longitude]}
 										icon={icon}
 									>
-										<Popup>{point.attestations[0].location}</Popup>
+										<Popup>
+											<h4>{point.attestations[0][`title_${selectedLanguage}`] ?? point.attestations[0].location}</h4>
+											<p>{point.attestations[0][`description_${selectedLanguage}`] ?? point.attestations[0].location}</p></Popup>
 									</Marker>
 								);
 							})

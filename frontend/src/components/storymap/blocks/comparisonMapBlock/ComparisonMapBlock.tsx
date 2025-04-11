@@ -65,13 +65,19 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 				getBackGroundColorClassName(point.attestations.length),
 				point.attestations.length.toString(),
 			);
+
+			if (point.attestations[0].location?.includes("Kinaros")) {
+				console.log(point)
+			}
+
+			const popupContent = `<h4>${point.attestations[0][`title_${selectedLanguage}`] ?? point.attestations[0].location}</h4><p>${point.attestations[0][`description_${selectedLanguage}`] ?? ''}</p>`;
 			L.marker([point.latitude, point.longitude], {
 				pane: point.pane,
 				shadowPane: point.pane,
 				icon: icon,
 			})
 				.addTo(comparisonMap)
-				.bindPopup(point.attestations[0].location as string);
+				.bindPopup(popupContent as string);
 		});
 
 		// on créé un point miniature sur le pane opposé
