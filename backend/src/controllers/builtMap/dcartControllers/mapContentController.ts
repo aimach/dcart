@@ -151,6 +151,11 @@ export const mapContentController = {
 
 			// si c'est la mise à jour du statut de la carte
 			if (req.query.isActive) {
+				// on vérifie si l'utilisateur est admin
+				if (req.user?.userStatus !== "admin") {
+					res.status(403).send("Accès refusé");
+					return;
+				}
 				mapToUpdate.isActive = req.query.isActive === "true";
 				const updatedMap = await dcartDataSource
 					.getRepository(MapContent)

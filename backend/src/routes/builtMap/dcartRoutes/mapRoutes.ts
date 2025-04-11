@@ -4,7 +4,7 @@ import express from "express";
 import { dcartControllers } from "../../../controllers/builtMap/dcartControllers";
 // import des validateurs
 import { validateMapContentBody } from "../../../utils/validator/builtMap/mapContent";
-import { authenticateUser } from "../../../middlewares/authenticate";
+import { authenticateAdmin, authenticateUser } from "../../../middlewares/authenticate";
 
 export const mapRoutes = express.Router();
 
@@ -30,4 +30,4 @@ mapRoutes.put(
 );
 
 // supprimer carte
-mapRoutes.delete("/:mapId", authenticateUser, dcartControllers.deleteMap);
+mapRoutes.delete("/:mapId", authenticateUser, authenticateAdmin, dcartControllers.deleteMap);

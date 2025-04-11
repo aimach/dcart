@@ -160,6 +160,10 @@ export const storymapContentControllers = {
 			storymapToUpdate.modifier = userId;
 
 			if (req.query.isActive) {
+				if (req.user?.userStatus !== "admin") {
+					res.status(403).send("Accès refusé");
+					return;
+				}
 				const updatedStorymap = await dcartDataSource
 					.getRepository(Storymap)
 					.create({
