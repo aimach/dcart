@@ -1,6 +1,8 @@
+// import des bibliothèques
 import { useContext, useEffect } from "react";
-import { AuthContext } from "../../../context/AuthContext";
 import { useNavigate } from "react-router";
+// import du context
+import { AuthContext } from "../../../context/AuthContext";
 
 const BackofficeTranslationPage = () => {
 	const { isAdmin } = useContext(AuthContext);
