@@ -57,7 +57,7 @@ const createLanguageOptions = (
 		// préparation des catégories pour les inputs
 		const languageOptionArray = languageArray.map((language) => ({
 			value: language.id,
-			label: `${language.name.toUpperCase()} ${getFlagEmoji(language.name)}`,
+			label: `${language.name.toUpperCase()}`,
 		}));
 
 		// récupération de l'id de l'input des catégories

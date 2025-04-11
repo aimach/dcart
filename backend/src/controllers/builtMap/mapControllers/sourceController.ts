@@ -1,5 +1,6 @@
 // import des entités
 import { MapContent } from "../../../entities/builtMap/MapContent";
+import type { Attestation } from "../../../entities/builtMap/Attestation";
 // import des services
 import { dcartDataSource, mapDataSource } from "../../../dataSource/dataSource";
 import {
@@ -16,10 +17,8 @@ import {
 import { sortSourcesByDate } from "../../../utils/functions/builtMap";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
-import { query, type Request, type Response } from "express";
-import type { AttestationType, ElementType, PointType, SourceType } from "../../../utils/types/mapTypes";
-import type { Attestation } from "../../../entities/builtMap/Attestation";
-import { match } from "assert";
+import type { AttestationType, PointType } from "../../../utils/types/mapTypes";
+import type { Request, Response } from "express";
 
 export const sourceController = {
 	// récupérer toutes les sources à partir de l'id de la carte
@@ -86,6 +85,7 @@ export const sourceController = {
 					.createQueryBuilder("map")
 					.leftJoinAndSelect("map.attestations", "attestations")
 					.leftJoinAndSelect("attestations.icon", "icon")
+					.leftJoinAndSelect("attestations.color", "color")
 					.where("map.id = :id", { id: mapId })
 					.getOne();
 				if (!mapInfos) {
@@ -102,7 +102,7 @@ export const sourceController = {
 				);
 				let queryIncludedElements = "";
 				let queryDivinityNb = "";
-				let queryLotIds = "";
+				const queryLotIds = "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (req.query.locationId) {
@@ -208,8 +208,8 @@ export const sourceController = {
 							return {
 								...point,
 								sources: sortSourcesByDate(point.sources),
-								color: attestation.color,
-								shape: attestation.icon?.name,
+								color: attestation.color?.code_hex,
+								shape: attestation.icon?.name_en,
 								layerName: attestation.name,
 							};
 						});
