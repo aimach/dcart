@@ -4,6 +4,7 @@ import type jwt from "jsonwebtoken";
 import { jwtService } from "../utils/jwt";
 // import des types
 import type { Request, Response, NextFunction } from "express";
+import { dcartDataSource } from "../dataSource/dataSource";
 
 // extension de l'interface Request pour inclure la propriété user
 declare global {
@@ -31,6 +32,21 @@ export const authenticateUser = (
 
 	try {
 		const decoded = jwtService.verifyToken(token as string) as UserPayload;
+
+		if (!decoded) {
+			res.status(401).json({ message: "Token invalide ou expiré" });
+			return;
+		}
+
+		// vérification que l'utilisateur existe (si jamais le token est valide mais que l'utilisateur n'existe pas)
+		const authenticatedUser = dcartDataSource.getRepository("User").findOne({
+			where: { id: decoded.userId },
+		});
+		if (!authenticatedUser) {
+			res.status(401).json({ message: "Utilisateur non trouvé" });
+			return
+		}
+
 		req.user = decoded;
 		next();
 	} catch (error) {

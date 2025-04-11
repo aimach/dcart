@@ -160,24 +160,24 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 					: itemInfos.creator.pseudo}
 			</td>
 			<td>
-				{/* {isAdmin && ( */}
-				{itemInfos.isActive ? (
-					<EyeOff onClick={() => handlePublicationClick(type, false)} />
-				) : (
-					<Eye onClick={() => handlePublicationClick(type, true)} />
+				{isAdmin && (
+					itemInfos.isActive ? (
+						<EyeOff onClick={() => handlePublicationClick(type, false)} />
+					) : (
+						<Eye onClick={() => handlePublicationClick(type, true)} />
+					)
 				)}
-				{/* )} */}
 				{isModifiedByAnotherUser ? (
 					<PenOff />
 				) : (
 					<Pen onClick={() => handleModifyClick(itemInfos.id)} />
 				)}
-				{/* {isAdmin && ( */}
-				<Trash
-					color="#9d2121"
-					onClick={() => handleDeleteClick(itemInfos.id)}
-				/>
-				{/* )} */}
+				{isAdmin && (
+					<Trash
+						color="#9d2121"
+						onClick={() => handleDeleteClick(itemInfos.id)}
+					/>
+				)}
 			</td>
 		</tr>
 	);
