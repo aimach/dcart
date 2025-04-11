@@ -24,7 +24,7 @@ import style from "./authFormComponent.module.scss";
 const AuthFormComponent = () => {
 	const { language, translation } = useTranslation();
 
-	const { setToken, setStatus, status } = useContext(AuthContext);
+	const { setToken, setIsAdmin } = useContext(AuthContext);
 
 	// fonction de gestion du bouton "Se connecter"
 	const navigate = useNavigate();
@@ -35,7 +35,7 @@ const AuthFormComponent = () => {
 			const decodedToken = jwtService.verifyToken(
 				loginUserResponse.accessToken as string);
 			if ((decodedToken as JwtPayload & { userStatus: string }).userStatus) {
-				setStatus((decodedToken as JwtPayload & { userStatus: string }).userStatus);
+				setIsAdmin((decodedToken as JwtPayload & { userStatus: string }).userStatus === "admin");
 			}
 			navigate("/backoffice");
 		}

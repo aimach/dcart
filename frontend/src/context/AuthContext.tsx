@@ -7,22 +7,22 @@ import { apiClient } from "../utils/api/apiClient";
 type AuthContextType = {
 	token: string | null;
 	setToken: React.Dispatch<React.SetStateAction<string | null>>;
-	status: string;
-	setStatus: React.Dispatch<React.SetStateAction<string>>;
+	isAdmin: boolean;
+	setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
 };
 
 export const AuthContext = createContext<AuthContextType>({
 	token: null,
 	setToken: () => { },
-	status: "",
-	setStatus: () => { },
+	isAdmin: false,
+	setIsAdmin: () => { },
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 	children,
 }) => {
 	const [token, setToken] = useState<string | null>(null);
-	const [status, setStatus] = useState<string>("");
+	const [isAdmin, setIsAdmin] = useState<boolean>(false);
 
 	useEffect(() => {
 		const fetchProfile = async () => {
@@ -82,7 +82,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 	}, [token]);
 
 	return (
-		<AuthContext.Provider value={{ token, setToken, status, setStatus }}>
+		<AuthContext.Provider value={{ token, setToken, isAdmin, setIsAdmin }}>
 			{children}
 		</AuthContext.Provider>
 	);
