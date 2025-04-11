@@ -65,9 +65,12 @@ const MultipleLayerComponent = ({
 
 
 	const allResultsWithLayerFilter = useMemo(() => {
+		const allLayersWithOnlySVG = allLayers.filter((layerName) =>
+			layerName.includes("svg"),
+		);
 		return allMemoizedPoints.filter((point) => {
 			if (
-				allLayers.filter((layerName) => layerName.includes("svg")).some((layerName) => layerName.replace(/<svg[\s\S]*?<\/svg>/, '').trim() === point.layerName)
+				allLayersWithOnlySVG.some((layerName) => layerName.replace(/<svg[\s\S]*?<\/svg>/, '').trim() === point.layerName)
 			)
 				return point;
 		});

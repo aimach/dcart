@@ -524,7 +524,9 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 	}
 
 	if (markers.length > 2) {
-		return generateCamembertSVG(uniqueMarkersColorsAndShapes);
+		const markerColors = uniqueMarkersColorsAndShapes.map((marker) => marker.color);
+		const uniqueColors = [...new Set(markerColors)];
+		return generateCamembertSVG(uniqueColors, uniqueMarkersColorsAndShapes);
 	};
 }
 
@@ -552,15 +554,16 @@ const createClusterCustomIcon = (cluster: MarkerCluster) => {
  * @param {number} size - La taille du SVG
  * @returns {string} - Le SVG généré
  */
-function generateCamembertSVG(colors: string[], size = 35) {
+function generateCamembertSVG(colors: string[], markersColorsAndShapes: any[], size = 35) {
 	const cx = size / 2;
 	const cy = size / 2;
 	const radius = size / 2;
-	const total = colors.length;
+	const total = colors.length === 1 ? markersColorsAndShapes.length : colors.length;
 	let angleStart = 0;
 	let paths = '';
+	const arrayForLoop = colors.length === 1 ? markersColorsAndShapes : colors;
 
-	for (const color of colors) {
+	for (const color of arrayForLoop) {
 		const angle = (2 * Math.PI) / total;
 		const angleEnd = angleStart + angle;
 
@@ -578,7 +581,7 @@ function generateCamembertSVG(colors: string[], size = 35) {
       Z
     `;
 
-		paths += `<path d="${d}" fill="${color}" />`;
+		paths += `<path d="${d}" fill="${colors.length === 1 ? color.color : color}" />`;
 
 		angleStart = angleEnd;
 	};
