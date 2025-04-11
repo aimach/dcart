@@ -1,6 +1,6 @@
 // import des entités
 import { MapContent } from "../../../entities/builtMap/MapContent";
-import { Category } from "../../../entities/builtMap/Category";
+import { Category } from "../../../entities/common/Category";
 import { Storymap } from "../../../entities/storymap/Storymap";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";

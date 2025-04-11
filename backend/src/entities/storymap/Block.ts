@@ -14,6 +14,7 @@ import {
 import { Storymap } from "./Storymap";
 import { Point } from "./Point";
 import { Type } from "./Type";
+import { Attestation } from "../common/Attestation";
 
 @Entity()
 export class Block extends BaseEntity {
@@ -55,11 +56,11 @@ export class Block extends BaseEntity {
 	type!: Type;
 
 	@OneToMany(
-		() => Point,
-		(point) => point.block,
-		{ cascade: true },
+		() => Attestation,
+		(attestation) => attestation.map,
+		{ nullable: true, onDelete: "CASCADE" },
 	)
-	points!: Point[];
+	attestations?: Attestation[] | null;
 
 	@ManyToOne(
 		() => Block,

@@ -1,6 +1,6 @@
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
-import { Category } from "../../entities/builtMap/Category";
+import { Category } from "../../entities/common/Category";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
