@@ -1,13 +1,13 @@
 // import des entités
 import { MapContent } from "../../../entities/builtMap/MapContent";
 import { Category } from "../../../entities/builtMap/Category";
+import { Storymap } from "../../../entities/storymap/Storymap";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
-import { Storymap } from "../../../entities/storymap/Storymap";
 
 export const mapContentController = {
 	// récupérer les données de toutes les cartes ou d'une carte en particulier
@@ -151,6 +151,11 @@ export const mapContentController = {
 
 			// si c'est la mise à jour du statut de la carte
 			if (req.query.isActive) {
+				// on vérifie si l'utilisateur est admin
+				if (req.user?.userStatus !== "admin") {
+					res.status(403).send("Accès refusé");
+					return;
+				}
 				mapToUpdate.isActive = req.query.isActive === "true";
 				const updatedMap = await dcartDataSource
 					.getRepository(MapContent)

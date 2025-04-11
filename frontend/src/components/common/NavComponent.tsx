@@ -1,7 +1,10 @@
 // import des bibliothèques
+import { useContext } from "react";
 import { NavLink } from "react-router";
 // import des composants
 import NavItemComponent from "./navItem/NavItemComponent";
+// import du contexte
+import { AuthContext } from "../../context/AuthContext";
 // import des types
 import type { NavList } from "../../utils/types/commonTypes";
 
@@ -35,21 +38,25 @@ const NavComponent = ({
 	activeLinkClassName,
 	notActiveLinkClassName,
 }: NavComponentProps) => {
+	const { isAdmin } = useContext(AuthContext);
 	if (type === "route") {
 		return (
 			<nav className={navClassName}>
-				<ul>
-					{list.map((element) => (
-						<NavLink
-							key={element.title as string}
-							to={element.route as string}
-							className={({ isActive }) =>
-								isActive ? activeLinkClassName : notActiveLinkClassName
-							}
-						>
-							{element.title as string}
-						</NavLink>
-					))}
+				<ul >
+					{list.map((element) => {
+						if (!element.adminOnly || (element.adminOnly && isAdmin))
+							return (
+								<NavLink
+									key={element.title as string}
+									to={element.route as string}
+									className={({ isActive }) =>
+										isActive ? activeLinkClassName : notActiveLinkClassName
+									}
+								>
+									{element.title as string}
+								</NavLink>
+							)
+					})}
 				</ul>
 			</nav>
 		);

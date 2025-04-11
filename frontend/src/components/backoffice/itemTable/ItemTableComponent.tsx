@@ -1,13 +1,23 @@
 // import des bibliothèques
 import { useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router";
 import DOMPurify from "dompurify";
 import truncate from "truncate-html";
 // import des composants
+import TagComponent from "../../common/tag/TagComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
+// import du contexte
+import { AuthContext } from "../../../context/AuthContext";
+import { SessionContext } from "../../../context/SessionContext";
 // import des services
-import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
 import { createSession, getSessionById } from "../../../utils/api/sessionAPI";
+import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
+import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
+import { useModalStore } from "../../../utils/stores/storymap/modalStore";
+import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
+import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
+import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
 // import des types
 import type { MapType } from "../../../utils/types/mapTypes";
 import type { StorymapType } from "../../../utils/types/storymapTypes";
@@ -15,14 +25,6 @@ import type { StorymapType } from "../../../utils/types/storymapTypes";
 import style from "./itemTableComponent.module.scss";
 // import des icônes
 import { Eye, EyeOff, ImageOff, Pen, PenOff, Trash } from "lucide-react";
-import { SessionContext } from "../../../context/SessionContext";
-import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
-import { useModalStore } from "../../../utils/stores/storymap/modalStore";
-import { useNavigate } from "react-router";
-import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
-import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
-import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
-import TagComponent from "../../common/tag/TagComponent";
 
 type ItemTableComponentProps = {
 	itemInfos: MapType | StorymapType;
@@ -34,6 +36,7 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 	const { selectedLanguage } = useStorymapLanguageStore();
 
 	const { setSession } = useContext(SessionContext);
+	const { isAdmin } = useContext(AuthContext)
 
 	const { setMapInfos } = useMapFormStore();
 	const { openDeleteModal, setIdToDelete, reload, setReload } = useModalStore();
@@ -43,8 +46,8 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 			type === "map"
 				? DOMPurify.sanitize((itemInfos as MapType)[`description_${language}`])
 				: DOMPurify.sanitize(
-						(itemInfos as StorymapType)[`description_${selectedLanguage}`],
-					);
+					(itemInfos as StorymapType)[`description_${selectedLanguage}`],
+				);
 
 		return shortDescription.length > 100
 			? truncate(shortDescription, 100, { ellipsis: "…" })
@@ -146,10 +149,10 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 			<td>
 				{itemInfos.modifier
 					? new Date(itemInfos.updatedAt).toLocaleDateString(language, {
-							year: "numeric",
-							month: "long",
-							day: "numeric",
-						})
+						year: "numeric",
+						month: "long",
+						day: "numeric",
+					})
 					: ""}
 			</td>
 			<td>
@@ -158,21 +161,24 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 					: itemInfos.creator.pseudo}
 			</td>
 			<td>
-				{itemInfos.isActive ? (
-					<EyeOff onClick={() => handlePublicationClick(type, false)} />
-				) : (
-					<Eye onClick={() => handlePublicationClick(type, true)} />
+				{isAdmin && (
+					itemInfos.isActive ? (
+						<EyeOff onClick={() => handlePublicationClick(type, false)} />
+					) : (
+						<Eye onClick={() => handlePublicationClick(type, true)} />
+					)
 				)}
 				{isModifiedByAnotherUser ? (
 					<PenOff />
 				) : (
 					<Pen onClick={() => handleModifyClick(itemInfos.id)} />
 				)}
-
-				<Trash
-					color="#9d2121"
-					onClick={() => handleDeleteClick(itemInfos.id)}
-				/>
+				{isAdmin && (
+					<Trash
+						color="#9d2121"
+						onClick={() => handleDeleteClick(itemInfos.id)}
+					/>
+				)}
 			</td>
 		</tr>
 	);

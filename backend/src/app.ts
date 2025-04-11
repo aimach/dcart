@@ -2,7 +2,6 @@
 import express, { type Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
-import passport from "passport";
 import cookieParser from "cookie-parser";
 // import des dataSources
 import { dcartDataSource, mapDataSource } from "./dataSource/dataSource";
