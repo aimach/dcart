@@ -123,7 +123,6 @@ const SimpleLayerComponent = ({
 					{allColorsAndShapes.map((layer) => {
 						const icon = getShapeForLayerName(
 							layer.shape,
-							"",
 							layer.color) + layer.name;
 						return (
 							<LayersControl.Overlay name={icon} key={icon}>

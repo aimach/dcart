@@ -16,12 +16,12 @@ import {
 	handleSpiderfyPosition,
 	zoomOnSelectedMarkerCluster,
 } from "../../../../utils/functions/map";
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
 import type L from "leaflet";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
-import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
@@ -33,6 +33,8 @@ const MultipleLayerComponent = ({
 	const { mapInfos, allLayers, map, selectedMarker, setSelectedMarker } =
 		useMapStore();
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
+
+
 
 	const layersArrayForControl = useMemo(() => {
 		const layersArray: {
@@ -53,11 +55,10 @@ const MultipleLayerComponent = ({
 		return layersArray.map((layer) => {
 			return {
 				...layer,
-				name: getShapeForLayerName(
+				shapeCode: getShapeForLayerName(
 					layer.shape as string,
-					layer.name,
 					layer.color as string,
-				),
+				)
 			};
 		});
 	}, [allMemoizedPoints]);
@@ -66,7 +67,7 @@ const MultipleLayerComponent = ({
 	const allResultsWithLayerFilter = useMemo(() => {
 		return allMemoizedPoints.filter((point) => {
 			if (
-				allLayers.some((string) => string.includes(`svg> ${point.layerName}`))
+				allLayers.filter((layerName) => layerName.includes("svg")).some((layerName) => layerName.replace(/<svg[\s\S]*?<\/svg>/, '').trim() === point.layerName)
 			)
 				return point;
 		});
@@ -120,6 +121,7 @@ const MultipleLayerComponent = ({
 		}
 	}, [map, selectedMarker, mapInfos]);
 
+
 	return (
 		<LayersControl position="bottomright" collapsed={false}>
 			<MarkerClusterGroup
@@ -141,7 +143,7 @@ const MultipleLayerComponent = ({
 			</MarkerClusterGroup>
 			{layersArrayForControl.map((layer) => {
 				return (
-					<LayersControl.Overlay name={layer.name} key={layer.name} checked>
+					<LayersControl.Overlay name={`${layer.shapeCode} ${layer.name}`} key={layer.name} checked>
 						<LayerGroup key={layer.name} />
 					</LayersControl.Overlay>
 				);

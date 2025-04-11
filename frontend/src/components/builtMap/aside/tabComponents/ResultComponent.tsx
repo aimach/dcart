@@ -51,12 +51,12 @@ const ResultComponent = () => {
 		// filtre les points qui ne sont pas dans les calques sélectionnés
 		const allResultsFiltered = mapInfos?.isLayered
 			? allResults.filter((point: PointType) =>
-					mapInfos
-						? allLayers.some((string) =>
-								string.includes(`svg> ${point.layerName}`),
-							)
-						: point,
-				)
+				mapInfos
+					? allLayers.some((string) =>
+						string.includes(`svg> ${point.layerName}`),
+					)
+					: point,
+			)
 			: allResults;
 		// ajoute la classe "isSelected" aux points sélectionnés
 		const allResultsFilteredWithCSS = allResultsFiltered.map(
@@ -67,7 +67,7 @@ const ResultComponent = () => {
 					isSelected,
 					selectedClassName: isSelected ? style.isSelected : undefined,
 					shapeCode: DOMPurify.sanitize(
-						getShapeForLayerName(point.shape as string, "", point.color),
+						getShapeForLayerName(point.shape as string, point.color),
 					),
 				};
 			},
