@@ -1,13 +1,23 @@
 // import des bibliothèques
 import { useContext, useEffect, useMemo, useState } from "react";
+import { useNavigate } from "react-router";
 import DOMPurify from "dompurify";
 import truncate from "truncate-html";
 // import des composants
+import TagComponent from "../../common/tag/TagComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
+// import du contexte
+import { AuthContext } from "../../../context/AuthContext";
+import { SessionContext } from "../../../context/SessionContext";
 // import des services
-import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
 import { createSession, getSessionById } from "../../../utils/api/sessionAPI";
+import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
+import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
+import { useModalStore } from "../../../utils/stores/storymap/modalStore";
+import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
+import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
+import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
 // import des types
 import type { MapType } from "../../../utils/types/mapTypes";
 import type { StorymapType } from "../../../utils/types/storymapTypes";
@@ -15,15 +25,6 @@ import type { StorymapType } from "../../../utils/types/storymapTypes";
 import style from "./itemTableComponent.module.scss";
 // import des icônes
 import { Eye, EyeOff, ImageOff, Pen, PenOff, Trash } from "lucide-react";
-import { SessionContext } from "../../../context/SessionContext";
-import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
-import { useModalStore } from "../../../utils/stores/storymap/modalStore";
-import { useNavigate } from "react-router";
-import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
-import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
-import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
-import TagComponent from "../../common/tag/TagComponent";
-import { AuthContext } from "../../../context/AuthContext";
 
 type ItemTableComponentProps = {
 	itemInfos: MapType | StorymapType;

@@ -1,5 +1,4 @@
 // import des types
-import { UserFilterType } from "../types/filterTypes";
 import type { Language, TranslationType } from "../types/languageTypes";
 import type { MapInfoType, MenuTabType, PointType } from "../types/mapTypes";
 

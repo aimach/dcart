@@ -1,9 +1,9 @@
 // import des bibliothèques
 import express from "express";
-// import des modules
+// import des services
 import { dcartControllers } from "../controllers/builtMap/dcartControllers";
+// import des middlewares
 import { validateLoginBody } from "../utils/validator/login";
-import { authenticateUser } from "../middlewares/authenticate";
 
 export const authRoutes = express.Router();
 

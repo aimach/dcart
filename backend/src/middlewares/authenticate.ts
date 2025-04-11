@@ -1,10 +1,10 @@
 // import des bibliothèques
 import type jwt from "jsonwebtoken";
 // import des services
+import { dcartDataSource } from "../dataSource/dataSource";
 import { jwtService } from "../utils/jwt";
 // import des types
 import type { Request, Response, NextFunction } from "express";
-import { dcartDataSource } from "../dataSource/dataSource";
 
 // extension de l'interface Request pour inclure la propriété user
 declare global {

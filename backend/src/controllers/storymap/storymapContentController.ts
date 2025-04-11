@@ -1,17 +1,17 @@
 // import des types
-import type { Request, Response } from "express";
+import type jwt from "jsonwebtoken";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { Storymap } from "../../entities/storymap/Storymap";
 import { groupByLocation } from "../../utils/functions/storymap";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
+import type { Request, Response } from "express";
 import type { Point } from "../../entities/storymap/Point";
 import type {
 	BlockInterface,
 	GroupedPoint,
 } from "../../utils/types/storymapTypes";
-import type jwt from "jsonwebtoken";
 
 export const storymapContentControllers = {
 	// récupère une storymap par son id
