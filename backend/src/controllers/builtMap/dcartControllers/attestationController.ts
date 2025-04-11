@@ -1,5 +1,5 @@
 // import des entités
-import { Attestation } from "../../../entities/builtMap/Attestation";
+import { Attestation } from "../../../entities/common/Attestation";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";

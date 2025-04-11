@@ -8,8 +8,8 @@ import {
 } from "typeorm";
 // import des entités
 import { Icon } from "./Icon";
-import { MapContent } from "./MapContent";
 import { Color } from "./Color";
+import { MapContent } from "../builtMap/MapContent";
 
 @Entity()
 export class Attestation extends BaseEntity {

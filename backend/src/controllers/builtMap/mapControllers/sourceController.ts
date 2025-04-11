@@ -1,6 +1,6 @@
 // import des entités
 import { MapContent } from "../../../entities/builtMap/MapContent";
-import type { Attestation } from "../../../entities/builtMap/Attestation";
+import type { Attestation } from "../../../entities/common/Attestation";
 // import des services
 import { dcartDataSource, mapDataSource } from "../../../dataSource/dataSource";
 import {
