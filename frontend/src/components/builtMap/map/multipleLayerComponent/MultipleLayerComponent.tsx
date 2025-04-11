@@ -16,12 +16,12 @@ import {
 	handleSpiderfyPosition,
 	zoomOnSelectedMarkerCluster,
 } from "../../../../utils/functions/map";
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
 import type L from "leaflet";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
-import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
@@ -33,6 +33,8 @@ const MultipleLayerComponent = ({
 	const { mapInfos, allLayers, map, selectedMarker, setSelectedMarker } =
 		useMapStore();
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
+
+
 
 	const layersArrayForControl = useMemo(() => {
 		const layersArray: {
@@ -53,23 +55,27 @@ const MultipleLayerComponent = ({
 		return layersArray.map((layer) => {
 			return {
 				...layer,
-				name: getShapeForLayerName(
+				shapeCode: getShapeForLayerName(
 					layer.shape as string,
-					layer.name,
 					layer.color as string,
-				),
+				)
 			};
 		});
 	}, [allMemoizedPoints]);
 
+
 	const allResultsWithLayerFilter = useMemo(() => {
+		const allLayersWithOnlySVG = allLayers.filter((layerName) =>
+			layerName.includes("svg"),
+		);
 		return allMemoizedPoints.filter((point) => {
 			if (
-				allLayers.some((string) => string.includes(`svg> ${point.layerName}`))
+				allLayersWithOnlySVG.some((layerName) => layerName.replace(/<svg[\s\S]*?<\/svg>/, '').trim() === point.layerName)
 			)
 				return point;
 		});
 	}, [allLayers, allMemoizedPoints]);
+
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
 
@@ -81,7 +87,7 @@ const MultipleLayerComponent = ({
 		if (!clusterGroup) return;
 
 		clusterGroup.on("clustermouseover", (e) =>
-			handleClusterMouseOver(e, selectedMarker, allResultsWithLayerFilter),
+			handleClusterMouseOver(e),
 		);
 		clusterGroup.on("clusterclick", (e) =>
 			handleClusterClick(
@@ -96,7 +102,7 @@ const MultipleLayerComponent = ({
 
 		return () => {
 			clusterGroup.off("clustermouseover", (e) =>
-				handleClusterMouseOver(e, selectedMarker, allResultsWithLayerFilter),
+				handleClusterMouseOver(e),
 			);
 			clusterGroup.off("clusterclick", (e) =>
 				handleClusterClick(
@@ -118,8 +124,9 @@ const MultipleLayerComponent = ({
 		}
 	}, [map, selectedMarker, mapInfos]);
 
+
 	return (
-		<LayersControl position="bottomright">
+		<LayersControl position="bottomright" collapsed={false}>
 			<MarkerClusterGroup
 				ref={clusterRef}
 				zoomToBoundsOnClick={false}
@@ -139,7 +146,7 @@ const MultipleLayerComponent = ({
 			</MarkerClusterGroup>
 			{layersArrayForControl.map((layer) => {
 				return (
-					<LayersControl.Overlay name={layer.name} key={layer.name} checked>
+					<LayersControl.Overlay name={`${layer.shapeCode} ${layer.name}`} key={layer.name} checked>
 						<LayerGroup key={layer.name} />
 					</LayersControl.Overlay>
 				);

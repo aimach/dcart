@@ -13,6 +13,7 @@ type State = {
 	map: LeafletMap | null;
 	mapInfos: MapInfoType | null;
 	mapFilters: MapFilterType;
+	mapFiltersOptions: Record<string, string>;
 	allPoints: PointType[];
 	mapReady: boolean;
 };
@@ -25,6 +26,7 @@ type Action = {
 	setMapInfos: (mapInfo: MapInfoType | null) => void;
 	setMapFilters: (mapFilter: MapFilterType) => void;
 	resetMapFilters: () => void;
+	setMapFiltersOptions: (mapFiltersOptions: Record<string, string>) => void;
 	resetMapInfos: () => void;
 	setAllPoints: (allPoints: PointType[]) => void;
 	resetAllPoints: () => void;
@@ -39,7 +41,12 @@ export const useMapFormStore = create<State & Action>((set) => ({
 	map: null,
 	setMap: (map) => set(() => ({ map })),
 	mapInfos: null,
-	mapFilters: { location: false, language: false, element: false },
+	mapFilters: {
+		location: false,
+		language: false,
+		element: false,
+		divinityNb: false,
+	},
 	setMapFilters: (mapFilters) => set(() => ({ mapFilters })),
 	resetMapFilters: () =>
 		set(() => ({
@@ -57,4 +64,7 @@ export const useMapFormStore = create<State & Action>((set) => ({
 	resetAllPoints: () => set(() => ({ allPoints: [] })),
 	mapReady: false,
 	setMapReady: (mapReady) => set(() => ({ mapReady })),
+	mapFiltersOptions: { element: "basic" },
+	setMapFiltersOptions: (mapFiltersOptions) =>
+		set(() => ({ mapFiltersOptions: mapFiltersOptions })),
 }));

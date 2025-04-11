@@ -137,7 +137,9 @@ const StorymapIntroPage = () => {
 		} catch (error) {
 			console.error(error);
 		}
-	};
+	}
+
+
 
 	return (
 		<section className={style.BOStorymapFormPageContainer}>

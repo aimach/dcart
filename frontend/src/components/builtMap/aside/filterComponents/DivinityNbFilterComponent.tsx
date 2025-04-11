@@ -17,9 +17,10 @@ const DivinityNbComponent = () => {
 		useShallow((state) => state),
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: on ne souhaite pas de mise à jour car les bornes doivent rester les mêmes (sinon recalcule sur les points filtrés)
 	const { min, max } = useMemo(() => {
 		return getMinAndMaxElementNumbers(allPoints);
-	}, [allPoints]);
+	}, []);
 
 	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
 	function handleRangeChange(minValue: string, maxValue: string) {

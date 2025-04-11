@@ -24,9 +24,9 @@ export class FilterMapContent extends BaseEntity {
 		[key: string]: any;
 	} | null;
 
-	@ManyToOne(() => MapContent)
+	@ManyToOne(() => MapContent, map => map.filterMapContent, { onDelete: "CASCADE" })
 	map?: MapContent;
 
-	@ManyToOne(() => Filter)
-	filter?: MapContent;
+	@ManyToOne(() => Filter, filter => filter.filterMapContent, { onDelete: "CASCADE" })
+	filter?: Filter;
 }

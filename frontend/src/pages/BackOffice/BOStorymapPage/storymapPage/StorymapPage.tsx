@@ -111,8 +111,8 @@ const StorymapPage = () => {
 		storymapInfos && (
 			<>
 				<div className={style.storymapHeaderContainer}>
-					<div>
-						{location.pathname.includes("storymaps/view/") && (
+					{location.pathname.includes("storymaps/view/") && (
+						<div>
 							<Link
 								to={`/backoffice/storymaps/${storymapId}`}
 								state={{ from: location.pathname }}
@@ -125,8 +125,8 @@ const StorymapPage = () => {
 									color="gold"
 								/>
 							</Link>
-						)}
-					</div>
+						</div>
+					)}
 					<div className={style.linkAndLanguageContainer}>
 						{relatedMapId && (
 							<div className={style.mapLinkContainer}>
@@ -142,20 +142,17 @@ const StorymapPage = () => {
 								<li
 									onClick={() => setSelectedLanguage("lang1")}
 									onKeyUp={() => setSelectedLanguage("lang1")}
-									className={
-										selectedLanguage === "lang1" ? style.languageSelected : ""
-									}
+									style={selectedLanguage === "lang1" ? { fontWeight: "bold" } : {}}
+
 								>
-									{getFlagEmoji(storymapInfos.lang1.name)}
+									{storymapInfos.lang1.name.toUpperCase()}
 								</li>
 								<li
 									onClick={() => setSelectedLanguage("lang2")}
 									onKeyUp={() => setSelectedLanguage("lang2")}
-									className={
-										selectedLanguage === "lang2" ? style.languageSelected : ""
-									}
+									style={selectedLanguage === "lang2" ? { fontWeight: "bold" } : {}}
 								>
-									{getFlagEmoji(storymapInfos.lang2.name)}
+									{storymapInfos.lang2.name.toUpperCase()}
 								</li>
 							</ul>
 						)}

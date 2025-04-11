@@ -25,6 +25,7 @@ const emptyUserFilters: UserFilterType = {
 	post: undefined,
 	ante: undefined,
 	elementId: undefined,
+	lotIds:[],
 	locationId: undefined,
 	greek: false,
 	semitic: false,

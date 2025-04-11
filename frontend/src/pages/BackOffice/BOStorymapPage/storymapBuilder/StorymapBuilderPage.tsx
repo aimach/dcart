@@ -67,7 +67,7 @@ const StorymapBuilderPage = () => {
 	const { isDeleteModalOpen, closeDeleteModal } = useModalStore();
 
 	// récupération des paramètres de l'url
-	const [searchParams, setSearchParams] = useSearchParams();
+	const [_, setSearchParams] = useSearchParams();
 
 	// définition du formulaire à afficher
 	let formComponent: JSX.Element = <BlockChoiceForm />;

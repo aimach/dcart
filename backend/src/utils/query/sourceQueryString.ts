@@ -161,6 +161,7 @@ export const getSourcesQueryWithDetails = (
 	queryLanguage: string,
 	queryIncludedElements: string,
 	queryDivinityNb: string,
+  queryLotIds: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -230,6 +231,7 @@ sources_with_attestations AS (
   WHERE attestation.id IN (${attestationIds})
   ${queryDivinityNb}
   ${queryIncludedElements}
+  ${queryLotIds}
 ),
 
 -- on enlève les doublons des sources et on classe les attestations par id

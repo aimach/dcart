@@ -19,7 +19,7 @@ const storymapContentSchema = Joi.object({
 	updatedAt: Joi.date().optional(),
 	blocks: Joi.array().items(blockToEditSchema).min(0).optional(),
 	category_id: Joi.string().uuid().required(),
-	relatedMap: Joi.string().uuid().optional().allow(null),
+	relatedMap: Joi.string().uuid().optional().allow(0).allow(""),
 });
 
 export const validateStorymapContentBody = (

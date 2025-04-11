@@ -1,8 +1,8 @@
 // import des bibliothèques
-import L from "leaflet";
+import L, { icon } from "leaflet";
 // import des types
 import type { PointType } from "../types/mapTypes";
-import type { MarkerOptions, Marker } from "leaflet";
+import type { MarkerOptions, Marker, MarkerCluster } from "leaflet";
 
 interface CustomMarkerOptions extends MarkerOptions {
 	colorAndShape?: {
@@ -206,7 +206,7 @@ const getCircleIcon = (
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="45" ${customFillAndStroke} stroke-width="5" />
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill=${customTextColor} font-family="Arial, sans-serif">
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${customTextColor} >
         ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
@@ -224,7 +224,7 @@ const getSquareIcon = (
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <rect x="5" y="5" width="90" height="90" ${customFillAndStroke}
  stroke-width="5"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="40" fill=${customTextColor} font-family="Arial, sans-serif">
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${customTextColor} >
         ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
@@ -242,7 +242,7 @@ const getTriangleIcon = (
      <svg xmlns="http://www.w3.org/2000/svg" width=${customSize}  height=${customSize}  viewBox="0 0 100 100">
       <polygon points="50,10 90,90 10,90" ${customFillAndStroke}
  stroke-width="5" />
-      <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="35" fill=${customTextColor} font-family="Arial, sans-serif">
+      <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="50" fill=${customTextColor} >
         ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
@@ -259,7 +259,7 @@ const getDiamondIcon = (
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <polygon 
         points="50,5 95,50 50,95 5,50" 
-        ${customFillAndStroke}}
+        ${customFillAndStroke}
         stroke-width="5"
       />
       <text 
@@ -267,14 +267,57 @@ const getDiamondIcon = (
         y="55%" 
         dominant-baseline="middle" 
         text-anchor="middle" 
-        font-size="35" 
-        fill=${customTextColor}
-        font-family="Arial, sans-serif"
+        font-size="50" 
+        fill=${customTextColor} 
       >
         ${isNbDisplayed ? sourcesNb.toString() : ""}
       </text>
     </svg>
   `;
+};
+
+const getStarIcon = (
+	sourcesNb: number,
+	customFillAndStroke: string,
+	customSize: number,
+	customTextColor: string,
+	isNbDisplayed: boolean,
+) => {
+	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
+	<defs>
+		<filter id="blur" x="-5%" y = "-5%" width="110%" height="110%" >
+			<feGaussianBlur in="SourceGraphic" stdDeviation = "0.5" />
+				</filter>
+				</defs>
+				<path d="
+				M60, 10
+				L71, 42
+				L105, 45
+				L78, 65
+				L87, 98
+				L60, 80
+				L33, 98
+				L42, 65
+				L15, 45
+				L49, 42 
+				Z"
+        ${customFillAndStroke}
+        stroke-width="5"
+      />
+      <text 
+        x="60" 
+		y="60"
+        dominant-baseline="middle" 
+        text-anchor="middle" 
+        font-size="50" 
+        fill=${customTextColor}
+      >
+        ${isNbDisplayed ? sourcesNb.toString() : ""}
+      </text>
+    </svg>
+  `;
+
+
 };
 
 const getShapedDivContent = (
@@ -288,11 +331,11 @@ const getShapedDivContent = (
 	const customColor = getColorDependingOnNb(sourcesNb, color);
 	let customFillAndStroke = `fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}`;
 	let customTextColor = tinycolor(customColor).isDark()
-		? tinycolor(color).lighten(40).toString()
-		: tinycolor(color).darken(40).toString();
+		? "white"
+		: "black";
 
 	if (isSelected) {
-		customFillAndStroke = `fill="white" stroke=${tinycolor(customColor).darken(10).toString()}`;
+		customFillAndStroke = `fill="white" stroke-width="10" stroke=${tinycolor(customColor).darken(10).toString()}`;
 		customTextColor = tinycolor(color).darken(40).toString();
 	}
 	customSize = 35;
@@ -324,6 +367,14 @@ const getShapedDivContent = (
 			);
 		case "diamond":
 			return getDiamondIcon(
+				sourcesNb,
+				customFillAndStroke,
+				customSize,
+				customTextColor,
+				isNbDisplayed,
+			);
+		case "star":
+			return getStarIcon(
 				sourcesNb,
 				customFillAndStroke,
 				customSize,
@@ -408,52 +459,152 @@ const getShapeDependingOnNb = (sourcesNb: number): number => {
 
 const getShapeForLayerName = (
 	shape: string | undefined,
-	name: string,
 	color: string | undefined,
+	xAndY: string | undefined = "",
+	isAddingWidthAndHeight = true,
 ) => {
 	let defaultColor = color;
 	if (!color) {
 		defaultColor = "#AD9A85";
 	}
+	const size = isAddingWidthAndHeight ? 'width="20" height="20"' : '';
 	switch (shape) {
 		case "circle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
 		case "square":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg>`;
 		case "triangle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20"  height="20"  viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
 		case "diamond":
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg>`;
+		case "star":
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><defs><filter id="blur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/></filter></defs><path d="
+			M60,10 
+			L71,42 
+			L105,45 
+			L78,65 
+			L87,98 
+			L60,80 
+			L33,98 
+			L42,65 
+			L15,45 
+			L49,42 
+			Z"
+			fill=${defaultColor} stroke="lightgrey" stroke-width="5"  filter="url(#blur)" stroke-linejoin="round"/></svg>`
 		default:
-			return `<svg xmlns="http://www.w3.org/2000/svg" width="20" height="20" viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg> ${name}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
 	}
 };
 
-const getBlendIcon = (markers: Marker[]): string | undefined => {
-	const blendIcon: string[] = [];
-	for (const marker of markers) {
-		const color = (marker.options as CustomMarkerOptions).colorAndShape?.color;
-		const shape = (marker.options as CustomMarkerOptions).colorAndShape?.shape;
-		const customIcon = getShapeForLayerName(shape, "", color);
-		blendIcon.push(customIcon);
+const getBlendIconHTML = (markers: Marker[]): string | undefined => {
+	const markersColorsAndShapes = markers.map((marker) => {
+		return (marker.options as CustomMarkerOptions).colorAndShape;
+	})
+	const uniqueMarkersColorsAndShapes = markersColorsAndShapes.filter((marker, index) => {
+		return markersColorsAndShapes.findIndex((m) => m?.color === marker.color && m?.shape === marker.shape) === index;
+	});
+
+	if (uniqueMarkersColorsAndShapes.length === 1) {
+		const iconHTML = markers[0].options.icon?.options.html ?? '';
+		return iconHTML;
 	}
 
-	return blendIcon.join("");
-};
+	if (markers.length === 2 || uniqueMarkersColorsAndShapes.length === 2) {
+		const uniqueMarkers = getUniqueMarkersByIcon(markers);
+		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" stroke="lightgrey" stroke-width="1"><clipPath id="left-half">
+		<rect x="0" y="0" width="20" height="40" /></clipPath><clipPath id="right-half"><rect x="20" y="0" width="20" height="40" /></clipPath>`;
+		for (let i = 0; i < 2; i++) {
+			const side = i === 0 ? "left-half" : "right-half";
+			const color = (uniqueMarkers[i].options as CustomMarkerOptions).colorAndShape?.color;
+			const shape = (uniqueMarkers[i].options as CustomMarkerOptions).colorAndShape?.shape;
+			const customIcon = getShapeForLayerName(shape, color, '', false);
+			blendIcon += `<g clip-path="url(#${side})">${customIcon}</g>`;
+		}
+		return `${blendIcon}</svg>`;
+	}
+
+	if (markers.length > 2) {
+		const markerColors = uniqueMarkersColorsAndShapes.map((marker) => marker.color);
+		const uniqueColors = [...new Set(markerColors)];
+		return generateCamembertSVG(uniqueColors, uniqueMarkersColorsAndShapes);
+	};
+}
+
 
 /**
  * Fonction donnée au composant MarkerCluster pour créer une icône personnalisée
  * @param {L.MarkerCluster} cluster - Le cluster
  * @returns
  */
-const createClusterCustomIcon = (cluster) => {
+const createClusterCustomIcon = (cluster: MarkerCluster) => {
 	const markers = cluster.getAllChildMarkers();
 
-	const blendIcon = getBlendIcon(markers);
+	const blendIcon = getBlendIconHTML(markers);
 	return L.divIcon({
-		html: `<div class="marker-cluster-custom">${blendIcon}</div>`,
+		html: `${blendIcon} `,
 		className: "",
 		iconSize: L.point(32, 32, true),
+	});
+};
+
+
+/**
+ * Fonction pour générer un SVG de camembert
+ * @param {string[]} colors - Les couleurs des points
+ * @param {number} size - La taille du SVG
+ * @returns {string} - Le SVG généré
+ */
+function generateCamembertSVG(colors: string[], markersColorsAndShapes: any[], size = 35) {
+	const cx = size / 2;
+	const cy = size / 2;
+	const radius = size / 2;
+	const total = colors.length === 1 ? markersColorsAndShapes.length : colors.length;
+	let angleStart = 0;
+	let paths = '';
+	const arrayForLoop = colors.length === 1 ? markersColorsAndShapes : colors;
+
+	for (const color of arrayForLoop) {
+		const angle = (2 * Math.PI) / total;
+		const angleEnd = angleStart + angle;
+
+		const x1 = cx + radius * Math.cos(angleStart);
+		const y1 = cy + radius * Math.sin(angleStart);
+		const x2 = cx + radius * Math.cos(angleEnd);
+		const y2 = cy + radius * Math.sin(angleEnd);
+
+		const largeArc = angle > Math.PI ? 1 : 0;
+
+		const d = `
+      M ${cx} ${cy}
+      L ${x1} ${y1}
+      A ${radius} ${radius} 0 ${largeArc} 1 ${x2} ${y2}
+      Z
+    `;
+
+		paths += `<path d="${d}" fill="${colors.length === 1 ? color.color : color}" />`;
+
+		angleStart = angleEnd;
+	};
+
+	return `
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" stroke="lightgrey" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+      ${paths}
+    </svg>
+  `;
+}
+
+/**
+ * Fonction pour obtenir un tableau de marqueurs uniques en fonction de leur icône
+ * @param markers - Le tableau de marqueurs
+ * @returns - Le tableau de marqueurs uniques
+ */
+const getUniqueMarkersByIcon = (markers: Marker[]) => {
+	const seen = new Set();
+	return markers.filter(marker => {
+		const iconHtml = ((marker.options as CustomMarkerOptions).colorAndShape?.color ?? '') + ((marker.options as CustomMarkerOptions).colorAndShape?.shape ?? '');
+		if (seen.has(iconHtml)) return false;
+		seen.add(iconHtml);
+		return true;
 	});
 };
 
@@ -464,6 +615,6 @@ export {
 	getLittleCircleIcon,
 	getShapedDivContent,
 	getShapeForLayerName,
-	getBlendIcon,
+	getBlendIconHTML,
 	createClusterCustomIcon,
 };

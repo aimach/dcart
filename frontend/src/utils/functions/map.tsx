@@ -127,8 +127,8 @@ const isSelectedMarker = (
 ): boolean => {
 	if (selectedMarker) {
 		return (
-			`${point.latitude}-${point.longitude}` ===
-			`${(selectedMarker as PointType).latitude}-${(selectedMarker as PointType).longitude}`
+			`${point.latitude}-${point.longitude}-${point.color}-${point.shape}` ===
+			`${(selectedMarker as PointType).latitude}-${(selectedMarker as PointType).longitude}-${(selectedMarker as PointType).color}-${(selectedMarker as PointType).shape}`
 		);
 	}
 	return false;
@@ -163,9 +163,8 @@ const getCreationAndModificationString = (
 		},
 	);
 
-	let string = `${translation[language].common.createdOn} ${creationDate} ${translation[language].common.by} ${
-		itemInfos.creator.pseudo
-	}`;
+	let string = `${translation[language].common.createdOn} ${creationDate} ${translation[language].common.by} ${itemInfos.creator.pseudo
+		}`;
 
 	if (itemInfos.modifier) {
 		const modificationDate = new Date(itemInfos.updatedAt).toLocaleDateString(
@@ -177,9 +176,8 @@ const getCreationAndModificationString = (
 			},
 		);
 
-		string += ` - ${translation[language].common.updatedOn} ${modificationDate} ${translation[language].common.by} ${
-			itemInfos.modifier.pseudo
-		}`;
+		string += ` - ${translation[language].common.updatedOn} ${modificationDate} ${translation[language].common.by} ${itemInfos.modifier.pseudo
+			}`;
 	}
 
 	if (itemInfos.uploadPointsLastDate) {
@@ -223,18 +221,12 @@ const createLucideString = (
  * @param {Event} e - L'événement de la souris
  */
 const handleClusterMouseOver = (
-	e: L.MarkerClusterMouseEvent,
-	selectedMarker: PointType | undefined,
-	allResults: PointType[],
+	e: L.MarkerClusterMouseEvent
 ) => {
 	const cluster = e.layer;
-	const clusterPosition = cluster.getLatLng();
-	const point = allResults.find(
-		(point) =>
-			point.latitude === clusterPosition.lat &&
-			point.longitude === clusterPosition.lng,
-	);
-	const tooltipContent = point ? point.nom_ville : selectedMarker?.nom_ville;
+	const clusterFirstPoint = cluster.getAllChildMarkers()[0];
+
+	const tooltipContent = clusterFirstPoint._tooltip?.options?.children;
 
 	cluster
 		.bindTooltip(tooltipContent, {
@@ -265,19 +257,17 @@ const handleClusterClick = (
 	map.flyTo(cluster.getLatLng(), 11, {
 		animate: false,
 	});
-	if (map.hasLayer(cluster)) {
-	}
 
 	const closestCluster = getClosestCluster(map, clickedLatLng);
 
 	const clusterPosition = cluster.getLatLng();
-	const selectedPoint = allResults.find(
+	const selectedPoint = allResults.filter(
 		(point) =>
 			point.latitude === clusterPosition.lat &&
 			point.longitude === clusterPosition.lng,
 	);
 
-	setSelectedMarker(selectedPoint as PointType);
+	setSelectedMarker(selectedPoint[selectedPoint.length - 1] as PointType); // on prend le dernier point du cluster, mais qui s'affiche en premier (à gauche) sur le spiderfy()
 	setSelectedTabMenu("infos");
 	setIsPanelDisplayed(true);
 
@@ -348,16 +338,30 @@ const zoomOnSelectedMarkerCluster = (
  * @param {Map} map - La carte en cours
 
  */
-const getClosestCluster = (map: LeafletMap, clickedLatLng: LatLng) =>
-	Object.values(map._layers)
-		.filter((layer) => layer instanceof L.MarkerCluster)
-		.reduce((closest, layer) => {
+const getClosestCluster = (
+	map: LeafletMap,
+	clickedLatLng: LatLng,
+	maxDistance = 50 // en mètres
+): L.MarkerCluster | null => {
+	let closestCluster: { cluster: L.MarkerCluster; dist: number } | null = null;
+
+	map.eachLayer((layer) => {
+		if (
+			layer instanceof L.MarkerCluster
+		) {
 			const dist = clickedLatLng.distanceTo(layer.getLatLng());
-			if (!closest || dist < closest.dist) {
-				return { cluster: layer, dist };
+			if (!closestCluster || dist < closestCluster.dist) {
+				closestCluster = { cluster: layer, dist };
 			}
-			return closest;
-		}, null)?.cluster;
+		}
+	});
+
+	if (closestCluster && closestCluster.dist <= maxDistance) {
+		return closestCluster.cluster;
+	}
+
+	return null;
+};
 
 export {
 	getAgentsArrayWithoutDuplicates,

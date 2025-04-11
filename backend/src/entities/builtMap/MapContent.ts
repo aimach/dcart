@@ -100,6 +100,6 @@ export class MapContent extends BaseEntity {
 			cascade: true,
 			onDelete: "CASCADE",
 		},
-	) // cascade: true permet d'insérer directement les filtres lors de la création de la carte
+	)
 	filterMapContent?: FilterMapContent[];
 }

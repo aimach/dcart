@@ -44,6 +44,7 @@ const LocationFilterComponent = ({
 		);
 	}, [userFilters.locationId, locationOptions]);
 
+
 	return (
 		<div>
 			<Select

@@ -26,3 +26,10 @@ filterRoutes.put(
 	validateFilterBody,
 	dcartControllers.updateFiltersToMap,
 );
+
+// modification des options d'un filtre d'une carte
+filterRoutes.put(
+	"/update/:mapId/:filterType",
+	authenticateUser,
+	dcartControllers.updateFilterOptions,
+);
