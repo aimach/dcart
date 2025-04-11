@@ -65,7 +65,7 @@ export const authController = {
 			}
 
 			// génération des tokens
-			const accessToken = jwtService.generateAccessToken((user as User).id);
+			const accessToken = jwtService.generateAccessToken(user.id, user.status);
 			// vérification de l'existence du refreshToken
 			const refreshTokenInDB = await dcartDataSource
 				.getRepository(RefreshToken)
@@ -103,7 +103,7 @@ export const authController = {
 
 			const user = await User.findOne({
 				where: { id: userId },
-				select: ["id", "username"],
+				select: ["id", "username", "status"],
 			});
 
 			if (!user) {
@@ -128,7 +128,7 @@ export const authController = {
 
 			// vérification du token
 			const decoded = jwtService.verifyToken(refreshToken) as jwt.JwtPayload;
-			const newAccessToken = jwtService.generateAccessToken(decoded.userId);
+			const newAccessToken = jwtService.generateAccessToken(decoded.userId, decoded.userStatus);
 
 			res.json({ accessToken: newAccessToken });
 		} catch (error) {

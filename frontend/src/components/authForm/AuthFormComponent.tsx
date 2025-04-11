@@ -2,18 +2,21 @@
 import { useContext } from "react";
 import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
+// import des composants
+import ErrorComponent from "../form/errorComponent/ErrorComponent";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import du contexte
 import { AuthContext } from "../../context/AuthContext";
 // import des services
 import { loginUser } from "../../utils/api/authAPI";
+import { jwtService } from "../../utils/functions/auth";
 // import des types
 import type { User } from "../../utils/types/userTypes";
+import type { SubmitHandler } from "react-hook-form";
+import type { JwtPayload } from "jwt-decode";
 // import du style
 import style from "./authFormComponent.module.scss";
-import type { SubmitHandler } from "react-hook-form";
-import ErrorComponent from "../form/errorComponent/ErrorComponent";
 
 /**
  * Composant de formulaire d'authentification
@@ -21,7 +24,7 @@ import ErrorComponent from "../form/errorComponent/ErrorComponent";
 const AuthFormComponent = () => {
 	const { language, translation } = useTranslation();
 
-	const { setToken } = useContext(AuthContext);
+	const { setToken, setStatus, status } = useContext(AuthContext);
 
 	// fonction de gestion du bouton "Se connecter"
 	const navigate = useNavigate();
@@ -29,6 +32,11 @@ const AuthFormComponent = () => {
 		const loginUserResponse = await loginUser(data);
 		setToken(loginUserResponse.accessToken as string);
 		if (loginUserResponse.accessToken) {
+			const decodedToken = jwtService.verifyToken(
+				loginUserResponse.accessToken as string);
+			if ((decodedToken as JwtPayload & { userStatus: string }).userStatus) {
+				setStatus((decodedToken as JwtPayload & { userStatus: string }).userStatus);
+			}
 			navigate("/backoffice");
 		}
 	};
