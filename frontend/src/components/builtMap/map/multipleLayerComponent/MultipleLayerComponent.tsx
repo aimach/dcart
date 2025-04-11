@@ -72,6 +72,7 @@ const MultipleLayerComponent = ({
 		});
 	}, [allLayers, allMemoizedPoints]);
 
+
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:<

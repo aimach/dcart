@@ -498,18 +498,19 @@ const getShapeForLayerName = (
 };
 
 const getBlendIconHTML = (markers: Marker[]): string | undefined => {
-
-	const markersColors = markers.map((marker) => {
-		return (marker.options as CustomMarkerOptions).colorAndShape?.color as string;
+	const markersColorsAndShapes = markers.map((marker) => {
+		return (marker.options as CustomMarkerOptions).colorAndShape;
 	})
-	const uniqueMarkersColors = [...new Set(markersColors)];
+	const uniqueMarkersColorsAndShapes = markersColorsAndShapes.filter((marker, index) => {
+		return markersColorsAndShapes.findIndex((m) => m?.color === marker.color && m?.shape === marker.shape) === index;
+	});
 
-	if (uniqueMarkersColors.length === 1) {
+	if (uniqueMarkersColorsAndShapes.length === 1) {
 		const iconHTML = markers[0].options.icon?.options.html ?? '';
 		return iconHTML;
 	}
 
-	if (markers.length === 2 || uniqueMarkersColors.length === 2) {
+	if (markers.length === 2 || uniqueMarkersColorsAndShapes.length === 2) {
 		const uniqueMarkers = getUniqueMarkersByIcon(markers);
 		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" stroke="lightgrey" stroke-width="1"><clipPath id="left-half">
 		<rect x="0" y="0" width="20" height="40" /></clipPath><clipPath id="right-half"><rect x="20" y="0" width="20" height="40" /></clipPath>`;
@@ -524,7 +525,7 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 	}
 
 	if (markers.length > 2) {
-		return generateCamembertSVG(uniqueMarkersColors);
+		return generateCamembertSVG(uniqueMarkersColorsAndShapes);
 	};
 }
 

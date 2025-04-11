@@ -177,7 +177,7 @@ const MapComponent = () => {
 			{!mapReady && <LoaderComponent size={50} />}
 			<div className={mapContainerClassName} id="built-map">
 				<section className="leaflet-container">
-					{isModalOpen && allMemoizedPoints.length > 0 && (
+					{/* {isModalOpen && allMemoizedPoints.length > 0 && (
 						<ModalComponent
 							onClose={() => {
 								setIsModalOpen(false);
@@ -185,8 +185,8 @@ const MapComponent = () => {
 						>
 							<MapIntroductionContent setIsModalOpen={setIsModalOpen} />
 						</ModalComponent>
-					)}
-					{mapReady && isModalOpen && allMemoizedPoints.length === 0 && (
+					)} */}
+					{/* {mapReady && isModalOpen && allMemoizedPoints.length === 0 && (
 						<ModalComponent onClose={() => setIsModalOpen(false)}>
 							{translation[language].mapPage.noResult}
 							<br />
@@ -203,7 +203,7 @@ const MapComponent = () => {
 								}}
 							/>
 						</ModalComponent>
-					)}
+					)} */}
 					{isTutorialOpen && (
 						<ModalComponent
 							onClose={() => {
