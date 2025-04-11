@@ -16,8 +16,5 @@ authRoutes.post("/login", validateLoginBody, dcartControllers.login);
 // déconnexion de l'utilisateur
 authRoutes.get("/logout", dcartControllers.logout);
 
-// récupération du profile
-authRoutes.get("/profile", authenticateUser, dcartControllers.getProfile);
-
 // génération d'un nouveau token d'accès
 authRoutes.post("/refresh-token", dcartControllers.refreshToken);
