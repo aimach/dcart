@@ -47,16 +47,16 @@ export class Point extends BaseEntity {
 	translation_en!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	title_fr!: string | null;
+	title_lang1!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	title_en!: string | null;
+	title_2!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	description_fr!: string | null;
+	description_lang1!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	description_en!: string | null;
+	description_2!: string | null;
 
 	@Column({ type: "text", nullable: true })
 	color!: string | null;
