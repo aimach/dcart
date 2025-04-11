@@ -20,7 +20,7 @@ interface UserPayload extends jwt.JwtPayload {
 	userId: string;
 }
 
-export const authenticateUser = (
+export const authenticateUser = async (
 	req: Request,
 	res: Response,
 	next: NextFunction,
@@ -38,16 +38,17 @@ export const authenticateUser = (
 			return;
 		}
 
-		// vérification que l'utilisateur existe (si jamais le token est valide mais que l'utilisateur n'existe pas)
-		const authenticatedUser = dcartDataSource.getRepository("User").findOne({
-			where: { id: decoded.userId },
+		// récupération de l'utilisateur
+		const authenticatedUser = await dcartDataSource.getRepository("User").findOne({
+			where: { id: decoded.userId }, select: { id: true, status: true },
 		});
+
 		if (!authenticatedUser) {
 			res.status(401).json({ message: "Utilisateur non trouvé" });
 			return
 		}
 
-		req.user = decoded;
+		req.user = { userId: authenticatedUser.id, userStatus: authenticatedUser.status };
 		next();
 	} catch (error) {
 		res.status(401).json({ message: "Token invalide ou expiré" });
