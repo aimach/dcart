@@ -145,7 +145,19 @@ export const blockController = {
 				.getRepository(Block)
 				.save(updatedBlock);
 
-			res.status(200).send(newBlock);
+			const savedBlock = await dcartDataSource
+				.getRepository(Block)
+				.findOne({
+					where: { id: newBlock.id },
+					relations: {
+						attestations: {
+							icon: true,
+							color: true,
+						},
+					},
+				});
+
+			res.status(200).send(savedBlock);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

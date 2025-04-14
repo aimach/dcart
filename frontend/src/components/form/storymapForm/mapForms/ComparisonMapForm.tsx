@@ -12,21 +12,21 @@ import { comparisonMapInputs } from "../../../../utils/forms/storymapInputArray"
 import { uploadParsedPointsForComparisonMap } from "../../../../utils/api/storymap/postRequests";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
+import {
+	notifyError,
+} from "../../../../utils/functions/toast";
+import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 // import des types
 import type {
 	blockType,
-	parsedPointType,
 } from "../../../../utils/types/formTypes";
 import type { ParseResult } from "papaparse";
 import type { ChangeEvent } from "react";
+import type { ParsedPointType, PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleHelp } from "lucide-react";
-import {
-	notifyError,
-	notifyUploadSuccess,
-} from "../../../../utils/functions/toast";
 
 export type comparisonMapInputsType = {
 	content1_lang1: string;
@@ -57,23 +57,21 @@ const ComparisonMapForm = () => {
 	const { storymapId } = useParams();
 
 	// gestion de l'upload du fichier csv
-	const [parsedPoints, setParsedPoints] = useState<
-		Record<string, parsedPointType[]>
+	const [pointSets, setPointsSets] = useState<
+		Record<string, PointSetType | null>
 	>({
-		left: [],
-		right: [],
+		left: null,
+		right: null,
 	});
 	const handleFileUpload = (event: ChangeEvent) => {
 		// définition de la correspondance avec les headers du csv
 		const headerMapping: Record<string, string> = {
-			Lieu: "location",
-			Latitude: "latitude",
-			Longitude: "longitude",
+			ID: "id",
 		};
 
 		const file = (event.target as HTMLInputElement).files?.[0];
 		// récupération de l'index de l'input (left ou right)
-		const index = (event.target as HTMLInputElement).id;
+		const panelSide = (event.target as HTMLInputElement).id;
 		// si le fichier existe bien, il est parsé et les points sont stockés dans un état
 		if (file) {
 			// @ts-ignore : l'erreur de type sur File, le fichier est bien de type File (problème de typage avec l'utilisation de l'option skipFirstNLines)
@@ -81,24 +79,34 @@ const ComparisonMapForm = () => {
 				header: true,
 				transformHeader: (header) => headerMapping[header] || header,
 				skipEmptyLines: true,
+				dynamicTyping: true, // option qui permet d'avoir les chiffres et booléens en tant que tels
 				skipFirstNLines: 2,
-				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
-				complete: (result: ParseResult<parsedPointType>) => {
-					setParsedPoints({ ...parsedPoints, [index]: result.data });
-					notifyUploadSuccess("Points");
+				complete: (result: ParseResult<ParsedPointType>) => {
+					// récupération des ids des attestations
+					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
+						result.data,
+					);
+					setPointsSets({
+						...pointSets,
+						[panelSide]: {
+							name: panelSide,
+							attestationIds: allAttestationsIds,
+						}
+					});
 				},
 				error: () => {
-					notifyError("Erreur lors de la lecture du fichier");
+					notifyError("Erreur lors de la lecture du fichier :");
 				},
 			});
 		}
 	};
 
+
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: comparisonMapInputsType) => {
 		await uploadParsedPointsForComparisonMap(
 			data as blockType,
-			parsedPoints,
+			pointSets as Record<string, PointSetType>,
 			storymapId as string,
 			"comparison_map",
 			action as string,
@@ -226,8 +234,8 @@ const ComparisonMapForm = () => {
 						type="submit"
 						disabled={
 							action === "create" &&
-							(parsedPoints.left.length === 0 ||
-								parsedPoints.right.length === 0)
+							(pointSets.left?.attestationIds.length === 0 ||
+								pointSets.right?.attestationIds.length === 0)
 						}
 					>
 						{action === "create"
