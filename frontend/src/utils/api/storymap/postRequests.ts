@@ -210,11 +210,6 @@ const uploadParsedPointsForComparisonMap = async (
 				mapId,
 			);
 
-			if (!pointsSets.left && !pointsSets.right) {
-				notifyEditSuccess("Carte de comparaison", true);
-				return;
-			}
-
 			// chargement des points pour les 2 panels
 			for (const panelSide in pointsSets) {
 				const pointSetFromPanelSide = updatedBlock.attestations.find(

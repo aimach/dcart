@@ -5,8 +5,6 @@ import { parse } from "papaparse";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
-import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 import { getAllIcons, getAllColors } from "../../../../utils/api/builtMap/getRequests";
 // import des types

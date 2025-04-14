@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { parse } from "papaparse";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
@@ -16,13 +16,14 @@ import {
 	notifyError,
 } from "../../../../utils/functions/toast";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
+import { getAllColors, getAllIcons } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type {
 	blockType,
 } from "../../../../utils/types/formTypes";
 import type { ParseResult } from "papaparse";
 import type { ChangeEvent } from "react";
-import type { ParsedPointType, PointSetType } from "../../../../utils/types/mapTypes";
+import type { MapColorType, MapIconType, ParsedPointType, PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
@@ -33,6 +34,10 @@ export type comparisonMapInputsType = {
 	content1_lang2: string;
 	content2_lang1: string;
 	content2_lang2: string;
+	leftColorId?: string;
+	leftIconId?: string;
+	rightColorId?: string;
+	rightIconId?: string;
 };
 
 /**
@@ -58,10 +63,20 @@ const ComparisonMapForm = () => {
 
 	// gestion de l'upload du fichier csv
 	const [pointSets, setPointsSets] = useState<
-		Record<string, PointSetType | null>
+		Record<string, PointSetType>
 	>({
-		left: null,
-		right: null,
+		left: {
+			color: "0",
+			icon: "0",
+			name: "",
+			attestationIds: ""
+		},
+		right: {
+			color: "0",
+			icon: "0",
+			name: "",
+			attestationIds: ""
+		},
 	});
 	const handleFileUpload = (event: ChangeEvent) => {
 		// définition de la correspondance avec les headers du csv
@@ -101,6 +116,38 @@ const ComparisonMapForm = () => {
 		}
 	};
 
+	const [allIcons, setAllIcons] = useState<MapIconType[]>([]);
+	const [allColors, setAllColors] = useState<MapColorType[]>([]);
+	useEffect(() => {
+		const fetchAllIcons = async () => {
+			const fetchedIcons = await getAllIcons();
+			setAllIcons(fetchedIcons);
+		};
+		const fetchAllColors = async () => {
+			const fetchedColors = await getAllColors();
+			setAllColors(fetchedColors);
+		}
+		fetchAllIcons();
+		fetchAllColors();
+	}, []);
+
+
+	const [isLoaded, setIsLoaded] = useState(false);
+
+	useEffect(() => {
+		const leftPointsSet = block?.attestations?.find(
+			(pointSet) => pointSet.name === "left",
+		);
+		const rightPointsSet = block?.attestations?.find(
+			(pointSet) => pointSet.name === "right",
+		);
+
+		setPointsSets({ left: { ...pointSets.left, color: leftPointsSet?.color?.id, icon: leftPointsSet?.icon?.id, attestationIds: leftPointsSet?.attestationIds as string, name: "left" }, right: { ...pointSets.right, color: rightPointsSet?.color?.id, icon: rightPointsSet?.icon?.id, attestationIds: rightPointsSet?.attestationIds as string, name: "right" } });
+
+		setIsLoaded(true);
+	}, [block]);
+
+
 
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: comparisonMapInputsType) => {
@@ -126,7 +173,7 @@ const ComparisonMapForm = () => {
 		defaultValues: block as comparisonMapInputsType,
 	});
 
-	return (
+	return isLoaded && (
 		<>
 			<FormTitleComponent
 				action={action as string}
@@ -181,33 +228,212 @@ const ComparisonMapForm = () => {
 					}
 				})}
 				<div className={style.mapFormUploadInputContainer}>
-					<label htmlFor="left">
-						{translation[language].backoffice.storymapFormPage.form.csv}{" "}
-						{
-							translation[language].backoffice.storymapFormPage.form.forLeftPane
-						}{" "}
-					</label>
-					<input
-						id="left"
-						type="file"
-						accept=".csv"
-						onChange={handleFileUpload}
-					/>
+					<div className={style.mapFormUploadInputContainer}>
+						<label htmlFor="left">
+							{translation[language].backoffice.storymapFormPage.form.csv}{" "}
+							{
+								translation[language].backoffice.storymapFormPage.form.forLeftPane
+							}{" "}
+						</label>
+						<input
+							id="left"
+							type="file"
+							accept=".csv"
+							onChange={handleFileUpload}
+						/>
+						<div className={style.labelContainer}>
+							<label htmlFor="leftColorId">
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.pointIcon.label
+								}
+							</label>
+							<p>
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.pointIcon.description
+								}
+							</p>
+						</div>
+					</div>
+					<div className={style.mapFormUploadInputContainer}>
+
+						<select
+							name="leftColorId"
+							id="leftColorId"
+							value={pointSets.left.color as string}
+							onChange={(event) =>
+								setPointsSets({
+									...pointSets,
+									left: {
+										...pointSets.left, color: event.target.value,
+									}
+								})
+							}
+						>
+							<option value="null">
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.chooseColor
+								}
+							</option>
+							{allColors.map((color) => (
+								<option key={color.id} value={color.id}>
+									{color[`name_${language}`]}
+								</option>
+							))}
+						</select>
+					</div>
+					<div className={style.commonFormInputContainer}>
+						<div className={style.labelContainer}>
+							<label htmlFor="leftIconId">
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.pointIcon.label
+								}
+							</label>
+							<p>
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.pointIcon.description
+								}
+							</p>
+						</div>
+						<div className={style.inputContainer}>
+							<select
+								name="leftIconId"
+								id="leftIconId"
+								value={pointSets.left.icon as string}
+								onChange={(event) =>
+									setPointsSets({
+										...pointSets,
+										left: {
+											...pointSets.left, icon: event.target.value,
+										}
+									})
+								}
+							>
+								<option value="null">
+									{
+										translation[language].backoffice.mapFormPage.pointSetForm
+											.chooseIcon
+									}
+								</option>
+								{allIcons.map((icon) =>
+								(
+									<option key={icon.id} value={icon.id}>
+										{icon[`name_${language}`]}
+									</option>
+								)
+								)}
+							</select>
+						</div>
+					</div>
 				</div>
 				<div className={style.mapFormUploadInputContainer}>
-					<label htmlFor="right">
-						{translation[language].backoffice.storymapFormPage.form.csv}{" "}
-						{
-							translation[language].backoffice.storymapFormPage.form
-								.forRightPane
-						}
-					</label>
-					<input
-						id="right"
-						type="file"
-						accept=".csv"
-						onChange={handleFileUpload}
-					/>
+					<div className={style.mapFormUploadInputContainer}>
+
+						<label htmlFor="right">
+							{translation[language].backoffice.storymapFormPage.form.csv}{" "}
+							{
+								translation[language].backoffice.storymapFormPage.form
+									.forRightPane
+							}
+						</label>
+						<input
+							id="right"
+							type="file"
+							accept=".csv"
+							onChange={handleFileUpload}
+						/>
+					</div>
+					<div className={style.mapFormUploadInputContainer}>
+						<div className={style.labelContainer}>
+							<label htmlFor="rightColorId">
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.pointIcon.label
+								}
+							</label>
+							<p>
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.pointIcon.description
+								}
+							</p>
+						</div>
+						<select
+							name="rightColorId"
+							id="rightColorId"
+							value={pointSets.right.color as string}
+
+							onChange={(event) =>
+								setPointsSets({
+									...pointSets,
+									right: {
+										...pointSets.right, color: event.target.value,
+									}
+								})
+							}
+						>
+							<option value="null">
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.chooseColor
+								}
+							</option>
+							{allColors.map((color) => (
+								<option key={color.id} value={color.id}>
+									{color[`name_${language}`]}
+								</option>
+							))}
+						</select>
+					</div>
+					<div className={style.commonFormInputContainer}>
+						<div className={style.labelContainer}>
+							<label htmlFor="rightIconId">
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.pointIcon.label
+								}
+							</label>
+							<p>
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.pointIcon.description
+								}
+							</p>
+						</div>
+						<div className={style.inputContainer}>
+							<select
+								name="rightIconId"
+								id="rightIconId"
+								value={pointSets.right.icon as string}
+								onChange={(event) =>
+									setPointsSets({
+										...pointSets,
+										right: {
+											...pointSets.right, icon: event.target.value,
+										}
+									})
+								}
+							>
+								<option value="null">
+									{
+										translation[language].backoffice.mapFormPage.pointSetForm
+											.chooseIcon
+									}
+								</option>
+								{allIcons.map((icon) =>
+								(
+									<option key={icon.id} value={icon.id}>
+										{icon[`name_${language}`]}
+									</option>
+								)
+								)}
+							</select>
+						</div>
+					</div>
 				</div>
 				<div className={style.helpContainer}>
 					<a

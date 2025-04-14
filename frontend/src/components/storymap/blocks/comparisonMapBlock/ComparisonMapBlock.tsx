@@ -4,15 +4,12 @@ import { v4 as uuidv4 } from "uuid";
 import L from "leaflet";
 // import des services
 import {
-	getDefaultIcon,
 	getIcon,
-	getLittleCircleIcon,
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type {
 	BlockContentType,
-	GroupedTyped,
 } from "../../../../utils/types/storymapTypes";
 import type { LatLngTuple } from "leaflet";
 import type { PointType } from "../../../../utils/types/mapTypes";
@@ -21,7 +18,6 @@ import style from "./comparisonMapBloc.module.scss";
 import "./comparisonMapBloc.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-side-by-side";
-import { getBackGroundColorClassName } from "../../../../utils/functions/map";
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 
 interface ComparisonMapBlockProps {
@@ -50,6 +46,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 	useEffect(() => {
 		fetchAllPoints();
 	}, [fetchAllPoints]);
+
 
 	useEffect(() => {
 		if (bothSidesPoints.length === 0) return;
