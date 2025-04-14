@@ -1,10 +1,11 @@
 // import des bibliothèques
-import { useEffect, useMemo } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import L from "leaflet";
 // import des services
 import {
 	getDefaultIcon,
+	getIcon,
 	getLittleCircleIcon,
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
@@ -14,12 +15,14 @@ import type {
 	GroupedTyped,
 } from "../../../../utils/types/storymapTypes";
 import type { LatLngTuple } from "leaflet";
+import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./comparisonMapBloc.module.scss";
 import "./comparisonMapBloc.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-side-by-side";
 import { getBackGroundColorClassName } from "../../../../utils/functions/map";
+import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 
 interface ComparisonMapBlockProps {
 	blockContent: BlockContentType;
@@ -31,8 +34,27 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 
 	const mapName = useMemo(() => `comparison-map-${uuidv4}`, []);
 
+	const [leftPoints, setLeftPoints] = useState<PointType[]>([]);
+	const [rightPoints, setRightPoints] = useState<PointType[]>([]);
+	const [bothSidesPoints, setBothSidesPoints] = useState<PointType[]>([]);
+
+	const fetchAllPoints = useCallback(async () => {
+		const leftPointsArray = await getAllPointsByBlockId(blockContent.id, "left");
+		const rightPointsArray = await getAllPointsByBlockId(blockContent.id, "right");
+		setLeftPoints(leftPointsArray);
+		setRightPoints(rightPointsArray);
+		const bothSidesPointsArray = [...leftPointsArray, ...rightPointsArray];
+		setBothSidesPoints(bothSidesPointsArray);
+	}, [blockContent.id]);
+
 	useEffect(() => {
-		const bounds: LatLngTuple[] = blockContent.groupedPoints?.map(
+		fetchAllPoints();
+	}, [fetchAllPoints]);
+
+	useEffect(() => {
+		if (bothSidesPoints.length === 0) return;
+
+		const bounds: LatLngTuple[] = bothSidesPoints.map(
 			(point) => [point.latitude, point.longitude] as LatLngTuple,
 		);
 		const comparisonMap = L.map(mapName, {
@@ -57,23 +79,37 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 		}).addTo(comparisonMap);
 
 		// on créé les points sur chaque pane
-		(blockContent.groupedPoints as GroupedTyped[]).map((point) => {
+		leftPoints.map((point) => {
 			// on créé une icone adaptée au nombre de sources
-			const icon = getDefaultIcon(
-				point.attestations.length,
+			const icon = getIcon(
+				point,
 				style,
-				getBackGroundColorClassName(point.attestations.length),
-				point.attestations.length.toString(),
+				false,
+				true,
 			);
 
-			if (point.attestations[0].location?.includes("Kinaros")) {
-				console.log(point)
-			}
-
-			const popupContent = `<h4>${point.attestations[0][`title_${selectedLanguage}`] ?? point.attestations[0].location}</h4><p>${point.attestations[0][`description_${selectedLanguage}`] ?? ''}</p>`;
+			const popupContent = point.nom_ville;
 			L.marker([point.latitude, point.longitude], {
-				pane: point.pane,
-				shadowPane: point.pane,
+				pane: "left",
+				shadowPane: "left",
+				icon: icon,
+			})
+				.addTo(comparisonMap)
+				.bindPopup(popupContent as string);
+		});
+		rightPoints.map((point) => {
+			// on créé une icone adaptée au nombre de sources
+			const icon = getIcon(
+				point,
+				style,
+				false,
+				true,
+			);
+
+			const popupContent = point.nom_ville;
+			L.marker([point.latitude, point.longitude], {
+				pane: "right",
+				shadowPane: "right",
 				icon: icon,
 			})
 				.addTo(comparisonMap)
@@ -81,20 +117,20 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 		});
 
 		// on créé un point miniature sur le pane opposé
-		(blockContent.groupedPoints as GroupedTyped[]).map((point) => {
-			L.marker([point.latitude, point.longitude], {
-				pane: point.pane === "left" ? "right" : "left",
-				shadowPane: point.pane === "left" ? "right" : "left",
-				icon: getLittleCircleIcon(style),
-			}).addTo(comparisonMap);
-		});
+		// (blockContent.groupedPoints as GroupedTyped[]).map((point) => {
+		// 	L.marker([point.latitude, point.longitude], {
+		// 		pane: point.pane === "left" ? "right" : "left",
+		// 		shadowPane: point.pane === "left" ? "right" : "left",
+		// 		icon: getLittleCircleIcon(style),
+		// 	}).addTo(comparisonMap);
+		// });
 
 		L.control.sideBySide(leftLayer, rightLayer).addTo(comparisonMap);
 
 		return () => {
 			comparisonMap.remove();
 		};
-	}, [blockContent.groupedPoints, mapName]);
+	}, [blockContent, leftPoints, rightPoints, mapName]);
 
 	return (
 		<>

@@ -152,9 +152,10 @@ const getAllPointsByMapId = async (
  */
 const getAllPointsByBlockId = async (
 	blockId: string,
+	side?: string,
 ) => {
 	try {
-		const response = await apiClient.get(`/map/sources/block/${blockId}`);
+		const response = await apiClient.get(`/map/sources/block/${blockId}${side ? `?side=${side}` : ""}`);
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des sources :", error);

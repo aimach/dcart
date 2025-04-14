@@ -230,23 +230,29 @@ export const sourceController = {
 		try {
 			// on récupère params et query
 			const { blockId } = req.params;
+			const { side } = req.query;
 
 			// on prépare la variable à renvoyer
 			let results = null;
 
 			// on récupère les informations de la carte
-			const blockInfos = await dcartDataSource
+			const blockQuery = await dcartDataSource
 				.getRepository(Block)
 				.createQueryBuilder("block")
 				.leftJoinAndSelect("block.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
 				.leftJoinAndSelect("attestations.color", "color")
-				.where("block.id = :id", { id: blockId })
-				.getOne();
+				.where("block.id = :id", { id: blockId });
+
+			if (side) {
+				blockQuery.andWhere("attestations.name = :side", { side });
+			}
+
+			const blockInfos = await blockQuery.getOne();
+
 			if (!blockInfos) {
 				res.status(404).send({ Erreur: "Block non trouvé" });
 			}
-
 
 			const attestationsArray = blockInfos?.attestations ?? [];
 
