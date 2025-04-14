@@ -25,18 +25,19 @@ interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
 	setPointSet: (pointSet: PointSetType) => void;
 	handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
+	parentId: string;
+	type: "map" | "block";
 }
 
 const PointSetUploadForm = ({
 	pointSet,
 	setPointSet,
 	handleSubmit,
+	parentId,
+	type,
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
-
-	// récupération des données des stores
-	const { mapInfos } = useMapFormStore(useShallow((state) => state));
 
 	// fonction pour gérer l'upload du fichier
 	const handleFileUpload = (event: ChangeEvent) => {
@@ -63,7 +64,7 @@ const PointSetUploadForm = ({
 					setPointSet({
 						...pointSet,
 						attestationIds: allAttestationsIds,
-						mapId: mapInfos?.id as string,
+						[type === "map" ? "mapId" : "blockId"]: parentId as string,
 					} as PointSetType);
 				},
 				error: (error) => {

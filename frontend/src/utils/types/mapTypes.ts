@@ -178,7 +178,8 @@ type PointSetType = {
 	attestationIds: string;
 	color?: { id: string; name_fr: string; name_en: string; code_hex: string } | string;
 	icon?: { id: string; name_fr: string; name_en: string; svg_code: string } | string;
-	mapId: string;
+	mapId?: string;
+	blockId?: string;
 };
 
 export type {

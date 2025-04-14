@@ -38,6 +38,8 @@ export const storymapContentControllers = {
 					.leftJoinAndSelect("storymap.category", "category")
 					.leftJoinAndSelect("storymap.blocks", "block")
 					.leftJoinAndSelect("block.attestations", "attestations")
+					.leftJoinAndSelect("attestations.icon", "icon")
+					.leftJoinAndSelect("attestations.color", "color")
 					.leftJoinAndSelect("block.type", "type")
 					.leftJoinAndSelect("block.children", "child")
 					.leftJoinAndSelect("child.type", "child_type")
@@ -49,6 +51,7 @@ export const storymapContentControllers = {
 						"category",
 						"block",
 						"attestations",
+						"icon", "color",
 						"type",
 						"child",
 						"child_type",
@@ -72,7 +75,9 @@ export const storymapContentControllers = {
 				.createQueryBuilder("storymap")
 				.leftJoinAndSelect("storymap.category", "category")
 				.leftJoinAndSelect("storymap.blocks", "block")
-				.leftJoinAndSelect("block.attestations", "attestation")
+				.leftJoinAndSelect("block.attestations", "attestations")
+				.leftJoinAndSelect("attestations.icon", "icon")
+				.leftJoinAndSelect("attestations.color", "color")
 				.leftJoinAndSelect("block.type", "type")
 				.leftJoinAndSelect("block.children", "child")
 				.leftJoinAndSelect("child.type", "child_type")
@@ -85,7 +90,8 @@ export const storymapContentControllers = {
 					"storymap",
 					"category",
 					"block",
-					"attestation",
+					"attestations",
+					"icon", "color",
 					"type",
 					"child",
 					"child_type",

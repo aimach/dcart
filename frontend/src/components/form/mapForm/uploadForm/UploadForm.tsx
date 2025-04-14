@@ -119,6 +119,8 @@ const UploadForm = () => {
 					pointSet={pointSet}
 					setPointSet={setPointSet}
 					handleSubmit={handleSubmit}
+					parentId={mapInfos?.id as string}
+					type="map"
 				/>
 			)}
 			{mapInfos?.attestations && (

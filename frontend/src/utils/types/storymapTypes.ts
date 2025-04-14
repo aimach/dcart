@@ -1,4 +1,5 @@
 import type { FormType } from "./formTypes";
+import type { PointSetType } from "./mapTypes";
 
 type StorymapType = {
 	id: string;
@@ -41,6 +42,7 @@ type BlockContentType = {
 	points?: PointType[];
 	groupedPoints?: GroupedTyped[];
 	children: BlockContentType[];
+	attestations?: PointSetType[];
 };
 
 type PointType = {
