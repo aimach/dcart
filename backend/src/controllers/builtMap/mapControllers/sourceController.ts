@@ -19,6 +19,8 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { AttestationType, PointType } from "../../../utils/types/mapTypes";
 import type { Request, Response } from "express";
+import { Block } from "../../../entities/storymap/Block";
+import { BlockInterface } from "../../../utils/types/storymapTypes";
 
 export const sourceController = {
 	// récupérer toutes les sources à partir de l'id de la carte
@@ -217,6 +219,66 @@ export const sourceController = {
 					}),
 				);
 			}
+
+			res.status(200).json(results.flat());
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+	// récupérer toutes les sources à partir de l'id de la carte
+	getSourcesByBlockId: async (req: Request, res: Response): Promise<void> => {
+		try {
+			// on récupère params et query
+			const { blockId } = req.params;
+
+			// on prépare la variable à renvoyer
+			let results = null;
+
+			// on récupère les informations de la carte
+			const blockInfos = await dcartDataSource
+				.getRepository(Block)
+				.createQueryBuilder("block")
+				.leftJoinAndSelect("block.attestations", "attestations")
+				.leftJoinAndSelect("attestations.icon", "icon")
+				.leftJoinAndSelect("attestations.color", "color")
+				.where("block.id = :id", { id: blockId })
+				.getOne();
+			if (!blockInfos) {
+				res.status(404).send({ Erreur: "Block non trouvé" });
+			}
+
+
+			const attestationsArray = blockInfos?.attestations ?? [];
+
+
+			results = await Promise.all(
+				attestationsArray.map(async (attestation: Attestation) => {
+					const sqlQuery = getSourcesQueryWithDetails(
+						attestation.attestationIds,
+						"",
+						"",
+						"",
+						"",
+						"",
+						""
+					);
+
+					const queryResults = await mapDataSource.query(sqlQuery);
+
+					// on trie les sources de chaque point par date
+					const sortedResults = queryResults.map((point: PointType) => {
+						return {
+							...point,
+							sources: sortSourcesByDate(point.sources),
+							color: attestation.color?.code_hex,
+							shape: attestation.icon?.name_en,
+							layerName: attestation.name,
+						};
+					});
+					return sortedResults;
+				}),
+			);
+
 
 			res.status(200).json(results.flat());
 		} catch (error) {
