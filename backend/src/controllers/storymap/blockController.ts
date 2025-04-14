@@ -30,6 +30,7 @@ export const blockController = {
 				.leftJoinAndSelect("block.children", "blocks")
 				.leftJoinAndSelect("block.type", "type")
 				.leftJoinAndSelect("blocks.type", "childrenType")
+				.leftJoinAndSelect("blocks.attestations", "attestations")
 				.orderBy("blocks.position", "ASC")
 				.where("block.id = :blockId", { blockId })
 				.getOne();

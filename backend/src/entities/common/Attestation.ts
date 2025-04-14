@@ -10,6 +10,7 @@ import {
 import { Icon } from "./Icon";
 import { Color } from "./Color";
 import { MapContent } from "../builtMap/MapContent";
+import { Block } from "../storymap/Block";
 
 @Entity()
 export class Attestation extends BaseEntity {
@@ -39,7 +40,15 @@ export class Attestation extends BaseEntity {
 	@ManyToOne(
 		() => MapContent,
 		(MapContent) => MapContent.attestations,
-		{ cascade: true, onDelete: "CASCADE" },
+		{ cascade: true, onDelete: "CASCADE", nullable: true },
 	)
-	map!: MapContent;
+	map?: MapContent | null;
+
+
+	@ManyToOne(
+		() => Block,
+		(Block) => Block.attestations,
+		{ cascade: true, onDelete: "CASCADE", nullable: true },
+	)
+	block?: Block | null;
 }

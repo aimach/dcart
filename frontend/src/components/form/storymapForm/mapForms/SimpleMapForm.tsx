@@ -29,6 +29,8 @@ import {
 	notifyError,
 	notifyUploadSuccess,
 } from "../../../../utils/functions/toast";
+import { ParsedPointType, PointSetType } from "../../../../utils/types/mapTypes";
+import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -57,17 +59,11 @@ const SimpleMapForm = () => {
 	const { storymapId } = useParams();
 
 	// gestion de l'upload du fichier csv
-	const [parsedPoints, setParsedPoints] = useState<parsedPointType[]>([]);
+	const [pointSet, setPointSet] = useState<PointSetType | null>(null);
 	const handleFileUpload = (event: ChangeEvent) => {
 		// définition de la correspondance avec les headers du csv
 		const headerMapping: Record<string, string> = {
-			Lieu: "location",
-			Latitude: "latitude",
-			Longitude: "longitude",
-			"Titre L1": "title_lang1",
-			"Titre L2": "title_lang2",
-			"Description L1": "description_lang1",
-			"Description L2": "description_lang2",
+			ID: "id"
 		};
 
 		const file = (event.target as HTMLInputElement).files?.[0];
@@ -78,29 +74,38 @@ const SimpleMapForm = () => {
 				header: true,
 				transformHeader: (header) => headerMapping[header] || header,
 				skipEmptyLines: true,
+				dynamicTyping: true, // option qui permet d'avoir les chiffres et booléens en tant que tels
 				skipFirstNLines: 2,
-				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
-				complete: (result: ParseResult<parsedPointType>) => {
-					setParsedPoints(result.data);
-					notifyUploadSuccess("Points");
+				complete: (result: ParseResult<ParsedPointType>) => {
+					// récupération des ids des attestations
+					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
+						result.data,
+					);
+					setPointSet({
+						...pointSet,
+						attestationIds: allAttestationsIds,
+					} as PointSetType);
 				},
-				error: () => {
-					notifyError("Erreur lors de la lecture du fichier");
+				error: (error) => {
+					console.error("Erreur lors de la lecture du fichier :", error);
 				},
 			});
 		}
 	};
+
+	console.log(pointSet)
 
 
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: simpleMapInputsType) => {
 		await uploadParsedPointsForSimpleMap(
 			data as blockType,
-			parsedPoints,
+			pointSet as PointSetType,
 			storymapId as string,
 			"simple_map",
 			action as string,
 		);
+
 		// réinitialisation du choix du formulaire
 		setReload(!reload);
 		updateFormType("blockChoice");

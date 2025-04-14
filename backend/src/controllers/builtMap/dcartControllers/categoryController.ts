@@ -1,5 +1,5 @@
 // import des entités
-import { Category } from "../../../entities/builtMap/Category";
+import { Category } from "../../../entities/common/Category";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";

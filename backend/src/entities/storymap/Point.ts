@@ -64,10 +64,10 @@ export class Point extends BaseEntity {
 	@Column({ type: "enum", enum: pane, nullable: true })
 	pane!: pane;
 
-	@ManyToOne(
-		() => Block,
-		(block) => block.points,
-		{ onDelete: "CASCADE" },
-	)
-	block!: Block;
+	// @ManyToOne(
+	// 	() => Block,
+	// 	(block) => block.points,
+	// 	{ onDelete: "CASCADE" },
+	// )
+	// block!: Block;
 }

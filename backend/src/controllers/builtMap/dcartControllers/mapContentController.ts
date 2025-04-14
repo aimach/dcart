@@ -8,6 +8,21 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
+import { User } from "../../../entities/auth/User";
+
+interface UserPayload extends jwt.JwtPayload {
+	userStatus: 'admin' | 'writer';
+	userId: string;
+}
+
+// extension de l'interface Request pour inclure la propriété user
+declare global {
+	namespace Express {
+		interface Request {
+			user?: UserPayload;
+		}
+	}
+}
 
 export const mapContentController = {
 	// récupérer les données de toutes les cartes ou d'une carte en particulier
@@ -103,10 +118,17 @@ export const mapContentController = {
 				relatedStorymap,
 			} = req.body;
 
-			const { userId } = req.user as jwt.JwtPayload;
+			const { userId } = req.user as UserPayload;
 
 			// récupération de la date actuelle
 			const currentDate = new Date();
+
+			const creator = await dcartDataSource.getRepository(User).findOne({ where: { id: userId } });
+
+			if (!creator) {
+				res.status(404).send("Utilisateur non trouvé.");
+				return;
+			}
 
 			const newMap = dcartDataSource.getRepository(MapContent).create({
 				title_en,
@@ -116,7 +138,7 @@ export const mapContentController = {
 				image_url,
 				relatedStorymap: relatedStorymap === "0" || relatedStorymap === "" ? null : relatedStorymap,
 				category,
-				creator: userId,
+				creator,
 				uploadPointsLastDate: currentDate,
 			});
 

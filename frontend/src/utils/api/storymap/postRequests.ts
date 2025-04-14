@@ -13,6 +13,8 @@ import {
 	notifyEditSuccess,
 	notifyError,
 } from "../../functions/toast";
+import { createPointSet } from "../builtMap/postRequests";
+import { PointSetType } from "../../types/mapTypes";
 
 /**
  * Fonction pour insérer une nouvelle storymap dans la BDD
@@ -103,14 +105,14 @@ const updateBlock = async (body: blockType, blockId: string) => {
  */
 const uploadParsedPointsForSimpleMap = async (
 	simpleMapInfos: blockType,
-	parsedPoints: parsedPointType[],
+	pointSet: PointSetType,
 	storymapId: string,
 	typeName: string,
 	action: string,
 	parentId?: string,
 ) => {
 	try {
-		let mapId = simpleMapInfos.id ?? "";
+		let blockId = simpleMapInfos.id ?? "";
 		if (action === "create") {
 			// création du bloc de la carte
 			const newMapInfos = await createBlock({
@@ -119,13 +121,15 @@ const uploadParsedPointsForSimpleMap = async (
 				typeName,
 				parentId,
 			});
-			mapId = newMapInfos?.id;
+			blockId = newMapInfos?.id;
+
+			const pointSetWithBlockId = {
+				...pointSet,
+				blockId
+			}
 
 			// chargement des points
-			await apiClient(`/storymap/points/${mapId}`, {
-				method: "POST",
-				data: JSON.stringify({ parsedPoints }),
-			});
+			await createPointSet(pointSetWithBlockId)
 
 			notifyCreateSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
 		}
@@ -138,19 +142,19 @@ const uploadParsedPointsForSimpleMap = async (
 					typeName,
 					parentId,
 				},
-				mapId,
+				blockId,
 			);
 			// si l'utilisateur a chargé des points
-			if (parsedPoints.length > 0) {
+			if (pointSet) {
 				// suppressino des anciens points
-				await apiClient(`/storymap/points/${mapId}`, {
+				await apiClient(`/storymap/points/${blockId}`, {
 					method: "DELETE",
 				});
 
 				// chargement des nouveaux points
-				await apiClient(`/storymap/points/${mapId}`, {
+				await apiClient(`/storymap/points/${blockId}`, {
 					method: "POST",
-					data: JSON.stringify({ parsedPoints }),
+					data: JSON.stringify({ pointSet }),
 				});
 			}
 			notifyEditSuccess(typeName === "step" ? "Etape" : "Carte simple", true);

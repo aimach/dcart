@@ -1,8 +1,6 @@
 // import des bibliothèques
-import { Not } from "typeorm";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
-import { Type } from "../../entities/storymap/Type";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
