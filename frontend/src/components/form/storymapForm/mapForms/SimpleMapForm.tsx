@@ -97,9 +97,8 @@ const SimpleMapForm = () => {
 				typeName: "simple_map",
 			}, (block as BlockContentType).id);
 
-			if (updatedBlockInfos?.status === 200) {
+			if (updatedBlockInfos?.id) {
 				setStep(2);
-				updateBlockContent(updatedBlockInfos);
 			}
 		}
 	}
@@ -207,9 +206,12 @@ const SimpleMapForm = () => {
 								? translation[language].backoffice.storymapFormPage.form.create
 								: translation[language].backoffice.storymapFormPage.form.edit}
 						</button>
-						<button type="button" onClick={() => setStep(2)}>
-							Aller aux jeux de points
-						</button>
+						{block?.id && (
+
+							<button type="button" onClick={() => setStep(2)}>
+								Aller aux jeux de points
+							</button>
+						)}
 					</div>
 				</form>
 			)}
