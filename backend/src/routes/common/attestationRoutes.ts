@@ -9,4 +9,4 @@ export const attestationRoutes = express.Router();
 attestationRoutes.post("/", dcartControllers.createAttestationList);
 
 // supprimer un jeu d'attestations
-attestationRoutes.delete("/:id", dcartControllers.deleteAttestationList);
+attestationRoutes.delete("/:parentId", dcartControllers.deleteAttestationList);

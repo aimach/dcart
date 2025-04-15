@@ -134,7 +134,7 @@ const uploadParsedPointsForSimpleMap = async (
 		}
 		if (action === "edit") {
 			// mise à jour du bloc de la carte
-			await updateBlock(
+			const updatedBlock = await updateBlock(
 				{
 					...simpleMapInfos,
 					storymapId,
@@ -145,16 +145,18 @@ const uploadParsedPointsForSimpleMap = async (
 			);
 			// si l'utilisateur a chargé des points
 			if (pointSet) {
-				// suppressino des anciens points
-				await apiClient(`/storymap/points/${blockId}`, {
+				const pointSetWithBlockId = {
+					...pointSet,
+					name: updatedBlock.content1_lang1,
+					blockId
+				}
+
+				await apiClient(`/dcart/attestations/${blockId}`, {
 					method: "DELETE",
 				});
 
 				// chargement des nouveaux points
-				await apiClient(`/storymap/points/${blockId}`, {
-					method: "POST",
-					data: JSON.stringify({ pointSet }),
-				});
+				await createPointSet(pointSetWithBlockId)
 			}
 			notifyEditSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
 		}

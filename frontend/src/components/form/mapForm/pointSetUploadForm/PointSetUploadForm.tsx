@@ -18,6 +18,7 @@ import type {
 } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
+import { notifyUploadSuccess } from "../../../../utils/functions/toast";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
@@ -64,6 +65,7 @@ const PointSetUploadForm = ({
 						attestationIds: allAttestationsIds,
 						[type === "map" ? "mapId" : "blockId"]: parentId as string,
 					} as PointSetType);
+					notifyUploadSuccess("Points");
 				},
 				error: (error) => {
 					console.error("Erreur lors de la lecture du fichier :", error);

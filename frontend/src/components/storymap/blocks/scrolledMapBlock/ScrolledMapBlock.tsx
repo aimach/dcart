@@ -1,5 +1,5 @@
 // import de bibliothèques
-import { useState } from "react";
+import { useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import MapSection from "./MapSection";
@@ -22,7 +22,9 @@ const ScrolledMapBlock = ({ blockContent }: SimpleMapBlockProps) => {
 	const onStepEnter = ({ data }: { data: string }) => {
 		setCurrentPoint(data);
 	};
-	const mapName = `map-${uuidv4()}`;
+	const mapName = useMemo(() => `map-${uuidv4()}`, []);
+
+	const reversedChildren = [...(blockContent.children as BlockContentType[])].reverse();
 
 	return (
 		<>
@@ -36,7 +38,7 @@ const ScrolledMapBlock = ({ blockContent }: SimpleMapBlockProps) => {
 				<div className={style.scrolledSection}>
 					<ScrolledSection
 						onStepEnter={onStepEnter}
-						steps={blockContent.children as BlockContentType[]}
+						steps={reversedChildren}
 						currentPoint={currentPoint}
 					/>
 				</div>

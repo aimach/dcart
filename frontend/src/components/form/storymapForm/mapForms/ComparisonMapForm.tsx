@@ -366,7 +366,6 @@ const ComparisonMapForm = () => {
 							name="rightColorId"
 							id="rightColorId"
 							value={pointSets.right.color as string}
-
 							onChange={(event) =>
 								setPointsSets({
 									...pointSets,

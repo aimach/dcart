@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 import {
 	MapContainer,
 	TileLayer,
@@ -12,6 +12,7 @@ import {
 	getBackGroundColorClassName,
 	getLittleCircleIcon,
 	getDefaultIcon,
+	getIcon,
 } from "../../../../utils/functions/icons";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
@@ -23,6 +24,9 @@ import type {
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./scrolledMapBlock.module.scss";
+import { PointSetType, PointType } from "../../../../utils/types/mapTypes";
+import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
+import { all } from "axios";
 
 interface MapSectionProps {
 	blockContent: BlockContentType;
@@ -42,14 +46,31 @@ const MapSection = ({
 	// on récupère les informations du context
 	const [map, setMap] = useState<LeafletMap | null>(null);
 
-	const points: GroupedTyped[] = [];
+	const [points, setPoints] = useState<(PointType & { blockId: string })[]>([]);
 
-	// on construit le groupe des points à partir des enfants
-	blockContent.children.map((child: BlockContentType) => {
-		(child.groupedPoints as GroupedTyped[]).map((point) =>
-			points.push({ ...point, blockId: child.id }),
-		);
-	});
+
+	const fetchPointsAndAddBlockId = async (childId: string) => {
+		// récupération de tous les points
+		const allAttestations = await getAllPointsByBlockId(childId);
+		for (const attestation of allAttestations) {
+			attestation.blockId = childId;
+		}
+		return allAttestations;
+	}
+
+	useEffect(() => {
+		const loadAllPoints = async () => {
+			const promesses = blockContent.children.map((child: BlockContentType) => {
+				return fetchPointsAndAddBlockId(child.id);
+			}
+			);
+			const allAttestations = await Promise.all(promesses);
+			const allPoints = allAttestations.flat();
+			setPoints(allPoints);
+		}
+		loadAllPoints();
+	}, []);
+
 
 	// on met à jour les limites de la carte
 	const bounds: LatLngTuple[] = [];
@@ -92,20 +113,17 @@ const MapSection = ({
 					/>
 
 					{points.length ? (
-						points.map((point: GroupedTyped) => {
-							// on créé une icone adaptée au nombre de sources
-							const backgroundColorClassName =
-								point.color ??
-								getBackGroundColorClassName(point.attestations.length);
-							const bigIcon = getDefaultIcon(
-								point.attestations.length,
+						points.map((point: PointType & { blockId: string }) => {
+							const bigIcon = getIcon(
+								point,
 								style,
-								backgroundColorClassName,
-								point.attestations.length.toString(),
+								false,
+								true,
 							);
+
 							return (
 								<Marker
-									key={`${point.latitude} - ${point.longitude}`}
+									key={`${point.latitude} - ${point.longitude} + ${point.blockId}`}
 									position={[point.latitude, point.longitude]}
 									icon={currentPoint === point.blockId ? bigIcon : littleIcon}
 									eventHandlers={{
@@ -115,7 +133,7 @@ const MapSection = ({
 										},
 									}}
 								>
-									<Popup>{point.attestations[0].location}</Popup>
+									<Popup>{point.nom_ville}</Popup>
 								</Marker>
 							);
 						})

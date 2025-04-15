@@ -99,11 +99,15 @@ export const attestationController = {
 	// supprimer un jeu d'attestations
 	deleteAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { id } = req.params;
+			const { parentId } = req.params;
 
 			const attestationListToDelete = await dcartDataSource
 				.getRepository(Attestation)
-				.findOne({ where: { id } });
+				.createQueryBuilder("attestation")
+				.where('attestation.mapId = :parentId OR attestation.blockId = :parentId', {
+					parentId,
+				})
+				.getMany();
 
 			if (!attestationListToDelete) {
 				res.status(404).json("Le jeu d'attestations n'existe pas");
