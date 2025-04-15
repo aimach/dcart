@@ -229,12 +229,14 @@ const ComparisonMapForm = () => {
 							type="button"
 							onClickFunction={() => setFormSide("left")}
 							textContent="côté gauche"
+							isSelected={formSide === "left"}
 						/>
 						<ButtonComponent
 							color="brown"
 							type="button"
 							onClickFunction={() => setFormSide("right")}
 							textContent="côté droit"
+							isSelected={formSide === "right"}
 						/>
 					</div>
 					<div className={style.helpContainer}>

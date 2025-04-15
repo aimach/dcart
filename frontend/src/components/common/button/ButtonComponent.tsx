@@ -9,6 +9,7 @@ interface ButtonComponentProps {
 	textContent: string;
 	onClickFunction?: () => void;
 	link?: string;
+	isSelected: boolean;
 }
 
 /**
@@ -18,6 +19,7 @@ interface ButtonComponentProps {
  * @param {string} textContent - Texte du bouton
  * @param {function} onClickFunction - Fonction à exécuter au clic
  * @param {string} link - Si de type "route", lien vers lequel rediriger
+ * @param {boolean} isSelected - Si le bouton est sélectionné
  */
 const ButtonComponent = ({
 	type,
@@ -25,11 +27,12 @@ const ButtonComponent = ({
 	textContent,
 	onClickFunction,
 	link,
+	isSelected = true,
 }: ButtonComponentProps) => {
 	return type === "route" ? (
 		<Link
 			to={link as string}
-			className={`${style.simpleButton} ${style[color]}`}
+			className={`${style.simpleButton} ${isSelected ? style[color] : style.unselected}`}
 		>
 			{textContent}
 		</Link>
@@ -37,7 +40,7 @@ const ButtonComponent = ({
 		<button
 			type="button"
 			onClick={onClickFunction}
-			className={`${style.simpleButton} ${style[color]}`}
+			className={`${style.simpleButton} ${isSelected ? style[color] : style.unselected}`}
 		>
 			{textContent}
 		</button>

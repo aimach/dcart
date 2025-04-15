@@ -19,10 +19,15 @@
 .gold {
     background-color: v.$color-old-gold;
     border: 1px solid v.$color-old-gold;
-
 }
 
 .brown {
     background-color: v.$color-dark-lava;
     border: 1px solid v.$color-black-chocolate;
+}
+
+.unselected {
+    background-color: v.$color-neutral-100;
+    color: v.$color-neutral-60;
+    border: 1px solid v.$color-neutral-60;
 }
