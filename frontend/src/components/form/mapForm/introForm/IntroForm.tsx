@@ -1,15 +1,16 @@
 // import des bibliothèques
-import { useEffect, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { Controller, get, useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import EditorComponent from "../../storymapForm/wysiwygBlock/EditorComponent";
+// import du contexte
+import { CategoryOptionsContext } from "../../../../context/CategoryContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { getAllCategories } from "../../../../utils/api/builtMap/getRequests";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
@@ -43,6 +44,8 @@ type IntroFormProps = {
  */
 const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 	const { translation, language } = useTranslation();
+
+	const { categoryOptions } = useContext(CategoryOptionsContext)
 
 	const { pathname } = useLocation();
 
@@ -99,20 +102,12 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setDataLoaded(false);
-		const getCategoryOptions = async () => {
-			const allCategories = await getAllCategories();
-			const formatedCategoryOptions: OptionType[] = allCategories.map(
-				(category: CategoryType) => ({
-					value: category.id,
-					label: category[`name_${language}`],
-				}),
-			);
-
+		const addCategoryOptions = async () => {
 			for (const input of inputs) {
 				if (input.name === "category") {
 					input.options = [
 						{ value: "0", label: "Choisir une catégorie" },
-						...formatedCategoryOptions,
+						...categoryOptions,
 					];
 				}
 			}
@@ -136,7 +131,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 			}
 			setDataLoaded(true);
 		};
-		getCategoryOptions();
+		addCategoryOptions();
 		getPublishedStorymaps();
 	}, [language]);
 
@@ -194,7 +189,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 										<ErrorComponent
 											message={
 												input.required.message?.[
-													language as keyof TranslationType
+												language as keyof TranslationType
 												] as string
 											}
 										/>
@@ -223,7 +218,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 											<ErrorComponent
 												message={
 													input.required.message?.[
-														language as keyof TranslationType
+													language as keyof TranslationType
 													] as string
 												}
 											/>
@@ -256,8 +251,8 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 												defaultValue={
 													(mapInfos as MapInfoType)
 														? (mapInfos as MapInfoType)[
-																`${input.name}` as keyof typeof mapInfos
-															]
+														`${input.name}` as keyof typeof mapInfos
+														]
 														: null
 												}
 											/>
@@ -265,14 +260,14 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 									/>
 									{input.required.value &&
 										errors[input.name as keyof MapInfoType]?.type ===
-											"required" && (
+										"required" && (
 											<ErrorComponent
 												message={input.required.message?.[language] as string}
 											/>
 										)}
 									{errors[input.name as keyof MapInfoType] &&
 										errors[input.name as keyof MapInfoType]?.type ===
-											"maxLength" && (
+										"maxLength" && (
 											<ErrorComponent message="1000 char. max" />
 										)}
 								</div>

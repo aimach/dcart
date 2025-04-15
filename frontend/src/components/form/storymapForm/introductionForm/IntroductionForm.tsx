@@ -1,8 +1,10 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
+// import du contexte
+import { CategoryOptionsContext } from "../../../../context/CategoryContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -54,6 +56,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	// importation des données de traduction
 	const { language } = useTranslation();
 
+	const { categoryOptions } = useContext(CategoryOptionsContext)
+
 	// définition d'un état pour les inputs du formulaire
 	const [inputs, setInputs] = useState<InputType[]>(storymapInputs);
 	const [relatedMapId, setRelatedMapId] = useState<string | null>(null);
@@ -61,10 +65,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	// au montage du composant, récupération des catégories et des langues pour les select/options
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		const fetchAllCategoriesAndCreateOptions = async () => {
-			const allCategories: CategoryType[] = await getAllStorymapCategories();
-			// création des options pour le select des catégories
-			const newInputs = createCategoryOptions(allCategories, language, inputs);
+		const addCategoryOptions = async () => {
+			const newInputs = createCategoryOptions(categoryOptions, inputs);
 			setInputs(newInputs);
 		};
 		const fetchAllLanguagesAndCreateOptions = async () => {
@@ -84,7 +86,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 			setRelatedMapId(relatedMap);
 		};
 		fetchAllMaps();
-		fetchAllCategoriesAndCreateOptions();
+		addCategoryOptions();
 		fetchAllLanguagesAndCreateOptions();
 		if (storymapId !== "create") {
 			fetchRelatedMapId(storymapId as string);

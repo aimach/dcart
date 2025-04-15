@@ -1,8 +1,8 @@
+import type { OptionType } from "../types/commonTypes";
 import type { InputType } from "../types/formTypes";
 import type { Language } from "../types/languageTypes";
 import type { MapType } from "../types/mapTypes";
 import type {
-	CategoryType,
 	StorymapLanguageType,
 } from "../types/storymapTypes";
 
@@ -14,17 +14,10 @@ import type {
  * @returns un tableau contenant les inputs mis à jour avec la liste des options des catégories
  */
 const createCategoryOptions = (
-	categories: CategoryType[],
-	language: Language,
+	categoryOptions: OptionType[],
 	inputs: InputType[],
 ) => {
-	if (categories.length > 0) {
-		// préparation des catégories pour les inputs
-		const categoryArray = categories.map((category) => ({
-			value: category.id,
-			label: category[`name_${language}`],
-		}));
-
+	if (categoryOptions.length > 0) {
 		// récupération de l'id de l'input des catégories
 		const categoryInputIndex = inputs
 			.map((input) => input.name)
@@ -36,7 +29,7 @@ const createCategoryOptions = (
 				value: "0",
 				label: "Choisissez une catégorie",
 			},
-			...categoryArray,
+			...categoryOptions,
 		];
 		return [...inputs];
 	}
