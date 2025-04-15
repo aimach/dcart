@@ -5,6 +5,8 @@ import { useForm } from "react-hook-form";
 // import des composants
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
+import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
+import LabelComponent from "../../inputComponent/LabelComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -15,6 +17,7 @@ import { uploadParsedPointsForSimpleMap } from "../../../../utils/api/storymap/p
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
+import { parseCSVFile } from "../../../../utils/functions/csv";
 // import des types
 import type { blockType } from "../../../../utils/types/formTypes";
 import type { ChangeEvent } from "react";
@@ -23,9 +26,6 @@ import type { PointSetType } from "../../../../utils/types/mapTypes";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleHelp } from "lucide-react";
-import { parseCSVFile } from "../../../../utils/functions/csv";
-import LabelComponent from "../../inputComponent/LabelComponent";
-import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -178,12 +178,16 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				{stepInputs.map((input) => {
 					return (
 						<div key={input.name} className={style.mapFormInputContainer}>
-							<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-							<input
-								{...register(input.name as keyof stepInputsType, {
-									required: input.required.value,
-								})}
-							/>
+							<div className={style.labelContainer}>
+								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+							</div>
+							<div className={style.inputContainer}>
+								<input
+									{...register(input.name as keyof stepInputsType, {
+										required: input.required.value,
+									})}
+								/>
+							</div>
 
 							{input.required.value &&
 								errors[input.name as keyof stepInputsType] && (
@@ -194,19 +198,6 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						</div>
 					);
 				})}
-				<div className={style.mapFormUploadInputContainer}>
-					<LabelComponent
-						htmlFor="points"
-						label={translation[language].backoffice.storymapFormPage.form.csv}
-						description=""
-					/>
-					<input
-						id="point"
-						type="file"
-						accept=".csv"
-						onChange={handleFileUpload}
-					/>
-				</div>
 				<div className={style.helpContainer}>
 					<a
 						href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-storymaps-carte-simple-1bd4457ff83180d3ab96f4b50bc0800b?pvs=4"
@@ -217,7 +208,22 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
 					</a>
 				</div>
-				<div className={style.commonFormInputContainer}>
+				<div className={style.mapFormInputContainer}>
+					<LabelComponent
+						htmlFor="points"
+						label={translation[language].backoffice.storymapFormPage.form.csv}
+						description=""
+					/>
+					<div className={style.inputContainer}>
+						<input
+							id="point"
+							type="file"
+							accept=".csv"
+							onChange={handleFileUpload}
+						/>
+					</div>
+				</div>
+				<div className={style.mapFormInputContainer}>
 					<LabelComponent
 						htmlFor="name"
 						label={
@@ -243,7 +249,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						/>
 					</div>
 				</div>
-				<div className={style.mapFormUploadInputContainer}>
+				<div className={style.mapFormInputContainer}>
 					<LabelComponent
 						htmlFor="colorId"
 						label={
@@ -273,7 +279,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						/>
 					</div>
 				</div>
-				<div className={style.commonFormInputContainer}>
+				<div className={style.mapFormInputContainer}>
 					<LabelComponent
 						htmlFor="iconId"
 						label={

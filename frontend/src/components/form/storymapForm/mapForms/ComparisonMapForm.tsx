@@ -166,14 +166,21 @@ const ComparisonMapForm = () => {
 						if (input.type === "text") {
 							return (
 								<div key={input.name} className={style.mapFormInputContainer}>
-									<label htmlFor={input.name}>
-										{input[`label_${language}`]}
-									</label>
-									<input
-										{...register(input.name as keyof comparisonMapInputsType, {
-											required: input.required.value,
-										})}
-									/>
+									<div className={style.labelContainer}>
+										<label htmlFor={input.name}>
+											{input[`label_${language}`]}
+										</label>
+									</div>
+									<div className={style.inputContainer}>
+										<input
+											{...register(
+												input.name as keyof comparisonMapInputsType,
+												{
+													required: input.required.value,
+												},
+											)}
+										/>
+									</div>
 
 									{errors[input.name as keyof comparisonMapInputsType] && (
 										<ErrorComponent
@@ -186,21 +193,27 @@ const ComparisonMapForm = () => {
 						if (input.type === "select") {
 							return (
 								<div key={input.name} className={style.mapFormInputContainer}>
-									<label htmlFor={input.name}>
-										{input[`label_${language}`]}
-									</label>
-									<select
-										{...register(input.name as keyof comparisonMapInputsType, {
-											required: input.required.value,
-										})}
-									>
-										{input.options?.map((option) => (
-											<option key={option.value} value={option.value}>
-												{option.label}
-											</option>
-										))}
-									</select>
-
+									<div className={style.labelContainer}>
+										<label htmlFor={input.name}>
+											{input[`label_${language}`]}
+										</label>
+									</div>
+									<div className={style.inputContainer}>
+										<select
+											{...register(
+												input.name as keyof comparisonMapInputsType,
+												{
+													required: input.required.value,
+												},
+											)}
+										>
+											{input.options?.map((option) => (
+												<option key={option.value} value={option.value}>
+													{option.label}
+												</option>
+											))}
+										</select>
+									</div>
 									{errors[input.name as keyof comparisonMapInputsType] && (
 										<ErrorComponent
 											message={input.required.message?.[language] as string}
@@ -224,8 +237,18 @@ const ComparisonMapForm = () => {
 							textContent="côté droit"
 						/>
 					</div>
+					<div className={style.helpContainer}>
+						<a
+							href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-storymaps-carte-simple-1bd4457ff83180d3ab96f4b50bc0800b?pvs=4"
+							target="_blank"
+							rel="noreferrer"
+						>
+							<CircleHelp color="grey" />
+							{translation[language].backoffice.mapFormPage.uploadPointsHelp}
+						</a>
+					</div>
 					<div className={style.mapFormUploadInputContainer}>
-						<div className={style.mapFormUploadInputContainer}>
+						<div className={style.mapFormInputContainer}>
 							<LabelComponent
 								htmlFor={formSide}
 								label={`${translation[language].backoffice.storymapFormPage.form.csv} ${
@@ -235,14 +258,16 @@ const ComparisonMapForm = () => {
 								}`}
 								description=""
 							/>
-							<input
-								id={formSide}
-								type="file"
-								accept=".csv"
-								onChange={handleFileUpload}
-							/>
+							<div className={style.inputContainer}>
+								<input
+									id={formSide}
+									type="file"
+									accept=".csv"
+									onChange={handleFileUpload}
+								/>
+							</div>
 						</div>
-						<div className={style.mapFormUploadInputContainer}>
+						<div className={style.mapFormInputContainer}>
 							<LabelComponent
 								htmlFor={`${formSide}ColorId`}
 								label={
@@ -254,27 +279,29 @@ const ComparisonMapForm = () => {
 										.pointColor.description
 								}
 							/>
-							<SelectOptionsComponent
-								selectId={`${formSide}ColorId`}
-								basicOptionValue="null"
-								basicOptionContent={
-									translation[language].backoffice.mapFormPage.pointSetForm
-										.chooseColor
-								}
-								options={colors}
-								onChangeFunction={(event) =>
-									setPointsSets({
-										...pointSets,
-										[formSide]: {
-											...pointSets[formSide],
-											color: event.target.value,
-										},
-									})
-								}
-								value={pointSets[formSide].color as string}
-							/>
+							<div className={style.inputContainer}>
+								<SelectOptionsComponent
+									selectId={`${formSide}ColorId`}
+									basicOptionValue="null"
+									basicOptionContent={
+										translation[language].backoffice.mapFormPage.pointSetForm
+											.chooseColor
+									}
+									options={colors}
+									onChangeFunction={(event) =>
+										setPointsSets({
+											...pointSets,
+											[formSide]: {
+												...pointSets[formSide],
+												color: event.target.value,
+											},
+										})
+									}
+									value={pointSets[formSide].color as string}
+								/>
+							</div>
 						</div>
-						<div className={style.commonFormInputContainer}>
+						<div className={style.mapFormInputContainer}>
 							<LabelComponent
 								htmlFor={`${formSide}IconId`}
 								label={
@@ -309,16 +336,7 @@ const ComparisonMapForm = () => {
 							</div>
 						</div>
 					</div>
-					<div className={style.helpContainer}>
-						<a
-							href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-storymaps-carte-simple-1bd4457ff83180d3ab96f4b50bc0800b?pvs=4"
-							target="_blank"
-							rel="noreferrer"
-						>
-							<CircleHelp color="grey" />
-							{translation[language].backoffice.mapFormPage.uploadPointsHelp}
-						</a>
-					</div>
+
 					<div className={style.formButtonNavigation}>
 						<button
 							type="button"

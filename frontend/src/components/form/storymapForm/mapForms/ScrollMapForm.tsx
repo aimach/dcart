@@ -16,6 +16,10 @@ import {
 } from "../../../../utils/api/storymap/postRequests";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import StepForm from "./StepForm";
@@ -23,10 +27,6 @@ import StepForm from "./StepForm";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
 
 export type scrollMapInputsType = {
 	content1_lang1: string;
@@ -100,7 +100,7 @@ const ScrollMapForm = () => {
 	return (
 		<section className={style.scrollMapFormContainer}>
 			<StepPanel scrollMapId={scrollMapId} />
-			<section>
+			<section className={style.scrollMapFormSection}>
 				<FormTitleComponent
 					action={action as string}
 					translationKey="scroll_map"
@@ -114,15 +114,18 @@ const ScrollMapForm = () => {
 							if (input.type === "text") {
 								return (
 									<div key={input.name} className={style.mapFormInputContainer}>
-										<label htmlFor={input.name}>
-											{input[`label_${language}`]}
-										</label>
-										<input
-											{...register(input.name as keyof scrollMapInputsType, {
-												required: input.required.value,
-											})}
-										/>
-
+										<div className={style.labelContainer}>
+											<label htmlFor={input.name}>
+												{input[`label_${language}`]}
+											</label>
+										</div>
+										<div className={style.inputContainer}>
+											<input
+												{...register(input.name as keyof scrollMapInputsType, {
+													required: input.required.value,
+												})}
+											/>
+										</div>
 										{errors[input.name as keyof scrollMapInputsType] && (
 											<ErrorComponent
 												message={input.required.message?.[language] as string}
@@ -134,20 +137,24 @@ const ScrollMapForm = () => {
 							if (input.type === "select") {
 								return (
 									<div key={input.name} className={style.mapFormInputContainer}>
-										<label htmlFor={input.name}>
-											{input[`label_${language}`]}
-										</label>
-										<select
-											{...register(input.name as keyof scrollMapInputsType, {
-												required: input.required.value,
-											})}
-										>
-											{input.options?.map((option) => (
-												<option key={option.value} value={option.value}>
-													{option.label}
-												</option>
-											))}
-										</select>
+										<div className={style.labelContainer}>
+											<label htmlFor={input.name}>
+												{input[`label_${language}`]}
+											</label>
+										</div>
+										<div className={style.inputContainer}>
+											<select
+												{...register(input.name as keyof scrollMapInputsType, {
+													required: input.required.value,
+												})}
+											>
+												{input.options?.map((option) => (
+													<option key={option.value} value={option.value}>
+														{option.label}
+													</option>
+												))}
+											</select>
+										</div>
 
 										{errors[input.name as keyof scrollMapInputsType] && (
 											<ErrorComponent
