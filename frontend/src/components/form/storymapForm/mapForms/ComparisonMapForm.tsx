@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { parse } from "papaparse";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
@@ -16,18 +16,18 @@ import {
 	notifyError,
 } from "../../../../utils/functions/toast";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
-import { getAllColors, getAllIcons } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type {
 	blockType,
 } from "../../../../utils/types/formTypes";
 import type { ParseResult } from "papaparse";
 import type { ChangeEvent } from "react";
-import type { MapColorType, MapIconType, ParsedPointType, PointSetType } from "../../../../utils/types/mapTypes";
+import type { ParsedPointType, PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleHelp } from "lucide-react";
+import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 
 export type comparisonMapInputsType = {
 	content1_lang1: string;
@@ -46,6 +46,8 @@ export type comparisonMapInputsType = {
 const ComparisonMapForm = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
+
+	const { icons, colors } = useContext(IconOptionsContext);
 
 	const { updateFormType, block, reload, setReload } = useBuilderStore(
 		useShallow((state) => ({
@@ -115,21 +117,6 @@ const ComparisonMapForm = () => {
 			});
 		}
 	};
-
-	const [allIcons, setAllIcons] = useState<MapIconType[]>([]);
-	const [allColors, setAllColors] = useState<MapColorType[]>([]);
-	useEffect(() => {
-		const fetchAllIcons = async () => {
-			const fetchedIcons = await getAllIcons();
-			setAllIcons(fetchedIcons);
-		};
-		const fetchAllColors = async () => {
-			const fetchedColors = await getAllColors();
-			setAllColors(fetchedColors);
-		}
-		fetchAllIcons();
-		fetchAllColors();
-	}, []);
 
 
 	const [isLoaded, setIsLoaded] = useState(false);
@@ -277,7 +264,7 @@ const ComparisonMapForm = () => {
 										.chooseColor
 								}
 							</option>
-							{allColors.map((color) => (
+							{colors.map((color) => (
 								<option key={color.id} value={color.id}>
 									{color[`name_${language}`]}
 								</option>
@@ -319,7 +306,7 @@ const ComparisonMapForm = () => {
 											.chooseIcon
 									}
 								</option>
-								{allIcons.map((icon) =>
+								{icons.map((icon) =>
 								(
 									<option key={icon.id} value={icon.id}>
 										{icon[`name_${language}`]}
@@ -381,7 +368,7 @@ const ComparisonMapForm = () => {
 										.chooseColor
 								}
 							</option>
-							{allColors.map((color) => (
+							{colors.map((color) => (
 								<option key={color.id} value={color.id}>
 									{color[`name_${language}`]}
 								</option>
@@ -423,7 +410,7 @@ const ComparisonMapForm = () => {
 											.chooseIcon
 									}
 								</option>
-								{allIcons.map((icon) =>
+								{icons.map((icon) =>
 								(
 									<option key={icon.id} value={icon.id}>
 										{icon[`name_${language}`]}

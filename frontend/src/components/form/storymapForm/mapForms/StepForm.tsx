@@ -1,11 +1,13 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { parse } from "papaparse";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
+// import du contexte
+import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -15,14 +17,13 @@ import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore"
 import { useShallow } from "zustand/shallow";
 import { notifyUploadSuccess } from "../../../../utils/functions/toast";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
-import { getAllColors, getAllIcons } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type {
 	blockType,
 } from "../../../../utils/types/formTypes";
 import type { ParseResult } from "papaparse";
 import type { ChangeEvent } from "react";
-import type { MapColorType, MapIconType, ParsedPointType, PointSetType } from "../../../../utils/types/mapTypes";
+import type { ParsedPointType, PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
@@ -45,6 +46,8 @@ interface StepFormProps {
 const StepForm = ({ parentBlockId }: StepFormProps) => {
 	// on récupère la langue
 	const { translation, language } = useTranslation();
+
+	const { icons, colors } = useContext(IconOptionsContext)
 
 	// récupération des données des stores
 	const { block, updateFormType, reload, setReload } = useBuilderStore(
@@ -166,24 +169,6 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 		reset(defaultValues);
 	}, [stepAction, stepId, reset]);
 
-
-	const [allIcons, setAllIcons] = useState<MapIconType[]>([]);
-	const [allColors, setAllColors] = useState<MapColorType[]>([]);
-	useEffect(() => {
-		const fetchAllIcons = async () => {
-			const fetchedIcons = await getAllIcons();
-			setAllIcons(fetchedIcons);
-		};
-		const fetchAllColors = async () => {
-			const fetchedColors = await getAllColors();
-			setAllColors(fetchedColors);
-		}
-		fetchAllIcons();
-		fetchAllColors();
-	}, []);
-
-	console.log(block)
-
 	useEffect(() => {
 		if (!block) return;
 		if (stepAction === "edit" && block?.attestations) {
@@ -278,7 +263,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 									.chooseColor
 							}
 						</option>
-						{allColors.map((color) => (
+						{colors.map((color) => (
 							<option key={color.id} value={color.id}>
 								{color[`name_${language}`]}
 							</option>
@@ -318,7 +303,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 										.chooseIcon
 								}
 							</option>
-							{allIcons.map((icon) =>
+							{icons.map((icon) =>
 							(
 								<option key={icon.id} value={icon.id}>
 									{icon[`name_${language}`]}

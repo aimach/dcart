@@ -1,18 +1,16 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useContext } from "react";
 import { parse } from "papaparse";
-// import des composants
+// import du contexte
+import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
-import { getAllIcons, getAllColors } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { FormEvent, ChangeEvent } from "react";
 import type { ParseResult } from "papaparse";
 import type {
-	MapColorType,
-	MapIconType,
 	ParsedPointType,
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
@@ -37,6 +35,8 @@ const PointSetUploadForm = ({
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
+
+	const { icons, colors } = useContext(IconOptionsContext)
 
 	// fonction pour gérer l'upload du fichier
 	const handleFileUpload = (event: ChangeEvent) => {
@@ -74,23 +74,8 @@ const PointSetUploadForm = ({
 		}
 	};
 
-	const [allIcons, setAllIcons] = useState<MapIconType[]>([]);
-	const [allColors, setAllColors] = useState<MapColorType[]>([]);
-	useEffect(() => {
-		const fetchAllIcons = async () => {
-			const fetchedIcons = await getAllIcons();
-			setAllIcons(fetchedIcons);
-		};
-		const fetchAllColors = async () => {
-			const fetchedColors = await getAllColors();
-			setAllColors(fetchedColors);
-		}
-		fetchAllIcons();
-		fetchAllColors();
-	}, []);
-
 	return (
-		allIcons.length && (
+		icons.length && (
 			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
 				<div className={style.commonFormInputContainer}>
 					<div className={style.labelContainer}>
@@ -179,7 +164,7 @@ const PointSetUploadForm = ({
 										.chooseColor
 								}
 							</option>
-							{allColors.map((color) => (
+							{colors.map((color) => (
 								<option key={color.id} value={color.id}>
 									{color[`name_${language}`]}
 								</option>
@@ -219,7 +204,7 @@ const PointSetUploadForm = ({
 										.chooseIcon
 								}
 							</option>
-							{allIcons.map((icon) =>
+							{icons.map((icon) =>
 							(
 								<option key={icon.id} value={icon.id}>
 									{icon[`name_${language}`]}
