@@ -9,17 +9,12 @@ import type {
 	SourceType,
 	PointType,
 	AgentType,
-	ParsedPointType,
 	MapType,
 	MenuTabType,
 	MapInfoType,
-	PointSetType,
 } from "../types/mapTypes";
 import type { LatLng, Map as LeafletMap, Point } from "leaflet";
 import type { StorymapType } from "../types/storymapTypes";
-import { ChangeEvent } from "react";
-import { ParseResult } from "papaparse";
-import { notifyError } from "./toast";
 
 /**
  * Fonction qui retourne un tableau d'agents sans doublons, établis à partir de la désignation
@@ -167,8 +162,9 @@ const getCreationAndModificationString = (
 		},
 	);
 
-	let string = `${translation[language].common.createdOn} ${creationDate} ${translation[language].common.by} ${itemInfos.creator.pseudo
-		}`;
+	let string = `${translation[language].common.createdOn} ${creationDate} ${translation[language].common.by} ${
+		itemInfos.creator.pseudo
+	}`;
 
 	if (itemInfos.modifier) {
 		const modificationDate = new Date(itemInfos.updatedAt).toLocaleDateString(
@@ -180,8 +176,9 @@ const getCreationAndModificationString = (
 			},
 		);
 
-		string += ` - ${translation[language].common.updatedOn} ${modificationDate} ${translation[language].common.by} ${itemInfos.modifier.pseudo
-			}`;
+		string += ` - ${translation[language].common.updatedOn} ${modificationDate} ${translation[language].common.by} ${
+			itemInfos.modifier.pseudo
+		}`;
 	}
 
 	if (itemInfos.uploadPointsLastDate) {
@@ -224,9 +221,7 @@ const createLucideString = (
  * Fonction pour gérer le survol de la souris sur un cluster
  * @param {Event} e - L'événement de la souris
  */
-const handleClusterMouseOver = (
-	e: L.MarkerClusterMouseEvent
-) => {
+const handleClusterMouseOver = (e: L.MarkerClusterMouseEvent) => {
 	const cluster = e.layer;
 	const clusterFirstPoint = cluster.getAllChildMarkers()[0];
 
@@ -345,14 +340,12 @@ const zoomOnSelectedMarkerCluster = (
 const getClosestCluster = (
 	map: LeafletMap,
 	clickedLatLng: LatLng,
-	maxDistance = 50 // en mètres
+	maxDistance = 50, // en mètres
 ): L.MarkerCluster | null => {
 	let closestCluster: { cluster: L.MarkerCluster; dist: number } | null = null;
 
 	map.eachLayer((layer) => {
-		if (
-			layer instanceof L.MarkerCluster
-		) {
+		if (layer instanceof L.MarkerCluster) {
 			const dist = clickedLatLng.distanceTo(layer.getLatLng());
 			if (!closestCluster || dist < closestCluster.dist) {
 				closestCluster = { cluster: layer, dist };

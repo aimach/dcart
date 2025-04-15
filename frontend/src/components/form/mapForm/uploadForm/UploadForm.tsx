@@ -74,8 +74,8 @@ const UploadForm = () => {
 		}
 	}, [mapInfos]);
 
-	const handleDeletePointSet = async (pointSetId: string) => {
-		await deletePointSet(pointSetId as string);
+	const handleDeletePointSet = async () => {
+		await deletePointSet(mapInfos?.id as string);
 		const newMapInfos = await getOneMapInfos(mapInfos?.id as string);
 		setMapInfos(newMapInfos);
 		notifyDeleteSuccess("Jeu de points", false);
@@ -180,12 +180,8 @@ const UploadForm = () => {
 									</td>
 									<td>
 										<X
-											onClick={() =>
-												handleDeletePointSet(pointSet.id as string)
-											}
-											onKeyDown={() =>
-												handleDeletePointSet(pointSet.id as string)
-											}
+											onClick={handleDeletePointSet}
+											onKeyDown={handleDeletePointSet}
 											color="#9d2121"
 										/>
 									</td>
