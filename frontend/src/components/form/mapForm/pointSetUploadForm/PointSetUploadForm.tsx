@@ -1,23 +1,19 @@
 // import des bibliothèques
 import { useContext } from "react";
-import { parse } from "papaparse";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
+import { parseCSVFile } from "../../../../utils/functions/csv";
 // import des types
 import type { FormEvent, ChangeEvent } from "react";
-import type { ParseResult } from "papaparse";
-import type {
-	ParsedPointType,
-	PointSetType,
-} from "../../../../utils/types/mapTypes";
+import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
-import { notifyUploadSuccess } from "../../../../utils/functions/toast";
-import { parseCSVFile } from "../../../../utils/functions/csv";
+import LabelComponent from "../../inputComponent/LabelComponent";
+import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
@@ -37,7 +33,7 @@ const PointSetUploadForm = ({
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
 
-	const { icons, colors } = useContext(IconOptionsContext)
+	const { icons, colors } = useContext(IconOptionsContext);
 
 	const handleFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
@@ -51,29 +47,25 @@ const PointSetUploadForm = ({
 					attestationIds: allAttestationsIds,
 					[type === "map" ? "mapId" : "blockId"]: parentId as string,
 				} as PointSetType);
-			}
-		})
-
+			},
+		});
 	};
 
 	return (
 		icons.length && (
 			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
 				<div className={style.commonFormInputContainer}>
-					<div className={style.labelContainer}>
-						<label htmlFor="name">
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointSetName.label
-							}
-						</label>
-						<p>
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointSetName.description
-							}
-						</p>
-					</div>
+					<LabelComponent
+						htmlFor="name"
+						label={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointSetName.label
+						}
+						description={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointSetName.description
+						}
+					/>
 					<div className={style.inputContainer}>
 						<input
 							id="name"
@@ -89,21 +81,18 @@ const PointSetUploadForm = ({
 					</div>
 				</div>
 				<div className={style.commonFormInputContainer}>
-					<div className={style.labelContainer}>
-						<label htmlFor="attestationIds">
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.attestationIds.label
-							}
-						</label>
-						<p>
-							{" "}
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.attestationIds.description
-							}
-						</p>
-					</div>
+					<LabelComponent
+						htmlFor="attestationIds"
+						label={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.attestationIds.label
+						}
+						description={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.attestationIds.description
+						}
+					/>
+
 					<div className={style.inputContainer}>
 						<input
 							id="attestationIds"
@@ -115,85 +104,63 @@ const PointSetUploadForm = ({
 					</div>
 				</div>
 				<div className={style.commonFormInputContainer}>
-					<div className={style.labelContainer}>
-						<label htmlFor="colorId">
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointIcon.label
-							}
-						</label>
-						<p>
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointIcon.description
-							}
-						</p>
-					</div>
+					<LabelComponent
+						htmlFor="colorId"
+						label={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointColor.label
+						}
+						description={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointColor.description
+						}
+					/>
 					<div className={style.inputContainer}>
-						<select
-							name="colorId"
-							id="colorId"
-							onChange={(event) =>
+						<SelectOptionsComponent
+							selectId="colorId"
+							basicOptionValue="null"
+							basicOptionContent={
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.chooseColor
+							}
+							options={colors}
+							onChangeFunction={(event) =>
 								setPointSet({
 									...pointSet,
 									color: event.target.value,
 								} as PointSetType)
 							}
-						>
-							<option value="null">
-								{
-									translation[language].backoffice.mapFormPage.pointSetForm
-										.chooseColor
-								}
-							</option>
-							{colors.map((color) => (
-								<option key={color.id} value={color.id}>
-									{color[`name_${language}`]}
-								</option>
-							))}
-						</select>
+						/>
 					</div>
 				</div>
 				<div className={style.commonFormInputContainer}>
-					<div className={style.labelContainer}>
-						<label htmlFor="color">
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointIcon.label
-							}
-						</label>
-						<p>
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointIcon.description
-							}
-						</p>
-					</div>
+					<LabelComponent
+						htmlFor="iconId"
+						label={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointIcon.label
+						}
+						description={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointIcon.description
+						}
+					/>
 					<div className={style.inputContainer}>
-						<select
-							name="iconId"
-							id="iconId"
-							onChange={(event) =>
+						<SelectOptionsComponent
+							selectId="iconId"
+							basicOptionValue="null"
+							basicOptionContent={
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.chooseIcon
+							}
+							options={icons}
+							onChangeFunction={(event) =>
 								setPointSet({
 									...pointSet,
 									icon: event.target.value,
 								} as PointSetType)
 							}
-						>
-							<option value="null">
-								{
-									translation[language].backoffice.mapFormPage.pointSetForm
-										.chooseIcon
-								}
-							</option>
-							{icons.map((icon) =>
-							(
-								<option key={icon.id} value={icon.id}>
-									{icon[`name_${language}`]}
-								</option>
-							)
-							)}
-						</select>
+						/>
 					</div>
 				</div>
 				<button type="submit" className={style.commonFormButton}>

@@ -13,18 +13,20 @@ import style from "./scrolledMapBlock.module.scss";
 
 interface SimpleMapBlockProps {
 	blockContent: BlockContentType;
+	mapName: string;
 }
 
-const ScrolledMapBlock = ({ blockContent }: SimpleMapBlockProps) => {
+const ScrolledMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const { selectedLanguage } = useStorymapLanguageStore();
 	const [currentPoint, setCurrentPoint] = useState("");
 
 	const onStepEnter = ({ data }: { data: string }) => {
 		setCurrentPoint(data);
 	};
-	const mapName = useMemo(() => `map-${uuidv4()}`, []);
 
-	const reversedChildren = [...(blockContent.children as BlockContentType[])].reverse();
+	const reversedChildren = [
+		...(blockContent.children as BlockContentType[]),
+	].reverse();
 
 	return (
 		<>

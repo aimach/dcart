@@ -3,14 +3,10 @@ import { useCallback, useEffect, useMemo, useState } from "react";
 import { v4 as uuidv4 } from "uuid";
 import L from "leaflet";
 // import des services
-import {
-	getIcon,
-} from "../../../../utils/functions/icons";
+import { getIcon } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
-import type {
-	BlockContentType,
-} from "../../../../utils/types/storymapTypes";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { LatLngTuple } from "leaflet";
 import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
@@ -22,21 +18,29 @@ import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequest
 
 interface ComparisonMapBlockProps {
 	blockContent: BlockContentType;
+	mapName: string;
 }
 
-const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
+const ComparisonMapBlock = ({
+	blockContent,
+	mapName,
+}: ComparisonMapBlockProps) => {
 	// récupération des données des stores
 	const { selectedLanguage } = useStorymapLanguageStore();
-
-	const mapName = useMemo(() => `comparison-map-${uuidv4}`, []);
 
 	const [leftPoints, setLeftPoints] = useState<PointType[]>([]);
 	const [rightPoints, setRightPoints] = useState<PointType[]>([]);
 	const [bothSidesPoints, setBothSidesPoints] = useState<PointType[]>([]);
 
 	const fetchAllPoints = useCallback(async () => {
-		const leftPointsArray = await getAllPointsByBlockId(blockContent.id, "left");
-		const rightPointsArray = await getAllPointsByBlockId(blockContent.id, "right");
+		const leftPointsArray = await getAllPointsByBlockId(
+			blockContent.id,
+			"left",
+		);
+		const rightPointsArray = await getAllPointsByBlockId(
+			blockContent.id,
+			"right",
+		);
 		setLeftPoints(leftPointsArray);
 		setRightPoints(rightPointsArray);
 		const bothSidesPointsArray = [...leftPointsArray, ...rightPointsArray];
@@ -46,7 +50,6 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 	useEffect(() => {
 		fetchAllPoints();
 	}, [fetchAllPoints]);
-
 
 	useEffect(() => {
 		if (bothSidesPoints.length === 0) return;
@@ -78,12 +81,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 		// on créé les points sur chaque pane
 		leftPoints.map((point) => {
 			// on créé une icone adaptée au nombre de sources
-			const icon = getIcon(
-				point,
-				style,
-				false,
-				true,
-			);
+			const icon = getIcon(point, style, false, true);
 
 			const popupContent = point.nom_ville;
 			L.marker([point.latitude, point.longitude], {
@@ -96,12 +94,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 		});
 		rightPoints.map((point) => {
 			// on créé une icone adaptée au nombre de sources
-			const icon = getIcon(
-				point,
-				style,
-				false,
-				true,
-			);
+			const icon = getIcon(point, style, false, true);
 
 			const popupContent = point.nom_ville;
 			L.marker([point.latitude, point.longitude], {

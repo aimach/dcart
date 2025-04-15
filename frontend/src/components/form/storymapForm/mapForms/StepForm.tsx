@@ -1,6 +1,5 @@
 // import des bibliothèques
 import { useContext, useEffect, useState } from "react";
-import { parse } from "papaparse";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
@@ -15,20 +14,18 @@ import { stepInputs } from "../../../../utils/forms/storymapInputArray";
 import { uploadParsedPointsForSimpleMap } from "../../../../utils/api/storymap/postRequests";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
-import { notifyUploadSuccess } from "../../../../utils/functions/toast";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 // import des types
-import type {
-	blockType,
-} from "../../../../utils/types/formTypes";
-import type { ParseResult } from "papaparse";
+import type { blockType } from "../../../../utils/types/formTypes";
 import type { ChangeEvent } from "react";
-import type { ParsedPointType, PointSetType } from "../../../../utils/types/mapTypes";
+import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleHelp } from "lucide-react";
 import { parseCSVFile } from "../../../../utils/functions/csv";
+import LabelComponent from "../../inputComponent/LabelComponent";
+import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -48,7 +45,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	// on récupère la langue
 	const { translation, language } = useTranslation();
 
-	const { icons, colors } = useContext(IconOptionsContext)
+	const { icons, colors } = useContext(IconOptionsContext);
 
 	// récupération des données des stores
 	const { block, updateFormType, reload, setReload } = useBuilderStore(
@@ -75,8 +72,10 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	// gestion de l'upload du fichier csv
 	const [pointSet, setPointSet] = useState<PointSetType | null>(
 		stepAction === "edit" && block?.attestations?.[0]?.attestationIds
-			? { attestationIds: block.attestations[0].attestationIds } as PointSetType
-			: null
+			? ({
+					attestationIds: block.attestations[0].attestationIds,
+				} as PointSetType)
+			: null,
 	);
 	const handleFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
@@ -85,9 +84,12 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
 					result.data,
 				);
-				setPointSet({ ...pointSet, attestationIds: allAttestationsIds as string } as PointSetType);
-			}
-		})
+				setPointSet({
+					...pointSet,
+					attestationIds: allAttestationsIds as string,
+				} as PointSetType);
+			},
+		});
 	};
 
 	// fonction appelée lors de la soumission du formulaire
@@ -98,8 +100,8 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				if (pointSet) {
 					pointSetWithName = {
 						...pointSet,
-						name: data.content1_lang1
-					}
+						name: data.content1_lang1,
+					};
 					// création du bloc de la carte
 					await uploadParsedPointsForSimpleMap(
 						data as blockType,
@@ -143,11 +145,11 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 			stepAction === "edit"
 				? (block as stepInputsType)
 				: {
-					content1_lang1: "",
-					content1_lang2: "",
-					content2_lang1: "",
-					content2_lang2: "",
-				};
+						content1_lang1: "",
+						content1_lang2: "",
+						content2_lang1: "",
+						content2_lang2: "",
+					};
 		// NB : ne fonctionne pas juste avec {}
 		reset(defaultValues);
 	}, [stepAction, stepId, reset]);
@@ -164,7 +166,6 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 			} as PointSetType);
 		}
 	}, [stepAction, block]);
-
 
 	return (
 		<>
@@ -194,9 +195,11 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					);
 				})}
 				<div className={style.mapFormUploadInputContainer}>
-					<label htmlFor="points">
-						{translation[language].backoffice.storymapFormPage.form.csv}
-					</label>
+					<LabelComponent
+						htmlFor="points"
+						label={translation[language].backoffice.storymapFormPage.form.csv}
+						description=""
+					/>
 					<input
 						id="point"
 						type="file"
@@ -214,86 +217,90 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
 					</a>
 				</div>
-				<div className={style.mapFormUploadInputContainer}>
-					<div className={style.labelContainer}>
-						<label htmlFor="colorId">
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointIcon.label
-							}
-						</label>
-						<p>
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointIcon.description
-							}
-						</p>
-					</div>
-					<select
-						name="colorId"
-						id="colorId"
-						value={pointSet ? pointSet.color as string : "0"}
-						onChange={(event) =>
-							setPointSet({
-								...pointSet,
-								color: event.target.value,
-							} as PointSetType)
+				<div className={style.commonFormInputContainer}>
+					<LabelComponent
+						htmlFor="name"
+						label={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointSetName.label
 						}
-					>
-						<option value="null">
-							{
+						description={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointSetName.description
+						}
+					/>
+					<div className={style.inputContainer}>
+						<input
+							id="name"
+							name="name"
+							type="text"
+							onChange={(event) =>
+								setPointSet({
+									...pointSet,
+									name: event.target.value,
+								} as PointSetType)
+							}
+						/>
+					</div>
+				</div>
+				<div className={style.mapFormUploadInputContainer}>
+					<LabelComponent
+						htmlFor="colorId"
+						label={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointColor.label
+						}
+						description={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointColor.description
+						}
+					/>
+					<div className={style.inputContainer}>
+						<SelectOptionsComponent
+							selectId="colorId"
+							basicOptionValue="null"
+							basicOptionContent={
 								translation[language].backoffice.mapFormPage.pointSetForm
 									.chooseColor
 							}
-						</option>
-						{colors.map((color) => (
-							<option key={color.id} value={color.id}>
-								{color[`name_${language}`]}
-							</option>
-						))}
-					</select>
+							options={colors}
+							onChangeFunction={(event) =>
+								setPointSet({
+									...pointSet,
+									color: event.target.value,
+								} as PointSetType)
+							}
+						/>
+					</div>
 				</div>
 				<div className={style.commonFormInputContainer}>
-					<div className={style.labelContainer}>
-						<label htmlFor="iconId">
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointIcon.label
-							}
-						</label>
-						<p>
-							{
-								translation[language].backoffice.mapFormPage.pointSetForm
-									.pointIcon.description
-							}
-						</p>
-					</div>
+					<LabelComponent
+						htmlFor="iconId"
+						label={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointIcon.label
+						}
+						description={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointIcon.description
+						}
+					/>
 					<div className={style.inputContainer}>
-						<select
-							name="iconId"
-							id="iconId"
-							value={pointSet ? pointSet.icon as string : "0"}
-							onChange={(event) =>
+						<SelectOptionsComponent
+							selectId="iconId"
+							basicOptionValue="null"
+							basicOptionContent={
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.chooseIcon
+							}
+							options={icons}
+							onChangeFunction={(event) =>
 								setPointSet({
 									...pointSet,
 									icon: event.target.value,
 								} as PointSetType)
 							}
-						>
-							<option value="null">
-								{
-									translation[language].backoffice.mapFormPage.pointSetForm
-										.chooseIcon
-								}
-							</option>
-							{icons.map((icon) =>
-							(
-								<option key={icon.id} value={icon.id}>
-									{icon[`name_${language}`]}
-								</option>
-							)
-							)}
-						</select>
+						/>
 					</div>
 				</div>
 				<div className={style.formButtonNavigation}>
@@ -311,7 +318,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						{stepAction === "create"
 							? translation[language].backoffice.storymapFormPage.form.addStep
 							: translation[language].backoffice.storymapFormPage.form
-								.modifyStep}
+									.modifyStep}
 					</button>
 				</div>
 			</form>
