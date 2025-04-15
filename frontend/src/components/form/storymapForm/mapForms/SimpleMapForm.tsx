@@ -6,32 +6,33 @@ import { useForm } from "react-hook-form";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import PointSetUploadForm from "../../mapForm/pointSetUploadForm/PointSetUploadForm";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { createBlock, updateBlock } from "../../../../utils/api/storymap/postRequests";
+import {
+	createBlock,
+	updateBlock,
+} from "../../../../utils/api/storymap/postRequests";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { simpleMapInputs } from "../../../../utils/forms/storymapInputArray";
 import { useShallow } from "zustand/shallow";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
-import PointSetUploadForm from "../../mapForm/pointSetUploadForm/PointSetUploadForm";
 import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
-// import des types
-import type { FormEventHandler } from "react";
-// import du style
-import style from "./mapForms.module.scss";
-// import des icônes
-import { ChevronLeft } from "lucide-react";
+import { getBlockInfos } from "../../../../utils/api/storymap/getRequests";
 import {
 	notifyCreateSuccess,
 	notifyDeleteSuccess,
 } from "../../../../utils/functions/toast";
+// import des types
+import type { FormEventHandler } from "react";
 import type { PointSetType } from "../../../../utils/types/mapTypes";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+// import du style
+import style from "./mapForms.module.scss";
 // import des icônes
+import { ChevronLeft } from "lucide-react";
 import { X } from "lucide-react";
-import { getBlockInfos } from "../../../../utils/api/storymap/getRequests";
-
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -46,22 +47,22 @@ const SimpleMapForm = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	const { updateFormType, block, updateBlockContent, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-			updateBlockContent: state.updateBlockContent,
-		})),
-	);
+	const { updateFormType, block, updateBlockContent, reload, setReload } =
+		useBuilderStore(
+			useShallow((state) => ({
+				block: state.block,
+				updateFormType: state.updateFormType,
+				reload: state.reload,
+				setReload: state.setReload,
+				updateBlockContent: state.updateBlockContent,
+			})),
+		);
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const action = searchParams.get("action");
 	const { storymapId } = useParams();
 
 	const [step, setStep] = useState(1);
-
 
 	// gestion de l'upload du fichier csv
 	const [pointSet, setPointSet] = useState<PointSetType | null>(null);
@@ -72,7 +73,6 @@ const SimpleMapForm = () => {
 			setIsAlreadyAPointSet(true);
 		}
 	}, [block?.attestations]);
-
 
 	// fonction appelée lors de la soumission du formulaire
 	const handleMapFormSubmit = async (data: simpleMapInputsType) => {
@@ -86,25 +86,29 @@ const SimpleMapForm = () => {
 			if (newBlockInfos?.id) {
 				setReload(!reload);
 				updateBlockContent(newBlockInfos);
-				setStep(2)
+				setStep(2);
 			}
-		};
+		}
 		if (action === "edit") {
 			// mise à jour du bloc de la carte
-			const updatedBlockInfos = await updateBlock({
-				...data,
-				storymapId,
-				typeName: "simple_map",
-			}, (block as BlockContentType).id);
+			const updatedBlockInfos = await updateBlock(
+				{
+					...data,
+					storymapId,
+					typeName: "simple_map",
+				},
+				(block as BlockContentType).id,
+			);
 
 			if (updatedBlockInfos?.id) {
 				setStep(2);
 			}
 		}
-	}
+	};
 
-
-	const handleSubmitPointSet: FormEventHandler<HTMLFormElement> = async (event) => {
+	const handleSubmitPointSet: FormEventHandler<HTMLFormElement> = async (
+		event,
+	) => {
 		event.preventDefault();
 
 		const newPointSet = await createPointSet(pointSet as PointSetType);
@@ -115,8 +119,6 @@ const SimpleMapForm = () => {
 			notifyCreateSuccess("Jeu de points", false);
 		}
 	};
-
-
 
 	// récupération des fonctions de gestion du formulaire
 	const {
@@ -149,12 +151,18 @@ const SimpleMapForm = () => {
 						if (input.type === "text") {
 							return (
 								<div key={input.name} className={style.mapFormInputContainer}>
-									<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-									<input
-										{...register(input.name as keyof simpleMapInputsType, {
-											required: input.required.value,
-										})}
-									/>
+									<div className={style.labelContainer}>
+										<label htmlFor={input.name}>
+											{input[`label_${language}`]}
+										</label>
+									</div>
+									<div className={style.inputContainer}>
+										<input
+											{...register(input.name as keyof simpleMapInputsType, {
+												required: input.required.value,
+											})}
+										/>
+									</div>
 
 									{input.required.value &&
 										errors[input.name as keyof simpleMapInputsType] && (
@@ -168,19 +176,24 @@ const SimpleMapForm = () => {
 						if (input.type === "select") {
 							return (
 								<div key={input.name} className={style.mapFormInputContainer}>
-									<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-									<select
-										{...register(input.name as keyof simpleMapInputsType, {
-											required: input.required.value,
-										})}
-									>
-										{input.options?.map((option) => (
-											<option key={option.value} value={option.value}>
-												{option.label}
-											</option>
-										))}
-									</select>
-
+									<div className={style.labelContainer}>
+										<label htmlFor={input.name}>
+											{input[`label_${language}`]}
+										</label>
+									</div>
+									<div className={style.inputContainer}>
+										<select
+											{...register(input.name as keyof simpleMapInputsType, {
+												required: input.required.value,
+											})}
+										>
+											{input.options?.map((option) => (
+												<option key={option.value} value={option.value}>
+													{option.label}
+												</option>
+											))}
+										</select>
+									</div>
 									{errors[input.name as keyof simpleMapInputsType] && (
 										<ErrorComponent
 											message={input.required.message?.[language] as string}
@@ -207,7 +220,6 @@ const SimpleMapForm = () => {
 								: translation[language].backoffice.storymapFormPage.form.edit}
 						</button>
 						{block?.id && (
-
 							<button type="button" onClick={() => setStep(2)}>
 								Aller aux jeux de points
 							</button>
@@ -270,15 +282,24 @@ const SimpleMapForm = () => {
 									<tr key={pointSet.id} className={style.pointSetTableRow}>
 										<td>{pointSet.name}</td>
 										<td>
-											{pointSet.color ? <div style={{ backgroundColor: pointSet.color.code_hex, width: 30, height: 30 }} /> :
-												translation[language].backoffice.mapFormPage.pointSetForm
-													.noDefinedColor}
+											{pointSet.color ? (
+												<div
+													style={{
+														backgroundColor: pointSet.color.code_hex,
+														width: 30,
+														height: 30,
+													}}
+												/>
+											) : (
+												translation[language].backoffice.mapFormPage
+													.pointSetForm.noDefinedColor
+											)}
 										</td>
 										<td>
 											{pointSet.icon
 												? pointSet.icon[`name_${language}`]
 												: translation[language].backoffice.mapFormPage
-													.pointSetForm.noDefinedIcon}
+														.pointSetForm.noDefinedIcon}
 										</td>
 										<td>
 											<X
@@ -295,11 +316,11 @@ const SimpleMapForm = () => {
 								))}
 							</tbody>
 						</table>
-					)
-					}
+					)}
 				</>
 			)}
-		</>)
-}
+		</>
+	);
+};
 
 export default SimpleMapForm;

@@ -4,37 +4,89 @@
 .mapFormContainer {
     @include m.flexbox(flex, column, nowrap, center, flex-start);
     gap: v.$space-l;
-    width: 50vw;
     margin: v.$space-xxl;
 
-    >button {
-        @include m.buttonStyle(v.$color-umber, v.$color-neutral-100, (v.$space-s v.$space-l));
-        @include m.flexbox(flex, row, nowrap, space-evenly, center);
+    >h4 {
+        font-size: v.$font-size-l;
+        font-weight: v.$font-weight-bold;
+    }
+
+    &Button {
+        @include m.flexbox(flex, row, nowrap, center, flex-start);
         gap: v.$space-s;
+
+        >button {
+            @include m.buttonStyle(v.$color-umber, v.$color-neutral-100, (v.$space-s v.$space-l));
+            @include m.flexbox(flex, row, nowrap, space-evenly, center);
+            gap: v.$space-s;
+        }
     }
 }
 
-.mapFormInputContainer {
-    @include m.flexbox(flex, column, nowrap, center, flex-start);
-    gap: v.$space-s;
-    width: 100%;
+.labelContainer {
+    width: 50%;
 
     >label {
         font-size: v.$font-size-m;
         font-weight: v.$font-weight-bold;
     }
 
-    >input,
-    select {
-        width: 100%;
-        padding: v.$space-s;
-        border: v.$border-width-m solid v.$color-grullo-light;
-        border-radius: v.$border-radius-rounded;
-        font-size: v.$font-size-m;
-        font-family: "Vollkorn";
+    >p {
+        width: 80%;
+        padding-top: v.$space-xs;
+        font-size: v.$font-size-s;
+        font-weight: v.$font-weight-light;
+        color: v.$color-grullo;
+    }
+}
 
-        &:focus {
-            outline: v.$border-width-m solid v.$color-umber;
+.mapFormInputContainer {
+    @include m.flexbox(flex, row, nowrap, center, flex-start);
+    gap: v.$space-s;
+    width: 100%;
+    padding-bottom: v.$space-s;
+    border-bottom: v.$border-width-m solid v.$color-grullo-light;
+
+    >h4 {
+        font-size: v.$font-size-l;
+        font-weight: v.$font-weight-bold;
+    }
+
+    .labelContainer {
+        width: 50%;
+
+        >label {
+            font-size: v.$font-size-m;
+            font-weight: v.$font-weight-bold;
+        }
+
+        >p {
+            width: 80%;
+            padding-top: v.$space-xs;
+            font-size: v.$font-size-s;
+            font-weight: v.$font-weight-light;
+            color: v.$color-grullo;
+        }
+    }
+
+    .inputContainer {
+        width: 50%;
+        @include m.flexbox(flex, column, nowrap, space-between, flex-start);
+        gap: v.$space-s;
+
+        >input,
+        textarea,
+        select {
+            width: 100%;
+            padding: v.$space-s;
+            border: v.$border-width-m solid v.$color-grullo-light;
+            border-radius: v.$border-radius-rounded;
+            font-size: v.$font-size-m;
+            font-family: "Vollkorn";
+
+            &:focus {
+                outline: v.$border-width-m solid v.$color-umber;
+            }
         }
     }
 }

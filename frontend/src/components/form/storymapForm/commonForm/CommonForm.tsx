@@ -1,12 +1,14 @@
 // import des bibliothèques
 import { useEffect, useRef } from "react";
 import { useForm, Controller } from "react-hook-form";
+import { useSearchParams } from "react-router";
 // import des composants
 import EditorComponent from "../wysiwygBlock/EditorComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
+import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type {
@@ -24,17 +26,15 @@ import type {
 import style from "./commonForm.module.scss";
 // import des icônes
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
-import { useSearchParams } from "react-router";
 
 type CommonFormProps = {
 	onSubmit: SubmitHandler<allInputsType>;
 	inputs: InputType[];
 	defaultValues?:
-	| storymapInputsType
-	| BlockContentType
-	| undefined
-	| StorymapType;
+		| storymapInputsType
+		| BlockContentType
+		| undefined
+		| StorymapType;
 	action?: string;
 };
 
@@ -70,7 +70,6 @@ const CommonForm = ({
 	} = useForm<allInputsType>({
 		defaultValues: defaultValues ?? {},
 	});
-
 
 	// si des valeurs par défaut sont passées, injection dans l'input des catégories
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -173,8 +172,8 @@ const CommonForm = ({
 											defaultValue={
 												defaultValues
 													? defaultValues[
-													`${input.name}` as keyof typeof defaultValues
-													]
+															`${input.name}` as keyof typeof defaultValues
+														]
 													: null
 											}
 										/>
