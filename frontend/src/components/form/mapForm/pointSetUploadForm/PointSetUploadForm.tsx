@@ -17,6 +17,7 @@ import type {
 // import du style
 import style from "../introForm/introForm.module.scss";
 import { notifyUploadSuccess } from "../../../../utils/functions/toast";
+import { parseCSVFile } from "../../../../utils/functions/csv";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
@@ -38,40 +39,21 @@ const PointSetUploadForm = ({
 
 	const { icons, colors } = useContext(IconOptionsContext)
 
-	// fonction pour gérer l'upload du fichier
 	const handleFileUpload = (event: ChangeEvent) => {
-		// définition de la correspondance avec les headers du csv
-		const headerMapping: Record<string, string> = {
-			ID: "id",
-		};
+		parseCSVFile({
+			event,
+			onComplete: (result) => {
+				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
+					result.data,
+				);
+				setPointSet({
+					...pointSet,
+					attestationIds: allAttestationsIds,
+					[type === "map" ? "mapId" : "blockId"]: parentId as string,
+				} as PointSetType);
+			}
+		})
 
-		const file = (event.target as HTMLInputElement).files?.[0];
-		// s'il existe bien un fichier, les données sont parsées et les points sont ajoutés à la carte de démonstration
-		if (file) {
-			// @ts-ignore : l'erreur de type sur File, le fichier est bien de type File (problème de typage avec l'utilisation de l'option skipFirstNLines)
-			parse(file, {
-				header: true,
-				transformHeader: (header) => headerMapping[header] || header,
-				skipEmptyLines: true,
-				dynamicTyping: true, // option qui permet d'avoir les chiffres et booléens en tant que tels
-				skipFirstNLines: 2,
-				complete: (result: ParseResult<ParsedPointType>) => {
-					// récupération des ids des attestations
-					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
-						result.data,
-					);
-					setPointSet({
-						...pointSet,
-						attestationIds: allAttestationsIds,
-						[type === "map" ? "mapId" : "blockId"]: parentId as string,
-					} as PointSetType);
-					notifyUploadSuccess("Points");
-				},
-				error: (error) => {
-					console.error("Erreur lors de la lecture du fichier :", error);
-				},
-			});
-		}
 	};
 
 	return (

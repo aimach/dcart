@@ -13,9 +13,13 @@ import type {
 	MapType,
 	MenuTabType,
 	MapInfoType,
+	PointSetType,
 } from "../types/mapTypes";
 import type { LatLng, Map as LeafletMap, Point } from "leaflet";
 import type { StorymapType } from "../types/storymapTypes";
+import { ChangeEvent } from "react";
+import { ParseResult } from "papaparse";
+import { notifyError } from "./toast";
 
 /**
  * Fonction qui retourne un tableau d'agents sans doublons, établis à partir de la désignation
@@ -42,7 +46,7 @@ const getAgentsArrayWithoutDuplicates = (agentsArray: AgentType[]) => {
  * @returns {string} - Une chaîne de caractères contenant tous les ids des attestations
  */
 const getAllAttestationsIdsFromParsedPoints = (
-	parsedPoints: ParsedPointType[],
+	parsedPoints: { id: string }[],
 ): string => {
 	let allAttestationsIds = "";
 	parsedPoints.map((point) => {

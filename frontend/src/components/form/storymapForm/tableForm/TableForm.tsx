@@ -183,7 +183,7 @@ const TableForm = () => {
 					<button type="submit">
 						{
 							translation[language].backoffice.storymapFormPage.form[
-								action === "create" ? "create" : "edit"
+							action === "create" ? "create" : "edit"
 							]
 						}
 						<ChevronRight />

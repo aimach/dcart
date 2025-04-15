@@ -28,6 +28,7 @@ import type { ParsedPointType, PointSetType } from "../../../../utils/types/mapT
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleHelp } from "lucide-react";
+import { parseCSVFile } from "../../../../utils/functions/csv";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -78,33 +79,15 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 			: null
 	);
 	const handleFileUpload = (event: ChangeEvent) => {
-		// définition de la correspondance avec les headers du csv
-		const headerMapping: Record<string, string> = {
-			ID: "id",
-		};
-
-		const file = (event.target as HTMLInputElement).files?.[0];
-		// si le fichier existe bien, il est parsé et les points sont stockés dans un état
-		if (file) {
-			// @ts-ignore : l'erreur de type sur File, le fichier est bien de type File (problème de typage avec l'utilisation de l'option skipFirstNLines)
-			parse(file, {
-				header: true,
-				transformHeader: (header) => headerMapping[header] || header,
-				skipEmptyLines: true,
-				skipFirstNLines: 2,
-				dynamicTyping: true, // permet d'avoir les chiffres et booléens en tant que tels
-				complete: (result: ParseResult<ParsedPointType>) => {
-					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
-						result.data,
-					);
-					setPointSet({ ...pointSet, attestationIds: allAttestationsIds as string } as PointSetType);
-					notifyUploadSuccess("Points");
-				},
-				error: (error) => {
-					console.error("Erreur lors de la lecture du fichier :", error);
-				},
-			});
-		}
+		parseCSVFile({
+			event,
+			onComplete: (result) => {
+				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
+					result.data,
+				);
+				setPointSet({ ...pointSet, attestationIds: allAttestationsIds as string } as PointSetType);
+			}
+		})
 	};
 
 	// fonction appelée lors de la soumission du formulaire

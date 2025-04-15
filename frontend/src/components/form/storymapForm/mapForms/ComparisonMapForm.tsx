@@ -1,33 +1,30 @@
 // import des bibliothèques
 import { useContext, useEffect, useState } from "react";
-import { parse } from "papaparse";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
+// import du contexte
+import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation"; // import des services
 import { comparisonMapInputs } from "../../../../utils/forms/storymapInputArray";
 import { uploadParsedPointsForComparisonMap } from "../../../../utils/api/storymap/postRequests";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
-import {
-	notifyError,
-} from "../../../../utils/functions/toast";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
+import { parseCSVFile } from "../../../../utils/functions/csv";
 // import des types
 import type {
 	blockType,
 } from "../../../../utils/types/formTypes";
-import type { ParseResult } from "papaparse";
 import type { ChangeEvent } from "react";
-import type { ParsedPointType, PointSetType } from "../../../../utils/types/mapTypes";
+import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleHelp } from "lucide-react";
-import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 
 export type comparisonMapInputsType = {
 	content1_lang1: string;
@@ -80,46 +77,27 @@ const ComparisonMapForm = () => {
 			attestationIds: ""
 		},
 	});
-	const handleFileUpload = (event: ChangeEvent) => {
-		// définition de la correspondance avec les headers du csv
-		const headerMapping: Record<string, string> = {
-			ID: "id",
-		};
 
-		const file = (event.target as HTMLInputElement).files?.[0];
-		// récupération de l'index de l'input (left ou right)
-		const panelSide = (event.target as HTMLInputElement).id;
-		// si le fichier existe bien, il est parsé et les points sont stockés dans un état
-		if (file) {
-			// @ts-ignore : l'erreur de type sur File, le fichier est bien de type File (problème de typage avec l'utilisation de l'option skipFirstNLines)
-			parse(file, {
-				header: true,
-				transformHeader: (header) => headerMapping[header] || header,
-				skipEmptyLines: true,
-				dynamicTyping: true, // option qui permet d'avoir les chiffres et booléens en tant que tels
-				skipFirstNLines: 2,
-				complete: (result: ParseResult<ParsedPointType>) => {
-					// récupération des ids des attestations
-					const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
-						result.data,
-					);
-					setPointsSets({
-						...pointSets,
-						[panelSide]: {
-							name: panelSide,
-							attestationIds: allAttestationsIds,
-						}
-					});
-				},
-				error: () => {
-					notifyError("Erreur lors de la lecture du fichier :");
-				},
-			});
-		}
+
+	const handleFileUpload = (event: ChangeEvent) => {
+		parseCSVFile({
+			event,
+			onComplete: (result, panelSide = "") => {
+				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(result.data);
+				setPointsSets(prev => ({
+					...prev,
+					[panelSide]: {
+						name: panelSide,
+						attestationIds: allAttestationsIds,
+					},
+				}));
+			},
+		});
 	};
 
 
 	const [isLoaded, setIsLoaded] = useState(false);
+
 
 	useEffect(() => {
 		const leftPointsSet = block?.attestations?.find(
@@ -446,8 +424,8 @@ const ComparisonMapForm = () => {
 						type="submit"
 						disabled={
 							action === "create" &&
-							(pointSets.left?.attestationIds.length === 0 ||
-								pointSets.right?.attestationIds.length === 0)
+							(pointSets.left?.attestationIds === '' ||
+								pointSets.right?.attestationIds === '')
 						}
 					>
 						{action === "create"
