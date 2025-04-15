@@ -1,10 +1,9 @@
-// import des bibliothèques
 import Joi from "joi";
+// import des bibliothèques
 // import des types
 import type { Request, Response, NextFunction } from "express";
 
-const mapContentSchema = Joi.object({
-	id: Joi.string().uuid().optional(),
+const newMapContentSchema = Joi.object({
 	title_fr: Joi.string().required().messages({
 		"any.required": "Le nom en français est requis",
 		"string.base": "Le nom en français doit être une chaîne de caractères",
@@ -21,25 +20,21 @@ const mapContentSchema = Joi.object({
 		"string.base":
 			"La description en anglais doit être une chaîne de caractères",
 	}),
-	image_url: Joi.string().optional().allow("").messages({
+	image_url: Joi.string().required().allow("").messages({
 		"string.base": "Le lien de l'image doit être une chaîne de caractères",
 	}),
-	divinityIds: Joi.string().optional().allow("").allow(null),
-	isActive: Joi.boolean().optional(),
-	createdAt: Joi.date().optional(),
-	updatedAt: Joi.date().optional(),
-	relatedStorymap: Joi.alternatives(
-		Joi.object({
-			id: Joi.string().uuid().required(),
-		}).optional(),
-		Joi.string().optional(),
-	),
-	category: Joi.alternatives(
-		Joi.object({
-			id: Joi.string().uuid().required(),
-		}).optional(),
-		Joi.string().optional(),
-	),
+	relatedStorymap: Joi.string(),
+	category: Joi.string(),
+});
+
+const updateMapContentSchema = newMapContentSchema.keys({
+	id: Joi.string().uuid().required(),
+	divinityIds: Joi.string().optional().allow(null),
+	isActive: Joi.boolean().required(),
+	createdAt: Joi.date().required(),
+	updatedAt: Joi.date().required(),
+	relatedStorymap: Joi.string().required(),
+	category: Joi.string().required(),
 	filters: Joi.array()
 		.items(
 			Joi.object({
@@ -47,16 +42,38 @@ const mapContentSchema = Joi.object({
 			}),
 		)
 		.optional(),
+	isLayered: Joi.boolean().required(),
+	isNbDisplayed: Joi.boolean().required(),
+	uploadPointsLastDate: Joi.date().required(),
+	filterMapContent: Joi.array().required(),
+	attestations: Joi.array().required(),
 });
 
-export const validateMapContentBody = (
+export const validateNewMapContentBody = (
 	req: Request,
 	res: Response,
 	next: NextFunction,
 ) => {
-	const { error } = mapContentSchema.validate(req.body);
+	const { error } = newMapContentSchema.validate(req.body);
 	if (error) {
 		res.status(422).send({ erreur: error.details[0].message });
+	} else {
+		next();
+	}
+};
+
+export const validateUpdatedMapContentBody = (
+	req: Request,
+	res: Response,
+	next: NextFunction,
+) => {
+	if (!req.query.isActive) {
+		const { error } = updateMapContentSchema.validate(req.body);
+		if (error) {
+			res.status(422).send({ erreur: error.details[0].message });
+		} else {
+			next();
+		}
 	} else {
 		next();
 	}
