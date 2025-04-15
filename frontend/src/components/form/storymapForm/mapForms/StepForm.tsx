@@ -155,7 +155,15 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	}, [stepAction, stepId, reset]);
 
 	useEffect(() => {
-		if (!block) return;
+		if (!block) {
+			setPointSet({
+				...pointSet,
+				attestationIds: "",
+				name: "",
+				color: "",
+				icon: "",
+			} as PointSetType);
+		}
 		if (stepAction === "edit" && block?.attestations) {
 			const defaultPointSet = block?.attestations[0];
 			setPointSet({
@@ -276,6 +284,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 									color: event.target.value,
 								} as PointSetType)
 							}
+							value={(pointSet?.color as string) ?? "null"}
 						/>
 					</div>
 				</div>
@@ -306,6 +315,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 									icon: event.target.value,
 								} as PointSetType)
 							}
+							value={(pointSet?.icon as string) ?? "null"}
 						/>
 					</div>
 				</div>

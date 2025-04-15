@@ -130,6 +130,7 @@ const PointSetUploadForm = ({
 									color: event.target.value,
 								} as PointSetType)
 							}
+							value={(pointSet?.color as string) ?? "null"}
 						/>
 					</div>
 				</div>
@@ -160,6 +161,7 @@ const PointSetUploadForm = ({
 									icon: event.target.value,
 								} as PointSetType)
 							}
+							value={(pointSet?.icon as string) ?? "null"}
 						/>
 					</div>
 				</div>
