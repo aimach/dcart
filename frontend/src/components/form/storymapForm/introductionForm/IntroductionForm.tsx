@@ -9,7 +9,6 @@ import { CategoryOptionsContext } from "../../../../context/CategoryContext";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import {
-	getAllStorymapCategories,
 	getAllStorymapLanguages,
 	getRelatedMapId,
 	getStorymapInfosAndBlocks,
@@ -33,7 +32,6 @@ import { addStorymapLinkToMap } from "../../../../utils/api/builtMap/postRequest
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type {
-	CategoryType,
 	StorymapLanguageType,
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
@@ -56,7 +54,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	// importation des données de traduction
 	const { language } = useTranslation();
 
-	const { categoryOptions } = useContext(CategoryOptionsContext)
+	const { categoryOptions } = useContext(CategoryOptionsContext);
 
 	// définition d'un état pour les inputs du formulaire
 	const [inputs, setInputs] = useState<InputType[]>(storymapInputs);
@@ -143,8 +141,6 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 		}
 		setStep(2);
 	};
-
-
 
 	return (
 		<>
