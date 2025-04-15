@@ -14,16 +14,16 @@ import {
 	createBlock,
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./layoutForm.module.scss";
 // import des icônes
-import { LayoutList } from "lucide-react";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
+import { ChevronLeft, LayoutList } from "lucide-react";
 
 /**
  * Formulaire pour la création d'un bloc de type "layout"
@@ -31,7 +31,7 @@ import {
 const LayoutForm = () => {
 	const { translation, language } = useTranslation();
 
-	const { block, reload, setReload } = useBuilderStore(
+	const { block, reload, setReload, updateFormType } = useBuilderStore(
 		useShallow((state) => ({
 			block: state.block,
 			updateFormType: state.updateFormType,
@@ -132,6 +132,18 @@ const LayoutForm = () => {
 								}
 							</button>
 						</div>
+					</div>
+					<div className={style.navigationButtonContainer}>
+						<button
+							type="button"
+							onClick={() => {
+								updateFormType("blockChoice");
+								setSearchParams(undefined);
+							}}
+						>
+							<ChevronLeft />
+							{translation[language].common.back}
+						</button>
 					</div>
 				</>
 			);
