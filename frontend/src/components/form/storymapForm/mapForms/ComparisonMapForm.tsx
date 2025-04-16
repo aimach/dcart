@@ -22,7 +22,7 @@ import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleHelp } from "lucide-react";
+import { Check, ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
@@ -93,6 +93,10 @@ const ComparisonMapForm = () => {
 						attestationIds: allAttestationsIds,
 					},
 				}));
+				setSelectedFiles((prev) => ({
+					...prev,
+					[panelSide]: (event.target as HTMLInputElement).files?.[0] as File,
+				}));
 			},
 		});
 	};
@@ -151,7 +155,12 @@ const ComparisonMapForm = () => {
 		defaultValues: block as comparisonMapInputsType,
 	});
 
-	console.log(pointSets);
+	const [selectedFiles, setSelectedFiles] = useState<Record<string, File>>({
+		left: new File([], ""),
+		right: new File([], ""),
+	});
+
+	console.log(selectedFiles);
 
 	return (
 		isLoaded && (
@@ -265,10 +274,25 @@ const ComparisonMapForm = () => {
 							<div className={style.inputContainer}>
 								<input
 									id={formSide}
+									key={formSide}
 									type="file"
 									accept=".csv"
 									onChange={handleFileUpload}
 								/>
+								<p
+									style={{ display: "flex", alignItems: "center", gap: "5px" }}
+								>
+									<CircleCheck color="green" />
+									{action === "create" &&
+										selectedFiles[formSide].name !== "" &&
+										`Fichier chargé : ${selectedFiles[formSide].name}`}
+									{action === "edit" &&
+										selectedFiles[formSide].name === "" &&
+										"Un fichier est déjà chargé"}
+									{action === "edit" &&
+										selectedFiles[formSide].name !== "" &&
+										`Nouveau fichier chargé : ${selectedFiles[formSide].name}`}
+								</p>
 							</div>
 						</div>
 						<div className={style.mapFormInputContainer}>
