@@ -235,6 +235,7 @@ const SimpleMapForm = () => {
 							color="brown"
 							textContent="Ajouter un nouveau jeu de points"
 							onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
+							isSelected={true}
 						/>
 					)}
 
