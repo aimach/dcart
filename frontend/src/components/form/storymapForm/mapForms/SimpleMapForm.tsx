@@ -24,6 +24,7 @@ import {
 	notifyCreateSuccess,
 	notifyDeleteSuccess,
 } from "../../../../utils/functions/toast";
+import { getShapeForLayerName } from "../../../../utils/functions/icons";
 // import des types
 import type { FormEventHandler } from "react";
 import type { PointSetType } from "../../../../utils/types/mapTypes";
@@ -33,7 +34,6 @@ import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
 import { X } from "lucide-react";
-import { getShapeForLayerName } from "../../../../utils/functions/icons";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -250,62 +250,73 @@ const SimpleMapForm = () => {
 						/>
 					)}
 					{block?.attestations && (
-						<table className={style.pointSetTable}>
-							<thead>
-								<tr>
-									<th scope="col">
-										{
-											translation[language].backoffice.mapFormPage.pointSetTable
-												.name
-										}
-									</th>
-									<th scope="col">
-										{
-											translation[language].backoffice.mapFormPage.pointSetTable
-												.icon
-										}
-									</th>
-									<th scope="col">
-										{
-											translation[language].backoffice.mapFormPage.pointSetTable
-												.delete
-										}
-									</th>
-								</tr>
-							</thead>
-							<tbody>
-								{block.attestations.map((pointSet) => {
-									const icon = getShapeForLayerName(
-										pointSet.icon?.name_en,
-										pointSet.color?.code_hex,
-									);
-									return (
-										<tr key={pointSet.id} className={style.pointSetTableRow}>
-											<td>{pointSet.name}</td>
-											<td>
-												<p
-													// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
-													dangerouslySetInnerHTML={{
-														__html: icon,
-													}}
-												/>
-											</td>
-											<td>
-												<X
-													onClick={() =>
-														handleDeletePointSet(pointSet.id as string)
-													}
-													onKeyDown={() =>
-														handleDeletePointSet(pointSet.id as string)
-													}
-													color="#9d2121"
-												/>
-											</td>
-										</tr>
-									);
-								})}
-							</tbody>
-						</table>
+						<>
+							<table className={style.pointSetTable}>
+								<thead>
+									<tr>
+										<th scope="col">
+											{
+												translation[language].backoffice.mapFormPage
+													.pointSetTable.name
+											}
+										</th>
+										<th scope="col">
+											{
+												translation[language].backoffice.mapFormPage
+													.pointSetTable.icon
+											}
+										</th>
+										<th scope="col">
+											{
+												translation[language].backoffice.mapFormPage
+													.pointSetTable.delete
+											}
+										</th>
+									</tr>
+								</thead>
+								<tbody>
+									{block.attestations.map((pointSet) => {
+										const icon = getShapeForLayerName(
+											pointSet.icon?.name_en,
+											pointSet.color?.code_hex,
+										);
+										return (
+											<tr key={pointSet.id} className={style.pointSetTableRow}>
+												<td>{pointSet.name}</td>
+												<td>
+													<p
+														// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
+														dangerouslySetInnerHTML={{
+															__html: icon,
+														}}
+													/>
+												</td>
+												<td>
+													<X
+														onClick={() =>
+															handleDeletePointSet(pointSet.id as string)
+														}
+														onKeyDown={() =>
+															handleDeletePointSet(pointSet.id as string)
+														}
+														color="#9d2121"
+													/>
+												</td>
+											</tr>
+										);
+									})}
+								</tbody>
+							</table>
+							<ButtonComponent
+								type="button"
+								color="brown"
+								textContent={translation[language].common.back}
+								onClickFunction={() => {
+									setStep(1);
+								}}
+								isSelected={true}
+							/>
+						</>
 					)}
 				</>
 			)}
