@@ -151,6 +151,8 @@ const ComparisonMapForm = () => {
 		defaultValues: block as comparisonMapInputsType,
 	});
 
+	console.log(pointSets);
+
 	return (
 		isLoaded && (
 			<>
@@ -353,9 +355,8 @@ const ComparisonMapForm = () => {
 						<button
 							type="submit"
 							disabled={
-								action === "create" &&
-								(pointSets.left?.attestationIds === "" ||
-									pointSets.right?.attestationIds === "")
+								(action === "create" && !pointSets.left?.attestationIds) ||
+								!pointSets.right?.attestationIds
 							}
 						>
 							{action === "create"

@@ -154,6 +154,12 @@
         @include m.flexbox(flex, row, nowrap, space-evenly, center);
         gap: v.$space-s;
     }
+
+    >button:disabled {
+        background-color: v.$color-neutral-80;
+        color: v.$color-neutral-100;
+        cursor: not-allowed;
+    }
 }
 
 .pointSetTable {
