@@ -20,9 +20,7 @@ import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/stor
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
-import type {
-	BlockContentType,
-} from "../../../../utils/types/storymapTypes";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import "leaflet/dist/leaflet.css";
@@ -52,12 +50,14 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		fetchAllPoints();
 	}, [fetchAllPoints]);
 
-
 	// on met à jour les limites de la carte
 	useEffect(() => {
 		if (!map || points.length === 0) return;
 
-		const bounds: LatLngTuple[] = points.map(({ latitude, longitude }) => [latitude, longitude]);
+		const bounds: LatLngTuple[] = points.map(({ latitude, longitude }) => [
+			latitude,
+			longitude,
+		]);
 		map.fitBounds(bounds);
 	}, [points, map]);
 
@@ -70,9 +70,10 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		}));
 	}, [blockContent.attestations]);
 
-
 	useEffect(() => {
-		const inputs = document.querySelectorAll(".leaflet-control-layers-selector");
+		const inputs = document.querySelectorAll(
+			".leaflet-control-layers-selector",
+		);
 		for (const input of inputs) {
 			(input as HTMLInputElement).style.display = "none";
 		}
@@ -120,22 +121,21 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 						{allColorsAndShapes.length > 0 && (
 							<LayersControl position="bottomright" collapsed={false}>
 								{allColorsAndShapes.map((layer) => {
-									const icon = getShapeForLayerName(
-										layer.shape,
-										layer.color) + layer.name;
+									const icon =
+										getShapeForLayerName(layer.shape, layer.color) + layer.name;
 									return (
 										<LayersControl.Overlay name={icon} key={icon}>
 											<LayerGroup key={icon} />
 										</LayersControl.Overlay>
 									);
 								})}
-							</LayersControl >
+							</LayersControl>
 						)}
 						<ZoomControl position="topright" />
 						<ScaleControl position="bottomright" />
 					</>
 				</MapContainer>
-			</div >
+			</div>
 			<h4 className={style.mapTitle}>
 				{blockContent[`content1_${selectedLanguage}`]}
 			</h4>
