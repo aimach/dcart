@@ -104,6 +104,8 @@ const CommonForm = ({
 		return inputs.filter((input) => input.name === "lang1")[0]?.options ?? [];
 	}, [inputs]);
 
+	console.log(defaultLangValue);
+
 	useEffect(() => {
 		if (lang1Value && lang2Value) {
 			if (lang1Value !== "0") {

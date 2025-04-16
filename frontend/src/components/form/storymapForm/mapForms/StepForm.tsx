@@ -199,14 +199,14 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 										required: input.required.value,
 									})}
 								/>
-							</div>
 
-							{input.required.value &&
-								errors[input.name as keyof stepInputsType] && (
-									<ErrorComponent
-										message={input.required.message?.[language] as string}
-									/>
-								)}
+								{input.required.value &&
+									errors[input.name as keyof stepInputsType] && (
+										<ErrorComponent
+											message={input.required.message?.[language] as string}
+										/>
+									)}
+							</div>
 						</div>
 					);
 				})}
