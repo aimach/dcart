@@ -183,6 +183,14 @@ const ScrollMapForm = () => {
 									]
 								}
 							</button>
+							{action === "edit" && (
+								<button
+									type="button"
+									onClick={() => setSearchParams({ stepAction: "create" })}
+								>
+									Aller aux étapes
+								</button>
+							)}
 						</div>
 					</form>
 				) : (

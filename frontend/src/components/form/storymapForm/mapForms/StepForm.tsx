@@ -232,15 +232,14 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 							accept=".csv"
 							onChange={handleFileUpload}
 						/>
-						<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-							<CircleCheck color="green" />
-							{stepAction === "edit" &&
-								!selectedFile &&
-								"Un fichier est déjà chargé"}
-							{stepAction === "edit" &&
-								selectedFile &&
-								`Nouveau fichier chargé : ${selectedFile.name}`}
-						</p>
+						{stepAction === "edit" && (
+							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+								<CircleCheck color="green" />
+								{electedFile
+									? "Un fichier est déjà chargé"
+									: `Nouveau fichier chargé : ${selectedFile?.name}`}
+							</p>
+						)}
 					</div>
 				</div>
 				<div className={style.mapFormInputContainer}>

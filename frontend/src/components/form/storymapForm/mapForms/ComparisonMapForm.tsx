@@ -280,7 +280,9 @@ const ComparisonMapForm = () => {
 								<p
 									style={{ display: "flex", alignItems: "center", gap: "5px" }}
 								>
-									<CircleCheck color="green" />
+									{((action === "create" &&
+										selectedFiles[formSide].name !== "") ||
+										action === "edit") && <CircleCheck color="green" />}
 									{action === "create" &&
 										selectedFiles[formSide].name !== "" &&
 										`Fichier chargé : ${selectedFiles[formSide].name}`}
