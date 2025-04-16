@@ -118,6 +118,27 @@ export const blockController = {
 		try {
 			const { blockId } = req.params;
 
+			if (blockId === "position") {
+				const { blocks } = req.body;
+
+				if (!blocks || blocks.length === 0) {
+					res.status(400).send("Aucune donnée reçue");
+					return;
+				}
+
+				for (const [index, block] of blocks.entries()) {
+					dcartDataSource.getRepository(Block).update(
+						{ id: block.id },
+						{
+							position: index + 1,
+						},
+					);
+				}
+
+				res.status(200).send("Position des blocs mise à jour.");
+				return;
+			}
+
 			const blockToUpdate = await dcartDataSource.getRepository(Block).findOne({
 				where: { id: blockId },
 			});
@@ -148,44 +169,17 @@ export const blockController = {
 				.getRepository(Block)
 				.save(updatedBlock);
 
-			const savedBlock = await dcartDataSource
-				.getRepository(Block)
-				.findOne({
-					where: { id: newBlock.id },
-					relations: {
-						attestations: {
-							icon: true,
-							color: true,
-						},
+			const savedBlock = await dcartDataSource.getRepository(Block).findOne({
+				where: { id: newBlock.id },
+				relations: {
+					attestations: {
+						icon: true,
+						color: true,
 					},
-				});
+				},
+			});
 
 			res.status(200).send(savedBlock);
-		} catch (error) {
-			handleError(res, error as Error);
-		}
-	},
-
-	// met à jour la position du bloc
-	updateBlocksPosition: async (req: Request, res: Response): Promise<void> => {
-		try {
-			const { blocks } = req.body;
-
-			if (!blocks || blocks.length === 0) {
-				res.status(400).send("Aucune donnée reçue");
-				return;
-			}
-
-			for (const [index, block] of blocks.entries()) {
-				dcartDataSource.getRepository(Block).update(
-					{ id: block.id },
-					{
-						position: index + 1,
-					},
-				);
-			}
-
-			res.status(200).send("Position des blocs mise à jour.");
 		} catch (error) {
 			handleError(res, error as Error);
 		}

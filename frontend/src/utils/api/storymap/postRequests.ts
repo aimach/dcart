@@ -1,9 +1,6 @@
 // import des services
 import { apiClient } from "../apiClient";
-import {
-	normalizeBody,
-	requiredBlockKeys,
-} from "../../functions/block";
+import { normalizeBody, requiredBlockKeys } from "../../functions/block";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
@@ -124,11 +121,11 @@ const uploadParsedPointsForSimpleMap = async (
 
 			const pointSetWithBlockId = {
 				...pointSet,
-				blockId
-			}
+				blockId,
+			};
 
 			// chargement des points
-			await createPointSet(pointSetWithBlockId)
+			await createPointSet(pointSetWithBlockId);
 
 			notifyCreateSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
 		}
@@ -148,15 +145,15 @@ const uploadParsedPointsForSimpleMap = async (
 				const pointSetWithBlockId = {
 					...pointSet,
 					name: updatedBlock.content1_lang1,
-					blockId
-				}
+					blockId,
+				};
 
 				await apiClient(`/dcart/attestations/${blockId}`, {
 					method: "DELETE",
 				});
 
 				// chargement des nouveaux points
-				await createPointSet(pointSetWithBlockId)
+				await createPointSet(pointSetWithBlockId);
 			}
 			notifyEditSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
 		}
@@ -180,7 +177,6 @@ const uploadParsedPointsForComparisonMap = async (
 	typeName: string,
 	action: string,
 ) => {
-
 	try {
 		let mapId = blockParent.id ?? "";
 		if (action === "create") {
@@ -220,12 +216,9 @@ const uploadParsedPointsForComparisonMap = async (
 
 				// s'il y a des points chargés, supression des anciens
 				if (pointsSets[panelSide]) {
-					await apiClient(
-						`dcart/attestations/${pointSetFromPanelSide.id}`,
-						{
-							method: "DELETE",
-						},
-					);
+					await apiClient(`dcart/attestations/${pointSetFromPanelSide.id}`, {
+						method: "DELETE",
+					});
 					pointsSets[panelSide].blockId = updatedBlock.id;
 
 					// chargement des nouveaux points

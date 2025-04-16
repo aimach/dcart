@@ -76,7 +76,7 @@ const getAllStorymapCategories = async () => {
  */
 const updateBlocksPosition = async (blocks: BlockContentType[]) => {
 	try {
-		await apiClient.put("/storymap/blocks/position/update", { blocks });
+		await apiClient.put("/storymap/blocks/position", { blocks });
 	} catch (error) {
 		console.error(
 			"Erreur lors de la mise à jour de la position des blocs :",

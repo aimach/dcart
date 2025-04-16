@@ -3,12 +3,12 @@ import express from "express";
 // import des modules
 import { blockController } from "../../controllers/storymap/blockController";
 // import des validateurs
+
+import { authenticateUser } from "../../middlewares/authenticate";
 import {
-	validateBlockArrayBody,
 	validateBlockBody,
 	validateEditBlockBody,
 } from "../../utils/validator/storymap/block";
-import { authenticateUser } from "../../middlewares/authenticate";
 
 export const blockRoutes = express.Router();
 
@@ -18,24 +18,17 @@ blockRoutes.get("/:blockId", blockController.getBlockInfos);
 // crée un nouveau bloc
 blockRoutes.post(
 	"/",
-	authenticateUser,
 	validateBlockBody,
+	authenticateUser,
 	blockController.createNewBlock,
 );
 
 // met à jour un bloc
 blockRoutes.put(
 	"/:blockId",
-	authenticateUser,
 	validateEditBlockBody,
-	blockController.updateBlock,
-);
-
-// met à jour la position du bloc
-blockRoutes.put(
-	"/position/update",
 	authenticateUser,
-	blockController.updateBlocksPosition,
+	blockController.updateBlock,
 );
 
 // supprime un bloc

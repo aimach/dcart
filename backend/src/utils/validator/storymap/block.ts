@@ -2,7 +2,7 @@
 import Joi from "joi";
 // import des types
 import type { Request, Response, NextFunction } from "express";
-import { groupedPoint, pointSchema } from "./point";
+import { pointSchema } from "./point";
 
 const blockToCreateSchema = Joi.object({
 	id: Joi.string().uuid().optional(),
@@ -32,16 +32,12 @@ const blockToCreateSchema = Joi.object({
 	parentId: Joi.string().uuid().optional().allow(null),
 });
 
-export const validateBlockBody = (
-	req: Request,
-	res: Response,
-	next: NextFunction,
-) => {
-	let validation: undefined | Joi.ValidationResult;
-	// si ce n'est pas la requête pour mettre à jour le statut de la storymap (qui n'a pas de body)
-	if (req.body.typeName !== "separator") {
-		validation = blockToCreateSchema.validate(req.body);
+const validateBlockBody = (req: Request, res: Response, next: NextFunction) => {
+	if (req.body.typeName === "separator") {
+		return next();
 	}
+	const validation = blockToCreateSchema.validate(req.body);
+
 	if (validation?.error) {
 		res.status(422).send({ erreur: validation?.error.details[0].message });
 	} else {
@@ -65,28 +61,24 @@ export const blockToEditSchema = Joi.object({
 	typeName: Joi.string().optional().allow(null).messages({
 		"string.base": "Le champ 'typeId' doit être un uuid",
 	}),
-	children: Joi.array()
-		.items(
-			Joi.object({
-				id: Joi.string().uuid().required(),
-			}),
-		)
-		.optional(),
+	children: Joi.array().optional(),
 	points: Joi.array().items(pointSchema).optional(),
-	storymapId: Joi.string().uuid().required().messages({
-		"any.required": "Le champ storymapId est requis",
-		"string.base": "Le champ 'storymapId' doit être un uuid",
-	}),
+	storymapId: Joi.string().uuid().required(),
 	parentId: Joi.string().uuid().optional().allow(null),
 	groupedPoints: Joi.array().optional(),
 	attestations: Joi.array().optional(),
 });
 
-export const validateEditBlockBody = (
+const validateEditBlockBody = (
 	req: Request,
 	res: Response,
 	next: NextFunction,
 ) => {
+	const { blockId } = req.params;
+
+	if (blockId === "position") {
+		return next();
+	}
 	const { error } = blockToEditSchema.validate(req.body);
 	if (error) {
 		res.status(422).send({ erreur: error.details[0].message });
@@ -99,7 +91,7 @@ const blockArraySchema = Joi.object({
 	blocks: Joi.array().items(blockToEditSchema).required(),
 });
 
-export const validateBlockArrayBody = (
+const validateBlockArrayBody = (
 	req: Request,
 	res: Response,
 	next: NextFunction,
@@ -111,3 +103,5 @@ export const validateBlockArrayBody = (
 		next();
 	}
 };
+
+export { validateBlockBody, validateEditBlockBody, validateBlockArrayBody };
