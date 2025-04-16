@@ -23,7 +23,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./layoutForm.module.scss";
 // import des icônes
-import { ChevronLeft, LayoutList } from "lucide-react";
+import { ChevronLeft, ChevronRight, LayoutList } from "lucide-react";
 
 /**
  * Formulaire pour la création d'un bloc de type "layout"
@@ -144,6 +144,28 @@ const LayoutForm = () => {
 							<ChevronLeft />
 							{translation[language].common.back}
 						</button>
+						{action === "edit" && (
+							<>
+								<button
+									type="button"
+									onClick={() => {
+										setStep(2);
+									}}
+								>
+									Modifier directement le texte
+									<ChevronRight />
+								</button>
+								<button
+									type="button"
+									onClick={() => {
+										setStep(3);
+									}}
+								>
+									Modifier directement l'image
+									<ChevronRight />
+								</button>
+							</>
+						)}
 					</div>
 				</>
 			);

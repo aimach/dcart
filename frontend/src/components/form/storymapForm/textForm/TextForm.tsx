@@ -52,6 +52,12 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 
 	// fonction appelée lors de la soumission du formulaire
 	const onSubmit: SubmitHandler<textInputsType> = async (data) => {
+		if (!data.content1_lang1 || data.content1_lang1 === "<p><br></p>") {
+			return;
+		}
+		if (!data.content1_lang2 || data.content1_lang2 === "<p><br></p>") {
+			return;
+		}
 		if (action === "create") {
 			await createBlock({
 				...data,
