@@ -85,6 +85,7 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 		<>
 			<FormTitleComponent action={action as string} translationKey="text" />
 			<CommonForm
+				key={block ? block.id : "text"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
 				inputs={textInputs}
 				defaultValues={(defaultValues ?? block) as BlockContentType}

@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
@@ -92,10 +92,18 @@ const ScrollMapForm = () => {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<scrollMapInputsType>({
 		defaultValues: block as scrollMapInputsType,
 	});
+
+	useEffect(() => {
+		if (action === "edit") {
+			setValue("content1_lang1", block?.content1_lang1 as string);
+			setValue("content1_lang2", block?.content1_lang2 as string);
+		}
+	}, [action, block]);
 
 	return (
 		<section className={style.scrollMapFormContainer}>

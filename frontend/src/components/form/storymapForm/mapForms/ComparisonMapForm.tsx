@@ -132,6 +132,13 @@ const ComparisonMapForm = () => {
 		setIsLoaded(true);
 	}, [block]);
 
+	useEffect(() => {
+		if (action === "edit") {
+			setValue("content1_lang1", block?.content1_lang1 as string);
+			setValue("content1_lang2", block?.content1_lang2 as string);
+		}
+	}, [action, block]);
+
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: comparisonMapInputsType) => {
 		await uploadParsedPointsForComparisonMap(
@@ -151,6 +158,7 @@ const ComparisonMapForm = () => {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<comparisonMapInputsType>({
 		defaultValues: block as comparisonMapInputsType,
@@ -160,8 +168,6 @@ const ComparisonMapForm = () => {
 		left: new File([], ""),
 		right: new File([], ""),
 	});
-
-	console.log(pointSets);
 
 	return (
 		isLoaded && (

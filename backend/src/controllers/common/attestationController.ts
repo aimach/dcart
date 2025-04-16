@@ -107,7 +107,6 @@ export const attestationController = {
 	deleteAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { id } = req.params;
-			console.log(id);
 
 			const attestationListToDelete = await dcartDataSource
 				.getRepository(Attestation)

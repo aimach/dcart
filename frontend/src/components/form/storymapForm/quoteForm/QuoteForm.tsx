@@ -76,6 +76,7 @@ const QuoteForm = () => {
 		<>
 			<FormTitleComponent action={action as string} translationKey="quote" />
 			<CommonForm
+				key={block ? block.id : "quote"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
 				inputs={quoteInputs}
 				defaultValues={block as BlockContentType}

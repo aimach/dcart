@@ -75,6 +75,13 @@ const SimpleMapForm = () => {
 		}
 	}, [block?.attestations]);
 
+	useEffect(() => {
+		if (action === "edit") {
+			setValue("content1_lang1", block?.content1_lang1 as string);
+			setValue("content1_lang2", block?.content1_lang2 as string);
+		}
+	}, [action, block]);
+
 	// fonction appelée lors de la soumission du formulaire
 	const handleMapFormSubmit = async (data: simpleMapInputsType) => {
 		if (action === "create") {
@@ -125,6 +132,7 @@ const SimpleMapForm = () => {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<simpleMapInputsType>({
 		defaultValues: block as simpleMapInputsType,

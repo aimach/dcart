@@ -14,10 +14,7 @@ import {
 import { useShallow } from "zustand/shallow";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
-import type {
-	BlockContentType,
-	StorymapType,
-} from "../../../../utils/types/storymapTypes";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 import {
 	notifyCreateSuccess,
@@ -89,6 +86,7 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
 		<>
 			<FormTitleComponent action={action as string} translationKey="image" />
 			<CommonForm
+				key={block ? block.id : "image"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
 				inputs={imageInputs}
 				defaultValues={(defaultValues ?? block) as BlockContentType}

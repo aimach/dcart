@@ -169,9 +169,10 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 			const defaultPointSet = block?.attestations[0];
 			setPointSet({
 				...pointSet,
-				attestationIds: defaultPointSet.attestationIds,
-				color: defaultPointSet.color?.id,
-				icon: defaultPointSet.icon?.id,
+				attestationIds: defaultPointSet?.attestationIds,
+				color: defaultPointSet?.color?.id,
+				icon: defaultPointSet?.icon?.id,
+				name: defaultPointSet?.name,
 			} as PointSetType);
 		}
 	}, [stepAction, block]);
@@ -235,9 +236,9 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						{stepAction === "edit" && (
 							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
 								<CircleCheck color="green" />
-								{electedFile
+								{selectedFile === null
 									? "Un fichier est déjà chargé"
-									: `Nouveau fichier chargé : ${selectedFile?.name}`}
+									: `Nouveau fichier chargé : ${selectedFile.name}`}
 							</p>
 						)}
 					</div>
@@ -265,6 +266,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 									name: event.target.value,
 								} as PointSetType)
 							}
+							value={(pointSet?.name as string) ?? ""}
 						/>
 					</div>
 				</div>

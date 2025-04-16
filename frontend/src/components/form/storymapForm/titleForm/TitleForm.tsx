@@ -73,6 +73,7 @@ const TitleForm = () => {
 		<>
 			<FormTitleComponent action={action as string} translationKey="title" />
 			<CommonForm
+				key={block ? block.id : "title"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
 				inputs={titleInput}
 				defaultValues={block as BlockContentType}

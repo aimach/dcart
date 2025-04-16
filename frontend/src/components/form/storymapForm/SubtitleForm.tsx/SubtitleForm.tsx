@@ -14,10 +14,7 @@ import {
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import FormTitleComponent from "../common/FormTitleComponent";
-import type {
-	BlockContentType,
-	StorymapType,
-} from "../../../../utils/types/storymapTypes";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 import {
 	notifyCreateSuccess,
@@ -79,6 +76,7 @@ const SubtitleForm = () => {
 		<>
 			<FormTitleComponent action={action as string} translationKey="subtitle" />
 			<CommonForm
+				key={block ? block.id : "subtitle"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
 				inputs={subtitleInputs}
 				defaultValues={block as BlockContentType}

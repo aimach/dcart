@@ -1,8 +1,8 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { parse } from "papaparse";
-import { useForm } from "react-hook-form";
+import { set, useForm } from "react-hook-form";
 // import des composants
 import FormTitleComponent from "../common/FormTitleComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
@@ -24,7 +24,7 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du style
 import style from "../mapForms/mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, ChevronRight } from "lucide-react";
+import { ChevronLeft, ChevronRight, CircleCheck } from "lucide-react";
 
 export type tableInputsType = {
 	content1_lang1: string;
@@ -67,8 +67,10 @@ const TableForm = () => {
 				if (parsed.data) {
 					if (langNb === 1) {
 						setCsvContentLang1(parsed.data as string[][]);
+						setSelectedFiles((prev) => ({ ...prev, lang1: file }));
 					} else {
 						setCsvContentLang2(parsed.data as string[][]);
+						setSelectedFiles((prev) => ({ ...prev, lang2: file }));
 					}
 				}
 			};
@@ -80,6 +82,7 @@ const TableForm = () => {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<tableInputsType>({
 		defaultValues: block as tableInputsType,
@@ -117,6 +120,20 @@ const TableForm = () => {
 		updateFormType("blockChoice");
 		setSearchParams(undefined);
 	};
+
+	const [selectedFiles, setSelectedFiles] = useState<Record<string, File>>({
+		lang1: new File([], ""),
+		lang2: new File([], ""),
+	});
+
+	// utile si l'utilisateur passe d'un form "create" à "edit" via le panel des blocs
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		if (action === "edit" && block) {
+			setValue("content1_lang1", block.content1_lang1);
+			setValue("content1_lang2", block.content1_lang2);
+		}
+	}, [action, block]);
 
 	return (
 		<>
@@ -162,6 +179,14 @@ const TableForm = () => {
 							accept=".csv"
 							onChange={(event) => handleFileUpload(event, 1)}
 						/>
+						{action === "edit" && (
+							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+								<CircleCheck color="green" />
+								{selectedFiles.lang1.name === ""
+									? "Un fichier est déjà chargé"
+									: `Nouveau fichier chargé : ${selectedFiles.lang1.name}`}
+							</p>
+						)}
 					</div>
 				</div>
 				<div className={style.mapFormInputContainer}>
@@ -180,6 +205,14 @@ const TableForm = () => {
 							accept=".csv"
 							onChange={(event) => handleFileUpload(event, 2)}
 						/>
+						{action === "edit" && (
+							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+								<CircleCheck color="green" />
+								{selectedFiles.lang2.name === ""
+									? "Un fichier est déjà chargé"
+									: `Nouveau fichier chargé : ${selectedFiles.lang2.name}`}
+							</p>
+						)}
 					</div>
 				</div>
 				<div className={style.formButtonNavigation}>
