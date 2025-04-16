@@ -33,6 +33,7 @@ import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
 import { X } from "lucide-react";
+import { getShapeForLayerName } from "../../../../utils/functions/icons";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -261,12 +262,6 @@ const SimpleMapForm = () => {
 									<th scope="col">
 										{
 											translation[language].backoffice.mapFormPage.pointSetTable
-												.color
-										}
-									</th>
-									<th scope="col">
-										{
-											translation[language].backoffice.mapFormPage.pointSetTable
 												.icon
 										}
 									</th>
@@ -279,42 +274,36 @@ const SimpleMapForm = () => {
 								</tr>
 							</thead>
 							<tbody>
-								{block.attestations.map((pointSet) => (
-									<tr key={pointSet.id} className={style.pointSetTableRow}>
-										<td>{pointSet.name}</td>
-										<td>
-											{pointSet.color ? (
-												<div
-													style={{
-														backgroundColor: pointSet.color.code_hex,
-														width: 30,
-														height: 30,
+								{block.attestations.map((pointSet) => {
+									const icon = getShapeForLayerName(
+										pointSet.icon?.name_en,
+										pointSet.color?.code_hex,
+									);
+									return (
+										<tr key={pointSet.id} className={style.pointSetTableRow}>
+											<td>{pointSet.name}</td>
+											<td>
+												<p
+													// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
+													dangerouslySetInnerHTML={{
+														__html: icon,
 													}}
 												/>
-											) : (
-												translation[language].backoffice.mapFormPage
-													.pointSetForm.noDefinedColor
-											)}
-										</td>
-										<td>
-											{pointSet.icon
-												? pointSet.icon[`name_${language}`]
-												: translation[language].backoffice.mapFormPage
-														.pointSetForm.noDefinedIcon}
-										</td>
-										<td>
-											<X
-												onClick={() =>
-													handleDeletePointSet(pointSet.id as string)
-												}
-												onKeyDown={() =>
-													handleDeletePointSet(pointSet.id as string)
-												}
-												color="#9d2121"
-											/>
-										</td>
-									</tr>
-								))}
+											</td>
+											<td>
+												<X
+													onClick={() =>
+														handleDeletePointSet(pointSet.id as string)
+													}
+													onKeyDown={() =>
+														handleDeletePointSet(pointSet.id as string)
+													}
+													color="#9d2121"
+												/>
+											</td>
+										</tr>
+									);
+								})}
 							</tbody>
 						</table>
 					)}

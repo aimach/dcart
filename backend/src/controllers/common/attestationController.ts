@@ -40,7 +40,9 @@ export const attestationController = {
 		try {
 			const { color, icon, mapId, blockId } = req.body;
 
-			const parentRepository = mapId ? dcartDataSource.getRepository(MapContent) : dcartDataSource.getRepository(Block);
+			const parentRepository = mapId
+				? dcartDataSource.getRepository(MapContent)
+				: dcartDataSource.getRepository(Block);
 			const parentId = mapId ? mapId : blockId;
 
 			if (!parentId) {
@@ -89,7 +91,12 @@ export const attestationController = {
 
 			const newAttestation = await dcartDataSource
 				.getRepository(Attestation)
-				.save({ ...req.body, icon: iconToAdd, [mapId ? 'map' : "block"]: parentToAddAttestations, color: colorToAdd });
+				.save({
+					...req.body,
+					icon: iconToAdd,
+					[mapId ? "map" : "block"]: parentToAddAttestations,
+					color: colorToAdd,
+				});
 			res.status(201).json(newAttestation);
 		} catch (error) {
 			handleError(res, error as Error);
@@ -99,15 +106,12 @@ export const attestationController = {
 	// supprimer un jeu d'attestations
 	deleteAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { parentId } = req.params;
+			const { id } = req.params;
+			console.log(id);
 
 			const attestationListToDelete = await dcartDataSource
 				.getRepository(Attestation)
-				.createQueryBuilder("attestation")
-				.where('attestation.mapId = :parentId OR attestation.blockId = :parentId', {
-					parentId,
-				})
-				.getMany();
+				.findOneBy({ id });
 
 			if (!attestationListToDelete) {
 				res.status(404).json("Le jeu d'attestations n'existe pas");
