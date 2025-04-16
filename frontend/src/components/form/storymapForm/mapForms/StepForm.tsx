@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
@@ -93,6 +93,13 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 		});
 	};
 
+	const initialPointSetId = useMemo(() => {
+		if (stepAction === "edit" && block?.attestations?.[0]?.attestationIds) {
+			return block.attestations[0].id;
+		}
+		return null;
+	}, [block, stepAction]);
+
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: stepInputsType) => {
 		try {
@@ -110,6 +117,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						storymapId as string,
 						"step",
 						stepAction as string,
+						initialPointSetId as string,
 						parentBlockId,
 					);
 				}
@@ -121,6 +129,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					storymapId as string,
 					"step",
 					stepAction as string,
+					initialPointSetId as string,
 					parentBlockId,
 				);
 			}

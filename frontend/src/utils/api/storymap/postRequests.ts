@@ -105,6 +105,7 @@ const uploadParsedPointsForSimpleMap = async (
 	storymapId: string,
 	typeName: string,
 	action: string,
+	initialPointSetId?: string,
 	parentId?: string,
 ) => {
 	try {
@@ -148,7 +149,7 @@ const uploadParsedPointsForSimpleMap = async (
 					blockId,
 				};
 
-				await apiClient(`/dcart/attestations/${blockId}`, {
+				await apiClient(`/dcart/attestations/${initialPointSetId}`, {
 					method: "DELETE",
 				});
 

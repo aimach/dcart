@@ -74,16 +74,16 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 			const newInputs = createLanguageOptions(allLanguages, inputs);
 			setInputs(newInputs);
 		};
-		const fetchAllMaps = async () => {
-			const allMaps = await getAllMapsInfos(false);
-			const newInputs = createMapOptions(allMaps, inputs, language);
-			setInputs(newInputs);
-		};
+		// const fetchAllMaps = async () => {
+		// 	const allMaps = await getAllMapsInfos(false);
+		// 	const newInputs = createMapOptions(allMaps, inputs, language);
+		// 	setInputs(newInputs);
+		// };
 		const fetchRelatedMapId = async (storymapId: string) => {
 			const relatedMap = await getRelatedMapId(storymapId as string);
 			setRelatedMapId(relatedMap);
 		};
-		fetchAllMaps();
+		// fetchAllMaps();
 		addCategoryOptions();
 		fetchAllLanguagesAndCreateOptions();
 		if (storymapId !== "create") {
@@ -114,9 +114,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	const onSubmit: SubmitHandler<storymapInputsType> = async (data) => {
 		if (storymapId === "create") {
 			const newStorymap = await createStorymap(data);
-			await addStorymapLinkToMap(newStorymap.id, data.relatedMap as string);
+			// await addStorymapLinkToMap(newStorymap.id, data.relatedMap as string);
 			setStorymapInfos(newStorymap);
-			notifyCreateSuccess("Storymap", true);
 			navigate(`/backoffice/storymaps/${newStorymap.id}`);
 		} else {
 			const bodyWithoutUselessData = {
