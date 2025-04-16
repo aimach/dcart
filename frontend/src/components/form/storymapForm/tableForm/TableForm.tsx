@@ -2,7 +2,7 @@
 import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { parse } from "papaparse";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 // import des composants
 import FormTitleComponent from "../common/FormTitleComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
@@ -24,7 +24,12 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du style
 import style from "../mapForms/mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, ChevronRight, CircleCheck } from "lucide-react";
+import {
+	ChevronLeft,
+	ChevronRight,
+	CircleCheck,
+	CircleHelp,
+} from "lucide-react";
 
 export type tableInputsType = {
 	content1_lang1: string;
@@ -138,6 +143,17 @@ const TableForm = () => {
 	return (
 		<>
 			<FormTitleComponent action={action as string} translationKey="table" />
+			<div className={style.helpContainer}>
+				<a
+					href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-tableau-1d74457ff83180b7936ec004ff956c83"
+					target="_blank"
+					rel="noreferrer"
+				>
+					<CircleHelp color="grey" />
+					{translation[language].backoffice.mapFormPage.uploadPointsHelp}
+				</a>
+			</div>
+
 			<form
 				onSubmit={handleSubmit(handlePointSubmit)}
 				className={style.mapFormContainer}
