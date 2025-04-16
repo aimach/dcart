@@ -25,7 +25,7 @@ import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleHelp } from "lucide-react";
+import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -88,6 +88,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					...pointSet,
 					attestationIds: allAttestationsIds as string,
 				} as PointSetType);
+				setSelectedFile((event.target as HTMLInputElement).files?.[0] ?? null);
 			},
 		});
 	};
@@ -175,6 +176,8 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 		}
 	}, [stepAction, block]);
 
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+
 	return (
 		<>
 			<FormTitleComponent action={stepAction as string} translationKey="step" />
@@ -229,6 +232,15 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 							accept=".csv"
 							onChange={handleFileUpload}
 						/>
+						<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+							<CircleCheck color="green" />
+							{stepAction === "edit" &&
+								!selectedFile &&
+								"Un fichier est déjà chargé"}
+							{stepAction === "edit" &&
+								selectedFile &&
+								`Nouveau fichier chargé : ${selectedFile.name}`}
+						</p>
 					</div>
 				</div>
 				<div className={style.mapFormInputContainer}>

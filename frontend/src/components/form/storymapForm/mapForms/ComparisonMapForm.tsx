@@ -160,8 +160,6 @@ const ComparisonMapForm = () => {
 		right: new File([], ""),
 	});
 
-	console.log(selectedFiles);
-
 	return (
 		isLoaded && (
 			<>
