@@ -32,7 +32,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft } from "lucide-react";
+import { ChevronLeft, CircleHelp } from "lucide-react";
 import { X } from "lucide-react";
 
 export type simpleMapInputsType = {
@@ -239,13 +239,31 @@ const SimpleMapForm = () => {
 			{step === 2 && (
 				<>
 					{isAlreadyAPointSet && (
-						<ButtonComponent
-							type="button"
-							color="brown"
-							textContent="Ajouter un nouveau jeu de points"
-							onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
-							isSelected={true}
-						/>
+						<div className={style.headerContainer}>
+							<ButtonComponent
+								type="button"
+								color="brown"
+								textContent="Ajouter un nouveau jeu de points"
+								onClickFunction={() =>
+									setIsAlreadyAPointSet(!isAlreadyAPointSet)
+								}
+								isSelected={true}
+							/>
+
+							<div className={style.helpContainer}>
+								<a
+									href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9?pvs=4"
+									target="_blank"
+									rel="noreferrer"
+								>
+									<CircleHelp color="grey" />
+									{
+										translation[language].backoffice.mapFormPage
+											.uploadPointsHelp
+									}
+								</a>
+							</div>
+						</div>
 					)}
 
 					{!isAlreadyAPointSet && (

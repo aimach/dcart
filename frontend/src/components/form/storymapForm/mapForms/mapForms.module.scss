@@ -23,6 +23,11 @@
     }
 }
 
+.headerContainer {
+    @include m.flexbox(flex, row, nowrap, space-between, center);
+    margin: 0 v.$space-l;
+}
+
 .labelContainer {
     width: 50%;
 
