@@ -89,6 +89,7 @@ const ComparisonMapForm = () => {
 				setPointsSets((prev) => ({
 					...prev,
 					[panelSide]: {
+						...prev[panelSide],
 						name: panelSide,
 						attestationIds: allAttestationsIds,
 					},
@@ -159,6 +160,8 @@ const ComparisonMapForm = () => {
 		left: new File([], ""),
 		right: new File([], ""),
 	});
+
+	console.log(pointSets);
 
 	return (
 		isLoaded && (
