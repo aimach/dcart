@@ -1,12 +1,13 @@
 // import des bibliothèques
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
-import { useForm } from "react-hook-form";
+import { Controller, set, useForm } from "react-hook-form";
 // import des composants
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
+import EditorComponent from "../wysiwygBlock/EditorComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -19,13 +20,19 @@ import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 import { parseCSVFile } from "../../../../utils/functions/csv";
 // import des types
-import type { blockType } from "../../../../utils/types/formTypes";
+import type {
+	allInputsType,
+	blockType,
+} from "../../../../utils/types/formTypes";
 import type { ChangeEvent } from "react";
 import type { PointSetType } from "../../../../utils/types/mapTypes";
+import type Quill from "quill";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
+import Block from "quill/blots/block";
+import { BlockContentType } from "../../../../utils/types/storymapTypes";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -147,22 +154,14 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 		handleSubmit,
 		formState: { errors },
 		reset,
+		control,
 	} = useForm<stepInputsType>({ defaultValues: {} });
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		const defaultValues =
-			stepAction === "edit"
-				? (block as stepInputsType)
-				: {
-						content1_lang1: "",
-						content1_lang2: "",
-						content2_lang1: "",
-						content2_lang2: "",
-					};
-		// NB : ne fonctionne pas juste avec {}
-		reset(defaultValues);
-	}, [stepAction, stepId, reset]);
+		if (stepAction === "edit") {
+			reset(block as BlockContentType);
+		}
+	}, [stepAction, reset, block]);
 
 	useEffect(() => {
 		if (!block) {
@@ -188,6 +187,8 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+	const quillRef = useRef<Quill | null>(null);
+
 	return (
 		<>
 			<FormTitleComponent action={stepAction as string} translationKey="step" />
@@ -197,27 +198,69 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				key={stepAction}
 			>
 				{stepInputs.map((input) => {
-					return (
-						<div key={input.name} className={style.mapFormInputContainer}>
-							<div className={style.labelContainer}>
-								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-							</div>
-							<div className={style.inputContainer}>
-								<input
-									{...register(input.name as keyof stepInputsType, {
-										required: input.required.value,
-									})}
-								/>
+					if (input.type === "text") {
+						return (
+							<div key={input.name} className={style.mapFormInputContainer}>
+								<div className={style.labelContainer}>
+									<label htmlFor={input.name}>
+										{input[`label_${language}`]}
+									</label>
+								</div>
+								<div className={style.inputContainer}>
+									<input
+										{...register(input.name as keyof stepInputsType, {
+											required: input.required.value,
+										})}
+									/>
 
-								{input.required.value &&
-									errors[input.name as keyof stepInputsType] && (
-										<ErrorComponent
-											message={input.required.message?.[language] as string}
-										/>
-									)}
+									{input.required.value &&
+										errors[input.name as keyof stepInputsType] && (
+											<ErrorComponent
+												message={input.required.message?.[language] as string}
+											/>
+										)}
+								</div>
 							</div>
-						</div>
-					);
+						);
+					}
+					if (input.type === "wysiwyg") {
+						return (
+							<div key={input.name} className={style.mapFormInputContainer}>
+								<div className={style.labelContainer}>
+									<label htmlFor={input.name}>
+										{input[`label_${language}`]}
+									</label>
+									<p>{input[`description_${language}`] ?? ""}</p>
+								</div>
+								<div className={style.inputContainer}>
+									<Controller
+										name={input.name as keyof allInputsType}
+										control={control}
+										render={({ field: { onChange } }) => (
+											<EditorComponent
+												key={block?.id}
+												ref={quillRef}
+												onChange={onChange}
+												defaultValue={
+													block && block.type.name !== "scroll_map"
+														? (block[
+																`${input.name}` as keyof typeof block
+															] as string)
+														: null
+												}
+											/>
+										)}
+									/>
+									{input.required.value &&
+										errors[input.name as keyof allInputsType] && (
+											<ErrorComponent
+												message={input.required.message?.[language] as string}
+											/>
+										)}
+								</div>
+							</div>
+						);
+					}
 				})}
 				<div className={style.helpContainer}>
 					<a

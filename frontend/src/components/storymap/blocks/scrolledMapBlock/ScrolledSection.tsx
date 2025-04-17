@@ -1,11 +1,13 @@
 // import de bibliothèques
 import { Scrollama, Step } from "react-scrollama";
+import DOMPurify from "dompurify";
 // import des services
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./scrolledMapBlock.module.scss";
+import { useMemo } from "react";
 
 interface ScrolledSectionProps {
 	onStepEnter: ({ data }: { data: string }) => void;
@@ -20,10 +22,21 @@ const ScrolledSection = ({
 }: ScrolledSectionProps) => {
 	const { selectedLanguage } = useStorymapLanguageStore();
 
+	const stepsInOrder = useMemo(() => {
+		return steps.sort((a, b) => {
+			const aPosition = a.position as number;
+			const bPosition = b.position as number;
+			return aPosition - bPosition;
+		});
+	}, [steps]);
+
 	return (
 		<>
 			<Scrollama offset={0.2} onStepEnter={onStepEnter}>
-				{(steps as BlockContentType[]).map((point) => {
+				{(stepsInOrder as BlockContentType[]).map((point) => {
+					const description = DOMPurify.sanitize(
+						point[`content2_${selectedLanguage}`],
+					);
 					return (
 						<Step data={point.id} key={point.id + (point.position as number)}>
 							<div
@@ -34,7 +47,13 @@ const ScrolledSection = ({
 							>
 								<div className={style.infoElement}>
 									<h4>{point[`content1_${selectedLanguage}`]}</h4>
-									<p>{point[`content2_${selectedLanguage}`]}</p>
+									<p className={style.description}>
+										<span
+											dangerouslySetInnerHTML={{
+												__html: description,
+											}}
+										/>
+									</p>
 								</div>
 							</div>
 						</Step>

@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 import StepPanel from "./StepPanel";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
+import StepForm from "./StepForm";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -22,7 +23,6 @@ import {
 } from "../../../../utils/functions/toast";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
-import StepForm from "./StepForm";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
@@ -103,7 +103,7 @@ const ScrollMapForm = () => {
 			setValue("content1_lang1", block?.content1_lang1 as string);
 			setValue("content1_lang2", block?.content1_lang2 as string);
 		}
-	}, [action, block]);
+	}, [action, block, setValue]);
 
 	return (
 		<section className={style.scrollMapFormContainer}>

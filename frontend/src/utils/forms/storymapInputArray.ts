@@ -579,7 +579,7 @@ const stepInputs: InputType[] = [
 		label_fr: "Description en langue 1",
 		label_en: "Description in language 1",
 		name: "content2_lang1",
-		type: "text",
+		type: "wysiwyg",
 		required: {
 			value: false,
 		},
@@ -588,7 +588,7 @@ const stepInputs: InputType[] = [
 		label_fr: "Description en langue 2",
 		label_en: "Description in language 2",
 		name: "content2_lang2",
-		type: "text",
+		type: "wysiwyg",
 		required: {
 			value: false,
 		},

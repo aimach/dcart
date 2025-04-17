@@ -136,7 +136,6 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 				storymapInfos?.id as string,
 				data.relatedMap as string,
 			);
-			notifyEditSuccess("Storymap", true);
 		}
 		setStep(2);
 	};
