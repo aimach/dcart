@@ -25,12 +25,12 @@ type StorymapType = {
 	blocks?: BlockContentType[];
 	img_url: string;
 	publication_date?: string;
-	category_id?: string;
 	relatedMap?: string;
+	tags?: TagType[] | string;
 };
 
 type StorymapBodyType = {
-	id: string;
+	id?: string;
 	title_lang1: string;
 	title_lang2: string;
 	description_lang1: string;
@@ -41,6 +41,7 @@ type StorymapBodyType = {
 	lang1: string;
 	lang2: string;
 	publication_date: string;
+	tags: string;
 };
 
 type BlockContentType = {

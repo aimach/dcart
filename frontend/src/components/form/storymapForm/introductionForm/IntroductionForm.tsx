@@ -1,8 +1,10 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
+import Select from "react-select";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
+import LabelComponent from "../../inputComponent/LabelComponent";
 // import du contexte
 import { TagOptionsContext } from "../../../../context/TagContext";
 // import des custom hooks
@@ -10,7 +12,6 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import {
 	getAllStorymapLanguages,
-	getRelatedMapId,
 	getStorymapInfosAndBlocks,
 } from "../../../../utils/api/storymap/getRequests";
 import { storymapInputs } from "../../../../utils/forms/storymapInputArray";
@@ -18,10 +19,7 @@ import {
 	createStorymap,
 	updateStorymap,
 } from "../../../../utils/api/storymap/postRequests";
-import {
-	createLanguageOptions,
-	createTagOptions,
-} from "../../../../utils/functions/storymap";
+import { createLanguageOptions } from "../../../../utils/functions/storymap";
 import { addStorymapLinkToMap } from "../../../../utils/api/builtMap/postRequests";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
@@ -35,6 +33,8 @@ import type {
 	storymapInputsType,
 	allInputsType,
 } from "../../../../utils/types/formTypes";
+import type { OptionType } from "../../../../utils/types/commonTypes";
+import { TagType } from "../../../../utils/types/mapTypes";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -53,15 +53,10 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 
 	// définition d'un état pour les inputs du formulaire
 	const [inputs, setInputs] = useState<InputType[]>(storymapInputs);
-	const [relatedMapId, setRelatedMapId] = useState<string | null>(null);
 
 	// au montage du composant, récupération des catégories et des langues pour les select/options
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		const addTagOptions = async () => {
-			const newInputs = createTagOptions(tagOptions, inputs);
-			setInputs(newInputs);
-		};
 		const fetchAllLanguagesAndCreateOptions = async () => {
 			const allLanguages: StorymapLanguageType[] =
 				await getAllStorymapLanguages();
@@ -69,21 +64,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 			const newInputs = createLanguageOptions(allLanguages, inputs);
 			setInputs(newInputs);
 		};
-		// const fetchAllMaps = async () => {
-		// 	const allMaps = await getAllMapsInfos(false);
-		// 	const newInputs = createMapOptions(allMaps, inputs, language);
-		// 	setInputs(newInputs);
-		// };
-		const fetchRelatedMapId = async (storymapId: string) => {
-			const relatedMap = await getRelatedMapId(storymapId as string);
-			setRelatedMapId(relatedMap);
-		};
-		// fetchAllMaps();
-		addTagOptions();
+
 		fetchAllLanguagesAndCreateOptions();
-		if (storymapId !== "create") {
-			fetchRelatedMapId(storymapId as string);
-		}
 	}, [language]);
 
 	// -- MODE MODIFICATION --
@@ -96,7 +78,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 		const fetchStorymapInfos = async (storymapId: string) => {
 			setIsLoaded(false);
 			const response = await getStorymapInfosAndBlocks(storymapId as string);
-			setStorymapInfos({ ...response, category_id: response.category.id });
+			setStorymapInfos({ ...response });
 			setIsLoaded(true);
 		};
 		if (storymapId !== "create") {
@@ -105,11 +87,11 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	}, [storymapId]);
 
 	// définition de la fonction de soumission du formulaire (création ou mise à jour de la storymap)
+	const [selectedTags, setSelectedTags] = useState<string>("");
 	const navigate = useNavigate();
 	const onSubmit: SubmitHandler<storymapInputsType> = async (data) => {
 		if (storymapId === "create") {
-			const newStorymap = await createStorymap(data);
-			// await addStorymapLinkToMap(newStorymap.id, data.relatedMap as string);
+			const newStorymap = await createStorymap({ ...data, tags: selectedTags });
 			setStorymapInfos(newStorymap);
 			navigate(`/backoffice/storymaps/${newStorymap.id}`);
 		} else {
@@ -125,34 +107,83 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 				lang1: data.lang1,
 				lang2: data.lang2,
 				publication_date: data.publication_date,
+				tags: selectedTags,
 			};
 			await updateStorymap(bodyWithoutUselessData, storymapInfos?.id as string);
-			await addStorymapLinkToMap(
-				storymapInfos?.id as string,
-				data.relatedMap as string,
-			);
 		}
 		setStep(2);
 	};
 
+	const defaultTagValues = useMemo(() => {
+		return (storymapInfos?.tags as TagType[])?.map((tag: TagType) => ({
+			value: tag.id,
+			label: tag[`name_${language}`],
+		}));
+	}, [language, storymapInfos]);
+
 	return (
 		<>
 			{storymapId === "create" && (
-				<CommonForm
-					onSubmit={onSubmit as SubmitHandler<allInputsType>}
-					inputs={inputs}
-					action="create"
-				/>
+				<>
+					<CommonForm
+						onSubmit={onSubmit as SubmitHandler<allInputsType>}
+						inputs={inputs}
+						action="create"
+					/>
+					<div>
+						<LabelComponent
+							htmlFor="tags"
+							label="Etiquettes de la carte"
+							description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
+						/>
+						<div>
+							<Select
+								options={tagOptions}
+								delimiter="|"
+								isMulti
+								onChange={(newValue) => {
+									const tagIds = newValue
+										.map((tag: OptionType) => tag.value as string)
+										.join("|");
+									setSelectedTags(tagIds);
+								}}
+								placeholder="Choisir une ou plusieurs étiquette"
+							/>
+						</div>
+					</div>
+				</>
 			)}
 			{isLoaded && (
-				<CommonForm
-					onSubmit={onSubmit as SubmitHandler<allInputsType>}
-					inputs={inputs}
-					defaultValues={
-						{ ...storymapInfos, relatedMap: relatedMapId } as StorymapType
-					}
-					action="edit"
-				/>
+				<>
+					<CommonForm
+						onSubmit={onSubmit as SubmitHandler<allInputsType>}
+						inputs={inputs}
+						defaultValues={{ ...storymapInfos } as StorymapType}
+						action="edit"
+					/>
+					<div>
+						<LabelComponent
+							htmlFor="tags"
+							label="Etiquettes de la carte"
+							description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
+						/>
+						<div>
+							<Select
+								options={tagOptions}
+								defaultValue={storymapInfos ? defaultTagValues : []}
+								delimiter="|"
+								isMulti
+								onChange={(newValue) => {
+									const tagIds = newValue
+										.map((tag: OptionType) => tag.value as string)
+										.join("|");
+									setSelectedTags(tagIds);
+								}}
+								placeholder="Choisir une ou plusieurs étiquette"
+							/>
+						</div>
+					</div>
+				</>
 			)}
 		</>
 	);

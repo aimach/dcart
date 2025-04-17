@@ -38,7 +38,6 @@ export class Tag extends BaseEntity {
 	@ManyToMany(
 		() => Storymap,
 		(Storymap) => Storymap.tags,
-		{ cascade: true },
 	)
 	@JoinTable()
 	storymaps!: Storymap[];

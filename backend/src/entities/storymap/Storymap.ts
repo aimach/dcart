@@ -77,7 +77,7 @@ export class Storymap extends BaseEntity {
 	@ManyToMany(
 		() => Tag,
 		(tag) => tag.storymaps,
-		{ onDelete: "SET NULL" },
+		{ cascade: true, onDelete: "CASCADE" },
 	)
 	tags!: Tag[];
 

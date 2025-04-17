@@ -81,6 +81,7 @@ export class MapContent extends BaseEntity {
 	@ManyToMany(
 		() => Tag,
 		(tag) => tag.maps,
+		{ cascade: true, onDelete: "CASCADE" },
 	)
 	tags!: Tag[];
 

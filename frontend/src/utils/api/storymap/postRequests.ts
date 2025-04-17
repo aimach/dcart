@@ -8,7 +8,7 @@ import {
 } from "../../functions/toast";
 import { createPointSet } from "../builtMap/postRequests";
 // import des types
-import type { blockType, storymapInputsType } from "../../types/formTypes";
+import type { blockType } from "../../types/formTypes";
 import type { PointSetType } from "../../types/mapTypes";
 import type { StorymapBodyType } from "../../types/storymapTypes";
 
@@ -17,7 +17,7 @@ import type { StorymapBodyType } from "../../types/storymapTypes";
  * @param {storymapInputsType} body - le payload de la requête
  * @returns - l'id de la storymap
  */
-const createStorymap = async (body: storymapInputsType) => {
+const createStorymap = async (body: StorymapBodyType) => {
 	try {
 		const response = await apiClient("/storymap/storymap", {
 			method: "POST",
