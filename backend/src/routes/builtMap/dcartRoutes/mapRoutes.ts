@@ -33,14 +33,6 @@ mapRoutes.put(
 	dcartControllers.updateMap,
 );
 
-// ajouter une storymap à une carte
-mapRoutes.put(
-	"/:mapId/relatedStorymap",
-	validateUpdatedMapContentBody,
-	authenticateUser,
-	dcartControllers.updateStorymapLink,
-);
-
 // supprimer carte
 mapRoutes.delete(
 	"/:mapId",

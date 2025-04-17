@@ -8,11 +8,12 @@ import {
 	BaseEntity,
 	ManyToOne,
 	OneToMany,
+	ManyToMany,
 } from "typeorm";
 // import des entités
 import { FilterMapContent } from "./FilterMapContent";
 import { User } from "../auth/User";
-import { Category } from "../common/Category";
+import { Tag } from "../common/Tag";
 import { Attestation } from "../common/Attestation";
 
 @Entity()
@@ -59,9 +60,6 @@ export class MapContent extends BaseEntity {
 	@Column({ type: "date", nullable: false })
 	uploadPointsLastDate!: Date;
 
-	@Column({ type: "uuid", default: null, nullable: true })
-	relatedStorymap?: string | null;
-
 	@OneToMany(
 		() => Attestation,
 		(attestation) => attestation.map,
@@ -80,11 +78,11 @@ export class MapContent extends BaseEntity {
 	)
 	modifier!: User;
 
-	@ManyToOne(
-		() => Category,
-		(category) => category.maps,
+	@ManyToMany(
+		() => Tag,
+		(tag) => tag.maps,
 	)
-	category!: Category;
+	tags!: Tag[];
 
 	@OneToMany(
 		() => FilterMapContent,
