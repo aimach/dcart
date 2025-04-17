@@ -45,6 +45,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./storymapIntroPage.module.scss";
+// import des icônes
 import { ChevronRightCircle } from "lucide-react";
 
 /**
@@ -59,10 +60,11 @@ const StorymapIntroPage = () => {
 	const [step, setStep] = useState(1);
 
 	// récupération des données des stores
-	const { formType, updateFormType } = useBuilderStore(
+	const { formType, updateFormType, updateBlockContent } = useBuilderStore(
 		useShallow((state) => ({
 			formType: state.formType,
 			updateFormType: state.updateFormType,
+			updateBlockContent: state.updateBlockContent,
 		})),
 	);
 	const { isDeleteModalOpen, closeDeleteModal } = useModalStore();
@@ -70,10 +72,13 @@ const StorymapIntroPage = () => {
 	const { storymapId } = useParams();
 
 	const { state } = useLocation();
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (!state) return;
 		if (state?.from.includes("/storymaps/view/")) {
 			setStep(2);
+			updateFormType("blockChoice");
+			updateBlockContent(null);
 		}
 	}, [state]);
 
@@ -137,9 +142,7 @@ const StorymapIntroPage = () => {
 		} catch (error) {
 			console.error(error);
 		}
-	}
-
-
+	};
 
 	return (
 		<section className={style.BOStorymapFormPageContainer}>

@@ -1,10 +1,11 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { parse } from "papaparse";
 import { useForm } from "react-hook-form";
 // import des composants
 import FormTitleComponent from "../common/FormTitleComponent";
+import LabelComponent from "../../inputComponent/LabelComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -13,17 +14,22 @@ import { tableInputs } from "../../../../utils/forms/storymapInputArray";
 import { useShallow } from "zustand/shallow";
 import { createBlock } from "../../../../utils/api/storymap/postRequests";
 import { updateBlock } from "../../../../utils/api/storymap/postRequests";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 // import des types
 import type { ChangeEvent } from "react";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du style
 import style from "../mapForms/mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, ChevronRight } from "lucide-react";
 import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
+	ChevronLeft,
+	ChevronRight,
+	CircleCheck,
+	CircleHelp,
+} from "lucide-react";
 
 export type tableInputsType = {
 	content1_lang1: string;
@@ -66,8 +72,10 @@ const TableForm = () => {
 				if (parsed.data) {
 					if (langNb === 1) {
 						setCsvContentLang1(parsed.data as string[][]);
+						setSelectedFiles((prev) => ({ ...prev, lang1: file }));
 					} else {
 						setCsvContentLang2(parsed.data as string[][]);
+						setSelectedFiles((prev) => ({ ...prev, lang2: file }));
 					}
 				}
 			};
@@ -79,6 +87,7 @@ const TableForm = () => {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<tableInputsType>({
 		defaultValues: block as tableInputsType,
@@ -117,21 +126,50 @@ const TableForm = () => {
 		setSearchParams(undefined);
 	};
 
+	const [selectedFiles, setSelectedFiles] = useState<Record<string, File>>({
+		lang1: new File([], ""),
+		lang2: new File([], ""),
+	});
+
+	// utile si l'utilisateur passe d'un form "create" à "edit" via le panel des blocs
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		if (action === "edit" && block) {
+			setValue("content1_lang1", block.content1_lang1);
+			setValue("content1_lang2", block.content1_lang2);
+		}
+	}, [action, block]);
+
 	return (
 		<>
 			<FormTitleComponent action={action as string} translationKey="table" />
+			<div className={style.helpContainer}>
+				<a
+					href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-tableau-1d74457ff83180b7936ec004ff956c83"
+					target="_blank"
+					rel="noreferrer"
+				>
+					<CircleHelp color="grey" />
+					{translation[language].backoffice.mapFormPage.uploadPointsHelp}
+				</a>
+			</div>
+
 			<form
 				onSubmit={handleSubmit(handlePointSubmit)}
 				className={style.mapFormContainer}
 			>
 				{tableInputs.map((input) => (
 					<div key={input.name} className={style.mapFormInputContainer}>
-						<label htmlFor={input.name}>{input[`label_${language}`]}</label>
-						<input
-							{...register(input.name as keyof tableInputsType, {
-								required: input.required.value,
-							})}
-						/>
+						<div className={style.labelContainer}>
+							<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+						</div>
+						<div className={style.inputContainer}>
+							<input
+								{...register(input.name as keyof tableInputsType, {
+									required: input.required.value,
+								})}
+							/>
+						</div>
 
 						{input.required.value &&
 							errors[input.name as keyof tableInputsType] && (
@@ -141,33 +179,57 @@ const TableForm = () => {
 							)}
 					</div>
 				))}
-				<div className={style.mapFormUploadInputContainer}>
-					<label htmlFor="tableLang1">
-						{
+				<div className={style.mapFormInputContainer}>
+					<LabelComponent
+						htmlFor="tableLang1"
+						label={
 							translation[language].backoffice.storymapFormPage.form
 								.uploadTableFr
 						}
-					</label>
-					<input
-						id="tableLang1"
-						type="file"
-						accept=".csv"
-						onChange={(event) => handleFileUpload(event, 1)}
+						description=""
 					/>
+					<div className={style.inputContainer}>
+						<input
+							id="tableLang1"
+							type="file"
+							accept=".csv"
+							onChange={(event) => handleFileUpload(event, 1)}
+						/>
+						{action === "edit" && (
+							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+								<CircleCheck color="green" />
+								{selectedFiles.lang1.name === ""
+									? "Un fichier est déjà chargé"
+									: `Nouveau fichier chargé : ${selectedFiles.lang1.name}`}
+							</p>
+						)}
+					</div>
 				</div>
-				<div className={style.mapFormUploadInputContainer}>
-					<label htmlFor="tableLang2">
-						{
+				<div className={style.mapFormInputContainer}>
+					<LabelComponent
+						htmlFor="tableLang2"
+						label={
 							translation[language].backoffice.storymapFormPage.form
 								.uploadTableEn
 						}
-					</label>
-					<input
-						id="tableLang2"
-						type="file"
-						accept=".csv"
-						onChange={(event) => handleFileUpload(event, 2)}
+						description=""
 					/>
+					<div className={style.inputContainer}>
+						<input
+							id="tableLang2"
+							type="file"
+							accept=".csv"
+							onChange={(event) => handleFileUpload(event, 2)}
+						/>
+						{action === "edit" && (
+							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+								<CircleCheck color="green" />
+								{selectedFiles.lang2.name === ""
+									? "Un fichier est déjà chargé"
+									: `Nouveau fichier chargé : ${selectedFiles.lang2.name}`}
+							</p>
+						)}
+					</div>
 				</div>
 				<div className={style.formButtonNavigation}>
 					<button

@@ -7,11 +7,26 @@ import { groupByLocation } from "../../utils/functions/storymap";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
-import type { Point } from "../../entities/storymap/Point";
 import type {
 	BlockInterface,
 	GroupedPoint,
 } from "../../utils/types/storymapTypes";
+import { PointType } from "../../utils/types/mapTypes";
+import { Attestation } from "../../entities/common/Attestation";
+
+interface UserPayload extends jwt.JwtPayload {
+	userStatus: "admin" | "writer";
+	userId: string;
+}
+
+// extension de l'interface Request pour inclure la propriété user
+declare global {
+	namespace Express {
+		interface Request {
+			user?: UserPayload;
+		}
+	}
+}
 
 export const storymapContentControllers = {
 	// récupère une storymap par son id
@@ -23,22 +38,26 @@ export const storymapContentControllers = {
 					.createQueryBuilder("storymap")
 					.leftJoinAndSelect("storymap.category", "category")
 					.leftJoinAndSelect("storymap.blocks", "block")
-					.leftJoinAndSelect("block.points", "point")
+					.leftJoinAndSelect("block.attestations", "attestations")
+					.leftJoinAndSelect("attestations.icon", "icon")
+					.leftJoinAndSelect("attestations.color", "color")
 					.leftJoinAndSelect("block.type", "type")
 					.leftJoinAndSelect("block.children", "child")
 					.leftJoinAndSelect("child.type", "child_type")
-					.leftJoinAndSelect("child.points", "step_point")
+					.leftJoinAndSelect("child.attestations", "step_attestations")
 					.leftJoinAndSelect("storymap.creator", "creator")
 					.leftJoinAndSelect("storymap.modifier", "modifier")
 					.select([
 						"storymap",
 						"category",
 						"block",
-						"point",
+						"attestations",
+						"icon",
+						"color",
 						"type",
 						"child",
 						"child_type",
-						"step_point",
+						"step_attestations",
 						"creator.pseudo",
 						"modifier.pseudo",
 					]);
@@ -58,11 +77,13 @@ export const storymapContentControllers = {
 				.createQueryBuilder("storymap")
 				.leftJoinAndSelect("storymap.category", "category")
 				.leftJoinAndSelect("storymap.blocks", "block")
-				.leftJoinAndSelect("block.points", "point")
+				.leftJoinAndSelect("block.attestations", "attestations")
+				.leftJoinAndSelect("attestations.icon", "icon")
+				.leftJoinAndSelect("attestations.color", "color")
 				.leftJoinAndSelect("block.type", "type")
 				.leftJoinAndSelect("block.children", "child")
 				.leftJoinAndSelect("child.type", "child_type")
-				.leftJoinAndSelect("child.points", "step_point")
+				.leftJoinAndSelect("child.attestations", "step_attestations")
 				.leftJoinAndSelect("storymap.creator", "creator")
 				.leftJoinAndSelect("storymap.modifier", "modifier")
 				.leftJoinAndSelect("storymap.lang1", "lang1")
@@ -71,11 +92,13 @@ export const storymapContentControllers = {
 					"storymap",
 					"category",
 					"block",
-					"point",
+					"attestations",
+					"icon",
+					"color",
 					"type",
 					"child",
 					"child_type",
-					"step_point",
+					"step_attestations",
 					"creator.pseudo",
 					"modifier.pseudo",
 					"lang1",
@@ -95,26 +118,6 @@ export const storymapContentControllers = {
 				storymapInfos.blocks = storymapInfos.blocks.filter(
 					(block) => block.position !== null && block.type?.name !== "step",
 				);
-
-				storymapInfos?.blocks.map((block) => {
-					// s'il y a des points au niveau d'un block, on les regroupes par localisation
-					if (block.points.length) {
-						const groupedPoints: GroupedPoint[] = groupByLocation(
-							block.points as Point[],
-						);
-						(block as BlockInterface).groupedPoints = groupedPoints;
-					}
-
-					// s'il y a des points au niveau des enfants, on fait de même
-					if (block.children.length) {
-						block.children.map((child) => {
-							const groupedPoints: GroupedPoint[] = groupByLocation(
-								child.points as Point[],
-							);
-							(child as BlockInterface).groupedPoints = groupedPoints;
-						});
-					}
-				});
 			}
 
 			res.status(200).send(storymapInfos);
@@ -126,7 +129,7 @@ export const storymapContentControllers = {
 	// crée une nouvelle storymap
 	createNewStorymap: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { userId } = req.user as jwt.JwtPayload;
+			const { userId } = req.user as UserPayload;
 
 			const newStorymap = dcartDataSource.getRepository(Storymap).create({
 				...req.body,

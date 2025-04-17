@@ -1,13 +1,28 @@
 // import des entités
 import { MapContent } from "../../../entities/builtMap/MapContent";
-import { Category } from "../../../entities/builtMap/Category";
+import { Category } from "../../../entities/common/Category";
 import { Storymap } from "../../../entities/storymap/Storymap";
+import { User } from "../../../entities/auth/User";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
+
+interface UserPayload extends jwt.JwtPayload {
+	userStatus: "admin" | "writer";
+	userId: string;
+}
+
+// extension de l'interface Request pour inclure la propriété user
+declare global {
+	namespace Express {
+		interface Request {
+			user?: UserPayload;
+		}
+	}
+}
 
 export const mapContentController = {
 	// récupérer les données de toutes les cartes ou d'une carte en particulier
@@ -75,7 +90,7 @@ export const mapContentController = {
 					"category",
 					"attestations",
 					"icon",
-					"color"
+					"color",
 				])
 				.where("map.id = :mapId", { mapId })
 				.getOne();
@@ -103,10 +118,19 @@ export const mapContentController = {
 				relatedStorymap,
 			} = req.body;
 
-			const { userId } = req.user as jwt.JwtPayload;
+			const { userId } = req.user as UserPayload;
 
 			// récupération de la date actuelle
 			const currentDate = new Date();
+
+			const creator = await dcartDataSource
+				.getRepository(User)
+				.findOne({ where: { id: userId } });
+
+			if (!creator) {
+				res.status(404).send("Utilisateur non trouvé.");
+				return;
+			}
 
 			const newMap = dcartDataSource.getRepository(MapContent).create({
 				title_en,
@@ -114,9 +138,12 @@ export const mapContentController = {
 				description_en,
 				description_fr,
 				image_url,
-				relatedStorymap: relatedStorymap === "0" || relatedStorymap === "" ? null : relatedStorymap,
+				relatedStorymap:
+					relatedStorymap === "0" || relatedStorymap === ""
+						? null
+						: relatedStorymap,
 				category,
-				creator: userId,
+				creator,
 				uploadPointsLastDate: currentDate,
 			});
 
@@ -177,10 +204,15 @@ export const mapContentController = {
 			}
 
 			// à corriger après la présentation
+			// biome-ignore lint/performance/noDelete:
 			delete req.body.filterMapContent;
 
-			const updatedMap = await dcartDataSource.getRepository(MapContent).merge(mapToUpdate, req.body);
-			const newMap = await dcartDataSource.getRepository(MapContent).save(updatedMap);
+			const updatedMap = await dcartDataSource
+				.getRepository(MapContent)
+				.merge(mapToUpdate, req.body);
+			const newMap = await dcartDataSource
+				.getRepository(MapContent)
+				.save(updatedMap);
 
 			res.status(200).send(newMap);
 		} catch (error) {

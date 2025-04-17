@@ -75,6 +75,7 @@ const LinkForm = () => {
 		<>
 			<FormTitleComponent action={action as string} translationKey="link" />
 			<CommonForm
+				key={block ? block.id : "link"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
 				inputs={linkInputs}
 				defaultValues={block as BlockContentType}

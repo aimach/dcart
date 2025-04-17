@@ -14,9 +14,17 @@ import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
 import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
 import { updateMap } from "../../../../utils/api/builtMap/putRequests";
+import {
+	notifyCreateSuccess,
+	notifyDeleteSuccess,
+	notifySuccessWithCustomMessage,
+} from "../../../../utils/functions/toast";
+import { getShapeForLayerName } from "../../../../utils/functions/icons";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
+	MapColorType,
+	MapIconType,
 	MapInfoType,
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
@@ -24,11 +32,6 @@ import type {
 import style from "../introForm/introForm.module.scss";
 // import des images
 import { CircleHelp, X } from "lucide-react";
-import {
-	notifyCreateSuccess,
-	notifyDeleteSuccess,
-	notifySuccessWithCustomMessage,
-} from "../../../../utils/functions/toast";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -119,6 +122,8 @@ const UploadForm = () => {
 					pointSet={pointSet}
 					setPointSet={setPointSet}
 					handleSubmit={handleSubmit}
+					parentId={mapInfos?.id as string}
+					type="map"
 				/>
 			)}
 			{mapInfos?.attestations && (
@@ -130,12 +135,6 @@ const UploadForm = () => {
 									{
 										translation[language].backoffice.mapFormPage.pointSetTable
 											.name
-									}
-								</th>
-								<th scope="col">
-									{
-										translation[language].backoffice.mapFormPage.pointSetTable
-											.color
 									}
 								</th>
 								<th scope="col">
@@ -153,33 +152,36 @@ const UploadForm = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{mapInfos.attestations.map((pointSet) => (
-								<tr key={pointSet.id} className={style.pointSetTableRow}>
-									<td>{pointSet.name}</td>
-									<td>
-										{pointSet.color ? <div style={{ backgroundColor: pointSet.color.code_hex, width: 30, height: 30 }} /> :
-											translation[language].backoffice.mapFormPage.pointSetForm
-												.noDefinedColor}
-									</td>
-									<td>
-										{pointSet.icon
-											? pointSet.icon[`name_${language}`]
-											: translation[language].backoffice.mapFormPage
-												.pointSetForm.noDefinedIcon}
-									</td>
-									<td>
-										<X
-											onClick={() =>
-												handleDeletePointSet(pointSet.id as string)
-											}
-											onKeyDown={() =>
-												handleDeletePointSet(pointSet.id as string)
-											}
-											color="#9d2121"
-										/>
-									</td>
-								</tr>
-							))}
+							{mapInfos.attestations.map((pointSet) => {
+								const icon = getShapeForLayerName(
+									(pointSet.icon as MapIconType)?.name_en,
+									(pointSet.color as MapColorType)?.code_hex,
+								);
+								return (
+									<tr key={pointSet.id} className={style.pointSetTableRow}>
+										<td>{pointSet.name}</td>
+										<td>
+											<p
+												// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
+												dangerouslySetInnerHTML={{
+													__html: icon,
+												}}
+											/>
+										</td>
+										<td>
+											<X
+												onClick={() =>
+													handleDeletePointSet(pointSet.id as string)
+												}
+												onKeyDown={() =>
+													handleDeletePointSet(pointSet.id as string)
+												}
+												color="#9d2121"
+											/>
+										</td>
+									</tr>
+								);
+							})}
 						</tbody>
 					</table>
 					{mapInfos?.attestations.length > 1 && (

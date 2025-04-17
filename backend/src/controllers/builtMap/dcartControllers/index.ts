@@ -1,10 +1,10 @@
 // import des controllers
 import { authController } from "../../auth/authController";
-import { attestationController } from "./attestationController";
+import { attestationController } from "../../common/attestationController";
 import { categoryController } from "./categoryController";
-import { colorController } from "./colorController";
+import { colorController } from "../../common/colorController";
 import { filterController } from "./filterController";
-import { iconController } from "./iconController";
+import { iconController } from "../../common/iconController";
 import { mapContentController } from "./mapContentController";
 
 export const dcartControllers = {

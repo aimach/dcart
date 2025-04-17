@@ -70,8 +70,23 @@
 .infoElement {
     margin: 0 v.$space-xl;
     margin-bottom: v.$space-xxxl;
-    padding: v.$space-s;
-    background-color: v.$color-neutral-80;
+    padding: v.$space-m;
+    background-color: v.$color-grullo-light;
+    border-radius: v.$border-radius-base;
+
+    color: v.$color-black-chocolate;
+
+    >h4 {
+        margin-bottom: v.$space-s;
+        font-size: v.$font-size-xxl;
+        font-weight: v.$font-weight-bold;
+    }
+
+    >p {
+        font-size: v.$font-size-l;
+        line-height: 1.5;
+        text-align: justify;
+    }
 
 }
 

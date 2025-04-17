@@ -1,6 +1,5 @@
 // import de bibliothèques
 import { useState } from "react";
-import { v4 as uuidv4 } from "uuid";
 // import des composants
 import MapSection from "./MapSection";
 import ScrolledSection from "./ScrolledSection";
@@ -13,16 +12,24 @@ import style from "./scrolledMapBlock.module.scss";
 
 interface SimpleMapBlockProps {
 	blockContent: BlockContentType;
+	mapName: string;
 }
 
-const ScrolledMapBlock = ({ blockContent }: SimpleMapBlockProps) => {
+const ScrolledMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const { selectedLanguage } = useStorymapLanguageStore();
 	const [currentPoint, setCurrentPoint] = useState("");
+	const [pointIndex, setPointIndex] = useState(0);
 
 	const onStepEnter = ({ data }: { data: string }) => {
-		setCurrentPoint(data);
+		const pointId = data.split("|")[0];
+		const pointIndex = data.split("|")[1];
+		setCurrentPoint(pointId);
+		setPointIndex(Number.parseInt(pointIndex, 10) + 1);
 	};
-	const mapName = `map-${uuidv4()}`;
+
+	const reversedChildren = [
+		...(blockContent.children as BlockContentType[]),
+	].reverse();
 
 	return (
 		<>
@@ -32,11 +39,12 @@ const ScrolledMapBlock = ({ blockContent }: SimpleMapBlockProps) => {
 					mapName={mapName}
 					currentPoint={currentPoint}
 					setCurrentPoint={setCurrentPoint}
+					pointIndex={pointIndex}
 				/>
 				<div className={style.scrolledSection}>
 					<ScrolledSection
 						onStepEnter={onStepEnter}
-						steps={blockContent.children as BlockContentType[]}
+						steps={reversedChildren}
 						currentPoint={currentPoint}
 					/>
 				</div>

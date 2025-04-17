@@ -10,7 +10,6 @@
 @import url('https://fonts.googleapis.com/css2?family=Vollkorn:ital,wght@0,400..900;1,400..900&display=swap');
 
 
-
 html,
 body,
 div,
@@ -109,6 +108,8 @@ a {
 	color: inherit;
 }
 
+
+
 article,
 aside,
 details,
@@ -150,6 +151,7 @@ table {
 	border-collapse: collapse;
 	border-spacing: 0;
 }
+
 
 button {
 	@include m.unbuttonize;

@@ -16,7 +16,7 @@ declare global {
 }
 
 interface UserPayload extends jwt.JwtPayload {
-	userStatus: 'admin' | 'writer';
+	userStatus: "admin" | "writer";
 	userId: string;
 }
 
@@ -39,16 +39,22 @@ export const authenticateUser = async (
 		}
 
 		// récupération de l'utilisateur
-		const authenticatedUser = await dcartDataSource.getRepository("User").findOne({
-			where: { id: decoded.userId }, select: { id: true, status: true },
-		});
+		const authenticatedUser = await dcartDataSource
+			.getRepository("User")
+			.findOne({
+				where: { id: decoded.userId },
+				select: { id: true, status: true },
+			});
 
 		if (!authenticatedUser) {
 			res.status(401).json({ message: "Utilisateur non trouvé" });
-			return
+			return;
 		}
 
-		req.user = { userId: authenticatedUser.id, userStatus: authenticatedUser.status };
+		req.user = {
+			userId: authenticatedUser.id,
+			userStatus: authenticatedUser.status,
+		};
 		next();
 	} catch (error) {
 		res.status(401).json({ message: "Token invalide ou expiré" });
@@ -58,7 +64,8 @@ export const authenticateUser = async (
 export const authenticateAdmin = (
 	req: Request,
 	res: Response,
-	next: NextFunction,) => {
+	next: NextFunction,
+) => {
 	try {
 		if ((req.user as UserPayload)?.userStatus === "admin") {
 			next();
@@ -68,4 +75,4 @@ export const authenticateAdmin = (
 	} catch (error) {
 		res.status(401).json({ message: "Token invalide ou expiré" });
 	}
-}
+};

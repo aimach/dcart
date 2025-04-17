@@ -1,4 +1,5 @@
 import type { FormType } from "./formTypes";
+import type { PointSetType } from "./mapTypes";
 
 type StorymapType = {
 	id: string;
@@ -28,6 +29,20 @@ type StorymapType = {
 	relatedMap?: string;
 };
 
+type StorymapBodyType = {
+	id: string;
+	title_lang1: string;
+	title_lang2: string;
+	description_lang1: string;
+	description_lang2: string;
+	category_id: string;
+	img_url: string;
+	author: string;
+	lang1: string;
+	lang2: string;
+	publication_date: string;
+};
+
 type BlockContentType = {
 	id: string;
 	id_storymap: number;
@@ -41,6 +56,7 @@ type BlockContentType = {
 	points?: PointType[];
 	groupedPoints?: GroupedTyped[];
 	children: BlockContentType[];
+	attestations?: PointSetType[];
 };
 
 type PointType = {
@@ -54,10 +70,10 @@ type PointType = {
 	transliteration: string | null;
 	translation_fr: string | null;
 	translation_en: string | null;
-	title_fr: string | null;
-	title_en: string | null;
-	description_en: string | null;
-	description_fr: string | null;
+	title_lang1: string | null;
+	title_lang2: string | null;
+	description_lang1: string | null;
+	description_lang2: string | null;
 	pane: string | null;
 	color: string | null;
 };
@@ -97,4 +113,5 @@ export type {
 	TypeType,
 	CategoryType,
 	StorymapLanguageType,
+	StorymapBodyType,
 };

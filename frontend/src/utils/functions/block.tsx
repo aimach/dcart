@@ -3,7 +3,6 @@ import DOMPurify from "dompurify";
 // import des types
 import type { BlockContentType } from "../types/storymapTypes";
 import type { blockType, parsedPointType } from "../types/formTypes";
-import type { Language } from "../types/languageTypes";
 // import des icônes
 import {
 	Columns2,
@@ -47,16 +46,40 @@ const getPreviewText = (
 	if (block.type.name === "text") {
 		const sanitizedText = DOMPurify.sanitize(
 			block[`content1_${selectedLanguage}`],
-		).slice(0, 20);
-		// biome-ignore lint/security/noDangerouslySetInnerHtml: texte est nettoyé avec DOMPurify
-		return <p dangerouslySetInnerHTML={{ __html: sanitizedText }} />;
+		).slice(0, 50);
+		return (
+			<p
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: texte est nettoyé avec DOMPurify
+				dangerouslySetInnerHTML={{ __html: `${sanitizedText}...` }}
+				style={{ fontSize: "13px" }}
+			/>
+		);
 	}
-	if (block.type.name !== "layout") {
-		return block[`content1_${selectedLanguage}`].length > 20
-			? `${block[`content1_${selectedLanguage}`].slice(0, 20)}...`
-			: block[`content1_${selectedLanguage}`];
+	if (block.type.name === "layout") {
+		const blockText = block.children.find(
+			(child) => child.type.name === "text",
+		);
+		if (!blockText) {
+			return "";
+		}
+		const sanitizedText = DOMPurify.sanitize(
+			blockText[`content1_${selectedLanguage}`],
+		).slice(0, 30);
+		return (
+			<p
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: texte est nettoyé avec DOMPurify
+				dangerouslySetInnerHTML={{ __html: `${sanitizedText}...` }}
+				style={{ fontSize: "13px" }}
+			/>
+		);
 	}
-	return "";
+	return (
+		<p style={{ fontSize: "13px" }}>
+			{block[`content1_${selectedLanguage}`].length > 30
+				? `${block[`content1_${selectedLanguage}`].slice(0, 30)}...`
+				: block[`content1_${selectedLanguage}`]}
+		</p>
+	);
 };
 
 /**
@@ -109,9 +132,8 @@ const normalizeBody = (body: blockType, keys: string[]) => {
 		const value = body.hasOwnProperty(key)
 			? (body[key as keyof blockType] as string)
 			: null;
-		acc[key] = value;
-		return acc;
-	}, body);
+		return { ...acc, [key]: value };
+	}, {});
 };
 
 const addPanelToPoints = (points: Record<string, parsedPointType[]>) => {

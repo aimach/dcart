@@ -11,18 +11,15 @@ import {
 	createBlock,
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
-// import des types
-import type { SubmitHandler } from "react-hook-form";
-import FormTitleComponent from "../common/FormTitleComponent";
-import type {
-	BlockContentType,
-	StorymapType,
-} from "../../../../utils/types/storymapTypes";
-import type { allInputsType } from "../../../../utils/types/formTypes";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+// import des types
+import type { SubmitHandler } from "react-hook-form";
+import FormTitleComponent from "../common/FormTitleComponent";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type subtitleInputsType = {
 	content1_lang1: string;
@@ -79,6 +76,7 @@ const SubtitleForm = () => {
 		<>
 			<FormTitleComponent action={action as string} translationKey="subtitle" />
 			<CommonForm
+				key={block ? block.id : "subtitle"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
 				inputs={subtitleInputs}
 				defaultValues={block as BlockContentType}

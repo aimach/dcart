@@ -1,12 +1,17 @@
 // import des bibiliothèques
 import express from "express";
+// import des controllers
 import { mapController } from "../../../controllers/builtMap/mapControllers";
+// import des validateurs
 import { validateSourceBody } from "../../../utils/validator/builtMap/source";
 
 export const sourceRoutes = express.Router();
 
 // récupérer les sources par l'id de la map
-sourceRoutes.get("/:mapId", mapController.getSourcesByMapId);
+sourceRoutes.get("/map/:mapId", mapController.getSourcesByMapId);
+
+// récupérer les sources par l'id du block
+sourceRoutes.get("/block/:blockId", mapController.getSourcesByBlockId);
 
 // récupérer les attestations par l'id d'une source
 sourceRoutes.get(

@@ -1,11 +1,12 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useState, useEffect } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
 import StepPanel from "./StepPanel";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
+import StepForm from "./StepForm";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -16,17 +17,16 @@ import {
 } from "../../../../utils/api/storymap/postRequests";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
-// import des types
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
-import StepForm from "./StepForm";
-// import du style
-import style from "./mapForms.module.scss";
-// import des icônes
-import { ChevronLeft } from "lucide-react";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+// import des types
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+// import du style
+import style from "./mapForms.module.scss";
+// import des icônes
+import { ChevronLeft } from "lucide-react";
 
 export type scrollMapInputsType = {
 	content1_lang1: string;
@@ -92,15 +92,23 @@ const ScrollMapForm = () => {
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<scrollMapInputsType>({
 		defaultValues: block as scrollMapInputsType,
 	});
 
+	useEffect(() => {
+		if (action === "edit") {
+			setValue("content1_lang1", block?.content1_lang1 as string);
+			setValue("content1_lang2", block?.content1_lang2 as string);
+		}
+	}, [action, block, setValue]);
+
 	return (
 		<section className={style.scrollMapFormContainer}>
 			<StepPanel scrollMapId={scrollMapId} />
-			<section>
+			<section className={style.scrollMapFormSection}>
 				<FormTitleComponent
 					action={action as string}
 					translationKey="scroll_map"
@@ -114,15 +122,18 @@ const ScrollMapForm = () => {
 							if (input.type === "text") {
 								return (
 									<div key={input.name} className={style.mapFormInputContainer}>
-										<label htmlFor={input.name}>
-											{input[`label_${language}`]}
-										</label>
-										<input
-											{...register(input.name as keyof scrollMapInputsType, {
-												required: input.required.value,
-											})}
-										/>
-
+										<div className={style.labelContainer}>
+											<label htmlFor={input.name}>
+												{input[`label_${language}`]}
+											</label>
+										</div>
+										<div className={style.inputContainer}>
+											<input
+												{...register(input.name as keyof scrollMapInputsType, {
+													required: input.required.value,
+												})}
+											/>
+										</div>
 										{errors[input.name as keyof scrollMapInputsType] && (
 											<ErrorComponent
 												message={input.required.message?.[language] as string}
@@ -134,20 +145,24 @@ const ScrollMapForm = () => {
 							if (input.type === "select") {
 								return (
 									<div key={input.name} className={style.mapFormInputContainer}>
-										<label htmlFor={input.name}>
-											{input[`label_${language}`]}
-										</label>
-										<select
-											{...register(input.name as keyof scrollMapInputsType, {
-												required: input.required.value,
-											})}
-										>
-											{input.options?.map((option) => (
-												<option key={option.value} value={option.value}>
-													{option.label}
-												</option>
-											))}
-										</select>
+										<div className={style.labelContainer}>
+											<label htmlFor={input.name}>
+												{input[`label_${language}`]}
+											</label>
+										</div>
+										<div className={style.inputContainer}>
+											<select
+												{...register(input.name as keyof scrollMapInputsType, {
+													required: input.required.value,
+												})}
+											>
+												{input.options?.map((option) => (
+													<option key={option.value} value={option.value}>
+														{option.label}
+													</option>
+												))}
+											</select>
+										</div>
 
 										{errors[input.name as keyof scrollMapInputsType] && (
 											<ErrorComponent
@@ -176,6 +191,14 @@ const ScrollMapForm = () => {
 									]
 								}
 							</button>
+							{action === "edit" && (
+								<button
+									type="button"
+									onClick={() => setSearchParams({ stepAction: "create" })}
+								>
+									Aller aux étapes
+								</button>
+							)}
 						</div>
 					</form>
 				) : (

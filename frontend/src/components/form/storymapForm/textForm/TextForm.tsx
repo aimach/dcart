@@ -12,14 +12,14 @@ import {
 	createBlock,
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
-// import des types
-import type { SubmitHandler } from "react-hook-form";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
-import type { allInputsType } from "../../../../utils/types/formTypes";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+// import des types
+import type { SubmitHandler } from "react-hook-form";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type textInputsType = {
 	content1_lang1: string;
@@ -52,6 +52,12 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 
 	// fonction appelée lors de la soumission du formulaire
 	const onSubmit: SubmitHandler<textInputsType> = async (data) => {
+		if (!data.content1_lang1 || data.content1_lang1 === "<p><br></p>") {
+			return;
+		}
+		if (!data.content1_lang2 || data.content1_lang2 === "<p><br></p>") {
+			return;
+		}
 		if (action === "create") {
 			await createBlock({
 				...data,
@@ -85,6 +91,7 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 		<>
 			<FormTitleComponent action={action as string} translationKey="text" />
 			<CommonForm
+				key={block ? block.id : "text"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
 				inputs={textInputs}
 				defaultValues={(defaultValues ?? block) as BlockContentType}

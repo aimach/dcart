@@ -54,6 +54,11 @@
         @include m.flexbox(flex, column, nowrap, space-between, flex-start);
         gap: v.$space-s;
 
+        input[type=checkbox]:focus {
+            outline: none;
+            border: none;
+        }
+
         >input,
         textarea,
         select {

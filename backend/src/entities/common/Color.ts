@@ -5,12 +5,12 @@ import {
 	Column,
 	BaseEntity,
 	OneToMany,
-	ManyToOne,
 } from "typeorm";
-import { Attestation } from "./Attestation";
+// import des entités
+import { Attestation } from "../common/Attestation";
 
 @Entity()
-export class Icon extends BaseEntity {
+export class Color extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
 	id!: string;
 
@@ -19,6 +19,9 @@ export class Icon extends BaseEntity {
 
 	@Column({ type: "varchar", length: 255, nullable: false })
 	name_en!: string;
+
+	@Column({ type: "varchar", nullable: false })
+	code_hex!: string;
 
 	@OneToMany(
 		() => Attestation,

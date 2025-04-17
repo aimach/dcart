@@ -32,9 +32,23 @@ const EditorComponent = forwardRef(
 				container.ownerDocument.createElement("div"),
 			);
 
+			// enregistrement des tailles
+			const Size = Quill.import("formats/size") as { whitelist: string[] };
+			Size.whitelist = ["small", "normal", "large", "huge"];
+			// @ts-ignore
+			Quill.register(Size, true);
+
+			// enregistrement des polices disponibles
+			const Font = Quill.import("formats/font") as { whitelist: string[] };
+			Font.whitelist = ["arial", "georgia", "courier", "times", "monospace"];
+			// @ts-ignore
+			Quill.register(Font, true);
+
 			// Définition de la toolbar personnalisée
 			const toolbarOptions = [
 				["bold", "italic", "underline", "strike"], // Gras, italique, souligné, barré
+				[{ size: ["small", false, "large", "huge"] }], // Taille du texte
+				[{ font: ["arial", "georgia", "courier", "times", "monospace"] }], // Polices
 				[{ list: "ordered" }, { list: "bullet" }], // Listes numérotées et à puces
 				[{ script: "sub" }, { script: "super" }], // Indice / exposant
 				[{ indent: "-1" }, { indent: "+1" }], // Indentation
@@ -60,7 +74,6 @@ const EditorComponent = forwardRef(
 				quill.root.innerHTML = defaultValue;
 			}
 
-			const counter = document.querySelector("#counter");
 			quill.on("text-change", () => {
 				onChange(quill.root.innerHTML);
 			});

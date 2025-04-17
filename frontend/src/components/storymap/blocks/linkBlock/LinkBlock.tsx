@@ -3,7 +3,7 @@ import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/stor
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
-import "./linkBlock.module.scss";
+import style from "./linkBlock.module.scss";
 
 interface LinkBlockProps {
 	blockContent: BlockContentType;
@@ -18,6 +18,7 @@ const LinkBlock = ({ blockContent }: LinkBlockProps) => {
 			href={blockContent[`content2_${selectedLanguage}`]}
 			target="_blank"
 			rel="noopener noreferrer"
+			className={style.linkBlock}
 		>
 			{blockContent[`content1_${selectedLanguage}`]}
 		</a>

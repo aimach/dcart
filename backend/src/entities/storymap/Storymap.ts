@@ -11,7 +11,7 @@ import {
 } from "typeorm";
 // import des entités
 import { Block } from "./Block";
-import { Category } from "../builtMap/Category";
+import { Category } from "../common/Category";
 import { User } from "../auth/User";
 import { Language } from "./Language";
 

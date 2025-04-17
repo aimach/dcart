@@ -7,7 +7,7 @@ import {
 	OneToMany,
 } from "typeorm";
 // import des entités
-import { MapContent } from "./MapContent";
+import { MapContent } from "../builtMap/MapContent";
 import { Storymap } from "../storymap/Storymap";
 
 @Entity()

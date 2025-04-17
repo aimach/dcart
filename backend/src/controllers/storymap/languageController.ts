@@ -1,12 +1,10 @@
-// import des bibliothèques
-import { Not } from "typeorm";
+// import des entités
+import { Language } from "../../entities/storymap/Language";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
-import { Type } from "../../entities/storymap/Type";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
-import { Language } from "../../entities/storymap/Language";
 
 export const languageController = {
 	// récupère tous les languages disponibles pour les storymaps

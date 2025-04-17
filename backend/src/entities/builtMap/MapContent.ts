@@ -9,18 +9,11 @@ import {
 	ManyToOne,
 	OneToMany,
 } from "typeorm";
-import { Category } from "./Category";
-import { User } from "../auth/User";
-import { Attestation } from "./Attestation";
+// import des entités
 import { FilterMapContent } from "./FilterMapContent";
-// import des types
-import type { Filter } from "./Filter";
-
-enum location {
-	SUBREGION = "subRegion",
-	GREATREGION = "greatRegion",
-	CITY = "city",
-}
+import { User } from "../auth/User";
+import { Category } from "../common/Category";
+import { Attestation } from "../common/Attestation";
 
 @Entity()
 export class MapContent extends BaseEntity {

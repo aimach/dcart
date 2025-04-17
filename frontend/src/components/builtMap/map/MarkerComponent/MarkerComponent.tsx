@@ -45,13 +45,11 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 		setSelectedMarker(point);
 	};
 
-
-
 	const customIcon = getIcon(
 		point,
 		style,
 		selectedMarker ? isSelectedMarker(selectedMarker, point) : false,
-		mapInfos?.isNbDisplayed as boolean,
+		mapInfos ? (mapInfos.isNbDisplayed as boolean) : true,
 	);
 
 	return (

@@ -9,8 +9,6 @@ import {
 } from "typeorm";
 // import des entités
 import { FilterMapContent } from "./FilterMapContent";
-// import des types
-import type { MapContent } from "./MapContent";
 
 export enum FilterType {
 	TIME = "time",

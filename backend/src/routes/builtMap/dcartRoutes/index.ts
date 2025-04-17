@@ -4,9 +4,9 @@ import express from "express";
 import { categoryRoutes } from "./categoryRoutes";
 import { mapRoutes } from "./mapRoutes";
 import { filterRoutes } from "./filterRoutes";
-import { iconRoutes } from "./iconRoutes";
-import { attestationRoutes } from "./attestationRoutes";
-import { colorRoutes } from "./colorRoutes";
+import { iconRoutes } from "../../common/iconRoutes";
+import { attestationRoutes } from "../../common/attestationRoutes";
+import { colorRoutes } from "../../common/colorRoutes";
 
 const dcartRoutes = express.Router();
 

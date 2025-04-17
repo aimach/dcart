@@ -1,13 +1,14 @@
 // import des entités
-import { Attestation } from "../../../entities/builtMap/Attestation";
+import { Attestation } from "../../entities/common/Attestation";
+import { MapContent } from "../../entities/builtMap/MapContent";
+import { Icon } from "../../entities/common/Icon";
+import { Color } from "../../entities/common/Color";
+import { Block } from "../../entities/storymap/Block";
 // import des services
-import { dcartDataSource } from "../../../dataSource/dataSource";
-import { handleError } from "../../../utils/errorHandler/errorHandler";
+import { dcartDataSource } from "../../dataSource/dataSource";
+import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
-import { MapContent } from "../../../entities/builtMap/MapContent";
-import { Icon } from "../../../entities/builtMap/Icon";
-import { Color } from "../../../entities/builtMap/Color";
 
 export const attestationController = {
 	// récupère toutes les attestations d'une carte
@@ -37,14 +38,22 @@ export const attestationController = {
 	// créer une liste d'attestation
 	createAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { color, icon, mapId } = req.body;
+			const { color, icon, mapId, blockId } = req.body;
 
-			const mapToAddAttestations = await dcartDataSource
-				.getRepository(MapContent)
-				.findOne({ where: { id: mapId } });
+			const parentRepository = mapId
+				? dcartDataSource.getRepository(MapContent)
+				: dcartDataSource.getRepository(Block);
+			const parentId = mapId ? mapId : blockId;
 
-			if (!mapToAddAttestations) {
-				res.status(404).json("La carte n'existe pas");
+			if (!parentId) {
+				res.status(400).json("L'id de la carte ou du bloc est requis");
+				return;
+			}
+			const parentToAddAttestations = await parentRepository.findOne({
+				where: { id: parentId },
+			});
+			if (!parentToAddAttestations) {
+				res.status(404).json("La carte ou le bloc n'existe pas");
 				return;
 			}
 
@@ -82,7 +91,12 @@ export const attestationController = {
 
 			const newAttestation = await dcartDataSource
 				.getRepository(Attestation)
-				.save({ ...req.body, icon: iconToAdd, map: mapToAddAttestations });
+				.save({
+					...req.body,
+					icon: iconToAdd,
+					[mapId ? "map" : "block"]: parentToAddAttestations,
+					color: colorToAdd,
+				});
 			res.status(201).json(newAttestation);
 		} catch (error) {
 			handleError(res, error as Error);
@@ -96,7 +110,7 @@ export const attestationController = {
 
 			const attestationListToDelete = await dcartDataSource
 				.getRepository(Attestation)
-				.findOne({ where: { id } });
+				.findOneBy({ id });
 
 			if (!attestationListToDelete) {
 				res.status(404).json("Le jeu d'attestations n'existe pas");

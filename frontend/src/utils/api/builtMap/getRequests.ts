@@ -138,7 +138,24 @@ const getAllPointsByMapId = async (
 
 			query = queryArray.length ? `?${queryArray.join("&")}` : "";
 		}
-		const response = await apiClient.get(`/map/sources/${id}${query}`);
+		const response = await apiClient.get(`/map/sources/map/${id}${query}`);
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des sources :", error);
+	}
+};
+
+/**
+ * Récupère toutes les sources d'une carte à partir de l'id du block
+ * @param {string} id - L'id du block
+ * @returns
+ */
+const getAllPointsByBlockId = async (
+	blockId: string,
+	side?: string,
+) => {
+	try {
+		const response = await apiClient.get(`/map/sources/block/${blockId}${side ? `?side=${side}` : ""}`);
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des sources :", error);
@@ -265,5 +282,6 @@ export {
 	getOneMapInfos,
 	getTimeMarkers,
 	getUserFilters,
-	getAllIcons, getAllColors
+	getAllIcons, getAllColors,
+	getAllPointsByBlockId
 };

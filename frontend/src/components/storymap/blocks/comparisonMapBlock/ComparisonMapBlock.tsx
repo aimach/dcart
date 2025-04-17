@@ -1,44 +1,68 @@
 // import des bibliothèques
-import { useEffect, useMemo } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useCallback, useEffect, useState } from "react";
 import L from "leaflet";
 // import des services
 import {
-	getDefaultIcon,
+	getIcon,
 	getLittleCircleIcon,
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
+import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 // import des types
-import type {
-	BlockContentType,
-	GroupedTyped,
-} from "../../../../utils/types/storymapTypes";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { LatLngTuple } from "leaflet";
+import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./comparisonMapBloc.module.scss";
 import "./comparisonMapBloc.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-side-by-side";
-import { getBackGroundColorClassName } from "../../../../utils/functions/map";
 
 interface ComparisonMapBlockProps {
 	blockContent: BlockContentType;
+	mapName: string;
 }
 
-const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
+const ComparisonMapBlock = ({
+	blockContent,
+	mapName,
+}: ComparisonMapBlockProps) => {
 	// récupération des données des stores
 	const { selectedLanguage } = useStorymapLanguageStore();
 
-	const mapName = useMemo(() => `comparison-map-${uuidv4}`, []);
+	const [leftPoints, setLeftPoints] = useState<PointType[]>([]);
+	const [rightPoints, setRightPoints] = useState<PointType[]>([]);
+	const [bothSidesPoints, setBothSidesPoints] = useState<PointType[]>([]);
+
+	const fetchAllPoints = useCallback(async () => {
+		const leftPointsArray = await getAllPointsByBlockId(
+			blockContent.id,
+			"left",
+		);
+		const rightPointsArray = await getAllPointsByBlockId(
+			blockContent.id,
+			"right",
+		);
+		setLeftPoints(leftPointsArray);
+		setRightPoints(rightPointsArray);
+		const bothSidesPointsArray = [...leftPointsArray, ...rightPointsArray];
+		setBothSidesPoints(bothSidesPointsArray);
+	}, [blockContent.id]);
 
 	useEffect(() => {
-		const bounds: LatLngTuple[] = blockContent.groupedPoints?.map(
+		fetchAllPoints();
+	}, [fetchAllPoints]);
+
+	useEffect(() => {
+		if (bothSidesPoints.length === 0) return;
+
+		const bounds: LatLngTuple[] = bothSidesPoints.map(
 			(point) => [point.latitude, point.longitude] as LatLngTuple,
 		);
 		const comparisonMap = L.map(mapName, {
 			scrollWheelZoom: false,
 		});
-		comparisonMap.fitBounds(bounds);
+		comparisonMap.fitBounds(bounds, { padding: [50, 50] });
 
 		comparisonMap.createPane("left");
 		comparisonMap.createPane("right");
@@ -57,28 +81,45 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 		}).addTo(comparisonMap);
 
 		// on créé les points sur chaque pane
-		(blockContent.groupedPoints as GroupedTyped[]).map((point) => {
+		leftPoints.map((point) => {
 			// on créé une icone adaptée au nombre de sources
-			const icon = getDefaultIcon(
-				point.attestations.length,
-				style,
-				getBackGroundColorClassName(point.attestations.length),
-				point.attestations.length.toString(),
-			);
+			const icon = getIcon(point, style, false, true);
+
+			const popupContent = point.nom_ville;
 			L.marker([point.latitude, point.longitude], {
-				pane: point.pane,
-				shadowPane: point.pane,
+				pane: "left",
+				shadowPane: "left",
 				icon: icon,
 			})
 				.addTo(comparisonMap)
-				.bindPopup(point.attestations[0].location as string);
+				.bindPopup(popupContent as string);
+		});
+		rightPoints.map((point) => {
+			// on créé une icone adaptée au nombre de sources
+			const icon = getIcon(point, style, false, true);
+
+			const popupContent = point.nom_ville;
+			L.marker([point.latitude, point.longitude], {
+				pane: "right",
+				shadowPane: "right",
+				icon: icon,
+			})
+				.addTo(comparisonMap)
+				.bindPopup(popupContent as string);
 		});
 
 		// on créé un point miniature sur le pane opposé
-		(blockContent.groupedPoints as GroupedTyped[]).map((point) => {
+		rightPoints.map((point) => {
 			L.marker([point.latitude, point.longitude], {
-				pane: point.pane === "left" ? "right" : "left",
-				shadowPane: point.pane === "left" ? "right" : "left",
+				pane: "left",
+				shadowPane: "left",
+				icon: getLittleCircleIcon(style),
+			}).addTo(comparisonMap);
+		});
+		leftPoints.map((point) => {
+			L.marker([point.latitude, point.longitude], {
+				pane: "right",
+				shadowPane: "right",
 				icon: getLittleCircleIcon(style),
 			}).addTo(comparisonMap);
 		});
@@ -88,7 +129,7 @@ const ComparisonMapBlock = ({ blockContent }: ComparisonMapBlockProps) => {
 		return () => {
 			comparisonMap.remove();
 		};
-	}, [blockContent.groupedPoints, mapName]);
+	}, [blockContent, leftPoints, rightPoints, mapName, bothSidesPoints]);
 
 	return (
 		<>

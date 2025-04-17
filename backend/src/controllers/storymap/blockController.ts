@@ -1,8 +1,9 @@
-// import des services
-import { dcartDataSource } from "../../dataSource/dataSource";
+// import des entités
 import { Block } from "../../entities/storymap/Block";
 import { Storymap } from "../../entities/storymap/Storymap";
 import { Type } from "../../entities/storymap/Type";
+// import des services
+import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
@@ -30,6 +31,12 @@ export const blockController = {
 				.leftJoinAndSelect("block.children", "blocks")
 				.leftJoinAndSelect("block.type", "type")
 				.leftJoinAndSelect("blocks.type", "childrenType")
+				.leftJoinAndSelect("block.attestations", "attestations")
+				.leftJoinAndSelect("attestations.icon", "icon")
+				.leftJoinAndSelect("attestations.color", "color")
+				.leftJoinAndSelect("blocks.attestations", "childrenAttestations")
+				.leftJoinAndSelect("childrenAttestations.icon", "childrenIcon")
+				.leftJoinAndSelect("childrenAttestations.color", "childrenColor")
 				.orderBy("blocks.position", "ASC")
 				.where("block.id = :blockId", { blockId })
 				.getOne();
@@ -112,6 +119,27 @@ export const blockController = {
 		try {
 			const { blockId } = req.params;
 
+			if (blockId === "position") {
+				const { blocks } = req.body;
+
+				if (!blocks || blocks.length === 0) {
+					res.status(400).send("Aucune donnée reçue");
+					return;
+				}
+
+				for (const [index, block] of blocks.entries()) {
+					dcartDataSource.getRepository(Block).update(
+						{ id: block.id },
+						{
+							position: index + 1,
+						},
+					);
+				}
+
+				res.status(200).send("Position des blocs mise à jour.");
+				return;
+			}
+
 			const blockToUpdate = await dcartDataSource.getRepository(Block).findOne({
 				where: { id: blockId },
 			});
@@ -142,32 +170,17 @@ export const blockController = {
 				.getRepository(Block)
 				.save(updatedBlock);
 
-			res.status(200).send(newBlock);
-		} catch (error) {
-			handleError(res, error as Error);
-		}
-	},
-
-	// met à jour la position du bloc
-	updateBlocksPosition: async (req: Request, res: Response): Promise<void> => {
-		try {
-			const { blocks } = req.body;
-
-			if (!blocks || blocks.length === 0) {
-				res.status(400).send("Aucune donnée reçue");
-				return;
-			}
-
-			for (const [index, block] of blocks.entries()) {
-				dcartDataSource.getRepository(Block).update(
-					{ id: block.id },
-					{
-						position: index + 1,
+			const savedBlock = await dcartDataSource.getRepository(Block).findOne({
+				where: { id: newBlock.id },
+				relations: {
+					attestations: {
+						icon: true,
+						color: true,
 					},
-				);
-			}
+				},
+			});
 
-			res.status(200).send("Position des blocs mise à jour.");
+			res.status(200).send(savedBlock);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

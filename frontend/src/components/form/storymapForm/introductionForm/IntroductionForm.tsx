@@ -1,13 +1,14 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
+// import du contexte
+import { CategoryOptionsContext } from "../../../../context/CategoryContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import {
-	getAllStorymapCategories,
 	getAllStorymapLanguages,
 	getRelatedMapId,
 	getStorymapInfosAndBlocks,
@@ -17,21 +18,15 @@ import {
 	createStorymap,
 	updateStorymap,
 } from "../../../../utils/api/storymap/postRequests";
-import { getAllMapsInfos } from "../../../../utils/api/builtMap/getRequests";
 import {
 	createCategoryOptions,
 	createLanguageOptions,
-	createMapOptions,
 } from "../../../../utils/functions/storymap";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
 import { addStorymapLinkToMap } from "../../../../utils/api/builtMap/postRequests";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type {
-	CategoryType,
+	StorymapBodyType,
 	StorymapLanguageType,
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
@@ -54,6 +49,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	// importation des données de traduction
 	const { language } = useTranslation();
 
+	const { categoryOptions } = useContext(CategoryOptionsContext);
+
 	// définition d'un état pour les inputs du formulaire
 	const [inputs, setInputs] = useState<InputType[]>(storymapInputs);
 	const [relatedMapId, setRelatedMapId] = useState<string | null>(null);
@@ -61,10 +58,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	// au montage du composant, récupération des catégories et des langues pour les select/options
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		const fetchAllCategoriesAndCreateOptions = async () => {
-			const allCategories: CategoryType[] = await getAllStorymapCategories();
-			// création des options pour le select des catégories
-			const newInputs = createCategoryOptions(allCategories, language, inputs);
+		const addCategoryOptions = async () => {
+			const newInputs = createCategoryOptions(categoryOptions, inputs);
 			setInputs(newInputs);
 		};
 		const fetchAllLanguagesAndCreateOptions = async () => {
@@ -74,17 +69,17 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 			const newInputs = createLanguageOptions(allLanguages, inputs);
 			setInputs(newInputs);
 		};
-		const fetchAllMaps = async () => {
-			const allMaps = await getAllMapsInfos(false);
-			const newInputs = createMapOptions(allMaps, inputs, language);
-			setInputs(newInputs);
-		};
+		// const fetchAllMaps = async () => {
+		// 	const allMaps = await getAllMapsInfos(false);
+		// 	const newInputs = createMapOptions(allMaps, inputs, language);
+		// 	setInputs(newInputs);
+		// };
 		const fetchRelatedMapId = async (storymapId: string) => {
 			const relatedMap = await getRelatedMapId(storymapId as string);
 			setRelatedMapId(relatedMap);
 		};
-		fetchAllMaps();
-		fetchAllCategoriesAndCreateOptions();
+		// fetchAllMaps();
+		addCategoryOptions();
 		fetchAllLanguagesAndCreateOptions();
 		if (storymapId !== "create") {
 			fetchRelatedMapId(storymapId as string);
@@ -114,13 +109,12 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	const onSubmit: SubmitHandler<storymapInputsType> = async (data) => {
 		if (storymapId === "create") {
 			const newStorymap = await createStorymap(data);
-			await addStorymapLinkToMap(newStorymap.id, data.relatedMap as string);
+			// await addStorymapLinkToMap(newStorymap.id, data.relatedMap as string);
 			setStorymapInfos(newStorymap);
-			notifyCreateSuccess("Storymap", true);
 			navigate(`/backoffice/storymaps/${newStorymap.id}`);
 		} else {
-			const bodyWithoutUselessData = {
-				id: storymapInfos?.id,
+			const bodyWithoutUselessData: StorymapBodyType = {
+				id: storymapInfos?.id as string,
 				title_lang1: data.title_lang1,
 				title_lang2: data.title_lang2,
 				description_lang1: data.description_lang1,
@@ -137,12 +131,9 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 				storymapInfos?.id as string,
 				data.relatedMap as string,
 			);
-			notifyEditSuccess("Storymap", true);
 		}
 		setStep(2);
 	};
-
-
 
 	return (
 		<>

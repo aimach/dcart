@@ -12,7 +12,7 @@ const storymapRoutes = express.Router();
 
 storymapRoutes.use("/categories", categoryRoutes);
 storymapRoutes.use("/blocks", blockRoutes);
-storymapRoutes.use("/points", pointRoutes);
+// storymapRoutes.use("/points", pointRoutes);
 storymapRoutes.use("/storymap", storymapContentRoutes);
 storymapRoutes.use("/types", typeRoutes);
 storymapRoutes.use("/languages", languageRoutes);

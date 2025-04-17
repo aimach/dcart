@@ -1,28 +1,34 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useCallback, useEffect, useMemo, useState } from "react";
 import {
 	MapContainer,
 	TileLayer,
 	ScaleControl,
 	ZoomControl,
-	Marker,
-	Popup,
+	LayersControl,
+	LayerGroup,
 } from "react-leaflet";
+import MarkerClusterGroup from "react-leaflet-markercluster";
+// import des composants
+import MarkerComponent from "../../../builtMap/map/MarkerComponent/MarkerComponent";
 // import des services
 import {
-	getBackGroundColorClassName,
-	getDefaultIcon,
+	createClusterCustomIcon,
+	getShapeForLayerName,
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
+import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type {
-	BlockContentType,
-	GroupedTyped,
-} from "../../../../utils/types/storymapTypes";
+	MapColorType,
+	MapIconType,
+	PointType,
+} from "../../../../utils/types/mapTypes";
 // import du style
-import "leaflet/dist/leaflet.css";
 import style from "./simpleMapBlock.module.scss";
+import "leaflet/dist/leaflet.css";
 import "./simpleMapBlock.css";
 
 interface SimpleMapBlockProps {
@@ -37,21 +43,46 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const { selectedLanguage } = useStorymapLanguageStore();
 
 	const [map, setMap] = useState<LeafletMap | null>(null);
+	const [points, setPoints] = useState<PointType[]>([]);
 
-	const points = blockContent.groupedPoints as GroupedTyped[];
+	const fetchAllPoints = useCallback(async () => {
+		const allAttestationsPoints = await getAllPointsByBlockId(blockContent.id);
+		setPoints(allAttestationsPoints);
+	}, [blockContent.id]);
+
+	useEffect(() => {
+		fetchAllPoints();
+	}, [fetchAllPoints]);
 
 	// on met à jour les limites de la carte
-	const bounds: LatLngTuple[] = [];
 	useEffect(() => {
-		if (points.length) {
-			for (const point of points) {
-				bounds.push([point.latitude, point.longitude]);
-			}
-			if (map) {
-				map.fitBounds(bounds);
-			}
-		}
+		if (!map || points.length === 0) return;
+
+		const bounds: LatLngTuple[] = points.map(({ latitude, longitude }) => [
+			latitude,
+			longitude,
+		]);
+		map.fitBounds(bounds, { padding: [50, 50] });
 	}, [points, map]);
+
+	// récupérer les formes et les couleurs des attestations
+	const allColorsAndShapes = useMemo(() => {
+		return (blockContent.attestations ?? []).map(({ name, color, icon }) => ({
+			name,
+			color: (color as MapColorType).code_hex,
+			shape: (icon as MapIconType).name_en,
+		}));
+	}, [blockContent.attestations]);
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: volontaire, sinon s'exécute trop tôt
+	useEffect(() => {
+		const inputs = document.querySelectorAll(
+			".leaflet-control-layers-selector",
+		);
+		for (const input of inputs) {
+			(input as HTMLInputElement).style.display = "none";
+		}
+	}, [points]);
 
 	return (
 		<>
@@ -69,31 +100,41 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 							attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 							url={blockContent[`content2_${selectedLanguage}`]}
 						/>
-
-						{points.length ? (
-							points.map((point: GroupedTyped) => {
-								// on créé une icone adaptée au nombre de sources
-								const backgroundColorClassName =
-									point.color ??
-									getBackGroundColorClassName(point.attestations.length);
-								const icon = getDefaultIcon(
-									point.attestations.length,
-									style,
-									backgroundColorClassName,
-									point.attestations.length.toString(),
-								);
-								return (
-									<Marker
-										key={`${point.latitude}-${point.longitude}`}
-										position={[point.latitude, point.longitude]}
-										icon={icon}
-									>
-										<Popup>{point.attestations[0].location}</Popup>
-									</Marker>
-								);
-							})
-						) : (
-							<div>Aucun résultat</div>
+						<MarkerClusterGroup
+							spiderfyOnClick={false}
+							spiderfyOnMaxZoom={false}
+							showCoverageOnHover={false}
+							zoomToBoundsOnClick={false}
+							disableClusteringAtZoom={12}
+							maxClusterRadius={1}
+							disableSpiderfy={true}
+							iconCreateFunction={createClusterCustomIcon}
+						>
+							{points.length > 0 ? (
+								points.map((point: PointType) => {
+									return (
+										<MarkerComponent
+											key={`${point.latitude}-${point.longitude}`}
+											point={point}
+										/>
+									);
+								})
+							) : (
+								<div>Aucun résultat</div>
+							)}
+						</MarkerClusterGroup>
+						{allColorsAndShapes.length > 0 && (
+							<LayersControl position="bottomright" collapsed={false}>
+								{allColorsAndShapes.map((layer) => {
+									const icon =
+										getShapeForLayerName(layer.shape, layer.color) + layer.name;
+									return (
+										<LayersControl.Overlay name={icon} key={icon}>
+											<LayerGroup key={icon} />
+										</LayersControl.Overlay>
+									);
+								})}
+							</LayersControl>
 						)}
 						<ZoomControl position="topright" />
 						<ScaleControl position="bottomright" />

@@ -16,6 +16,8 @@ import BOMapFormPage from "./pages/BackOffice/BOMapFormPage.tsx/BOMapFormPage.ts
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
+import { IconOptionsProvider } from "./context/IconOptionsContext.tsx";
+import { CategoryOptionsProvider } from "./context/CategoryContext.tsx";
 // import du style
 import "./index.css";
 import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
@@ -32,41 +34,45 @@ if (rootElement) {
 			<TranslationProvider>
 				<AuthProvider>
 					<SessionProvider>
-						<Routes>
-							<Route element={<NavigationLayout />}>
-								<Route index element={<App />} />
-								<Route path="maps/categories">
-									<Route index element={<MapCategoryMenuPage />} />
-								</Route>
-								<Route path="map/:mapId" element={<MapPage />} />
-								<Route path="storymaps/categories">
-									<Route index element={<StorymapCategoryMenuPage />} />
-								</Route>
-								<Route path="storymap/:storymapId" element={<StorymapPage />} />
-							</Route>
-							<Route
-								path="authentification"
-								element={<AuthentificationPage />}
-							/>
-							<Route path="backoffice" element={<ProtectedLayout />}>
-								<Route index element={<BOHomePage />} />
-								<Route path="maps">
-									<Route index element={<BackofficeMapPage />} />
-									<Route path="create" element={<BOMapFormPage />} />
-									<Route path="edit/:mapId" element={<BOMapFormPage />} />
-								</Route>
-								<Route path="storymaps">
-									<Route index element={<BackofficeStorymapPage />} />
-									<Route path=":storymapId" element={<StorymapIntroPage />} />
-									<Route path="view/:storymapId" element={<StorymapPage />} />
-								</Route>
-								<Route
-									path="translation"
-									element={<BackofficeTranslationPage />}
-								/>
-							</Route>
-						</Routes>
-						<ToastContainer />
+						<IconOptionsProvider>
+							<CategoryOptionsProvider>
+								<Routes>
+									<Route element={<NavigationLayout />}>
+										<Route index element={<App />} />
+										<Route path="maps/categories">
+											<Route index element={<MapCategoryMenuPage />} />
+										</Route>
+										<Route path="map/:mapId" element={<MapPage />} />
+										<Route path="storymaps/categories">
+											<Route index element={<StorymapCategoryMenuPage />} />
+										</Route>
+										<Route path="storymap/:storymapId" element={<StorymapPage />} />
+									</Route>
+									<Route
+										path="authentification"
+										element={<AuthentificationPage />}
+									/>
+									<Route path="backoffice" element={<ProtectedLayout />}>
+										<Route index element={<BOHomePage />} />
+										<Route path="maps">
+											<Route index element={<BackofficeMapPage />} />
+											<Route path="create" element={<BOMapFormPage />} />
+											<Route path="edit/:mapId" element={<BOMapFormPage />} />
+										</Route>
+										<Route path="storymaps">
+											<Route index element={<BackofficeStorymapPage />} />
+											<Route path=":storymapId" element={<StorymapIntroPage />} />
+											<Route path="view/:storymapId" element={<StorymapPage />} />
+										</Route>
+										<Route
+											path="translation"
+											element={<BackofficeTranslationPage />}
+										/>
+									</Route>
+								</Routes>
+								<ToastContainer />
+							</CategoryOptionsProvider>
+						</IconOptionsProvider>
 					</SessionProvider>
 				</AuthProvider>
 			</TranslationProvider>

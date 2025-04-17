@@ -1,15 +1,16 @@
 // import des bibliothèques
-import { useEffect, useRef, useState } from "react";
-import { Controller, get, useForm } from "react-hook-form";
+import { useContext, useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import EditorComponent from "../../storymapForm/wysiwygBlock/EditorComponent";
+// import du contexte
+import { CategoryOptionsContext } from "../../../../context/CategoryContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { getAllCategories } from "../../../../utils/api/builtMap/getRequests";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
@@ -43,6 +44,8 @@ type IntroFormProps = {
  */
 const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 	const { translation, language } = useTranslation();
+
+	const { categoryOptions } = useContext(CategoryOptionsContext);
 
 	const { pathname } = useLocation();
 
@@ -99,20 +102,12 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		setDataLoaded(false);
-		const getCategoryOptions = async () => {
-			const allCategories = await getAllCategories();
-			const formatedCategoryOptions: OptionType[] = allCategories.map(
-				(category: CategoryType) => ({
-					value: category.id,
-					label: category[`name_${language}`],
-				}),
-			);
-
+		const addCategoryOptions = async () => {
 			for (const input of inputs) {
 				if (input.name === "category") {
 					input.options = [
 						{ value: "0", label: "Choisir une catégorie" },
-						...formatedCategoryOptions,
+						...categoryOptions,
 					];
 				}
 			}
@@ -136,7 +131,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 			}
 			setDataLoaded(true);
 		};
-		getCategoryOptions();
+		addCategoryOptions();
 		getPublishedStorymaps();
 	}, [language]);
 
@@ -144,16 +139,14 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		if (mapInfos) {
 			if (mapInfos.category) {
 				setValue("category", (mapInfos.category as CategoryType).id);
-			} else {
-				setValue("category", "0");
 			}
 			if (mapInfos.relatedStorymap) {
 				setValue("relatedStorymap", mapInfos.relatedStorymap as string);
-			} else {
-				setValue("relatedStorymap", "0");
 			}
+			setValue("relatedStorymap", "0");
+			setValue("category", "0");
 		}
-	}, []);
+	}, [mapInfos, setValue]);
 
 	// WYSIWYG
 	const quillRef = useRef<Quill | null>(null);
