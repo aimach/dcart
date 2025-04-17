@@ -1,6 +1,5 @@
 // import de bibliothèques
-import { useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useState } from "react";
 // import des composants
 import MapSection from "./MapSection";
 import ScrolledSection from "./ScrolledSection";

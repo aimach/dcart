@@ -33,7 +33,7 @@ const ScrolledSection = ({
 								}}
 							>
 								<div className={style.infoElement}>
-									<p>{point[`content1_${selectedLanguage}`]}</p>
+									<h4>{point[`content1_${selectedLanguage}`]}</h4>
 									<p>{point[`content2_${selectedLanguage}`]}</p>
 								</div>
 							</div>
