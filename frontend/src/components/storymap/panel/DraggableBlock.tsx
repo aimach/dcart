@@ -61,19 +61,26 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 				];
 
 	// définition du style du container titre (icone + type de bloc)
-	const titleStyle = {
+	const titleStyle: React.CSSProperties = {
 		display: "flex",
-		alignItems: "center",
+		alignItems: "flex-start",
 		gap: "10px",
 		paddingBottom: "10px",
 	};
 
 	// définition du style du container des icones d'action (modifier, supprimer)
-	const actionContainerStyle = {
+	const actionContainerStyle: React.CSSProperties = {
 		display: "flex",
 		justifyContent: "flex-end",
 		gap: "10px",
 		paddingTop: "10px",
+	};
+
+	const textContainerStyle: React.CSSProperties = {
+		display: "flex",
+		flexDirection: "column",
+		alignItems: "flex-start",
+		textAlign: "left",
 	};
 
 	// fonction déclenchée lors du clic sur l'icone de modification
@@ -117,12 +124,18 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 		cursor: "grab",
 	};
 
+	const previewText = getPreviewText(block, selectedLanguage);
+
 	return (
 		<>
 			<div ref={setNodeRef} style={style} {...listeners} {...attributes}>
 				<div style={titleStyle}>
 					{icon}
-					{titleText}
+					<div style={textContainerStyle}>
+						<p>{titleText}</p>
+						<br />
+						{previewText}
+					</div>
 				</div>
 				<div style={actionContainerStyle}>
 					<Pen
