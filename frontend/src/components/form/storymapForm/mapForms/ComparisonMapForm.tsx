@@ -1,7 +1,7 @@
 // import des bibliothèques
 import { useContext, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
-import { set, useForm } from "react-hook-form";
+import { useForm } from "react-hook-form";
 // import des composants
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
@@ -22,7 +22,7 @@ import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { Check, ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
+import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";

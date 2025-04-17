@@ -178,7 +178,7 @@ const getLittleCircleIcon = (style: CSSModuleClasses) => {
 	return L.divIcon({
 		className: style.littleCircle,
 		iconSize: [8, 8],
-		iconAnchor: [16, 4],
+		iconAnchor: [0, 0],
 	});
 };
 
@@ -256,8 +256,7 @@ const getTriangleIcon = (
 		: content
 			? content
 			: "";
-	return `const iconContent = isNbDisplayed ? sourcesNb.toString() : content ? content : "";
-     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize}  height=${customSize}  viewBox="0 0 100 100">
+	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize}  height=${customSize}  viewBox="0 0 100 100">
       <polygon points="50,10 90,90 10,90" ${customFillAndStroke}
  stroke-width="5" />
       <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="50" fill=${customTextColor} >
@@ -451,7 +450,7 @@ const getIcon = (
 			),
 			className: "",
 			iconSize: [8, 8],
-			iconAnchor: [16, 4],
+			iconAnchor: [16, 16],
 		});
 	}
 
@@ -467,7 +466,7 @@ const getIcon = (
 			),
 			className: "",
 			iconSize: [8, 8],
-			iconAnchor: [16, 4],
+			iconAnchor: [16, 16],
 		});
 	}
 	return customIcon;

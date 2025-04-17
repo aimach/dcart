@@ -2,7 +2,10 @@
 import { useCallback, useEffect, useState } from "react";
 import L from "leaflet";
 // import des services
-import { getIcon } from "../../../../utils/functions/icons";
+import {
+	getIcon,
+	getLittleCircleIcon,
+} from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
@@ -59,7 +62,7 @@ const ComparisonMapBlock = ({
 		const comparisonMap = L.map(mapName, {
 			scrollWheelZoom: false,
 		});
-		comparisonMap.fitBounds(bounds);
+		comparisonMap.fitBounds(bounds, { padding: [50, 50] });
 
 		comparisonMap.createPane("left");
 		comparisonMap.createPane("right");
@@ -105,14 +108,23 @@ const ComparisonMapBlock = ({
 				.bindPopup(popupContent as string);
 		});
 
+		console.log(rightPoints);
+
 		// on créé un point miniature sur le pane opposé
-		// (blockContent.groupedPoints as GroupedTyped[]).map((point) => {
-		// 	L.marker([point.latitude, point.longitude], {
-		// 		pane: point.pane === "left" ? "right" : "left",
-		// 		shadowPane: point.pane === "left" ? "right" : "left",
-		// 		icon: getLittleCircleIcon(style),
-		// 	}).addTo(comparisonMap);
-		// });
+		rightPoints.map((point) => {
+			L.marker([point.latitude, point.longitude], {
+				pane: "left",
+				shadowPane: "left",
+				icon: getLittleCircleIcon(style),
+			}).addTo(comparisonMap);
+		});
+		leftPoints.map((point) => {
+			L.marker([point.latitude, point.longitude], {
+				pane: "right",
+				shadowPane: "right",
+				icon: getLittleCircleIcon(style),
+			}).addTo(comparisonMap);
+		});
 
 		L.control.sideBySide(leftLayer, rightLayer).addTo(comparisonMap);
 

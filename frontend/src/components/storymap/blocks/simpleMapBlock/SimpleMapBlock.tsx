@@ -58,7 +58,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 			latitude,
 			longitude,
 		]);
-		map.fitBounds(bounds);
+		map.fitBounds(bounds, { padding: [50, 50] });
 	}, [points, map]);
 
 	// récupérer les formes et les couleurs des attestations

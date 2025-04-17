@@ -54,14 +54,16 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	const { icons, colors } = useContext(IconOptionsContext);
 
 	// récupération des données des stores
-	const { block, updateFormType, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
-	);
+	const { block, updateFormType, updateBlockContent, reload, setReload } =
+		useBuilderStore(
+			useShallow((state) => ({
+				block: state.block,
+				updateFormType: state.updateFormType,
+				reload: state.reload,
+				setReload: state.setReload,
+				updateBlockContent: state.updateBlockContent,
+			})),
+		);
 
 	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
@@ -71,9 +73,6 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 
 	// récupération de l'action à effectuer (création ou édition de la step)
 	const stepAction = searchParams.get("stepAction");
-
-	// récupération de l'id de la step
-	const stepId = searchParams.get("id");
 
 	// gestion de l'upload du fichier csv
 	const [pointSet, setPointSet] = useState<PointSetType | null>(
@@ -140,6 +139,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				);
 			}
 			reset(); // réinitialisation du formulaire
+			updateBlockContent(null);
 			setSearchParams({ stepAction: "create" });
 			setReload(!reload);
 		} catch (error) {
