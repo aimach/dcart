@@ -16,8 +16,8 @@ export const tagController = {
 				if (req.query.isActive) {
 					const allTags = await dcartDataSource
 						.getRepository(Tag)
-						.createQueryBuilder("category")
-						.leftJoinAndSelect("category.storymaps", "storymaps")
+						.createQueryBuilder("tag")
+						.leftJoinAndSelect("tag.storymaps", "storymaps")
 						.where("storymaps.isActive = :isActive", { isActive: true })
 						.getMany();
 					res.status(200).send(allTags);
@@ -31,16 +31,16 @@ export const tagController = {
 				res.status(200).send(allTags);
 				return;
 			}
-			const category = await dcartDataSource
+			const tag = await dcartDataSource
 				.getRepository(Tag)
 				.findOne({ where: { id } });
 
-			if (!category) {
+			if (!tag) {
 				res.status(404).send({ message: "Tag non trouvé" });
 				return;
 			}
 
-			res.status(200).send(category);
+			res.status(200).send(tag);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

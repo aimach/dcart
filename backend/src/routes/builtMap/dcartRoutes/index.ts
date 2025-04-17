@@ -10,7 +10,7 @@ import { colorRoutes } from "../../common/colorRoutes";
 
 const dcartRoutes = express.Router();
 
-dcartRoutes.use("/categories", tagRoutes);
+dcartRoutes.use("/tags", tagRoutes);
 dcartRoutes.use("/maps", mapRoutes);
 dcartRoutes.use("/filters", filterRoutes);
 dcartRoutes.use("/icons", iconRoutes);

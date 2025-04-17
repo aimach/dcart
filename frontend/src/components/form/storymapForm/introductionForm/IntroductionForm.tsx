@@ -4,7 +4,7 @@ import { useNavigate, useParams } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
 // import du contexte
-import { CategoryOptionsContext } from "../../../../context/CategoryContext";
+import { TagOptionsContext } from "../../../../context/TagContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -19,8 +19,8 @@ import {
 	updateStorymap,
 } from "../../../../utils/api/storymap/postRequests";
 import {
-	createCategoryOptions,
 	createLanguageOptions,
+	createTagOptions,
 } from "../../../../utils/functions/storymap";
 import { addStorymapLinkToMap } from "../../../../utils/api/builtMap/postRequests";
 // import des types
@@ -49,7 +49,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	// importation des données de traduction
 	const { language } = useTranslation();
 
-	const { categoryOptions } = useContext(CategoryOptionsContext);
+	const { tagOptions } = useContext(TagOptionsContext);
 
 	// définition d'un état pour les inputs du formulaire
 	const [inputs, setInputs] = useState<InputType[]>(storymapInputs);
@@ -58,8 +58,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	// au montage du composant, récupération des catégories et des langues pour les select/options
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		const addCategoryOptions = async () => {
-			const newInputs = createCategoryOptions(categoryOptions, inputs);
+		const addTagOptions = async () => {
+			const newInputs = createTagOptions(tagOptions, inputs);
 			setInputs(newInputs);
 		};
 		const fetchAllLanguagesAndCreateOptions = async () => {
@@ -79,7 +79,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 			setRelatedMapId(relatedMap);
 		};
 		// fetchAllMaps();
-		addCategoryOptions();
+		addTagOptions();
 		fetchAllLanguagesAndCreateOptions();
 		if (storymapId !== "create") {
 			fetchRelatedMapId(storymapId as string);

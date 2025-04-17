@@ -92,7 +92,7 @@ type TypeType = {
 	name: FormType;
 };
 
-type CategoryType = {
+type TagType = {
 	id: string;
 	name_en: string;
 	name_fr: string;
@@ -111,7 +111,7 @@ export type {
 	PointType,
 	GroupedTyped,
 	TypeType,
-	CategoryType,
+	TagType,
 	StorymapLanguageType,
 	StorymapBodyType,
 };

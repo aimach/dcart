@@ -36,7 +36,7 @@ export const storymapContentControllers = {
 				const query = await dcartDataSource
 					.getRepository(Storymap)
 					.createQueryBuilder("storymap")
-					.leftJoinAndSelect("storymap.category", "category")
+					.leftJoinAndSelect("storymap.tags", "tags")
 					.leftJoinAndSelect("storymap.blocks", "block")
 					.leftJoinAndSelect("block.attestations", "attestations")
 					.leftJoinAndSelect("attestations.icon", "icon")
@@ -49,7 +49,7 @@ export const storymapContentControllers = {
 					.leftJoinAndSelect("storymap.modifier", "modifier")
 					.select([
 						"storymap",
-						"category",
+						"tags",
 						"block",
 						"attestations",
 						"icon",
@@ -75,7 +75,7 @@ export const storymapContentControllers = {
 			const storymapInfos = await dcartDataSource
 				.getRepository(Storymap)
 				.createQueryBuilder("storymap")
-				.leftJoinAndSelect("storymap.category", "category")
+				.leftJoinAndSelect("storymap.tags", "tags")
 				.leftJoinAndSelect("storymap.blocks", "block")
 				.leftJoinAndSelect("block.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
@@ -90,7 +90,7 @@ export const storymapContentControllers = {
 				.leftJoinAndSelect("storymap.lang2", "lang2")
 				.select([
 					"storymap",
-					"category",
+					"tags",
 					"block",
 					"attestations",
 					"icon",
@@ -133,7 +133,7 @@ export const storymapContentControllers = {
 
 			const newStorymap = dcartDataSource.getRepository(Storymap).create({
 				...req.body,
-				category: req.body.category_id,
+				tag: req.body.tag_id,
 				creator: userId,
 			});
 			await dcartDataSource.getRepository(Storymap).save(newStorymap);
@@ -187,7 +187,7 @@ export const storymapContentControllers = {
 				.create({
 					...storymapToUpdate,
 					...req.body,
-					category: req.body.category_id,
+					tag: req.body.tag_id,
 				});
 
 			const newStorymap = await dcartDataSource

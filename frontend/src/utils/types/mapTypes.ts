@@ -1,6 +1,3 @@
-// import des types
-import type { FilterType } from "./filterTypes";
-
 type AgentType = {
 	genres: [
 		{
@@ -24,7 +21,7 @@ type AttestationType = {
 	extrait_avec_restitution: string;
 };
 
-type CategoryType = {
+type TagType = {
 	id: string;
 	name_fr: string;
 	name_en: string;
@@ -71,7 +68,7 @@ type MapInfoType = {
 	description_en: string;
 	description_fr: string;
 	image_url?: string;
-	category: string | CategoryType;
+	tags: string | TagType[];
 	attestations: PointSetType[];
 	filterMapContent?:
 		| Record<string, string>
@@ -104,7 +101,7 @@ type MapType = {
 		options: Record<string, string> | null;
 		filter: { type: string };
 	}[];
-	category: CategoryType;
+	category: TagType;
 	creator: {
 		pseudo: string;
 	};
@@ -194,7 +191,7 @@ export type {
 	GreatRegionType,
 	DivinityType,
 	TimeMarkersType,
-	CategoryType,
+	TagType,
 	ParsedPointType,
 	MapFilterType,
 	MapIconType,

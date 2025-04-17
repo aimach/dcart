@@ -23,15 +23,15 @@ const getAllAttestationsFromSourceId = async (sourceId: string) => {
 };
 
 /**
- * Récupère toutes les catégories des cartes
+ * Récupère tous les tags
  * @returns {Promise} - Toutes les catégories
  */
-const getAllCategories = async () => {
+const getAllTags = async () => {
 	try {
-		const response = await apiClient.get("/dcart/categories/all");
+		const response = await apiClient.get("/dcart/tags/all");
 		return response.data;
 	} catch (error) {
-		console.error("Erreur lors du chargement des catégories :", error);
+		console.error("Erreur lors du chargement des tags :", error);
 	}
 };
 
@@ -39,13 +39,13 @@ const getAllCategories = async () => {
  * Récupère les catégories qui ont des cartes associées, avec les informations des cartes
  * @returns {Promise} - Toutes les catégories qui ont des cartes associées
  */
-const getAllCategoriesWithMapsInfos = async () => {
+const getAllTagsWithMapsInfos = async () => {
 	try {
-		const response = await apiClient.get("/dcart/categories/all/maps");
+		const response = await apiClient.get("/dcart/tags/all/maps");
 		return response.data;
 	} catch (error) {
 		console.error(
-			"Erreur lors du chargement des catégories avec les informations des cartes :",
+			"Erreur lors du chargement des tags avec les informations des cartes :",
 			error,
 		);
 	}
@@ -93,15 +93,13 @@ const getAllMapsInfos = async (isActive: boolean) => {
 };
 
 /**
- * Récupère toutes les cartes d'une catégorie
- * @param {string} categoryId - L'id de la catégorie
- * @returns {Promise} - Toutes les cartes de la catégorie
+ * Récupère toutes les cartes d'un tag'
+ * @param {string} tagId - L'id du tag
+ * @returns {Promise} - Toutes les cartes du tag
  */
-const getAllMapsInfosFromCategoryId = async (categoryId: string) => {
+const getAllMapsInfosFromtagId = async (tagId: string) => {
 	try {
-		const response = await apiClient.get(
-			`/dcart/categories/${categoryId}/maps`,
-		);
+		const response = await apiClient.get(`/dcart/tags/${tagId}/maps`);
 		return response.data;
 	} catch (error) {
 		console.error(
@@ -128,7 +126,9 @@ const getAllPointsByMapId = async (
 			for (const [key, value] of Object.entries(params)) {
 				if (key === "lotIds" && value !== undefined) {
 					if (Array.isArray(value) && Array.isArray(value[0])) {
-						const lotIds = value.map((lot: string[]) => JSON.stringify(lot)).join("|");
+						const lotIds = value
+							.map((lot: string[]) => JSON.stringify(lot))
+							.join("|");
 						queryArray.push(`lotIds=${lotIds}`);
 					}
 				} else if (value !== undefined) {
@@ -150,12 +150,11 @@ const getAllPointsByMapId = async (
  * @param {string} id - L'id du block
  * @returns
  */
-const getAllPointsByBlockId = async (
-	blockId: string,
-	side?: string,
-) => {
+const getAllPointsByBlockId = async (blockId: string, side?: string) => {
 	try {
-		const response = await apiClient.get(`/map/sources/block/${blockId}${side ? `?side=${side}` : ""}`);
+		const response = await apiClient.get(
+			`/map/sources/block/${blockId}${side ? `?side=${side}` : ""}`,
+		);
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des sources :", error);
@@ -270,18 +269,19 @@ const getAllColors = async () => {
 
 export {
 	getAllAttestationsFromSourceId,
-	getAllCategories,
-	getAllCategoriesWithMapsInfos,
+	getAllTags,
+	getAllTagsWithMapsInfos,
 	getAllDivinities,
 	getAllGreatRegions,
 	getAllMapsInfos,
-	getAllMapsInfosFromCategoryId,
+	getAllMapsInfosFromtagId,
 	getAllPointsByMapId,
 	getAllPointsForDemoMap,
 	getAllStorymapsInfos,
 	getOneMapInfos,
 	getTimeMarkers,
 	getUserFilters,
-	getAllIcons, getAllColors,
-	getAllPointsByBlockId
+	getAllIcons,
+	getAllColors,
+	getAllPointsByBlockId,
 };

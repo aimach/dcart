@@ -24,7 +24,7 @@ const newMapContentSchema = Joi.object({
 		"string.base": "Le lien de l'image doit être une chaîne de caractères",
 	}),
 	relatedStorymap: Joi.string(),
-	category: Joi.string(),
+	tags: Joi.string(),
 });
 
 const updateMapContentSchema = newMapContentSchema.keys({
@@ -33,8 +33,7 @@ const updateMapContentSchema = newMapContentSchema.keys({
 	isActive: Joi.boolean().required(),
 	createdAt: Joi.date().required(),
 	updatedAt: Joi.date().required(),
-	relatedStorymap: Joi.string().required(),
-	category: Joi.string().required(),
+	tags: Joi.string().required(),
 	filters: Joi.array()
 		.items(
 			Joi.object({

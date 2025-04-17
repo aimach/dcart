@@ -9,6 +9,7 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
+import { In } from "typeorm";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";
@@ -34,7 +35,7 @@ export const mapContentController = {
 				const query = await dcartDataSource
 					.getRepository(MapContent)
 					.createQueryBuilder("map")
-					.leftJoinAndSelect("map.tag", "tag")
+					.leftJoinAndSelect("map.tags", "tags")
 					.leftJoinAndSelect("map.creator", "creator")
 					.leftJoinAndSelect("map.modifier", "modifier")
 					.leftJoinAndSelect("map.filterMapContent", "filterMapContent")
@@ -46,7 +47,7 @@ export const mapContentController = {
 						"map",
 						"filterMapContent",
 						"filter.type",
-						"tag",
+						"tags",
 						"attestations",
 						"attestations.icon",
 						"attestations.color",
@@ -67,7 +68,7 @@ export const mapContentController = {
 			const mapInfos = await dcartDataSource
 				.getRepository(MapContent)
 				.createQueryBuilder("map")
-				.leftJoinAndSelect("map.tag", "tag")
+				.leftJoinAndSelect("map.tags", "tags")
 				.leftJoinAndSelect("map.filterMapContent", "filterMapContent")
 				.leftJoinAndSelect("map.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
@@ -77,7 +78,7 @@ export const mapContentController = {
 					"map",
 					"filterMapContent",
 					"filter.type",
-					"tag",
+					"tags",
 					"attestations",
 					"icon",
 					"color",
@@ -112,6 +113,7 @@ export const mapContentController = {
 			// récupération de la date actuelle
 			const currentDate = new Date();
 
+			// récupération du créateur de la carte
 			const creator = await dcartDataSource
 				.getRepository(User)
 				.findOne({ where: { id: userId } });
@@ -121,14 +123,24 @@ export const mapContentController = {
 				return;
 			}
 
+			// récupération des tags
+			const tagIds = tags.split("|");
+			const tagsToSave = await dcartDataSource
+				.getRepository(Tag)
+				.find({ where: { id: In(tagIds) } });
+			if (tagsToSave.length !== tagIds.length) {
+				res.status(404).send("Tags non trouvés.");
+				return;
+			}
+
 			const newMap = dcartDataSource.getRepository(MapContent).create({
 				title_en,
 				title_fr,
 				description_en,
 				description_fr,
 				image_url,
-				tags,
 				creator,
+				tags: tagsToSave,
 				uploadPointsLastDate: currentDate,
 			});
 
@@ -145,12 +157,13 @@ export const mapContentController = {
 		try {
 			const { mapId } = req.params;
 			const { userId } = req.user as jwt.JwtPayload;
+			const { tags } = req.body;
 
 			const mapToUpdate = await dcartDataSource
 				.getRepository(MapContent)
 				.findOne({
 					where: { id: mapId },
-					relations: ["tag", "filterMapContent"],
+					relations: ["tags", "filterMapContent"],
 				});
 
 			if (!mapToUpdate) {
@@ -176,15 +189,17 @@ export const mapContentController = {
 				return;
 			}
 
-			// si la catégorie de la carte a été modifiée, ajout de la nouvelle catégorie au body
-			const newTag = await dcartDataSource.getRepository(Tag).findOne({
-				where: { id: req.body.tag.id },
-			});
-			req.body.tag = newTag;
-
-			if (req.body.relatedStorymap === "0") {
-				req.body.relatedStorymap = null;
+			// récupération des tags
+			const tagIds = tags.split("|");
+			const tagsToSave = await dcartDataSource
+				.getRepository(Tag)
+				.find({ where: { id: In(tagIds) } });
+			if (tagsToSave.length !== tagIds.length) {
+				res.status(404).send("Tags non trouvés.");
+				return;
 			}
+
+			mapToUpdate.tags = tagsToSave;
 
 			// à corriger après la présentation
 			// biome-ignore lint/performance/noDelete:

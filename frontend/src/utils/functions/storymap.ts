@@ -2,34 +2,27 @@ import type { OptionType } from "../types/commonTypes";
 import type { InputType } from "../types/formTypes";
 import type { Language } from "../types/languageTypes";
 import type { MapType } from "../types/mapTypes";
-import type {
-	StorymapLanguageType,
-} from "../types/storymapTypes";
+import type { StorymapLanguageType } from "../types/storymapTypes";
 
 /**
- * Fonction pour créer les options du select des catégories
- * @param categories - la liste des catégories de la BDD
+ * Fonction pour créer les options du select des tags
+ * @param tags - la liste des tags de la BDD
  * @param language - le langage de l'utilisateur
  * @param inputs - les inputs du formulaire
- * @returns un tableau contenant les inputs mis à jour avec la liste des options des catégories
+ * @returns un tableau contenant les inputs mis à jour avec la liste des options des tags
  */
-const createCategoryOptions = (
-	categoryOptions: OptionType[],
-	inputs: InputType[],
-) => {
-	if (categoryOptions.length > 0) {
-		// récupération de l'id de l'input des catégories
-		const categoryInputIndex = inputs
-			.map((input) => input.name)
-			.indexOf("category_id");
+const createTagOptions = (tagOptions: OptionType[], inputs: InputType[]) => {
+	if (tagOptions.length > 0) {
+		// récupération de l'id de l'input des tags
+		const tagInputIndex = inputs.map((input) => input.name).indexOf("tag_id");
 
 		// insertion des nouvelles données
-		inputs[categoryInputIndex].options = [
+		inputs[tagInputIndex].options = [
 			{
 				value: "0",
-				label: "Choisissez une catégorie",
+				label: "Choisissez un tag",
 			},
-			...categoryOptions,
+			...tagOptions,
 		];
 		return [...inputs];
 	}
@@ -134,7 +127,7 @@ const getFlagEmoji = (language: string) => {
 };
 
 export {
-	createCategoryOptions,
+	createTagOptions,
 	createLanguageOptions,
 	getFlagEmoji,
 	createMapOptions,

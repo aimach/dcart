@@ -50,15 +50,15 @@ const getRelatedMapId = async (storymapId: string) => {
 	}
 };
 
-// ----------- CATEGORIES
+// ----------- TAGS
 
 /**
  * Fonction pour récupérer toutes les catégories des storymaps
  * @returns Un tableau de catégories
  */
-const getAllStorymapCategories = async () => {
+const getAllStorymapTags = async () => {
 	try {
-		const response = await apiClient.get("/storymap/categories/all");
+		const response = await apiClient.get("/storymap/tags/all");
 		return response.data;
 	} catch (error) {
 		console.error(
@@ -137,7 +137,7 @@ const getAllStorymapLanguages = async () => {
 
 export {
 	getStorymapInfosAndBlocks,
-	getAllStorymapCategories,
+	getAllStorymapTags,
 	getAllBlockTypes,
 	updateBlocksPosition,
 	getBlockInfos,
