@@ -7,6 +7,7 @@ import {
 	getLittleCircleIcon,
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
+import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { LatLngTuple } from "leaflet";
@@ -16,7 +17,6 @@ import style from "./comparisonMapBloc.module.scss";
 import "./comparisonMapBloc.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-side-by-side";
-import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 
 interface ComparisonMapBlockProps {
 	blockContent: BlockContentType;
@@ -129,7 +129,7 @@ const ComparisonMapBlock = ({
 		return () => {
 			comparisonMap.remove();
 		};
-	}, [blockContent, leftPoints, rightPoints, mapName]);
+	}, [blockContent, leftPoints, rightPoints, mapName, bothSidesPoints]);
 
 	return (
 		<>

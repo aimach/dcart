@@ -29,6 +29,20 @@ type StorymapType = {
 	relatedMap?: string;
 };
 
+type StorymapBodyType = {
+	id: string;
+	title_lang1: string;
+	title_lang2: string;
+	description_lang1: string;
+	description_lang2: string;
+	category_id: string;
+	img_url: string;
+	author: string;
+	lang1: string;
+	lang2: string;
+	publication_date: string;
+};
+
 type BlockContentType = {
 	id: string;
 	id_storymap: number;
@@ -99,4 +113,5 @@ export type {
 	TypeType,
 	CategoryType,
 	StorymapLanguageType,
+	StorymapBodyType,
 };

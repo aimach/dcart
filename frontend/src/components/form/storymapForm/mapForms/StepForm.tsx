@@ -1,7 +1,7 @@
 // import des bibliothèques
 import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
-import { Controller, set, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 // import des composants
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
@@ -25,7 +25,11 @@ import type {
 	blockType,
 } from "../../../../utils/types/formTypes";
 import type { ChangeEvent } from "react";
-import type { PointSetType } from "../../../../utils/types/mapTypes";
+import type {
+	MapColorType,
+	MapIconType,
+	PointSetType,
+} from "../../../../utils/types/mapTypes";
 import type Quill from "quill";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
@@ -162,6 +166,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 		}
 	}, [stepAction, reset, block]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (!block) {
 			setPointSet({
@@ -177,8 +182,8 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 			setPointSet({
 				...pointSet,
 				attestationIds: defaultPointSet?.attestationIds,
-				color: defaultPointSet?.color?.id,
-				icon: defaultPointSet?.icon?.id,
+				color: (defaultPointSet?.color as MapColorType)?.id,
+				icon: (defaultPointSet?.icon as MapIconType)?.id,
 				name: defaultPointSet?.name,
 			} as PointSetType);
 		}

@@ -5,6 +5,9 @@ import { useForm } from "react-hook-form";
 // import des composants
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
+import LabelComponent from "../../inputComponent/LabelComponent";
+import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -18,14 +21,15 @@ import { parseCSVFile } from "../../../../utils/functions/csv";
 // import des types
 import type { blockType } from "../../../../utils/types/formTypes";
 import type { ChangeEvent } from "react";
-import type { PointSetType } from "../../../../utils/types/mapTypes";
+import type {
+	MapColorType,
+	MapIconType,
+	PointSetType,
+} from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
-import ButtonComponent from "../../../common/button/ButtonComponent";
-import LabelComponent from "../../inputComponent/LabelComponent";
-import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 
 export type comparisonMapInputsType = {
 	content1_lang1: string;
@@ -104,6 +108,7 @@ const ComparisonMapForm = () => {
 
 	const [isLoaded, setIsLoaded] = useState(false);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const leftPointsSet = block?.attestations?.find(
 			(pointSet) => pointSet.name === "left",
@@ -115,15 +120,15 @@ const ComparisonMapForm = () => {
 		setPointsSets({
 			left: {
 				...pointSets.left,
-				color: leftPointsSet?.color?.id,
-				icon: leftPointsSet?.icon?.id,
+				color: (leftPointsSet?.color as MapColorType)?.id,
+				icon: (leftPointsSet?.icon as MapIconType)?.id,
 				attestationIds: leftPointsSet?.attestationIds as string,
 				name: "left",
 			},
 			right: {
 				...pointSets.right,
-				color: rightPointsSet?.color?.id,
-				icon: rightPointsSet?.icon?.id,
+				color: (rightPointsSet?.color as MapColorType)?.id,
+				icon: (rightPointsSet?.icon as MapIconType)?.id,
 				attestationIds: rightPointsSet?.attestationIds as string,
 				name: "right",
 			},

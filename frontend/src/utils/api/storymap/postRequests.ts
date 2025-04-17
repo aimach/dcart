@@ -8,9 +8,9 @@ import {
 } from "../../functions/toast";
 import { createPointSet } from "../builtMap/postRequests";
 // import des types
-import type { storymapInputsType } from "../../types/formTypes";
-import type { blockType } from "../../types/formTypes";
+import type { blockType, storymapInputsType } from "../../types/formTypes";
 import type { PointSetType } from "../../types/mapTypes";
+import type { StorymapBodyType } from "../../types/storymapTypes";
 
 /**
  * Fonction pour insérer une nouvelle storymap dans la BDD
@@ -36,7 +36,7 @@ const createStorymap = async (body: storymapInputsType) => {
  * @param {string} storymapId - l'id de la storymap
  * @returns
  */
-const updateStorymap = async (body: storymapInputsType, storymapId: string) => {
+const updateStorymap = async (body: StorymapBodyType, storymapId: string) => {
 	try {
 		const response = await apiClient(`/storymap/storymap/${storymapId}`, {
 			method: "PUT",

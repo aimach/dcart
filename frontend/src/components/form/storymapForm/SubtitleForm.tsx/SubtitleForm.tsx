@@ -11,15 +11,15 @@ import {
 	createBlock,
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import FormTitleComponent from "../common/FormTitleComponent";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
 
 export type subtitleInputsType = {
 	content1_lang1: string;

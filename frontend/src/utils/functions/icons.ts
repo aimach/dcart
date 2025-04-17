@@ -539,15 +539,16 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 		(marker, index) => {
 			return (
 				markersColorsAndShapes.findIndex(
-					(m) => m?.color === marker.color && m?.shape === marker.shape,
+					(m) => m?.color === marker?.color && m?.shape === marker?.shape,
 				) === index
 			);
 		},
 	);
 
 	if (uniqueMarkersColorsAndShapes.length === 1) {
-		const iconHTML = markers[0].options.icon?.options.html ?? "";
-		return iconHTML;
+		const iconHTML =
+			(markers[0].options.icon?.options as L.DivIconOptions)?.html ?? "";
+		return iconHTML as string;
 	}
 
 	if (markers.length === 2 || uniqueMarkersColorsAndShapes.length === 2) {
@@ -568,10 +569,13 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 
 	if (markers.length > 2) {
 		const markerColors = uniqueMarkersColorsAndShapes.map(
-			(marker) => marker.color,
+			(marker) => marker?.color ?? "",
 		);
 		const uniqueColors = [...new Set(markerColors)];
-		return generateCamembertSVG(uniqueColors, uniqueMarkersColorsAndShapes);
+		return generateCamembertSVG(
+			uniqueColors,
+			uniqueMarkersColorsAndShapes as { color: string; shape: string }[],
+		);
 	}
 };
 
@@ -599,7 +603,10 @@ const createClusterCustomIcon = (cluster: MarkerCluster) => {
  */
 function generateCamembertSVG(
 	colors: string[],
-	markersColorsAndShapes: any[],
+	markersColorsAndShapes: {
+		color: string;
+		shape: string;
+	}[],
 	size = 35,
 ) {
 	const cx = size / 2;
@@ -629,7 +636,7 @@ function generateCamembertSVG(
       Z
     `;
 
-		paths += `<path d="${d}" fill="${colors.length === 1 ? color.color : color}" />`;
+		paths += `<path d="${d}" fill="${colors.length === 1 ? (color as { color: string; shape: string }).color : color}" />`;
 
 		angleStart = angleEnd;
 	}

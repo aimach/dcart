@@ -14,9 +14,17 @@ import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
 import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
 import { updateMap } from "../../../../utils/api/builtMap/putRequests";
+import {
+	notifyCreateSuccess,
+	notifyDeleteSuccess,
+	notifySuccessWithCustomMessage,
+} from "../../../../utils/functions/toast";
+import { getShapeForLayerName } from "../../../../utils/functions/icons";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
+	MapColorType,
+	MapIconType,
 	MapInfoType,
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
@@ -24,15 +32,6 @@ import type {
 import style from "../introForm/introForm.module.scss";
 // import des images
 import { CircleHelp, X } from "lucide-react";
-import {
-	notifyCreateSuccess,
-	notifyDeleteSuccess,
-	notifySuccessWithCustomMessage,
-} from "../../../../utils/functions/toast";
-import {
-	getIcon,
-	getShapeForLayerName,
-} from "../../../../utils/functions/icons";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -155,8 +154,8 @@ const UploadForm = () => {
 						<tbody>
 							{mapInfos.attestations.map((pointSet) => {
 								const icon = getShapeForLayerName(
-									pointSet.icon?.name_en,
-									pointSet.color?.code_hex,
+									(pointSet.icon as MapIconType)?.name_en,
+									(pointSet.color as MapColorType)?.code_hex,
 								);
 								return (
 									<tr key={pointSet.id} className={style.pointSetTableRow}>

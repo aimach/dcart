@@ -15,8 +15,14 @@ import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storyma
 // import des types
 import type { BlockContentType } from "../../../utils/types/storymapTypes";
 // import du style
+// import "draggableBlockSctyle.ts";
 // import des icones
 import { Pen, Trash2 } from "lucide-react";
+import {
+	draggableBlockActionContainerStyle,
+	draggableBlockTextContainerStyle,
+	draggableBlockTitleStyle,
+} from "./draggableBlockSctyle";
 
 type DraggableBlockProps = {
 	block: BlockContentType;
@@ -59,29 +65,6 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 					block.type
 						.name as keyof typeof translation.en.backoffice.storymapFormPage.types
 				];
-
-	// définition du style du container titre (icone + type de bloc)
-	const titleStyle: React.CSSProperties = {
-		display: "flex",
-		alignItems: "flex-start",
-		gap: "10px",
-		paddingBottom: "10px",
-	};
-
-	// définition du style du container des icones d'action (modifier, supprimer)
-	const actionContainerStyle: React.CSSProperties = {
-		display: "flex",
-		justifyContent: "flex-end",
-		gap: "10px",
-		paddingTop: "10px",
-	};
-
-	const textContainerStyle: React.CSSProperties = {
-		display: "flex",
-		flexDirection: "column",
-		alignItems: "flex-start",
-		textAlign: "left",
-	};
 
 	// fonction déclenchée lors du clic sur l'icone de modification
 	const handleEditClick = () => {
@@ -129,15 +112,15 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 	return (
 		<>
 			<div ref={setNodeRef} style={style} {...listeners} {...attributes}>
-				<div style={titleStyle}>
+				<div style={draggableBlockTitleStyle}>
 					{icon}
-					<div style={textContainerStyle}>
+					<div style={draggableBlockTextContainerStyle}>
 						<p>{titleText}</p>
 						<br />
 						{previewText}
 					</div>
 				</div>
-				<div style={actionContainerStyle}>
+				<div style={draggableBlockActionContainerStyle}>
 					<Pen
 						onMouseDown={handleEditClick}
 						size={20}

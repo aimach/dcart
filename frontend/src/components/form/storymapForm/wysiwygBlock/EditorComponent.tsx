@@ -35,11 +35,13 @@ const EditorComponent = forwardRef(
 			// enregistrement des tailles
 			const Size = Quill.import("formats/size") as { whitelist: string[] };
 			Size.whitelist = ["small", "normal", "large", "huge"];
+			// @ts-ignore
 			Quill.register(Size, true);
 
 			// enregistrement des polices disponibles
 			const Font = Quill.import("formats/font") as { whitelist: string[] };
 			Font.whitelist = ["arial", "georgia", "courier", "times", "monospace"];
+			// @ts-ignore
 			Quill.register(Font, true);
 
 			// Définition de la toolbar personnalisée

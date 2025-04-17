@@ -1,5 +1,8 @@
 // import des bibliothèques
 import { useContext } from "react";
+// import des composants
+import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
+import LabelComponent from "../../inputComponent/LabelComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -12,8 +15,6 @@ import type { FormEvent, ChangeEvent } from "react";
 import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
-import LabelComponent from "../../inputComponent/LabelComponent";
-import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;

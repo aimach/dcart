@@ -12,14 +12,14 @@ import {
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
 import { useShallow } from "zustand/shallow";
-// import des types
-import type { SubmitHandler } from "react-hook-form";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
-import type { allInputsType } from "../../../../utils/types/formTypes";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+// import des types
+import type { SubmitHandler } from "react-hook-form";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type imageInputsType = {
 	content1_lang1: string;

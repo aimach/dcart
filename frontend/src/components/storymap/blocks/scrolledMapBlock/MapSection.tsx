@@ -107,7 +107,13 @@ const MapSection = ({
 
 					{points.length ? (
 						points.map((point: PointType & { blockId: string }) => {
-							const bigIcon = getIcon(point, style, false, false, pointIndex);
+							const bigIcon = getIcon(
+								point,
+								style,
+								false,
+								false,
+								pointIndex.toString(),
+							);
 
 							return (
 								<Marker

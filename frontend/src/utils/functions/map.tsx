@@ -211,6 +211,7 @@ const createLucideString = (
 	}
 
 	const svgString = renderToStaticMarkup(
+		// @ts-ignore
 		<Icon size={options?.size || 24} color={options?.color || "black"} />,
 	);
 
@@ -221,6 +222,7 @@ const createLucideString = (
  * Fonction pour gérer le survol de la souris sur un cluster
  * @param {Event} e - L'événement de la souris
  */
+// @ts-ignore
 const handleClusterMouseOver = (e: L.MarkerClusterMouseEvent) => {
 	const cluster = e.layer;
 	const clusterFirstPoint = cluster.getAllChildMarkers()[0];
@@ -244,6 +246,7 @@ const handleClusterMouseOver = (e: L.MarkerClusterMouseEvent) => {
  */
 
 const handleClusterClick = (
+	// @ts-ignore
 	e: L.MarkerClusterMouseEvent,
 	map: LeafletMap,
 	setSelectedMarker: (point: PointType) => void,

@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useContext, useEffect, useRef, useState } from "react";
-import { Controller, get, useForm } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
@@ -45,7 +45,7 @@ type IntroFormProps = {
 const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 	const { translation, language } = useTranslation();
 
-	const { categoryOptions } = useContext(CategoryOptionsContext)
+	const { categoryOptions } = useContext(CategoryOptionsContext);
 
 	const { pathname } = useLocation();
 
@@ -139,16 +139,14 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		if (mapInfos) {
 			if (mapInfos.category) {
 				setValue("category", (mapInfos.category as CategoryType).id);
-			} else {
-				setValue("category", "0");
 			}
 			if (mapInfos.relatedStorymap) {
 				setValue("relatedStorymap", mapInfos.relatedStorymap as string);
-			} else {
-				setValue("relatedStorymap", "0");
 			}
+			setValue("relatedStorymap", "0");
+			setValue("category", "0");
 		}
-	}, []);
+	}, [mapInfos, setValue]);
 
 	// WYSIWYG
 	const quillRef = useRef<Quill | null>(null);
@@ -189,7 +187,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 										<ErrorComponent
 											message={
 												input.required.message?.[
-												language as keyof TranslationType
+													language as keyof TranslationType
 												] as string
 											}
 										/>
@@ -218,7 +216,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 											<ErrorComponent
 												message={
 													input.required.message?.[
-													language as keyof TranslationType
+														language as keyof TranslationType
 													] as string
 												}
 											/>
@@ -251,8 +249,8 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 												defaultValue={
 													(mapInfos as MapInfoType)
 														? (mapInfos as MapInfoType)[
-														`${input.name}` as keyof typeof mapInfos
-														]
+																`${input.name}` as keyof typeof mapInfos
+															]
 														: null
 												}
 											/>
@@ -260,14 +258,14 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 									/>
 									{input.required.value &&
 										errors[input.name as keyof MapInfoType]?.type ===
-										"required" && (
+											"required" && (
 											<ErrorComponent
 												message={input.required.message?.[language] as string}
 											/>
 										)}
 									{errors[input.name as keyof MapInfoType] &&
 										errors[input.name as keyof MapInfoType]?.type ===
-										"maxLength" && (
+											"maxLength" && (
 											<ErrorComponent message="1000 char. max" />
 										)}
 								</div>

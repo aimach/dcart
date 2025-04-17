@@ -8,21 +8,15 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putRequests";
 import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { MapInfoType } from "../../../../utils/types/mapTypes";
-// import du style
-import style from "./SelectElementForm.module.scss";
-import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+import type { LotType } from "../../../../utils/types/filterTypes";
 
 type SelectElementFormProps = {
 	elementOptions: OptionType[];
 	mapInfos: MapInfoType;
-};
-
-type lotType = {
-	firstLevelIds: OptionType[];
-	secondLevelIds: OptionType[];
 };
 
 const SelectElementForm = ({
@@ -32,15 +26,15 @@ const SelectElementForm = ({
 	const { translation, language } = useTranslation();
 	const { setMapInfos } = useMapStore();
 
-	const [lots, setLots] = useState<lotType[]>([]);
-	const [checkboxArray, setCheckboxArray] = useState<lotType[]>([]);
+	const [lots, setLots] = useState<LotType[]>([]);
+	const [checkboxArray, setCheckboxArray] = useState<LotType[]>([]);
 
 	useEffect(() => {
 		const elementFilter = mapInfos.filterMapContent?.find(
 			(filter) => filter.filter.type === "element",
 		);
 		if (elementFilter?.options.checkbox?.length > 0) {
-			setCheckboxArray(elementFilter?.options.checkbox as lotType[]);
+			setCheckboxArray(elementFilter?.options.checkbox as LotType[]);
 			setLots([
 				...elementFilter?.options.checkbox,
 				{ firstLevelIds: [], secondLevelIds: [] },

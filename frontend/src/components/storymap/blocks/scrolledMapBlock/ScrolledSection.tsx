@@ -1,4 +1,5 @@
 // import de bibliothèques
+// @ts-ignore
 import { Scrollama, Step } from "react-scrollama";
 import DOMPurify from "dompurify";
 // import des services
@@ -54,6 +55,7 @@ const ScrolledSection = ({
 									</h4>
 									<p className={style.description}>
 										<span
+											// biome-ignore lint/security/noDangerouslySetInnerHtml: c'est nettoyé avec DOMPurify
 											dangerouslySetInnerHTML={{
 												__html: description,
 											}}

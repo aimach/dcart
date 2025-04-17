@@ -74,8 +74,8 @@ type MapInfoType = {
 	category: string | CategoryType;
 	attestations: PointSetType[];
 	filterMapContent?:
-	Record<string, string>
-	| Record<string, Record<string, string>[]>;
+		| Record<string, string>
+		| Record<string, Record<string, string>[]>;
 	isLayered: boolean;
 	isNbDisplayed: boolean;
 	relatedStorymap?: string;
@@ -170,14 +170,14 @@ type MapColorType = {
 	name_fr: string;
 	name_en: string;
 	code_hex: string;
-}
+};
 
 type PointSetType = {
 	id?: string;
 	name: string;
 	attestationIds: string;
-	color?: { id: string; name_fr: string; name_en: string; code_hex: string } | string;
-	icon?: { id: string; name_fr: string; name_en: string; svg_code: string } | string;
+	color?: MapColorType | string;
+	icon?: MapIconType | string;
 	mapId?: string;
 	blockId?: string;
 };
@@ -199,5 +199,5 @@ export type {
 	MapFilterType,
 	MapIconType,
 	PointSetType,
-	MapColorType
+	MapColorType,
 };

@@ -18,20 +18,15 @@ import {
 	createStorymap,
 	updateStorymap,
 } from "../../../../utils/api/storymap/postRequests";
-import { getAllMapsInfos } from "../../../../utils/api/builtMap/getRequests";
 import {
 	createCategoryOptions,
 	createLanguageOptions,
-	createMapOptions,
 } from "../../../../utils/functions/storymap";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
 import { addStorymapLinkToMap } from "../../../../utils/api/builtMap/postRequests";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type {
+	StorymapBodyType,
 	StorymapLanguageType,
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
@@ -118,8 +113,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 			setStorymapInfos(newStorymap);
 			navigate(`/backoffice/storymaps/${newStorymap.id}`);
 		} else {
-			const bodyWithoutUselessData = {
-				id: storymapInfos?.id,
+			const bodyWithoutUselessData: StorymapBodyType = {
+				id: storymapInfos?.id as string,
 				title_lang1: data.title_lang1,
 				title_lang2: data.title_lang2,
 				description_lang1: data.description_lang1,

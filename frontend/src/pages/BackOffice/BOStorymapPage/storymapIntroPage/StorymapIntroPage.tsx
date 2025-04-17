@@ -45,6 +45,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./storymapIntroPage.module.scss";
+// import des icônes
 import { ChevronRightCircle } from "lucide-react";
 
 /**

@@ -3,7 +3,6 @@ import DOMPurify from "dompurify";
 // import des types
 import type { BlockContentType } from "../types/storymapTypes";
 import type { blockType, parsedPointType } from "../types/formTypes";
-import type { Language } from "../types/languageTypes";
 // import des icônes
 import {
 	Columns2,
@@ -133,9 +132,8 @@ const normalizeBody = (body: blockType, keys: string[]) => {
 		const value = body.hasOwnProperty(key)
 			? (body[key as keyof blockType] as string)
 			: null;
-		acc[key] = value;
-		return acc;
-	}, body);
+		return { ...acc, [key]: value };
+	}, {});
 };
 
 const addPanelToPoints = (points: Record<string, parsedPointType[]>) => {

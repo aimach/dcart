@@ -21,10 +21,14 @@ import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequest
 // import des types
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
-import type { PointType } from "../../../../utils/types/mapTypes";
+import type {
+	MapColorType,
+	MapIconType,
+	PointType,
+} from "../../../../utils/types/mapTypes";
 // import du style
-import "leaflet/dist/leaflet.css";
 import style from "./simpleMapBlock.module.scss";
+import "leaflet/dist/leaflet.css";
 import "./simpleMapBlock.css";
 
 interface SimpleMapBlockProps {
@@ -65,11 +69,12 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const allColorsAndShapes = useMemo(() => {
 		return (blockContent.attestations ?? []).map(({ name, color, icon }) => ({
 			name,
-			color: color?.code_hex,
-			shape: icon?.name_en,
+			color: (color as MapColorType).code_hex,
+			shape: (icon as MapIconType).name_en,
 		}));
 	}, [blockContent.attestations]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: volontaire, sinon s'exécute trop tôt
 	useEffect(() => {
 		const inputs = document.querySelectorAll(
 			".leaflet-control-layers-selector",

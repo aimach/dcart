@@ -27,7 +27,11 @@ import {
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
 // import des types
 import type { FormEventHandler } from "react";
-import type { PointSetType } from "../../../../utils/types/mapTypes";
+import type {
+	MapColorType,
+	MapIconType,
+	PointSetType,
+} from "../../../../utils/types/mapTypes";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./mapForms.module.scss";
@@ -303,8 +307,8 @@ const SimpleMapForm = () => {
 								<tbody>
 									{block.attestations.map((pointSet) => {
 										const icon = getShapeForLayerName(
-											pointSet.icon?.name_en,
-											pointSet.color?.code_hex,
+											(pointSet.icon as MapIconType)?.name_en,
+											(pointSet.color as MapColorType)?.code_hex,
 										);
 										return (
 											<tr key={pointSet.id} className={style.pointSetTableRow}>
