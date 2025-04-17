@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useCallback, useEffect, useState } from "react";
+import { useEffect, useState } from "react";
 import {
 	MapContainer,
 	TileLayer,
@@ -9,24 +9,18 @@ import {
 } from "react-leaflet";
 // import des services
 import {
-	getBackGroundColorClassName,
 	getLittleCircleIcon,
-	getDefaultIcon,
 	getIcon,
 } from "../../../../utils/functions/icons";
+import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
-import type {
-	BlockContentType,
-	GroupedTyped,
-} from "../../../../utils/types/storymapTypes";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./scrolledMapBlock.module.scss";
-import { PointSetType, PointType } from "../../../../utils/types/mapTypes";
-import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
-import { all } from "axios";
 
 interface MapSectionProps {
 	blockContent: BlockContentType;
@@ -48,7 +42,6 @@ const MapSection = ({
 
 	const [points, setPoints] = useState<(PointType & { blockId: string })[]>([]);
 
-
 	const fetchPointsAndAddBlockId = async (childId: string) => {
 		// récupération de tous les points
 		const allAttestations = await getAllPointsByBlockId(childId);
@@ -56,32 +49,30 @@ const MapSection = ({
 			attestation.blockId = childId;
 		}
 		return allAttestations;
-	}
+	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const loadAllPoints = async () => {
 			const promesses = blockContent.children.map((child: BlockContentType) => {
 				return fetchPointsAndAddBlockId(child.id);
-			}
-			);
+			});
 			const allAttestations = await Promise.all(promesses);
 			const allPoints = allAttestations.flat();
 			setPoints(allPoints);
-		}
+		};
 		loadAllPoints();
 	}, []);
 
-
 	// on met à jour les limites de la carte
 	const bounds: LatLngTuple[] = [];
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (points.length) {
 			for (const point of points) {
 				bounds.push([point.latitude, point.longitude]);
 			}
 			if (map) {
-				map.fitBounds(bounds);
+				map.fitBounds(bounds, { padding: [300, 300] });
 			}
 		}
 	}, [map, points]);
@@ -114,12 +105,7 @@ const MapSection = ({
 
 					{points.length ? (
 						points.map((point: PointType & { blockId: string }) => {
-							const bigIcon = getIcon(
-								point,
-								style,
-								false,
-								true,
-							);
+							const bigIcon = getIcon(point, style, false, true);
 
 							return (
 								<Marker
