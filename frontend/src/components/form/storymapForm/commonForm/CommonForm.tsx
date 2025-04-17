@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useSearchParams } from "react-router";
 // import des composants
@@ -245,14 +245,16 @@ const CommonForm = ({
 					);
 				}
 			})}
-			<div className={style.commonFormInputContainer}>
-				<LabelComponent
-					htmlFor="tags"
-					label="Etiquettes de la carte"
-					description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
-				/>
-				<div className={style.inputContainer}>{children}</div>
-			</div>
+			{React.Children.map(children, (child, index) => (
+				<div className={style.commonFormInputContainer} key={index}>
+					<LabelComponent
+						htmlFor="tags"
+						label="Etiquettes de la carte"
+						description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
+					/>
+					<div className={style.inputContainer}>{child}</div>
+				</div>
+			))}
 			<div className={style.commonFormContainerButton}>
 				<button
 					type="button"
