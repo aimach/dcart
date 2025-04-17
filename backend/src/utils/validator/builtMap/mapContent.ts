@@ -1,5 +1,5 @@
-import Joi from "joi";
 // import des bibliothèques
+import Joi from "joi";
 // import des types
 import type { Request, Response, NextFunction } from "express";
 

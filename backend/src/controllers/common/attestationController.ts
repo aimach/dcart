@@ -1,14 +1,14 @@
 // import des entités
 import { Attestation } from "../../entities/common/Attestation";
+import { MapContent } from "../../entities/builtMap/MapContent";
+import { Icon } from "../../entities/common/Icon";
+import { Color } from "../../entities/common/Color";
+import { Block } from "../../entities/storymap/Block";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
-import { MapContent } from "../../entities/builtMap/MapContent";
-import { Icon } from "../../entities/common/Icon";
-import { Color } from "../../entities/common/Color";
-import { Block } from "../../entities/storymap/Block";
 
 export const attestationController = {
 	// récupère toutes les attestations d'une carte

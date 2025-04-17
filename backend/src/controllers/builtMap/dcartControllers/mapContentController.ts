@@ -2,16 +2,16 @@
 import { MapContent } from "../../../entities/builtMap/MapContent";
 import { Category } from "../../../entities/common/Category";
 import { Storymap } from "../../../entities/storymap/Storymap";
+import { User } from "../../../entities/auth/User";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
-import { User } from "../../../entities/auth/User";
 
 interface UserPayload extends jwt.JwtPayload {
-	userStatus: 'admin' | 'writer';
+	userStatus: "admin" | "writer";
 	userId: string;
 }
 
@@ -90,7 +90,7 @@ export const mapContentController = {
 					"category",
 					"attestations",
 					"icon",
-					"color"
+					"color",
 				])
 				.where("map.id = :mapId", { mapId })
 				.getOne();
@@ -123,7 +123,9 @@ export const mapContentController = {
 			// récupération de la date actuelle
 			const currentDate = new Date();
 
-			const creator = await dcartDataSource.getRepository(User).findOne({ where: { id: userId } });
+			const creator = await dcartDataSource
+				.getRepository(User)
+				.findOne({ where: { id: userId } });
 
 			if (!creator) {
 				res.status(404).send("Utilisateur non trouvé.");
@@ -136,7 +138,10 @@ export const mapContentController = {
 				description_en,
 				description_fr,
 				image_url,
-				relatedStorymap: relatedStorymap === "0" || relatedStorymap === "" ? null : relatedStorymap,
+				relatedStorymap:
+					relatedStorymap === "0" || relatedStorymap === ""
+						? null
+						: relatedStorymap,
 				category,
 				creator,
 				uploadPointsLastDate: currentDate,
@@ -199,10 +204,15 @@ export const mapContentController = {
 			}
 
 			// à corriger après la présentation
+			// biome-ignore lint/performance/noDelete:
 			delete req.body.filterMapContent;
 
-			const updatedMap = await dcartDataSource.getRepository(MapContent).merge(mapToUpdate, req.body);
-			const newMap = await dcartDataSource.getRepository(MapContent).save(updatedMap);
+			const updatedMap = await dcartDataSource
+				.getRepository(MapContent)
+				.merge(mapToUpdate, req.body);
+			const newMap = await dcartDataSource
+				.getRepository(MapContent)
+				.save(updatedMap);
 
 			res.status(200).send(newMap);
 		} catch (error) {

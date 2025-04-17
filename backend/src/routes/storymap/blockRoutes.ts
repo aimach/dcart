@@ -3,7 +3,6 @@ import express from "express";
 // import des modules
 import { blockController } from "../../controllers/storymap/blockController";
 // import des validateurs
-
 import { authenticateUser } from "../../middlewares/authenticate";
 import {
 	validateBlockBody,

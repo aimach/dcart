@@ -9,7 +9,6 @@ import {
 	CreateDateColumn,
 	UpdateDateColumn,
 } from "typeorm";
-
 // import des entités
 import { Storymap } from "./Storymap";
 import { Type } from "./Type";

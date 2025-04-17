@@ -1,6 +1,8 @@
 // import des bibiliothèques
 import express from "express";
+// import des controllers
 import { mapController } from "../../../controllers/builtMap/mapControllers";
+// import des validateurs
 import { validateSourceBody } from "../../../utils/validator/builtMap/source";
 
 export const sourceRoutes = express.Router();

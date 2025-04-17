@@ -2,6 +2,7 @@
 import Joi from "joi";
 // import des types
 import type { Request, Response, NextFunction } from "express";
+// import des schémas
 import { pointSchema } from "./point";
 
 const blockToCreateSchema = Joi.object({

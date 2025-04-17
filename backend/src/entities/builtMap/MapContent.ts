@@ -9,6 +9,7 @@ import {
 	ManyToOne,
 	OneToMany,
 } from "typeorm";
+// import des entités
 import { FilterMapContent } from "./FilterMapContent";
 import { User } from "../auth/User";
 import { Category } from "../common/Category";

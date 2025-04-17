@@ -1,8 +1,9 @@
-// import des services
-import { dcartDataSource } from "../../dataSource/dataSource";
+// import des entités
 import { Block } from "../../entities/storymap/Block";
 import { Storymap } from "../../entities/storymap/Storymap";
 import { Type } from "../../entities/storymap/Type";
+// import des services
+import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";

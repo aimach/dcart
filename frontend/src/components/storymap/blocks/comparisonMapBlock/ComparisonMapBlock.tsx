@@ -108,8 +108,6 @@ const ComparisonMapBlock = ({
 				.bindPopup(popupContent as string);
 		});
 
-		console.log(rightPoints);
-
 		// on créé un point miniature sur le pane opposé
 		rightPoints.map((point) => {
 			L.marker([point.latitude, point.longitude], {

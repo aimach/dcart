@@ -4,10 +4,10 @@ import { MapContent } from "../../entities/builtMap/MapContent";
 import { Storymap } from "../../entities/storymap/Storymap";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
+import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
-import { handleError } from "../../utils/errorHandler/errorHandler";
 
 // définition de la map des sessions actives
 const activeSessions = new Map();

@@ -11,10 +11,11 @@ import type {
 	BlockInterface,
 	GroupedPoint,
 } from "../../utils/types/storymapTypes";
-
+import { PointType } from "../../utils/types/mapTypes";
+import { Attestation } from "../../entities/common/Attestation";
 
 interface UserPayload extends jwt.JwtPayload {
-	userStatus: 'admin' | 'writer';
+	userStatus: "admin" | "writer";
 	userId: string;
 }
 
@@ -51,7 +52,8 @@ export const storymapContentControllers = {
 						"category",
 						"block",
 						"attestations",
-						"icon", "color",
+						"icon",
+						"color",
 						"type",
 						"child",
 						"child_type",
@@ -91,7 +93,8 @@ export const storymapContentControllers = {
 					"category",
 					"block",
 					"attestations",
-					"icon", "color",
+					"icon",
+					"color",
 					"type",
 					"child",
 					"child_type",
@@ -115,26 +118,6 @@ export const storymapContentControllers = {
 				storymapInfos.blocks = storymapInfos.blocks.filter(
 					(block) => block.position !== null && block.type?.name !== "step",
 				);
-
-				storymapInfos?.blocks.map((block) => {
-					// s'il y a des points au niveau d'un block, on les regroupes par localisation
-					if (block.attestations?.length) {
-						const groupedPoints: GroupedPoint[] = groupByLocation(
-							block.attestations as any,
-						);
-						(block as BlockInterface).groupedPoints = groupedPoints;
-					}
-
-					// s'il y a des points au niveau des enfants, on fait de même
-					if (block.children.length) {
-						block.children.map((child) => {
-							const groupedPoints: GroupedPoint[] = groupByLocation(
-								child.attestations as any,
-							);
-							(child as BlockInterface).groupedPoints = groupedPoints;
-						});
-					}
-				});
 			}
 
 			res.status(200).send(storymapInfos);

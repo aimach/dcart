@@ -1,13 +1,5 @@
 // import des bibilothèques
-import {
-	Entity,
-	PrimaryGeneratedColumn,
-	Column,
-	BaseEntity,
-	ManyToOne,
-} from "typeorm";
-// import des entités
-import { Block } from "./Block";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 
 export enum pane {
 	LEFT = "left",

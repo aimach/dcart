@@ -5,8 +5,8 @@ import {
 	Column,
 	BaseEntity,
 	OneToMany,
-	ManyToOne,
 } from "typeorm";
+// import des entités
 import { Attestation } from "../common/Attestation";
 
 @Entity()

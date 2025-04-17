@@ -1,6 +1,6 @@
 // import des bibliothèques
 import express from "express";
-// import des modules
+// import des controllers
 import { categoryController } from "../../controllers/storymap/categoryController";
 
 export const categoryRoutes = express.Router();
