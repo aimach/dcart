@@ -23,7 +23,6 @@ const newMapContentSchema = Joi.object({
 	image_url: Joi.string().required().allow("").messages({
 		"string.base": "Le lien de l'image doit être une chaîne de caractères",
 	}),
-	relatedStorymap: Joi.string(),
 	tags: Joi.string(),
 });
 

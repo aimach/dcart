@@ -20,7 +20,6 @@ import {
 	updateStorymap,
 } from "../../../../utils/api/storymap/postRequests";
 import { createLanguageOptions } from "../../../../utils/functions/storymap";
-import { addStorymapLinkToMap } from "../../../../utils/api/builtMap/postRequests";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type {
@@ -34,7 +33,7 @@ import type {
 	allInputsType,
 } from "../../../../utils/types/formTypes";
 import type { OptionType } from "../../../../utils/types/commonTypes";
-import { TagType } from "../../../../utils/types/mapTypes";
+import type { TagType } from "../../../../utils/types/mapTypes";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -107,7 +106,11 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 				lang1: data.lang1,
 				lang2: data.lang2,
 				publication_date: data.publication_date,
-				tags: selectedTags,
+				tags: selectedTags
+					? selectedTags
+					: (storymapInfos?.tags as TagType[])
+							.map((tag: TagType) => tag.id)
+							.join("|"),
 			};
 			await updateStorymap(bodyWithoutUselessData, storymapInfos?.id as string);
 		}
@@ -124,66 +127,46 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	return (
 		<>
 			{storymapId === "create" && (
-				<>
-					<CommonForm
-						onSubmit={onSubmit as SubmitHandler<allInputsType>}
-						inputs={inputs}
-						action="create"
+				<CommonForm
+					onSubmit={onSubmit as SubmitHandler<allInputsType>}
+					inputs={inputs}
+					action="create"
+				>
+					<Select
+						options={tagOptions}
+						delimiter="|"
+						isMulti
+						onChange={(newValue) => {
+							const tagIds = newValue
+								.map((tag: OptionType) => tag.value as string)
+								.join("|");
+							setSelectedTags(tagIds);
+						}}
+						placeholder="Choisir une ou plusieurs étiquette"
 					/>
-					<div>
-						<LabelComponent
-							htmlFor="tags"
-							label="Etiquettes de la carte"
-							description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
-						/>
-						<div>
-							<Select
-								options={tagOptions}
-								delimiter="|"
-								isMulti
-								onChange={(newValue) => {
-									const tagIds = newValue
-										.map((tag: OptionType) => tag.value as string)
-										.join("|");
-									setSelectedTags(tagIds);
-								}}
-								placeholder="Choisir une ou plusieurs étiquette"
-							/>
-						</div>
-					</div>
-				</>
+				</CommonForm>
 			)}
 			{isLoaded && (
-				<>
-					<CommonForm
-						onSubmit={onSubmit as SubmitHandler<allInputsType>}
-						inputs={inputs}
-						defaultValues={{ ...storymapInfos } as StorymapType}
-						action="edit"
+				<CommonForm
+					onSubmit={onSubmit as SubmitHandler<allInputsType>}
+					inputs={inputs}
+					defaultValues={{ ...storymapInfos } as StorymapType}
+					action="edit"
+				>
+					<Select
+						options={tagOptions}
+						defaultValue={storymapInfos ? defaultTagValues : []}
+						delimiter="|"
+						isMulti
+						onChange={(newValue) => {
+							const tagIds = newValue
+								.map((tag: OptionType) => tag.value as string)
+								.join("|");
+							setSelectedTags(tagIds);
+						}}
+						placeholder="Choisir une ou plusieurs étiquette"
 					/>
-					<div>
-						<LabelComponent
-							htmlFor="tags"
-							label="Etiquettes de la carte"
-							description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
-						/>
-						<div>
-							<Select
-								options={tagOptions}
-								defaultValue={storymapInfos ? defaultTagValues : []}
-								delimiter="|"
-								isMulti
-								onChange={(newValue) => {
-									const tagIds = newValue
-										.map((tag: OptionType) => tag.value as string)
-										.join("|");
-									setSelectedTags(tagIds);
-								}}
-								placeholder="Choisir une ou plusieurs étiquette"
-							/>
-						</div>
-					</div>
-				</>
+				</CommonForm>
 			)}
 		</>
 	);
