@@ -27,12 +27,11 @@ import type {
 import type { ChangeEvent } from "react";
 import type { PointSetType } from "../../../../utils/types/mapTypes";
 import type Quill from "quill";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
-import Block from "quill/blots/block";
-import { BlockContentType } from "../../../../utils/types/storymapTypes";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -201,11 +200,11 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					if (input.type === "text") {
 						return (
 							<div key={input.name} className={style.mapFormInputContainer}>
-								<div className={style.labelContainer}>
-									<label htmlFor={input.name}>
-										{input[`label_${language}`]}
-									</label>
-								</div>
+								<LabelComponent
+									htmlFor={input.name}
+									label={input[`label_${language}`]}
+									description={input[`description_${language}`] ?? ""}
+								/>
 								<div className={style.inputContainer}>
 									<input
 										{...register(input.name as keyof stepInputsType, {
@@ -226,12 +225,11 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					if (input.type === "wysiwyg") {
 						return (
 							<div key={input.name} className={style.mapFormInputContainer}>
-								<div className={style.labelContainer}>
-									<label htmlFor={input.name}>
-										{input[`label_${language}`]}
-									</label>
-									<p>{input[`description_${language}`] ?? ""}</p>
-								</div>
+								<LabelComponent
+									htmlFor={input.name}
+									label={input[`label_${language}`]}
+									description={input[`description_${language}`] ?? ""}
+								/>
 								<div className={style.inputContainer}>
 									<Controller
 										name={input.name as keyof allInputsType}

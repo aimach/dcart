@@ -553,6 +553,10 @@ const stepInputs: InputType[] = [
 		label_fr: "Titre en langue 1",
 		label_en: "Title in language 1",
 		name: "content1_lang1",
+		description_fr:
+			"Le titre de l'étape sera automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
+		description_en:
+			"The title of the step will be automatically preceded by the step number. It is not necessary to add it.",
 		type: "text",
 		required: {
 			value: true,
@@ -566,6 +570,10 @@ const stepInputs: InputType[] = [
 		label_fr: "Titre en langue 2",
 		label_en: "Title in language 2",
 		name: "content1_lang2",
+		description_fr:
+			"Le titre de l'étape sera automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
+		description_en:
+			"The title of the step will be automatically preceded by the step number. It is not necessary to add it.",
 		type: "text",
 		required: {
 			value: true,

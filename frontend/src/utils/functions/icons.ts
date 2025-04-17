@@ -202,12 +202,18 @@ const getCircleIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	content?: string,
 ) => {
+	const iconContent = isNbDisplayed
+		? sourcesNb.toString()
+		: content
+			? content
+			: "";
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <circle cx="50" cy="50" r="45" ${customFillAndStroke} stroke-width="5" />
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${customTextColor} >
-        ${isNbDisplayed ? sourcesNb.toString() : ""}
+        ${iconContent}
       </text>
     </svg>
   `;
@@ -219,13 +225,19 @@ const getSquareIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	content?: string,
 ) => {
+	const iconContent = isNbDisplayed
+		? sourcesNb.toString()
+		: content
+			? content
+			: "";
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <rect x="5" y="5" width="90" height="90" ${customFillAndStroke}
  stroke-width="5"/>
       <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${customTextColor} >
-        ${isNbDisplayed ? sourcesNb.toString() : ""}
+        ${iconContent}
       </text>
     </svg>
   `;
@@ -237,13 +249,19 @@ const getTriangleIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	content?: string,
 ) => {
-	return `
+	const iconContent = isNbDisplayed
+		? sourcesNb.toString()
+		: content
+			? content
+			: "";
+	return `const iconContent = isNbDisplayed ? sourcesNb.toString() : content ? content : "";
      <svg xmlns="http://www.w3.org/2000/svg" width=${customSize}  height=${customSize}  viewBox="0 0 100 100">
       <polygon points="50,10 90,90 10,90" ${customFillAndStroke}
  stroke-width="5" />
       <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="50" fill=${customTextColor} >
-        ${isNbDisplayed ? sourcesNb.toString() : ""}
+        ${iconContent}
       </text>
     </svg>
   `;
@@ -255,7 +273,13 @@ const getDiamondIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	content?: string,
 ) => {
+	const iconContent = isNbDisplayed
+		? sourcesNb.toString()
+		: content
+			? content
+			: "";
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
       <polygon 
         points="50,5 95,50 50,95 5,50" 
@@ -270,7 +294,7 @@ const getDiamondIcon = (
         font-size="50" 
         fill=${customTextColor} 
       >
-        ${isNbDisplayed ? sourcesNb.toString() : ""}
+        ${iconContent}
       </text>
     </svg>
   `;
@@ -282,7 +306,13 @@ const getStarIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	content?: string,
 ) => {
+	const iconContent = isNbDisplayed
+		? sourcesNb.toString()
+		: content
+			? content
+			: "";
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
 	<defs>
 		<filter id="blur" x="-5%" y = "-5%" width="110%" height="110%" >
@@ -312,12 +342,10 @@ const getStarIcon = (
         font-size="50" 
         fill=${customTextColor}
       >
-        ${isNbDisplayed ? sourcesNb.toString() : ""}
+        ${iconContent}
       </text>
     </svg>
   `;
-
-
 };
 
 const getShapedDivContent = (
@@ -326,13 +354,12 @@ const getShapedDivContent = (
 	sourcesNb: number,
 	isSelected: boolean,
 	isNbDisplayed: boolean,
+	content?: string,
 ) => {
 	let customSize = getShapeDependingOnNb(sourcesNb);
 	const customColor = getColorDependingOnNb(sourcesNb, color);
 	let customFillAndStroke = `fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}`;
-	let customTextColor = tinycolor(customColor).isDark()
-		? "white"
-		: "black";
+	let customTextColor = tinycolor(customColor).isDark() ? "white" : "black";
 
 	if (isSelected) {
 		customFillAndStroke = `fill="white" stroke-width="10" stroke=${tinycolor(customColor).darken(10).toString()}`;
@@ -348,6 +375,7 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				content,
 			);
 		case "square":
 			return getSquareIcon(
@@ -356,6 +384,7 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				content,
 			);
 		case "triangle":
 			return getTriangleIcon(
@@ -364,6 +393,7 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				content,
 			);
 		case "diamond":
 			return getDiamondIcon(
@@ -372,6 +402,7 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				content,
 			);
 		case "star":
 			return getStarIcon(
@@ -380,6 +411,7 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				content,
 			);
 
 		default:
@@ -389,6 +421,7 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				content,
 			);
 	}
 };
@@ -398,6 +431,7 @@ const getIcon = (
 	style: CSSModuleClasses,
 	isSelected: boolean,
 	isNbDisplayed: boolean,
+	content?: string,
 ) => {
 	let customIcon = getDefaultIcon(
 		point.sources.length,
@@ -413,6 +447,7 @@ const getIcon = (
 				point.sources.length,
 				isSelected,
 				isNbDisplayed,
+				content,
 			),
 			className: "",
 			iconSize: [8, 8],
@@ -428,6 +463,7 @@ const getIcon = (
 				point.sources.length,
 				isSelected,
 				isNbDisplayed,
+				content,
 			),
 			className: "",
 			iconSize: [8, 8],
@@ -467,7 +503,7 @@ const getShapeForLayerName = (
 	if (!color) {
 		defaultColor = "#AD9A85";
 	}
-	const size = isAddingWidthAndHeight ? 'width="20" height="20"' : '';
+	const size = isAddingWidthAndHeight ? 'width="20" height="20"' : "";
 	switch (shape) {
 		case "circle":
 			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
@@ -490,7 +526,7 @@ const getShapeForLayerName = (
 			L15,45 
 			L49,42 
 			Z"
-			fill=${defaultColor} stroke="lightgrey" stroke-width="5"  filter="url(#blur)" stroke-linejoin="round"/></svg>`
+			fill=${defaultColor} stroke="lightgrey" stroke-width="5"  filter="url(#blur)" stroke-linejoin="round"/></svg>`;
 		default:
 			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
 	}
@@ -499,13 +535,19 @@ const getShapeForLayerName = (
 const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 	const markersColorsAndShapes = markers.map((marker) => {
 		return (marker.options as CustomMarkerOptions).colorAndShape;
-	})
-	const uniqueMarkersColorsAndShapes = markersColorsAndShapes.filter((marker, index) => {
-		return markersColorsAndShapes.findIndex((m) => m?.color === marker.color && m?.shape === marker.shape) === index;
 	});
+	const uniqueMarkersColorsAndShapes = markersColorsAndShapes.filter(
+		(marker, index) => {
+			return (
+				markersColorsAndShapes.findIndex(
+					(m) => m?.color === marker.color && m?.shape === marker.shape,
+				) === index
+			);
+		},
+	);
 
 	if (uniqueMarkersColorsAndShapes.length === 1) {
-		const iconHTML = markers[0].options.icon?.options.html ?? '';
+		const iconHTML = markers[0].options.icon?.options.html ?? "";
 		return iconHTML;
 	}
 
@@ -515,21 +557,24 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 		<rect x="0" y="0" width="20" height="40" /></clipPath><clipPath id="right-half"><rect x="20" y="0" width="20" height="40" /></clipPath>`;
 		for (let i = 0; i < 2; i++) {
 			const side = i === 0 ? "left-half" : "right-half";
-			const color = (uniqueMarkers[i].options as CustomMarkerOptions).colorAndShape?.color;
-			const shape = (uniqueMarkers[i].options as CustomMarkerOptions).colorAndShape?.shape;
-			const customIcon = getShapeForLayerName(shape, color, '', false);
+			const color = (uniqueMarkers[i].options as CustomMarkerOptions)
+				.colorAndShape?.color;
+			const shape = (uniqueMarkers[i].options as CustomMarkerOptions)
+				.colorAndShape?.shape;
+			const customIcon = getShapeForLayerName(shape, color, "", false);
 			blendIcon += `<g clip-path="url(#${side})">${customIcon}</g>`;
 		}
 		return `${blendIcon}</svg>`;
 	}
 
 	if (markers.length > 2) {
-		const markerColors = uniqueMarkersColorsAndShapes.map((marker) => marker.color);
+		const markerColors = uniqueMarkersColorsAndShapes.map(
+			(marker) => marker.color,
+		);
 		const uniqueColors = [...new Set(markerColors)];
 		return generateCamembertSVG(uniqueColors, uniqueMarkersColorsAndShapes);
-	};
-}
-
+	}
+};
 
 /**
  * Fonction donnée au composant MarkerCluster pour créer une icône personnalisée
@@ -547,20 +592,24 @@ const createClusterCustomIcon = (cluster: MarkerCluster) => {
 	});
 };
 
-
 /**
  * Fonction pour générer un SVG de camembert
  * @param {string[]} colors - Les couleurs des points
  * @param {number} size - La taille du SVG
  * @returns {string} - Le SVG généré
  */
-function generateCamembertSVG(colors: string[], markersColorsAndShapes: any[], size = 35) {
+function generateCamembertSVG(
+	colors: string[],
+	markersColorsAndShapes: any[],
+	size = 35,
+) {
 	const cx = size / 2;
 	const cy = size / 2;
 	const radius = size / 2;
-	const total = colors.length === 1 ? markersColorsAndShapes.length : colors.length;
+	const total =
+		colors.length === 1 ? markersColorsAndShapes.length : colors.length;
 	let angleStart = 0;
-	let paths = '';
+	let paths = "";
 	const arrayForLoop = colors.length === 1 ? markersColorsAndShapes : colors;
 
 	for (const color of arrayForLoop) {
@@ -584,7 +633,7 @@ function generateCamembertSVG(colors: string[], markersColorsAndShapes: any[], s
 		paths += `<path d="${d}" fill="${colors.length === 1 ? color.color : color}" />`;
 
 		angleStart = angleEnd;
-	};
+	}
 
 	return `
     <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" stroke="lightgrey" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
@@ -600,8 +649,10 @@ function generateCamembertSVG(colors: string[], markersColorsAndShapes: any[], s
  */
 const getUniqueMarkersByIcon = (markers: Marker[]) => {
 	const seen = new Set();
-	return markers.filter(marker => {
-		const iconHtml = ((marker.options as CustomMarkerOptions).colorAndShape?.color ?? '') + ((marker.options as CustomMarkerOptions).colorAndShape?.shape ?? '');
+	return markers.filter((marker) => {
+		const iconHtml =
+			((marker.options as CustomMarkerOptions).colorAndShape?.color ?? "") +
+			((marker.options as CustomMarkerOptions).colorAndShape?.shape ?? "");
 		if (seen.has(iconHtml)) return false;
 		seen.add(iconHtml);
 		return true;

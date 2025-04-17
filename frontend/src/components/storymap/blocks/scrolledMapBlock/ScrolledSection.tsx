@@ -33,12 +33,15 @@ const ScrolledSection = ({
 	return (
 		<>
 			<Scrollama offset={0.2} onStepEnter={onStepEnter}>
-				{(stepsInOrder as BlockContentType[]).map((point) => {
+				{(stepsInOrder as BlockContentType[]).map((point, index) => {
 					const description = DOMPurify.sanitize(
 						point[`content2_${selectedLanguage}`],
 					);
 					return (
-						<Step data={point.id} key={point.id + (point.position as number)}>
+						<Step
+							data={`${point.id}|${index}`}
+							key={point.id + (point.position as number)}
+						>
 							<div
 								id={point.id.toString()}
 								style={{
@@ -46,7 +49,9 @@ const ScrolledSection = ({
 								}}
 							>
 								<div className={style.infoElement}>
-									<h4>{point[`content1_${selectedLanguage}`]}</h4>
+									<h4>
+										{index + 1}. {point[`content1_${selectedLanguage}`]}
+									</h4>
 									<p className={style.description}>
 										<span
 											dangerouslySetInnerHTML={{

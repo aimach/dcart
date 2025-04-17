@@ -1,6 +1,5 @@
 // import des bibliothèques
-import { useCallback, useEffect, useMemo, useState } from "react";
-import { v4 as uuidv4 } from "uuid";
+import { useCallback, useEffect, useState } from "react";
 import L from "leaflet";
 // import des services
 import { getIcon } from "../../../../utils/functions/icons";
