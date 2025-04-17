@@ -9,7 +9,7 @@ interface ButtonComponentProps {
 	textContent: string;
 	onClickFunction?: () => void;
 	link?: string;
-	isSelected: boolean;
+	isSelected?: boolean;
 }
 
 /**
