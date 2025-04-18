@@ -190,7 +190,12 @@ export const mapContentController = {
 			}
 
 			// récupération des tags
-			const tagIds = tags.split("|");
+			let tagIds: string[] = [];
+			if (Array.isArray(tags)) {
+				tagIds = tags.map((tag) => tag.id);
+			} else {
+				tagIds = tags.split("|");
+			}
 			const tagsToSave = await dcartDataSource
 				.getRepository(Tag)
 				.find({ where: { id: In(tagIds) } });
@@ -201,7 +206,6 @@ export const mapContentController = {
 
 			mapToUpdate.tags = tagsToSave;
 
-			// à corriger après la présentation
 			// biome-ignore lint/performance/noDelete:
 			delete req.body.filterMapContent;
 

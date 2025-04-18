@@ -32,7 +32,7 @@ const updateMapContentSchema = newMapContentSchema.keys({
 	isActive: Joi.boolean().required(),
 	createdAt: Joi.date().required(),
 	updatedAt: Joi.date().required(),
-	tags: Joi.string().required(),
+	tags: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
 	filters: Joi.array()
 		.items(
 			Joi.object({

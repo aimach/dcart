@@ -36,6 +36,8 @@ const PointSetUploadForm = ({
 
 	const { icons, colors } = useContext(IconOptionsContext);
 
+	console.log(icons);
+
 	const handleFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
 			event,
