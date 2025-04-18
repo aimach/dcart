@@ -25,6 +25,7 @@ import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/Storyma
 import MapCategoryMenuPage from "./pages/MapCategoryMenuPage/MapCategoryMenuPage.tsx";
 import StorymapCategoryMenuPage from "./pages/StorymapCategoryMenuPage/StorymapCategoryMenuPage.tsx";
 import { SessionProvider } from "./context/SessionContext.tsx";
+import HomePage from "./HomePage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -38,7 +39,7 @@ if (rootElement) {
 							<TagOptionsProvider>
 								<Routes>
 									<Route element={<NavigationLayout />}>
-										<Route index element={<App />} />
+										<Route index element={<HomePage />} />
 										<Route path="maps/categories">
 											<Route index element={<MapCategoryMenuPage />} />
 										</Route>
