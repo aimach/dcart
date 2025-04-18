@@ -22,10 +22,9 @@ import { TagOptionsProvider } from "./context/TagContext.tsx";
 import "./index.css";
 import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
 import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
-import MapCategoryMenuPage from "./pages/MapCategoryMenuPage/MapCategoryMenuPage.tsx";
-import StorymapCategoryMenuPage from "./pages/StorymapCategoryMenuPage/StorymapCategoryMenuPage.tsx";
 import { SessionProvider } from "./context/SessionContext.tsx";
 import HomePage from "./HomePage.tsx";
+import TagPage from "./pages/TagPage/TagPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -40,13 +39,11 @@ if (rootElement) {
 								<Routes>
 									<Route element={<NavigationLayout />}>
 										<Route index element={<HomePage />} />
-										<Route path="maps/categories">
-											<Route index element={<MapCategoryMenuPage />} />
+										<Route path="tag/:tagId">
+											<Route index element={<TagPage />} />
 										</Route>
 										<Route path="map/:mapId" element={<MapPage />} />
-										<Route path="storymaps/categories">
-											<Route index element={<StorymapCategoryMenuPage />} />
-										</Route>
+
 										<Route
 											path="storymap/:storymapId"
 											element={<StorymapPage />}

@@ -20,46 +20,45 @@ export const tagController = {
 				return;
 			}
 
+			const tagQuery = await dcartDataSource
+				.getRepository(Tag)
+				.createQueryBuilder("tag")
+				.leftJoinAndSelect("tag.maps", "map")
+				.leftJoinAndSelect("tag.storymaps", "storymap")
+				.leftJoinAndSelect("map.tags", "mapTag")
+				.leftJoinAndSelect("storymap.tags", "storymapTag")
+				.select([
+					"tag.id",
+					"tag.name_fr",
+					"tag.name_en",
+					"tag.description_fr",
+					"tag.description_en",
+					"map.id",
+					"map.title_fr",
+					"map.title_en",
+					"map.description_fr",
+					"map.description_en",
+					"map.image_url",
+					"mapTag",
+					"storymap.id",
+					"storymap.title_lang1",
+					"storymap.title_lang2",
+					"storymap.description_lang1",
+					"storymap.description_lang2",
+					"storymap.image_url",
+					"storymapTag",
+				])
+				.where("map.isActive = true")
+				.andWhere("storymap.isActive = true");
+
 			if (tagId === "items") {
-				results = await dcartDataSource
-					.getRepository(Tag)
-					.createQueryBuilder("tag")
-					.leftJoinAndSelect("tag.maps", "map")
-					.leftJoinAndSelect("tag.storymaps", "storymap")
-					.leftJoinAndSelect("map.tags", "mapTag")
-					.leftJoinAndSelect("storymap.tags", "storymapTag")
-					.select([
-						"tag.id",
-						"tag.name_fr",
-						"tag.name_en",
-						"tag.description_fr",
-						"tag.description_en",
-						"map.id",
-						"map.title_fr",
-						"map.title_en",
-						"map.description_fr",
-						"map.description_en",
-						"map.image_url",
-						"mapTag",
-						"storymap.id",
-						"storymap.title_lang1",
-						"storymap.title_lang2",
-						"storymap.description_lang1",
-						"storymap.description_lang2",
-						"storymap.image_url",
-						"storymapTag",
-					])
-					.where("map.isActive = true")
-					.andWhere("storymap.isActive = true")
-					.getMany();
+				results = await tagQuery.getMany();
 
 				res.status(200).json(results);
 				return;
 			}
 
-			results = await dcartDataSource
-				.getRepository(Tag)
-				.findOneBy({ id: tagId });
+			results = await tagQuery.andWhere("tag.id = :tagId", { tagId }).getOne();
 
 			if (!results) {
 				res.status(404).json("Aucun tag trouvé");

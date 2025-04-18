@@ -276,6 +276,15 @@ const getAllTagsWithMapsAndStorymaps = async () => {
 	}
 };
 
+const getTagWithMapsAndStorymaps = async (tagId: string) => {
+	try {
+		const response = await apiClient.get(`/dcart/tags/${tagId}`);
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des cartes et storyamps :", error);
+	}
+};
+
 export {
 	getAllAttestationsFromSourceId,
 	getAllTags,
@@ -294,4 +303,5 @@ export {
 	getAllColors,
 	getAllPointsByBlockId,
 	getAllTagsWithMapsAndStorymaps,
+	getTagWithMapsAndStorymaps,
 };

@@ -159,19 +159,29 @@ button {
 
 .mainPage {
 	width: 100vw;
-
 	@include m.flexbox(flex, column, nowrap, flex-start, center);
 	gap: v.$space-xxl;
-	padding-top: 10vh;
-
-	// background-image: url('./assets/home_bg.png');
 	background-position-y: 43%;
 	background-repeat: no-repeat;
 	background-size: cover;
 
-	>h1 {
-		font-size: v.$font-size-xxxxxl;
+	.heroContainer {
+		width: 100vw;
+		height: 100vh;
+		background-image: url('./assets/home_bg.png');
+		background-size: cover;
+		background-position: top;
+		background-repeat: no-repeat;
+		@include m.flexbox(flex, column, nowrap, center, center);
+		gap: v.$space-xxl;
+
+		>h1 {
+			font-size: v.$font-size-xxxxxl;
+			text-align: center;
+		}
+
 	}
+
 
 	>p {
 		width: 50vw;
@@ -211,6 +221,12 @@ button {
 		@include m.flexbox(flex, row, wrap, center, center);
 		gap: v.$space-xxl;
 
+		.tagItemContainer {
+			>h3 {
+				font-size: v.$font-size-xxl;
+				margin-bottom: v.$space-l;
+			}
+		}
 	}
 
 
