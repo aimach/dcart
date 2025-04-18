@@ -3,16 +3,11 @@ import type jwt from "jsonwebtoken";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { Storymap } from "../../entities/storymap/Storymap";
-import { groupByLocation } from "../../utils/functions/storymap";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
-import type {
-	BlockInterface,
-	GroupedPoint,
-} from "../../utils/types/storymapTypes";
-import { PointType } from "../../utils/types/mapTypes";
-import { Attestation } from "../../entities/common/Attestation";
+import { Tag } from "../../entities/common/Tag";
+import { In } from "typeorm";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";
@@ -36,7 +31,7 @@ export const storymapContentControllers = {
 				const query = await dcartDataSource
 					.getRepository(Storymap)
 					.createQueryBuilder("storymap")
-					.leftJoinAndSelect("storymap.category", "category")
+					.leftJoinAndSelect("storymap.tags", "tags")
 					.leftJoinAndSelect("storymap.blocks", "block")
 					.leftJoinAndSelect("block.attestations", "attestations")
 					.leftJoinAndSelect("attestations.icon", "icon")
@@ -49,7 +44,7 @@ export const storymapContentControllers = {
 					.leftJoinAndSelect("storymap.modifier", "modifier")
 					.select([
 						"storymap",
-						"category",
+						"tags",
 						"block",
 						"attestations",
 						"icon",
@@ -75,7 +70,7 @@ export const storymapContentControllers = {
 			const storymapInfos = await dcartDataSource
 				.getRepository(Storymap)
 				.createQueryBuilder("storymap")
-				.leftJoinAndSelect("storymap.category", "category")
+				.leftJoinAndSelect("storymap.tags", "tags")
 				.leftJoinAndSelect("storymap.blocks", "block")
 				.leftJoinAndSelect("block.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
@@ -90,7 +85,7 @@ export const storymapContentControllers = {
 				.leftJoinAndSelect("storymap.lang2", "lang2")
 				.select([
 					"storymap",
-					"category",
+					"tags",
 					"block",
 					"attestations",
 					"icon",
@@ -130,10 +125,21 @@ export const storymapContentControllers = {
 	createNewStorymap: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { userId } = req.user as UserPayload;
+			const { tags } = req.body;
+
+			// récupération des tags
+			const tagIds = tags.split("|");
+			const tagsToSave = await dcartDataSource
+				.getRepository(Tag)
+				.find({ where: { id: In(tagIds) } });
+			if (tagsToSave.length !== tagIds.length) {
+				res.status(404).send("Tags non trouvés.");
+				return;
+			}
 
 			const newStorymap = dcartDataSource.getRepository(Storymap).create({
 				...req.body,
-				category: req.body.category_id,
+				tags: tagsToSave,
 				creator: userId,
 			});
 			await dcartDataSource.getRepository(Storymap).save(newStorymap);
@@ -147,6 +153,7 @@ export const storymapContentControllers = {
 	updateStorymap: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { storymapId } = req.params;
+			const { tags } = req.body;
 
 			const storymapToUpdate = await dcartDataSource
 				.getRepository(Storymap)
@@ -182,12 +189,22 @@ export const storymapContentControllers = {
 				return;
 			}
 
+			// récupération des tags
+			const tagIds = tags.split("|");
+			const tagsToSave = await dcartDataSource
+				.getRepository(Tag)
+				.find({ where: { id: In(tagIds) } });
+			if (tagsToSave.length !== tagIds.length) {
+				res.status(404).send("Tags non trouvés.");
+				return;
+			}
+
 			const updatedStorymap = await dcartDataSource
 				.getRepository(Storymap)
 				.create({
 					...storymapToUpdate,
 					...req.body,
-					category: req.body.category_id,
+					tags: tagsToSave,
 				});
 
 			const newStorymap = await dcartDataSource

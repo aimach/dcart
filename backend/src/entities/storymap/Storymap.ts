@@ -8,10 +8,11 @@ import {
 	ManyToOne,
 	CreateDateColumn,
 	UpdateDateColumn,
+	ManyToMany,
 } from "typeorm";
 // import des entités
 import { Block } from "./Block";
-import { Category } from "../common/Category";
+import { Tag } from "../common/Tag";
 import { User } from "../auth/User";
 import { Language } from "./Language";
 
@@ -73,12 +74,12 @@ export class Storymap extends BaseEntity {
 	)
 	blocks!: Block[];
 
-	@ManyToOne(
-		() => Category,
-		(category) => category.storymaps,
-		{ onDelete: "SET NULL" },
+	@ManyToMany(
+		() => Tag,
+		(tag) => tag.storymaps,
+		{ cascade: true, onDelete: "CASCADE" },
 	)
-	category!: Category;
+	tags!: Tag[];
 
 	@ManyToOne(() => Language, { nullable: false })
 	lang1!: Language;

@@ -4,14 +4,15 @@ import {
 	PrimaryGeneratedColumn,
 	Column,
 	BaseEntity,
-	OneToMany,
+	ManyToMany,
+	JoinTable,
 } from "typeorm";
 // import des entités
 import { MapContent } from "../builtMap/MapContent";
 import { Storymap } from "../storymap/Storymap";
 
 @Entity()
-export class Category extends BaseEntity {
+export class Tag extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
 	id!: string;
 
@@ -27,16 +28,17 @@ export class Category extends BaseEntity {
 	@Column({ type: "text", nullable: true })
 	description_en: string | undefined | null;
 
-	@OneToMany(
+	@ManyToMany(
 		() => MapContent,
-		(map) => map.category,
+		(map) => map.tags,
 	)
+	@JoinTable()
 	maps!: MapContent[];
 
-	@OneToMany(
+	@ManyToMany(
 		() => Storymap,
-		(Storymap) => Storymap.category,
-		{ cascade: true },
+		(Storymap) => Storymap.tags,
 	)
+	@JoinTable()
 	storymaps!: Storymap[];
 }

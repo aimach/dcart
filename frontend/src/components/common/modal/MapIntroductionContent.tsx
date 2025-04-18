@@ -76,14 +76,6 @@ const MapIntroductionContent = ({
 							setIsModalOpen(false);
 						}}
 					/>
-					{mapInfos.relatedStorymap && (
-						<div className={style.storymapLinkContainer}>
-							<ChevronRightCircle />
-							<Link to={`/storymap/${mapInfos.relatedStorymap}`}>
-								{translation[language].modal.associatedStorymap}
-							</Link>
-						</div>
-					)}
 				</div>
 			)}
 		</>

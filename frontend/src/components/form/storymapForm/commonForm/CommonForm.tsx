@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useMemo, useRef, useState } from "react";
+import React, { useEffect, useMemo, useRef, useState } from "react";
 import { useForm, Controller } from "react-hook-form";
 import { useSearchParams } from "react-router";
 // import des composants
@@ -27,6 +27,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import style from "./commonForm.module.scss";
 // import des icônes
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import LabelComponent from "../../inputComponent/LabelComponent";
 
 type CommonFormProps = {
 	onSubmit: SubmitHandler<allInputsType>;
@@ -37,6 +38,12 @@ type CommonFormProps = {
 		| undefined
 		| StorymapType;
 	action?: string;
+	children?: React.ReactNode;
+	childrenLabelContent?: {
+		htmlFor: string;
+		label: string;
+		description: string;
+	};
 };
 
 /**
@@ -46,6 +53,7 @@ type CommonFormProps = {
  * @param {InputType[]} props.inputs - le tableau des inputs du formulaire
  * @param {storymapInputsType | titleInputsType | undefined} props.defaultValues - les valeurs par défaut des inputs
  * @param {string} props.action - l'action à effectuer
+ * @param {React.ReactNode} props.children - les enfants du composant
  * @returns ErrorComponent | EditorComponent
  */
 const CommonForm = ({
@@ -53,6 +61,7 @@ const CommonForm = ({
 	inputs,
 	defaultValues,
 	action,
+	children,
 }: CommonFormProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
@@ -236,6 +245,16 @@ const CommonForm = ({
 					);
 				}
 			})}
+			{React.Children.map(children, (child, index) => (
+				<div className={style.commonFormInputContainer} key={index}>
+					<LabelComponent
+						htmlFor="tags"
+						label="Etiquettes de la carte"
+						description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
+					/>
+					<div className={style.inputContainer}>{child}</div>
+				</div>
+			))}
 			<div className={style.commonFormContainerButton}>
 				<button
 					type="button"

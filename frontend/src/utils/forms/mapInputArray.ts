@@ -83,38 +83,6 @@ const firstStepInputs: InputType[] = [
 			value: false,
 		},
 	},
-	{
-		label_fr: "Catégorie de la carte",
-		label_en: "Map category",
-		description_fr:
-			"La catégorie dans laquelle l'utilisateur pourra retrouver la carte.",
-		description_en:
-			"The category in which the user will be able to find the map.",
-		name: "category",
-		type: "select",
-		options: [{ value: "0", label: "Choisir une catégorie" }],
-		required: {
-			value: true,
-			message: {
-				fr: "La catégorie de la carte est requise",
-				en: "Map category is required",
-			},
-		},
-	},
-	{
-		label_fr: "Storymap associée",
-		label_en: "Associated storymap",
-		description_fr:
-			"La storymap associée à la carte (affichée dans la modale d'introduction).",
-		description_en:
-			"The associated storymap to the map (displayed in the introduction modal).",
-		name: "relatedStorymap",
-		type: "select",
-		options: [{ value: "0", label: "Choisir une storymap" }],
-		required: {
-			value: false,
-		},
-	},
 ];
 
 const mapInputs: InputType[] = [

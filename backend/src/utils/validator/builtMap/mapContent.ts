@@ -23,8 +23,7 @@ const newMapContentSchema = Joi.object({
 	image_url: Joi.string().required().allow("").messages({
 		"string.base": "Le lien de l'image doit être une chaîne de caractères",
 	}),
-	relatedStorymap: Joi.string(),
-	category: Joi.string(),
+	tags: Joi.string(),
 });
 
 const updateMapContentSchema = newMapContentSchema.keys({
@@ -33,8 +32,7 @@ const updateMapContentSchema = newMapContentSchema.keys({
 	isActive: Joi.boolean().required(),
 	createdAt: Joi.date().required(),
 	updatedAt: Joi.date().required(),
-	relatedStorymap: Joi.string().required(),
-	category: Joi.string().required(),
+	tags: Joi.alternatives().try(Joi.string(), Joi.array()).required(),
 	filters: Joi.array()
 		.items(
 			Joi.object({

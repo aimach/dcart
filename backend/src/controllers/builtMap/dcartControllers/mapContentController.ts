@@ -1,6 +1,6 @@
 // import des entités
 import { MapContent } from "../../../entities/builtMap/MapContent";
-import { Category } from "../../../entities/common/Category";
+import { Tag } from "../../../entities/common/Tag";
 import { Storymap } from "../../../entities/storymap/Storymap";
 import { User } from "../../../entities/auth/User";
 // import des services
@@ -9,6 +9,7 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
+import { In } from "typeorm";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";
@@ -30,21 +31,11 @@ export const mapContentController = {
 		try {
 			const { mapId } = req.params;
 
-			if (req.query.relatedMap) {
-				const relatedMap = await dcartDataSource
-					.getRepository(MapContent)
-					.findOne({
-						where: { relatedStorymap: mapId },
-					});
-				res.status(200).send(relatedMap?.id);
-				return;
-			}
-
 			if (mapId === "all") {
 				const query = await dcartDataSource
 					.getRepository(MapContent)
 					.createQueryBuilder("map")
-					.leftJoinAndSelect("map.category", "category")
+					.leftJoinAndSelect("map.tags", "tags")
 					.leftJoinAndSelect("map.creator", "creator")
 					.leftJoinAndSelect("map.modifier", "modifier")
 					.leftJoinAndSelect("map.filterMapContent", "filterMapContent")
@@ -56,7 +47,7 @@ export const mapContentController = {
 						"map",
 						"filterMapContent",
 						"filter.type",
-						"category",
+						"tags",
 						"attestations",
 						"attestations.icon",
 						"attestations.color",
@@ -77,7 +68,7 @@ export const mapContentController = {
 			const mapInfos = await dcartDataSource
 				.getRepository(MapContent)
 				.createQueryBuilder("map")
-				.leftJoinAndSelect("map.category", "category")
+				.leftJoinAndSelect("map.tags", "tags")
 				.leftJoinAndSelect("map.filterMapContent", "filterMapContent")
 				.leftJoinAndSelect("map.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
@@ -87,7 +78,7 @@ export const mapContentController = {
 					"map",
 					"filterMapContent",
 					"filter.type",
-					"category",
+					"tags",
 					"attestations",
 					"icon",
 					"color",
@@ -114,8 +105,7 @@ export const mapContentController = {
 				description_en,
 				description_fr,
 				image_url,
-				category,
-				relatedStorymap,
+				tags,
 			} = req.body;
 
 			const { userId } = req.user as UserPayload;
@@ -123,6 +113,7 @@ export const mapContentController = {
 			// récupération de la date actuelle
 			const currentDate = new Date();
 
+			// récupération du créateur de la carte
 			const creator = await dcartDataSource
 				.getRepository(User)
 				.findOne({ where: { id: userId } });
@@ -132,18 +123,24 @@ export const mapContentController = {
 				return;
 			}
 
+			// récupération des tags
+			const tagIds = tags.split("|");
+			const tagsToSave = await dcartDataSource
+				.getRepository(Tag)
+				.find({ where: { id: In(tagIds) } });
+			if (tagsToSave.length !== tagIds.length) {
+				res.status(404).send("Tags non trouvés.");
+				return;
+			}
+
 			const newMap = dcartDataSource.getRepository(MapContent).create({
 				title_en,
 				title_fr,
 				description_en,
 				description_fr,
 				image_url,
-				relatedStorymap:
-					relatedStorymap === "0" || relatedStorymap === ""
-						? null
-						: relatedStorymap,
-				category,
 				creator,
+				tags: tagsToSave,
 				uploadPointsLastDate: currentDate,
 			});
 
@@ -160,12 +157,13 @@ export const mapContentController = {
 		try {
 			const { mapId } = req.params;
 			const { userId } = req.user as jwt.JwtPayload;
+			const { tags } = req.body;
 
 			const mapToUpdate = await dcartDataSource
 				.getRepository(MapContent)
 				.findOne({
 					where: { id: mapId },
-					relations: ["category", "filterMapContent"],
+					relations: ["tags", "filterMapContent"],
 				});
 
 			if (!mapToUpdate) {
@@ -191,100 +189,29 @@ export const mapContentController = {
 				return;
 			}
 
-			// si la catégorie de la carte a été modifiée, ajout de la nouvelle catégorie au body
-			const newCategory = await dcartDataSource
-				.getRepository(Category)
-				.findOne({
-					where: { id: req.body.category.id },
-				});
-			req.body.category = newCategory;
-
-			if (req.body.relatedStorymap === "0") {
-				req.body.relatedStorymap = null;
+			// récupération des tags
+			let tagIds: string[] = [];
+			if (Array.isArray(tags)) {
+				tagIds = tags.map((tag) => tag.id);
+			} else {
+				tagIds = tags.split("|");
+			}
+			const tagsToSave = await dcartDataSource
+				.getRepository(Tag)
+				.find({ where: { id: In(tagIds) } });
+			if (tagsToSave.length !== tagIds.length) {
+				res.status(404).send("Tags non trouvés.");
+				return;
 			}
 
-			// à corriger après la présentation
+			mapToUpdate.tags = tagsToSave;
+
 			// biome-ignore lint/performance/noDelete:
 			delete req.body.filterMapContent;
 
 			const updatedMap = await dcartDataSource
 				.getRepository(MapContent)
 				.merge(mapToUpdate, req.body);
-			const newMap = await dcartDataSource
-				.getRepository(MapContent)
-				.save(updatedMap);
-
-			res.status(200).send(newMap);
-		} catch (error) {
-			handleError(res, error as Error);
-		}
-	},
-
-	// met à jour l'id de la storymap associée à la carte
-	updateStorymapLink: async (req: Request, res: Response): Promise<void> => {
-		try {
-			const { mapId } = req.params;
-			const { storymapId } = req.body;
-
-			if (mapId === "0") {
-				const mapToUpdate = await dcartDataSource
-					.getRepository(MapContent)
-					.findOne({
-						where: { relatedStorymap: storymapId },
-					});
-
-				if (!mapToUpdate) {
-					res.status(404).send("Carte non trouvée.");
-					return;
-				}
-
-				const updatedMap = await dcartDataSource
-					.getRepository(MapContent)
-					.create({
-						...mapToUpdate,
-						relatedStorymap: null,
-					});
-
-				const newMap = await dcartDataSource
-					.getRepository(MapContent)
-					.save(updatedMap);
-				res.status(200).send(newMap);
-				return;
-			}
-
-			const { userId } = req.user as jwt.JwtPayload;
-
-			const mapToUpdate = await dcartDataSource
-				.getRepository(MapContent)
-				.findOne({
-					where: { id: mapId },
-				});
-
-			if (!mapToUpdate) {
-				res.status(404).send("Carte non trouvée.");
-				return;
-			}
-
-			const storymapToAdd = await dcartDataSource
-				.getRepository(Storymap)
-				.findOne({
-					where: { id: storymapId },
-				});
-			if (!storymapToAdd) {
-				res.status(404).send("Storymap non trouvée.");
-				return;
-			}
-
-			// ajout de l'id du modificateur
-			mapToUpdate.modifier = userId;
-
-			const updatedMap = await dcartDataSource
-				.getRepository(MapContent)
-				.create({
-					...mapToUpdate,
-					relatedStorymap: storymapId === "0" ? null : storymapId,
-				});
-
 			const newMap = await dcartDataSource
 				.getRepository(MapContent)
 				.save(updatedMap);

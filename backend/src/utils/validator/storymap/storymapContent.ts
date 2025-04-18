@@ -15,10 +15,10 @@ const storymapContentSchema = Joi.object({
 	publishedAt: Joi.string().optional().allow(null),
 	lang1: Joi.string().uuid().required(),
 	lang2: Joi.string().uuid().required(),
+	tags: Joi.string().required(),
 	createdAt: Joi.date().optional(),
 	updatedAt: Joi.date().optional(),
 	blocks: Joi.array().items(blockToEditSchema).min(0).optional(),
-	category_id: Joi.string().uuid().required(),
 	relatedMap: Joi.string().uuid().optional().allow(0).allow(""),
 });
 
@@ -44,7 +44,7 @@ const storymapToEditSchema = Joi.object({
 	image_url: Joi.string().optional().allow(null),
 	author: Joi.string().max(255).optional().allow(null),
 	publishedAt: Joi.string().optional().allow(null),
-	category_id: Joi.string().uuid().required(),
+	tags: Joi.string().required(),
 	lang1: Joi.string().uuid().required(),
 	lang2: Joi.string().uuid().required(),
 });

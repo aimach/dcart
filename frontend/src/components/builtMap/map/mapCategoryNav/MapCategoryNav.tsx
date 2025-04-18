@@ -3,10 +3,10 @@ import { Link } from "react-router";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { getAllCategoriesWithMapsInfos } from "../../../../utils/api/builtMap/getRequests";
-import { getAllStorymapCategories } from "../../../../utils/api/storymap/getRequests";
+import { getAllTagsWithMapsInfos } from "../../../../utils/api/builtMap/getRequests";
+import { getAllStorymapTags } from "../../../../utils/api/storymap/getRequests";
 // import des types
-import type { CategoryType } from "../../../../utils/types/mapTypes";
+import type { TagType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./mapCategoryNav.module.scss";
 // import des images
@@ -25,12 +25,10 @@ const MapCategoryNav = ({ type }: MapCategoryNavProps) => {
 	const { translation, language } = useTranslation();
 
 	// état pour stocker les catégories avec cartes
-	const [categoriesWithMaps, setCategoriesWithMaps] = useState<CategoryType[]>(
-		[],
-	);
+	const [categoriesWithMaps, setCategoriesWithMaps] = useState<TagType[]>([]);
 
 	// état pour gérer la catégorie sélectionnée
-	const [selectedCategory, setSelectedCategory] = useState<CategoryType | null>(
+	const [selectedCategory, setSelectedCategory] = useState<TagType | null>(
 		null,
 	);
 
@@ -41,10 +39,10 @@ const MapCategoryNav = ({ type }: MapCategoryNavProps) => {
 	const fetchCategoriesWithMaps = useCallback(async () => {
 		let categories = [];
 		if (type === "map") {
-			categories = await getAllCategoriesWithMapsInfos();
+			categories = await getAllTagsWithMapsInfos();
 		}
 		if (type === "storymap") {
-			categories = await getAllStorymapCategories();
+			categories = await getAllStorymapTags();
 		}
 		setCategoriesWithMaps(categories ?? []);
 	}, [type]);

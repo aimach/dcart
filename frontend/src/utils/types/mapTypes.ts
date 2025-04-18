@@ -1,5 +1,5 @@
 // import des types
-import type { FilterType } from "./filterTypes";
+import type { StorymapType } from "./storymapTypes";
 
 type AgentType = {
 	genres: [
@@ -24,7 +24,7 @@ type AttestationType = {
 	extrait_avec_restitution: string;
 };
 
-type CategoryType = {
+type TagType = {
 	id: string;
 	name_fr: string;
 	name_en: string;
@@ -71,14 +71,13 @@ type MapInfoType = {
 	description_en: string;
 	description_fr: string;
 	image_url?: string;
-	category: string | CategoryType;
+	tags: string | TagType[];
 	attestations: PointSetType[];
 	filterMapContent?:
 		| Record<string, string>
 		| Record<string, Record<string, string>[]>;
 	isLayered: boolean;
 	isNbDisplayed: boolean;
-	relatedStorymap?: string;
 };
 
 type MapType = {
@@ -104,13 +103,14 @@ type MapType = {
 		options: Record<string, string> | null;
 		filter: { type: string };
 	}[];
-	category: CategoryType;
+	category: TagType;
 	creator: {
 		pseudo: string;
 	};
 	modifier: {
 		pseudo: string;
 	};
+	image_url?: string;
 };
 
 type MenuTabType = "results" | "filters" | "infos";
@@ -182,6 +182,15 @@ type PointSetType = {
 	blockId?: string;
 };
 
+/**
+ * Fonction pour déterminer si l'élément est de type MapType
+ * @param {MapType | StorymapType} item - L'élément à vérifier
+ * @returns boolean - true si l'élément est de type MapType, false sinon
+ */
+const isMapType = (item): item is MapType => {
+	return (item as MapType).title_fr !== undefined;
+};
+
 export type {
 	MapType,
 	PointType,
@@ -194,10 +203,12 @@ export type {
 	GreatRegionType,
 	DivinityType,
 	TimeMarkersType,
-	CategoryType,
+	TagType,
 	ParsedPointType,
 	MapFilterType,
 	MapIconType,
 	PointSetType,
 	MapColorType,
 };
+
+export { isMapType };

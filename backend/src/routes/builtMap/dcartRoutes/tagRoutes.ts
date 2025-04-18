@@ -3,13 +3,10 @@ import express from "express";
 // import des controllers
 import { dcartControllers } from "../../../controllers/builtMap/dcartControllers";
 
-export const categoryRoutes = express.Router();
+export const tagRoutes = express.Router();
 
 // récupère toutes les catégories ou une catégorie en particulier
-categoryRoutes.get("/:categoryId", dcartControllers.getCategories);
+tagRoutes.get("/:tagId", dcartControllers.getTags);
 
 // récupère toutes les catégories avec les cartes associées
-categoryRoutes.get(
-	"/:categoryId/maps",
-	dcartControllers.getAllCategoriesWithMaps,
-);
+tagRoutes.get("/:tagId/maps", dcartControllers.getAllTagsWithMaps);

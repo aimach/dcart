@@ -17,14 +17,14 @@ import BOMapFormPage from "./pages/BackOffice/BOMapFormPage.tsx/BOMapFormPage.ts
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
 import { IconOptionsProvider } from "./context/IconOptionsContext.tsx";
-import { CategoryOptionsProvider } from "./context/CategoryContext.tsx";
+import { TagOptionsProvider } from "./context/TagContext.tsx";
 // import du style
 import "./index.css";
 import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
 import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
-import MapCategoryMenuPage from "./pages/MapCategoryMenuPage/MapCategoryMenuPage.tsx";
-import StorymapCategoryMenuPage from "./pages/StorymapCategoryMenuPage/StorymapCategoryMenuPage.tsx";
 import { SessionProvider } from "./context/SessionContext.tsx";
+import HomePage from "./HomePage.tsx";
+import TagPage from "./pages/TagPage/TagPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -35,18 +35,19 @@ if (rootElement) {
 				<AuthProvider>
 					<SessionProvider>
 						<IconOptionsProvider>
-							<CategoryOptionsProvider>
+							<TagOptionsProvider>
 								<Routes>
 									<Route element={<NavigationLayout />}>
-										<Route index element={<App />} />
-										<Route path="maps/categories">
-											<Route index element={<MapCategoryMenuPage />} />
+										<Route index element={<HomePage />} />
+										<Route path="tag/:tagId">
+											<Route index element={<TagPage />} />
 										</Route>
 										<Route path="map/:mapId" element={<MapPage />} />
-										<Route path="storymaps/categories">
-											<Route index element={<StorymapCategoryMenuPage />} />
-										</Route>
-										<Route path="storymap/:storymapId" element={<StorymapPage />} />
+
+										<Route
+											path="storymap/:storymapId"
+											element={<StorymapPage />}
+										/>
 									</Route>
 									<Route
 										path="authentification"
@@ -61,8 +62,14 @@ if (rootElement) {
 										</Route>
 										<Route path="storymaps">
 											<Route index element={<BackofficeStorymapPage />} />
-											<Route path=":storymapId" element={<StorymapIntroPage />} />
-											<Route path="view/:storymapId" element={<StorymapPage />} />
+											<Route
+												path=":storymapId"
+												element={<StorymapIntroPage />}
+											/>
+											<Route
+												path="view/:storymapId"
+												element={<StorymapPage />}
+											/>
 										</Route>
 										<Route
 											path="translation"
@@ -71,7 +78,7 @@ if (rootElement) {
 									</Route>
 								</Routes>
 								<ToastContainer />
-							</CategoryOptionsProvider>
+							</TagOptionsProvider>
 						</IconOptionsProvider>
 					</SessionProvider>
 				</AuthProvider>
