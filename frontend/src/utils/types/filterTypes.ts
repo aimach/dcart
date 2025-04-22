@@ -10,7 +10,7 @@ type UserFilterType = {
 	ante?: number;
 	post?: number;
 	elementId?: string;
-	lotIds: string[][];
+	lotIds: number[][];
 	locationType?: string;
 	locationId?: string;
 	greek: boolean;

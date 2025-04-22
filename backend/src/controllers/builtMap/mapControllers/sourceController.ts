@@ -15,7 +15,10 @@ import {
 	getQueryStringForIncludedElements,
 	getQueryStringForLanguage,
 } from "../../../utils/query/filtersQueryString";
-import { sortSourcesByDate } from "../../../utils/functions/builtMap";
+import {
+	attestationMatchesLot,
+	sortSourcesByDate,
+} from "../../../utils/functions/builtMap";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { AttestationType, PointType } from "../../../utils/types/mapTypes";
@@ -103,7 +106,6 @@ export const sourceController = {
 				);
 				let queryIncludedElements = "";
 				let queryDivinityNb = "";
-				const queryLotIds = "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (req.query.locationId) {
@@ -158,7 +160,6 @@ export const sourceController = {
 							queryLanguage,
 							queryIncludedElements,
 							queryDivinityNb,
-							queryLotIds,
 						);
 
 						const queryResults = await mapDataSource.query(sqlQuery);
@@ -166,19 +167,18 @@ export const sourceController = {
 						// on trie les sources si req.query.lotIds est présent
 						let filteredResults = [];
 						if (req.query.lotIds) {
-							const lotIdsArray = (req.query.lotIds as string)
+							const firstLevelLotIds = (req.query.lotIds as string)
 								.split("|")
 								.map((lot) => JSON.parse(lot));
-							const attestationMatchesLot = (
-								attestation: AttestationType,
-								lotIdsArray: number[][],
-							) => {
-								const elementIds =
-									attestation.elements?.map((e) => e.element_id) || [];
-								return lotIdsArray.some((lot) =>
-									lot.every((id) => elementIds.includes(id)),
-								);
-							};
+
+							const lotIdsArray: number[][] = [];
+
+							// on crée un tableau contenant les paires [id premier niveau, id second niveau]
+							firstLevelLotIds.map((lot) => {
+								for (let index = 1; index < lot.length; index++) {
+									lotIdsArray.push([lot[0], lot[index]]);
+								}
+							});
 
 							const filterPointsByValidLots = (
 								points: PointType[],
@@ -282,7 +282,6 @@ export const sourceController = {
 						"",
 						"",
 						"",
-						"",
 					);
 
 					const queryResults = await mapDataSource.query(sqlQuery);
@@ -319,7 +318,6 @@ export const sourceController = {
 			// on récupère le texte de la requête SQL
 			const sqlQuery = getSourcesQueryWithDetails(
 				attestationIds,
-				"",
 				"",
 				"",
 				"",

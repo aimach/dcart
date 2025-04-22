@@ -33,7 +33,7 @@ const SelectElementForm = ({
 		const elementFilter = mapInfos.filterMapContent?.find(
 			(filter) => filter.filter.type === "element",
 		);
-		if (elementFilter?.options.checkbox?.length > 0) {
+		if (elementFilter?.options?.checkbox?.length > 0) {
 			setCheckboxArray(elementFilter?.options.checkbox as LotType[]);
 			setLots([
 				...elementFilter?.options.checkbox,
