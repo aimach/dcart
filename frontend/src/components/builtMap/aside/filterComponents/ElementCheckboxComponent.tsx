@@ -1,4 +1,5 @@
 // import des types
+import { useEffect } from "react";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 
@@ -75,7 +76,12 @@ const ElementCheckboxComponent = ({
 		});
 	};
 
-	console.log(userFilters);
+	// si userFilters.lotIds est vide, on vide les checkbox
+	useEffect(() => {
+		if (userFilters.lotIds.length === 0) {
+			setSelected({});
+		}
+	}, [userFilters.lotIds]);
 
 	return (
 		<div style={{ marginBottom: "1rem" }}>
