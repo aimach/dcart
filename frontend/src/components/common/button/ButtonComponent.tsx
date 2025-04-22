@@ -5,7 +5,7 @@ import style from "./buttonComponent.module.scss";
 
 interface ButtonComponentProps {
 	type: "route" | "button";
-	color: "gold" | "brown";
+	color: "gold" | "brown" | "red";
 	textContent: string;
 	onClickFunction?: () => void;
 	link?: string;

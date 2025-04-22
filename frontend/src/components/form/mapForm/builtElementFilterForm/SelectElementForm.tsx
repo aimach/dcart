@@ -3,16 +3,18 @@ import { useEffect, useState } from "react";
 import Select from "react-select";
 // import des composants
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import LabelComponent from "../../inputComponent/LabelComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putRequests";
 import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
-import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { LotType } from "../../../../utils/types/filterTypes";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
+// import du style
+import style from "./builtElementFilterForm.module.scss";
 
 type SelectElementFormProps = {
 	elementOptions: OptionType[];
@@ -95,12 +97,19 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 
 	return (
 		lots.length > 0 && (
-			<div>
+			<div className={style.selectElementFormContainer}>
 				{lots.map((lot, index) => {
 					return (
-						<div key={`${index}-${lot.secondLevelIds[-1]}`}>
-							<div>
-								<p>Premier niveau</p>
+						<div
+							key={`${index}-${lot.secondLevelIds[-1]}`}
+							className={style.allSelectContainer}
+						>
+							<div className={style.selectContainer}>
+								<LabelComponent
+									htmlFor="firstLevelIds"
+									label="Premier niveau (1 élément)"
+									description=""
+								/>
 								<Select
 									options={elementOptions}
 									value={lot.firstLevelIds[0]}
@@ -120,10 +129,13 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 									isClearable={true}
 								/>
 							</div>
-							<div>
-								<p>Second niveau</p>
+							<div className={style.selectContainer}>
+								<LabelComponent
+									htmlFor="firstLevelIds"
+									label="Second niveau (un ou plusieurs éléments)"
+									description=""
+								/>
 								<Select
-									draggable={true}
 									options={elementOptions}
 									value={lot.secondLevelIds}
 									isMulti
@@ -156,7 +168,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 							) ? (
 								<ButtonComponent
 									type="button"
-									color="brown"
+									color="red"
 									onClickFunction={() => handleDeleteMultiSelect(index)}
 									textContent="Supprimer"
 								/>

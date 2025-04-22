@@ -26,6 +26,11 @@
     border: 1px solid v.$color-black-chocolate;
 }
 
+.red {
+    background-color: v.$color-error;
+    border: 1px solid v.$color-error;
+}
+
 .unselected {
     background-color: v.$color-neutral-100;
     color: v.$color-neutral-60;

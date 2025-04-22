@@ -1,0 +1,19 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.selectElementFormContainer {
+    width: 100%;
+
+    .allSelectContainer {
+        border-bottom: v.$border-width-m solid v.$color-grullo-light;
+    }
+}
+
+.selectContainer {
+    width: 100%;
+
+    >div {
+        margin: 1rem;
+    }
+
+}
