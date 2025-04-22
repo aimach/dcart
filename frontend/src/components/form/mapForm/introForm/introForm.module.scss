@@ -59,6 +59,11 @@
             border: none;
         }
 
+        input[type=radio]:focus {
+            outline: none;
+            border: none;
+        }
+
         >input,
         textarea,
         select {

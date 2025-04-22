@@ -98,6 +98,7 @@ const UserMapFilterForm = () => {
 	const { pathname } = useLocation();
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
+
 		if (pathname.includes("edit")) {
 			// mise à jour des filtres
 			const updatedFiltersResponse = await updateFiltersToMap(

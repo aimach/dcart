@@ -44,7 +44,6 @@ export class Attestation extends BaseEntity {
 	)
 	map?: MapContent | null;
 
-
 	@ManyToOne(
 		() => Block,
 		(Block) => Block.attestations,

@@ -1,5 +1,5 @@
 // import des types
-import type { SourceType } from "../types/mapTypes";
+import type { AttestationType, SourceType } from "../types/mapTypes";
 
 /**
  * Fonction pour trier les sources par date (post quem puis ante quem)
@@ -28,4 +28,19 @@ const sortSourcesByDate = (sources: SourceType[]) => {
 	return sortedSourcesWithUnknownDate;
 };
 
-export { sortSourcesByDate };
+/**
+ * Fonction utilisée pour vérifier si une attestation correspond à un lot d'ids (filtre élément)
+ * @param attestation - L'attestation à vérifier
+ * @param lotIdsArray - Le tableau d'ids
+ * @returns boolean - true si l'attestation correspond au lot, false sinon
+ */
+const attestationMatchesLot = (
+	attestation: AttestationType,
+	lotIdsArray: number[][],
+) => {
+	const elementIds = attestation.elements?.map((e) => e.element_id) || [];
+
+	return lotIdsArray.some((lot) => lot.every((id) => elementIds.includes(id)));
+};
+
+export { sortSourcesByDate, attestationMatchesLot };

@@ -149,7 +149,7 @@ export const filterController = {
 				return;
 			}
 
-			const newFilters = [];
+			const newFilters: Filter[] = [];
 			for (const filter in req.body) {
 				if (req.body[filter]) {
 					// si le filtre est coché
@@ -157,6 +157,7 @@ export const filterController = {
 						.getRepository(Filter)
 						.findOne({
 							where: { type: filter as FilterType },
+							relations: ["filterMapContent"],
 						});
 					if (filterToAdd) {
 						newFilters.push(filterToAdd);
@@ -169,12 +170,38 @@ export const filterController = {
 				}
 			}
 
-			// on supprime les filtres de la carte
-			await dcartDataSource.getRepository(FilterMapContent).delete({ map });
+			const existingFilters = await dcartDataSource
+				.getRepository(FilterMapContent)
+				.createQueryBuilder("filterMapContent")
+				.leftJoinAndSelect("filterMapContent.filter", "filter")
+				.where("filterMapContent.mapId = :mapId", { mapId: map.id })
+				.getMany();
 
-			// on ajoute les filtres à la carte
+			// on supprime les filtres de la carte
+			const filtersToDelete = existingFilters.filter(
+				(filter) =>
+					!newFilters.find((f) => {
+						return f.id === filter.filter?.id;
+					}),
+			);
+
 			Promise.all(
-				newFilters.map(async (filter: Filter) => {
+				filtersToDelete.map(async (filter: FilterMapContent) => {
+					await dcartDataSource
+						.getRepository(FilterMapContent)
+						.delete(filter.id);
+				}),
+			);
+
+			// on ajoute les filtres à la carte (s'ils n'existent pas déjà)
+			const filtersToAdd = newFilters.filter(
+				(filter) =>
+					!existingFilters.find((f) => {
+						return f.filter?.id === filter.id;
+					}),
+			);
+			Promise.all(
+				filtersToAdd.map(async (filter: Filter) => {
 					await dcartDataSource.getRepository(FilterMapContent).save({
 						filter: filter,
 						map: map,
