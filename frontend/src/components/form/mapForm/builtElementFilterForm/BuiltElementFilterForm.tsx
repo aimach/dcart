@@ -17,6 +17,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { MapInfoType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
+import LoaderComponent from "../../../common/loader/LoaderComponent";
 
 const BuiltElementFilterForm = () => {
 	const { translation, language } = useTranslation();
@@ -39,12 +40,15 @@ const BuiltElementFilterForm = () => {
 				[...uniqueAttestationIds].toString(),
 			);
 
-			const allElementsOptions = await fetchElementOptions(allPoints, language, false);
+			const allElementsOptions = await fetchElementOptions(
+				allPoints,
+				language,
+				false,
+			);
 			setElementOptions(allElementsOptions);
 		};
 		getElementsOptionsByAttestationIds();
-
-	}, [mapInfos?.attestations, language])
+	}, [mapInfos?.attestations, language]);
 
 	useEffect(() => {
 		if (mapInfos) {
@@ -54,7 +58,8 @@ const BuiltElementFilterForm = () => {
 			);
 			if (elementFilter) {
 				setSelectedOption(
-					(elementFilter.options as Record<string, string>)?.solution ?? "basic",
+					(elementFilter.options as Record<string, string>)?.solution ??
+						"basic",
 				);
 			}
 		}
@@ -74,9 +79,7 @@ const BuiltElementFilterForm = () => {
 		setMapInfos(newMap);
 	};
 
-
-
-	return elementOptions.length > 0 && (
+	return elementOptions.length > 0 ? (
 		<form className={style.commonFormContainer}>
 			{/* <h4>{translation[language].backoffice.mapFormPage.addFilters}</h4> */}
 			<h4>Construction du filtre "Elements"</h4>
@@ -141,9 +144,14 @@ const BuiltElementFilterForm = () => {
 				</div>
 			</div>
 			{selectedOption === "manual" && (
-				<SelectElementForm elementOptions={elementOptions} mapInfos={mapInfos as MapInfoType} />
+				<SelectElementForm
+					elementOptions={elementOptions}
+					mapInfos={mapInfos as MapInfoType}
+				/>
 			)}
 		</form>
+	) : (
+		<LoaderComponent size={40} />
 	);
 };
 

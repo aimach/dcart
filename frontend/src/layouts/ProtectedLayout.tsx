@@ -17,14 +17,14 @@ const ProtectedLayout = () => {
 	const navigate = useNavigate();
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: ignore "navigate" dans le tableau de dépendances
-	// useEffect(() => {
-	// 	const checkAuthentication = async () => {
-	// 		if (!token) {
-	// 			navigate("/authentification");
-	// 		}
-	// 	};
-	// 	checkAuthentication();
-	// }, [token]);
+	useEffect(() => {
+		const checkAuthentication = async () => {
+			if (!token) {
+				navigate("/authentification");
+			}
+		};
+		checkAuthentication();
+	}, [token]);
 
 	// définition de l'état pour l'affichage du menu
 	const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);

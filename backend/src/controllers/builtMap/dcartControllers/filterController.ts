@@ -181,8 +181,6 @@ export const filterController = {
 			const filtersToDelete = existingFilters.filter(
 				(filter) =>
 					!newFilters.find((f) => {
-						console.log({ f });
-						console.log({ filter });
 						return f.id === filter.filter?.id;
 					}),
 			);

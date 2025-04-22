@@ -29,6 +29,9 @@ const SelectElementForm = ({
 	const [lots, setLots] = useState<LotType[]>([]);
 	const [checkboxArray, setCheckboxArray] = useState<LotType[]>([]);
 
+	console.log({ lots });
+	console.log({ checkboxArray });
+
 	useEffect(() => {
 		const elementFilter = mapInfos.filterMapContent?.find(
 			(filter) => filter.filter.type === "element",
@@ -146,12 +149,18 @@ const SelectElementForm = ({
 								onClickFunction={() => handleMultiSelectChange(index)}
 								textContent="Sauvegarder"
 							/>
-							<ButtonComponent
-								type="button"
-								color="brown"
-								onClickFunction={() => handleDeleteMultiSelect(index)}
-								textContent="Supprimer"
-							/>
+							{checkboxArray.some(
+								(checkbox) =>
+									checkbox.firstLevelIds === lot.firstLevelIds &&
+									checkbox.secondLevelIds === lot.secondLevelIds,
+							) && (
+								<ButtonComponent
+									type="button"
+									color="brown"
+									onClickFunction={() => handleDeleteMultiSelect(index)}
+									textContent="Supprimer"
+								/>
+							)}
 						</div>
 					);
 				})}
