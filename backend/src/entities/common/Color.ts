@@ -6,8 +6,8 @@ import {
 	BaseEntity,
 	OneToMany,
 } from "typeorm";
-// import des entités
 import { Attestation } from "./Attestation";
+// import des entités
 
 @Entity()
 export class Color extends BaseEntity {
