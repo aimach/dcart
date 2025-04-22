@@ -144,10 +144,7 @@ const BuiltElementFilterForm = () => {
 				</div>
 			</div>
 			{selectedOption === "manual" && (
-				<SelectElementForm
-					elementOptions={elementOptions}
-					mapInfos={mapInfos as MapInfoType}
-				/>
+				<SelectElementForm elementOptions={elementOptions} />
 			)}
 		</form>
 	) : (

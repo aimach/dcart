@@ -11,31 +11,25 @@ import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
-import type { MapInfoType } from "../../../../utils/types/mapTypes";
 import type { LotType } from "../../../../utils/types/filterTypes";
+import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 
 type SelectElementFormProps = {
 	elementOptions: OptionType[];
-	mapInfos: MapInfoType;
 };
 
-const SelectElementForm = ({
-	elementOptions,
-	mapInfos,
-}: SelectElementFormProps) => {
+const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 	const { translation, language } = useTranslation();
-	const { setMapInfos } = useMapStore();
+	const { mapInfos, setMapInfos } = useMapFormStore();
 
-	const [lots, setLots] = useState<LotType[]>([]);
-	const [checkboxArray, setCheckboxArray] = useState<LotType[]>([]);
-
-	console.log({ lots });
-	console.log({ checkboxArray });
+	const [lots, setLots] = useState<LotType[]>([]); // les select/options en cours
+	const [checkboxArray, setCheckboxArray] = useState<LotType[]>([]); // les select/options déjà sauvegardés
 
 	useEffect(() => {
-		const elementFilter = mapInfos.filterMapContent?.find(
+		const elementFilter = mapInfos?.filterMapContent?.find(
 			(filter) => filter.filter.type === "element",
 		);
+
 		if (elementFilter?.options?.checkbox?.length > 0) {
 			setCheckboxArray(elementFilter?.options.checkbox as LotType[]);
 			setLots([
@@ -46,21 +40,26 @@ const SelectElementForm = ({
 			setLots([{ firstLevelIds: [], secondLevelIds: [] }]);
 		}
 	}, [mapInfos]);
-
 	const handleMultiSelectChange = async (index: number) => {
-		const current = lots[index];
+		const lotsWithoutEmpty = lots.filter(
+			(lot) => lot.firstLevelIds.length > 0 && lot.secondLevelIds.length > 0,
+		);
 		const body = {
 			solution: "manual",
-			checkbox: [...checkboxArray, current],
+			checkbox: [...lotsWithoutEmpty],
 		};
 		await updateMapFilterOptions(
-			mapInfos.id as string,
+			mapInfos?.id as string,
 			"element",
 			JSON.stringify(body),
 		);
 		const newMap = await getOneMapInfos(mapInfos?.id as string);
 		setMapInfos(newMap);
-		setCheckboxArray([...checkboxArray, current]);
+		const newFilters = newMap.filterMapContent?.find(
+			(filter) => filter.filter.type === "element",
+		).options.checkbox;
+		setCheckboxArray(newFilters);
+		setLots([...newFilters, { firstLevelIds: [], secondLevelIds: [] }]);
 		if (index === lots.length - 1) {
 			setLots([...lots, { firstLevelIds: [], secondLevelIds: [] }]);
 		}
@@ -83,7 +82,7 @@ const SelectElementForm = ({
 			],
 		};
 		await updateMapFilterOptions(
-			mapInfos.id as string,
+			mapInfos?.id as string,
 			"element",
 			JSON.stringify(body),
 		);
@@ -99,7 +98,7 @@ const SelectElementForm = ({
 			<div>
 				{lots.map((lot, index) => {
 					return (
-						<div key={index}>
+						<div key={`${index}-${lot.secondLevelIds[-1]}`}>
 							<div>
 								<p>Premier niveau</p>
 								<Select
@@ -124,6 +123,7 @@ const SelectElementForm = ({
 							<div>
 								<p>Second niveau</p>
 								<Select
+									draggable={true}
 									options={elementOptions}
 									value={lot.secondLevelIds}
 									isMulti
@@ -153,14 +153,14 @@ const SelectElementForm = ({
 								(checkbox) =>
 									checkbox.firstLevelIds === lot.firstLevelIds &&
 									checkbox.secondLevelIds === lot.secondLevelIds,
-							) && (
+							) ? (
 								<ButtonComponent
 									type="button"
 									color="brown"
 									onClickFunction={() => handleDeleteMultiSelect(index)}
 									textContent="Supprimer"
 								/>
-							)}
+							) : null}
 						</div>
 					);
 				})}
