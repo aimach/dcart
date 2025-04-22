@@ -6,6 +6,7 @@ import {
 	BaseEntity,
 	OneToMany,
 } from "typeorm";
+// import des entités
 import { MapContent } from "../builtMap/MapContent";
 import { Storymap } from "../storymap/Storymap";
 
@@ -25,8 +26,8 @@ export class User extends BaseEntity {
 
 	@Column({
 		type: "enum",
-		enum: ["visitor", "writer", "admin"],
-		default: "visitor",
+		enum: ["writer", "admin"],
+		default: "writer",
 	})
 	status!: string;
 

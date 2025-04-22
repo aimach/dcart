@@ -1,9 +1,8 @@
 // import des bibliothèques
 import express from "express";
-// import des modules
+// import des controllers
 import { pointController } from "../../controllers/storymap/pointController";
 // import des validateurs
-import { validatePointsBody } from "../../utils/validator/storymap/point";
 import { authenticateUser } from "../../middlewares/authenticate";
 
 export const pointRoutes = express.Router();

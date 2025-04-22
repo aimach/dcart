@@ -1,12 +1,12 @@
 import { blockController } from "./blockController";
-import { categoryController } from "./categoryController";
+import { tagController } from "./tagController";
 import { pointController } from "./pointController";
 import { storymapContentControllers } from "./storymapContentController";
 import { typeController } from "./typeController";
 
 export const storymapControllers = {
 	...blockController,
-	...categoryController,
+	...tagController,
 	...pointController,
 	...storymapContentControllers,
 	...typeController,

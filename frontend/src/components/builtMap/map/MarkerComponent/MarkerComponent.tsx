@@ -51,7 +51,7 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 		point,
 		style,
 		selectedMarker ? isSelectedMarker(selectedMarker, point) : false,
-		mapInfos?.isNbDisplayed as boolean,
+		mapInfos ? (mapInfos.isNbDisplayed as boolean) : true,
 	);
 
 	return (

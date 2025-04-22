@@ -71,17 +71,9 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 				<Link to="/">{translation[language].navigation.back}</Link>
 			)}
 			{pathname !== "/" && (
-				<NavComponent
-					type="route"
-					navClassName={style.headerNavMenu}
-					list={
-						type === "visitor"
-							? getVisitorNavigationList(translation, language)
-							: getBackofficeNavigationList(translation, language)
-					}
-					activeLinkClassName={style.headerNavMenuActive}
-					notActiveLinkClassName={style.headerNavMenuNotActive}
-				/>
+				<Link to="/" className={style.headerLogo}>
+					<h1>{translation[language].title as string}</h1>
+				</Link>
 			)}
 
 			<div className={style.headerLastSection}>

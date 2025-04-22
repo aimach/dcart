@@ -1,17 +1,27 @@
 // import des types
-import type { Request, Response } from "express";
+import type jwt from "jsonwebtoken";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { Storymap } from "../../entities/storymap/Storymap";
-import { groupByLocation } from "../../utils/functions/storymap";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
-import type { Point } from "../../entities/storymap/Point";
-import type {
-	BlockInterface,
-	GroupedPoint,
-} from "../../utils/types/storymapTypes";
-import type jwt from "jsonwebtoken";
+import type { Request, Response } from "express";
+import { Tag } from "../../entities/common/Tag";
+import { In } from "typeorm";
+
+interface UserPayload extends jwt.JwtPayload {
+	userStatus: "admin" | "writer";
+	userId: string;
+}
+
+// extension de l'interface Request pour inclure la propriété user
+declare global {
+	namespace Express {
+		interface Request {
+			user?: UserPayload;
+		}
+	}
+}
 
 export const storymapContentControllers = {
 	// récupère une storymap par son id
@@ -21,24 +31,28 @@ export const storymapContentControllers = {
 				const query = await dcartDataSource
 					.getRepository(Storymap)
 					.createQueryBuilder("storymap")
-					.leftJoinAndSelect("storymap.category", "category")
+					.leftJoinAndSelect("storymap.tags", "tags")
 					.leftJoinAndSelect("storymap.blocks", "block")
-					.leftJoinAndSelect("block.points", "point")
+					.leftJoinAndSelect("block.attestations", "attestations")
+					.leftJoinAndSelect("attestations.icon", "icon")
+					.leftJoinAndSelect("attestations.color", "color")
 					.leftJoinAndSelect("block.type", "type")
 					.leftJoinAndSelect("block.children", "child")
 					.leftJoinAndSelect("child.type", "child_type")
-					.leftJoinAndSelect("child.points", "step_point")
+					.leftJoinAndSelect("child.attestations", "step_attestations")
 					.leftJoinAndSelect("storymap.creator", "creator")
 					.leftJoinAndSelect("storymap.modifier", "modifier")
 					.select([
 						"storymap",
-						"category",
+						"tags",
 						"block",
-						"point",
+						"attestations",
+						"icon",
+						"color",
 						"type",
 						"child",
 						"child_type",
-						"step_point",
+						"step_attestations",
 						"creator.pseudo",
 						"modifier.pseudo",
 					]);
@@ -56,26 +70,30 @@ export const storymapContentControllers = {
 			const storymapInfos = await dcartDataSource
 				.getRepository(Storymap)
 				.createQueryBuilder("storymap")
-				.leftJoinAndSelect("storymap.category", "category")
+				.leftJoinAndSelect("storymap.tags", "tags")
 				.leftJoinAndSelect("storymap.blocks", "block")
-				.leftJoinAndSelect("block.points", "point")
+				.leftJoinAndSelect("block.attestations", "attestations")
+				.leftJoinAndSelect("attestations.icon", "icon")
+				.leftJoinAndSelect("attestations.color", "color")
 				.leftJoinAndSelect("block.type", "type")
 				.leftJoinAndSelect("block.children", "child")
 				.leftJoinAndSelect("child.type", "child_type")
-				.leftJoinAndSelect("child.points", "step_point")
+				.leftJoinAndSelect("child.attestations", "step_attestations")
 				.leftJoinAndSelect("storymap.creator", "creator")
 				.leftJoinAndSelect("storymap.modifier", "modifier")
 				.leftJoinAndSelect("storymap.lang1", "lang1")
 				.leftJoinAndSelect("storymap.lang2", "lang2")
 				.select([
 					"storymap",
-					"category",
+					"tags",
 					"block",
-					"point",
+					"attestations",
+					"icon",
+					"color",
 					"type",
 					"child",
 					"child_type",
-					"step_point",
+					"step_attestations",
 					"creator.pseudo",
 					"modifier.pseudo",
 					"lang1",
@@ -95,26 +113,6 @@ export const storymapContentControllers = {
 				storymapInfos.blocks = storymapInfos.blocks.filter(
 					(block) => block.position !== null && block.type?.name !== "step",
 				);
-
-				storymapInfos?.blocks.map((block) => {
-					// s'il y a des points au niveau d'un block, on les regroupes par localisation
-					if (block.points.length) {
-						const groupedPoints: GroupedPoint[] = groupByLocation(
-							block.points as Point[],
-						);
-						(block as BlockInterface).groupedPoints = groupedPoints;
-					}
-
-					// s'il y a des points au niveau des enfants, on fait de même
-					if (block.children.length) {
-						block.children.map((child) => {
-							const groupedPoints: GroupedPoint[] = groupByLocation(
-								child.points as Point[],
-							);
-							(child as BlockInterface).groupedPoints = groupedPoints;
-						});
-					}
-				});
 			}
 
 			res.status(200).send(storymapInfos);
@@ -126,11 +124,22 @@ export const storymapContentControllers = {
 	// crée une nouvelle storymap
 	createNewStorymap: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { userId } = req.user as jwt.JwtPayload;
+			const { userId } = req.user as UserPayload;
+			const { tags } = req.body;
+
+			// récupération des tags
+			const tagIds = tags.split("|");
+			const tagsToSave = await dcartDataSource
+				.getRepository(Tag)
+				.find({ where: { id: In(tagIds) } });
+			if (tagsToSave.length !== tagIds.length) {
+				res.status(404).send("Tags non trouvés.");
+				return;
+			}
 
 			const newStorymap = dcartDataSource.getRepository(Storymap).create({
 				...req.body,
-				category: req.body.category_id,
+				tags: tagsToSave,
 				creator: userId,
 			});
 			await dcartDataSource.getRepository(Storymap).save(newStorymap);
@@ -144,6 +153,7 @@ export const storymapContentControllers = {
 	updateStorymap: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { storymapId } = req.params;
+			const { tags } = req.body;
 
 			const storymapToUpdate = await dcartDataSource
 				.getRepository(Storymap)
@@ -160,6 +170,10 @@ export const storymapContentControllers = {
 			storymapToUpdate.modifier = userId;
 
 			if (req.query.isActive) {
+				if (req.user?.userStatus !== "admin") {
+					res.status(403).send("Accès refusé");
+					return;
+				}
 				const updatedStorymap = await dcartDataSource
 					.getRepository(Storymap)
 					.create({
@@ -175,12 +189,22 @@ export const storymapContentControllers = {
 				return;
 			}
 
+			// récupération des tags
+			const tagIds = tags.split("|");
+			const tagsToSave = await dcartDataSource
+				.getRepository(Tag)
+				.find({ where: { id: In(tagIds) } });
+			if (tagsToSave.length !== tagIds.length) {
+				res.status(404).send("Tags non trouvés.");
+				return;
+			}
+
 			const updatedStorymap = await dcartDataSource
 				.getRepository(Storymap)
 				.create({
 					...storymapToUpdate,
 					...req.body,
-					category: req.body.category_id,
+					tags: tagsToSave,
 				});
 
 			const newStorymap = await dcartDataSource

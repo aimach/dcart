@@ -148,38 +148,6 @@ const storymapInputs: InputType[] = [
 			value: false,
 		},
 	},
-	{
-		label_fr: "Catégorie de la storymap",
-		label_en: "Storymap category",
-		description_fr:
-			"L'utilisateur pourra accéder à la liste des storymaps de la même catégorie en cliquant sur le nom de la catégorie",
-		description_en:
-			"The user will be able to access the list of storymaps of the same category by clicking on the name of the category",
-		name: "category_id",
-		type: "select",
-		options: [],
-		required: {
-			value: true,
-			message: {
-				fr: "La catégorie de la storymap est requise",
-				en: "The storymap category is required",
-			},
-		},
-	},
-	{
-		label_fr: "Carte associée à la storymap",
-		label_en: "Map associated with the storymap",
-		description_fr:
-			"L'utilisateur pourra accéder à la carte associée à la storymap via un lien en haut de la storymap. Inversement, le lien de la storymap sera affiché dans la modale d'introduction de la carte",
-		description_en:
-			"The user will be able to access the map associated with the storymap via a link at the top of the storymap. Conversely, the link to the storymap will be displayed in the introduction modal of the map",
-		name: "relatedMap",
-		type: "select",
-		options: [],
-		required: {
-			value: false,
-		},
-	},
 ];
 
 const titleInput: InputType[] = [
@@ -553,6 +521,10 @@ const stepInputs: InputType[] = [
 		label_fr: "Titre en langue 1",
 		label_en: "Title in language 1",
 		name: "content1_lang1",
+		description_fr:
+			"Le titre de l'étape sera automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
+		description_en:
+			"The title of the step will be automatically preceded by the step number. It is not necessary to add it.",
 		type: "text",
 		required: {
 			value: true,
@@ -566,6 +538,10 @@ const stepInputs: InputType[] = [
 		label_fr: "Titre en langue 2",
 		label_en: "Title in language 2",
 		name: "content1_lang2",
+		description_fr:
+			"Le titre de l'étape sera automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
+		description_en:
+			"The title of the step will be automatically preceded by the step number. It is not necessary to add it.",
 		type: "text",
 		required: {
 			value: true,
@@ -579,7 +555,7 @@ const stepInputs: InputType[] = [
 		label_fr: "Description en langue 1",
 		label_en: "Description in language 1",
 		name: "content2_lang1",
-		type: "text",
+		type: "wysiwyg",
 		required: {
 			value: false,
 		},
@@ -588,7 +564,7 @@ const stepInputs: InputType[] = [
 		label_fr: "Description en langue 2",
 		label_en: "Description in language 2",
 		name: "content2_lang2",
-		type: "text",
+		type: "wysiwyg",
 		required: {
 			value: false,
 		},

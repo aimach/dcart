@@ -1,9 +1,9 @@
 // import des bibliothèques
 import express from "express";
-// import des modules
+// import des controllers
 import { dcartControllers } from "../controllers/builtMap/dcartControllers";
+// import des validateurs
 import { validateLoginBody } from "../utils/validator/login";
-import { authenticateUser } from "../middlewares/authenticate";
 
 export const authRoutes = express.Router();
 
@@ -15,9 +15,6 @@ authRoutes.post("/login", validateLoginBody, dcartControllers.login);
 
 // déconnexion de l'utilisateur
 authRoutes.get("/logout", dcartControllers.logout);
-
-// récupération du profile
-authRoutes.get("/profile", authenticateUser, dcartControllers.getProfile);
 
 // génération d'un nouveau token d'accès
 authRoutes.post("/refresh-token", dcartControllers.refreshToken);

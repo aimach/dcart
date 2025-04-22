@@ -4,6 +4,7 @@
 .quoteBlockContainer {
     width: 70vw;
     background-color: v.$color-grullo-light;
+    border-radius: v.$border-radius-base;
 
     p:first-child {
         font-style: italic;

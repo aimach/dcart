@@ -33,7 +33,6 @@ import type {
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
 // import des icônes
-import { getFlagEmoji } from "../../../../utils/functions/storymap";
 import { ChevronRightCircle } from "lucide-react";
 
 export const getBlockComponentFromType = (
@@ -66,10 +65,18 @@ export const getBlockComponentFromType = (
 				<SimpleMapBlock key={key} blockContent={block} mapName={mapName} />
 			);
 		}
-		case "comparison_map":
-			return <ComparisonMapBlock key={key} blockContent={block} />;
-		case "scroll_map":
-			return <ScrolledMapBlock key={key} blockContent={block} />;
+		case "comparison_map": {
+			const mapName = `comparison-map-${uuidv4()}`;
+			return (
+				<ComparisonMapBlock key={key} blockContent={block} mapName={mapName} />
+			);
+		}
+		case "scroll_map": {
+			const mapName = `map-${uuidv4()}`;
+			return (
+				<ScrolledMapBlock key={key} blockContent={block} mapName={mapName} />
+			);
+		}
 		default:
 			console.error(`Unsupported block type: ${block.type}`);
 			return null;
@@ -142,15 +149,18 @@ const StorymapPage = () => {
 								<li
 									onClick={() => setSelectedLanguage("lang1")}
 									onKeyUp={() => setSelectedLanguage("lang1")}
-									style={selectedLanguage === "lang1" ? { fontWeight: "bold" } : {}}
-
+									style={
+										selectedLanguage === "lang1" ? { fontWeight: "bold" } : {}
+									}
 								>
 									{storymapInfos.lang1.name.toUpperCase()}
 								</li>
 								<li
 									onClick={() => setSelectedLanguage("lang2")}
 									onKeyUp={() => setSelectedLanguage("lang2")}
-									style={selectedLanguage === "lang2" ? { fontWeight: "bold" } : {}}
+									style={
+										selectedLanguage === "lang2" ? { fontWeight: "bold" } : {}
+									}
 								>
 									{storymapInfos.lang2.name.toUpperCase()}
 								</li>

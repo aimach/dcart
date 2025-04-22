@@ -12,14 +12,14 @@ import {
 	createBlock,
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
-// import des types
-import type { SubmitHandler } from "react-hook-form";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
-import type { allInputsType } from "../../../../utils/types/formTypes";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+// import des types
+import type { SubmitHandler } from "react-hook-form";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type quoteInputsType = {
 	content1_lang1: string;
@@ -76,6 +76,7 @@ const QuoteForm = () => {
 		<>
 			<FormTitleComponent action={action as string} translationKey="quote" />
 			<CommonForm
+				key={block ? block.id : "quote"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
 				inputs={quoteInputs}
 				defaultValues={block as BlockContentType}

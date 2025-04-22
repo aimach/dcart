@@ -1,13 +1,14 @@
-// import des services
-import { dcartDataSource } from "../../dataSource/dataSource";
+// import des entités
+import { Storymap } from "../../entities/storymap/Storymap";
 import { Block } from "../../entities/storymap/Block";
 import { Point } from "../../entities/storymap/Point";
+// import des services
+import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type { pane } from "../../entities/storymap/Point";
 import type { PointType } from "../../utils/types/storymapTypes";
-import { Storymap } from "../../entities/storymap/Storymap";
 
 export const pointController = {
 	// crée de nouveaux points

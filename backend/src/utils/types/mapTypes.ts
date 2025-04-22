@@ -21,7 +21,7 @@ type AttestationType = {
 	extrait_avec_restitution: string;
 };
 
-type CategoryType = {
+type TagType = {
 	id: string;
 	name_fr: string;
 	name_en: string;
@@ -67,7 +67,7 @@ type MapInfoType = {
 	title_fr: string;
 	description_en: string;
 	description_fr: string;
-	category: string | CategoryType;
+	tags: string | TagType[];
 	attestations: AttestationType[];
 	filters?: Record<string, string>[];
 };
@@ -100,6 +100,8 @@ type PointType = {
 	sources: SourceType[];
 	selectedClassName?: string;
 	isSelected?: boolean;
+	pane?: string;
+	color?: string;
 };
 
 type SourceType = {
@@ -129,7 +131,7 @@ export type {
 	GreatRegionType,
 	DivinityType,
 	TimeMarkersType,
-	CategoryType,
+	TagType,
 	ParsedPointType,
 	MapFilterType,
 };

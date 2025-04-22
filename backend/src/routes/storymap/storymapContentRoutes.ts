@@ -1,13 +1,16 @@
 // import des bibliothèques
 import express from "express";
-// import des modules
+// import des controllers
 import { storymapContentControllers } from "../../controllers/storymap/storymapContentController";
 // import des validateurs
 import {
 	validateStorymapContentBody,
 	validateStorymapContentToEditBody,
 } from "../../utils/validator/storymap/storymapContent";
-import { authenticateUser } from "../../middlewares/authenticate";
+import {
+	authenticateAdmin,
+	authenticateUser,
+} from "../../middlewares/authenticate";
 
 export const storymapContentRoutes = express.Router();
 
@@ -34,5 +37,6 @@ storymapContentRoutes.put(
 storymapContentRoutes.delete(
 	"/:storymapId",
 	authenticateUser,
+	authenticateAdmin,
 	storymapContentControllers.deleteStorymap,
 );

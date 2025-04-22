@@ -1,33 +1,32 @@
 // import des bibliothèques
-import { useEffect, useRef, useState } from "react";
-import { Controller, get, useForm } from "react-hook-form";
+import { useContext, useEffect, useMemo, useRef } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useLocation } from "react-router";
+import Select from "react-select";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import EditorComponent from "../../storymapForm/wysiwygBlock/EditorComponent";
+import LabelComponent from "../../inputComponent/LabelComponent";
+// import du contexte
+import { TagOptionsContext } from "../../../../context/TagContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { getAllCategories } from "../../../../utils/api/builtMap/getRequests";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
 import { updateMap } from "../../../../utils/api/builtMap/putRequests";
 import { notifyCreateSuccess } from "../../../../utils/functions/toast";
-import { getAllPublishedStorymaps } from "../../../../utils/api/storymap/getRequests";
 // import des types
 import type { FieldErrors, SubmitHandler } from "react-hook-form";
 import type { InputType } from "../../../../utils/types/formTypes";
-import type { OptionType } from "../../../../utils/types/commonTypes";
-import type {
-	CategoryType,
-	MapInfoType,
-} from "../../../../utils/types/mapTypes";
-import type { StorymapType } from "../../../../utils/types/storymapTypes";
+import type { MapInfoType, TagType } from "../../../../utils/types/mapTypes";
 import type { TranslationType } from "../../../../utils/types/languageTypes";
 import type Quill from "quill";
 import type { Dispatch, SetStateAction } from "react";
+import type { MultiValue } from "react-select";
+import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./introForm.module.scss";
 
@@ -44,6 +43,8 @@ type IntroFormProps = {
 const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 	const { translation, language } = useTranslation();
 
+	const { tagOptions } = useContext(TagOptionsContext);
+
 	const { pathname } = useLocation();
 
 	// récupération des données des stores
@@ -51,13 +52,19 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		useShallow((state) => state),
 	);
 
-	// définition d'un état pour savoir si les données sont chargées
-	const [dataLoaded, setDataLoaded] = useState(false);
+	const handleSelectTagsChange = (value: MultiValue<OptionType>) => {
+		const tagIds = value.map((tag) => tag.value as string).join("|");
+		const newMapInfos = { ...mapInfos, tags: tagIds };
+		setMapInfos(newMapInfos as MapInfoType);
+	};
 
 	// définition de la fonction de soumission du formulaire (ajout des données au store et passage à l'étape suivante)
 	const onSubmit: SubmitHandler<MapInfoType> = async (data) => {
 		if (pathname.includes("create")) {
-			const newMapResponse = await createNewMap({ ...mapInfos, ...data });
+			const newMapResponse = await createNewMap({
+				...mapInfos,
+				...data,
+			});
 			if (newMapResponse?.status === 201) {
 				setMapInfos(newMapResponse.data);
 				setIsMapCreated(true);
@@ -80,7 +87,6 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		register,
 		handleSubmit,
 		watch,
-		setValue,
 		formState: { errors },
 	} = useForm<MapInfoType>({
 		defaultValues: mapInfos ?? {},
@@ -95,102 +101,90 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		return () => subscription.unsubscribe();
 	}, [watch]);
 
-	// au montage du composant, et si le language change, récupération des catégories pour le select/options
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		setDataLoaded(false);
-		const getCategoryOptions = async () => {
-			const allCategories = await getAllCategories();
-			const formatedCategoryOptions: OptionType[] = allCategories.map(
-				(category: CategoryType) => ({
-					value: category.id,
-					label: category[`name_${language}`],
-				}),
-			);
-
+		const addTagOptions = async () => {
 			for (const input of inputs) {
-				if (input.name === "category") {
+				if (input.name === "tag") {
 					input.options = [
-						{ value: "0", label: "Choisir une catégorie" },
-						...formatedCategoryOptions,
+						{ value: "0", label: "Choisir un tag" },
+						...tagOptions,
 					];
 				}
 			}
 		};
-		const getPublishedStorymaps = async () => {
-			const allPublishedStorymaps = await getAllPublishedStorymaps();
-			const formatedStorymapOptions: OptionType[] = allPublishedStorymaps.map(
-				(storymap: StorymapType) => ({
-					value: storymap.id,
-					label: `${storymap.title_lang1} (${storymap.isActive ? "publiée" : "non publiée"})`,
-				}),
-			);
-
-			for (const input of inputs) {
-				if (input.name === "relatedStorymap") {
-					input.options = [
-						{ value: "0", label: "Choisir une storymap" },
-						...formatedStorymapOptions,
-					];
-				}
-			}
-			setDataLoaded(true);
-		};
-		getCategoryOptions();
-		getPublishedStorymaps();
+		addTagOptions();
 	}, [language]);
-
-	useEffect(() => {
-		if (mapInfos) {
-			if (mapInfos.category) {
-				setValue("category", (mapInfos.category as CategoryType).id);
-			} else {
-				setValue("category", "0");
-			}
-			if (mapInfos.relatedStorymap) {
-				setValue("relatedStorymap", mapInfos.relatedStorymap as string);
-			} else {
-				setValue("relatedStorymap", "0");
-			}
-		}
-	}, []);
 
 	// WYSIWYG
 	const quillRef = useRef<Quill | null>(null);
 
-	return (
-		dataLoaded && (
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className={style.commonFormContainer}
-			>
-				<h4>{translation[language].backoffice.mapFormPage.addMapIntro}</h4>
-				{inputs.map((input) => {
-					if (input.type === "select") {
-						return (
-							<div key={input.name} className={style.commonFormInputContainer}>
-								<div className={style.labelContainer}>
-									<label htmlFor={input.name}>
-										{input[`label_${language}`]}
-									</label>
-									<p>{input[`description_${language}`]}</p>
-								</div>
-								<div className={style.inputContainer}>
-									<select
-										{...register(input.name as keyof MapInfoType, {
-											required: input.required.value,
-										})}
-									>
-										{input.options?.map((option) => {
-											return (
-												<option key={option.value} value={option.value}>
-													{option.label}
-												</option>
-											);
-										})}
-									</select>
+	const defaultTagValues = useMemo(() => {
+		return (mapInfos?.tags as TagType[])?.map((tag: TagType) => ({
+			value: tag.id,
+			label: tag[`name_${language}`],
+		}));
+	}, [language]);
 
-									{errors[input.name as keyof FieldErrors<MapInfoType>] && (
+	return (
+		<form
+			onSubmit={handleSubmit(onSubmit)}
+			className={style.commonFormContainer}
+		>
+			<h4>{translation[language].backoffice.mapFormPage.addMapIntro}</h4>
+			{inputs.map((input) => {
+				if (input.type === "select") {
+					return (
+						<div key={input.name} className={style.commonFormInputContainer}>
+							<LabelComponent
+								htmlFor={input.name}
+								label={input[`label_${language}`]}
+								description={input[`description_${language}`] ?? ""}
+							/>
+							<div className={style.inputContainer}>
+								<select
+									{...register(input.name as keyof MapInfoType, {
+										required: input.required.value,
+									})}
+								>
+									{input.options?.map((option) => {
+										return (
+											<option key={option.value} value={option.value}>
+												{option.label}
+											</option>
+										);
+									})}
+								</select>
+
+								{errors[input.name as keyof FieldErrors<MapInfoType>] && (
+									<ErrorComponent
+										message={
+											input.required.message?.[
+												language as keyof TranslationType
+											] as string
+										}
+									/>
+								)}
+							</div>
+						</div>
+					);
+				}
+				if (input.type === "text") {
+					return (
+						<div key={input.name} className={style.commonFormInputContainer}>
+							<LabelComponent
+								htmlFor={input.name}
+								label={input[`label_${language}`]}
+								description={input[`description_${language}`] ?? ""}
+							/>
+							<div className={style.inputContainer}>
+								<input
+									{...register(input.name as keyof MapInfoType, {
+										required: input.required.value,
+									})}
+								/>
+								{input.required.value &&
+									errors[input.name as keyof FieldErrors<MapInfoType>] && (
 										<ErrorComponent
 											message={
 												input.required.message?.[
@@ -199,90 +193,77 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 											}
 										/>
 									)}
-								</div>
 							</div>
-						);
-					}
-					if (input.type === "text") {
-						return (
-							<div key={input.name} className={style.commonFormInputContainer}>
-								<div className={style.labelContainer}>
-									<label htmlFor={input.name}>
-										{input[`label_${language}`]}
-									</label>
-									<p>{input[`description_${language}`]}</p>
-								</div>
-								<div className={style.inputContainer}>
-									<input
-										{...register(input.name as keyof MapInfoType, {
-											required: input.required.value,
-										})}
-									/>
-									{input.required.value &&
-										errors[input.name as keyof FieldErrors<MapInfoType>] && (
-											<ErrorComponent
-												message={
-													input.required.message?.[
-														language as keyof TranslationType
-													] as string
-												}
-											/>
-										)}
-								</div>
+						</div>
+					);
+				}
+				if (input.type === "wysiwyg") {
+					return (
+						<div key={input.name} className={style.commonFormInputContainer}>
+							<LabelComponent
+								htmlFor={input.name}
+								label={input[`label_${language}`]}
+								description={input[`description_${language}`] ?? ""}
+							/>
+							<div className={style.inputContainer}>
+								<Controller
+									name={input.name as keyof MapInfoType}
+									control={control}
+									rules={{
+										required: input.required.value,
+										maxLength: 1000,
+									}}
+									render={({ field: { onChange } }) => (
+										<EditorComponent
+											ref={quillRef}
+											onChange={onChange}
+											defaultValue={
+												(mapInfos as MapInfoType)
+													? (mapInfos as MapInfoType)[
+															`${input.name}` as keyof typeof mapInfos
+														]
+													: null
+											}
+										/>
+									)}
+								/>
+								{input.required.value &&
+									errors[input.name as keyof MapInfoType]?.type ===
+										"required" && (
+										<ErrorComponent
+											message={input.required.message?.[language] as string}
+										/>
+									)}
+								{errors[input.name as keyof MapInfoType] &&
+									errors[input.name as keyof MapInfoType]?.type ===
+										"maxLength" && <ErrorComponent message="1000 char. max" />}
 							</div>
-						);
-					}
-					if (input.type === "wysiwyg") {
-						return (
-							<div key={input.name} className={style.commonFormInputContainer}>
-								<div className={style.labelContainer}>
-									<label htmlFor={input.name}>
-										{input[`label_${language}`]}
-									</label>
-									<p>{input[`description_${language}`]}</p>
-								</div>
-								<div className={style.inputContainer}>
-									<Controller
-										name={input.name as keyof MapInfoType}
-										control={control}
-										rules={{
-											required: input.required.value,
-											maxLength: 1000,
-										}}
-										render={({ field: { onChange } }) => (
-											<EditorComponent
-												ref={quillRef}
-												onChange={onChange}
-												defaultValue={
-													(mapInfos as MapInfoType)
-														? (mapInfos as MapInfoType)[
-																`${input.name}` as keyof typeof mapInfos
-															]
-														: null
-												}
-											/>
-										)}
-									/>
-									{input.required.value &&
-										errors[input.name as keyof MapInfoType]?.type ===
-											"required" && (
-											<ErrorComponent
-												message={input.required.message?.[language] as string}
-											/>
-										)}
-									{errors[input.name as keyof MapInfoType] &&
-										errors[input.name as keyof MapInfoType]?.type ===
-											"maxLength" && (
-											<ErrorComponent message="1000 char. max" />
-										)}
-								</div>
-							</div>
-						);
-					}
-				})}
-				<NavigationButtonComponent step={step} nextButtonDisplayed={true} />
-			</form>
-		)
+						</div>
+					);
+				}
+			})}
+
+			<div className={style.commonFormInputContainer}>
+				<LabelComponent
+					htmlFor="tags"
+					label="Etiquettes de la carte"
+					description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
+				/>
+				<div className={style.inputContainer}>
+					<Select
+						options={tagOptions}
+						defaultValue={mapInfos ? defaultTagValues : []}
+						delimiter="|"
+						isMulti
+						onChange={(newValue) =>
+							handleSelectTagsChange(newValue as MultiValue<OptionType>)
+						}
+						placeholder="Choisir une ou plusieurs étiquette"
+					/>
+				</div>
+			</div>
+			<NavigationButtonComponent step={step} nextButtonDisplayed={true} />
+		</form>
 	);
 };
 

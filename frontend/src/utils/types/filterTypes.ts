@@ -1,3 +1,6 @@
+// import des types
+import type { OptionType } from "./commonTypes";
+
 type FilterType = {
 	id: string;
 	type: "time" | "language" | "element" | "location" | "divinityNb";
@@ -16,4 +19,9 @@ type UserFilterType = {
 	maxDivinityNb?: string;
 };
 
-export type { FilterType, UserFilterType };
+type LotType = {
+	firstLevelIds: OptionType[];
+	secondLevelIds: OptionType[];
+};
+
+export type { FilterType, UserFilterType, LotType };

@@ -1,25 +1,23 @@
 // import des services
 import { apiClient } from "../apiClient";
-import {
-	addPanelToPoints,
-	normalizeBody,
-	requiredBlockKeys,
-} from "../../functions/block";
-// import des types
-import type { storymapInputsType } from "../../types/formTypes";
-import type { blockType, parsedPointType } from "../../types/formTypes";
+import { normalizeBody, requiredBlockKeys } from "../../functions/block";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 	notifyError,
 } from "../../functions/toast";
+import { createPointSet } from "../builtMap/postRequests";
+// import des types
+import type { blockType } from "../../types/formTypes";
+import type { PointSetType } from "../../types/mapTypes";
+import type { StorymapBodyType } from "../../types/storymapTypes";
 
 /**
  * Fonction pour insérer une nouvelle storymap dans la BDD
  * @param {storymapInputsType} body - le payload de la requête
  * @returns - l'id de la storymap
  */
-const createStorymap = async (body: storymapInputsType) => {
+const createStorymap = async (body: StorymapBodyType) => {
 	try {
 		const response = await apiClient("/storymap/storymap", {
 			method: "POST",
@@ -38,7 +36,7 @@ const createStorymap = async (body: storymapInputsType) => {
  * @param {string} storymapId - l'id de la storymap
  * @returns
  */
-const updateStorymap = async (body: storymapInputsType, storymapId: string) => {
+const updateStorymap = async (body: StorymapBodyType, storymapId: string) => {
 	try {
 		const response = await apiClient(`/storymap/storymap/${storymapId}`, {
 			method: "PUT",
@@ -103,14 +101,15 @@ const updateBlock = async (body: blockType, blockId: string) => {
  */
 const uploadParsedPointsForSimpleMap = async (
 	simpleMapInfos: blockType,
-	parsedPoints: parsedPointType[],
+	pointSet: PointSetType,
 	storymapId: string,
 	typeName: string,
 	action: string,
+	initialPointSetId?: string,
 	parentId?: string,
 ) => {
 	try {
-		let mapId = simpleMapInfos.id ?? "";
+		let blockId = simpleMapInfos.id ?? "";
 		if (action === "create") {
 			// création du bloc de la carte
 			const newMapInfos = await createBlock({
@@ -119,39 +118,43 @@ const uploadParsedPointsForSimpleMap = async (
 				typeName,
 				parentId,
 			});
-			mapId = newMapInfos?.id;
+			blockId = newMapInfos?.id;
+
+			const pointSetWithBlockId = {
+				...pointSet,
+				blockId,
+			};
 
 			// chargement des points
-			await apiClient(`/storymap/points/${mapId}`, {
-				method: "POST",
-				data: JSON.stringify({ parsedPoints }),
-			});
+			await createPointSet(pointSetWithBlockId);
 
 			notifyCreateSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
 		}
 		if (action === "edit") {
 			// mise à jour du bloc de la carte
-			await updateBlock(
+			const updatedBlock = await updateBlock(
 				{
 					...simpleMapInfos,
 					storymapId,
 					typeName,
 					parentId,
 				},
-				mapId,
+				blockId,
 			);
 			// si l'utilisateur a chargé des points
-			if (parsedPoints.length > 0) {
-				// suppressino des anciens points
-				await apiClient(`/storymap/points/${mapId}`, {
+			if (pointSet) {
+				const pointSetWithBlockId = {
+					...pointSet,
+					name: updatedBlock.content1_lang1,
+					blockId,
+				};
+
+				await apiClient(`/dcart/attestations/${initialPointSetId}`, {
 					method: "DELETE",
 				});
 
 				// chargement des nouveaux points
-				await apiClient(`/storymap/points/${mapId}`, {
-					method: "POST",
-					data: JSON.stringify({ parsedPoints }),
-				});
+				await createPointSet(pointSetWithBlockId);
 			}
 			notifyEditSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
 		}
@@ -169,42 +172,37 @@ const uploadParsedPointsForSimpleMap = async (
  * @param action - l'action à effectuer (création ou édition)
  */
 const uploadParsedPointsForComparisonMap = async (
-	simpleMapInfos: blockType,
-	parsedPoints: Record<string, parsedPointType[]>,
+	blockParent: blockType,
+	pointsSets: Record<string, PointSetType>,
 	storymapId: string,
 	typeName: string,
 	action: string,
 ) => {
 	try {
-		let mapId = simpleMapInfos.id ?? "";
-
-		// modification des points pour ajouter l'informations du panel
-		const parsedPointsWithPanel = addPanelToPoints(parsedPoints);
-
+		let mapId = blockParent.id ?? "";
 		if (action === "create") {
 			// création du bloc de la carte
 			const newMapInfos = await createBlock({
-				...simpleMapInfos,
+				...blockParent,
 				storymapId,
 				typeName,
 			});
 			mapId = newMapInfos?.id;
 
 			// chargement des points pour les 2 panels
-			for (const parsedPoints of parsedPointsWithPanel) {
-				await apiClient(`/storymap/points/${mapId}`, {
-					method: "POST",
-					data: JSON.stringify({ parsedPoints }),
-				});
+			for (const panelSide in pointsSets) {
+				pointsSets[panelSide].blockId = mapId;
+
+				await createPointSet(pointsSets[panelSide]);
 			}
-			notifyCreateSuccess("Carte déroulante", true);
+			notifyCreateSuccess("Carte de comparaison", true);
 		}
 
 		if (action === "edit") {
 			// mise à jour du bloc de la carte
-			await updateBlock(
+			const updatedBlock = await updateBlock(
 				{
-					...simpleMapInfos,
+					...blockParent,
 					storymapId,
 					typeName,
 				},
@@ -212,27 +210,26 @@ const uploadParsedPointsForComparisonMap = async (
 			);
 
 			// chargement des points pour les 2 panels
-			for (const parsedPoints of parsedPointsWithPanel) {
+			for (const panelSide in pointsSets) {
+				const pointSetFromPanelSide = updatedBlock.attestations.find(
+					(attestation: PointSetType) => attestation.name === panelSide,
+				);
+
 				// s'il y a des points chargés, supression des anciens
-				if (parsedPoints.length > 0) {
-					await apiClient(
-						`/storymap/points/${mapId}?pane=${parsedPoints[0].pane}`,
-						{
-							method: "DELETE",
-						},
-					);
+				if (pointsSets[panelSide]) {
+					await apiClient(`dcart/attestations/${pointSetFromPanelSide.id}`, {
+						method: "DELETE",
+					});
+					pointsSets[panelSide].blockId = updatedBlock.id;
 
 					// chargement des nouveaux points
-					await apiClient(`/storymap/points/${mapId}`, {
-						method: "POST",
-						data: JSON.stringify({ parsedPoints }),
-					});
+					await createPointSet(pointsSets[panelSide]);
 				}
 			}
-			notifyEditSuccess("Carte déroulante", true);
+			notifyEditSuccess("Carte de comparaison", true);
 		}
 	} catch (error) {
-		notifyError("Erreur lors de la création d'une carte déroulante");
+		notifyError("Erreur lors de la création d'une carte de comparaison");
 	}
 };
 

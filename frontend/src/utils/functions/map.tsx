@@ -9,7 +9,6 @@ import type {
 	SourceType,
 	PointType,
 	AgentType,
-	ParsedPointType,
 	MapType,
 	MenuTabType,
 	MapInfoType,
@@ -42,7 +41,7 @@ const getAgentsArrayWithoutDuplicates = (agentsArray: AgentType[]) => {
  * @returns {string} - Une chaîne de caractères contenant tous les ids des attestations
  */
 const getAllAttestationsIdsFromParsedPoints = (
-	parsedPoints: ParsedPointType[],
+	parsedPoints: { id: string }[],
 ): string => {
 	let allAttestationsIds = "";
 	parsedPoints.map((point) => {
@@ -163,8 +162,9 @@ const getCreationAndModificationString = (
 		},
 	);
 
-	let string = `${translation[language].common.createdOn} ${creationDate} ${translation[language].common.by} ${itemInfos.creator.pseudo
-		}`;
+	let string = `${translation[language].common.createdOn} ${creationDate} ${translation[language].common.by} ${
+		itemInfos.creator.pseudo
+	}`;
 
 	if (itemInfos.modifier) {
 		const modificationDate = new Date(itemInfos.updatedAt).toLocaleDateString(
@@ -176,8 +176,9 @@ const getCreationAndModificationString = (
 			},
 		);
 
-		string += ` - ${translation[language].common.updatedOn} ${modificationDate} ${translation[language].common.by} ${itemInfos.modifier.pseudo
-			}`;
+		string += ` - ${translation[language].common.updatedOn} ${modificationDate} ${translation[language].common.by} ${
+			itemInfos.modifier.pseudo
+		}`;
 	}
 
 	if (itemInfos.uploadPointsLastDate) {
@@ -210,6 +211,7 @@ const createLucideString = (
 	}
 
 	const svgString = renderToStaticMarkup(
+		// @ts-ignore
 		<Icon size={options?.size || 24} color={options?.color || "black"} />,
 	);
 
@@ -220,9 +222,8 @@ const createLucideString = (
  * Fonction pour gérer le survol de la souris sur un cluster
  * @param {Event} e - L'événement de la souris
  */
-const handleClusterMouseOver = (
-	e: L.MarkerClusterMouseEvent
-) => {
+// @ts-ignore
+const handleClusterMouseOver = (e: L.MarkerClusterMouseEvent) => {
 	const cluster = e.layer;
 	const clusterFirstPoint = cluster.getAllChildMarkers()[0];
 
@@ -245,6 +246,7 @@ const handleClusterMouseOver = (
  */
 
 const handleClusterClick = (
+	// @ts-ignore
 	e: L.MarkerClusterMouseEvent,
 	map: LeafletMap,
 	setSelectedMarker: (point: PointType) => void,
@@ -341,14 +343,12 @@ const zoomOnSelectedMarkerCluster = (
 const getClosestCluster = (
 	map: LeafletMap,
 	clickedLatLng: LatLng,
-	maxDistance = 50 // en mètres
+	maxDistance = 50, // en mètres
 ): L.MarkerCluster | null => {
 	let closestCluster: { cluster: L.MarkerCluster; dist: number } | null = null;
 
 	map.eachLayer((layer) => {
-		if (
-			layer instanceof L.MarkerCluster
-		) {
+		if (layer instanceof L.MarkerCluster) {
 			const dist = clickedLatLng.distanceTo(layer.getLatLng());
 			if (!closestCluster || dist < closestCluster.dist) {
 				closestCluster = { cluster: layer, dist };

@@ -5,9 +5,9 @@ import {
 	Column,
 	BaseEntity,
 	OneToMany,
-	ManyToOne,
 } from "typeorm";
-import { Attestation } from "./Attestation";
+// import des entités
+import { Attestation } from "../common/Attestation";
 
 @Entity()
 export class Icon extends BaseEntity {

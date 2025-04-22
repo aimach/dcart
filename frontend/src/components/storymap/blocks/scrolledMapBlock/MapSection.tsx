@@ -9,17 +9,15 @@ import {
 } from "react-leaflet";
 // import des services
 import {
-	getBackGroundColorClassName,
 	getLittleCircleIcon,
-	getDefaultIcon,
+	getIcon,
 } from "../../../../utils/functions/icons";
+import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
-import type {
-	BlockContentType,
-	GroupedTyped,
-} from "../../../../utils/types/storymapTypes";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./scrolledMapBlock.module.scss";
@@ -29,6 +27,7 @@ interface MapSectionProps {
 	mapName: string;
 	currentPoint: string | number;
 	setCurrentPoint: Dispatch<SetStateAction<string>>;
+	pointIndex: number;
 }
 
 const MapSection = ({
@@ -36,31 +35,46 @@ const MapSection = ({
 	mapName,
 	currentPoint,
 	setCurrentPoint,
+	pointIndex,
 }: MapSectionProps) => {
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
 	// on récupère les informations du context
 	const [map, setMap] = useState<LeafletMap | null>(null);
 
-	const points: GroupedTyped[] = [];
+	const [points, setPoints] = useState<(PointType & { blockId: string })[]>([]);
 
-	// on construit le groupe des points à partir des enfants
-	blockContent.children.map((child: BlockContentType) => {
-		(child.groupedPoints as GroupedTyped[]).map((point) =>
-			points.push({ ...point, blockId: child.id }),
-		);
-	});
+	const fetchPointsAndAddBlockId = async (childId: string) => {
+		// récupération de tous les points
+		const allAttestations = await getAllPointsByBlockId(childId);
+		for (const attestation of allAttestations) {
+			attestation.blockId = childId;
+		}
+		return allAttestations;
+	};
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		const loadAllPoints = async () => {
+			const promesses = blockContent.children.map((child: BlockContentType) => {
+				return fetchPointsAndAddBlockId(child.id);
+			});
+			const allAttestations = await Promise.all(promesses);
+			const allPoints = allAttestations.flat();
+			setPoints(allPoints);
+		};
+		loadAllPoints();
+	}, []);
 
 	// on met à jour les limites de la carte
 	const bounds: LatLngTuple[] = [];
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (points.length) {
 			for (const point of points) {
 				bounds.push([point.latitude, point.longitude]);
 			}
 			if (map) {
-				map.fitBounds(bounds);
+				map.fitBounds(bounds, { padding: [300, 300] });
 			}
 		}
 	}, [map, points]);
@@ -92,20 +106,18 @@ const MapSection = ({
 					/>
 
 					{points.length ? (
-						points.map((point: GroupedTyped) => {
-							// on créé une icone adaptée au nombre de sources
-							const backgroundColorClassName =
-								point.color ??
-								getBackGroundColorClassName(point.attestations.length);
-							const bigIcon = getDefaultIcon(
-								point.attestations.length,
+						points.map((point: PointType & { blockId: string }) => {
+							const bigIcon = getIcon(
+								point,
 								style,
-								backgroundColorClassName,
-								point.attestations.length.toString(),
+								false,
+								false,
+								pointIndex.toString(),
 							);
+
 							return (
 								<Marker
-									key={`${point.latitude} - ${point.longitude}`}
+									key={`${point.latitude} - ${point.longitude} + ${point.blockId}`}
 									position={[point.latitude, point.longitude]}
 									icon={currentPoint === point.blockId ? bigIcon : littleIcon}
 									eventHandlers={{
@@ -115,7 +127,7 @@ const MapSection = ({
 										},
 									}}
 								>
-									<Popup>{point.attestations[0].location}</Popup>
+									<Popup>{point.nom_ville}</Popup>
 								</Marker>
 							);
 						})

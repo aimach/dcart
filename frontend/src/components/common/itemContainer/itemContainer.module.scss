@@ -1,0 +1,62 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.itemIcon {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    top: 40px;
+    left: 5px;
+    border: v.$border-width-m solid v.$color-dark-lava;
+    border-radius: v.$border-radius-circle;
+    background-color: v.$color-neutral-100;
+    @include m.flexbox(flex, column, wrap, center, center);
+}
+
+.itemSwiper {
+    width: 300px;
+    height: 300px;
+    @include m.flexbox(flex, column, wrap, flex-end, center);
+    background-color: white;
+    border: v.$border-width-m solid v.$color-grullo;
+    border-radius: v.$border-radius-base;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    // transition: transform 0.1s ease-in-out;
+
+    // &:hover {
+    // 	transform: scale(1.05);
+    // }
+
+
+
+    .itemText {
+        width: 100%;
+        height: 70px;
+        background-color: v.$color-neutral-100;
+        border-bottom-left-radius: v.$border-radius-base;
+        border-bottom-right-radius: v.$border-radius-base;
+
+        >h4 {
+            font-size: v.$font-size-xxl;
+            text-align: center;
+            margin-top: v.$space-xs;
+        }
+
+    }
+
+    .itemTags {
+        padding: v.$space-xs;
+
+        >p {
+
+            color: v.$color-neutral-60;
+            font-size: v.$font-size-s;
+        }
+
+        @include m.flexbox(flex, row, wrap, center, center);
+        gap: v.$space-xs;
+    }
+}

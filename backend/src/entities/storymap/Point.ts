@@ -1,13 +1,5 @@
 // import des bibilothèques
-import {
-	Entity,
-	PrimaryGeneratedColumn,
-	Column,
-	BaseEntity,
-	ManyToOne,
-} from "typeorm";
-// import des entités
-import { Block } from "./Block";
+import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 
 export enum pane {
 	LEFT = "left",
@@ -47,16 +39,16 @@ export class Point extends BaseEntity {
 	translation_en!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	title_fr!: string | null;
+	title_lang1!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	title_en!: string | null;
+	title_lang2!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	description_fr!: string | null;
+	description_lang1!: string | null;
 
 	@Column({ type: "text", nullable: true })
-	description_en!: string | null;
+	description_lang2!: string | null;
 
 	@Column({ type: "text", nullable: true })
 	color!: string | null;
@@ -64,10 +56,10 @@ export class Point extends BaseEntity {
 	@Column({ type: "enum", enum: pane, nullable: true })
 	pane!: pane;
 
-	@ManyToOne(
-		() => Block,
-		(block) => block.points,
-		{ onDelete: "CASCADE" },
-	)
-	block!: Block;
+	// @ManyToOne(
+	// 	() => Block,
+	// 	(block) => block.points,
+	// 	{ onDelete: "CASCADE" },
+	// )
+	// block!: Block;
 }

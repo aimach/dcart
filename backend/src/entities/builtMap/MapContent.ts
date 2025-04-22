@@ -8,19 +8,13 @@ import {
 	BaseEntity,
 	ManyToOne,
 	OneToMany,
+	ManyToMany,
 } from "typeorm";
-import { Category } from "./Category";
-import { User } from "../auth/User";
-import { Attestation } from "./Attestation";
+// import des entités
 import { FilterMapContent } from "./FilterMapContent";
-// import des types
-import type { Filter } from "./Filter";
-
-enum location {
-	SUBREGION = "subRegion",
-	GREATREGION = "greatRegion",
-	CITY = "city",
-}
+import { User } from "../auth/User";
+import { Tag } from "../common/Tag";
+import { Attestation } from "../common/Attestation";
 
 @Entity()
 export class MapContent extends BaseEntity {
@@ -66,9 +60,6 @@ export class MapContent extends BaseEntity {
 	@Column({ type: "date", nullable: false })
 	uploadPointsLastDate!: Date;
 
-	@Column({ type: "uuid", default: null, nullable: true })
-	relatedStorymap?: string | null;
-
 	@OneToMany(
 		() => Attestation,
 		(attestation) => attestation.map,
@@ -87,11 +78,12 @@ export class MapContent extends BaseEntity {
 	)
 	modifier!: User;
 
-	@ManyToOne(
-		() => Category,
-		(category) => category.maps,
+	@ManyToMany(
+		() => Tag,
+		(tag) => tag.maps,
+		{ cascade: true, onDelete: "CASCADE" },
 	)
-	category!: Category;
+	tags!: Tag[];
 
 	@OneToMany(
 		() => FilterMapContent,
