@@ -91,6 +91,7 @@ type LanguageObject = {
 			element: string;
 			language: string;
 			divinityNb: string;
+			sourceType: string;
 			seeStat: string;
 			seeSources: string;
 			searchForLocation: string;

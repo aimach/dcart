@@ -15,7 +15,11 @@ import type {
 import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
-import { getAllDivinities } from "../api/builtMap/getRequests";
+import {
+	getAllDivinities,
+	getAllSourceTypes,
+} from "../api/builtMap/getRequests";
+import { all } from "axios";
 
 /**
  * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
@@ -240,13 +244,12 @@ const getSelectDefaultValues = (
 	if (!userFiltersListId) return [];
 
 	// convertir les valeurs en nombre
-	const locationIds = userFiltersListId
+	const defaultValues = userFiltersListId
 		.split("|")
-		.map((id) => Number.parseInt(id, 10));
-
+		.map((id) => (typeof id === "number" ? Number.parseInt(id, 10) : id));
 	// trouver les options correspondantes
 	return listOptions.filter((option) =>
-		locationIds.includes(option.value as number),
+		defaultValues.includes(option.value as number),
 	);
 };
 
@@ -430,7 +433,7 @@ const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
  * Fonction qui renvoie la liste des options d'éléments pour le select
  * @param {PointType[]} allPoints - Les points
  * @param {Language} language - La langue sélectionnée par l'utilisateur
- * @param {Function} setElementOptions - La fonction pour mettre à jour les options du select
+ * @param {boolean} isWithoutTheonym - Un booléen
  */
 const fetchElementOptions = async (
 	allPoints: PointType[],
@@ -470,6 +473,35 @@ const fetchElementOptions = async (
 	return formatedElementOptions;
 };
 
+/**
+ * Fonction qui renvoie tous les lieux d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @returns {Record<string, string>[]} - Le tableau des lieux
+ */
+const getAllSourceTypeFromPoints = (points: PointType[]) => {
+	const allSourceTypes: Record<string, string>[] = [];
+	points.map((point) => {
+		point.sources.map((source) => {
+			source.type_source.map((typeSource) => {
+				if (
+					allSourceTypes.find(
+						(type) => type.type_source_fr === typeSource.nom_fr,
+					)
+				) {
+					return;
+				}
+				if (typeSource.nom_fr && typeSource.nom_en) {
+					allSourceTypes.push({
+						type_source_fr: typeSource.nom_fr,
+						type_source_en: typeSource.nom_en,
+					});
+				}
+			});
+		});
+	});
+	return allSourceTypes;
+};
+
 export {
 	alreadyTwoFiltersChecked,
 	createTimeOptions,
@@ -487,4 +519,5 @@ export {
 	displayFiltersTags,
 	getMinAndMaxElementNumbers,
 	fetchElementOptions,
+	getAllSourceTypeFromPoints,
 };

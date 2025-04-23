@@ -24,7 +24,6 @@ const ElementCheckboxComponent = ({
 	selected,
 	setSelected,
 }: ElementCheckboxComponentProps) => {
-	console.log(selected);
 	const { userFilters, setUserFilters } = useMapFiltersStore();
 
 	const toggleFirstLevel = (optionId: number) => {

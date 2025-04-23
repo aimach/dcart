@@ -17,10 +17,12 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
 import DivinityNbComponent from "../filterComponents/DivinityNbFilterComponent";
+import SourceTypeFilterComponent from "../filterComponents/SourceTypeFilterComponent";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
 	elementOptions: OptionType[];
+	sourceTypeOptions: OptionType[];
 }
 
 /**
@@ -28,11 +30,13 @@ interface FilterComponentProps {
  * @param {Object} props
  * @param {OptionType[]} props.locationOptions - Liste des options pour le filtre de la localisation
  * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
+ * @param {OptionType[]} props.sourceTypeOptions - Liste des types de source pour le filtre des épithètes
  * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
  */
 const FilterComponent = ({
 	locationOptions,
 	elementOptions,
+	sourceTypeOptions,
 }: FilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
@@ -56,6 +60,7 @@ const FilterComponent = ({
 	// initiation d'états pour récupérer les valeurs des lieux et éléments
 	const [locationNameValues, setLocationNameValues] = useState<string[]>([]);
 	const [elementNameValues, setElementNameValues] = useState<string[]>([]);
+	const [sourceTypeValues, setSourceTypeValues] = useState<string[]>([]);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -140,6 +145,18 @@ const FilterComponent = ({
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.language}</h4>
 									<LanguageFilterComponent key={filter.id} />
+								</div>
+							);
+						}
+						if (filter.filter.type === "sourceType") {
+							return (
+								<div className={style.filterContainer} key={filter.id}>
+									<h4>{translation[language].mapPage.aside.sourceType}</h4>
+									<SourceTypeFilterComponent
+										sourceTypeOptions={sourceTypeOptions}
+										setSourceTypeValues={setSourceTypeValues}
+										key={filter.id}
+									/>
 								</div>
 							);
 						}

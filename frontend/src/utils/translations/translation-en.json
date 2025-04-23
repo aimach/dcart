@@ -89,6 +89,7 @@
 			"element": "Element",
 			"language": "Language",
 			"divinityNb": "Element number",
+			"sourceType": "Source type",
 			"seeStat": "See statistics",
 			"seeSources": "See sources",
 			"searchForLocation": "Search for a location...",

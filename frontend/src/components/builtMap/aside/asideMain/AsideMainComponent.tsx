@@ -11,6 +11,7 @@ import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAside
 import {
 	fetchElementOptions,
 	getAllLocationsFromPoints,
+	getAllSourceTypeFromPoints,
 } from "../../../../utils/functions/filter";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
@@ -30,6 +31,35 @@ const AsideMainComponent = () => {
 		(state) => state.selectedTabMenu,
 	);
 	const { mapInfos, allPoints, selectedMarker } = useMapStore((state) => state);
+
+	// --- RECUPERATION DES OPTIONS DES TYPES DE SOURCE POUR LES FILTRES
+	let sourceTypeOptions: OptionType[] = [];
+
+	sourceTypeOptions = useMemo(() => {
+		const sourceTypeFilter = mapInfos?.filterMapContent?.find(
+			(filter) => filter.filter.type === "sourceType",
+		);
+		if (sourceTypeFilter) {
+			// récupération de toutes les sources depuis la liste des points
+			const allSourcesFromPoints: Record<string, string>[] =
+				getAllSourceTypeFromPoints(allPoints);
+
+			// formattage des options pour le select
+			return allSourcesFromPoints
+				.map((option) => ({
+					value: option.type_source_fr,
+					label: option[`type_source_${language}`],
+				}))
+				.sort((option1, option2) =>
+					option1.label < option2.label
+						? -1
+						: option1.label > option2.label
+							? 1
+							: 0,
+				);
+		}
+		return [];
+	}, [allPoints, language, mapInfos]);
 
 	// --- RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
 	let locationOptions: OptionType[] = [];
@@ -104,6 +134,7 @@ const AsideMainComponent = () => {
 				<FilterComponent
 					locationOptions={locationOptions}
 					elementOptions={elementOptions}
+					sourceTypeOptions={sourceTypeOptions}
 				/>
 			);
 		case "infos":
