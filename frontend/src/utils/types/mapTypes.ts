@@ -1,6 +1,3 @@
-// import des types
-import type { StorymapType } from "./storymapTypes";
-
 type AgentType = {
 	genres: [
 		{
@@ -73,9 +70,7 @@ type MapInfoType = {
 	image_url?: string;
 	tags: string | TagType[];
 	attestations: PointSetType[];
-	filterMapContent?:
-		| Record<string, string>
-		| Record<string, Record<string, string>[]>;
+	filterMapContent?: FilterMapContentType[];
 	isLayered: boolean;
 	isNbDisplayed: boolean;
 };
@@ -183,6 +178,12 @@ type PointSetType = {
 	blockId?: string;
 };
 
+type FilterMapContentType = {
+	id: string;
+	filter: { type: string };
+	options: Record<string, string>;
+};
+
 /**
  * Fonction pour déterminer si l'élément est de type MapType
  * @param {MapType | StorymapType} item - L'élément à vérifier
@@ -210,6 +211,7 @@ export type {
 	MapIconType,
 	PointSetType,
 	MapColorType,
+	FilterMapContentType,
 };
 
 export { isMapType };

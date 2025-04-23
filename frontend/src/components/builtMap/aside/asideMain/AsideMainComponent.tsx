@@ -14,7 +14,6 @@ import {
 } from "../../../../utils/functions/filter";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
-import type { FilterType } from "../../../../utils/types/filterTypes";
 // import du style
 import style from "./asideMainComponent.module.scss";
 
@@ -87,7 +86,7 @@ const AsideMainComponent = () => {
 		if (mapInfos && allPoints) {
 			// si le filtre des éléments est activé, on récupère les options
 			if (
-				(mapInfos.filterMapContent as FilterType[])?.some(
+				mapInfos.filterMapContent?.some(
 					(filter) => filter.filter.type === "element",
 				)
 			) {
