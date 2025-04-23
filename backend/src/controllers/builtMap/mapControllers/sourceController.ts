@@ -178,8 +178,6 @@ export const sourceController = {
 					}
 				}
 
-				console.log({ querySourceType });
-
 				const { attestations } = mapInfos as MapContent;
 				results = await Promise.all(
 					attestations.map(async (attestation: Attestation) => {

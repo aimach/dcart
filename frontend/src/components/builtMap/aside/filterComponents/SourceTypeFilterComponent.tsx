@@ -44,8 +44,6 @@ const SourceTypeFilterComponent = ({
 		);
 	}, [userFilters.sourceTypeId, sourceTypeOptions]);
 
-	console.log(defaultValues);
-
 	return (
 		<div>
 			<Select

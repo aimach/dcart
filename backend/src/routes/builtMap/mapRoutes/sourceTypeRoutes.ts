@@ -5,5 +5,5 @@ import { mapController } from "../../../controllers/builtMap/mapControllers";
 
 export const sourceTypeRoutes = express.Router();
 
-// récupérer les divinités
+// récupérer les types de source
 sourceTypeRoutes.get("/all", mapController.getAllSourceTypes);

@@ -4,6 +4,8 @@ import { useCallback, useState } from "react";
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
 import ElementFilterComponent from "../filterComponents/ElementFilterComponent";
+import SourceTypeFilterComponent from "../filterComponents/SourceTypeFilterComponent";
+import DivinityNbComponent from "../filterComponents/DivinityNbFilterComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -16,9 +18,6 @@ import { useShallow } from "zustand/shallow";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
-import DivinityNbComponent from "../filterComponents/DivinityNbFilterComponent";
-import SourceTypeFilterComponent from "../filterComponents/SourceTypeFilterComponent";
-import { set } from "react-hook-form";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
@@ -87,7 +86,6 @@ const FilterComponent = ({
 		fetchAllPoints("filter");
 		setLocationNames(locationNameValues);
 		setElementNames(elementNameValues);
-		set;
 		setSourceTypeNames(sourceTypeValues);
 		setLanguageValues({
 			greek: userFilters.greek,
