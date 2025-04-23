@@ -21,7 +21,7 @@ import {
 } from "../../../utils/functions/builtMap";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
-import type { AttestationType, PointType } from "../../../utils/types/mapTypes";
+import type { PointType } from "../../../utils/types/mapTypes";
 import type { Request, Response } from "express";
 
 export const sourceController = {
@@ -30,6 +30,17 @@ export const sourceController = {
 		try {
 			// on récupère params et query
 			const { mapId } = req.params;
+			const {
+				greek,
+				semitic,
+				locationId,
+				lotIds,
+				ante,
+				post,
+				elementId,
+				minDivinityNb,
+				maxDivinityNb,
+			} = req.body;
 
 			// on prépare la variable à renvoyer
 			let results = null;
@@ -42,35 +53,35 @@ export const sourceController = {
 				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
 				let queryIncludedElements = "";
 
-				if (req.query.locationId) {
+				if (locationId) {
 					// s'il existe des params, on remplace les valeurs par celles des params
-					queryLocalisation = req.query.locationId
+					queryLocalisation = locationId
 						? getQueryStringForLocalisationFilter(
-								req.query.locationId as string,
+								locationId as string,
 								"greatRegion",
 							)
 						: queryLocalisation;
 				}
 
-				if (req.query.ante || req.query.post) {
-					const maxValue = req.query.ante ? req.query.ante.toString() : null;
-					const minValue = req.query.post ? req.query.post.toString() : null;
+				if (ante || post) {
+					const maxValue = ante ? ante.toString() : null;
+					const minValue = post ? post.toString() : null;
 					queryDatation = getQueryStringForDateFilter(maxValue, minValue);
 				}
 
-				if (req.query.elementId) {
+				if (elementId) {
 					// ici se fait la récupération des épithètes
 					queryIncludedElements = getQueryStringForIncludedElements(
 						mapId,
-						req.query.elementId as string,
+						elementId as string,
 					);
 				}
 
 				let queryLanguage = "";
-				if (req.query.greek === "true") {
+				if (greek === "true") {
 					queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
 				}
-				if (req.query.semitic === "true") {
+				if (semitic === "true") {
 					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
 				}
 
@@ -110,27 +121,23 @@ export const sourceController = {
 				let queryDivinityNb = "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
-				if (req.query.locationId) {
+				if (locationId) {
 					const locationFilter = mapInfos?.filterMapContent?.find(
 						(filter) => filter.filter?.type === "location",
 					);
 					const locationLevel =
 						locationFilter?.options?.solution ?? "greatRegion";
-					queryLocalisation = req.query.locationId
+					queryLocalisation = locationId
 						? getQueryStringForLocalisationFilter(
-								req.query.locationId as string,
+								locationId as string,
 								locationLevel,
 							)
 						: queryLocalisation;
 				}
 
-				if (req.query.ante || req.query.post) {
-					const maxDateValue = req.query.ante
-						? req.query.ante.toString()
-						: null;
-					const minDateValue = req.query.post
-						? req.query.post.toString()
-						: null;
+				if (ante || post) {
+					const maxDateValue = ante ? ante.toString() : null;
+					const minDateValue = post ? post.toString() : null;
 					queryDatation = getQueryStringForDateFilter(
 						maxDateValue,
 						minDateValue,
@@ -138,23 +145,23 @@ export const sourceController = {
 				}
 
 				// ici se fait la récupération des épithètes
-				if (req.query.elementId) {
+				if (elementId) {
 					queryIncludedElements = getQueryStringForIncludedElements(
 						mapId,
-						req.query.elementId as string,
+						elementId as string,
 					);
 				}
 
 				let queryLanguage = "";
-				if (req.query.greek === "true") {
+				if (greek === "true") {
 					queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
 				}
-				if (req.query.semitic === "true") {
+				if (semitic === "true") {
 					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
 				}
 
-				if (req.query.minDivinityNb && req.query.maxDivinityNb) {
-					queryDivinityNb = `AND json_array_length(attestation_with_elements.elements) BETWEEN ${req.query.minDivinityNb} AND ${req.query.maxDivinityNb}`;
+				if (minDivinityNb && maxDivinityNb) {
+					queryDivinityNb = `AND json_array_length(attestation_with_elements.elements) BETWEEN ${minDivinityNb} AND ${maxDivinityNb}`;
 				}
 
 				const { attestations } = mapInfos as MapContent;
@@ -171,17 +178,13 @@ export const sourceController = {
 
 						const queryResults = await mapDataSource.query(sqlQuery);
 
-						// on trie les sources si req.query.lotIds est présent
+						// on trie les sources si lotIds est présent
 						let filteredResults = [];
-						if (req.query.lotIds) {
-							const firstLevelLotIds = (req.query.lotIds as string)
-								.split("|")
-								.map((lot) => JSON.parse(lot));
-
+						if (lotIds && lotIds.length > 0) {
 							const lotIdsArray: number[][] = [];
 
 							// on crée un tableau contenant les paires [id premier niveau, id second niveau]
-							firstLevelLotIds.map((lot) => {
+							lotIds.map((lot: number[]) => {
 								for (let index = 1; index < lot.length; index++) {
 									lotIdsArray.push([lot[0], lot[index]]);
 								}

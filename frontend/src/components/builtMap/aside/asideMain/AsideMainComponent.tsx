@@ -48,7 +48,7 @@ const AsideMainComponent = () => {
 				value = "sous_region_id";
 				label = `sous_region_${language}`;
 			} else if (locationFilter.options?.solution === "location") {
-				value = "localisation_id";
+				value = "nom_ville";
 				label = "nom_ville";
 			}
 			const allLocationsFromPoints: Record<string, string>[] =

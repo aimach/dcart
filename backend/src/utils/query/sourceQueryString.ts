@@ -255,7 +255,6 @@ SELECT
   sous_region.id AS sous_region_id,
   sous_region.nom_fr AS sous_region_fr,
   sous_region.nom_en AS sous_region_EN,
-  -- localisation_source.id AS localisation_id,
   localisation_source.nom_ville,
 	json_agg(
     DISTINCT jsonb_build_object(
@@ -291,7 +290,6 @@ GROUP BY
   grande_region.nom_en,
   sous_region.id,
   sous_region.nom_fr, 
-  -- localisation_source.id,
   sous_region.nom_en
   ORDER BY grande_region_fr, sous_region_fr, localisation_source.nom_ville`;
 };

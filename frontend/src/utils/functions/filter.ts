@@ -133,7 +133,6 @@ const getAllLocationsFromPoints = (
 			sous_region_id: point.sous_region_id,
 			sous_region_fr: point.sous_region_fr,
 			sous_region_en: point.sous_region_en,
-			localisation_id: point.localisation_id,
 			nom_ville: point.nom_ville,
 		});
 	});

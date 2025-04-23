@@ -8,7 +8,7 @@ import { validateSourceBody } from "../../../utils/validator/builtMap/source";
 export const sourceRoutes = express.Router();
 
 // récupérer les sources par l'id de la map
-sourceRoutes.get("/map/:mapId", mapController.getSourcesByMapId);
+sourceRoutes.post("/map/:mapId", mapController.getSourcesByMapId);
 
 // récupérer les sources par l'id du block
 sourceRoutes.get("/block/:blockId", mapController.getSourcesByBlockId);
