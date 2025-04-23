@@ -37,23 +37,28 @@ const AsideMainComponent = () => {
 	// si le filtre de localisation est activé, utilisation du hook useMemo
 
 	locationOptions = useMemo(() => {
-		if (
-			(mapInfos?.filterMapContent)?.some(
-				(filter) => filter.filter.type === "location",
-			)
-		) {
+		const locationFilter = mapInfos?.filterMapContent?.find(
+			(filter) => filter.filter.type === "location",
+		);
+		if (locationFilter) {
 			// récupération de toutes les localités depuis la liste des points
+			let value = "grande_region_id";
+			let label = `grande_region_${language}`;
+			if (locationFilter.options?.solution === "subRegion") {
+				value = "sous_region_id";
+				label = `sous_region_${language}`;
+			} else if (locationFilter.options?.solution === "location") {
+				value = "localisation_id";
+				label = "nom_ville";
+			}
 			const allLocationsFromPoints: Record<string, string>[] =
-				getAllLocationsFromPoints(allPoints);
-
-			// récupération de la clé du champ en fonction du niveau de localisation (grande région / sous région)
-			const fieldKeyFromLocationLevel = "sous_region";
+				getAllLocationsFromPoints(allPoints, label);
 
 			// formattage des options pour le select
 			return allLocationsFromPoints
 				.map((option) => ({
-					value: option[`${fieldKeyFromLocationLevel}_id`],
-					label: option[`${fieldKeyFromLocationLevel}_${language}`],
+					value: option[value],
+					label: option[label],
 				}))
 				.sort((option1, option2) =>
 					option1.label < option2.label
@@ -69,7 +74,11 @@ const AsideMainComponent = () => {
 	// --- RECUPERATION DES OPTIONS D'ELEMENTS POUR LES FILTRES
 	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
 	const formatElementOptions = async () => {
-		const newElementOptions = await fetchElementOptions(allPoints, language, true);
+		const newElementOptions = await fetchElementOptions(
+			allPoints,
+			language,
+			true,
+		);
 		setElementOptions(newElementOptions);
 	};
 

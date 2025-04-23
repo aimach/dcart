@@ -12,5 +12,3 @@ locationRoutes.get(
 	"/regions/:greatRegionId/subRegions",
 	mapController.getAllSubRegionsFromGreatRegionId,
 );
-
-locationRoutes.get("/:locationLevel", mapController.getAllLocations);

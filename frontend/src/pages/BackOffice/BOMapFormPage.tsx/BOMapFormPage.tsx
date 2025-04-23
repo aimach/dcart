@@ -104,7 +104,7 @@ const BOMapFormPage = () => {
 							className={`${step === 5 && style.isSelected}`}
 						>
 							<MapPinCheck />
-							Options filtre localisation
+							Options filtre lieux
 						</li>
 					)}
 				</ul>

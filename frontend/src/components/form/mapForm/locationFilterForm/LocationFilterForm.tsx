@@ -85,8 +85,8 @@ const LocationFilterForm = () => {
 			<div className={style.commonFormInputContainer}>
 				<LabelComponent
 					htmlFor="location"
-					label="Lieu"
-					description="	Le filtre 'Lieu' affichera toutes les lieux de la carte."
+					label="Nom de ville"
+					description="	Le filtre 'Lieu' affichera toutes les noms de ville de la carte."
 				/>
 				<div className={style.inputContainer}>
 					<input
