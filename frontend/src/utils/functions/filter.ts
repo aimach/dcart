@@ -186,6 +186,15 @@ const getFilterLabel = (
 					translation[language as keyof TranslationType].backoffice.mapFormPage
 						.divinityNbFilter.description,
 			};
+		case "sourceType":
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.sourceTypeFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.sourceTypeFilter.description,
+			};
 		default:
 			return {
 				label:

@@ -214,6 +214,10 @@
 				"label": "Divinity number filter",
 				"description": "Displays a double slider with a minimum and maximum value, defined by the number of divinities in the set of displayed attestations"
 			},
+			"sourceTypeFilter": {
+				"label": "Source type filter",
+				"description": "Displays a select/options element with the list of source types from all displayed attestations"
+			},
 			"noFilter": {
 				"label": "I don't want to add a filter",
 				"description": "No filter will be added to the map."

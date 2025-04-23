@@ -194,6 +194,7 @@ type LanguageObject = {
 			languageFilter: { label: string; description: string };
 			epithetFilter: { label: string; description: string };
 			divinityNbFilter: { label: string; description: string };
+			sourceTypeFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;

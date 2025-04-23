@@ -62,6 +62,7 @@ type MapFilterType = {
 	language: boolean;
 	element: boolean;
 	divinityNb: boolean;
+	sourceType: boolean;
 };
 
 type MapInfoType = {
