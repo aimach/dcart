@@ -40,6 +40,7 @@ export const sourceController = {
 				elementId,
 				minDivinityNb,
 				maxDivinityNb,
+				sourceTypeId,
 			} = req.body;
 
 			// on prépare la variable à renvoyer
@@ -119,6 +120,7 @@ export const sourceController = {
 				);
 				let queryIncludedElements = "";
 				let queryDivinityNb = "";
+				let querySourceType = "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (locationId) {
@@ -164,6 +166,18 @@ export const sourceController = {
 					queryDivinityNb = `AND json_array_length(attestation_with_elements.elements) BETWEEN ${minDivinityNb} AND ${maxDivinityNb}`;
 				}
 
+				if (sourceTypeId) {
+					if (sourceTypeId.includes("|")) {
+						const sourceTypeIds = sourceTypeId
+							.split("|")
+							.map((sourceTypeName: string) => `'${sourceTypeName}'`) // ajout des quotes
+							.join(", ");
+						querySourceType = `WHERE type_source.nom_fr IN (${sourceTypeIds})`;
+					} else {
+						querySourceType = `WHERE type_source.nom_fr = '${sourceTypeId}'`;
+					}
+				}
+
 				const { attestations } = mapInfos as MapContent;
 				results = await Promise.all(
 					attestations.map(async (attestation: Attestation) => {
@@ -174,6 +188,7 @@ export const sourceController = {
 							queryLanguage,
 							queryIncludedElements,
 							queryDivinityNb,
+							querySourceType,
 						);
 
 						const queryResults = await mapDataSource.query(sqlQuery);
@@ -292,6 +307,7 @@ export const sourceController = {
 						"",
 						"",
 						"",
+						"",
 					);
 
 					const queryResults = await mapDataSource.query(sqlQuery);
@@ -328,6 +344,7 @@ export const sourceController = {
 			// on récupère le texte de la requête SQL
 			const sqlQuery = getSourcesQueryWithDetails(
 				attestationIds,
+				"",
 				"",
 				"",
 				"",

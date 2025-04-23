@@ -152,6 +152,8 @@ ORDER BY grande_region_fr, sous_region_fr, localisation_source.nom_ville`;
  * @param queryDatation - Une chaîne de caractères permettant de filtrer par la date.
  * @param queryLanguage - Une chaîne de caractères permettant de filtrer par la langue.
  * @param queryIncludedElements - Une chaîne de caractères permettant de filtrer par élément.
+ * @param queryDivinityNb - Une chaîne de caractères permettant de filtrer par nombre de puissances divines
+ * @param querySourceType - Une chaîne de caractères permettant de filtrer par nom de type de source.
  * @returns Une chaîne de caractères contenant la requête SQL.
  */
 export const getSourcesQueryWithDetails = (
@@ -161,6 +163,7 @@ export const getSourcesQueryWithDetails = (
 	queryLanguage: string,
 	queryIncludedElements: string,
 	queryDivinityNb: string,
+	querySourceType: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -236,12 +239,16 @@ sources_with_attestations AS (
 sources_without_duplicate AS (
   SELECT 
     source.id AS source_id,
-    json_agg(attestations ORDER BY attestations->>'attestation_id') AS sources
+    json_agg(attestations ORDER BY attestations->>'attestation_id') AS sources,
+    json_agg(DISTINCT jsonb_build_object('nom_fr', type_source.nom_fr, 'nom_en', type_source.nom_en))  AS type_source
   FROM (
     SELECT DISTINCT sources_with_attestations.source_id, sources_with_attestations.attestations
     FROM sources_with_attestations
   ) AS subquery
   JOIN source ON source.id = subquery.source_id
+  LEFT JOIN source_type_source ON source_type_source.id_source = source.id
+  LEFT JOIN type_source ON type_source.id = source_type_source.id_type_source
+  ${querySourceType}
   GROUP BY source.id
 )
 
@@ -261,7 +268,8 @@ SELECT
       'source_id', sources_without_duplicate.source_id,
       'attestations', sources_without_duplicate.sources,
       'post_quem', datation.post_quem,
-      'ante_quem', datation.ante_quem
+      'ante_quem', datation.ante_quem,
+      'type_source', sources_without_duplicate.type_source
     )
   ) AS sources
 FROM source

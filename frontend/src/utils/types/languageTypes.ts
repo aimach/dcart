@@ -58,6 +58,7 @@ type LanguageObject = {
 		published: string;
 		noPublished: string;
 		close: string;
+		typeOf: string;
 	};
 	modal: {
 		firstContent: string;
@@ -91,6 +92,7 @@ type LanguageObject = {
 			element: string;
 			language: string;
 			divinityNb: string;
+			sourceType: string;
 			seeStat: string;
 			seeSources: string;
 			searchForLocation: string;
@@ -194,6 +196,7 @@ type LanguageObject = {
 			languageFilter: { label: string; description: string };
 			epithetFilter: { label: string; description: string };
 			divinityNbFilter: { label: string; description: string };
+			sourceTypeFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;

@@ -62,6 +62,7 @@ type MapFilterType = {
 	language: boolean;
 	element: boolean;
 	divinityNb: boolean;
+	sourceType: boolean;
 };
 
 type MapInfoType = {
@@ -149,6 +150,7 @@ type SourceType = {
 	support_fr: string;
 	materiau_en: string;
 	materiau_fr: string;
+	type_source: { nom_fr: string; nom_en: string }[];
 	attestations: AttestationType[];
 };
 

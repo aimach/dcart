@@ -55,7 +55,8 @@
 		"storymap": "storymap",
 		"published": "publiée",
 		"noPublished": "non publiée",
-		"close": "Fermer"
+		"close": "Fermer",
+		"typeOf": "de type"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",
@@ -89,6 +90,7 @@
 			"element": "Element",
 			"language": "Language",
 			"divinityNb": "Nombre d'éléments",
+			"sourceType": "Type de source",
 			"seeStat": "Voir les statistiques",
 			"seeSources": "Voir les sources",
 			"searchForLocation": "Rechercher un lieu...",
@@ -213,6 +215,10 @@
 			"divinityNbFilter": {
 				"label": "Filtre du nombre de divinités",
 				"description": "Affiche un curseur avec un minimum et un maximum, définis par le nombre de divinités dans l'ensemble des attestations affichées"
+			},
+			"sourceTypeFilter": {
+				"label": "Filtre du type de source",
+				"description": "Afficher un select/options avec la liste des types de sources de l'ensemble des attestations affichées"
 			},
 			"noFilter": {
 				"label": "Je ne souhaite pas ajouter de filtre",

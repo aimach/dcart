@@ -1,6 +1,8 @@
-// import des types
+// import des bibliothèques
 import { useEffect } from "react";
+// import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
+// import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 
 type SelectedObjectType = {
@@ -24,7 +26,6 @@ const ElementCheckboxComponent = ({
 	selected,
 	setSelected,
 }: ElementCheckboxComponentProps) => {
-	console.log(selected);
 	const { userFilters, setUserFilters } = useMapFiltersStore();
 
 	const toggleFirstLevel = (optionId: number) => {

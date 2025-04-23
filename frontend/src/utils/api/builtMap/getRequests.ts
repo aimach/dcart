@@ -65,6 +65,19 @@ const getAllDivinities = async () => {
 };
 
 /**
+ * Récupère toutes les divinités
+ * @returns {Promise} - Toutes les divinités de la BDD MAP
+ */
+const getAllSourceTypes = async () => {
+	try {
+		const response = await apiClient.get("/map/sourceTypes/all");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des divinités :", error);
+	}
+};
+
+/**
  * Récupère toutes les grandes régions
  * @returns {Promise} - Toutes les grandes régions
  */
@@ -306,4 +319,5 @@ export {
 	getAllPointsByBlockId,
 	getAllTagsWithMapsAndStorymaps,
 	getTagWithMapsAndStorymaps,
+	getAllSourceTypes,
 };

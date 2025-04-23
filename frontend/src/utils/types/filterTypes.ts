@@ -13,6 +13,7 @@ type UserFilterType = {
 	lotIds: number[][];
 	locationType?: string;
 	locationId?: string;
+	sourceTypeId?: string;
 	greek: boolean;
 	semitic: boolean;
 	minDivinityNb?: string;
