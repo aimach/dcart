@@ -1,3 +1,6 @@
+// import des types
+import type { OptionType } from "./commonTypes";
+
 type AgentType = {
 	genres: [
 		{
@@ -181,7 +184,13 @@ type PointSetType = {
 type FilterMapContentType = {
 	id: string;
 	filter: { type: string };
-	options: Record<string, string>;
+	options: {
+		solution: string;
+		checkbox?: {
+			firstLevelIds: OptionType[];
+			secondLevelIds: OptionType[];
+		}[];
+	} | null;
 };
 
 /**

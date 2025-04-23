@@ -30,7 +30,9 @@
 		"bar": "Bar",
 		"resetFilter": "Reset filters",
 		"discover": "Discover",
-		"add": "Add"
+		"add": "Add",
+		"save": "Save",
+		"delete": "Delete"
 	},
 	"common": {
 		"between": "between",
@@ -101,6 +103,8 @@
 	},
 	"backoffice": {
 		"createA": "Create a",
+		"stillConnected": "Are you still connected ?",
+		"disconnectInOneMinute": "Deconnexion in 1 minute...",
 		"managementTable": {
 			"image": "Image",
 			"name": "Name/Description",
@@ -117,6 +121,13 @@
 			"requiredField": "Required field"
 		},
 		"mapFormPage": {
+			"intro": {
+				"tags": {
+					"label": "Map tags",
+					"description": "These tags will be used to filter the maps in the list of maps. You can choose one or more tags.",
+					"placeholder": "Choose one or more tags"
+				}
+			},
 			"aside": {
 				"informations": "Informations",
 				"pointSets": "Point sets",
@@ -151,6 +162,36 @@
 				"noDefinedIcon": "No icon defined",
 				"isLayeredLabel": "Point must be displayed on a different layer",
 				"isNbDisplayedLabel": "Display the number of sources"
+			},
+			"filterForm": {
+				"element": {
+					"title": "Build 'Elements' filter",
+					"firstLevel": "First level (1 element)",
+					"secondLevel": "Second level (one or more elements)",
+					"basic": {
+						"label": "Basic",
+						"description": "'Elements' filter will be built with the list of all elements from the displayed attestations."
+					},
+					"manual": {
+						"label": "Manual",
+						"description": "'Elements' filter will be built with the list of all elements from the displayed attestations. The user will be able to select one or more elements from the list. The filter will be displayed as a select/options element."
+					}
+				},
+				"location": {
+					"title": "Build 'Location' filter",
+					"greatRegion": {
+						"label": "Great region",
+						"description": "'Location' filter will display a select/options element with the list of great regions from all displayed attestations."
+					},
+					"subRegion": {
+						"label": "Subregion",
+						"description": "'Location' filter will display a select/options element with the list of subregions from all displayed attestations."
+					},
+					"cityName": {
+						"label": "City name",
+						"description": "'Location' filter will display a select/options element with the list of city names from all displayed attestations."
+					}
+				}
 			},
 			"addMapIntro": "Add map information",
 			"addMapPoints": "Add map points",

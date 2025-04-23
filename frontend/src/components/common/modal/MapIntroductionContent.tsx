@@ -16,7 +16,6 @@ import type { Dispatch, SetStateAction } from "react";
 import style from "./modalComponent.module.scss";
 // import des images
 import delta from "../../../assets/delta.png";
-import { ChevronRightCircle } from "lucide-react";
 
 interface MapIntroductionContentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;

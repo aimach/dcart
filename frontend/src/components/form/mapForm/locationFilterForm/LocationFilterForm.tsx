@@ -53,8 +53,14 @@ const LocationFilterForm = () => {
 			<div className={style.commonFormInputContainer}>
 				<LabelComponent
 					htmlFor="greatRegion"
-					label="Grande région"
-					description="Le filtre 'Lieu' affichera toutes les grandes régions de la carte."
+					label={
+						translation[language].backoffice.mapFormPage.filterForm.location
+							.greatRegion.label
+					}
+					description={
+						translation[language].backoffice.mapFormPage.filterForm.location
+							.greatRegion.description
+					}
 				/>
 				<div className={style.inputContainer}>
 					<input
@@ -69,8 +75,14 @@ const LocationFilterForm = () => {
 			<div className={style.commonFormInputContainer}>
 				<LabelComponent
 					htmlFor="subRegion"
-					label="Sous région"
-					description="Le filtre 'Lieu' affichera toutes les sous régions de la carte."
+					label={
+						translation[language].backoffice.mapFormPage.filterForm.location
+							.subRegion.label
+					}
+					description={
+						translation[language].backoffice.mapFormPage.filterForm.location
+							.subRegion.description
+					}
 				/>
 				<div className={style.inputContainer}>
 					<input
@@ -85,8 +97,14 @@ const LocationFilterForm = () => {
 			<div className={style.commonFormInputContainer}>
 				<LabelComponent
 					htmlFor="location"
-					label="Nom de ville"
-					description="	Le filtre 'Lieu' affichera toutes les noms de ville de la carte."
+					label={
+						translation[language].backoffice.mapFormPage.filterForm.location
+							.cityName.label
+					}
+					description={
+						translation[language].backoffice.mapFormPage.filterForm.location
+							.cityName.description
+					}
 				/>
 				<div className={style.inputContainer}>
 					<input

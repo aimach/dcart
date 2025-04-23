@@ -107,7 +107,10 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 							<div className={style.selectContainer}>
 								<LabelComponent
 									htmlFor="firstLevelIds"
-									label="Premier niveau (1 élément)"
+									label={
+										translation[language].backoffice.mapFormPage.filterForm
+											.element.firstLevel
+									}
 									description=""
 								/>
 								<Select
@@ -132,7 +135,10 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 							<div className={style.selectContainer}>
 								<LabelComponent
 									htmlFor="firstLevelIds"
-									label="Second niveau (un ou plusieurs éléments)"
+									label={
+										translation[language].backoffice.mapFormPage.filterForm
+											.element.secondLevel
+									}
 									description=""
 								/>
 								<Select
@@ -159,7 +165,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 								type="button"
 								color="brown"
 								onClickFunction={() => handleMultiSelectChange(index)}
-								textContent="Sauvegarder"
+								textContent={translation[language].button.save}
 							/>
 							{checkboxArray.some(
 								(checkbox) =>
@@ -170,7 +176,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 									type="button"
 									color="red"
 									onClickFunction={() => handleDeleteMultiSelect(index)}
-									textContent="Supprimer"
+									textContent={translation[language].button.delete}
 								/>
 							) : null}
 						</div>

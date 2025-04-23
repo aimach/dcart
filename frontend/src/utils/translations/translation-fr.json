@@ -30,7 +30,9 @@
 		"bar": "Barre",
 		"resetFilter": "Réinitialiser les filtres",
 		"discover": "Découvrir",
-		"add": "Ajouter"
+		"add": "Ajouter",
+		"save": "Sauvegarder",
+		"delete": "Supprimer"
 	},
 	"common": {
 		"between": "entre",
@@ -101,6 +103,8 @@
 	},
 	"backoffice": {
 		"createA": "Créer une",
+		"stillConnected": "Êtes-vous toujours connecté ?",
+		"disconnectInOneMinute": "Déconnexion dans 1 minute...",
 		"managementTable": {
 			"image": "Image",
 			"name": "Nom/Description",
@@ -117,6 +121,13 @@
 			"requiredField": "Ce champ est requis"
 		},
 		"mapFormPage": {
+			"intro": {
+				"tags": {
+					"label": "Etiquettes de la carte",
+					"description": "Les étiquettes permettent de classer les cartes et de les retrouver plus facilement.",
+					"placeholder": "Choisir une ou plusieurs étiquettes"
+				}
+			},
 			"aside": {
 				"informations": "Informations",
 				"pointSets": "Jeu de points",
@@ -151,6 +162,36 @@
 				"noDefinedIcon": "Pas d'icône définie",
 				"isLayeredLabel": "Les points doivent être affichés sur un calque différent",
 				"isNbDisplayedLabel": "Afficher le nombre de sources dans le point"
+			},
+			"filterForm": {
+				"element": {
+					"title": "Construction du filtre 'Elements'",
+					"firstLevel": "Premier niveau (1 élément)",
+					"secondLevel": "Second niveau (un ou plusieurs éléments)",
+					"basic": {
+						"label": "Basique",
+						"description": "Le filtre 'Elements' se présentera sous la forme d'un select/options où l'utilisateur pourra parcourir la liste des options et en choisir une ou plusieurs."
+					},
+					"manual": {
+						"label": "Manuelle",
+						"description": "Le filtre 'Elements' se présentera sous la forme de checkboxs à 2 niveaux : un premier niveau avec les théonymes et un second avec les épithètes. Ces deux niveaux sont à construire s sur-mesure ci-dessous"
+					}
+				},
+				"location": {
+					"title": "Construire le filtre 'Lieu'",
+					"greatRegion": {
+						"label": "Grande région",
+						"description": "Le filtre 'Lieu' affichera toutes les grandes régions de la carte."
+					},
+					"subRegion": {
+						"label": "Sous région",
+						"description": "Le filtre 'Lieu' affichera toutes les sous régions de la carte."
+					},
+					"cityName": {
+						"label": "Nom de ville",
+						"description": "Le filtre 'Lieu' affichera tous les noms de ville de la carte."
+					}
+				}
 			},
 			"addMapIntro": "Ajouter les informations de la carte",
 			"addMapPoints": "Ajouter les points de la carte",

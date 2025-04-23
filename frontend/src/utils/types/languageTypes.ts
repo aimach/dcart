@@ -33,6 +33,8 @@ type LanguageObject = {
 		resetFilter: string;
 		discover: string;
 		add: string;
+		save: string;
+		delete: string;
 	};
 	common: {
 		between: string;
@@ -103,6 +105,8 @@ type LanguageObject = {
 	};
 	backoffice: {
 		createA: string;
+		stillConnected: string;
+		disconnectInOneMinute: string;
 		managementTable: {
 			image: string;
 			name: string;
@@ -119,6 +123,9 @@ type LanguageObject = {
 			requiredField: string;
 		};
 		mapFormPage: {
+			intro: {
+				tags: { label: string; description: string; placeholder: string };
+			};
 			aside: {
 				informations: string;
 				pointSets: string;
@@ -153,6 +160,30 @@ type LanguageObject = {
 				noDefinedIcon: string;
 				isLayeredLabel: string;
 				isNbDisplayedLabel: string;
+			};
+			filterForm: {
+				element: {
+					title: string;
+					firstLevel: string;
+					secondLevel: string;
+					basic: { label: string; description: string };
+					manual: { label: string; description: string };
+				};
+				location: {
+					title: string;
+					greatRegion: {
+						label: string;
+						description: string;
+					};
+					subRegion: {
+						label: string;
+						description: string;
+					};
+					cityName: {
+						label: string;
+						description: string;
+					};
+				};
 			};
 			addMapIntro: string;
 			addMapPoints: string;

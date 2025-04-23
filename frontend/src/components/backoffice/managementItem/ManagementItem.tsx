@@ -1,6 +1,8 @@
 // import des bibliothèques
 import { useState, useEffect, useContext, useMemo } from "react";
 import DOMPurify from "dompurify";
+// import du contexte
+import { SessionContext } from "../../../context/SessionContext";
 // import des services
 import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
@@ -8,6 +10,7 @@ import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
 import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
 import { getCreationAndModificationString } from "../../../utils/functions/map";
 import { createSession, getSessionById } from "../../../utils/api/sessionAPI";
+import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import { useNavigate } from "react-router";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
@@ -18,8 +21,6 @@ import type { StorymapType } from "../../../utils/types/storymapTypes";
 import style from "./managementItem.module.scss";
 // import des icônes
 import { Eye, EyeOff, ImageOff, Pen, PenOff, Trash } from "lucide-react";
-import { SessionContext } from "../../../context/SessionContext";
-import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
 
 type ManagementItemProps = {
 	itemInfos: MapType | StorymapType;
@@ -126,7 +127,11 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 					<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
 						dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
 					/>
-					<p>{itemInfos.isActive ? "Publiée" : "Non publiée"}</p>
+					<p>
+						{itemInfos.isActive
+							? translation[language].common.published
+							: translation[language].common.published}
+					</p>
 					<p className={style.greyAndItalic}>{creationAndModificationString}</p>
 				</div>
 			</div>

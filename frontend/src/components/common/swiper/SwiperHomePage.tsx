@@ -11,6 +11,7 @@ import type { TagType } from "../../../utils/types/storymapTypes";
 import type { TagWithItemsType } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./swiper.module.scss";
+// import des icônes et des images
 import { BookOpenText, MapPin } from "lucide-react";
 import mapPinBG from "../../../assets/map-pin-bg.png";
 import bookOpenBG from "../../../assets/book-open-bg.png";
