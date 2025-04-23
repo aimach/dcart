@@ -110,13 +110,19 @@ const getAllElementsFromPoints = (points: PointType[]) => {
 /**
  * Fonction qui renvoie tous les lieux d'une liste de points donnée
  * @param {PointType[]} points - Les points
+ * @param {string} locationLevel - Le niveau de localisation (grande région, sous région ou nom ville)
  * @returns {Record<string, string>[]} - Le tableau des lieux
  */
-const getAllLocationsFromPoints = (points: PointType[]) => {
+const getAllLocationsFromPoints = (
+	points: PointType[],
+	locationLevel: string,
+) => {
 	const allLocations: Record<string, string>[] = [];
 	points.map((point) => {
 		if (
-			allLocations.find((loc) => loc.sous_region_fr === point.sous_region_fr)
+			allLocations.find(
+				(loc) => loc[locationLevel] === point[locationLevel as keyof PointType],
+			)
 		) {
 			return;
 		}
@@ -127,6 +133,7 @@ const getAllLocationsFromPoints = (points: PointType[]) => {
 			sous_region_id: point.sous_region_id,
 			sous_region_fr: point.sous_region_fr,
 			sous_region_en: point.sous_region_en,
+			nom_ville: point.nom_ville,
 		});
 	});
 	return allLocations;
@@ -347,9 +354,9 @@ const displayFiltersTags = (
 
 	// affichage des dates
 	if (userFilters.post !== -1000 || userFilters.ante !== 400) {
-		if (userFilters.post)
+		if (userFilters.post !== undefined)
 			stringArray.push(`${translationObject.common.after} ${userFilters.post}`);
-		if (userFilters.ante)
+		if (userFilters.ante !== undefined)
 			stringArray.push(
 				`${translationObject.common.before} ${userFilters.ante}`,
 			);
@@ -435,7 +442,6 @@ const fetchElementOptions = async (
 				(divinity: DivinityType) => divinity.id === element.element_id,
 			);
 		});
-
 	}
 
 	// formattage des options pour le select

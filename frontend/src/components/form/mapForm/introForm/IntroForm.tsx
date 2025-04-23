@@ -119,6 +119,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 	// WYSIWYG
 	const quillRef = useRef<Quill | null>(null);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	const defaultTagValues = useMemo(() => {
 		return (mapInfos?.tags as TagType[])?.map((tag: TagType) => ({
 			value: tag.id,
@@ -246,8 +247,10 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 			<div className={style.commonFormInputContainer}>
 				<LabelComponent
 					htmlFor="tags"
-					label="Etiquettes de la carte"
-					description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
+					label={translation[language].backoffice.mapFormPage.intro.tags.label}
+					description={
+						translation[language].backoffice.mapFormPage.intro.tags.description
+					}
 				/>
 				<div className={style.inputContainer}>
 					<Select
@@ -258,7 +261,10 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 						onChange={(newValue) =>
 							handleSelectTagsChange(newValue as MultiValue<OptionType>)
 						}
-						placeholder="Choisir une ou plusieurs étiquette"
+						placeholder={
+							translation[language].backoffice.mapFormPage.intro.tags
+								.placeholder
+						}
 					/>
 				</div>
 			</div>

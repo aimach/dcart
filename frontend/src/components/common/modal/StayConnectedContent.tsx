@@ -52,9 +52,9 @@ const StayConnectedContent = () => {
 
 	return (
 		<div className={style.modalCustomContentContainer}>
-			Êtes-vous toujours connecté ?
+			{translation[language].backoffice.stillConnected}
 			<br />
-			Déconnexion dans 1 minute...
+			{translation[language].backoffice.disconnectInOneMinute}
 			<div className={style.buttonContainer}>
 				<button type="button" onClick={handleStayConnected}>
 					{translation[language].modal.yes}

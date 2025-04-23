@@ -1,5 +1,5 @@
 // import des types
-import type { StorymapType } from "./storymapTypes";
+import type { OptionType } from "./commonTypes";
 
 type AgentType = {
 	genres: [
@@ -73,9 +73,7 @@ type MapInfoType = {
 	image_url?: string;
 	tags: string | TagType[];
 	attestations: PointSetType[];
-	filterMapContent?:
-		| Record<string, string>
-		| Record<string, Record<string, string>[]>;
+	filterMapContent?: FilterMapContentType[];
 	isLayered: boolean;
 	isNbDisplayed: boolean;
 };
@@ -132,6 +130,7 @@ type PointType = {
 	sous_region_id: string;
 	sous_region_fr: string;
 	sous_region_en: string;
+	localisation_id: string;
 	nom_ville: string;
 	sources: SourceType[];
 	selectedClassName?: string;
@@ -182,6 +181,18 @@ type PointSetType = {
 	blockId?: string;
 };
 
+type FilterMapContentType = {
+	id: string;
+	filter: { type: string };
+	options: {
+		solution: string;
+		checkbox?: {
+			firstLevelIds: OptionType[];
+			secondLevelIds: OptionType[];
+		}[];
+	} | null;
+};
+
 /**
  * Fonction pour déterminer si l'élément est de type MapType
  * @param {MapType | StorymapType} item - L'élément à vérifier
@@ -209,6 +220,7 @@ export type {
 	MapIconType,
 	PointSetType,
 	MapColorType,
+	FilterMapContentType,
 };
 
 export { isMapType };

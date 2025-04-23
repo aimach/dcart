@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { useState } from "react";
+import { useParams } from "react-router";
 import MultiRangeSlider from "multi-range-slider-react";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
@@ -7,11 +8,9 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useShallow } from "zustand/shallow";
 import { getAllDatationLabels } from "../../../../utils/functions/filter";
 import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
-// import des types
 // import du style
 import style from "./filtersComponent.module.scss";
 import "./timeFilterComponent.css";
-import { useParams } from "react-router";
 
 interface TimeFilterComponentProps {
 	disabled: boolean;

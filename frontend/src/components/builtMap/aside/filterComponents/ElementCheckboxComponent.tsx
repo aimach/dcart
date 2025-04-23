@@ -3,13 +3,20 @@ import { useEffect } from "react";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 
+type SelectedObjectType = {
+	[key: number]: {
+		checked: boolean;
+		children: number[];
+	};
+};
+
 type ElementCheckboxComponentProps = {
 	options: {
 		firstLevelIds: OptionType[];
 		secondLevelIds: OptionType[];
 	};
-	selected: any;
-	setSelected: (selected: any) => void;
+	selected: SelectedObjectType;
+	setSelected: (selected: SelectedObjectType) => void;
 };
 
 const ElementCheckboxComponent = ({
@@ -17,6 +24,7 @@ const ElementCheckboxComponent = ({
 	selected,
 	setSelected,
 }: ElementCheckboxComponentProps) => {
+	console.log(selected);
 	const { userFilters, setUserFilters } = useMapFiltersStore();
 
 	const toggleFirstLevel = (optionId: number) => {
@@ -77,6 +85,7 @@ const ElementCheckboxComponent = ({
 	};
 
 	// si userFilters.lotIds est vide, on vide les checkbox
+	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
 	useEffect(() => {
 		if (userFilters.lotIds.length === 0) {
 			setSelected({});

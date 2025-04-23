@@ -78,16 +78,36 @@ const getQueryStringForLanguage = (language: string, queryLanguage: string) => {
  * @returns {string} - la query string
  */
 const getQueryStringForLocalisationFilter = (
-	mapId: string,
 	locationId: string,
+	locationLevel: string,
 ) => {
-	const tableName = mapId === "exploration" ? "grande_region" : "sous_region";
+	let tableName = "grande_region";
+	let fieldName = "id";
+	if (locationLevel === "subRegion") {
+		tableName = "sous_region";
+	}
+	if (locationLevel === "location") {
+		tableName = "localisation_source";
+		fieldName = "nom_ville";
+	}
+
+	if (locationLevel === "location") {
+		// on check le nombre d'ids
+		if (locationId.includes("|")) {
+			const locationIds = locationId
+				.split("|")
+				.map((locationName) => `'${locationName}'`) // ajout des quotes
+				.join(", ");
+			return `AND ${tableName}.${fieldName} IN (${locationIds})`;
+		}
+		return `AND ${tableName}.${fieldName} = '${locationId}'`; // ajout des quotes
+	}
 	// on check le nombre d'ids
 	if (locationId.includes("|")) {
 		const locationIds = locationId.split("|").join(", ");
-		return `AND ${tableName}.id IN (${locationIds})`;
+		return `AND ${tableName}.${fieldName} IN (${locationIds})`;
 	}
-	return `AND ${tableName}.id = ${locationId}`;
+	return `AND ${tableName}.${fieldName} = ${locationId}`;
 };
 
 export {

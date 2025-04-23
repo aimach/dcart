@@ -119,26 +119,28 @@ const getAllPointsByMapId = async (
 	id: string,
 	params: UserFilterType | null,
 ) => {
+	const body = params ?? {};
 	try {
-		const queryArray = [];
-		let query = "";
-		if (params !== null) {
-			for (const [key, value] of Object.entries(params)) {
-				if (key === "lotIds" && value !== undefined) {
-					if (Array.isArray(value) && Array.isArray(value[0])) {
-						const lotIds = value
-							.map((lot: string[]) => JSON.stringify(lot))
-							.join("|");
-						queryArray.push(`lotIds=${lotIds}`);
-					}
-				} else if (value !== undefined) {
-					queryArray.push(`${key}=${value}`);
-				}
-			}
+		// if (params !== null) {
+		// 	for (const [key, value] of Object.entries(params)) {
+		// 		if (key === "lotIds" && value !== undefined) {
+		// 			if (Array.isArray(value) && Array.isArray(value[0])) {
+		// 				const lotIds = value
+		// 					.map((lot: string[]) => JSON.stringify(lot))
+		// 					.join("|");
+		// 				queryArray.push(`lotIds=${lotIds}`);
+		// 			}
+		// 		} else if (value !== undefined) {
+		// 			queryArray.push(`${key}=${value}`);
+		// 		}
+		// 	}
 
-			query = queryArray.length ? `?${queryArray.join("&")}` : "";
-		}
-		const response = await apiClient.get(`/map/sources/map/${id}${query}`);
+		// 	query = queryArray.length ? `?${queryArray.join("&")}` : "";
+		// }
+		const response = await apiClient.post(
+			`/map/sources/map/${id}`,
+			JSON.stringify(body),
+		);
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des sources :", error);

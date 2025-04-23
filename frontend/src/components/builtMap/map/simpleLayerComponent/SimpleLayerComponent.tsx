@@ -4,7 +4,10 @@ import MarkerClusterGroup from "react-leaflet-markercluster";
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import des services
-import { createClusterCustomIcon, getShapeForLayerName } from "../../../../utils/functions/icons";
+import {
+	createClusterCustomIcon,
+	getShapeForLayerName,
+} from "../../../../utils/functions/icons";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import {
 	handleClusterClick,
@@ -14,7 +17,11 @@ import {
 } from "../../../../utils/functions/map";
 // import des types
 import type L from "leaflet";
-import type { PointType } from "../../../../utils/types/mapTypes";
+import type {
+	MapColorType,
+	MapIconType,
+	PointType,
+} from "../../../../utils/types/mapTypes";
 // import du style
 import "./simpleLayerChoice.css";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
@@ -39,9 +46,7 @@ const SimpleLayerComponent = ({
 		const clusterGroup = clusterRef.current;
 		if (!clusterGroup) return;
 
-		clusterGroup.on("clustermouseover", (e) =>
-			handleClusterMouseOver(e),
-		);
+		clusterGroup.on("clustermouseover", (e) => handleClusterMouseOver(e));
 		clusterGroup.on("clusterclick", (e) =>
 			handleClusterClick(
 				e,
@@ -54,9 +59,7 @@ const SimpleLayerComponent = ({
 		);
 
 		return () => {
-			clusterGroup.off("clustermouseover", (e) =>
-				handleClusterMouseOver(e),
-			);
+			clusterGroup.off("clustermouseover", (e) => handleClusterMouseOver(e));
 			clusterGroup.off("clusterclick", (e) =>
 				handleClusterClick(
 					e,
@@ -77,27 +80,30 @@ const SimpleLayerComponent = ({
 		}
 	}, [map, selectedMarker, mapInfos]);
 
-
 	// récupérer les formes et les couleurs des attestations
 	const allColorsAndShapes = useMemo(() => {
 		if (mapInfos) {
 			return mapInfos?.attestations.map((attestation) => {
-				return { name: attestation.name, color: attestation.color.code_hex, shape: attestation.icon.name_en };
-			})
+				return {
+					name: attestation.name,
+					color: (attestation.color as MapColorType).code_hex,
+					shape: (attestation.icon as MapIconType).name_en,
+				};
+			});
 		}
-		return []
+		return [];
 	}, [mapInfos]);
-
 
 	useEffect(() => {
 		if (allColorsAndShapes.length > 0) {
-			const inputs = document.querySelectorAll(".leaflet-control-layers-selector");
+			const inputs = document.querySelectorAll(
+				".leaflet-control-layers-selector",
+			);
 			for (const input of inputs) {
 				input.style.display = "none";
 			}
 		}
 	}, [allColorsAndShapes]);
-
 
 	// si c'est la carte 'exploration', ne pas utiliser le clustering
 	return mapInfos ? (
@@ -121,16 +127,15 @@ const SimpleLayerComponent = ({
 			{allColorsAndShapes.length > 0 && (
 				<LayersControl position="bottomright" collapsed={false}>
 					{allColorsAndShapes.map((layer) => {
-						const icon = getShapeForLayerName(
-							layer.shape,
-							layer.color) + layer.name;
+						const icon =
+							getShapeForLayerName(layer.shape, layer.color) + layer.name;
 						return (
 							<LayersControl.Overlay name={icon} key={icon}>
 								<LayerGroup key={icon} />
 							</LayersControl.Overlay>
 						);
 					})}
-				</LayersControl >
+				</LayersControl>
 			)}
 		</>
 	) : (

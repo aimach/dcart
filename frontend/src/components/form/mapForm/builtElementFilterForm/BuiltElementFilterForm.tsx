@@ -16,7 +16,6 @@ import {
 import { fetchElementOptions } from "../../../../utils/functions/filter";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
-import type { MapInfoType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
 
@@ -82,15 +81,20 @@ const BuiltElementFilterForm = () => {
 
 	return elementOptions.length > 0 ? (
 		<form className={style.commonFormContainer}>
-			{/* <h4>{translation[language].backoffice.mapFormPage.addFilters}</h4> */}
-			<h4>Construction du filtre "Elements"</h4>
+			<h4>
+				{translation[language].backoffice.mapFormPage.filterForm.element.title}
+			</h4>
 			<div className={style.commonFormInputContainer}>
 				<LabelComponent
 					htmlFor="basic"
-					label="Basique"
-					description="Le filtre 'Elements' se présentera sous la forme d'un
-							select/options où l'utilisateur pourra parcourir la liste des
-							options et en choisir une ou plusieurs."
+					label={
+						translation[language].backoffice.mapFormPage.filterForm.element
+							.basic.label
+					}
+					description={
+						translation[language].backoffice.mapFormPage.filterForm.element
+							.basic.description
+					}
 				/>
 				<div className={style.inputContainer}>
 					<input
@@ -124,10 +128,14 @@ const BuiltElementFilterForm = () => {
 			<div className={style.commonFormInputContainer}>
 				<LabelComponent
 					htmlFor="manual"
-					label="Manuelle"
-					description="	Le filtre 'Elements' se présentera sous la forme de checkboxs à 2 niveaux : un premier niveau avec les théonymes et un second avec
-							les épithètes. Ces deux niveaux sont à construire sur-mesure
-							ci-dessous"
+					label={
+						translation[language].backoffice.mapFormPage.filterForm.element
+							.manual.label
+					}
+					description={
+						translation[language].backoffice.mapFormPage.filterForm.element
+							.manual.description
+					}
 				/>
 				<div className={style.inputContainer}>
 					<input
