@@ -354,9 +354,9 @@ const displayFiltersTags = (
 
 	// affichage des dates
 	if (userFilters.post !== -1000 || userFilters.ante !== 400) {
-		if (userFilters.post)
+		if (userFilters.post !== undefined)
 			stringArray.push(`${translationObject.common.after} ${userFilters.post}`);
-		if (userFilters.ante)
+		if (userFilters.ante !== undefined)
 			stringArray.push(
 				`${translationObject.common.before} ${userFilters.ante}`,
 			);

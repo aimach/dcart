@@ -63,9 +63,9 @@ export const sourceController = {
 						: queryLocalisation;
 				}
 
-				if (ante || post) {
-					const maxValue = ante ? ante.toString() : null;
-					const minValue = post ? post.toString() : null;
+				if (ante !== undefined || post !== undefined) {
+					const maxValue = ante !== undefined ? ante.toString() : null;
+					const minValue = post !== undefined ? post.toString() : null;
 					queryDatation = getQueryStringForDateFilter(maxValue, minValue);
 				}
 
@@ -78,10 +78,10 @@ export const sourceController = {
 				}
 
 				let queryLanguage = "";
-				if (greek === "true") {
+				if (greek) {
 					queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
 				}
-				if (semitic === "true") {
+				if (semitic) {
 					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
 				}
 
@@ -135,9 +135,9 @@ export const sourceController = {
 						: queryLocalisation;
 				}
 
-				if (ante || post) {
-					const maxDateValue = ante ? ante.toString() : null;
-					const minDateValue = post ? post.toString() : null;
+				if (ante !== undefined || post !== undefined) {
+					const maxDateValue = ante !== undefined ? ante.toString() : null;
+					const minDateValue = post !== undefined ? post.toString() : null;
 					queryDatation = getQueryStringForDateFilter(
 						maxDateValue,
 						minDateValue,
@@ -153,10 +153,10 @@ export const sourceController = {
 				}
 
 				let queryLanguage = "";
-				if (greek === "true") {
+				if (greek) {
 					queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
 				}
-				if (semitic === "true") {
+				if (semitic) {
 					queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
 				}
 
