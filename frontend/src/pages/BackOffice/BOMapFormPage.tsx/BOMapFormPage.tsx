@@ -18,8 +18,9 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import du style
 import style from "./BOMapFormPage.module.scss";
 // import des icônes
-import { FileText, Filter, ListTodo, MapPin } from "lucide-react";
+import { FileText, Filter, ListTodo, MapPin, MapPinCheck } from "lucide-react";
 import BuiltElementFilterForm from "../../../components/form/mapForm/builtElementFilterForm/BuiltElementFilterForm";
+import LocationFilterForm from "../../../components/form/mapForm/locationFilterForm/LocationFilterForm";
 
 /**
  * Page du formulaire de création de carte
@@ -93,7 +94,17 @@ const BOMapFormPage = () => {
 							className={`${step === 4 && style.isSelected}`}
 						>
 							<ListTodo />
-							Construction filtre éléments
+							Options filtre éléments
+						</li>
+					)}
+					{mapFilters.location && (
+						<li
+							onClick={() => setStep(5)}
+							onKeyUp={() => setStep(5)}
+							className={`${step === 5 && style.isSelected}`}
+						>
+							<MapPinCheck />
+							Options filtre localisation
 						</li>
 					)}
 				</ul>
@@ -108,6 +119,7 @@ const BOMapFormPage = () => {
 				{step === 2 && <UploadForm />}
 				{step === 3 && <UserMapFilterForm />}
 				{step === 4 && <BuiltElementFilterForm />}
+				{step === 5 && <LocationFilterForm />}
 			</section>
 		</section>
 	);
