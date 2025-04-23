@@ -93,6 +93,8 @@ type LanguageObject = {
 			language: string;
 			divinityNb: string;
 			sourceType: string;
+			agentActivity: string;
+			agentName: string;
 			seeStat: string;
 			seeSources: string;
 			searchForLocation: string;
@@ -197,6 +199,8 @@ type LanguageObject = {
 			epithetFilter: { label: string; description: string };
 			divinityNbFilter: { label: string; description: string };
 			sourceTypeFilter: { label: string; description: string };
+			agentActivityFilter: { label: string; description: string };
+			agentNameFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;

@@ -196,6 +196,24 @@ const getFilterLabel = (
 					translation[language as keyof TranslationType].backoffice.mapFormPage
 						.sourceTypeFilter.description,
 			};
+		case "agentActivity":
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.agentActivityFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.agentActivityFilter.description,
+			};
+		case "agentName":
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.agentNameFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.agentNameFilter.description,
+			};
 		default:
 			return {
 				label:

@@ -91,6 +91,8 @@
 			"language": "Language",
 			"divinityNb": "Element number",
 			"sourceType": "Source type",
+			"agentActivity": "Agent activity",
+			"agentName": "Agent name",
 			"seeStat": "See statistics",
 			"seeSources": "See sources",
 			"searchForLocation": "Search for a location...",
@@ -219,6 +221,14 @@
 			"sourceTypeFilter": {
 				"label": "Source type filter",
 				"description": "Displays a select/options element with the list of source types from all displayed attestations"
+			},
+			"agentActivityFilter": {
+				"label": "Agent activity filter",
+				"description": "Displays a select/options element with the list of agent activities from all displayed attestations"
+			},
+			"agentNameFilter": {
+				"label": "Agent type filter",
+				"description": "Displays a select/options element with the list of agent names from all displayed attestations"
 			},
 			"noFilter": {
 				"label": "I don't want to add a filter",

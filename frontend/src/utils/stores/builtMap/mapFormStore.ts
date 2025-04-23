@@ -47,6 +47,8 @@ export const useMapFormStore = create<State & Action>((set) => ({
 		element: false,
 		divinityNb: false,
 		sourceType: false,
+		agentActivity: false,
+		agentName: false,
 	},
 	setMapFilters: (mapFilters) => set(() => ({ mapFilters })),
 	resetMapFilters: () =>
@@ -57,6 +59,8 @@ export const useMapFormStore = create<State & Action>((set) => ({
 				element: false,
 				divinityNb: false,
 				sourceType: false,
+				agentActivity: false,
+				agentName: false,
 			},
 		})),
 	setMapInfos: (mapInfos) => set(() => ({ mapInfos })),

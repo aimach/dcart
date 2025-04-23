@@ -59,6 +59,9 @@ type MapFilterType = {
 	language: boolean;
 	element: boolean;
 	divinityNb: boolean;
+	sourceType: boolean;
+	agentActivity: boolean;
+	agentName: boolean;
 };
 
 type MapInfoType = {

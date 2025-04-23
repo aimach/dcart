@@ -24,6 +24,14 @@ const filterSchema = Joi.object({
 		"any.required": "Le booléen 'sourceType' est requis",
 		"boolean.base": "'sourceType' doit être un booléen",
 	}),
+	agentActivity: Joi.boolean().required().messages({
+		"any.required": "Le booléen 'agentActivity' est requis",
+		"boolean.base": "'agentActivity' doit être un booléen",
+	}),
+	agentName: Joi.boolean().required().messages({
+		"any.required": "Le booléen 'agentName' est requis",
+		"boolean.base": "'agentName' doit être un booléen",
+	}),
 });
 
 export const validateFilterBody = (
