@@ -18,6 +18,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import style from "./tabComponent.module.scss";
 import DivinityNbComponent from "../filterComponents/DivinityNbFilterComponent";
 import SourceTypeFilterComponent from "../filterComponents/SourceTypeFilterComponent";
+import { set } from "react-hook-form";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
@@ -54,6 +55,7 @@ const FilterComponent = ({
 		setLocationNames,
 		setElementNames,
 		setLanguageValues,
+		setSourceTypeNames,
 		resetLanguageValues,
 	} = useMapFiltersStore(useShallow((state) => state));
 
@@ -85,6 +87,8 @@ const FilterComponent = ({
 		fetchAllPoints("filter");
 		setLocationNames(locationNameValues);
 		setElementNames(elementNameValues);
+		set;
+		setSourceTypeNames(sourceTypeValues);
 		setLanguageValues({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,
@@ -100,6 +104,7 @@ const FilterComponent = ({
 		fetchAllPoints("reset");
 		setLocationNames([]);
 		setElementNames([]);
+		setSourceTypeValues([]);
 		resetLanguageValues();
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 

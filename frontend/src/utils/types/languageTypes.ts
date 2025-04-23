@@ -58,6 +58,7 @@ type LanguageObject = {
 		published: string;
 		noPublished: string;
 		close: string;
+		typeOf: string;
 	};
 	modal: {
 		firstContent: string;

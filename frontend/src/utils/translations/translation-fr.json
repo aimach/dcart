@@ -55,7 +55,8 @@
 		"storymap": "storymap",
 		"published": "publiée",
 		"noPublished": "non publiée",
-		"close": "Fermer"
+		"close": "Fermer",
+		"typeOf": "de type"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",

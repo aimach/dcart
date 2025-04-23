@@ -359,6 +359,7 @@ const displayFiltersTags = (
 	userFilters: UserFilterType,
 	locationNames: string[],
 	elementNames: string[],
+	sourceTypeNames: string[],
 	languageValues: Record<string, boolean>,
 	translationObject: LanguageObject,
 ) => {
@@ -394,6 +395,13 @@ const displayFiltersTags = (
 		stringArray.push(
 			`${translationObject.mapPage.withElements}  : ${elementNames.join(", ")}`,
 		);
+
+	// affichage des types de source
+	if (sourceTypeNames.length) {
+		stringArray.push(
+			`${translationObject.common.typeOf} ${sourceTypeNames.join(", ")}`,
+		);
+	}
 
 	return stringArray;
 };

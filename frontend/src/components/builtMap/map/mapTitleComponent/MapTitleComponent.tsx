@@ -23,13 +23,19 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 	// récupération des données du store
 	const { mapInfos, tutorialStep } = useMapStore();
 
-	const { userFilters, locationNames, elementNames, languageValues } =
-		useMapFiltersStore();
+	const {
+		userFilters,
+		locationNames,
+		elementNames,
+		languageValues,
+		sourceTypeNames,
+	} = useMapFiltersStore();
 
 	const filtersDetails = displayFiltersTags(
 		userFilters,
 		locationNames,
 		elementNames,
+		sourceTypeNames,
 		languageValues,
 		translation[language],
 	);

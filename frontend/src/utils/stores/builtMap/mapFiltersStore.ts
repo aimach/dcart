@@ -8,6 +8,7 @@ type State = {
 	isReset: boolean;
 	locationNames: string[];
 	elementNames: string[];
+	sourceTypeNames: string[];
 	languageValues: Record<string, boolean>;
 };
 
@@ -17,6 +18,7 @@ type Action = {
 	setIsReset: (isReset: boolean) => void;
 	setLocationNames: (locationNames: string[]) => void;
 	setElementNames: (elementNames: string[]) => void;
+	setSourceTypeNames: (locationNames: string[]) => void;
 	setLanguageValues: (languageValues: Record<string, boolean>) => void;
 	resetLanguageValues: () => void;
 };
@@ -25,7 +27,7 @@ const emptyUserFilters: UserFilterType = {
 	post: undefined,
 	ante: undefined,
 	elementId: undefined,
-	lotIds:[],
+	lotIds: [],
 	locationId: undefined,
 	greek: false,
 	semitic: false,
@@ -40,6 +42,7 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 		set(() => ({ userFilters: emptyUserFilters }));
 		get().setElementNames([]);
 		get().setLocationNames([]);
+		get().setSourceTypeNames([]);
 	},
 	isReset: false,
 	setIsReset: (isReset) => set(() => ({ isReset: isReset })),
@@ -47,6 +50,8 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 	setLocationNames: (locationNames) => set(() => ({ locationNames })),
 	elementNames: [],
 	setElementNames: (elementNames) => set(() => ({ elementNames })),
+	sourceTypeNames: [],
+	setSourceTypeNames: (sourceTypeNames) => set(() => ({ sourceTypeNames })),
 	languageValues: { greek: false, semitic: false },
 	setLanguageValues: (languageValues) => set(() => ({ languageValues })),
 	resetLanguageValues: () =>
