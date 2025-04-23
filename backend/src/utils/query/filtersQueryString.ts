@@ -78,10 +78,16 @@ const getQueryStringForLanguage = (language: string, queryLanguage: string) => {
  * @returns {string} - la query string
  */
 const getQueryStringForLocalisationFilter = (
-	mapId: string,
 	locationId: string,
+	locationLevel: string,
 ) => {
-	const tableName = mapId === "exploration" ? "grande_region" : "sous_region";
+	let tableName = "grande_region";
+	if (locationLevel === "subRegion") {
+		tableName = "sous_region";
+	}
+	if (locationLevel === "location") {
+		tableName = "localisation_source";
+	}
 	// on check le nombre d'ids
 	if (locationId.includes("|")) {
 		const locationIds = locationId.split("|").join(", ");

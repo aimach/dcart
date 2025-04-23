@@ -132,6 +132,7 @@ type PointType = {
 	sous_region_id: string;
 	sous_region_fr: string;
 	sous_region_en: string;
+	localisation_id: string;
 	nom_ville: string;
 	sources: SourceType[];
 	selectedClassName?: string;

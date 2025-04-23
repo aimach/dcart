@@ -46,8 +46,8 @@ export const sourceController = {
 					// s'il existe des params, on remplace les valeurs par celles des params
 					queryLocalisation = req.query.locationId
 						? getQueryStringForLocalisationFilter(
-								mapId,
 								req.query.locationId as string,
+								"greatRegion",
 							)
 						: queryLocalisation;
 				}
@@ -90,6 +90,8 @@ export const sourceController = {
 					.leftJoinAndSelect("map.attestations", "attestations")
 					.leftJoinAndSelect("attestations.icon", "icon")
 					.leftJoinAndSelect("attestations.color", "color")
+					.leftJoinAndSelect("map.filterMapContent", "filterMapContent")
+					.leftJoinAndSelect("filterMapContent.filter", "filter")
 					.where("map.id = :id", { id: mapId })
 					.getOne();
 				if (!mapInfos) {
@@ -109,10 +111,15 @@ export const sourceController = {
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (req.query.locationId) {
+					const locationFilter = mapInfos?.filterMapContent?.find(
+						(filter) => filter.filter?.type === "location",
+					);
+					const locationLevel =
+						locationFilter?.options?.solution ?? "greatRegion";
 					queryLocalisation = req.query.locationId
 						? getQueryStringForLocalisationFilter(
-								mapId,
 								req.query.locationId as string,
+								locationLevel,
 							)
 						: queryLocalisation;
 				}
