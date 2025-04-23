@@ -261,7 +261,9 @@ SELECT
       'source_id', sources_without_duplicate.source_id,
       'attestations', sources_without_duplicate.sources,
       'post_quem', datation.post_quem,
-      'ante_quem', datation.ante_quem
+      'ante_quem', datation.ante_quem,
+      'type_source_fr', type_source.nom_fr,
+	    'type_source_en', type_source.nom_en
     )
   ) AS sources
 FROM source
@@ -275,6 +277,8 @@ LEFT JOIN source_langue ON source_langue.ID_source = attestation.ID_source
 LEFT JOIN datation ON datation.ID = source.datation_ID
 LEFT JOIN type_support ON type_support.id = source.type_support_id
 LEFT JOIN materiau ON materiau.id = source.materiau_id 
+LEFT JOIN source_type_source ON source_type_source.id_source = sources_without_duplicate.source_id
+LEFT JOIN type_source ON type_source.id = source_type_source.id_type_source
 WHERE localisation_source.latitude IS NOT NULL
 AND localisation_source.longitude IS NOT NULL 
 AND attestation.id_etat_fiche = 4 
