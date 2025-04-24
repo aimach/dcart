@@ -43,22 +43,7 @@ const AsideMainComponent = () => {
 		);
 		if (sourceTypeFilter) {
 			// récupération de toutes les sources depuis la liste des points
-			const allSourcesFromPoints: Record<string, string>[] =
-				getAllSourceTypeFromPoints(allPoints);
-
-			// formattage des options pour le select
-			return allSourcesFromPoints
-				.map((option) => ({
-					value: option.type_source_fr,
-					label: option[`type_source_${language}`],
-				}))
-				.sort((option1, option2) =>
-					option1.label < option2.label
-						? -1
-						: option1.label > option2.label
-							? 1
-							: 0,
-				);
+			return getAllSourceTypeFromPoints(allPoints, language);
 		}
 		return [];
 	}, [allPoints, language, mapInfos]);

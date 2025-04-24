@@ -486,13 +486,7 @@ const fetchElementOptions = async (
 			value: option.element_id,
 			label: `${option[`element_nom_${language}`]} (${option.etat_absolu})`,
 		}))
-		.sort((option1, option2) =>
-			option1.label < option2.label
-				? -1
-				: option1.label > option2.label
-					? 1
-					: 0,
-		);
+		.sort((a, b) => a.label.localeCompare(b.label));
 
 	return formatedElementOptions;
 };
@@ -502,28 +496,36 @@ const fetchElementOptions = async (
  * @param {PointType[]} points - Les points
  * @returns {Record<string, string>[]} - Le tableau des lieux
  */
-const getAllSourceTypeFromPoints = (points: PointType[]) => {
+const getAllSourceTypeFromPoints = (
+	points: PointType[],
+	language: Language,
+) => {
 	const allSourceTypes: Record<string, string>[] = [];
+	const sourceTypes = new Set<string>();
 	points.map((point) => {
 		point.sources.map((source) => {
-			source.type_source.map((typeSource) => {
-				if (
-					allSourceTypes.find(
-						(type) => type.type_source_fr === typeSource.nom_fr,
-					)
-				) {
+			source[`type_source_${language}`].map((type_source: string, index) => {
+				if (sourceTypes.has(type_source)) {
 					return;
 				}
-				if (typeSource.nom_fr && typeSource.nom_en) {
+				if (type_source) {
+					sourceTypes.add(type_source);
 					allSourceTypes.push({
-						type_source_fr: typeSource.nom_fr,
-						type_source_en: typeSource.nom_en,
+						nom_fr: source.type_source_fr[index],
+						nom_en: source.type_source_en[index],
 					});
 				}
 			});
 		});
 	});
-	return allSourceTypes;
+
+	// formattage des options pour le select
+	return allSourceTypes
+		.map((option) => ({
+			value: option.nom_fr,
+			label: option[`nom_${language}`],
+		}))
+		.sort((a, b) => a.label.localeCompare(b.label));
 };
 
 /**

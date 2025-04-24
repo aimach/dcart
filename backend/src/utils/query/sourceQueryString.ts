@@ -165,6 +165,7 @@ export const getSourcesQueryWithDetails = (
 	queryDivinityNb: string,
 	querySourceType: string,
 ) => {
+	console.log(querySourceType);
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
 WITH attestation_with_elements AS (
@@ -245,11 +246,11 @@ sources_without_duplicate AS (
   FROM (
     SELECT DISTINCT sources_with_attestations.source_id, sources_with_attestations.attestations, type_source.nom_fr, type_source.nom_en
     FROM sources_with_attestations
-	LEFT JOIN source_type_source ON source_type_source.id_source = sources_with_attestations.source_id
+	  LEFT JOIN source_type_source ON source_type_source.id_source = sources_with_attestations.source_id
   	LEFT JOIN type_source ON type_source.id = source_type_source.id_type_source 
+    ${querySourceType}
   ) AS subquery
   JOIN source ON source.id = subquery.source_id
-  ${querySourceType}
   GROUP BY source.id
 )
 
