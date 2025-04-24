@@ -241,15 +241,15 @@ sources_with_attestations AS (
 sources_without_duplicate AS (
   SELECT 
     source.id AS source_id,
-    json_agg(attestations ORDER BY attestations->>'attestation_id') AS sources,
-    json_agg(DISTINCT jsonb_build_object('nom_fr', type_source.nom_fr, 'nom_en', type_source.nom_en))  AS type_source
+    json_agg(attestations ORDER BY attestations->>'attestation_id') AS sources
+   -- json_agg(DISTINCT jsonb_build_object('nom_fr', type_source.nom_fr, 'nom_en', type_source.nom_en)) AS type_source
   FROM (
     SELECT DISTINCT sources_with_attestations.source_id, sources_with_attestations.attestations
     FROM sources_with_attestations
   ) AS subquery
   JOIN source ON source.id = subquery.source_id
-  LEFT JOIN source_type_source ON source_type_source.id_source = source.id
-  LEFT JOIN type_source ON type_source.id = source_type_source.id_type_source
+ -- LEFT JOIN source_type_source ON source_type_source.id_source = source.id
+  --LEFT JOIN type_source ON type_source.id = source_type_source.id_type_source
   ${querySourceType}
   GROUP BY source.id
 )
@@ -270,8 +270,8 @@ SELECT
       'source_id', sources_without_duplicate.source_id,
       'attestations', sources_without_duplicate.sources,
       'post_quem', datation.post_quem,
-      'ante_quem', datation.ante_quem,
-      'type_source', sources_without_duplicate.type_source
+      'ante_quem', datation.ante_quem
+--       'type_source', sources_without_duplicate.type_source
     )
   ) AS sources
 FROM source

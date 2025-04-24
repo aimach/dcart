@@ -264,7 +264,7 @@ const getSelectDefaultValues = (
 		.split("|")
 		.map((id) => (typeof id === "number" ? Number.parseInt(id, 10) : id));
 	// trouver les options correspondantes
-	return listOptions.filter((option) =>
+	return (listOptions ?? []).filter((option) =>
 		defaultValues.includes(option.value as number),
 	);
 };
@@ -577,7 +577,8 @@ const getAllAgentActivityFromPoints = (
  * @returns {Record<string, string>[]} - Le tableau des options des activités
  */
 const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
-	const allAgentNames: string[] = [];
+	const allAgentNames: Record<string, string>[] = [];
+	const names = new Set<string>();
 
 	for (const point of points) {
 		for (const sources of point.sources) {
@@ -585,18 +586,15 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
 				if (attestations.agents && attestations.agents.length > 0) {
 					for (const agent of attestations.agents) {
 						if (!agent.designation) continue;
-
-						const textFr = agent.designation.split("<br/>")[0];
-						const textEn = agent.designation.split("<br/>")[1];
-
-						if (
-							allAgentNames.find(
-								(name) => name === (language === "fr" ? textFr : textEn),
-							)
-						) {
-							continue;
-						}
-						allAgentNames.push(language === "fr" ? textFr : textEn);
+						const nameFr = agent.designation.split("<br/>")[0];
+						const nameEn = agent.designation.split("<br/>")[1];
+						if (names.has(nameFr)) continue;
+						names.add(nameFr);
+						allAgentNames.push({
+							id: agent.designation,
+							nom_fr: nameFr,
+							nom_en: nameEn,
+						});
 					}
 				}
 			}
@@ -605,8 +603,8 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
 		// formattage des options pour le select
 		return allAgentNames
 			.map((name) => ({
-				value: name,
-				label: name,
+				value: name.id,
+				label: name[`nom_${language}`],
 			}))
 			.sort((a, b) => a.label.localeCompare(b.label));
 	}

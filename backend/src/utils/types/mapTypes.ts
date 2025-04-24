@@ -7,6 +7,7 @@ type AgentType = {
 	];
 	activite_en: string;
 	activite_fr: string;
+	activite_id: string;
 	designation: string;
 };
 
