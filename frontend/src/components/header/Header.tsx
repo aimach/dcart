@@ -98,6 +98,15 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 						<MenuIcon onClick={() => setMenuIsOpen(true)} />
 					</>
 				)}
+				{type === "backoffice" && (
+					<NavComponent
+						type="route"
+						navClassName={style.headerNavigationMenu}
+						list={getBackofficeNavigationList(translation, language)}
+						selectedElement={language}
+						liClasseName={style.languageSelected}
+					/>
+				)}
 				{/* {token && pathname.includes("backoffice") && (
 					<ButtonComponent
 						type="button"

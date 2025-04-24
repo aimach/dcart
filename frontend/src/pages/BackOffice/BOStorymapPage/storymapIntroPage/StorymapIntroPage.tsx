@@ -75,7 +75,7 @@ const StorymapIntroPage = () => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (!state) return;
-		if (state?.from.includes("/storymaps/view/")) {
+		if (state?.from.includes("/storymaps/preview/")) {
 			setStep(2);
 			updateFormType("blockChoice");
 			updateBlockContent(null);
@@ -142,9 +142,7 @@ const StorymapIntroPage = () => {
 		} catch (error) {
 			console.error(error);
 		}
-	}
-
-
+	};
 
 	return (
 		<section className={style.BOStorymapFormPageContainer}>
@@ -161,7 +159,7 @@ const StorymapIntroPage = () => {
 			<aside className={style.storymapFormAside}>
 				{storymapId !== "create" && (
 					<div className={style.buttonContainer}>
-						<Link to={`/backoffice/storymaps/view/${storymapId}`}>
+						<Link to={`/backoffice/storymaps/preview/${storymapId}`}>
 							<button type="button" className={style.previewButton}>
 								{translation[language].backoffice.storymapFormPage.preview}
 							</button>

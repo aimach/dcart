@@ -68,7 +68,7 @@ if (rootElement) {
 												element={<StorymapIntroPage />}
 											/>
 											<Route
-												path="view/:storymapId"
+												path="preview/:storymapId"
 												element={<StorymapPage />}
 											/>
 										</Route>

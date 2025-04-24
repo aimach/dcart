@@ -33,6 +33,7 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
+import { Link } from "react-router";
 
 /**
  * Composant de la carte
@@ -177,7 +178,7 @@ const MapComponent = () => {
 			{!mapReady && <LoaderComponent size={50} />}
 			<div className={mapContainerClassName} id="built-map">
 				<section className="leaflet-container">
-					{isModalOpen && allMemoizedPoints.length > 0 && (
+					{/* {isModalOpen && allMemoizedPoints.length > 0 && (
 						<ModalComponent
 							onClose={() => {
 								setIsModalOpen(false);
@@ -203,7 +204,7 @@ const MapComponent = () => {
 								}}
 							/>
 						</ModalComponent>
-					)}
+					)} */}
 					{isTutorialOpen && (
 						<ModalComponent
 							onClose={() => {
@@ -222,6 +223,30 @@ const MapComponent = () => {
 						maxZoom={11}
 						ref={setMap}
 					>
+						{location.pathname.includes("maps/preview/") && (
+							<div
+								style={{
+									position: "absolute",
+									top: 10,
+									left: 10,
+									zIndex: 400,
+								}}
+							>
+								<Link
+									to={`/backoffice/maps/edit/${mapInfos?.id}`}
+									state={{ from: location.pathname }}
+								>
+									<ButtonComponent
+										type="button"
+										textContent={
+											translation[language].backoffice.storymapFormPage
+												.backToEdit
+										}
+										color="brown"
+									/>
+								</Link>
+							</div>
+						)}
 						<MapTitleComponent setIsModalOpen={setIsModalOpen} />
 						{mapReady && (
 							<>
