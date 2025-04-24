@@ -323,8 +323,25 @@ export const sourceController = {
 								.filter((point: PointType) => point !== null);
 						}
 
+						// on trie les attestations par id
+						const sortedAttestations = filteredResults.map(
+							(point: PointType) => {
+								return {
+									...point,
+									sources: point.sources?.map((source) => {
+										return {
+											...source,
+											attestations: source.attestations?.sort(
+												(a, b) => a.attestation_id - b.attestation_id,
+											),
+										};
+									}),
+								};
+							},
+						);
+
 						// on trie les sources de chaque point par date
-						const sortedResults = filteredResults.map((point: PointType) => {
+						const sortedResults = sortedAttestations.map((point: PointType) => {
 							return {
 								...point,
 								sources: sortSourcesByDate(point.sources),
