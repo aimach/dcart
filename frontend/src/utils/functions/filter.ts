@@ -17,6 +17,7 @@ import type {
 import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
+import { all } from "axios";
 
 /**
  * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
@@ -525,6 +526,92 @@ const getAllSourceTypeFromPoints = (points: PointType[]) => {
 	return allSourceTypes;
 };
 
+/**
+ * Fonction qui renvoie toutes les activités des agents d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des activités
+ */
+const getAllAgentActivityFromPoints = (
+	points: PointType[],
+	language: Language,
+) => {
+	const allAgentActivity: Record<string, string>[] = [];
+	const activityIds = new Set<string>();
+
+	for (const point of points) {
+		for (const sources of point.sources) {
+			for (const attestations of sources.attestations) {
+				if (attestations.agents && attestations.agents.length > 0) {
+					for (const agent of attestations.agents) {
+						if (!agent.activite_id) continue;
+						const id = agent.activite_id.toString();
+						if (activityIds.has(id)) continue;
+						if (agent.activite_fr && agent.activite_en) {
+							activityIds.add(id);
+							allAgentActivity.push({
+								id,
+								nom_fr: agent.activite_fr,
+								nom_en: agent.activite_en,
+							});
+						}
+					}
+				}
+			}
+		}
+
+		// formattage des options pour le select
+		return allAgentActivity
+			.map((option) => ({
+				value: option.id,
+				label: option[`nom_${language}`],
+			}))
+			.sort((a, b) => a.label.localeCompare(b.label));
+	}
+};
+
+/**
+ * Fonction qui renvoie toutes les activités des agents d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des activités
+ */
+const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
+	const allAgentNames: string[] = [];
+
+	for (const point of points) {
+		for (const sources of point.sources) {
+			for (const attestations of sources.attestations) {
+				if (attestations.agents && attestations.agents.length > 0) {
+					for (const agent of attestations.agents) {
+						if (!agent.designation) continue;
+
+						const textFr = agent.designation.split("<br/>")[0];
+						const textEn = agent.designation.split("<br/>")[1];
+
+						if (
+							allAgentNames.find(
+								(name) => name === (language === "fr" ? textFr : textEn),
+							)
+						) {
+							continue;
+						}
+						allAgentNames.push(language === "fr" ? textFr : textEn);
+					}
+				}
+			}
+		}
+
+		// formattage des options pour le select
+		return allAgentNames
+			.map((name) => ({
+				value: name,
+				label: name,
+			}))
+			.sort((a, b) => a.label.localeCompare(b.label));
+	}
+};
+
 export {
 	alreadyTwoFiltersChecked,
 	createTimeOptions,
@@ -543,4 +630,6 @@ export {
 	getMinAndMaxElementNumbers,
 	fetchElementOptions,
 	getAllSourceTypeFromPoints,
+	getAllAgentActivityFromPoints,
+	getAllAgentNameFromPoints,
 };

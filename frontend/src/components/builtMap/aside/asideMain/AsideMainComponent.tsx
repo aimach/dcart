@@ -10,6 +10,8 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import {
 	fetchElementOptions,
+	getAllAgentActivityFromPoints,
+	getAllAgentNameFromPoints,
 	getAllLocationsFromPoints,
 	getAllSourceTypeFromPoints,
 } from "../../../../utils/functions/filter";
@@ -64,7 +66,6 @@ const AsideMainComponent = () => {
 	// --- RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
 	let locationOptions: OptionType[] = [];
 	// si le filtre de localisation est activé, utilisation du hook useMemo
-
 	locationOptions = useMemo(() => {
 		const locationFilter = mapInfos?.filterMapContent?.find(
 			(filter) => filter.filter.type === "location",
@@ -111,6 +112,28 @@ const AsideMainComponent = () => {
 		setElementOptions(newElementOptions);
 	};
 
+	// --- RECUPERATION DES OPTIONS ACTIVITES D'AGENTS POUR LES FILTRES
+	const agentActivityOptions = useMemo(() => {
+		const agentActivityFilter = mapInfos?.filterMapContent?.find(
+			(filter) => filter.filter.type === "agentActivity",
+		);
+		if (agentActivityFilter) {
+			return getAllAgentActivityFromPoints(allPoints, language);
+		}
+		return [];
+	}, [allPoints, language, mapInfos?.filterMapContent]);
+
+	// --- RECUPERATION DES OPTIONS NOMS D'AGENTS POUR LES FILTRES
+	const agentNameOptions = useMemo(() => {
+		const agentActivityFilter = mapInfos?.filterMapContent?.find(
+			(filter) => filter.filter.type === "agentActivity",
+		);
+		if (agentActivityFilter) {
+			return getAllAgentNameFromPoints(allPoints, language);
+		}
+		return [];
+	}, [allPoints, language, mapInfos?.filterMapContent]);
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (mapInfos && allPoints) {
@@ -135,6 +158,8 @@ const AsideMainComponent = () => {
 					locationOptions={locationOptions}
 					elementOptions={elementOptions}
 					sourceTypeOptions={sourceTypeOptions}
+					agentActivityOptions={agentActivityOptions}
+					agentNameOptions={agentNameOptions}
 				/>
 			);
 		case "infos":

@@ -7,7 +7,6 @@ import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
-import type { FilterType } from "../../../entities/builtMap/Filter";
 
 export const filterController = {
 	// récupère tous les filtres
@@ -56,7 +55,7 @@ export const filterController = {
 					const filterToAdd = await dcartDataSource
 						.getRepository(Filter)
 						.findOne({
-							where: { type: filter as FilterType },
+							where: { type: filter as string },
 						});
 					if (filterToAdd) {
 						newFilters.push(filterToAdd);
@@ -100,7 +99,7 @@ export const filterController = {
 			}
 
 			const filter = await dcartDataSource.getRepository(Filter).findOne({
-				where: { type: filterType as FilterType },
+				where: { type: filterType as string },
 			});
 			if (!filter) {
 				res.status(404).json({ message: "Filtre non trouvé" });
@@ -156,7 +155,7 @@ export const filterController = {
 					const filterToAdd = await dcartDataSource
 						.getRepository(Filter)
 						.findOne({
-							where: { type: filter as FilterType },
+							where: { type: filter as string },
 							relations: ["filterMapContent"],
 						});
 					if (filterToAdd) {

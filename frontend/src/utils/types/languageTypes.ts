@@ -99,6 +99,9 @@ type LanguageObject = {
 			seeSources: string;
 			searchForLocation: string;
 			searchForElement: string;
+			searchForSourceType: string;
+			searchForAgentActivity: string;
+			searchForAgentName: string;
 			noSelectedMarker: string;
 			traduction: string;
 			originalVersion: string;
