@@ -165,7 +165,6 @@ export const getSourcesQueryWithDetails = (
 	queryDivinityNb: string,
 	querySourceType: string,
 ) => {
-	console.log(querySourceType);
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
 WITH attestation_with_elements AS (
