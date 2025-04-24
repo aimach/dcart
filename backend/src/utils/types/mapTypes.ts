@@ -7,6 +7,7 @@ type AgentType = {
 	];
 	activite_en: string;
 	activite_fr: string;
+	activite_id: string;
 	designation: string;
 };
 
@@ -59,6 +60,9 @@ type MapFilterType = {
 	language: boolean;
 	element: boolean;
 	divinityNb: boolean;
+	sourceType: boolean;
+	agentActivity: boolean;
+	agentName: boolean;
 };
 
 type MapInfoType = {

@@ -4,7 +4,7 @@ import { useCallback, useState } from "react";
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
 import ElementFilterComponent from "../filterComponents/ElementFilterComponent";
-import SourceTypeFilterComponent from "../filterComponents/SourceTypeFilterComponent";
+import MultiSelectFilterComponent from "../filterComponents/MultiSelectFilterComponent";
 import DivinityNbComponent from "../filterComponents/DivinityNbFilterComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
@@ -23,6 +23,8 @@ interface FilterComponentProps {
 	locationOptions: OptionType[];
 	elementOptions: OptionType[];
 	sourceTypeOptions: OptionType[];
+	agentActivityOptions: OptionType[];
+	agentNameOptions: OptionType[];
 }
 
 /**
@@ -31,12 +33,15 @@ interface FilterComponentProps {
  * @param {OptionType[]} props.locationOptions - Liste des options pour le filtre de la localisation
  * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
  * @param {OptionType[]} props.sourceTypeOptions - Liste des types de source pour le filtre des épithètes
+ * @param {OptionType[]} props.agentActivityOptions - Liste des activités des agents pour le filtre des activités
  * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
  */
 const FilterComponent = ({
 	locationOptions,
 	elementOptions,
 	sourceTypeOptions,
+	agentActivityOptions,
+	agentNameOptions,
 }: FilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
@@ -55,6 +60,7 @@ const FilterComponent = ({
 		setElementNames,
 		setLanguageValues,
 		setSourceTypeNames,
+		setAgentActivityNames,
 		resetLanguageValues,
 	} = useMapFiltersStore(useShallow((state) => state));
 
@@ -62,6 +68,7 @@ const FilterComponent = ({
 	const [locationNameValues, setLocationNameValues] = useState<string[]>([]);
 	const [elementNameValues, setElementNameValues] = useState<string[]>([]);
 	const [sourceTypeValues, setSourceTypeValues] = useState<string[]>([]);
+	const [agentActivityValues, setAgentActivityValues] = useState<string[]>([]);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -87,6 +94,7 @@ const FilterComponent = ({
 		setLocationNames(locationNameValues);
 		setElementNames(elementNameValues);
 		setSourceTypeNames(sourceTypeValues);
+		setAgentActivityNames(agentActivityValues);
 		setLanguageValues({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,
@@ -155,10 +163,46 @@ const FilterComponent = ({
 							return (
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.sourceType}</h4>
-									<SourceTypeFilterComponent
-										sourceTypeOptions={sourceTypeOptions}
-										setSourceTypeValues={setSourceTypeValues}
+									<MultiSelectFilterComponent
 										key={filter.id}
+										optionsArray={sourceTypeOptions}
+										setValues={setSourceTypeValues}
+										userFilterId="sourceTypeId"
+										placeholder={
+											translation[language].mapPage.aside.searchForSourceType
+										}
+									/>
+								</div>
+							);
+						}
+						if (filter.filter.type === "agentActivity") {
+							return (
+								<div className={style.filterContainer} key={filter.id}>
+									<h4>{translation[language].mapPage.aside.agentActivity}</h4>
+									<MultiSelectFilterComponent
+										key={filter.id}
+										optionsArray={agentActivityOptions}
+										setValues={setAgentActivityValues}
+										userFilterId="agentActivityId"
+										placeholder={
+											translation[language].mapPage.aside.searchForAgentActivity
+										}
+									/>
+								</div>
+							);
+						}
+						if (filter.filter.type === "agentName") {
+							return (
+								<div className={style.filterContainer} key={filter.id}>
+									<h4>{translation[language].mapPage.aside.agentName}</h4>
+									<MultiSelectFilterComponent
+										key={filter.id}
+										optionsArray={agentNameOptions}
+										setValues={setAgentActivityValues}
+										userFilterId="agentNameId"
+										placeholder={
+											translation[language].mapPage.aside.searchForAgentName
+										}
 									/>
 								</div>
 							);

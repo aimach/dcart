@@ -8,6 +8,7 @@ type AgentType = {
 			nom_fr: string;
 		},
 	];
+	activite_id: number;
 	activite_en: string;
 	activite_fr: string;
 	designation: string;
@@ -150,7 +151,8 @@ type SourceType = {
 	support_fr: string;
 	materiau_en: string;
 	materiau_fr: string;
-	type_source: { nom_fr: string; nom_en: string }[];
+	type_source_fr: string[];
+	type_source_en: string[];
 	attestations: AttestationType[];
 };
 

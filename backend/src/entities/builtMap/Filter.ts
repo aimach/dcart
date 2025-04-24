@@ -9,26 +9,16 @@ import {
 // import des entités
 import { FilterMapContent } from "./FilterMapContent";
 
-export enum FilterType {
-	TIME = "time",
-	ELEMENT = "element",
-	LOCATION = "location",
-	LANGUAGE = "language",
-	DIVINITYNB = "divinityNb",
-	SOURCETYPE = "sourceType",
-}
-
 @Entity()
 export class Filter extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
 	id!: string;
 
 	@Column({
-		type: "enum",
-		enum: FilterType,
-		default: FilterType.TIME,
+		type: "varchar",
+		nullable: false,
 	})
-	type?: FilterType;
+	type?: string;
 
 	@OneToMany(
 		() => FilterMapContent,

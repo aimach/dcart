@@ -91,10 +91,15 @@
 			"language": "Language",
 			"divinityNb": "Nombre d'éléments",
 			"sourceType": "Type de source",
+			"agentActivity": "Activité de l'agent",
+			"agentName": "Nom de l'agent",
 			"seeStat": "Voir les statistiques",
 			"seeSources": "Voir les sources",
 			"searchForLocation": "Rechercher un lieu...",
 			"searchForElement": "Rechercher un element...",
+			"searchForSourceType": "Rechercher un type de source...",
+			"searchForAgentActivity": "Rechercher une activité d'agent...",
+			"searchForAgentName": "Rechercher un nom d'agent...",
 			"noSelectedMarker": "Sélectionner un point pour voir les détails",
 			"traduction": "Traduction",
 			"originalVersion": "Version originale",
@@ -219,6 +224,14 @@
 			"sourceTypeFilter": {
 				"label": "Filtre du type de source",
 				"description": "Afficher un select/options avec la liste des types de sources de l'ensemble des attestations affichées"
+			},
+			"agentActivityFilter": {
+				"label": "Filtre de l'activité des agents",
+				"description": "Afficher un select/options avec la liste des activités des agents de l'ensemble des attestations affichées"
+			},
+			"agentNameFilter": {
+				"label": "Filtre du nom des agents",
+				"description": "Afficher un select/options avec la liste des noms des agents de l'ensemble des attestations affichées"
 			},
 			"noFilter": {
 				"label": "Je ne souhaite pas ajouter de filtre",

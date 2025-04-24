@@ -18,6 +18,8 @@ type UserFilterType = {
 	semitic: boolean;
 	minDivinityNb?: string;
 	maxDivinityNb?: string;
+	agentActivityId?: string;
+	agentNameId?: string;
 };
 
 type LotType = {

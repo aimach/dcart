@@ -41,6 +41,8 @@ export const sourceController = {
 				minDivinityNb,
 				maxDivinityNb,
 				sourceTypeId,
+				agentActivityId,
+				agentNameId,
 			} = req.body;
 
 			// on prépare la variable à renvoyer
@@ -247,8 +249,99 @@ export const sourceController = {
 							filteredResults = queryResults;
 						}
 
+						// on filtre les sources si agentActivityId ou agentNameId sont présents
+						if (agentActivityId || agentNameId) {
+							filteredResults = filteredResults
+								.map((point: PointType) => {
+									const filteredSources = point.sources
+										?.map((source) => {
+											const filteredAttestations = source.attestations
+												?.map((attestation) => {
+													const filteredAgents = attestation.agents?.filter(
+														(agent) => {
+															let activityBoolean = agent.activite_id !== null;
+															let nameBoolean = agent.designation !== null;
+															if (agentActivityId) {
+																if (agent.activite_id) {
+																	if (agentActivityId.includes("|")) {
+																		const agentActivityIds =
+																			agentActivityId.split("|");
+																		activityBoolean = agentActivityIds.includes(
+																			agent.activite_id.toString(),
+																		);
+																	}
+																	activityBoolean =
+																		agent.activite_id.toString() ===
+																		agentActivityId;
+																} else {
+																	activityBoolean = false;
+																}
+															}
+															if (agentNameId) {
+																if (agent.designation) {
+																	if (agentNameId.includes("|")) {
+																		const agentNameIds = agentNameId.split("|");
+																		nameBoolean = agentNameIds.includes(
+																			agent.designation,
+																		);
+																	}
+																	nameBoolean =
+																		agent.designation === agentNameId;
+																} else {
+																	nameBoolean = false;
+																}
+															}
+															return nameBoolean && activityBoolean;
+														},
+													);
+													if (filteredAgents && filteredAgents.length > 0) {
+														return {
+															...attestation,
+															agents: filteredAgents,
+														};
+													}
+													return null;
+												})
+												.filter((attestation) => attestation !== null);
+											if (
+												filteredAttestations &&
+												filteredAttestations.length > 0
+											) {
+												return {
+													...source,
+													attestations: filteredAttestations,
+												};
+											}
+											return null;
+										})
+										.filter((source) => source !== null);
+									if (filteredSources && filteredSources.length > 0) {
+										return { ...point, sources: filteredSources };
+									}
+									return null;
+								})
+								.filter((point: PointType) => point !== null);
+						}
+
+						// on trie les attestations par id
+						const sortedAttestations = filteredResults.map(
+							(point: PointType) => {
+								return {
+									...point,
+									sources: point.sources?.map((source) => {
+										return {
+											...source,
+											attestations: source.attestations?.sort(
+												(a, b) => a.attestation_id - b.attestation_id,
+											),
+										};
+									}),
+								};
+							},
+						);
+
 						// on trie les sources de chaque point par date
-						const sortedResults = filteredResults.map((point: PointType) => {
+						const sortedResults = sortedAttestations.map((point: PointType) => {
 							return {
 								...point,
 								sources: sortSourcesByDate(point.sources),
