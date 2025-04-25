@@ -175,7 +175,6 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 					) : (
 						<Eye onClick={() => handlePublicationClick(type, true)} />
 					))}
-				<ScanEye onClick={() => navigate(`preview/${itemInfos.id}`)} />
 				{isModifiedByAnotherUser ? (
 					<PenOff />
 				) : (

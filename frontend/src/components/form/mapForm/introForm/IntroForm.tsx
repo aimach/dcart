@@ -1,7 +1,7 @@
 // import des bibliothèques
 import { useContext, useEffect, useMemo, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
-import { useLocation } from "react-router";
+import { useLocation, useParams } from "react-router";
 import Select from "react-select";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
@@ -29,6 +29,7 @@ import type { MultiValue } from "react-select";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./introForm.module.scss";
+import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 
 type IntroFormProps = {
 	inputs: InputType[];
@@ -45,7 +46,9 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 
 	const { tagOptions } = useContext(TagOptionsContext);
 
-	const { pathname } = useLocation();
+	const { pathname, state } = useLocation();
+
+	const { mapId } = useParams();
 
 	// récupération des données des stores
 	const { mapInfos, setMapInfos, step, incrementStep } = useMapFormStore(
@@ -91,6 +94,16 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 	} = useForm<MapInfoType>({
 		defaultValues: mapInfos ?? {},
 	});
+
+	useEffect(() => {
+		const fetchMapInfos = async () => {
+			const allMapInfos = await getOneMapInfos(mapId as string);
+			setMapInfos(allMapInfos);
+		};
+		if (state?.from.includes("/maps/preview/")) {
+			fetchMapInfos();
+		}
+	}, [mapId, state]);
 
 	// à chaque changement dans les inputs, mise à jour du store avec les informations des inputs
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
