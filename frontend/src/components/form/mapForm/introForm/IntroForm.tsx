@@ -18,6 +18,7 @@ import { useShallow } from "zustand/shallow";
 import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
 import { updateMap } from "../../../../utils/api/builtMap/putRequests";
 import { notifyCreateSuccess } from "../../../../utils/functions/toast";
+import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { FieldErrors, SubmitHandler } from "react-hook-form";
 import type { InputType } from "../../../../utils/types/formTypes";
@@ -29,7 +30,6 @@ import type { MultiValue } from "react-select";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./introForm.module.scss";
-import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 
 type IntroFormProps = {
 	inputs: InputType[];

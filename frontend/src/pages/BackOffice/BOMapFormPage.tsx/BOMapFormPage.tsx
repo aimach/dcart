@@ -11,6 +11,7 @@ import StayConnectedContent from "../../../components/common/modal/StayConnected
 import ModalComponent from "../../../components/common/modal/ModalComponent";
 import BuiltElementFilterForm from "../../../components/form/mapForm/builtElementFilterForm/BuiltElementFilterForm";
 import LocationFilterForm from "../../../components/form/mapForm/locationFilterForm/LocationFilterForm";
+import ButtonComponent from "../../../components/common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -21,7 +22,6 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import style from "./BOMapFormPage.module.scss";
 // import des icônes
 import { FileText, Filter, ListTodo, MapPin, MapPinCheck } from "lucide-react";
-import ButtonComponent from "../../../components/common/button/ButtonComponent";
 
 /**
  * Page du formulaire de création de carte

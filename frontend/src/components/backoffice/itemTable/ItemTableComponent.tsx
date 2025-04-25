@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useContext, useEffect, useMemo, useState } from "react";
-import { Link, useNavigate } from "react-router";
+import { useNavigate } from "react-router";
 import DOMPurify from "dompurify";
 import truncate from "truncate-html";
 // import des composants
@@ -24,15 +24,7 @@ import type { StorymapType } from "../../../utils/types/storymapTypes";
 // import du style
 import style from "./itemTableComponent.module.scss";
 // import des icônes
-import {
-	Eye,
-	EyeOff,
-	ImageOff,
-	Pen,
-	PenOff,
-	ScanEye,
-	Trash,
-} from "lucide-react";
+import { Eye, EyeOff, ImageOff, Pen, PenOff, Trash } from "lucide-react";
 
 type ItemTableComponentProps = {
 	itemInfos: MapType | StorymapType;
