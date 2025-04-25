@@ -42,7 +42,7 @@ if (rootElement) {
 										<Route path="tag/:tagId">
 											<Route index element={<TagPage />} />
 										</Route>
-										<Route path="map/:mapId" element={<MapPage />} />
+										<Route path="map/:mapSlug" element={<MapPage />} />
 
 										<Route
 											path="storymap/:storymapId"

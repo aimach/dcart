@@ -24,6 +24,7 @@ type TagWithItemsType = {
 		description_fr: string;
 		description_en: string;
 		image_url: string;
+		slug: string;
 		tags: Omit<TagType[], "maps">;
 	}[];
 	storymaps: {
@@ -33,6 +34,7 @@ type TagWithItemsType = {
 		description_fr: string;
 		description_en: string;
 		image_url: string;
+		slug: string;
 		tags: Omit<TagType[], "maps">;
 	}[];
 };

@@ -10,6 +10,8 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
 import { In } from "typeorm";
+import { generateUniqueSlug, slugify } from "../../../utils/functions/builtMap";
+import { datationController } from "../mapControllers/datationController";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";
@@ -133,12 +135,18 @@ export const mapContentController = {
 				return;
 			}
 
+			const slug = await generateUniqueSlug(
+				title_fr,
+				dcartDataSource.getRepository(MapContent),
+			);
+
 			const newMap = dcartDataSource.getRepository(MapContent).create({
 				title_en,
 				title_fr,
 				description_en,
 				description_fr,
 				image_url,
+				slug,
 				creator,
 				tags: tagsToSave,
 				uploadPointsLastDate: currentDate,
@@ -208,6 +216,14 @@ export const mapContentController = {
 
 			// biome-ignore lint/performance/noDelete:
 			delete req.body.filterMapContent;
+
+			if (mapToUpdate.title_fr !== req.body.title_fr) {
+				const newSlug = await generateUniqueSlug(
+					req.body.title_fr,
+					dcartDataSource.getRepository(MapContent),
+				);
+				req.body.slug = newSlug;
+			}
 
 			const updatedMap = await dcartDataSource
 				.getRepository(MapContent)

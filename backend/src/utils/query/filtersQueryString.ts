@@ -35,19 +35,19 @@ const getQueryStringForExcludedElements = (excludedElements: string) => {
 
 /**
  * Fonction qui renvoie la query string pour filtrer les éléments inclus
- * @param {string} mapId - l'id de la carte (exploration ou un uuid)
+ * @param {string} mapSlug - l'id de la carte (exploration ou un uuid)
  * @param {string} queryElements - la liste des ids des éléments à inclure (séparés par des "|")
  * @returns {string} - la query string
  */
 const getQueryStringForIncludedElements = (
-	mapId: string,
+	mapSlug: string,
 	queryElements: string,
 ) => {
 	const queryElementsArray = queryElements.split("|");
 	const queryElementsArrayWithBrackets = queryElementsArray.map(
 		(element) => `'%{${element}}%'`,
 	);
-	let query = mapId === "exploration" ? "WHERE" : "AND";
+	let query = mapSlug === "exploration" ? "WHERE" : "AND";
 	if (queryElements) {
 		query += ` formule.formule LIKE ANY(ARRAY[${queryElementsArrayWithBrackets}]) `;
 	}

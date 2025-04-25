@@ -8,6 +8,7 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 import { Tag } from "../../entities/common/Tag";
 import { In } from "typeorm";
+import { generateUniqueSlug, slugify } from "../../utils/functions/builtMap";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";
@@ -137,8 +138,14 @@ export const storymapContentControllers = {
 				return;
 			}
 
+			const slug = await generateUniqueSlug(
+				req.body.title_lang1,
+				dcartDataSource.getRepository(Storymap),
+			);
+
 			const newStorymap = dcartDataSource.getRepository(Storymap).create({
 				...req.body,
+				slug,
 				tags: tagsToSave,
 				creator: userId,
 			});
@@ -197,6 +204,14 @@ export const storymapContentControllers = {
 			if (tagsToSave.length !== tagIds.length) {
 				res.status(404).send("Tags non trouvés.");
 				return;
+			}
+
+			if (storymapToUpdate.title_lang1 !== req.body.title_lang1) {
+				const newSlug = await generateUniqueSlug(
+					req.body.title_lang1,
+					dcartDataSource.getRepository(Storymap),
+				);
+				req.body.slug = newSlug;
 			}
 
 			const updatedStorymap = await dcartDataSource

@@ -24,7 +24,7 @@ import style from "./mapPage.module.scss";
  */
 const MapPage = () => {
 	// récupération des paramètres de l'URL : l'id de la carte en cours
-	const { mapId } = useParams();
+	const { mapSlug } = useParams();
 
 	// récupération des données des stores
 	const { setMapFilters, isPanelDisplayed, setIsPanelDisplayed } =
@@ -47,17 +47,17 @@ const MapPage = () => {
 
 	// fonction pour récupérer les points de la carte en cours
 	const fetchAllPoints = useCallback(async () => {
-		const points = await getAllPointsByMapId(mapId as string, null);
+		const points = await getAllPointsByMapId(mapSlug as string, null);
 		mapStore.setAllPoints(points);
 		mapStore.setAllResults(points);
 		mapStore.setMapReady(true);
-	}, [mapId, mapStore]);
+	}, [mapSlug, mapStore]);
 
 	// fonction pour récupérer les informations de la carte
 	const fetchMapInfos = useCallback(
-		async (mapId: string) => {
-			if (!mapId) return;
-			const mapInfos = await getOneMapInfos(mapId as string);
+		async (mapSlug: string) => {
+			if (!mapSlug) return;
+			const mapInfos = await getOneMapInfos(mapSlug as string);
 			// si la carte est une carte d'exploration, on réinitialise les filtres
 			if (mapInfos === "exploration") {
 				mapStore.setIncludedElementId(undefined);
@@ -82,13 +82,13 @@ const MapPage = () => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		// chargement des données
-		fetchMapInfos(mapId as string);
+		fetchMapInfos(mapSlug as string);
 		fetchAllPoints();
 		// réinitialisation des états si l'utilisateur vient d'une autre carte
 		mapStore.setMapReady(false);
 		mapStore.resetTileLayerURL();
 		setIsPanelDisplayed(false);
-	}, [mapId]);
+	}, [mapSlug]);
 
 	return (
 		<section className={style.mapSection}>

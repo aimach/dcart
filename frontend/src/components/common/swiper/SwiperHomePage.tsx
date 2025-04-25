@@ -35,10 +35,11 @@ const SwiperHomePage = ({ items }: SwiperHomePageProps) => {
 					: isMap
 						? mapPinBG
 						: bookOpenBG;
+				console.log(item);
 
 				return (
 					<SwiperSlide key={item.id} className={style.itemSwiperSlide}>
-						<Link to={isMap ? `/map/${item.id}` : `/storymap/${item.id}`}>
+						<Link to={isMap ? `/map/${item.slug}` : `/storymap/${item.slug}`}>
 							<div
 								className={style.itemSwiper}
 								style={{

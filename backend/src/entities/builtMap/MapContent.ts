@@ -34,7 +34,10 @@ export class MapContent extends BaseEntity {
 	description_en?: string | null;
 
 	@Column({ type: "text", nullable: true })
-	image_url!: string | null;
+	image_url?: string | null;
+
+	@Column({ type: "text", unique: true, nullable: false })
+	slug!: string;
 
 	@Column({ type: "text", nullable: true })
 	divinityIds?: string | null;

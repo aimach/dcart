@@ -18,7 +18,7 @@ sourceRoutes.get(
 
 // récupérer les sources par l'id de la map
 // NB : on utilise un POST car le payload peut être trop long pour un GET
-sourceRoutes.post("/map/:mapId", mapController.getSourcesByMapId);
+sourceRoutes.post("/map/:mapSlug", mapController.getSourcesByMapId);
 
 // récupérer les sources par la liste des attestations
 // NB : on utilise un POST car le payload peut être trop long pour un GET

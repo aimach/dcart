@@ -46,7 +46,7 @@ const MapComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	const { mapId } = useParams();
+	const { mapSlug } = useParams();
 
 	// récupération des données du store
 	const {
@@ -71,10 +71,7 @@ const MapComponent = () => {
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(useShallow((state) => state));
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore(
-		useShallow((state) => ({
-			setSelectedTabMenu: state.setSelectedTabMenu,
-			setIsPanelDisplayed: state.setIsPanelDisplayed,
-		})),
+		useShallow((state) => state),
 	);
 
 	// définition de l'état d'affichage de la modale
@@ -173,7 +170,7 @@ const MapComponent = () => {
 		tutorialStep === 2 ? "built-map shadowed" : "built-map";
 
 	const fetchMapInfos = async () => {
-		const allMapInfos = await getOneMapInfos(mapId as string);
+		const allMapInfos = await getOneMapInfos(mapSlug as string);
 		setMapInfos(allMapInfos);
 	};
 

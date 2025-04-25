@@ -28,8 +28,9 @@ const ItemContainer = ({ item }: ItemContainerProps) => {
 		: isMap
 			? mapPinBG
 			: bookOpenBG;
+
 	return (
-		<Link to={isMap ? `/map/${item.id}` : `/storymap/${item.id}`}>
+		<Link to={isMap ? `/map/${item.slug}` : `/storymap/${item.slug}`}>
 			<div className={style.itemIcon}>
 				{isMap ? <MapPin /> : <BookOpenText />}
 			</div>

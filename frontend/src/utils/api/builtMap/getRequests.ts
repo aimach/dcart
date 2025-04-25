@@ -214,10 +214,10 @@ const getAllStorymapsInfos = async () => {
  * @param {string} mapId - L'id de la carte
  * @returns {Promise | string} - Les informations de la carte ou une string "exploration"
  */
-const getOneMapInfos = async (mapId: string) => {
+const getOneMapInfos = async (mapSlug: string) => {
 	try {
-		if (mapId !== "exploration") {
-			const response = await apiClient.get(`/dcart/maps/${mapId}`);
+		if (mapSlug !== "exploration") {
+			const response = await apiClient.get(`/dcart/maps/${mapSlug}`);
 			const mapInfos = await response.data;
 			return mapInfos;
 		}
