@@ -15,6 +15,7 @@ import type { FormEvent, ChangeEvent } from "react";
 import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
+// import des icônes
 import { CircleCheck } from "lucide-react";
 
 interface PointSetUploadFormProps {

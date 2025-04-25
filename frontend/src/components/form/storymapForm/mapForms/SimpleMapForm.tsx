@@ -38,8 +38,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleHelp, Pen } from "lucide-react";
-import { X } from "lucide-react";
+import { ChevronLeft, CircleHelp, Pen, X } from "lucide-react";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;

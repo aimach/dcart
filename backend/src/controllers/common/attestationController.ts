@@ -177,7 +177,6 @@ export const attestationController = {
 
 			res.status(200).json("Le jeu d'attestations a bien été modifié");
 		} catch (error) {
-			console.log(error);
 			handleError(res, error as Error);
 		}
 	},

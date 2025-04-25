@@ -107,7 +107,10 @@ const updatePointSet = async (body: PointSetType) => {
 		});
 		return newPointSet;
 	} catch (error) {
-		console.error("Erreur lors de la création du jeu d'attestations :", error);
+		console.error(
+			"Erreur lors de la modification du jeu d'attestations :",
+			error,
+		);
 	}
 };
 
