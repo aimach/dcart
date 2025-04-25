@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useContext, useState } from "react";
 // import des composants
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
@@ -15,6 +15,8 @@ import type { FormEvent, ChangeEvent } from "react";
 import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
+// import des icônes
+import { CircleCheck } from "lucide-react";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
@@ -22,6 +24,8 @@ interface PointSetUploadFormProps {
 	handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 	parentId: string;
 	type: "map" | "block";
+	action: "create" | "edit";
+	cancelFunction: () => void;
 }
 
 const PointSetUploadForm = ({
@@ -30,11 +34,15 @@ const PointSetUploadForm = ({
 	handleSubmit,
 	parentId,
 	type,
+	action,
+	cancelFunction,
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
 
 	const { icons, colors } = useContext(IconOptionsContext);
+
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
 	const handleFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
@@ -48,6 +56,7 @@ const PointSetUploadForm = ({
 					attestationIds: allAttestationsIds,
 					[type === "map" ? "mapId" : "blockId"]: parentId as string,
 				} as PointSetType);
+				setSelectedFile((event.target as HTMLInputElement).files?.[0] ?? null);
 			},
 		});
 	};
@@ -72,6 +81,7 @@ const PointSetUploadForm = ({
 							id="name"
 							name="name"
 							type="text"
+							defaultValue={pointSet?.name ?? ""}
 							onChange={(event) =>
 								setPointSet({
 									...pointSet,
@@ -102,6 +112,19 @@ const PointSetUploadForm = ({
 							accept=".csv"
 							onChange={handleFileUpload}
 						/>
+						<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+							{((action === "create" && pointSet?.attestationIds) ||
+								action === "edit") && <CircleCheck color="green" />}
+							{action === "create" &&
+								pointSet?.attestationIds &&
+								`Fichier chargé : ${selectedFile?.name}`}
+							{action === "edit" &&
+								!selectedFile &&
+								"Un fichier est déjà chargé"}
+							{action === "edit" &&
+								selectedFile &&
+								`Nouveau fichier chargé : ${selectedFile?.name}`}
+						</p>
 					</div>
 				</div>
 				<div className={style.commonFormInputContainer}>
@@ -166,9 +189,22 @@ const PointSetUploadForm = ({
 						/>
 					</div>
 				</div>
+
 				<button type="submit" className={style.commonFormButton}>
-					{translation[language].button.add}
+					{translation[language].button[pointSet ? "edit" : "add"]}
 				</button>
+				{action === "edit" && (
+					<button
+						type="button"
+						className={style.commonFormButton}
+						onClick={() => {
+							cancelFunction();
+							setSelectedFile(null);
+						}}
+					>
+						{translation[language].button.cancel}
+					</button>
+				)}
 			</form>
 		)
 	);

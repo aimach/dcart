@@ -13,10 +13,14 @@ import PointSetUploadForm from "../pointSetUploadForm/PointSetUploadForm";
 import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
 import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
-import { updateMap } from "../../../../utils/api/builtMap/putRequests";
+import {
+	updateMap,
+	updatePointSet,
+} from "../../../../utils/api/builtMap/putRequests";
 import {
 	notifyCreateSuccess,
 	notifyDeleteSuccess,
+	notifyEditSuccess,
 	notifySuccessWithCustomMessage,
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
@@ -31,7 +35,7 @@ import type {
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des images
-import { CircleHelp, X } from "lucide-react";
+import { CircleHelp, Pen, X } from "lucide-react";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -55,14 +59,25 @@ const UploadForm = () => {
 
 	// fonction pour gérer la soumission du formulaire (passage à l'étape suivante)
 	const [pointSet, setPointSet] = useState<PointSetType | null>(null);
+	const [action, setAction] = useState<"create" | "edit">("create");
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
-		const newPointSet = await createPointSet(pointSet as PointSetType);
-		if (newPointSet?.status === 201) {
-			setIsAlreadyAPointSet(true);
-			const mapWithPointSet = await getOneMapInfos(mapInfos?.id as string);
-			setMapInfos(mapWithPointSet);
-			notifyCreateSuccess("Jeu de points", false);
+		if (action === "create") {
+			const newPointSet = await createPointSet(pointSet as PointSetType);
+			if (newPointSet?.status === 201) {
+				setIsAlreadyAPointSet(true);
+				const mapWithPointSet = await getOneMapInfos(mapInfos?.id as string);
+				setMapInfos(mapWithPointSet);
+				notifyCreateSuccess("Jeu de points", false);
+			}
+		}
+		if (action === "edit") {
+			const newPointSet = await updatePointSet(pointSet as PointSetType);
+			if (newPointSet?.status === 200) {
+				const mapWithPointSet = await getOneMapInfos(mapInfos?.id as string);
+				setMapInfos(mapWithPointSet);
+				notifyEditSuccess("Jeu de points", false);
+			}
 		}
 	};
 
@@ -82,6 +97,22 @@ const UploadForm = () => {
 		const newMapInfos = await getOneMapInfos(mapInfos?.id as string);
 		setMapInfos(newMapInfos);
 		notifyDeleteSuccess("Jeu de points", false);
+	};
+
+	const handleUpdatePointSet = async (pointSetId: string) => {
+		const pointSetToUpdate = mapInfos?.attestations.find(
+			(pointSet) => pointSet.id === pointSetId,
+		) as PointSetType;
+		if (pointSetToUpdate) {
+			setAction("edit");
+			setPointSet({
+				...pointSetToUpdate,
+				mapId: mapInfos?.id as string,
+				icon: (pointSetToUpdate.icon as MapIconType).id,
+				color: (pointSetToUpdate.color as MapColorType).id,
+			});
+			setIsAlreadyAPointSet(false);
+		}
 	};
 
 	const handleCheckboxChange = async (fieldName: string, boolean: string) => {
@@ -124,6 +155,12 @@ const UploadForm = () => {
 					handleSubmit={handleSubmit}
 					parentId={mapInfos?.id as string}
 					type="map"
+					action={action}
+					cancelFunction={() => {
+						setPointSet(null);
+						setIsAlreadyAPointSet(true);
+						setAction("create");
+					}}
 				/>
 			)}
 			{mapInfos?.attestations && (
@@ -143,12 +180,7 @@ const UploadForm = () => {
 											.icon
 									}
 								</th>
-								<th scope="col">
-									{
-										translation[language].backoffice.mapFormPage.pointSetTable
-											.delete
-									}
-								</th>
+								<th scope="col" />
 							</tr>
 						</thead>
 						<tbody>
@@ -169,6 +201,14 @@ const UploadForm = () => {
 											/>
 										</td>
 										<td>
+											<Pen
+												onClick={() =>
+													handleUpdatePointSet(pointSet.id as string)
+												}
+												onKeyDown={() =>
+													handleUpdatePointSet(pointSet.id as string)
+												}
+											/>
 											<X
 												onClick={() =>
 													handleDeletePointSet(pointSet.id as string)
