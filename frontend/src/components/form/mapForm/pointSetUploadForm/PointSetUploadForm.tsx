@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useContext, useState } from "react";
 // import des composants
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
@@ -15,6 +15,7 @@ import type { FormEvent, ChangeEvent } from "react";
 import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
+import { CircleCheck } from "lucide-react";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
@@ -22,6 +23,7 @@ interface PointSetUploadFormProps {
 	handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 	parentId: string;
 	type: "map" | "block";
+	action: "create" | "update";
 }
 
 const PointSetUploadForm = ({
@@ -30,11 +32,14 @@ const PointSetUploadForm = ({
 	handleSubmit,
 	parentId,
 	type,
+	action,
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
 
 	const { icons, colors } = useContext(IconOptionsContext);
+
+	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
 	const handleFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
@@ -48,9 +53,12 @@ const PointSetUploadForm = ({
 					attestationIds: allAttestationsIds,
 					[type === "map" ? "mapId" : "blockId"]: parentId as string,
 				} as PointSetType);
+				setSelectedFile((event.target as HTMLInputElement).files?.[0] ?? null);
 			},
 		});
 	};
+
+	console.log(selectedFile);
 
 	return (
 		icons.length && (
@@ -103,6 +111,19 @@ const PointSetUploadForm = ({
 							accept=".csv"
 							onChange={handleFileUpload}
 						/>
+						<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+							{((action === "create" && pointSet?.attestationIds) ||
+								action === "update") && <CircleCheck color="green" />}
+							{action === "create" &&
+								pointSet?.attestationIds &&
+								`Fichier chargé : ${selectedFile?.name}`}
+							{action === "update" &&
+								!selectedFile &&
+								"Un fichier est déjà chargé"}
+							{action === "update" &&
+								selectedFile &&
+								`Nouveau fichier chargé : ${selectedFile?.name}`}
+						</p>
 					</div>
 				</div>
 				<div className={style.commonFormInputContainer}>

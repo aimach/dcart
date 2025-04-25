@@ -101,7 +101,7 @@ const updateMapFilterOptions = async (
  */
 const updatePointSet = async (body: PointSetType) => {
 	try {
-		const newPointSet = await apiClient("dcart/attestations", {
+		const newPointSet = await apiClient(`dcart/attestations/${body.id}`, {
 			method: "PUT",
 			data: JSON.stringify(body),
 		});

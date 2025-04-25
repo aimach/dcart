@@ -156,6 +156,7 @@ const UploadForm = () => {
 					handleSubmit={handleSubmit}
 					parentId={mapInfos?.id as string}
 					type="map"
+					action={action}
 				/>
 			)}
 			{mapInfos?.attestations && (

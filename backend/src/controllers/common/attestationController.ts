@@ -103,6 +103,85 @@ export const attestationController = {
 		}
 	},
 
+	// modifier une liste d'attestation
+	modifyAttestationList: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { id } = req.params;
+			const { color, icon, mapId, blockId } = req.body;
+
+			const parentRepository = mapId
+				? dcartDataSource.getRepository(MapContent)
+				: dcartDataSource.getRepository(Block);
+			const parentId = mapId ? mapId : blockId;
+
+			if (!parentId) {
+				res.status(400).json("L'id de la carte ou du bloc est requis");
+				return;
+			}
+			const parentToAddAttestations = await parentRepository.findOne({
+				where: { id: parentId },
+			});
+			if (!parentToAddAttestations) {
+				res.status(404).json("La carte ou le bloc n'existe pas");
+				return;
+			}
+
+			let iconToAdd = null;
+			if (!icon) {
+				iconToAdd = await dcartDataSource
+					.getRepository(Icon)
+					.findOne({ where: { name_fr: "cercle" } });
+			} else {
+				iconToAdd = await dcartDataSource
+					.getRepository(Icon)
+					.findOne({ where: { id: icon } });
+			}
+
+			if (!iconToAdd) {
+				res.status(404).json("L'icône n'existe pas");
+				return;
+			}
+
+			let colorToAdd = null;
+			if (!color) {
+				colorToAdd = await dcartDataSource
+					.getRepository(Color)
+					.findOne({ where: { name_fr: "marron" } });
+			} else {
+				colorToAdd = await dcartDataSource
+					.getRepository(Color)
+					.findOne({ where: { id: req.body.color } });
+			}
+
+			if (!colorToAdd) {
+				res.status(404).json("La couleur n'existe pas");
+				return;
+			}
+
+			const attestationListToUpdate = await dcartDataSource
+				.getRepository(Attestation)
+				.findOneBy({ id });
+			if (!attestationListToUpdate) {
+				res.status(404).json("Le jeu d'attestations n'existe pas");
+				return;
+			}
+
+			attestationListToUpdate.icon = iconToAdd;
+			attestationListToUpdate.color = colorToAdd;
+			attestationListToUpdate.name = req.body.name;
+			attestationListToUpdate.attestationIds = req.body.attestationIds;
+
+			await dcartDataSource
+				.getRepository(Attestation)
+				.save(attestationListToUpdate);
+
+			res.status(200).json("Le jeu d'attestations a bien été modifié");
+		} catch (error) {
+			console.log(error);
+			handleError(res, error as Error);
+		}
+	},
+
 	// supprimer un jeu d'attestations
 	deleteAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
