@@ -36,7 +36,6 @@ import type {
 import style from "../introForm/introForm.module.scss";
 // import des images
 import { CircleHelp, Pen, X } from "lucide-react";
-import { set } from "react-hook-form";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -60,7 +59,7 @@ const UploadForm = () => {
 
 	// fonction pour gérer la soumission du formulaire (passage à l'étape suivante)
 	const [pointSet, setPointSet] = useState<PointSetType | null>(null);
-	const [action, setAction] = useState<string>("create");
+	const [action, setAction] = useState<"create" | "edit">("create");
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
 		if (action === "create") {
@@ -72,7 +71,7 @@ const UploadForm = () => {
 				notifyCreateSuccess("Jeu de points", false);
 			}
 		}
-		if (action === "update") {
+		if (action === "edit") {
 			const newPointSet = await updatePointSet(pointSet as PointSetType);
 			if (newPointSet?.status === 200) {
 				const mapWithPointSet = await getOneMapInfos(mapInfos?.id as string);
@@ -105,7 +104,7 @@ const UploadForm = () => {
 			(pointSet) => pointSet.id === pointSetId,
 		) as PointSetType;
 		if (pointSetToUpdate) {
-			setAction("update");
+			setAction("edit");
 			setPointSet({
 				...pointSetToUpdate,
 				mapId: mapInfos?.id as string,
@@ -157,6 +156,11 @@ const UploadForm = () => {
 					parentId={mapInfos?.id as string}
 					type="map"
 					action={action}
+					cancelFunction={() => {
+						setPointSet(null);
+						setIsAlreadyAPointSet(true);
+						setAction("create");
+					}}
 				/>
 			)}
 			{mapInfos?.attestations && (
@@ -176,12 +180,7 @@ const UploadForm = () => {
 											.icon
 									}
 								</th>
-								<th scope="col">
-									{
-										translation[language].backoffice.mapFormPage.pointSetTable
-											.delete
-									}
-								</th>
+								<th scope="col" />
 							</tr>
 						</thead>
 						<tbody>

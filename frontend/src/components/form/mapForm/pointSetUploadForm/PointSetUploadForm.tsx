@@ -23,7 +23,8 @@ interface PointSetUploadFormProps {
 	handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 	parentId: string;
 	type: "map" | "block";
-	action: "create" | "update";
+	action: "create" | "edit";
+	cancelFunction: () => void;
 }
 
 const PointSetUploadForm = ({
@@ -33,6 +34,7 @@ const PointSetUploadForm = ({
 	parentId,
 	type,
 	action,
+	cancelFunction,
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
@@ -57,8 +59,6 @@ const PointSetUploadForm = ({
 			},
 		});
 	};
-
-	console.log(selectedFile);
 
 	return (
 		icons.length && (
@@ -113,14 +113,14 @@ const PointSetUploadForm = ({
 						/>
 						<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
 							{((action === "create" && pointSet?.attestationIds) ||
-								action === "update") && <CircleCheck color="green" />}
+								action === "edit") && <CircleCheck color="green" />}
 							{action === "create" &&
 								pointSet?.attestationIds &&
 								`Fichier chargé : ${selectedFile?.name}`}
-							{action === "update" &&
+							{action === "edit" &&
 								!selectedFile &&
 								"Un fichier est déjà chargé"}
-							{action === "update" &&
+							{action === "edit" &&
 								selectedFile &&
 								`Nouveau fichier chargé : ${selectedFile?.name}`}
 						</p>
@@ -188,9 +188,22 @@ const PointSetUploadForm = ({
 						/>
 					</div>
 				</div>
+
 				<button type="submit" className={style.commonFormButton}>
 					{translation[language].button[pointSet ? "edit" : "add"]}
 				</button>
+				{action === "edit" && (
+					<button
+						type="button"
+						className={style.commonFormButton}
+						onClick={() => {
+							cancelFunction();
+							setSelectedFile(null);
+						}}
+					>
+						{translation[language].button.cancel}
+					</button>
+				)}
 			</form>
 		)
 	);

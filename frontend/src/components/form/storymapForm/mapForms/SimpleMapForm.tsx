@@ -23,8 +23,10 @@ import { getBlockInfos } from "../../../../utils/api/storymap/getRequests";
 import {
 	notifyCreateSuccess,
 	notifyDeleteSuccess,
+	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
+import { updatePointSet } from "../../../../utils/api/builtMap/putRequests";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -36,7 +38,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleHelp } from "lucide-react";
+import { ChevronLeft, CircleHelp, Pen } from "lucide-react";
 import { X } from "lucide-react";
 
 export type simpleMapInputsType = {
@@ -64,7 +66,7 @@ const SimpleMapForm = () => {
 		);
 
 	const [searchParams, setSearchParams] = useSearchParams();
-	const action = searchParams.get("action");
+	const action = searchParams.get("action") as "create" | "edit";
 	const { storymapId } = useParams();
 
 	const [step, setStep] = useState(1);
@@ -85,6 +87,10 @@ const SimpleMapForm = () => {
 			setValue("content1_lang2", block?.content1_lang2 as string);
 		}
 	}, [action, block]);
+
+	const [pointSetFormAction, setPointSetFormAction] = useState<
+		"create" | "edit"
+	>("create");
 
 	// fonction appelée lors de la soumission du formulaire
 	const handleMapFormSubmit = async (data: simpleMapInputsType) => {
@@ -122,13 +128,22 @@ const SimpleMapForm = () => {
 		event,
 	) => {
 		event.preventDefault();
-
-		const newPointSet = await createPointSet(pointSet as PointSetType);
-		if (newPointSet?.status === 201) {
-			setIsAlreadyAPointSet(true);
-			const newBlockInfos = await getBlockInfos(block?.id as string);
-			updateBlockContent(newBlockInfos);
-			notifyCreateSuccess("Jeu de points", false);
+		if (pointSetFormAction === "create") {
+			const newPointSet = await createPointSet(pointSet as PointSetType);
+			if (newPointSet?.status === 201) {
+				setIsAlreadyAPointSet(true);
+				const newBlockInfos = await getBlockInfos(block?.id as string);
+				updateBlockContent(newBlockInfos);
+				notifyCreateSuccess("Jeu de points", false);
+			}
+		}
+		if (pointSetFormAction === "edit") {
+			const newPointSet = await updatePointSet(pointSet as PointSetType);
+			if (newPointSet?.status === 200) {
+				const newBlockInfos = await getBlockInfos(block?.id as string);
+				updateBlockContent(newBlockInfos);
+				notifyEditSuccess("Jeu de points", false);
+			}
 		}
 	};
 
@@ -147,6 +162,22 @@ const SimpleMapForm = () => {
 		const newBlockInfos = await getBlockInfos(block?.id as string);
 		updateBlockContent(newBlockInfos);
 		notifyDeleteSuccess("Jeu de points", false);
+	};
+
+	const handleUpdatePointSet = async (pointSetId: string) => {
+		const pointSetToUpdate = block?.attestations?.find(
+			(pointSet) => pointSet.id === pointSetId,
+		) as PointSetType;
+		if (pointSetToUpdate) {
+			setPointSetFormAction("edit");
+			setPointSet({
+				...pointSetToUpdate,
+				blockId: block?.id as string,
+				icon: (pointSetToUpdate.icon as MapIconType).id,
+				color: (pointSetToUpdate.color as MapColorType).id,
+			});
+			setIsAlreadyAPointSet(false);
+		}
 	};
 
 	return (
@@ -277,6 +308,12 @@ const SimpleMapForm = () => {
 							handleSubmit={handleSubmitPointSet}
 							parentId={block?.id as string}
 							type="block"
+							action={pointSetFormAction}
+							cancelFunction={() => {
+								setPointSet(null);
+								setIsAlreadyAPointSet(true);
+								setPointSetFormAction("create");
+							}}
 						/>
 					)}
 					{block?.attestations && (
@@ -296,12 +333,7 @@ const SimpleMapForm = () => {
 													.pointSetTable.icon
 											}
 										</th>
-										<th scope="col">
-											{
-												translation[language].backoffice.mapFormPage
-													.pointSetTable.delete
-											}
-										</th>
+										<th scope="col" />
 									</tr>
 								</thead>
 								<tbody>
@@ -322,6 +354,14 @@ const SimpleMapForm = () => {
 													/>
 												</td>
 												<td>
+													<Pen
+														onClick={() =>
+															handleUpdatePointSet(pointSet.id as string)
+														}
+														onKeyDown={() =>
+															handleUpdatePointSet(pointSet.id as string)
+														}
+													/>
 													<X
 														onClick={() =>
 															handleDeletePointSet(pointSet.id as string)

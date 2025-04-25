@@ -33,7 +33,8 @@
 		"add": "Add",
 		"save": "Save",
 		"delete": "Delete",
-		"edit": "Edit"
+		"edit": "Edit",
+		"cancel": "Cancel"
 	},
 	"common": {
 		"between": "between",
