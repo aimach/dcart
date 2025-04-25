@@ -32,7 +32,8 @@
 		"discover": "Discover",
 		"add": "Add",
 		"save": "Save",
-		"delete": "Delete"
+		"delete": "Delete",
+		"edit": "Edit"
 	},
 	"common": {
 		"between": "between",

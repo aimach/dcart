@@ -72,6 +72,7 @@ const PointSetUploadForm = ({
 							id="name"
 							name="name"
 							type="text"
+							defaultValue={pointSet?.name ?? ""}
 							onChange={(event) =>
 								setPointSet({
 									...pointSet,
@@ -167,7 +168,7 @@ const PointSetUploadForm = ({
 					</div>
 				</div>
 				<button type="submit" className={style.commonFormButton}>
-					{translation[language].button.add}
+					{translation[language].button[pointSet ? "edit" : "add"]}
 				</button>
 			</form>
 		)

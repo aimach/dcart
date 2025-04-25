@@ -1,7 +1,7 @@
 // import des serivces
 import { apiClient } from "../apiClient";
 // import des types
-import type { MapInfoType } from "../../types/mapTypes";
+import type { MapInfoType, PointSetType } from "../../types/mapTypes";
 import {
 	notifyEditSuccess,
 	notifyError,
@@ -82,7 +82,7 @@ const updateMapFilterOptions = async (
 			`dcart/filters/update/${mapId}/${filterType}`,
 			{
 				method: "PUT",
-				data: mapFiltersOptions, 
+				data: mapFiltersOptions,
 			},
 		);
 		notifyEditSuccess("Option du filtre", true);
@@ -94,9 +94,27 @@ const updateMapFilterOptions = async (
 	}
 };
 
+/**
+ * Envoie une requête PUT pour modifier un jeu de points
+ * @param body - Les informations du jeu de points à créer
+ * @returns {Promise} - La réponse de la requête
+ */
+const updatePointSet = async (body: PointSetType) => {
+	try {
+		const newPointSet = await apiClient("dcart/attestations", {
+			method: "PUT",
+			data: JSON.stringify(body),
+		});
+		return newPointSet;
+	} catch (error) {
+		console.error("Erreur lors de la création du jeu d'attestations :", error);
+	}
+};
+
 export {
 	updateMap,
 	updateFiltersToMap,
 	updateMapActiveStatus,
 	updateMapFilterOptions,
+	updatePointSet,
 };

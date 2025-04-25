@@ -42,9 +42,9 @@ const createNewMap = async (body: MapInfoType) => {
 };
 
 /**
- * Envoie une requête POST pour créer une nouvelle carte
- * @param body - Les informations de la carte à créer
- * @returns {Promise} - La réponse de la création de la carte
+ * Envoie une requête POST pour créer un jeu de points
+ * @param body - Les informations du jeu de points à créer
+ * @returns {Promise} - La réponse de la requête
  */
 const createPointSet = async (body: PointSetType) => {
 	try {

@@ -35,6 +35,7 @@ type LanguageObject = {
 		add: string;
 		save: string;
 		delete: string;
+		edit: string;
 	};
 	common: {
 		between: string;
