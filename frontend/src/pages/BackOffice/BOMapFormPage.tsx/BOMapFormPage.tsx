@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useContext, useEffect, useState } from "react";
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 // import du contexte
 import { SessionContext } from "../../../context/SessionContext";
 // import des composants
@@ -11,6 +11,7 @@ import StayConnectedContent from "../../../components/common/modal/StayConnected
 import ModalComponent from "../../../components/common/modal/ModalComponent";
 import BuiltElementFilterForm from "../../../components/form/mapForm/builtElementFilterForm/BuiltElementFilterForm";
 import LocationFilterForm from "../../../components/form/mapForm/locationFilterForm/LocationFilterForm";
+import ButtonComponent from "../../../components/common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -30,8 +31,12 @@ const BOMapFormPage = () => {
 
 	const { pathname } = useLocation();
 
+	const navigate = useNavigate();
+
 	// récupération des données des stores
-	const { mapFilters, step, setStep } = useMapFormStore((state) => state);
+	const { mapInfos, mapFilters, step, setStep } = useMapFormStore(
+		(state) => state,
+	);
 	const { closeDeleteModal } = useModalStore();
 
 	// récupération des données du contexte
@@ -58,6 +63,16 @@ const BOMapFormPage = () => {
 				</ModalComponent>
 			)}
 			<aside className={style.mapFormAside}>
+				<ButtonComponent
+					type="button"
+					textContent={
+						translation[language].backoffice.storymapFormPage.preview
+					}
+					color="brown"
+					onClickFunction={() => {
+						navigate(`/backoffice/maps/preview/${mapInfos?.id}`);
+					}}
+				/>
 				<ul>
 					<li
 						onClick={() => setStep(1)}

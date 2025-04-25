@@ -561,15 +561,15 @@ const getAllAgentActivityFromPoints = (
 				}
 			}
 		}
-
-		// formattage des options pour le select
-		return allAgentActivity
-			.map((option) => ({
-				value: option.id,
-				label: option[`nom_${language}`],
-			}))
-			.sort((a, b) => a.label.localeCompare(b.label));
 	}
+
+	// formattage des options pour le select
+	return allAgentActivity
+		.map((option) => ({
+			value: option.id,
+			label: option[`nom_${language}`],
+		}))
+		.sort((a, b) => a.label.localeCompare(b.label));
 };
 
 /**
@@ -601,15 +601,14 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
 				}
 			}
 		}
-
-		// formattage des options pour le select
-		return allAgentNames
-			.map((name) => ({
-				value: name.id,
-				label: name[`nom_${language}`],
-			}))
-			.sort((a, b) => a.label.localeCompare(b.label));
 	}
+	// formattage des options pour le select
+	return allAgentNames
+		.map((name) => ({
+			value: name.id,
+			label: name[`nom_${language}`],
+		}))
+		.sort((a, b) => a.label.localeCompare(b.label));
 };
 
 export {

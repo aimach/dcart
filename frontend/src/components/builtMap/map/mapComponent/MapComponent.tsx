@@ -26,13 +26,17 @@ import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAside
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
 import { getPointsTimeMarkers } from "../../../../utils/functions/filter";
-import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
+import {
+	getAllPointsByMapId,
+	getOneMapInfos,
+} from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { LatLngTuple } from "leaflet";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
+import { Link, useParams } from "react-router";
 
 /**
  * Composant de la carte
@@ -42,11 +46,14 @@ const MapComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
+	const { mapId } = useParams();
+
 	// récupération des données du store
 	const {
 		map,
 		setMap,
 		mapInfos,
+		setMapInfos,
 		allPoints,
 		setAllPoints,
 		setAllResults,
@@ -62,14 +69,7 @@ const MapComponent = () => {
 		resetTutorialStep,
 	} = useMapStore(useShallow((state) => state));
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
-		useMapFiltersStore(
-			useShallow((state) => ({
-				userFilters: state.userFilters,
-				resetUserFilters: state.resetUserFilters,
-				isReset: state.isReset,
-				setIsReset: state.setIsReset,
-			})),
-		);
+		useMapFiltersStore(useShallow((state) => state));
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
@@ -172,6 +172,11 @@ const MapComponent = () => {
 	const mapContainerClassName =
 		tutorialStep === 2 ? "built-map shadowed" : "built-map";
 
+	const fetchMapInfos = async () => {
+		const allMapInfos = await getOneMapInfos(mapId as string);
+		setMapInfos(allMapInfos);
+	};
+
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
@@ -222,6 +227,33 @@ const MapComponent = () => {
 						maxZoom={11}
 						ref={setMap}
 					>
+						{location.pathname.includes("maps/preview/") && (
+							<div
+								style={{
+									position: "absolute",
+									top: 10,
+									left: 10,
+									zIndex: 400,
+								}}
+							>
+								<Link
+									to={`/backoffice/maps/edit/${mapInfos?.id}`}
+									state={{ from: location.pathname }}
+								>
+									<ButtonComponent
+										type="button"
+										textContent={
+											translation[language].backoffice.storymapFormPage
+												.backToEdit
+										}
+										color="brown"
+										onClickFunction={() => {
+											fetchMapInfos();
+										}}
+									/>
+								</Link>
+							</div>
+						)}
 						<MapTitleComponent setIsModalOpen={setIsModalOpen} />
 						{mapReady && (
 							<>

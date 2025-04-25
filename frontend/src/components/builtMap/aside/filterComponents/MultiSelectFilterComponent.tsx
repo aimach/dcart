@@ -1,8 +1,6 @@
 // import des bibliothèques
 import { useMemo } from "react";
 import Select from "react-select";
-// import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";

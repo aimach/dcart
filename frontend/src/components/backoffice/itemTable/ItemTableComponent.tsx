@@ -36,7 +36,7 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 	const { selectedLanguage } = useStorymapLanguageStore();
 
 	const { setSession } = useContext(SessionContext);
-	const { isAdmin } = useContext(AuthContext)
+	const { isAdmin } = useContext(AuthContext);
 
 	const { setMapInfos } = useMapFormStore();
 	const { openDeleteModal, setIdToDelete, reload, setReload } = useModalStore();
@@ -46,8 +46,8 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 			type === "map"
 				? DOMPurify.sanitize((itemInfos as MapType)[`description_${language}`])
 				: DOMPurify.sanitize(
-					(itemInfos as StorymapType)[`description_${selectedLanguage}`],
-				);
+						(itemInfos as StorymapType)[`description_${selectedLanguage}`],
+					);
 
 		return shortDescription.length > 100
 			? truncate(shortDescription, 100, { ellipsis: "…" })
@@ -149,10 +149,10 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 			<td>
 				{itemInfos.modifier
 					? new Date(itemInfos.updatedAt).toLocaleDateString(language, {
-						year: "numeric",
-						month: "long",
-						day: "numeric",
-					})
+							year: "numeric",
+							month: "long",
+							day: "numeric",
+						})
 					: ""}
 			</td>
 			<td>
@@ -161,13 +161,12 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 					: itemInfos.creator.pseudo}
 			</td>
 			<td>
-				{isAdmin && (
-					itemInfos.isActive ? (
+				{isAdmin &&
+					(itemInfos.isActive ? (
 						<EyeOff onClick={() => handlePublicationClick(type, false)} />
 					) : (
 						<Eye onClick={() => handlePublicationClick(type, true)} />
-					)
-				)}
+					))}
 				{isModifiedByAnotherUser ? (
 					<PenOff />
 				) : (
