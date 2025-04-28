@@ -9,6 +9,7 @@ import { jwtService } from "../../utils/jwt";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
+import { handleError } from "../../utils/errorHandler/errorHandler";
 
 export const authController = {
 	// cette route existe pour l'instant pour les besoins de développement mais sera supprimée lors de la mise en prod
@@ -48,10 +49,10 @@ export const authController = {
 
 	login: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { username, password } = req.body;
+			const { pseudo, password } = req.body;
 
 			// vérification de la présence de l'utilisateur dans la BDD, sinon message d'erreur
-			const user = await User.findOneBy({ username });
+			const user = await User.findOneBy({ pseudo });
 			if (!user) {
 				res.status(404).json({ message: "Utilisateur non trouvé." }).end;
 				return;
@@ -93,17 +94,26 @@ export const authController = {
 			});
 			res.status(200).json({ message: "Connexion réussie", accessToken });
 		} catch (error) {
-			res.status(500).json({ message: "Erreur serveur", error: error });
+			handleError(res, error as Error);
 		}
 	},
 
 	getProfile: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { userId } = req.user as jwt.JwtPayload;
+			const { userId } = req.params;
+			// const { userId } = req.user as jwt.JwtPayload;
+
+			if (userId === "all") {
+				const users = await User.find({
+					select: ["id", "username", "pseudo", "status"],
+				});
+				res.status(200).json(users);
+				return;
+			}
 
 			const user = await User.findOne({
 				where: { id: userId },
-				select: ["id", "username", "status"],
+				select: ["id", "username", "pseudo", "status"],
 			});
 
 			if (!user) {
@@ -111,9 +121,9 @@ export const authController = {
 				return;
 			}
 
-			res.status(200).json({ user });
+			res.status(200).json(user);
 		} catch (error) {
-			res.status(500).json({ message: "Erreur serveur", error: error });
+			handleError(res, error as Error);
 		}
 	},
 
@@ -128,7 +138,10 @@ export const authController = {
 
 			// vérification du token
 			const decoded = jwtService.verifyToken(refreshToken) as jwt.JwtPayload;
-			const newAccessToken = jwtService.generateAccessToken(decoded.userId, decoded.userStatus);
+			const newAccessToken = jwtService.generateAccessToken(
+				decoded.userId,
+				decoded.userStatus,
+			);
 
 			res.json({ accessToken: newAccessToken });
 		} catch (error) {
@@ -156,7 +169,7 @@ export const authController = {
 
 			res.status(200).json({ message: "Déconnecté avec succès" });
 		} catch (error) {
-			res.status(500).json({ message: "Erreur serveur" });
+			handleError(res, error as Error);
 		}
 	},
 };

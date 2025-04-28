@@ -33,9 +33,13 @@ const AuthFormComponent = () => {
 		setToken(loginUserResponse.accessToken as string);
 		if (loginUserResponse.accessToken) {
 			const decodedToken = jwtService.verifyToken(
-				loginUserResponse.accessToken as string);
+				loginUserResponse.accessToken as string,
+			);
 			if ((decodedToken as JwtPayload & { userStatus: string }).userStatus) {
-				setIsAdmin((decodedToken as JwtPayload & { userStatus: string }).userStatus === "admin");
+				setIsAdmin(
+					(decodedToken as JwtPayload & { userStatus: string }).userStatus ===
+						"admin",
+				);
 			}
 			navigate("/backoffice");
 		}
@@ -55,15 +59,15 @@ const AuthFormComponent = () => {
 				onSubmit={handleSubmit(handleConnectionButtonClick)}
 			>
 				<div className={style.commonFormInputContainer}>
-					<label htmlFor="username">
+					<label htmlFor="pseudo">
 						{translation[language].backoffice.authPage.username}
 					</label>
 					<input
 						type="text"
-						id="username"
-						{...register("username", { required: true })}
+						id="pseudo"
+						{...register("pseudo", { required: true })}
 					/>
-					{errors.username && (
+					{errors.pseudo && (
 						<ErrorComponent
 							message={translation[language].backoffice.authPage.requiredField}
 						/>

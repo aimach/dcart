@@ -4,7 +4,7 @@ import Joi from "joi";
 import type { Request, Response, NextFunction } from "express";
 
 const loginSchema = Joi.object({
-	username: Joi.string().required(),
+	pseudo: Joi.string().required(),
 	password: Joi.string().required(),
 });
 

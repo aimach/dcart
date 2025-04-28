@@ -17,6 +17,7 @@ import HomePage from "./HomePage.tsx";
 import TagPage from "./pages/TagPage/TagPage.tsx";
 import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
 import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
+import UserManagementPage from "./pages/BackOffice/BOUserManagementPage/BOUserManagementPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -76,10 +77,7 @@ if (rootElement) {
 											path="translation"
 											element={<BackofficeTranslationPage />}
 										/>
-										<Route
-											path="users"
-											element={<BackofficeTranslationPage />}
-										/>
+										<Route path="users" element={<UserManagementPage />} />
 									</Route>
 								</Routes>
 								<ToastContainer />

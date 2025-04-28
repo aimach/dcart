@@ -186,7 +186,7 @@ const getAllPointsForDemoMap = async (attestationIds: string) => {
  */
 const getAllStorymapsInfos = async () => {
 	try {
-		const response = await apiClient.get("/storymap/storymap/all");
+		const response = await apiClient.get("/storymap/storymap/id/all");
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des cartes :", error);
