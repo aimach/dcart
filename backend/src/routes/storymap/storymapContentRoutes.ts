@@ -20,7 +20,7 @@ storymapContentRoutes.get(
 	storymapContentControllers.getStorymapInfos,
 );
 
-// récupère une storymap par son id
+// récupère une storymap par son slug
 storymapContentRoutes.get(
 	"/slug/:slug",
 	storymapContentControllers.getStorymapInfos,

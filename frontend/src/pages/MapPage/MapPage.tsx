@@ -71,7 +71,7 @@ const MapPage = () => {
 			}
 			return mapInfos;
 		},
-		[mapStore, setMapFilters],
+		[mapStore, setMapFilters, fetchAllPoints],
 	);
 
 	// chargement des données de la carte au montage du composant et réinitialisation des états

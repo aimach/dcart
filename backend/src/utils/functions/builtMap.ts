@@ -1,8 +1,8 @@
 // import des types
-import { Repository } from "typeorm";
+import type { Repository } from "typeorm";
 import type { AttestationType, SourceType } from "../types/mapTypes";
-import { MapContent } from "../../entities/builtMap/MapContent";
-import { Storymap } from "../../entities/storymap/Storymap";
+import type { MapContent } from "../../entities/builtMap/MapContent";
+import type { Storymap } from "../../entities/storymap/Storymap";
 
 /**
  * Fonction pour trier les sources par date (post quem puis ante quem)

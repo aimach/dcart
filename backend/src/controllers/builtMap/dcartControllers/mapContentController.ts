@@ -1,17 +1,16 @@
+// import des bibliothèques
+import { In } from "typeorm";
 // import des entités
 import { MapContent } from "../../../entities/builtMap/MapContent";
 import { Tag } from "../../../entities/common/Tag";
-import { Storymap } from "../../../entities/storymap/Storymap";
 import { User } from "../../../entities/auth/User";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
+import { generateUniqueSlug } from "../../../utils/functions/builtMap";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
-import { In } from "typeorm";
-import { generateUniqueSlug, slugify } from "../../../utils/functions/builtMap";
-import { datationController } from "../mapControllers/datationController";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";

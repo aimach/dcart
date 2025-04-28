@@ -106,25 +106,6 @@ const BuiltElementFilterForm = () => {
 					/>
 				</div>
 			</div>
-			{/* <div className={style.commonFormInputContainer}>
-				<div className={style.labelContainer}>
-					<label htmlFor="automatic">Automatique</label>
-					<p>
-						Le filtre "Elements" se présentera sous la forme de checkboxs à 2
-						niveaux : un premier niveau avec les théonymes et un second avec les
-						épithètes.
-					</p>
-				</div>
-				<div className={style.inputContainer}>
-					<input
-						id="automatic"
-						name="element"
-						type="radio"
-						onChange={(event) => handleRadioChange(event)}
-						checked={selectedOption === "automatic"}
-					/>
-				</div>
-			</div> */}
 			<div className={style.commonFormInputContainer}>
 				<LabelComponent
 					htmlFor="manual"

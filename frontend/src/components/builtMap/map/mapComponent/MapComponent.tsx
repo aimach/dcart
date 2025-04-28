@@ -6,6 +6,7 @@ import {
 	ScaleControl,
 	ZoomControl,
 } from "react-leaflet";
+import { Link, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
@@ -37,7 +38,6 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
-import { Link, useParams } from "react-router";
 
 /**
  * Composant de la carte
