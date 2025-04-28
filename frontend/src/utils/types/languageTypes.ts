@@ -13,6 +13,7 @@ type LanguageObject = {
 		back: string;
 		explore: string;
 		discover: string;
+		users: string;
 	};
 	alert: {
 		maxReached: string;
@@ -74,6 +75,8 @@ type LanguageObject = {
 		deleteBlockText: string;
 		deteleStorymapText: string;
 		deteleMapText: string;
+		deleteUserText: string;
+		modifyUserStatusText: string;
 		associatedStorymap: string;
 		associatedMap: string;
 	};
@@ -258,6 +261,17 @@ type LanguageObject = {
 				addStep: string;
 				modifyStep: string;
 			};
+		};
+		userManagement: {
+			title: string;
+			username: string;
+			pseudo: string;
+			status: string;
+			links: string;
+			toAuthor: string;
+			toAdmin: string;
+			admin: string;
+			writer: string;
 		};
 	};
 };

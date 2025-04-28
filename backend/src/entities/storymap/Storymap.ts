@@ -61,14 +61,22 @@ export class Storymap extends BaseEntity {
 	@ManyToOne(
 		() => User,
 		(user) => user.createdStorymaps,
+		{
+			onDelete: "SET NULL",
+			nullable: true,
+		},
 	)
-	creator!: User;
+	creator?: User | null;
 
 	@ManyToOne(
 		() => User,
 		(user) => user.updatedStorymaps,
+		{
+			onDelete: "SET NULL",
+			nullable: true,
+		},
 	)
-	modifier!: User;
+	modifier?: User | null;
 
 	@OneToMany(
 		() => Block,

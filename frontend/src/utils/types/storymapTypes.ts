@@ -16,10 +16,10 @@ type StorymapType = {
 	createdAt: string;
 	updatedAt: string;
 	uploadPointsLastDate: string;
-	creator: {
+	creator?: {
 		pseudo: string;
 	};
-	modifier: {
+	modifier?: {
 		pseudo: string;
 	};
 	blocks?: BlockContentType[];

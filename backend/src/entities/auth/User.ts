@@ -15,7 +15,7 @@ export class User extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
 	id!: string;
 
-	@Column({ type: "varchar", length: 255, nullable: false })
+	@Column({ type: "varchar", length: 255, nullable: false, unique: true })
 	pseudo!: string;
 
 	@Column({ type: "varchar", length: 255, nullable: false })
@@ -34,24 +34,36 @@ export class User extends BaseEntity {
 	@OneToMany(
 		() => MapContent,
 		(mapContent) => mapContent.creator,
+		{
+			onDelete: "SET NULL",
+		},
 	)
 	createdMaps!: MapContent[];
 
 	@OneToMany(
 		() => MapContent,
 		(mapContent) => mapContent.modifier,
+		{
+			onDelete: "SET NULL",
+		},
 	)
 	updatedMaps!: MapContent[];
 
 	@OneToMany(
 		() => Storymap,
 		(storymap) => storymap.creator,
+		{
+			onDelete: "SET NULL",
+		},
 	)
 	createdStorymaps!: Storymap[];
 
 	@OneToMany(
 		() => Storymap,
 		(storymap) => storymap.modifier,
+		{
+			onDelete: "SET NULL",
+		},
 	)
 	updatedStorymaps!: Storymap[];
 }

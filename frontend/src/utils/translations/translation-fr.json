@@ -10,7 +10,8 @@
 		"translation": "TRADUCTION",
 		"back": "RETOUR",
 		"discover": "DECOUVRIR",
-		"explore": "EXPLORER"
+		"explore": "EXPLORER",
+		"users": "UTILISATEURS"
 	},
 	"alert": {
 		"maxReached": "Nombre maximum de filtres atteint"
@@ -72,6 +73,8 @@
 		"deleteBlockText": "Êtes-vous sûr de vouloir supprimer ce bloc ?",
 		"deteleStorymapText": "Êtes-vous sûr de vouloir supprimer cette storymap ?",
 		"deteleMapText": "Êtes-vous sûr de vouloir supprimer cette carte ?",
+		"deleteUserText": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible !",
+		"modifyUserStatusText": "Êtes-vous sûr de vouloir modifier le statut de cet utilisateur ?",
 		"associatedStorymap": "Voir la storymap associée",
 		"associatedMap": "Voir la carte associée"
 	},
@@ -291,6 +294,17 @@
 				"addStep": "Ajouter cette étape",
 				"modifyStep": "Modifier cette étape"
 			}
+		},
+		"userManagement": {
+			"title": "Gestion des utilisateurs",
+			"username": "Nom d'utilisateur",
+			"pseudo": "Pseudo",
+			"status": "Statut",
+			"links": "Liens rapides",
+			"toAuthor": "Devenir auteur",
+			"toAdmin": "Devenir administrateur",
+			"admin": "Administrateur",
+			"writer": "Auteur"
 		}
 	}
 }

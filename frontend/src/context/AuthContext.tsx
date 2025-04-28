@@ -9,13 +9,17 @@ type AuthContextType = {
 	setToken: React.Dispatch<React.SetStateAction<string | null>>;
 	isAdmin: boolean;
 	setIsAdmin: React.Dispatch<React.SetStateAction<boolean>>;
+	userId: null | string;
+	setUserId: React.Dispatch<React.SetStateAction<string | null>>;
 };
 
 export const AuthContext = createContext<AuthContextType>({
 	token: null,
-	setToken: () => { },
+	setToken: () => {},
 	isAdmin: false,
-	setIsAdmin: () => { },
+	setIsAdmin: () => {},
+	userId: null,
+	setUserId: () => {},
 });
 
 export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
@@ -23,6 +27,7 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 }) => {
 	const [token, setToken] = useState<string | null>(null);
 	const [isAdmin, setIsAdmin] = useState<boolean>(false);
+	const [userId, setUserId] = useState<string | null>(null);
 
 	useEffect(() => {
 		const fetchProfile = async () => {
@@ -81,9 +86,10 @@ export const AuthProvider: React.FC<{ children: React.ReactNode }> = ({
 		};
 	}, [token]);
 
-
 	return (
-		<AuthContext.Provider value={{ token, setToken, isAdmin, setIsAdmin }}>
+		<AuthContext.Provider
+			value={{ token, setToken, isAdmin, setIsAdmin, userId, setUserId }}
+		>
 			{children}
 		</AuthContext.Provider>
 	);

@@ -72,14 +72,22 @@ export class MapContent extends BaseEntity {
 	@ManyToOne(
 		() => User,
 		(user) => user.createdMaps,
+		{
+			onDelete: "SET NULL",
+			nullable: true,
+		},
 	)
-	creator!: User;
+	creator?: User | null;
 
 	@ManyToOne(
 		() => User,
 		(user) => user.updatedMaps,
+		{
+			onDelete: "SET NULL",
+			nullable: true,
+		},
 	)
-	modifier!: User;
+	modifier?: User | null;
 
 	@ManyToMany(
 		() => Tag,
