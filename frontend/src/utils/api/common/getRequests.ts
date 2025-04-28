@@ -2,9 +2,7 @@
 import { apiClient } from "../apiClient";
 
 /**
- * Récupère toutes les attestations d'une source à partir de son id
- * @param {string} sourceId - L'id de la source
- * @returns {Promise} - Toutes les attestations de la source
+ * Récupère tous les profils des utilisateurs
  */
 const getAllUsers = async () => {
 	try {

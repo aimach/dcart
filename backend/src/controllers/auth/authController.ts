@@ -6,10 +6,10 @@ import { RefreshToken } from "../../entities/auth/RefreshToken";
 import { dcartDataSource } from "../../dataSource/dataSource";
 // import des services
 import { jwtService } from "../../utils/jwt";
+import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
-import { handleError } from "../../utils/errorHandler/errorHandler";
 
 export const authController = {
 	// cette route existe pour l'instant pour les besoins de développement mais sera supprimée lors de la mise en prod

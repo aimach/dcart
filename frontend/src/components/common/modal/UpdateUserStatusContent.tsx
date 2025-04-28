@@ -7,7 +7,7 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import style from "./modalComponent.module.scss";
 
 /**
- * Affiche le contenu du modal de modification d'un utilisateur : texte de validation et boutons de confirmation (oui/non)
+ * Affiche le contenu du modal de modification du statut d'un utilisateur : texte de validation et boutons de confirmation (oui/non)
  */
 const UpdateUserStatusContent = () => {
 	// récupération des données de traduction

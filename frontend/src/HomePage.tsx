@@ -1,7 +1,9 @@
 // import des bibliothèques
 import { useEffect, useRef, useState } from "react";
+import { Link } from "react-router";
 // import des composants
 import SwiperContainer from "./components/common/swiper/SwiperContainer";
+import ButtonComponent from "./components/common/button/ButtonComponent";
 // import des services
 import { getAllTagsWithMapsAndStorymaps } from "./utils/api/builtMap/getRequests";
 import { shuffleArray } from "./utils/functions/common";
@@ -11,9 +13,8 @@ import { useTranslation } from "./utils/hooks/useTranslation";
 import type { TagWithItemsType } from "./utils/types/commonTypes";
 // import du style
 import style from "./App.module.scss";
-import ButtonComponent from "./components/common/button/ButtonComponent";
+// import des icônes
 import { ChevronRight } from "lucide-react";
-import { Link } from "react-router";
 
 /**
  * Page d'accueil : titre, description et barre de navigation

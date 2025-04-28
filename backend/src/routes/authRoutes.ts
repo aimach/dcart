@@ -39,6 +39,7 @@ authRoutes.put(
 	dcartControllers.updateUserStatus,
 );
 
+// suppression d'un utilisateur
 authRoutes.delete(
 	"/users/:userId",
 	authenticateUser,

@@ -5,6 +5,7 @@ import { apiClient } from "../apiClient";
 /**
  * Fonction de suppression d'un utilisateurs
  * @param userId  - l'id de l'utilisateur à supprimer
+ * @returns {Promise} - Le statut de la requête
  */
 const deleteUser = async (userId: string) => {
 	try {
