@@ -1,39 +1,39 @@
 // import des custom hooks
+import { updateUserStatus } from "../../../utils/api/common/putRequests";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import du style
 import style from "./modalComponent.module.scss";
-import { deleteUser } from "../../../utils/api/common/deleteRequests";
 
 /**
- * Affiche le contenu du modal de suppression d'un utilisateur : texte de validation et boutons de confirmation (oui/non)
+ * Affiche le contenu du modal de modification d'un utilisateur : texte de validation et boutons de confirmation (oui/non)
  */
-const DeleteUserContent = () => {
+const UpdateUserStatusContent = () => {
 	// récupération des données de traduction
 	const { language, translation } = useTranslation();
 
 	// récupération des données des stores
-	const { closeDeleteModal, idToDelete, reload, setReload } = useModalStore();
+	const { closeUpdateModal, idToUpdate, reload, setReload } = useModalStore();
 
 	// fonction pour supprimer une storymap
-	const handleUserDelete = async (userId: string) => {
-		const responseStatus = await deleteUser(userId);
+	const handleUserUpdate = async (userId: string) => {
+		const responseStatus = await updateUserStatus(userId);
 		// attendre le retour de la requête pour fermer le modal et rafraîchir la liste
 		if (responseStatus === 200) {
-			closeDeleteModal();
+			closeUpdateModal();
 			setReload(!reload);
 		}
 	};
 
 	return (
 		<div className={style.modalCustomContentContainer}>
-			{translation[language].modal.deleteUserText}
+			{translation[language].modal.modifyUserStatusText}
 			<div className={style.buttonContainer}>
-				<button type="button" onClick={() => handleUserDelete(idToDelete)}>
+				<button type="button" onClick={() => handleUserUpdate(idToUpdate)}>
 					{translation[language].modal.yes}
 				</button>
-				<button type="button" onClick={() => closeDeleteModal()}>
+				<button type="button" onClick={() => closeUpdateModal()}>
 					{translation[language].modal.no}
 				</button>
 			</div>
@@ -41,4 +41,4 @@ const DeleteUserContent = () => {
 	);
 };
 
-export default DeleteUserContent;
+export default UpdateUserStatusContent;

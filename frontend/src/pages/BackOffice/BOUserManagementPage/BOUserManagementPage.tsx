@@ -14,6 +14,7 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import type { User } from "../../../utils/types/userTypes";
 // import des icônes
 import { Trash } from "lucide-react";
+import UpdateUserStatusContent from "../../../components/common/modal/UpdateUserStatusContent";
 
 const UserManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -28,6 +29,10 @@ const UserManagementPage = () => {
 		setIdToDelete,
 		closeDeleteModal,
 		isDeleteModalOpen,
+		openUpdateModal,
+		setIdToUpdate,
+		closeUpdateModal,
+		isUpdateModalOpen,
 		reload,
 	} = useModalStore();
 
@@ -53,11 +58,21 @@ const UserManagementPage = () => {
 		setIdToDelete(userId);
 	};
 
+	const handleStatusClick = (userId: string) => {
+		openUpdateModal();
+		setIdToUpdate(userId);
+	};
+
 	return users.length > 0 ? (
 		<section>
 			{isDeleteModalOpen && (
 				<ModalComponent onClose={() => closeDeleteModal()}>
 					<DeleteUserContent />
+				</ModalComponent>
+			)}
+			{isUpdateModalOpen && (
+				<ModalComponent onClose={() => closeUpdateModal()}>
+					<UpdateUserStatusContent />
 				</ModalComponent>
 			)}
 			<h4>Gestion des utilisateurs</h4>
@@ -78,10 +93,20 @@ const UserManagementPage = () => {
 							<td>{user.status}</td>
 							<td>
 								{userId !== user.id && (
-									<Trash
-										color="#9d2121"
-										onClick={() => handleDeleteClick(user.id as string)}
-									/>
+									<>
+										<button
+											type="button"
+											onClick={() => handleStatusClick(user.id as string)}
+										>
+											{user.status === "admin"
+												? "Passer en auteur"
+												: "Passer en admin"}
+										</button>
+										<Trash
+											color="#9d2121"
+											onClick={() => handleDeleteClick(user.id as string)}
+										/>
+									</>
 								)}
 							</td>
 						</tr>

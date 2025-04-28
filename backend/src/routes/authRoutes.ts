@@ -31,6 +31,14 @@ authRoutes.get(
 	dcartControllers.getProfile,
 );
 
+// modification du statut d'un utilisateur
+authRoutes.put(
+	"/users/:userId/status",
+	authenticateUser,
+	authenticateAdmin,
+	dcartControllers.updateUserStatus,
+);
+
 authRoutes.delete(
 	"/users/:userId",
 	authenticateUser,

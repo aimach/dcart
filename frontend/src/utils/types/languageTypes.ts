@@ -76,6 +76,7 @@ type LanguageObject = {
 		deteleStorymapText: string;
 		deteleMapText: string;
 		deleteUserText: string;
+		modifyUserStatusText: string;
 		associatedStorymap: string;
 		associatedMap: string;
 	};

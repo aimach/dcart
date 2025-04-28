@@ -173,6 +173,30 @@ export const authController = {
 		}
 	},
 
+	updateUserStatus: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { userId } = req.params;
+
+			// récupération de l'utilisateur
+			const user = await dcartDataSource.getRepository(User).findOneBy({
+				id: userId,
+			});
+
+			if (!user) {
+				res.status(404).json({ message: "Utilisateur non trouvé." });
+				return;
+			}
+
+			// mise à jour du statut de l'utilisateur
+			user.status = user.status === "admin" ? "writer" : "admin";
+			await dcartDataSource.getRepository(User).save(user);
+
+			res.status(200).json({ message: "Statut utilisateur mis à jour" });
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
 	deleteUser: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { userId } = req.params;

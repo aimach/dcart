@@ -74,6 +74,7 @@
 		"deteleStorymapText": "Êtes-vous sûr de vouloir supprimer cette storymap ?",
 		"deteleMapText": "Êtes-vous sûr de vouloir supprimer cette carte ?",
 		"deleteUserText": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible !",
+		"modifyUserStatusText": "Êtes-vous sûr de vouloir modifier le statut de cet utilisateur ?",
 		"associatedStorymap": "Voir la storymap associée",
 		"associatedMap": "Voir la carte associée"
 	},
