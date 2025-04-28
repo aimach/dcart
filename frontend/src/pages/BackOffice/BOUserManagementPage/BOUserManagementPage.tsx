@@ -6,6 +6,8 @@ import LoaderComponent from "../../../components/common/loader/LoaderComponent";
 import ModalComponent from "../../../components/common/modal/ModalComponent";
 import DeleteUserContent from "../../../components/common/modal/DeleteUserContent";
 import UpdateUserStatusContent from "../../../components/common/modal/UpdateUserStatusContent";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du context
 import { AuthContext } from "../../../context/AuthContext";
 // import des services
@@ -20,6 +22,8 @@ import { Trash } from "lucide-react";
 
 const UserManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
+
+	const { translation, language } = useTranslation();
 
 	const navigate = useNavigate();
 
@@ -77,15 +81,17 @@ const UserManagementPage = () => {
 					<UpdateUserStatusContent />
 				</ModalComponent>
 			)}
-			<h4>Gestion des utilisateurs</h4>
+			<h4>{translation[language].backoffice.userManagement.title}</h4>
 			<div className={style.userManagementTableContainer}>
 				<table className={style.managementTable}>
 					<thead>
 						<tr>
-							<th>Nom d'utilisateur</th>
-							<th>Pseudo</th>
-							<th>Rôle</th>
-							<th>Liens rapides</th>
+							<th>
+								{translation[language].backoffice.userManagement.username}
+							</th>
+							<th>{translation[language].backoffice.userManagement.pseudo}</th>
+							<th>{translation[language].backoffice.userManagement.status}</th>
+							<th>{translation[language].backoffice.userManagement.links}</th>
 						</tr>
 					</thead>
 					<tbody>
@@ -93,7 +99,9 @@ const UserManagementPage = () => {
 							<tr key={user.id} className={style.userTableRow}>
 								<td>{user.username}</td>
 								<td>{user.pseudo}</td>
-								<td>{user.status}</td>
+								<td>
+									{translation[language].backoffice.userManagement[user.status]}
+								</td>
 								<td>
 									{userId !== user.id && (
 										<>
@@ -102,8 +110,10 @@ const UserManagementPage = () => {
 												onClick={() => handleStatusClick(user.id as string)}
 											>
 												{user.status === "admin"
-													? "Passer en auteur"
-													: "Passer en admin"}
+													? translation[language].backoffice.userManagement
+															.toAuthor
+													: translation[language].backoffice.userManagement
+															.toAdmin}
 											</button>
 											<Trash
 												color="#9d2121"

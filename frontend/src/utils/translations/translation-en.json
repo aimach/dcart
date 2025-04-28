@@ -293,6 +293,17 @@
 				"addStep": "Add this step",
 				"modifyStep": "Modify this step"
 			}
+		},
+		"userManagement": {
+			"title": "Users management",
+			"username": "Username",
+			"pseudo": "Pseudo",
+			"status": "Status",
+			"links": "Actions",
+			"toAuthor": "Become writer",
+			"toAdmin": "Become admin",
+			"admin": "Admin",
+			"writer": "Writer"
 		}
 	}
 }

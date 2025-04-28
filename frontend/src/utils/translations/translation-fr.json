@@ -294,6 +294,17 @@
 				"addStep": "Ajouter cette étape",
 				"modifyStep": "Modifier cette étape"
 			}
+		},
+		"userManagement": {
+			"title": "Gestion des utilisateurs",
+			"username": "Nom d'utilisateur",
+			"pseudo": "Pseudo",
+			"status": "Statut",
+			"links": "Liens rapides",
+			"toAuthor": "Devenir auteur",
+			"toAdmin": "Devenir administrateur",
+			"admin": "Administrateur",
+			"writer": "Auteur"
 		}
 	}
 }

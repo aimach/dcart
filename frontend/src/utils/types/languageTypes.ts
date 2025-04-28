@@ -262,6 +262,17 @@ type LanguageObject = {
 				modifyStep: string;
 			};
 		};
+		userManagement: {
+			title: string;
+			username: string;
+			pseudo: string;
+			status: string;
+			links: string;
+			toAuthor: string;
+			toAdmin: string;
+			admin: string;
+			writer: string;
+		};
 	};
 };
 
