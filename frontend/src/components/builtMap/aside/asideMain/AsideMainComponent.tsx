@@ -111,7 +111,7 @@ const AsideMainComponent = () => {
 	// --- RECUPERATION DES OPTIONS NOMS D'AGENTS POUR LES FILTRES
 	const agentNameOptions = useMemo(() => {
 		const agentActivityFilter = mapInfos?.filterMapContent?.find(
-			(filter) => filter.filter.type === "agentActivity",
+			(filter) => filter.filter.type === "agentName",
 		);
 		if (agentActivityFilter) {
 			return getAllAgentNameFromPoints(allPoints, language);

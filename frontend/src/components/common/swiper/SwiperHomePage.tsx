@@ -35,7 +35,6 @@ const SwiperHomePage = ({ items }: SwiperHomePageProps) => {
 					: isMap
 						? mapPinBG
 						: bookOpenBG;
-				console.log(item);
 
 				return (
 					<SwiperSlide key={item.id} className={style.itemSwiperSlide}>
