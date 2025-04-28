@@ -58,14 +58,16 @@ function HomePage() {
 						tagWithItems.maps.concat(tagWithItems.storymaps),
 					);
 					return (
-						<div key={tagWithItems.id} className={style.tagItemContainer}>
-							<h3>
-								<Link to={`tag/${tagWithItems.id}`}>
-									{tagWithItems[`name_${language}`]} <ChevronRight />
-								</Link>
-							</h3>
-							<SwiperContainer items={items} />
-						</div>
+						items.length > 0 && (
+							<div key={tagWithItems.id} className={style.tagItemContainer}>
+								<h3>
+									<Link to={`tag/${tagWithItems.id}`}>
+										{tagWithItems[`name_${language}`]} <ChevronRight />
+									</Link>
+								</h3>
+								<SwiperContainer items={items} />
+							</div>
+						)
 					);
 				})}
 			</section>

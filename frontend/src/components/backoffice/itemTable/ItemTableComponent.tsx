@@ -157,8 +157,8 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 			</td>
 			<td>
 				{itemInfos.modifier
-					? itemInfos.modifier.pseudo
-					: itemInfos.creator.pseudo}
+					? (itemInfos.modifier?.pseudo ?? "utilisateur supprimé")
+					: (itemInfos.creator?.pseudo ?? "utilisateur supprimé")}
 			</td>
 			<td>
 				{isAdmin &&

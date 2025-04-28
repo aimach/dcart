@@ -23,8 +23,12 @@ export const tagController = {
 			const tagQuery = await dcartDataSource
 				.getRepository(Tag)
 				.createQueryBuilder("tag")
-				.leftJoinAndSelect("tag.maps", "map")
-				.leftJoinAndSelect("tag.storymaps", "storymap")
+				.leftJoinAndSelect("tag.maps", "map", "map.isActive = true")
+				.leftJoinAndSelect(
+					"tag.storymaps",
+					"storymap",
+					"storymap.isActive = true",
+				)
 				.leftJoinAndSelect("map.tags", "mapTag")
 				.leftJoinAndSelect("storymap.tags", "storymapTag")
 				.select([
@@ -49,9 +53,7 @@ export const tagController = {
 					"storymap.image_url",
 					"storymap.slug",
 					"storymapTag",
-				])
-				.where("map.isActive = true")
-				.andWhere("storymap.isActive = true");
+				]);
 
 			if (tagId === "items") {
 				results = await tagQuery.getMany();

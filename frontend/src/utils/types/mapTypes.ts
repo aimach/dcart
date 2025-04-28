@@ -104,10 +104,10 @@ type MapType = {
 		filter: { type: string };
 	}[];
 	category: TagType;
-	creator: {
+	creator?: {
 		pseudo: string;
 	};
-	modifier: {
+	modifier?: {
 		pseudo: string;
 	};
 	image_url?: string;

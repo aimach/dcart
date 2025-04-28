@@ -163,7 +163,7 @@ const getCreationAndModificationString = (
 	);
 
 	let string = `${translation[language].common.createdOn} ${creationDate} ${translation[language].common.by} ${
-		itemInfos.creator.pseudo
+		itemInfos.creator?.pseudo ?? ""
 	}`;
 
 	if (itemInfos.modifier) {
