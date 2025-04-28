@@ -10,7 +10,7 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import PointSetUploadForm from "../pointSetUploadForm/PointSetUploadForm";
-import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
+import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
 import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
 import {
@@ -66,7 +66,9 @@ const UploadForm = () => {
 			const newPointSet = await createPointSet(pointSet as PointSetType);
 			if (newPointSet?.status === 201) {
 				setIsAlreadyAPointSet(true);
-				const mapWithPointSet = await getOneMapInfos(mapInfos?.id as string);
+				const mapWithPointSet = await getOneMapInfosById(
+					mapInfos?.id as string,
+				);
 				setMapInfos(mapWithPointSet);
 				notifyCreateSuccess("Jeu de points", false);
 			}
@@ -74,7 +76,9 @@ const UploadForm = () => {
 		if (action === "edit") {
 			const newPointSet = await updatePointSet(pointSet as PointSetType);
 			if (newPointSet?.status === 200) {
-				const mapWithPointSet = await getOneMapInfos(mapInfos?.id as string);
+				const mapWithPointSet = await getOneMapInfosById(
+					mapInfos?.id as string,
+				);
 				setMapInfos(mapWithPointSet);
 				notifyEditSuccess("Jeu de points", false);
 			}
@@ -94,7 +98,7 @@ const UploadForm = () => {
 
 	const handleDeletePointSet = async (pointSetId: string) => {
 		await deletePointSet(pointSetId as string);
-		const newMapInfos = await getOneMapInfos(mapInfos?.id as string);
+		const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
 		setMapInfos(newMapInfos);
 		notifyDeleteSuccess("Jeu de points", false);
 	};

@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useState, useEffect, useCallback } from "react";
+import { useEffect, useCallback } from "react";
 import { useParams } from "react-router";
 // import des composants
 import MapComponent from "../../components/builtMap/map/mapComponent/MapComponent";
@@ -8,7 +8,8 @@ import AsideReducedMenuComponent from "../../components/builtMap/aside/asideRedu
 // import des services
 import {
 	getAllPointsByMapId,
-	getOneMapInfos,
+	getOneMapInfosById,
+	getOneMapInfosBySlug,
 } from "../../utils/api/builtMap/getRequests";
 import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../utils/stores/builtMap/mapStore";
@@ -24,42 +25,35 @@ import style from "./mapPage.module.scss";
  */
 const MapPage = () => {
 	// récupération des paramètres de l'URL : l'id de la carte en cours
-	const { mapSlug } = useParams();
+	const { mapSlug, mapId } = useParams();
 
 	// récupération des données des stores
 	const { setMapFilters, isPanelDisplayed, setIsPanelDisplayed } =
 		useMapAsideMenuStore();
-	const mapStore = useMapStore(
-		useShallow((state) => ({
-			mapInfos: state.mapInfos,
-			setMapInfos: state.setMapInfos,
-			allPoints: state.allPoints,
-			setAllPoints: state.setAllPoints,
-			setAllResults: state.setAllResults,
-			allLayers: state.allLayers,
-			setAllLayers: state.setAllLayers,
-			setIncludedElementId: state.setIncludedElementId,
-			mapReady: state.mapReady,
-			setMapReady: state.setMapReady,
-			resetTileLayerURL: state.resetTileLayerURL,
-		})),
-	);
+	const mapStore = useMapStore(useShallow((state) => state));
 
 	// fonction pour récupérer les points de la carte en cours
-	const fetchAllPoints = useCallback(async () => {
-		const points = await getAllPointsByMapId(mapSlug as string, null);
-		mapStore.setAllPoints(points);
-		mapStore.setAllResults(points);
-		mapStore.setMapReady(true);
-	}, [mapSlug, mapStore]);
+	const fetchAllPoints = useCallback(
+		async (mapId: string) => {
+			const points = await getAllPointsByMapId(mapId as string, null);
+			mapStore.setAllPoints(points);
+			mapStore.setAllResults(points);
+			mapStore.setMapReady(true);
+		},
+		[mapStore],
+	);
 
 	// fonction pour récupérer les informations de la carte
-	const fetchMapInfos = useCallback(
-		async (mapSlug: string) => {
-			if (!mapSlug) return;
-			const mapInfos = await getOneMapInfos(mapSlug as string);
+	const fetchMapInfosAndPoints = useCallback(
+		async (mapIdentifier: string, type: string) => {
+			let mapInfos = null;
+			if (type === "id") {
+				mapInfos = await getOneMapInfosById(mapIdentifier as string);
+			} else {
+				mapInfos = await getOneMapInfosBySlug(mapIdentifier as string);
+			}
 			// si la carte est une carte d'exploration, on réinitialise les filtres
-			if (mapInfos === "exploration") {
+			if (mapIdentifier === "exploration") {
 				mapStore.setIncludedElementId(undefined);
 				mapStore.setMapInfos(null);
 				setMapFilters([]);
@@ -73,7 +67,9 @@ const MapPage = () => {
 					),
 				);
 				setMapFilters(mapInfos.filterMapContent);
+				fetchAllPoints(mapInfos.id);
 			}
+			return mapInfos;
 		},
 		[mapStore, setMapFilters],
 	);
@@ -81,14 +77,15 @@ const MapPage = () => {
 	// chargement des données de la carte au montage du composant et réinitialisation des états
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		// chargement des données
-		fetchMapInfos(mapSlug as string);
-		fetchAllPoints();
+		fetchMapInfosAndPoints(
+			mapSlug ?? (mapId as string),
+			mapSlug ? "slug" : "id",
+		);
 		// réinitialisation des états si l'utilisateur vient d'une autre carte
 		mapStore.setMapReady(false);
 		mapStore.resetTileLayerURL();
 		setIsPanelDisplayed(false);
-	}, [mapSlug]);
+	}, [mapSlug, mapId]);
 
 	return (
 		<section className={style.mapSection}>

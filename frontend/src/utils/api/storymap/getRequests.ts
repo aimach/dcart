@@ -8,9 +8,28 @@ import type { BlockContentType } from "../../types/storymapTypes";
  * @param {string} storymapId - l'id de la storymap
  * @returns - les informations de la storymap
  */
-const getStorymapInfosAndBlocks = async (storymapId: string) => {
+const getStorymapInfosAndBlocksBySlug = async (storymapSlug: string) => {
 	try {
-		const response = await apiClient.get(`/storymap/storymap/${storymapId}`);
+		const response = await apiClient.get(
+			`/storymap/storymap/slug/${storymapSlug}`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Erreur lors du chargement des données de la storymap (infos et blocks) :",
+			error,
+		);
+	}
+};
+
+/**
+ * Fonction pour récupérer toutes les informations de la storymap (infos et blocks)
+ * @param {string} storymapId - l'id de la storymap
+ * @returns - les informations de la storymap
+ */
+const getStorymapInfosAndBlocksById = async (storymapId: string) => {
+	try {
+		const response = await apiClient.get(`/storymap/storymap/id/${storymapId}`);
 		return response.data;
 	} catch (error) {
 		console.error(
@@ -136,7 +155,8 @@ const getAllStorymapLanguages = async () => {
 };
 
 export {
-	getStorymapInfosAndBlocks,
+	getStorymapInfosAndBlocksById,
+	getStorymapInfosAndBlocksBySlug,
 	getAllStorymapTags,
 	getAllBlockTypes,
 	updateBlocksPosition,

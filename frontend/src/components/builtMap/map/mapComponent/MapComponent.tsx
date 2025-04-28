@@ -28,7 +28,8 @@ import { useShallow } from "zustand/shallow";
 import { getPointsTimeMarkers } from "../../../../utils/functions/filter";
 import {
 	getAllPointsByMapId,
-	getOneMapInfos,
+	getOneMapInfosById,
+	getOneMapInfosBySlug,
 } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { LatLngTuple } from "leaflet";
@@ -46,7 +47,7 @@ const MapComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	const { mapSlug } = useParams();
+	const { mapSlug, mapId } = useParams();
 
 	// récupération des données du store
 	const {
@@ -170,8 +171,13 @@ const MapComponent = () => {
 		tutorialStep === 2 ? "built-map shadowed" : "built-map";
 
 	const fetchMapInfos = async () => {
-		const allMapInfos = await getOneMapInfos(mapSlug as string);
-		setMapInfos(allMapInfos);
+		if (mapSlug) {
+			const allMapInfos = await getOneMapInfosBySlug(mapSlug as string);
+			setMapInfos(allMapInfos);
+		} else {
+			const allMapInfos = await getOneMapInfosById(mapId as string);
+			setMapInfos(allMapInfos);
+		}
 	};
 
 	return (
@@ -234,7 +240,7 @@ const MapComponent = () => {
 								}}
 							>
 								<Link
-									to={`/backoffice/maps/edit/${mapInfos?.id}`}
+									to={`/backoffice/maps/edit/${mapId}`}
 									state={{ from: location.pathname }}
 								>
 									<ButtonComponent

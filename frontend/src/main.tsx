@@ -45,7 +45,7 @@ if (rootElement) {
 										<Route path="map/:mapSlug" element={<MapPage />} />
 
 										<Route
-											path="storymap/:storymapId"
+											path="storymap/:storymapSlug"
 											element={<StorymapPage />}
 										/>
 									</Route>

@@ -25,10 +25,13 @@ declare global {
 }
 
 export const storymapContentControllers = {
-	// récupère une storymap par son id
-	getStorymapById: async (req: Request, res: Response): Promise<void> => {
+	// récupère une storymap par son id ou son slug
+	getStorymapInfos: async (req: Request, res: Response): Promise<void> => {
 		try {
-			if (req.params.id === "all") {
+			const { id, slug } = req.params;
+			const identifier = id ?? slug;
+
+			if (identifier === "all") {
 				const query = await dcartDataSource
 					.getRepository(Storymap)
 					.createQueryBuilder("storymap")
@@ -68,6 +71,11 @@ export const storymapContentControllers = {
 				res.status(200).send(allStorymaps);
 				return;
 			}
+			const whereQuery = id
+				? "storymap.id = :identifier"
+				: "storymap.slug = :identifier";
+			const whereParams = id ? { identifier: id } : { identifier: slug };
+
 			const storymapInfos = await dcartDataSource
 				.getRepository(Storymap)
 				.createQueryBuilder("storymap")
@@ -100,7 +108,7 @@ export const storymapContentControllers = {
 					"lang1",
 					"lang2",
 				])
-				.where("storymap.id = :id", { id: req.params.id })
+				.where(whereQuery, whereParams)
 				.orderBy("block.position", "ASC")
 				.getOne();
 

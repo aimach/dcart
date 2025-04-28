@@ -14,8 +14,11 @@ import {
 
 export const mapRoutes = express.Router();
 
-// récupérer les données de toutes les cartes ou d'une carte en particulier
-mapRoutes.get("/:mapId", dcartControllers.getMapContent);
+// récupérer les données de toutes les cartes ou d'une carte en particulier par son id
+mapRoutes.get("/id/:mapId", dcartControllers.getMapContent);
+
+// récupérer les données de toutes les cartes ou d'une carte en particulier par son slug
+mapRoutes.get("/slug/:mapSlug", dcartControllers.getMapContent);
 
 // créer une nouvelle carte
 mapRoutes.post(

@@ -5,7 +5,7 @@ import DOMPurify from "dompurify";
 import { SessionContext } from "../../../context/SessionContext";
 // import des services
 import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
-import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
+import { getOneMapInfosById } from "../../../utils/api/builtMap/getRequests";
 import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
 import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
 import { getCreationAndModificationString } from "../../../utils/functions/map";
@@ -63,7 +63,7 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 	const handleModifyClick = async (idToModify: string) => {
 		if (type === "map") {
 			// mise à jour des informations de la carte dans le store
-			const allMapInfos = await getOneMapInfos(idToModify);
+			const allMapInfos = await getOneMapInfosById(idToModify);
 			setMapInfos(allMapInfos);
 			if (allMapInfos) {
 				navigate(`/backoffice/maps/edit/${idToModify}`);

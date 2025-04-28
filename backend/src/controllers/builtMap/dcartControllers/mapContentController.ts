@@ -28,12 +28,13 @@ declare global {
 }
 
 export const mapContentController = {
-	// récupérer les données de toutes les cartes ou d'une carte en particulier
+	// récupérer les données de toutes les cartes ou d'une carte en particulier par son id ou son slug
 	getMapContent: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { mapId } = req.params;
+			const { mapId, mapSlug } = req.params;
+			const identifier = mapId ?? mapSlug;
 
-			if (mapId === "all") {
+			if (identifier === "all") {
 				const query = await dcartDataSource
 					.getRepository(MapContent)
 					.createQueryBuilder("map")
@@ -67,6 +68,13 @@ export const mapContentController = {
 				return;
 			}
 
+			const whereQuery = mapId
+				? "map.id = :identifier"
+				: "map.slug = :identifier";
+			const whereParams = mapId
+				? { identifier: mapId }
+				: { identifier: mapSlug };
+
 			const mapInfos = await dcartDataSource
 				.getRepository(MapContent)
 				.createQueryBuilder("map")
@@ -85,14 +93,14 @@ export const mapContentController = {
 					"icon",
 					"color",
 				])
-				.where("map.id = :mapId", { mapId })
+				.where(whereQuery, whereParams)
 				.getOne();
 
 			if (!mapInfos) {
 				res.status(404).send({ Erreur: "Carte non trouvée" });
-			} else {
-				res.status(200).send(mapInfos);
+				return;
 			}
+			res.status(200).send(mapInfos);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

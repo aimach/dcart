@@ -5,7 +5,7 @@ import { useDroppable } from "@dnd-kit/core";
 // import des composants
 import MemoDraggableBlock from "./DraggableBlock";
 // import des services
-import { getStorymapInfosAndBlocks } from "../../../utils/api/storymap/getRequests";
+import { getStorymapInfosAndBlocksById } from "../../../utils/api/storymap/getRequests";
 import { useBuilderStore } from "../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
 // import des types
@@ -36,7 +36,9 @@ const PanelSection = ({ blockList, setBlockList }: PanelSectionProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const fetchStorymapInfos = async () => {
-			const response = await getStorymapInfosAndBlocks(storymapId as string);
+			const response = await getStorymapInfosAndBlocksById(
+				storymapId as string,
+			);
 			setStorymapInfos(response);
 
 			setBlockList(response.blocks);

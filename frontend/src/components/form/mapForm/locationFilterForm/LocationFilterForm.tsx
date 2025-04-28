@@ -7,7 +7,7 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putRequests";
-import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
+import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 // import du style
 import style from "../introForm/introForm.module.scss";
 
@@ -43,7 +43,7 @@ const LocationFilterForm = () => {
 			"location",
 			JSON.stringify({ solution: event.target.id }),
 		);
-		const newMap = await getOneMapInfos(mapInfos?.id as string);
+		const newMap = await getOneMapInfosById(mapInfos?.id as string);
 		setMapInfos(newMap);
 	};
 

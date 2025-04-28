@@ -11,7 +11,7 @@ import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore"
 import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putRequests";
 import {
 	getAllPointsForDemoMap,
-	getOneMapInfos,
+	getOneMapInfosById,
 } from "../../../../utils/api/builtMap/getRequests";
 import { fetchElementOptions } from "../../../../utils/functions/filter";
 // import des types
@@ -75,7 +75,7 @@ const BuiltElementFilterForm = () => {
 			"element",
 			JSON.stringify({ solution: event.target.id }),
 		);
-		const newMap = await getOneMapInfos(mapInfos?.id as string);
+		const newMap = await getOneMapInfosById(mapInfos?.id as string);
 		setMapInfos(newMap);
 	};
 
