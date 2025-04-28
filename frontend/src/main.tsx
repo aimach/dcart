@@ -13,18 +13,18 @@ import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.ts
 import BackofficeStorymapPage from "./pages/BackOffice/BOStorymapPage/BackofficeStorymapPage.tsx";
 import BackofficeTranslationPage from "./pages/BackOffice/BOTranslationPage/BackofficeTranslationPage.tsx";
 import BOMapFormPage from "./pages/BackOffice/BOMapFormPage.tsx/BOMapFormPage.tsx";
+import HomePage from "./HomePage.tsx";
+import TagPage from "./pages/TagPage/TagPage.tsx";
+import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
+import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
 import { IconOptionsProvider } from "./context/IconOptionsContext.tsx";
 import { TagOptionsProvider } from "./context/TagContext.tsx";
+import { SessionProvider } from "./context/SessionContext.tsx";
 // import du style
 import "./index.css";
-import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
-import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
-import { SessionProvider } from "./context/SessionContext.tsx";
-import HomePage from "./HomePage.tsx";
-import TagPage from "./pages/TagPage/TagPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -42,10 +42,10 @@ if (rootElement) {
 										<Route path="tag/:tagId">
 											<Route index element={<TagPage />} />
 										</Route>
-										<Route path="map/:mapId" element={<MapPage />} />
+										<Route path="map/:mapSlug" element={<MapPage />} />
 
 										<Route
-											path="storymap/:storymapId"
+											path="storymap/:storymapSlug"
 											element={<StorymapPage />}
 										/>
 									</Route>

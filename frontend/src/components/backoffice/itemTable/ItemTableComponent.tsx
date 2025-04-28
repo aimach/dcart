@@ -15,7 +15,7 @@ import { createSession, getSessionById } from "../../../utils/api/sessionAPI";
 import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
 import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
-import { getOneMapInfos } from "../../../utils/api/builtMap/getRequests";
+import { getOneMapInfosById } from "../../../utils/api/builtMap/getRequests";
 import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
 import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
 // import des types
@@ -77,7 +77,7 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 	const handleModifyClick = async (idToModify: string) => {
 		if (type === "map") {
 			// mise à jour des informations de la carte dans le store
-			const allMapInfos = await getOneMapInfos(idToModify);
+			const allMapInfos = await getOneMapInfosById(idToModify);
 			setMapInfos(allMapInfos);
 			if (allMapInfos) {
 				navigate(`/backoffice/maps/edit/${idToModify}`);

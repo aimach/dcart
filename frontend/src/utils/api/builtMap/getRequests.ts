@@ -96,7 +96,7 @@ const getAllGreatRegions = async () => {
  */
 const getAllMapsInfos = async (isActive: boolean) => {
 	try {
-		let url = "/dcart/maps/all";
+		let url = "/dcart/maps/id/all";
 		if (isActive) url += "?isActive=true";
 		const response = await apiClient.get(url);
 		return response.data;
@@ -134,22 +134,6 @@ const getAllPointsByMapId = async (
 ) => {
 	const body = params ?? {};
 	try {
-		// if (params !== null) {
-		// 	for (const [key, value] of Object.entries(params)) {
-		// 		if (key === "lotIds" && value !== undefined) {
-		// 			if (Array.isArray(value) && Array.isArray(value[0])) {
-		// 				const lotIds = value
-		// 					.map((lot: string[]) => JSON.stringify(lot))
-		// 					.join("|");
-		// 				queryArray.push(`lotIds=${lotIds}`);
-		// 			}
-		// 		} else if (value !== undefined) {
-		// 			queryArray.push(`${key}=${value}`);
-		// 		}
-		// 	}
-
-		// 	query = queryArray.length ? `?${queryArray.join("&")}` : "";
-		// }
 		const response = await apiClient.post(
 			`/map/sources/map/${id}`,
 			JSON.stringify(body),
@@ -214,10 +198,31 @@ const getAllStorymapsInfos = async () => {
  * @param {string} mapId - L'id de la carte
  * @returns {Promise | string} - Les informations de la carte ou une string "exploration"
  */
-const getOneMapInfos = async (mapId: string) => {
+const getOneMapInfosById = async (mapId: string) => {
 	try {
 		if (mapId !== "exploration") {
-			const response = await apiClient.get(`/dcart/maps/${mapId}`);
+			const response = await apiClient.get(`/dcart/maps/id/${mapId}`);
+			const mapInfos = await response.data;
+			return mapInfos;
+		}
+		return "exploration";
+	} catch (error) {
+		console.error(
+			"Erreur lors du chargement des informations de la carte :",
+			error,
+		);
+	}
+};
+
+/**
+ * Récupère toutes les informations d'une carte à partir de son slug
+ * @param {string} mapSlug - Le slug de la carte
+ * @returns {Promise | string} - Les informations de la carte ou une string "exploration"
+ */
+const getOneMapInfosBySlug = async (mapSlug: string) => {
+	try {
+		if (mapSlug !== "exploration") {
+			const response = await apiClient.get(`/dcart/maps/slug/${mapSlug}`);
 			const mapInfos = await response.data;
 			return mapInfos;
 		}
@@ -311,7 +316,8 @@ export {
 	getAllPointsByMapId,
 	getAllPointsForDemoMap,
 	getAllStorymapsInfos,
-	getOneMapInfos,
+	getOneMapInfosById,
+	getOneMapInfosBySlug,
 	getTimeMarkers,
 	getUserFilters,
 	getAllIcons,

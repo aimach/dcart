@@ -4,7 +4,6 @@ import { useNavigate, useParams } from "react-router";
 import Select from "react-select";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
-import LabelComponent from "../../inputComponent/LabelComponent";
 // import du contexte
 import { TagOptionsContext } from "../../../../context/TagContext";
 // import des custom hooks
@@ -12,7 +11,7 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import {
 	getAllStorymapLanguages,
-	getStorymapInfosAndBlocks,
+	getStorymapInfosAndBlocksById,
 } from "../../../../utils/api/storymap/getRequests";
 import { storymapInputs } from "../../../../utils/forms/storymapInputArray";
 import {
@@ -76,7 +75,9 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	useEffect(() => {
 		const fetchStorymapInfos = async (storymapId: string) => {
 			setIsLoaded(false);
-			const response = await getStorymapInfosAndBlocks(storymapId as string);
+			const response = await getStorymapInfosAndBlocksById(
+				storymapId as string,
+			);
 			setStorymapInfos({ ...response });
 			setIsLoaded(true);
 		};

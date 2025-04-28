@@ -36,6 +36,9 @@ export class Storymap extends BaseEntity {
 	@Column({ type: "text", nullable: true })
 	image_url!: string | null;
 
+	@Column({ type: "text", nullable: true })
+	slug!: string | null;
+
 	@Column({ type: "varchar", length: 255, nullable: true })
 	author!: string | null;
 

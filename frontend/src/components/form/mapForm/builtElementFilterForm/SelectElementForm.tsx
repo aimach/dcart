@@ -8,7 +8,7 @@ import LabelComponent from "../../inputComponent/LabelComponent";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putRequests";
-import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
+import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { LotType } from "../../../../utils/types/filterTypes";
@@ -55,7 +55,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 			"element",
 			JSON.stringify(body),
 		);
-		const newMap = await getOneMapInfos(mapInfos?.id as string);
+		const newMap = await getOneMapInfosById(mapInfos?.id as string);
 		setMapInfos(newMap);
 		const newFilters = newMap.filterMapContent?.find(
 			(filter) => filter.filter.type === "element",
@@ -88,7 +88,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 			"element",
 			JSON.stringify(body),
 		);
-		const newMap = await getOneMapInfos(mapInfos?.id as string);
+		const newMap = await getOneMapInfosById(mapInfos?.id as string);
 		setMapInfos(newMap);
 		setCheckboxArray(
 			newLots.filter((lot) => lot.firstLevelIds && lot.secondLevelIds),

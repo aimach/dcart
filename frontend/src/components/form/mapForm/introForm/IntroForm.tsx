@@ -18,7 +18,7 @@ import { useShallow } from "zustand/shallow";
 import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
 import { updateMap } from "../../../../utils/api/builtMap/putRequests";
 import { notifyCreateSuccess } from "../../../../utils/functions/toast";
-import { getOneMapInfos } from "../../../../utils/api/builtMap/getRequests";
+import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { FieldErrors, SubmitHandler } from "react-hook-form";
 import type { InputType } from "../../../../utils/types/formTypes";
@@ -97,7 +97,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 
 	useEffect(() => {
 		const fetchMapInfos = async () => {
-			const allMapInfos = await getOneMapInfos(mapId as string);
+			const allMapInfos = await getOneMapInfosById(mapId as string);
 			setMapInfos(allMapInfos);
 		};
 		if (state?.from.includes("/maps/preview/")) {

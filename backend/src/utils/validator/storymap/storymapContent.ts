@@ -42,6 +42,7 @@ const storymapToEditSchema = Joi.object({
 	description_lang1: Joi.string().optional().allow(null),
 	description_lang2: Joi.string().optional().allow(null),
 	image_url: Joi.string().optional().allow(null),
+	slug: Joi.string().optional().allow(null),
 	author: Joi.string().max(255).optional().allow(null),
 	publishedAt: Joi.string().optional().allow(null),
 	tags: Joi.string().required(),

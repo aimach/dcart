@@ -15,7 +15,16 @@ import {
 export const storymapContentRoutes = express.Router();
 
 // récupère une storymap par son id
-storymapContentRoutes.get("/:id", storymapContentControllers.getStorymapById);
+storymapContentRoutes.get(
+	"/id/:id",
+	storymapContentControllers.getStorymapInfos,
+);
+
+// récupère une storymap par son slug
+storymapContentRoutes.get(
+	"/slug/:slug",
+	storymapContentControllers.getStorymapInfos,
+);
 
 // crée une nouvelle storymap
 storymapContentRoutes.post(

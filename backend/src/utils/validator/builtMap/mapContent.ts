@@ -16,7 +16,7 @@ const newMapContentSchema = Joi.object({
 		"string.base":
 			"La description en français doit être une chaîne de caractères",
 	}),
-	description_en: Joi.string().optional().allow("").messages({
+	description_en: Joi.string().required().messages({
 		"string.base":
 			"La description en anglais doit être une chaîne de caractères",
 	}),
@@ -28,6 +28,9 @@ const newMapContentSchema = Joi.object({
 
 const updateMapContentSchema = newMapContentSchema.keys({
 	id: Joi.string().uuid().required(),
+	slug: Joi.string().optional().allow(null).messages({
+		"string.base": "Le slug doit être une chaîne de caractères",
+	}),
 	divinityIds: Joi.string().optional().allow(null),
 	isActive: Joi.boolean().required(),
 	createdAt: Joi.date().required(),

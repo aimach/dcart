@@ -1,5 +1,8 @@
 // import des types
+import type { Repository } from "typeorm";
 import type { AttestationType, SourceType } from "../types/mapTypes";
+import type { MapContent } from "../../entities/builtMap/MapContent";
+import type { Storymap } from "../../entities/storymap/Storymap";
 
 /**
  * Fonction pour trier les sources par date (post quem puis ante quem)
@@ -43,4 +46,37 @@ const attestationMatchesLot = (
 	return lotIdsArray.some((lot) => lot.every((id) => elementIds.includes(id)));
 };
 
-export { sortSourcesByDate, attestationMatchesLot };
+/**
+ * Fonction utilisée pour "sluger" une chaîne de caractères
+ * @param str - La chaîne de caractères à sluger
+ * @returns string - La chaîne de caractères slugée
+ */
+const slugify = (str: string) =>
+	str
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "") // accents en caractères normaux
+		.replace(/[^a-z0-9]+/g, "-") // caractères spéciaux en tirets
+		.replace(/^-+|-+$/g, ""); // trim tirets
+
+const generateUniqueSlug = async (
+	str: string,
+	repository: Repository<MapContent | Storymap>,
+) => {
+	const baseSlug = slugify(str);
+	let slug = baseSlug;
+	let suffix = 1;
+
+	while (await repository.findOneBy({ slug })) {
+		slug = `${baseSlug}-${suffix++}`;
+	}
+
+	return slug;
+};
+
+export {
+	sortSourcesByDate,
+	attestationMatchesLot,
+	slugify,
+	generateUniqueSlug,
+};

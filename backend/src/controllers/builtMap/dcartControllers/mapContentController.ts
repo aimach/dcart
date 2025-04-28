@@ -1,15 +1,16 @@
+// import des bibliothèques
+import { In } from "typeorm";
 // import des entités
 import { MapContent } from "../../../entities/builtMap/MapContent";
 import { Tag } from "../../../entities/common/Tag";
-import { Storymap } from "../../../entities/storymap/Storymap";
 import { User } from "../../../entities/auth/User";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
+import { generateUniqueSlug } from "../../../utils/functions/builtMap";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
-import { In } from "typeorm";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";
@@ -26,12 +27,13 @@ declare global {
 }
 
 export const mapContentController = {
-	// récupérer les données de toutes les cartes ou d'une carte en particulier
+	// récupérer les données de toutes les cartes ou d'une carte en particulier par son id ou son slug
 	getMapContent: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { mapId } = req.params;
+			const { mapId, mapSlug } = req.params;
+			const identifier = mapId ?? mapSlug;
 
-			if (mapId === "all") {
+			if (identifier === "all") {
 				const query = await dcartDataSource
 					.getRepository(MapContent)
 					.createQueryBuilder("map")
@@ -65,6 +67,13 @@ export const mapContentController = {
 				return;
 			}
 
+			const whereQuery = mapId
+				? "map.id = :identifier"
+				: "map.slug = :identifier";
+			const whereParams = mapId
+				? { identifier: mapId }
+				: { identifier: mapSlug };
+
 			const mapInfos = await dcartDataSource
 				.getRepository(MapContent)
 				.createQueryBuilder("map")
@@ -83,14 +92,14 @@ export const mapContentController = {
 					"icon",
 					"color",
 				])
-				.where("map.id = :mapId", { mapId })
+				.where(whereQuery, whereParams)
 				.getOne();
 
 			if (!mapInfos) {
 				res.status(404).send({ Erreur: "Carte non trouvée" });
-			} else {
-				res.status(200).send(mapInfos);
+				return;
 			}
+			res.status(200).send(mapInfos);
 		} catch (error) {
 			handleError(res, error as Error);
 		}
@@ -133,12 +142,18 @@ export const mapContentController = {
 				return;
 			}
 
+			const slug = await generateUniqueSlug(
+				title_fr,
+				dcartDataSource.getRepository(MapContent),
+			);
+
 			const newMap = dcartDataSource.getRepository(MapContent).create({
 				title_en,
 				title_fr,
 				description_en,
 				description_fr,
 				image_url,
+				slug,
 				creator,
 				tags: tagsToSave,
 				uploadPointsLastDate: currentDate,
@@ -208,6 +223,14 @@ export const mapContentController = {
 
 			// biome-ignore lint/performance/noDelete:
 			delete req.body.filterMapContent;
+
+			if (mapToUpdate.title_fr !== req.body.title_fr) {
+				const newSlug = await generateUniqueSlug(
+					req.body.title_fr,
+					dcartDataSource.getRepository(MapContent),
+				);
+				req.body.slug = newSlug;
+			}
 
 			const updatedMap = await dcartDataSource
 				.getRepository(MapContent)

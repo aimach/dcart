@@ -20,10 +20,7 @@ import ButtonComponent from "../../../../components/common/button/ButtonComponen
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
-import {
-	getRelatedMapId,
-	getStorymapInfosAndBlocks,
-} from "../../../../utils/api/storymap/getRequests";
+import { getStorymapInfosAndBlocksBySlug } from "../../../../utils/api/storymap/getRequests";
 // import des types
 import type {
 	BlockContentType,
@@ -32,8 +29,6 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
-// import des icônes
-import { ChevronRightCircle } from "lucide-react";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -87,7 +82,7 @@ const StorymapPage = () => {
 	const { translation, language } = useTranslation();
 
 	// récupération de l'id de la storymap
-	const { storymapId } = useParams();
+	const { storymapSlug } = useParams();
 
 	// récupération de l'ur
 	const location = useLocation();
@@ -97,22 +92,21 @@ const StorymapPage = () => {
 
 	// déclaration d'un état pour stocker les informations de la storymap
 	const [storymapInfos, setStorymapInfos] = useState<StorymapType | null>(null);
-	const [relatedMapId, setRelatedMapId] = useState<string | null>(null);
 
 	// au montage du composant, récupération des informations de la storymap
 	useEffect(() => {
 		const fetchStorymapInfos = async () => {
 			try {
-				const response = await getStorymapInfosAndBlocks(storymapId as string);
+				const response = await getStorymapInfosAndBlocksBySlug(
+					storymapSlug as string,
+				);
 				setStorymapInfos(response);
-				const relatedMap = await getRelatedMapId(storymapId as string);
-				setRelatedMapId(relatedMap);
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		fetchStorymapInfos();
-	}, [storymapId]);
+	}, [storymapSlug]);
 
 	return (
 		storymapInfos && (
@@ -121,7 +115,7 @@ const StorymapPage = () => {
 					{location.pathname.includes("storymaps/preview/") && (
 						<div>
 							<Link
-								to={`/backoffice/storymaps/${storymapId}`}
+								to={`/backoffice/storymaps/${storymapInfos.id}`}
 								state={{ from: location.pathname }}
 							>
 								<ButtonComponent
@@ -135,15 +129,6 @@ const StorymapPage = () => {
 						</div>
 					)}
 					<div className={style.linkAndLanguageContainer}>
-						{relatedMapId && (
-							<div className={style.mapLinkContainer}>
-								<ChevronRightCircle />
-								<Link to={`/map/${relatedMapId}`}>
-									{translation[language].modal.associatedMap}
-								</Link>
-							</div>
-						)}
-
 						{storymapInfos.lang2.name && (
 							<ul className={style.languageSelectionContainer}>
 								<li

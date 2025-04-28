@@ -1,13 +1,16 @@
+// import des bibliothèques
+import { In } from "typeorm";
+// import des entités
+import { Tag } from "../../entities/common/Tag";
 // import des types
 import type jwt from "jsonwebtoken";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { Storymap } from "../../entities/storymap/Storymap";
 import { handleError } from "../../utils/errorHandler/errorHandler";
+import { generateUniqueSlug } from "../../utils/functions/builtMap";
 // import des types
 import type { Request, Response } from "express";
-import { Tag } from "../../entities/common/Tag";
-import { In } from "typeorm";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";
@@ -24,10 +27,13 @@ declare global {
 }
 
 export const storymapContentControllers = {
-	// récupère une storymap par son id
-	getStorymapById: async (req: Request, res: Response): Promise<void> => {
+	// récupère une storymap par son id ou son slug
+	getStorymapInfos: async (req: Request, res: Response): Promise<void> => {
 		try {
-			if (req.params.id === "all") {
+			const { id, slug } = req.params;
+			const identifier = id ?? slug;
+
+			if (identifier === "all") {
 				const query = await dcartDataSource
 					.getRepository(Storymap)
 					.createQueryBuilder("storymap")
@@ -67,6 +73,11 @@ export const storymapContentControllers = {
 				res.status(200).send(allStorymaps);
 				return;
 			}
+			const whereQuery = id
+				? "storymap.id = :identifier"
+				: "storymap.slug = :identifier";
+			const whereParams = id ? { identifier: id } : { identifier: slug };
+
 			const storymapInfos = await dcartDataSource
 				.getRepository(Storymap)
 				.createQueryBuilder("storymap")
@@ -99,7 +110,7 @@ export const storymapContentControllers = {
 					"lang1",
 					"lang2",
 				])
-				.where("storymap.id = :id", { id: req.params.id })
+				.where(whereQuery, whereParams)
 				.orderBy("block.position", "ASC")
 				.getOne();
 
@@ -137,8 +148,14 @@ export const storymapContentControllers = {
 				return;
 			}
 
+			const slug = await generateUniqueSlug(
+				req.body.title_lang1,
+				dcartDataSource.getRepository(Storymap),
+			);
+
 			const newStorymap = dcartDataSource.getRepository(Storymap).create({
 				...req.body,
+				slug,
 				tags: tagsToSave,
 				creator: userId,
 			});
@@ -197,6 +214,14 @@ export const storymapContentControllers = {
 			if (tagsToSave.length !== tagIds.length) {
 				res.status(404).send("Tags non trouvés.");
 				return;
+			}
+
+			if (storymapToUpdate.title_lang1 !== req.body.title_lang1) {
+				const newSlug = await generateUniqueSlug(
+					req.body.title_lang1,
+					dcartDataSource.getRepository(Storymap),
+				);
+				req.body.slug = newSlug;
 			}
 
 			const updatedStorymap = await dcartDataSource

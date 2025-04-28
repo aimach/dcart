@@ -6,6 +6,7 @@ import {
 	ScaleControl,
 	ZoomControl,
 } from "react-leaflet";
+import { Link, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
@@ -28,7 +29,8 @@ import { useShallow } from "zustand/shallow";
 import { getPointsTimeMarkers } from "../../../../utils/functions/filter";
 import {
 	getAllPointsByMapId,
-	getOneMapInfos,
+	getOneMapInfosById,
+	getOneMapInfosBySlug,
 } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { LatLngTuple } from "leaflet";
@@ -36,7 +38,6 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
-import { Link, useParams } from "react-router";
 
 /**
  * Composant de la carte
@@ -46,7 +47,7 @@ const MapComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	const { mapId } = useParams();
+	const { mapSlug, mapId } = useParams();
 
 	// récupération des données du store
 	const {
@@ -71,10 +72,7 @@ const MapComponent = () => {
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(useShallow((state) => state));
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore(
-		useShallow((state) => ({
-			setSelectedTabMenu: state.setSelectedTabMenu,
-			setIsPanelDisplayed: state.setIsPanelDisplayed,
-		})),
+		useShallow((state) => state),
 	);
 
 	// définition de l'état d'affichage de la modale
@@ -173,8 +171,13 @@ const MapComponent = () => {
 		tutorialStep === 2 ? "built-map shadowed" : "built-map";
 
 	const fetchMapInfos = async () => {
-		const allMapInfos = await getOneMapInfos(mapId as string);
-		setMapInfos(allMapInfos);
+		if (mapSlug) {
+			const allMapInfos = await getOneMapInfosBySlug(mapSlug as string);
+			setMapInfos(allMapInfos);
+		} else {
+			const allMapInfos = await getOneMapInfosById(mapId as string);
+			setMapInfos(allMapInfos);
+		}
 	};
 
 	return (
@@ -237,7 +240,7 @@ const MapComponent = () => {
 								}}
 							>
 								<Link
-									to={`/backoffice/maps/edit/${mapInfos?.id}`}
+									to={`/backoffice/maps/edit/${mapId}`}
 									state={{ from: location.pathname }}
 								>
 									<ButtonComponent

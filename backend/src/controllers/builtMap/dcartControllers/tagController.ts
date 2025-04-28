@@ -39,6 +39,7 @@ export const tagController = {
 					"map.description_fr",
 					"map.description_en",
 					"map.image_url",
+					"map.slug",
 					"mapTag",
 					"storymap.id",
 					"storymap.title_lang1",
@@ -46,6 +47,7 @@ export const tagController = {
 					"storymap.description_lang1",
 					"storymap.description_lang2",
 					"storymap.image_url",
+					"storymap.slug",
 					"storymapTag",
 				])
 				.where("map.isActive = true")
@@ -92,6 +94,7 @@ export const tagController = {
 						"map.title_en",
 						"map.description_fr",
 						"map.description_en",
+						"map.slug",
 					])
 					.where("map.isActive = true") // Exclure les cartes inactives
 					.getMany();
@@ -125,6 +128,7 @@ export const tagController = {
 					"map.title_en",
 					"map.description_fr",
 					"map.description_en",
+					"map.slug",
 				])
 				.where({ id: tagId })
 				.getOne();
