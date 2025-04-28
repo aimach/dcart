@@ -10,7 +10,8 @@
 		"translation": "TRANSLATION",
 		"back": "BACK",
 		"discover": "DISCOVER",
-		"explore": "EXPLORE"
+		"explore": "EXPLORE",
+		"users": "USERS"
 	},
 	"alert": {
 		"maxReached": "Maximum number of filters reached"

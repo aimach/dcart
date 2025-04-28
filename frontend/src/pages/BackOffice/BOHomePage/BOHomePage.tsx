@@ -37,6 +37,13 @@ const BOHomePage = () => {
 							</Link>
 						</li>
 					)}
+					{isAdmin && (
+						<li>
+							<Link to="/backoffice/users">
+								{translation[language].navigation.users}
+							</Link>
+						</li>
+					)}
 				</ul>
 			</nav>
 		</div>

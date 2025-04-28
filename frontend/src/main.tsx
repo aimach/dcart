@@ -76,6 +76,10 @@ if (rootElement) {
 											path="translation"
 											element={<BackofficeTranslationPage />}
 										/>
+										<Route
+											path="users"
+											element={<BackofficeTranslationPage />}
+										/>
 									</Route>
 								</Routes>
 								<ToastContainer />

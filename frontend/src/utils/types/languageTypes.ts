@@ -13,6 +13,7 @@ type LanguageObject = {
 		back: string;
 		explore: string;
 		discover: string;
+		users: string;
 	};
 	alert: {
 		maxReached: string;
