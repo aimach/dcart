@@ -24,7 +24,7 @@ import style from "./authFormComponent.module.scss";
 const AuthFormComponent = () => {
 	const { language, translation } = useTranslation();
 
-	const { setToken, setIsAdmin } = useContext(AuthContext);
+	const { setToken, setIsAdmin, setUserId } = useContext(AuthContext);
 
 	// fonction de gestion du bouton "Se connecter"
 	const navigate = useNavigate();
@@ -39,6 +39,9 @@ const AuthFormComponent = () => {
 				setIsAdmin(
 					(decodedToken as JwtPayload & { userStatus: string }).userStatus ===
 						"admin",
+				);
+				setUserId(
+					(decodedToken as JwtPayload & { userId: string }).userId || null,
 				);
 			}
 			navigate("/backoffice");

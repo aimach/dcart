@@ -172,4 +172,17 @@ export const authController = {
 			handleError(res, error as Error);
 		}
 	},
+
+	deleteUser: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { userId } = req.params;
+
+			// suppression de l'utilisateur
+			await dcartDataSource.getRepository(User).delete({ id: userId });
+
+			res.status(200).json({ message: "Utilisateur supprimé" });
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
 };

@@ -30,3 +30,10 @@ authRoutes.get(
 	authenticateAdmin,
 	dcartControllers.getProfile,
 );
+
+authRoutes.delete(
+	"/users/:userId",
+	authenticateUser,
+	authenticateAdmin,
+	dcartControllers.deleteUser,
+);
