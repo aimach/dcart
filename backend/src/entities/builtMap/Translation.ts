@@ -9,7 +9,6 @@ export class Translation extends BaseEntity {
 	@Column({ type: "varchar", unique: true })
 	language!: string;
 
-	@Column({ type: "json" }) // tester si c'est mieux entre JSON, JSONB ou TEXT
-	// biome-ignore lint/suspicious/noExplicitAny: ignorer pour l'instant, en attente de création d'un custom type
-	json!: any; // à modifier avec un custom type
+	@Column({ type: "jsonb" })
+	translations!: Record<string, string>;
 }
