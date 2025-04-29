@@ -1,15 +1,14 @@
 // import des bibliothèques
-// import des composants
 import { useState } from "react";
+// import des composants
 import ButtonComponent from "../../../components/common/button/ButtonComponent";
-// import du context
-// import des services
-// import des types
-// import du style
+// import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
-import style from "./BOTranslationPage.module.scss";
+// import des services
 import { updateTranslationFromKey } from "../../../utils/api/translationAPI";
 import { notifyEditSuccess, notifyError } from "../../../utils/functions/toast";
+// import du style
+import style from "./BOTranslationPage.module.scss";
 
 type TranslationInputProps = {
 	id: string;

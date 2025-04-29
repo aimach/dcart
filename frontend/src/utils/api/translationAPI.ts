@@ -3,6 +3,7 @@ import { apiClient } from "./apiClient";
 
 /**
  * Récupère les traductions (avec ou sans clé)
+ * @param translationKey - Clé de la traduction (optionnelle)
  * @returns {Promise<any>} - Renvoie les traductions
  */
 const getTranslations = async (translationKey?: string) => {

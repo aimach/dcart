@@ -6,6 +6,7 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import type { Request, Response } from "express";
 
 export const translationController = {
+	// récupérer les objets de traduction ou une clé spécifique
 	getTranslation: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { translationKey } = req.query;
@@ -38,6 +39,7 @@ export const translationController = {
 		}
 	},
 
+	// mettre à jour une clé de traduction
 	updateTranslation: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { translationObjectId } = req.params;

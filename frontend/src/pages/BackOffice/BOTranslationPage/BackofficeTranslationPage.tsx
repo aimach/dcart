@@ -3,6 +3,7 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 // import des composants
 import LoaderComponent from "../../../components/common/loader/LoaderComponent";
+import TranslationInput from "./TranslationInput";
 // import du context
 import { AuthContext } from "../../../context/AuthContext";
 // import des services
@@ -11,7 +12,6 @@ import { getTranslations } from "../../../utils/api/translationAPI";
 import type { TranslationObjectType } from "../../../utils/types/languageTypes";
 // import des styles
 import style from "./BOTranslationPage.module.scss";
-import TranslationInput from "./TranslationInput";
 
 const BackofficeTranslationPage = () => {
 	const { isAdmin } = useContext(AuthContext);
