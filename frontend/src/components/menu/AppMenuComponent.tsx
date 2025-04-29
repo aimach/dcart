@@ -7,6 +7,7 @@ import ImageWithLink from "../common/ImageWithLink";
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import des services
 import { getMenuPageMenuList } from "../../utils/menu/menuListArrays";
+import { getTranslations } from "../../utils/api/translationAPI";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 // import du style
@@ -16,7 +17,6 @@ import { X } from "lucide-react";
 import labexLogo from "../../assets/logo_SMS.png";
 import HNLogo from "../../assets/huma_num_logo.png";
 import mapLogo from "../../assets/map_logo.png";
-import { getTranslations } from "../../utils/api/translationAPI";
 
 interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -63,8 +63,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 		if (databaseTranslation?.length > 0) {
 			const translationObject = databaseTranslation.find(
 				(translation) => translation.language === language,
-			);
-			console.log(translationObject);
+			) as { translations: Record<string, string> } | undefined;
 			return translationObject?.translations["menu.description"];
 		}
 		return translation[language].menu.content;

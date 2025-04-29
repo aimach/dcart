@@ -7,6 +7,7 @@ import ButtonComponent from "./components/common/button/ButtonComponent";
 // import des services
 import { getAllTagsWithMapsAndStorymaps } from "./utils/api/builtMap/getRequests";
 import { shuffleArray } from "./utils/functions/common";
+import { getTranslations } from "./utils/api/translationAPI";
 // import des custom hooks
 import { useTranslation } from "./utils/hooks/useTranslation";
 // import des types
@@ -15,7 +16,6 @@ import type { TagWithItemsType } from "./utils/types/commonTypes";
 import style from "./App.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
-import { getTranslations } from "./utils/api/translationAPI";
 
 /**
  * Page d'accueil : titre, description et barre de navigation
