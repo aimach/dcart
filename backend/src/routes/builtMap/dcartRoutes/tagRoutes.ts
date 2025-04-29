@@ -2,6 +2,10 @@
 import express from "express";
 // import des controllers
 import { dcartControllers } from "../../../controllers/builtMap/dcartControllers";
+import {
+	authenticateAdmin,
+	authenticateUser,
+} from "../../../middlewares/authenticate";
 
 export const tagRoutes = express.Router();
 
@@ -12,10 +16,25 @@ tagRoutes.get("/:tagId", dcartControllers.getTags);
 tagRoutes.get("/:tagId/maps", dcartControllers.getAllTagsWithMaps);
 
 // créée une nouvelle étiquette
-tagRoutes.post("/", dcartControllers.createTag);
+tagRoutes.post(
+	"/",
+	authenticateUser,
+	authenticateAdmin,
+	dcartControllers.createTag,
+);
 
 // modifie une étiquette
-tagRoutes.put("/:tagId", dcartControllers.updateTag);
+tagRoutes.put(
+	"/:tagId",
+	authenticateUser,
+	authenticateAdmin,
+	dcartControllers.updateTag,
+);
 
 // supprime une étiquette
-tagRoutes.delete("/:tagId", dcartControllers.deleteTag);
+tagRoutes.delete(
+	"/:tagId",
+	authenticateUser,
+	authenticateAdmin,
+	dcartControllers.deleteTag,
+);

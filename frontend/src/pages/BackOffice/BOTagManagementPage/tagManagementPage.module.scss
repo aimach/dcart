@@ -2,6 +2,8 @@
 @use '../../../styles/variable' as v;
 
 .tagManagementSection {
+    @include m.flexbox(flex, column, nowrap, center, center);
+
     >h4 {
         font-size: v.$font-size-xxl;
         text-align: center;
@@ -16,22 +18,30 @@
     border-radius: v.$border-radius-rounded;
     padding: v.$space-xl;
 
-    .tagManagementForm {
-        @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
-        width: 100%;
-        padding: v.$space-l;
+    >form {
+        @include m.flexbox(flex, row, nowrap, flex-start, center);
         border-bottom: 1px solid v.$color-grullo;
     }
 
-    .tagManagementRow {
-        @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
+    .tagManagementForm {
+        @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+        gap: v.$space-l;
         width: 100%;
+        padding: v.$space-l 0;
+
+    }
+
+    .tagManagementRow {
+        @include m.flexbox(flex, row, nowrap, space-between, flex-start);
+        width: 90%;
     }
 
     .tagInputContainer {
         width: 45%;
 
-        >input {
+        >input,
+        textarea {
+            width: 100%;
             padding: v.$space-s;
             border: v.$border-width-m solid v.$color-grullo-light;
             border-radius: v.$border-radius-rounded;
@@ -42,5 +52,12 @@
                 outline: v.$border-width-m solid v.$color-umber;
             }
         }
+    }
+
+    .buttonContainer {
+        @include m.flexbox(flex, column, nowrap, center, center);
+        width: 100px;
+        margin-top: v.$space-l;
+
     }
 }

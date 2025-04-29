@@ -14,6 +14,7 @@ import ErrorComponent from "../../../components/form/errorComponent/ErrorCompone
 import { notifyEditSuccess, notifyError } from "../../../utils/functions/toast";
 import { updateTag } from "../../../utils/api/builtMap/putRequests";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
+import ButtonComponent from "../../../components/common/button/ButtonComponent";
 
 type TagInputProps = {
 	tag: TagType;
@@ -55,7 +56,7 @@ const TagInput = ({ tag }: TagInputProps) => {
 					<div className={style.tagInputContainer}>
 						<LabelComponent
 							htmlFor="name_fr"
-							label="Nom en français"
+							label="Nom en français :"
 							description=""
 						/>
 						<input
@@ -70,7 +71,7 @@ const TagInput = ({ tag }: TagInputProps) => {
 					<div className={style.tagInputContainer}>
 						<LabelComponent
 							htmlFor="name_en"
-							label="Nom en anglais"
+							label="Nom en anglais :"
 							description=""
 						/>
 						<input
@@ -87,11 +88,10 @@ const TagInput = ({ tag }: TagInputProps) => {
 					<div className={style.tagInputContainer}>
 						<LabelComponent
 							htmlFor="description_fr"
-							label="Description en français"
+							label="Description en français :"
 							description=""
 						/>
-						<input
-							type="text"
+						<textarea
 							id="description_fr"
 							defaultValue={tag.description_fr}
 							{...register("description_fr")}
@@ -100,24 +100,33 @@ const TagInput = ({ tag }: TagInputProps) => {
 					<div className={style.tagInputContainer}>
 						<LabelComponent
 							htmlFor="description_en"
-							label="Description en anglais"
+							label="Description en anglais :"
 							description=""
 						/>
-						<input
-							type="text"
+						<textarea
 							id="description_en"
 							defaultValue={tag.description_en}
 							{...register("description_en")}
 						/>
 					</div>
 				</div>
-				<button type="submit">{translation[language].button.edit}</button>
-				<button type="button" onClick={() => handleDeleteClick(tag.id)}>
-					{translation[language].button.delete}
-				</button>
 				{Object.keys(errors).length > 0 && (
 					<ErrorComponent message={errors[Object.keys(errors)[0]].message} />
 				)}
+			</div>
+			<div className={style.buttonContainer}>
+				<ButtonComponent
+					type="button"
+					color="brown"
+					textContent={translation[language].button.edit}
+					onClickFunction={handleSubmit(handleTagUpdate)}
+				/>
+				<ButtonComponent
+					type="button"
+					color="red"
+					textContent={translation[language].button.delete}
+					onClickFunction={() => handleDeleteClick(tag.id)}
+				/>
 			</div>
 		</form>
 	);

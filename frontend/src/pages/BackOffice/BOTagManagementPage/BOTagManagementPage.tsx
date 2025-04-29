@@ -22,6 +22,7 @@ import LabelComponent from "../../../components/form/inputComponent/LabelCompone
 import ErrorComponent from "../../../components/form/errorComponent/ErrorComponent";
 import { addNewTag } from "../../../utils/api/builtMap/postRequests";
 import { notifyCreateSuccess } from "../../../utils/functions/toast";
+import ButtonComponent from "../../../components/common/button/ButtonComponent";
 
 const TagManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -75,9 +76,24 @@ const TagManagementPage = () => {
 				</ModalComponent>
 			)}
 			<h4>{translation[language].backoffice.tagManagement.title}</h4>
-			<button type="button" onClick={() => setIsCreateForm(!isCreateForm)}>
-				{translation[language].button.add}
-			</button>
+			<div>
+				{isCreateForm ? (
+					<ButtonComponent
+						type="button"
+						textContent={translation[language].button.cancel}
+						color="brown"
+						onClickFunction={() => setIsCreateForm(!isCreateForm)}
+					/>
+				) : (
+					<ButtonComponent
+						type="button"
+						textContent={translation[language].button.add}
+						color="brown"
+						onClickFunction={() => setIsCreateForm(!isCreateForm)}
+					/>
+				)}
+			</div>
+
 			<div className={style.tagManagementContainer}>
 				{isCreateForm ? (
 					<form onSubmit={handleSubmit(handleCreateTag)}>
@@ -138,7 +154,12 @@ const TagManagementPage = () => {
 									/>
 								</div>
 							</div>
-							<button type="submit">{translation[language].button.add}</button>
+							<ButtonComponent
+								type="button"
+								color="brown"
+								textContent={translation[language].button.add}
+								onClickFunction={handleSubmit(handleCreateTag)}
+							/>
 
 							{Object.keys(errors).length > 0 && (
 								<ErrorComponent

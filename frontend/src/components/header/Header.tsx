@@ -70,7 +70,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 			) : (
 				<Link to="/">{translation[language].navigation.back}</Link>
 			)}
-			{pathname !== "/" && (
+			{pathname !== "/" && !pathname.includes("backoffice") && (
 				<Link to="/" className={style.headerLogo}>
 					<h1>{translation[language].title as string}</h1>
 				</Link>
@@ -99,13 +99,26 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 					</>
 				)}
 				{type === "backoffice" && (
-					<NavComponent
-						type="route"
-						navClassName={style.headerNavigationMenu}
-						list={getBackofficeNavigationList(translation, language)}
-						selectedElement={language}
-						liClasseName={style.languageSelected}
-					/>
+					<>
+						<NavComponent
+							type="route"
+							navClassName={style.headerNavigationMenu}
+							list={getBackofficeNavigationList(translation, language)}
+							selectedElement={language}
+							liClasseName={style.languageSelected}
+						/>
+						<NavComponent
+							type="list"
+							navClassName={style.headerTranslationMenu}
+							list={getTranslationNavigationList(
+								translation,
+								language,
+								setLanguage,
+							)}
+							selectedElement={language}
+							liClasseName={style.languageSelected}
+						/>
+					</>
 				)}
 				{/* {token && pathname.includes("backoffice") && (
 					<ButtonComponent
