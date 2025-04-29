@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { Link } from "react-router";
 // import des composants
 import ImageWithLink from "../common/ImageWithLink";
@@ -7,6 +7,7 @@ import ImageWithLink from "../common/ImageWithLink";
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import des services
 import { getMenuPageMenuList } from "../../utils/menu/menuListArrays";
+import { getTranslations } from "../../utils/api/translationAPI";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 // import du style
@@ -47,6 +48,27 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 		setIsLongLine(newObject);
 	};
 
+	const [databaseTranslation, setDatabaseTranslation] = useState<
+		Record<string, string>[]
+	>([]);
+	useEffect(() => {
+		const fetchDatabaseTranslation = async () => {
+			const translations = await getTranslations();
+			setDatabaseTranslation(translations);
+		};
+		fetchDatabaseTranslation();
+	}, []);
+
+	const menuPageContent = useMemo(() => {
+		if (databaseTranslation?.length > 0) {
+			const translationObject = databaseTranslation.find(
+				(translation) => translation.language === language,
+			) as { translations: Record<string, string> } | undefined;
+			return translationObject?.translations["menu.description"];
+		}
+		return translation[language].menu.content;
+	}, [databaseTranslation, language, translation]);
+
 	return (
 		<main className={style.menuPageContainer}>
 			<section className={style.menuPageMenuSection}>
@@ -75,19 +97,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 						))}
 					</ul>
 				</nav>
-				<p>
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Est
-					possimus, accusantium iusto corporis laboriosam consectetur nihil
-					dignissimos quasi quidem tempore sit, tempora accusamus expedita eum
-					architecto eligendi quos rem assumenda. Lorem ipsum dolor sit amet
-					consectetur, adipisicing elit. Asperiores cupiditate distinctio
-					adipisci quod amet, deleniti maxime dolorum suscipit vel voluptatibus.
-					Dolorem eaque est quam atque eligendi error. Excepturi, nemo fugit.
-					Lorem ipsum dolor sit amet, consectetur adipisicing elit. Vel,
-					dignissimos rem. Odit, odio possimus illum nobis cum ex id porro atque
-					fugiat recusandae magni voluptates debitis, perspiciatis autem quaerat
-					voluptatum?
-				</p>
+				<p>{menuPageContent}</p>
 				<section className={style.menuPageLogoSection}>
 					<ImageWithLink
 						type="link"

@@ -1,5 +1,5 @@
 // import des custom hooks
-import { updateUserStatus } from "../../../utils/api/common/putRequests";
+import { updateUserStatus } from "../../../utils/api/profileAPI";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";

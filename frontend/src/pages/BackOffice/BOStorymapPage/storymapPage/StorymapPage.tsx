@@ -20,7 +20,10 @@ import ButtonComponent from "../../../../components/common/button/ButtonComponen
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
-import { getStorymapInfosAndBlocksBySlug } from "../../../../utils/api/storymap/getRequests";
+import {
+	getStorymapInfosAndBlocksById,
+	getStorymapInfosAndBlocksBySlug,
+} from "../../../../utils/api/storymap/getRequests";
 // import des types
 import type {
 	BlockContentType,
@@ -82,7 +85,7 @@ const StorymapPage = () => {
 	const { translation, language } = useTranslation();
 
 	// récupération de l'id de la storymap
-	const { storymapSlug } = useParams();
+	const { storymapSlug, storymapId } = useParams();
 
 	// récupération de l'ur
 	const location = useLocation();
@@ -97,16 +100,24 @@ const StorymapPage = () => {
 	useEffect(() => {
 		const fetchStorymapInfos = async () => {
 			try {
-				const response = await getStorymapInfosAndBlocksBySlug(
-					storymapSlug as string,
-				);
-				setStorymapInfos(response);
+				if (storymapSlug) {
+					const response = await getStorymapInfosAndBlocksBySlug(
+						storymapSlug as string,
+					);
+					setStorymapInfos(response);
+				}
+				if (storymapId) {
+					const response = await getStorymapInfosAndBlocksById(
+						storymapId as string,
+					);
+					setStorymapInfos(response);
+				}
 			} catch (error) {
 				console.error(error);
 			}
 		};
 		fetchStorymapInfos();
-	}, [storymapSlug]);
+	}, [storymapSlug, storymapId]);
 
 	return (
 		storymapInfos && (

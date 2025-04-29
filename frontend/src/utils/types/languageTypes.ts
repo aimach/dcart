@@ -2,6 +2,7 @@ type Language = "en" | "fr";
 
 type LanguageObject = {
 	title: string;
+	homeDescription: string;
 	en: string;
 	fr: string;
 	navigation: {
@@ -79,6 +80,9 @@ type LanguageObject = {
 		modifyUserStatusText: string;
 		associatedStorymap: string;
 		associatedMap: string;
+	};
+	menu: {
+		content: string;
 	};
 	mapPage: {
 		introduction: string;
@@ -273,6 +277,13 @@ type LanguageObject = {
 			admin: string;
 			writer: string;
 		};
+		translationManagement: {
+			frenchTranslation: string;
+			englishTranslation: string;
+			"homepage.title": string;
+			"homepage.description": string;
+			"menu.description": string;
+		};
 	};
 };
 
@@ -281,4 +292,15 @@ type TranslationType = {
 	fr: LanguageObject;
 };
 
-export type { Language, LanguageObject, TranslationType };
+type TranslationObjectType = {
+	id: string;
+	language: "en" | "fr";
+	translations: Record<string, string>;
+};
+
+export type {
+	Language,
+	LanguageObject,
+	TranslationType,
+	TranslationObjectType,
+};

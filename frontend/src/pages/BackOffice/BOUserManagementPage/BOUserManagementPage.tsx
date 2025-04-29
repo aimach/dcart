@@ -11,7 +11,7 @@ import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du context
 import { AuthContext } from "../../../context/AuthContext";
 // import des services
-import { getAllUsers } from "../../../utils/api/common/getRequests";
+import { getAllUsers } from "../../../utils/api/profileAPI";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import des types
 import type { User } from "../../../utils/types/userTypes";

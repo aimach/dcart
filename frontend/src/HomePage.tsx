@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 // import des composants
 import SwiperContainer from "./components/common/swiper/SwiperContainer";
@@ -7,6 +7,7 @@ import ButtonComponent from "./components/common/button/ButtonComponent";
 // import des services
 import { getAllTagsWithMapsAndStorymaps } from "./utils/api/builtMap/getRequests";
 import { shuffleArray } from "./utils/functions/common";
+import { getTranslations } from "./utils/api/translationAPI";
 // import des custom hooks
 import { useTranslation } from "./utils/hooks/useTranslation";
 // import des types
@@ -23,6 +24,10 @@ import { ChevronRight } from "lucide-react";
 function HomePage() {
 	// récupération des données de traduction
 	const { language, translation } = useTranslation();
+
+	const [databaseTranslation, setDatabaseTranslation] = useState<
+		Record<string, string>[]
+	>([]);
 
 	const tagContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -42,10 +47,35 @@ function HomePage() {
 		fetchAllTagsWithMapsAndStorymaps();
 	}, []);
 
+	useEffect(() => {
+		const fetchDatabaseTranslation = async () => {
+			const translations = await getTranslations();
+			setDatabaseTranslation(translations);
+		};
+		fetchDatabaseTranslation();
+	}, []);
+
+	const homePageContent = useMemo(() => {
+		if (databaseTranslation?.length > 0) {
+			const translationObject = databaseTranslation.find(
+				(translation) => translation.language === language,
+			) as { translations: Record<string, string> } | undefined;
+			return {
+				title: translationObject?.translations["homepage.title"],
+				description: translationObject?.translations["homepage.description"],
+			};
+		}
+		return {
+			title: translation[language].title,
+			description: translation[language].homeDescription,
+		};
+	}, [databaseTranslation, translation, language]);
+
 	return (
 		<section className={style.mainPage}>
 			<section className={style.heroContainer}>
-				<h1>{translation[language].title as string}</h1>
+				<h1>{homePageContent.title}</h1>
+				<p>{homePageContent.description}</p>
 				<ButtonComponent
 					type="button"
 					color="brown"
@@ -54,7 +84,7 @@ function HomePage() {
 				/>
 			</section>
 			<section className={style.tagContainer} ref={tagContainerRef}>
-				{allTagsWithItems.map((tagWithItems) => {
+				{allTagsWithItems?.map((tagWithItems) => {
 					const items = shuffleArray(
 						tagWithItems.maps.concat(tagWithItems.storymaps),
 					);

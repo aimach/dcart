@@ -1,5 +1,6 @@
 {
 	"title": "Digital Atlas of divine names in the Mediterranean",
+	"homeDescription": "Nullam quis arcu in magna pulvinar tincidunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam hendrerit nulla ut cursus laoreet. Nullam elementum lorem vel facilisis laoreet. Cras ac turpis vel erat vehicula venenatis.",
 	"en": "EN",
 	"fr": "FR",
 	"navigation": {
@@ -77,6 +78,9 @@
 		"modifyUserStatusText": "Are you sure you want to change the status of this user?",
 		"associatedStorymap": "See associated storymap",
 		"associatedMap": "See associated map"
+	},
+	"menu": {
+		"content": "Fusce at nisi arcu. Quisque sed dolor nec dui scelerisque dapibus. Sed at purus at sem aliquet luctus. Sed non massa sit amet sapien porttitor ornare. Vivamus pretium, tortor at tempus ullamcorper, diam ligula lobortis quam, at scelerisque libero lectus ut risus. Vivamus lacinia lacus vel neque egestas, vitae volutpat purus dapibus. Nullam nec ultricies erat. Etiam ac urna metus. Sed cursus libero id ullamcorper interdum. Donec non urna et erat vehicula porttitor. Vivamus a sagittis dolor. Nulla facilisi. Cras euismod orci at felis cursus, vel vulputate sapien suscipit. Morbi molestie arcu sit amet libero porttitor, a mollis odio suscipit. Fusce at sapien id justo cursus mollis. Ut non orci in magna pretium consequat. Nam id purus eu velit vulputate elementum. Mauris ac sapien non felis scelerisque tincidunt.Mauris vitae quam in justo dictum sodales. In eget tortor a nunc vehicula tempor. Nam ac tincidunt ipsum, eget accumsan nisi. Praesent porta, magna vitae dapibus pharetra, erat eros efficitur nunc, in mattis lectus libero a velit. Nulla facilisi. Curabitur tincidunt, felis a elementum tincidunt, ex felis fermentum dui, eget pulvinar arcu eros eu eros. Vestibulum sollicitudin pretium velit, eget volutpat justo fermentum sit amet. Pellentesque in nulla in nisi dictum interdum."
 	},
 	"mapPage": {
 		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
@@ -304,6 +308,13 @@
 			"toAdmin": "Become admin",
 			"admin": "Admin",
 			"writer": "Writer"
+		},
+		"translationManagement": {
+			"frenchTranslation": "French translation",
+			"englishTranslation": "English translation",
+			"homepage.title": "Title of the homepage",
+			"homepage.description": "Description of the homepage",
+			"menu.description": "Content of the menu"
 		}
 	}
 }
