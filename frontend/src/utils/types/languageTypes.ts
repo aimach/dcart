@@ -1,3 +1,5 @@
+import { deleteTag } from "../api/builtMap/deleteRequests";
+
 type Language = "en" | "fr";
 
 type LanguageObject = {
@@ -79,6 +81,7 @@ type LanguageObject = {
 		deteleMapText: string;
 		deleteUserText: string;
 		modifyUserStatusText: string;
+		deleteTagText: string;
 		associatedStorymap: string;
 		associatedMap: string;
 	};
@@ -284,6 +287,10 @@ type LanguageObject = {
 			"homepage.title": string;
 			"homepage.description": string;
 			"menu.description": string;
+		};
+		tagManagement: {
+			title: string;
+			createTag: string;
 		};
 	};
 };

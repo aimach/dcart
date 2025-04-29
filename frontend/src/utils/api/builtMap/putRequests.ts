@@ -1,7 +1,7 @@
 // import des serivces
 import { apiClient } from "../apiClient";
 // import des types
-import type { MapInfoType, PointSetType } from "../../types/mapTypes";
+import type { MapInfoType, PointSetType, TagType } from "../../types/mapTypes";
 import {
 	notifyEditSuccess,
 	notifyError,
@@ -96,7 +96,7 @@ const updateMapFilterOptions = async (
 
 /**
  * Envoie une requête PUT pour modifier un jeu de points
- * @param body - Les informations du jeu de points à créer
+ * @param body - Les informations du jeu de points à modifier
  * @returns {Promise} - La réponse de la requête
  */
 const updatePointSet = async (body: PointSetType) => {
@@ -114,10 +114,28 @@ const updatePointSet = async (body: PointSetType) => {
 	}
 };
 
+/**
+ * Envoie une requête PUT pour modifier une étiquette
+ * @param body - Les informations de l'étiquette à modifier
+ * @returns {Promise} - La réponse de la requête
+ */
+const updateTag = async (body: TagType) => {
+	try {
+		const response = await apiClient(`dcart/tags/${body.id}`, {
+			method: "PUT",
+			data: body,
+		});
+		return response.status;
+	} catch (error) {
+		console.error("Erreur lors de la modification de l'étiquette :", error);
+	}
+};
+
 export {
 	updateMap,
 	updateFiltersToMap,
 	updateMapActiveStatus,
 	updateMapFilterOptions,
 	updatePointSet,
+	updateTag,
 };

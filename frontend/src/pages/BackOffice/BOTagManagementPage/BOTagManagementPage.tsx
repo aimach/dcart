@@ -4,21 +4,24 @@ import { useNavigate } from "react-router";
 // import des composants
 import LoaderComponent from "../../../components/common/loader/LoaderComponent";
 import ModalComponent from "../../../components/common/modal/ModalComponent";
-import DeleteUserContent from "../../../components/common/modal/DeleteUserContent";
-import UpdateUserStatusContent from "../../../components/common/modal/UpdateUserStatusContent";
+import TagInput from "./TagInput";
+import DeleteTagContent from "../../../components/common/modal/DeleteTagContent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du context
 import { AuthContext } from "../../../context/AuthContext";
 // import des services
-import { getAllUsers } from "../../../utils/api/profileAPI";
+import { getAllTags } from "../../../utils/api/builtMap/getRequests";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import des types
-import type { User } from "../../../utils/types/userTypes";
+import type { TagType } from "../../../utils/types/mapTypes";
 // import des styles
 import style from "./tagManagementPage.module.scss";
-// import des icônes
-import { Trash } from "lucide-react";
+import { useForm } from "react-hook-form";
+import LabelComponent from "../../../components/form/inputComponent/LabelComponent";
+import ErrorComponent from "../../../components/form/errorComponent/ErrorComponent";
+import { addNewTag } from "../../../utils/api/builtMap/postRequests";
+import { notifyCreateSuccess } from "../../../utils/functions/toast";
 
 const TagManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -27,20 +30,10 @@ const TagManagementPage = () => {
 
 	const navigate = useNavigate();
 
-	const { userId } = useContext(AuthContext);
+	const { closeDeleteModal, isDeleteModalOpen, reload, setReload } =
+		useModalStore();
 
-	const [users, setUsers] = useState<User[]>([]);
-	const {
-		openDeleteModal,
-		setIdToDelete,
-		closeDeleteModal,
-		isDeleteModalOpen,
-		openUpdateModal,
-		setIdToUpdate,
-		closeUpdateModal,
-		isUpdateModalOpen,
-		reload,
-	} = useModalStore();
+	const [isCreateForm, setIsCreateForm] = useState(false);
 
 	useEffect(() => {
 		if (!isAdmin) {
@@ -48,84 +41,117 @@ const TagManagementPage = () => {
 		}
 	}, [isAdmin, navigate]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: reload pour le rafraîchissement de la liste
+	const [tags, setTags] = useState<TagType[]>([]);
+	// biome-ignore lint/correctness/useExhaustiveDependencies: force le re-render pour le rafraîchissement de la liste
 	useEffect(() => {
-		if (isAdmin) {
-			const fetchAllUsers = async () => {
-				const allUsers = await getAllUsers();
-				setUsers(allUsers);
-			};
-			fetchAllUsers();
+		const fetchAllTags = async () => {
+			const fetchedTags = await getAllTags();
+			setTags(fetchedTags);
+		};
+		fetchAllTags();
+	}, [reload]);
+
+	// import des sevice de formulaire
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<TagType>();
+
+	const handleCreateTag = async (data: TagType) => {
+		const statusResponse = await addNewTag(data);
+		if (statusResponse === 201) {
+			setIsCreateForm(false);
+			notifyCreateSuccess("Etiquette", true);
+			setReload(!reload);
 		}
-	}, [isAdmin, reload]);
-
-	const handleDeleteClick = (userId: string) => {
-		openDeleteModal();
-		setIdToDelete(userId);
 	};
 
-	const handleStatusClick = (userId: string) => {
-		openUpdateModal();
-		setIdToUpdate(userId);
-	};
-
-	return users.length > 0 ? (
-		<section className={style.userManagementSection}>
+	return tags.length > 0 ? (
+		<section className={style.tagManagementSection}>
 			{isDeleteModalOpen && (
 				<ModalComponent onClose={() => closeDeleteModal()}>
-					<DeleteUserContent />
+					<DeleteTagContent />
 				</ModalComponent>
 			)}
-			{isUpdateModalOpen && (
-				<ModalComponent onClose={() => closeUpdateModal()}>
-					<UpdateUserStatusContent />
-				</ModalComponent>
-			)}
-			<h4>{translation[language].backoffice.userManagement.title}</h4>
-			<div className={style.userManagementTableContainer}>
-				<table className={style.managementTable}>
-					<thead>
-						<tr>
-							<th>
-								{translation[language].backoffice.userManagement.username}
-							</th>
-							<th>{translation[language].backoffice.userManagement.pseudo}</th>
-							<th>{translation[language].backoffice.userManagement.status}</th>
-							<th>{translation[language].backoffice.userManagement.links}</th>
-						</tr>
-					</thead>
-					<tbody>
-						{users.map((user) => (
-							<tr key={user.id} className={style.userTableRow}>
-								<td>{user.username}</td>
-								<td>{user.pseudo}</td>
-								<td>
-									{translation[language].backoffice.userManagement[user.status]}
-								</td>
-								<td>
-									{userId !== user.id && (
-										<>
-											<button
-												type="button"
-												onClick={() => handleStatusClick(user.id as string)}
-											>
-												{user.status === "admin"
-													? translation[language].backoffice.userManagement
-															.toAuthor
-													: translation[language].backoffice.userManagement
-															.toAdmin}
-											</button>
-											<Trash
-												color="#9d2121"
-												onClick={() => handleDeleteClick(user.id as string)}
-											/>
-										</>
-									)}
-								</td>
-							</tr>
-						))}
-					</tbody>
-				</table>
+			<h4>{translation[language].backoffice.tagManagement.title}</h4>
+			<button type="button" onClick={() => setIsCreateForm(!isCreateForm)}>
+				{translation[language].button.add}
+			</button>
+			<div className={style.tagManagementContainer}>
+				{isCreateForm ? (
+					<form onSubmit={handleSubmit(handleCreateTag)}>
+						<div className={style.tagManagementForm}>
+							<div className={style.tagManagementRow}>
+								<div className={style.tagInputContainer}>
+									<LabelComponent
+										htmlFor="name_fr"
+										label="Nom en français"
+										description=""
+									/>
+									<input
+										type="text"
+										id="name_fr"
+										{...register("name_fr", {
+											required: "Le champ du nom en français est requis",
+										})}
+									/>
+								</div>
+								<div className={style.tagInputContainer}>
+									<LabelComponent
+										htmlFor="name_en"
+										label="Nom en anglais"
+										description=""
+									/>
+									<input
+										type="text"
+										id="name_en"
+										{...register("name_en", {
+											required: "Le champ du nom en anglais est requis",
+										})}
+									/>
+								</div>
+							</div>
+							<div className={style.tagManagementRow}>
+								<div className={style.tagInputContainer}>
+									<LabelComponent
+										htmlFor="description_fr"
+										label="Description en français"
+										description=""
+									/>
+									<input
+										type="text"
+										id="description_fr"
+										{...register("description_fr")}
+									/>
+								</div>
+								<div className={style.tagInputContainer}>
+									<LabelComponent
+										htmlFor="description_en"
+										label="Description en anglais"
+										description=""
+									/>
+									<input
+										type="text"
+										id="description_en"
+										{...register("description_en")}
+									/>
+								</div>
+							</div>
+							<button type="submit">{translation[language].button.add}</button>
+
+							{Object.keys(errors).length > 0 && (
+								<ErrorComponent
+									message={errors[Object.keys(errors)[0]].message}
+								/>
+							)}
+						</div>
+					</form>
+				) : (
+					tags.map((tag) => {
+						return <TagInput tag={tag} key={tag.id} />;
+					})
+				)}
 			</div>
 		</section>
 	) : (

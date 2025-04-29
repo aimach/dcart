@@ -140,4 +140,60 @@ export const tagController = {
 			handleError(res, error as Error);
 		}
 	},
+
+	createTag: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const newTag = dcartDataSource.getRepository(Tag).create(req.body);
+			const createdTag = await dcartDataSource.getRepository(Tag).save(newTag);
+			res.status(201).json(createdTag);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	updateTag: async (req: Request, res: Response): Promise<void> => {
+		const { tagId } = req.params;
+
+		try {
+			const tagToUpdate = await dcartDataSource
+				.getRepository(Tag)
+				.findOneBy({ id: tagId });
+
+			if (!tagToUpdate) {
+				res.status(404).json("Aucune étiquette trouvée");
+				return;
+			}
+
+			const updatedTag = await dcartDataSource
+				.getRepository(Tag)
+				.merge(tagToUpdate, req.body);
+
+			await dcartDataSource.getRepository(Tag).save(updatedTag);
+
+			res.status(200).json(updatedTag);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	deleteTag: async (req: Request, res: Response): Promise<void> => {
+		const { tagId } = req.params;
+
+		try {
+			const tagToDelete = await dcartDataSource
+				.getRepository(Tag)
+				.findOneBy({ id: tagId });
+
+			if (!tagToDelete) {
+				res.status(404).json("Aucune étiquette trouvée");
+				return;
+			}
+
+			await dcartDataSource.getRepository(Tag).delete(tagToDelete.id);
+
+			res.status(200).send("Étiquette supprimée avec succès");
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
 };

@@ -10,3 +10,12 @@ tagRoutes.get("/:tagId", dcartControllers.getTags);
 
 // récupère toutes les catégories avec les cartes associées
 tagRoutes.get("/:tagId/maps", dcartControllers.getAllTagsWithMaps);
+
+// créée une nouvelle étiquette
+tagRoutes.post("/", dcartControllers.createTag);
+
+// modifie une étiquette
+tagRoutes.put("/:tagId", dcartControllers.updateTag);
+
+// supprime une étiquette
+tagRoutes.delete("/:tagId", dcartControllers.deleteTag);

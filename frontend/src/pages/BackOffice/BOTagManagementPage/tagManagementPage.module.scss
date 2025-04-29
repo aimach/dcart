@@ -1,9 +1,7 @@
 @use '../../../styles/mixin' as m;
 @use '../../../styles/variable' as v;
 
-.userManagementSection {
-
-
+.tagManagementSection {
     >h4 {
         font-size: v.$font-size-xxl;
         text-align: center;
@@ -11,55 +9,37 @@
     }
 }
 
-.userManagementTableContainer {
+.tagManagementContainer {
     width: 90vw;
     margin: 0 auto;
     background-color: v.$background-color-soft;
     border-radius: v.$border-radius-rounded;
     padding: v.$space-xl;
 
-    .managementTable {
+    .tagManagementForm {
+        @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
         width: 100%;
+        padding: v.$space-l;
+        border-bottom: 1px solid v.$color-grullo;
+    }
 
-        >thead {
-            border-bottom: v.$border-width-m solid v.$color-grullo;
+    .tagManagementRow {
+        @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
+        width: 100%;
+    }
 
-            >tr>th {
-                padding-bottom: v.$space-m;
-                font-weight: v.$font-weight-bold;
-            }
+    .tagInputContainer {
+        width: 45%;
 
-        }
+        >input {
+            padding: v.$space-s;
+            border: v.$border-width-m solid v.$color-grullo-light;
+            border-radius: v.$border-radius-rounded;
+            font-size: v.$font-size-m;
+            font-family: "Vollkorn";
 
-        .userTableRow {
-            >td {
-                text-align: center;
-                background-color: v.$background-color-base;
-                padding: v.$space-l 0;
-                border-bottom: v.$border-width-m solid v.$color-grullo;
-                max-width: 100px;
-                vertical-align: middle;
-            }
-
-            >td:last-of-type {
-                text-align: center;
-
-                >svg,
-                button {
-                    cursor: pointer;
-                    margin-right: v.$space-s;
-                    background-color: v.$background-color-soft;
-                    border-radius: v.$border-radius-base;
-                    border: v.$border-width-m solid v.$color-neutral-80;
-                    padding: 5px;
-                    transition: scale 0.2s;
-                    color: v.$color-dark-lava;
-                }
-
-                >svg:hover,
-                button:hover {
-                    scale: 1.1;
-                }
+            &:focus {
+                outline: v.$border-width-m solid v.$color-umber;
             }
         }
     }
