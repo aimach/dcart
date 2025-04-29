@@ -81,6 +81,9 @@ type LanguageObject = {
 		associatedStorymap: string;
 		associatedMap: string;
 	};
+	menu: {
+		content: string;
+	};
 	mapPage: {
 		introduction: string;
 		noResult: string;

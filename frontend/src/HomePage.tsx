@@ -56,7 +56,7 @@ function HomePage() {
 	}, []);
 
 	const homePageContent = useMemo(() => {
-		if (databaseTranslation.length > 0) {
+		if (databaseTranslation?.length > 0) {
 			const translationObject = databaseTranslation.find(
 				(translation) => translation.language === language,
 			) as { translations: Record<string, string> } | undefined;
@@ -71,8 +71,6 @@ function HomePage() {
 		};
 	}, [databaseTranslation, translation, language]);
 
-	console.log(homePageContent);
-
 	return (
 		<section className={style.mainPage}>
 			<section className={style.heroContainer}>
@@ -86,7 +84,7 @@ function HomePage() {
 				/>
 			</section>
 			<section className={style.tagContainer} ref={tagContainerRef}>
-				{allTagsWithItems.map((tagWithItems) => {
+				{allTagsWithItems?.map((tagWithItems) => {
 					const items = shuffleArray(
 						tagWithItems.maps.concat(tagWithItems.storymaps),
 					);
