@@ -1,7 +1,7 @@
 // import des serivces
 import { apiClient } from "../apiClient";
 // import des types
-import type { MapInfoType, PointSetType } from "../../types/mapTypes";
+import type { MapInfoType, PointSetType, TagType } from "../../types/mapTypes";
 
 /**
  * Envoie une requête POST avec la liste des filtres à ajouter à une carte
@@ -78,4 +78,27 @@ const addStorymapLinkToMap = async (storymapId: string, mapId: string) => {
 	}
 };
 
-export { createNewMap, addFiltersToMap, createPointSet, addStorymapLinkToMap };
+/**
+ * Envoie une requête POST pour créer une nouvelle étiquette
+ * @param body - les données à insérer
+ * @returns {Promise} - Le statut de la requête
+ */
+const addNewTag = async (body: TagType) => {
+	try {
+		const response = await apiClient("dcart/tags", {
+			method: "POST",
+			data: body,
+		});
+		return response.status;
+	} catch (error) {
+		console.error("Erreur lors de l'ajout d'une nouvelle étiquette:", error);
+	}
+};
+
+export {
+	createNewMap,
+	addFiltersToMap,
+	createPointSet,
+	addStorymapLinkToMap,
+	addNewTag,
+};

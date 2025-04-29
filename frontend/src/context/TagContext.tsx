@@ -7,13 +7,16 @@ import { TranslationContext } from "./TranslationContext";
 import type { ReactNode } from "react";
 import type { OptionType } from "../utils/types/commonTypes";
 import type { TagType } from "../utils/types/mapTypes";
+import { set } from "react-hook-form";
 
 type TagOptionsContextType = {
 	tagOptions: OptionType[];
+	tags: TagType[];
 };
 
 export const TagOptionsContext = createContext<TagOptionsContextType>({
 	tagOptions: [],
+	tags: [],
 });
 
 interface TagOptionsProviderProps {
@@ -23,11 +26,14 @@ interface TagOptionsProviderProps {
 export const TagOptionsProvider = ({ children }: TagOptionsProviderProps) => {
 	const { language } = useContext(TranslationContext);
 
+	const [tags, setTags] = useState<TagType[]>([]);
 	const [tagOptions, setTagOptions] = useState<OptionType[]>([]);
 
 	useEffect(() => {
 		const fetchAllTags = async () => {
 			const fetchedTags = await getAllTags();
+			setTags(fetchedTags);
+
 			const formatedTagOptions: OptionType[] = fetchedTags.map(
 				(Tag: TagType) => ({
 					value: Tag.id,
@@ -40,7 +46,7 @@ export const TagOptionsProvider = ({ children }: TagOptionsProviderProps) => {
 	}, [language]);
 
 	return (
-		<TagOptionsContext.Provider value={{ tagOptions }}>
+		<TagOptionsContext.Provider value={{ tagOptions, tags }}>
 			{children}
 		</TagOptionsContext.Provider>
 	);

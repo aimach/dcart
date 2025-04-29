@@ -12,19 +12,19 @@ const getHomePageMenuList = (
 	translation: TranslationType,
 	language: Language,
 ) => [
-		{
-			id: "maps",
-			title: translation[language].navigation.explore,
-			onClickFunction: undefined,
-			route: "maps/categories",
-		},
-		{
-			id: "storymaps",
-			title: translation[language].navigation.discover,
-			onClickFunction: undefined,
-			route: "storymaps/categories",
-		},
-	];
+	{
+		id: "maps",
+		title: translation[language].navigation.explore,
+		onClickFunction: undefined,
+		route: "maps/categories",
+	},
+	{
+		id: "storymaps",
+		title: translation[language].navigation.discover,
+		onClickFunction: undefined,
+		route: "storymaps/categories",
+	},
+];
 
 /**
  * Génère le tableau des éléments de la barre de navigation de la page menu
@@ -36,25 +36,25 @@ const getMenuPageMenuList = (
 	translation: TranslationType,
 	language: Language,
 ) => [
-		{
-			id: "home",
-			title: translation[language].navigation.home,
-			onClickFunction: undefined,
-			route: "/",
-		},
-		{
-			id: "maps",
-			title: translation[language].navigation.maps,
-			onClickFunction: undefined,
-			route: "maps/categories",
-		},
-		{
-			id: "storymaps",
-			title: translation[language].navigation.storymaps,
-			onClickFunction: undefined,
-			route: "storymaps/categories",
-		},
-	];
+	{
+		id: "home",
+		title: translation[language].navigation.home,
+		onClickFunction: undefined,
+		route: "/",
+	},
+	{
+		id: "maps",
+		title: translation[language].navigation.maps,
+		onClickFunction: undefined,
+		route: "maps/categories",
+	},
+	{
+		id: "storymaps",
+		title: translation[language].navigation.storymaps,
+		onClickFunction: undefined,
+		route: "storymaps/categories",
+	},
+];
 
 /**
  * Génère le tableau des éléments de la barre de navigation du header si l'utilisateur est un visiteur
@@ -65,25 +65,25 @@ const getVisitorNavigationList = (
 	translation: TranslationType,
 	language: Language,
 ) => [
-		{
-			id: "home",
-			title: translation[language].navigation.home,
-			onClickFunction: undefined,
-			route: "/",
-		},
-		{
-			id: "maps",
-			title: translation[language].navigation.maps,
-			onClickFunction: undefined,
-			route: "maps/categories",
-		},
-		{
-			id: "storymaps",
-			title: translation[language].navigation.storymaps,
-			onClickFunction: undefined,
-			route: "storymaps/categories",
-		},
-	];
+	{
+		id: "home",
+		title: translation[language].navigation.home,
+		onClickFunction: undefined,
+		route: "/",
+	},
+	{
+		id: "maps",
+		title: translation[language].navigation.maps,
+		onClickFunction: undefined,
+		route: "maps/categories",
+	},
+	{
+		id: "storymaps",
+		title: translation[language].navigation.storymaps,
+		onClickFunction: undefined,
+		route: "storymaps/categories",
+	},
+];
 
 /**
  * Génère le tableau des éléments de la barre de navigation du header si l'utilisateur est un administrateur
@@ -94,35 +94,14 @@ const getBackofficeNavigationList = (
 	translation: TranslationType,
 	language: Language,
 ) => [
-		{
-			id: "home",
-			title: translation[language].navigation.backoffice,
-			onClickFunction: undefined,
-			route: "/backoffice",
-			adminOnly: false,
-		},
-		{
-			id: "maps",
-			title: translation[language].navigation.maps,
-			onClickFunction: undefined,
-			route: "/backoffice/maps",
-			adminOnly: false,
-		},
-		{
-			id: "storymaps",
-			title: translation[language].navigation.storymaps,
-			onClickFunction: undefined,
-			route: "/backoffice/storymaps",
-			adminOnly: false,
-		},
-		{
-			id: "translation",
-			title: translation[language].navigation.translation,
-			onClickFunction: undefined,
-			route: "/backoffice/translation",
-			adminOnly: true,
-		},
-	];
+	{
+		id: "home",
+		title: translation[language].navigation.backoffice,
+		onClickFunction: undefined,
+		route: "/backoffice",
+		adminOnly: false,
+	},
+];
 
 /**
  * Génère le tableau des éléments du menu traduction dans le header
@@ -134,19 +113,19 @@ const getTranslationNavigationList = (
 	language: Language,
 	switchLanguage: (newLanguage: Language) => void,
 ) => [
-		{
-			id: "fr",
-			title: translation[language].fr,
-			onClickFunction: () => switchLanguage("fr"),
-			route: undefined,
-		},
-		{
-			id: "en",
-			title: translation[language].en,
-			onClickFunction: () => switchLanguage("en"),
-			route: undefined,
-		},
-	];
+	{
+		id: "fr",
+		title: translation[language].fr,
+		onClickFunction: () => switchLanguage("fr"),
+		route: undefined,
+	},
+	{
+		id: "en",
+		title: translation[language].en,
+		onClickFunction: () => switchLanguage("en"),
+		route: undefined,
+	},
+];
 
 /**
  * Génère le tableau des éléments de la barre de navigation du panel latéral de la carte
@@ -163,13 +142,14 @@ const getAsideNavigationList = (
 ) => {
 	const allPointsLength = mapInfos
 		? allPoints.filter((point) => allLayers.includes(point.layerName as string))
-			.length
+				.length
 		: allPoints.length;
 	return [
 		{
 			id: "results",
-			title: `${allPointsLength} ${translation[language].button.result}${allPointsLength > 1 ? "s" : ""
-				}`,
+			title: `${allPointsLength} ${translation[language].button.result}${
+				allPointsLength > 1 ? "s" : ""
+			}`,
 			onClickFunction: () => setSelectedTabMenu("results"),
 			route: undefined,
 		},

@@ -44,6 +44,13 @@ const BOHomePage = () => {
 							</Link>
 						</li>
 					)}
+					{isAdmin && (
+						<li>
+							<Link to="/backoffice/tags">
+								{translation[language].navigation.tags}
+							</Link>
+						</li>
+					)}
 				</ul>
 			</nav>
 		</div>

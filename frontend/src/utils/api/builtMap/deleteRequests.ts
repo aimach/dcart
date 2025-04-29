@@ -3,7 +3,7 @@ import { apiClient } from "../apiClient";
 
 /**
  * Fonction de suppression d'un jeu de points
- * @param blockId  - l'id du jeu à supprimer
+ * @param pointSetId  - l'id du jeu à supprimer
  */
 const deletePointSet = async (pointSetId: string) => {
 	try {
@@ -13,4 +13,17 @@ const deletePointSet = async (pointSetId: string) => {
 	}
 };
 
-export { deletePointSet };
+/**
+ * Fonction de suppression d'une étiquette
+ * @param tagId  - l'id de l'étiquette à supprimer
+ */
+const deleteTag = async (tagId: string) => {
+	try {
+		const response = await apiClient.delete(`/dcart/tags/${tagId}`);
+		return response.status;
+	} catch (error) {
+		console.error("Erreur lors de la suppression de l'étiquette :", error);
+	}
+};
+
+export { deletePointSet, deleteTag };
