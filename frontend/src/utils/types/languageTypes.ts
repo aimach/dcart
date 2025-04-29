@@ -15,6 +15,7 @@ type LanguageObject = {
 		explore: string;
 		discover: string;
 		users: string;
+		tags: string;
 	};
 	alert: {
 		maxReached: string;

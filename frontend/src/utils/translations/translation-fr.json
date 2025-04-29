@@ -12,7 +12,8 @@
 		"back": "RETOUR",
 		"discover": "DECOUVRIR",
 		"explore": "EXPLORER",
-		"users": "UTILISATEURS"
+		"users": "UTILISATEURS",
+		"tags": "ÉTIQUETTES"
 	},
 	"alert": {
 		"maxReached": "Nombre maximum de filtres atteint"
