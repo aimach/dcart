@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useRef, useState } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { Link } from "react-router";
 // import des composants
 import SwiperContainer from "./components/common/swiper/SwiperContainer";
@@ -15,6 +15,7 @@ import type { TagWithItemsType } from "./utils/types/commonTypes";
 import style from "./App.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
+import { getTranslations } from "./utils/api/translationAPI";
 
 /**
  * Page d'accueil : titre, description et barre de navigation
@@ -23,6 +24,10 @@ import { ChevronRight } from "lucide-react";
 function HomePage() {
 	// récupération des données de traduction
 	const { language, translation } = useTranslation();
+
+	const [databaseTranslation, setDatabaseTranslation] = useState<
+		Record<string, string>[]
+	>([]);
 
 	const tagContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -42,10 +47,37 @@ function HomePage() {
 		fetchAllTagsWithMapsAndStorymaps();
 	}, []);
 
+	useEffect(() => {
+		const fetchDatabaseTranslation = async () => {
+			const translations = await getTranslations();
+			setDatabaseTranslation(translations);
+		};
+		fetchDatabaseTranslation();
+	}, []);
+
+	const homePageContent = useMemo(() => {
+		if (databaseTranslation.length > 0) {
+			const translationObject = databaseTranslation.find(
+				(translation) => translation.language === language,
+			) as { translations: Record<string, string> } | undefined;
+			return {
+				title: translationObject?.translations["homepage.title"],
+				description: translationObject?.translations["homepage.description"],
+			};
+		}
+		return {
+			title: translation[language].title,
+			description: translation[language].homeDescription,
+		};
+	}, [databaseTranslation, translation, language]);
+
+	console.log(homePageContent);
+
 	return (
 		<section className={style.mainPage}>
 			<section className={style.heroContainer}>
-				<h1>{translation[language].title as string}</h1>
+				<h1>{homePageContent.title}</h1>
+				<p>{homePageContent.description}</p>
 				<ButtonComponent
 					type="button"
 					color="brown"

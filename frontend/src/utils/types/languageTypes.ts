@@ -2,6 +2,7 @@ type Language = "en" | "fr";
 
 type LanguageObject = {
 	title: string;
+	homeDescription: string;
 	en: string;
 	fr: string;
 	navigation: {

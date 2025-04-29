@@ -9,7 +9,6 @@ export const translationController = {
 	getTranslation: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { translationKey } = req.query;
-			console.log();
 			let translations = [];
 			if (translationKey) {
 				translations = await dcartDataSource
@@ -22,6 +21,7 @@ export const translationController = {
 					.getRawMany();
 
 				res.status(200).json(translations);
+				return;
 			}
 
 			translations = await dcartDataSource
