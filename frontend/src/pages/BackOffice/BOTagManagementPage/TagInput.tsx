@@ -1,20 +1,19 @@
 // import des bibliothèques
-// import des composants
 import { useForm } from "react-hook-form";
+// import des composants
 import LabelComponent from "../../../components/form/inputComponent/LabelComponent";
+import ButtonComponent from "../../../components/common/button/ButtonComponent";
+import ErrorComponent from "../../../components/form/errorComponent/ErrorComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
-// import du context
 // import des services
+import { notifyEditSuccess, notifyError } from "../../../utils/functions/toast";
+import { updateTag } from "../../../utils/api/builtMap/putRequests";
+import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import des types
 import type { TagType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./tagManagementPage.module.scss";
-import ErrorComponent from "../../../components/form/errorComponent/ErrorComponent";
-import { notifyEditSuccess, notifyError } from "../../../utils/functions/toast";
-import { updateTag } from "../../../utils/api/builtMap/putRequests";
-import { useModalStore } from "../../../utils/stores/storymap/modalStore";
-import ButtonComponent from "../../../components/common/button/ButtonComponent";
 
 type TagInputProps = {
 	tag: TagType;

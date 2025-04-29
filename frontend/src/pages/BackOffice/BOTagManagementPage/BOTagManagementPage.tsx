@@ -1,11 +1,15 @@
 // import des bibliothèques
 import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
 // import des composants
 import LoaderComponent from "../../../components/common/loader/LoaderComponent";
 import ModalComponent from "../../../components/common/modal/ModalComponent";
 import TagInput from "./TagInput";
 import DeleteTagContent from "../../../components/common/modal/DeleteTagContent";
+import LabelComponent from "../../../components/form/inputComponent/LabelComponent";
+import ErrorComponent from "../../../components/form/errorComponent/ErrorComponent";
+import ButtonComponent from "../../../components/common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du context
@@ -13,16 +17,12 @@ import { AuthContext } from "../../../context/AuthContext";
 // import des services
 import { getAllTags } from "../../../utils/api/builtMap/getRequests";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
+import { addNewTag } from "../../../utils/api/builtMap/postRequests";
+import { notifyCreateSuccess } from "../../../utils/functions/toast";
 // import des types
 import type { TagType } from "../../../utils/types/mapTypes";
 // import des styles
 import style from "./tagManagementPage.module.scss";
-import { useForm } from "react-hook-form";
-import LabelComponent from "../../../components/form/inputComponent/LabelComponent";
-import ErrorComponent from "../../../components/form/errorComponent/ErrorComponent";
-import { addNewTag } from "../../../utils/api/builtMap/postRequests";
-import { notifyCreateSuccess } from "../../../utils/functions/toast";
-import ButtonComponent from "../../../components/common/button/ButtonComponent";
 
 const TagManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);

@@ -1,12 +1,12 @@
-// import des serivces
+// import des services
 import { apiClient } from "../apiClient";
-// import des types
-import type { MapInfoType, PointSetType, TagType } from "../../types/mapTypes";
 import {
 	notifyEditSuccess,
 	notifyError,
 	notifyPublicationSuccess,
 } from "../../functions/toast";
+// import des types
+import type { MapInfoType, PointSetType, TagType } from "../../types/mapTypes";
 
 /**
  * Envoie une requête PUT pour mettre à jour une carte
