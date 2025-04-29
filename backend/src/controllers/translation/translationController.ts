@@ -9,6 +9,7 @@ export const translationController = {
 	getTranslation: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { translationKey } = req.query;
+
 			let translations = [];
 			if (translationKey) {
 				translations = await dcartDataSource
@@ -32,6 +33,31 @@ export const translationController = {
 				.getRawMany();
 
 			res.status(200).send(translations);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	updateTranslation: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { translationObjectId } = req.params;
+			const { translationKey } = req.query;
+			const safeKey = (translationKey as string).replace(/'/g, "''"); // échappe les éventuelles quotes simples dans la clé
+			const { translation } = req.body;
+
+			await dcartDataSource
+				.getRepository(Translation)
+				.createQueryBuilder()
+				.update("translation")
+				.set({
+					translations: () =>
+						`translations || jsonb_build_object('${safeKey}', '${translation}')`,
+				})
+				.where("id = :id", {
+					id: translationObjectId,
+				})
+				.execute();
+			res.status(200).send("Objet de traduction modifié");
 		} catch (error) {
 			handleError(res, error as Error);
 		}

@@ -3,9 +3,6 @@ import { useContext, useEffect, useState } from "react";
 import { useNavigate } from "react-router";
 // import des composants
 import LoaderComponent from "../../../components/common/loader/LoaderComponent";
-import ButtonComponent from "../../../components/common/button/ButtonComponent";
-// import des custom hooks
-import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du context
 import { AuthContext } from "../../../context/AuthContext";
 // import des services
@@ -14,10 +11,9 @@ import { getTranslations } from "../../../utils/api/translationAPI";
 import type { TranslationObjectType } from "../../../utils/types/languageTypes";
 // import des styles
 import style from "./BOTranslationPage.module.scss";
+import TranslationInput from "./TranslationInput";
 
 const BackofficeTranslationPage = () => {
-	const { translation, language } = useTranslation();
-
 	const { isAdmin } = useContext(AuthContext);
 
 	const navigate = useNavigate();
@@ -59,27 +55,12 @@ const BackofficeTranslationPage = () => {
 									return null;
 								}
 								return (
-									<div key={key} className={style.translationInputContainer}>
-										<h4>
-											{
-												translation[language].backoffice.translationManagement[
-													key
-												]
-											}
-										</h4>
-										<div className={style.inputAndButton}>
-											<textarea
-												defaultValue={value as string}
-												onChange={() => console.log(key)}
-											/>
-											<ButtonComponent
-												type="button"
-												color="brown"
-												onClickFunction={() => console.log(key)}
-												textContent="Modifier"
-											/>
-										</div>
-									</div>
+									<TranslationInput
+										key={key}
+										id={translationObject.id}
+										translationKey={key}
+										value={value}
+									/>
 								);
 							},
 						)}
