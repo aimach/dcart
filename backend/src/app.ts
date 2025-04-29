@@ -11,6 +11,7 @@ import { mapRoutes } from "./routes/builtMap/mapRoutes";
 import { authRoutes } from "./routes/authRoutes";
 import { storymapRoutes } from "./routes/storymap";
 import { sessionRoutes } from "./routes/sessionRoutes";
+import { translationRoutes } from "./routes/translationRoutes";
 
 // on charge les variables d'environnement
 dotenv.config();
@@ -19,7 +20,7 @@ const app: Application = express();
 const PORT = process.env.APP_PORT;
 
 // middleware
-app.use(express.json({ limit: '10mb' }));
+app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(
 	cors({
@@ -49,6 +50,7 @@ app.use("/session", sessionRoutes);
 app.use("/dcart", dcartRoutes);
 app.use("/map", mapRoutes);
 app.use("/storymap", storymapRoutes);
+app.use("/translation", translationRoutes);
 
 // Démarrage du serveur
 app.listen(PORT, () =>
