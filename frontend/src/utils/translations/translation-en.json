@@ -308,6 +308,13 @@
 			"toAdmin": "Become admin",
 			"admin": "Admin",
 			"writer": "Writer"
+		},
+		"translationManagement": {
+			"frenchTranslation": "French translation",
+			"englishTranslation": "English translation",
+			"homepage.title": "Title of the homepage",
+			"homepage.description": "Description of the homepage",
+			"menu.description": "Content of the menu"
 		}
 	}
 }

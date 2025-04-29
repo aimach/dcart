@@ -15,22 +15,23 @@ export const translationController = {
 					.getRepository(Translation)
 					.createQueryBuilder("translation")
 					.select([
+						"translation.id",
 						"translation.language",
 						`translation.translations->>'${translationKey}' as translation`,
 					])
 					.getRawMany();
 
-				res.status(200).json(translations);
+				res.status(200).send(translations);
 				return;
 			}
 
 			translations = await dcartDataSource
 				.getRepository(Translation)
 				.createQueryBuilder("translation")
-				.select(["language", "translations"])
+				.select(["id", "language", "translations"])
 				.getRawMany();
 
-			res.status(200).json(translations);
+			res.status(200).send(translations);
 		} catch (error) {
 			handleError(res, error as Error);
 		}
