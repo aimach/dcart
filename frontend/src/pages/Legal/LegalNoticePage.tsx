@@ -9,6 +9,23 @@ const LegalNoticePage = () => {
 
 			<h2>1. Éditeur du site</h2>
 			<p>
+				Ce site web est édité dans le cadre du projet dCART (des dieux à la
+				carte,{" "}
+				<a href="https://sms.univ-tlse2.fr/accueil-sms/la-recherche/operations-structurantes/dcart-des-dieux-a-la-carte">
+					lien
+				</a>
+				), un projet de recherche financé par le LabEx SMS (Sociétés, Milieux,
+				Santé).
+				<br />
+				Ce projet vise à diffuser les données et connaissances qui ont été
+				produites dans le cadre du projet de recherche{" "}
+				<a href="https://map-polytheisms.huma-num.fr/">ERC MAP</a>, à
+				destination d'un public non spécialiste. Il mobilise les possibilités du
+				web pour diffuser des contenus attractifs (Atlas numérique des noms
+				divins en Méditerranée).
+				<br />
+			</p>
+			<p>
 				Nom de l’entreprise / Freelance : [Ton nom ou raison sociale] <br />
 				Statut juridique : [ex : Entreprise individuelle] <br />
 				Adresse : [adresse postale] <br />
@@ -22,9 +39,10 @@ const LegalNoticePage = () => {
 
 			<h2>3. Hébergement</h2>
 			<p>
-				Hébergeur : [Nom de l’hébergeur] <br />
-				Adresse : [adresse de l’hébergeur] <br />
-				Site : <a href="[lien vers site de l’hébergeur]">[lien]</a>
+				Hébergeur : TGIR Huma-Num <br />
+				Adresse : UMS 3598 54 Bd Raspail, 75006 Paris <br />
+				Site :{" "}
+				<a href="https://www.huma-num.fr/">Lien vers le site d'Huma-Num</a>
 			</p>
 
 			<h2>4. Propriété intellectuelle</h2>
