@@ -1,9 +1,9 @@
 // import du style
-import style from "./privacyPolicyPage.module.scss";
+import style from "./legalPage.module.scss";
 
 const PrivacyPolicyPage = () => {
 	return (
-		<div className={style.privacyPolicyPage}>
+		<div className={style.legalPage}>
 			<h1>Politique de confidentialité</h1>
 			<p>Dernière mise à jour : 30 avril 2025</p>
 

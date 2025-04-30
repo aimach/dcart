@@ -1,0 +1,18 @@
+@use '../../styles/mixin' as m;
+@use '../../styles/variable' as v;
+
+.legalPage {
+    width: 50vw;
+    margin: 0 auto;
+
+    >h1 {
+        font-size: $font-size-xxxxl;
+        text-align: center;
+        margin: $font-space-xl;
+    }
+
+    >h2 {
+        font-size: $font-size-xxl;
+        margin: $font-space-xl;
+    }
+}

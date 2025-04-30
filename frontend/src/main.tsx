@@ -18,6 +18,9 @@ import TagPage from "./pages/TagPage/TagPage.tsx";
 import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
 import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
 import UserManagementPage from "./pages/BackOffice/BOUserManagementPage/BOUserManagementPage.tsx";
+import TagManagementPage from "./pages/BackOffice/BOTagManagementPage/BOTagManagementPage.tsx";
+import PrivacyPolicyPage from "./pages/Legal/PrivacyPolicyPage.tsx";
+import LegalNoticePage from "./pages/Legal/LegalNoticePage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -26,7 +29,6 @@ import { TagOptionsProvider } from "./context/TagContext.tsx";
 import { SessionProvider } from "./context/SessionContext.tsx";
 // import du style
 import "./index.css";
-import TagManagementPage from "./pages/BackOffice/BOTagManagementPage/BOTagManagementPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -50,11 +52,16 @@ if (rootElement) {
 											path="storymap/:storymapSlug"
 											element={<StorymapPage />}
 										/>
+										<Route
+											path="politique-de-confidentialite"
+											element={<PrivacyPolicyPage />}
+										/>
+										<Route
+											path="mentions-legales"
+											element={<LegalNoticePage />}
+										/>
 									</Route>
-									<Route
-										path="authentification"
-										element={<AuthentificationPage />}
-									/>
+
 									<Route path="backoffice" element={<ProtectedLayout />}>
 										<Route index element={<BOHomePage />} />
 										<Route path="maps">
@@ -81,6 +88,10 @@ if (rootElement) {
 										<Route path="users" element={<UserManagementPage />} />
 										<Route path="tags" element={<TagManagementPage />} />
 									</Route>
+									<Route
+										path="authentification"
+										element={<AuthentificationPage />}
+									/>
 								</Routes>
 								<ToastContainer />
 							</TagOptionsProvider>
