@@ -27,6 +27,7 @@ export const tagController = {
 					.getRepository(Tag)
 					.createQueryBuilder("tag")
 					.leftJoinAndSelect("tag.storymaps", "storymaps")
+					.orderBy("tag.name", "ASC")
 					.getMany();
 				res.status(200).send(allTags);
 				return;
