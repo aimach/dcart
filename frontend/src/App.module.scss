@@ -215,6 +215,10 @@ button {
 		}
 	}
 
+	.heroButtonContainer {
+		@include m.flexbox(flex, row, nowrap, flex-start, center);
+	}
+
 	.tagContainer {
 		width: 100%;
 		height: 100%;

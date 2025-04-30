@@ -31,7 +31,7 @@ const MapIntroductionContent = ({
 	const { translation, language } = useTranslation();
 
 	// récupération de l'id de la carte en cours
-	const { mapId } = useParams();
+	const { mapSlug } = useParams();
 
 	// récupération des données des stores
 	const { mapInfos } = useMapStore();
@@ -45,7 +45,7 @@ const MapIntroductionContent = ({
 
 	return (
 		<>
-			{mapId === "exploration" && (
+			{mapSlug === "exploration" && (
 				<SearchFormComponent setIsModalOpen={setIsModalOpen} />
 			)}
 			{mapInfos && (

@@ -76,12 +76,20 @@ function HomePage() {
 			<section className={style.heroContainer}>
 				<h1>{homePageContent.title}</h1>
 				<p>{homePageContent.description}</p>
-				<ButtonComponent
-					type="button"
-					color="brown"
-					textContent="Découvrir"
-					onClickFunction={scrollToTagContainer}
-				/>
+				<div className={style.heroButtonContainer}>
+					<ButtonComponent
+						type="route"
+						color="brown"
+						textContent="Explorer"
+						link="/map/exploration"
+					/>
+					<ButtonComponent
+						type="button"
+						color="brown"
+						textContent="Découvrir"
+						onClickFunction={scrollToTagContainer}
+					/>
+				</div>
 			</section>
 			<section className={style.tagContainer} ref={tagContainerRef}>
 				{allTagsWithItems?.map((tagWithItems) => {
