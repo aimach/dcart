@@ -31,6 +31,7 @@ export const translationController = {
 				.getRepository(Translation)
 				.createQueryBuilder("translation")
 				.select(["id", "language", "translations"])
+				.orderBy("translation.language")
 				.getRawMany();
 
 			res.status(200).send(translations);

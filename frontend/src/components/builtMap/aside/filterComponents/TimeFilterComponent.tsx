@@ -24,7 +24,8 @@ interface TimeFilterComponentProps {
  */
 const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 	// récupération de l'id de la carte en cours
-	const { mapId } = useParams();
+	const { mapId, mapSlug } = useParams();
+	const mapIdentifier = mapId ?? mapSlug;
 
 	// récupération des données des stores
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
@@ -80,7 +81,7 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		setTimeValues({ ante: e.maxValue, post: e.minValue });
 		setMapReady(false);
 
-		const points = await getAllPointsByMapId(mapId as string, {
+		const points = await getAllPointsByMapId(mapIdentifier as string, {
 			...userFilters,
 			ante: e.maxValue,
 			post: e.minValue,

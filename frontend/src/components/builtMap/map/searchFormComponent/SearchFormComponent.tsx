@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
 import MultiSelectComponent from "../../../common/multiSelect/MultiSelectComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import useFilterSearch from "../../../../utils/hooks/useFilterSearch";
@@ -40,7 +41,8 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	const { translation, language } = useTranslation();
 
 	// récupération de l'id de la carte en cours
-	const { mapId } = useParams();
+	const { mapId, mapSlug } = useParams();
+	const mapIdentifier = mapId || mapSlug;
 
 	// récupération des données des stores
 	const { userFilters, setUserFilters } = useMapFiltersStore();
@@ -114,7 +116,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	const { fetchFilteredPoints } = useFilterSearch();
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		fetchFilteredPoints(mapId as string, userFilters);
+		fetchFilteredPoints(mapIdentifier as string, userFilters);
 		setIsModalOpen(false);
 	};
 
@@ -165,18 +167,20 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 								handleChange={handleChange}
 							/>{" "}
 						</div>
-						<button type="submit">
-							{translation[language].button.seeSources}
-						</button>
+						<div className={style.searchFormButtonContainer}>
+							<ButtonComponent
+								type="submit"
+								color="brown"
+								textContent={translation[language].button.filter}
+							/>
+							<ButtonComponent
+								type="button"
+								color="brown"
+								textContent={translation[language].button.seeAll}
+								onClickFunction={() => setIsModalOpen(false)}
+							/>
+						</div>
 					</form>
-					<div>-- {translation[language].common.or} --</div>
-					<button
-						type="button"
-						onClick={() => setIsModalOpen(false)}
-						onKeyUp={() => setIsModalOpen(false)}
-					>
-						{translation[language].button.seeAll}
-					</button>
 				</>
 			) : (
 				<LoaderComponent size={40} />

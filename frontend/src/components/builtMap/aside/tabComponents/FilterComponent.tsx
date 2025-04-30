@@ -6,6 +6,7 @@ import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent
 import ElementFilterComponent from "../filterComponents/ElementFilterComponent";
 import MultiSelectFilterComponent from "../filterComponents/MultiSelectFilterComponent";
 import DivinityNbComponent from "../filterComponents/DivinityNbFilterComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -216,20 +217,19 @@ const FilterComponent = ({
 				)}
 			</div>
 			<div className={style.filterButtonContainer}>
-				<button
-					className={style.filterButton}
+				<ButtonComponent
 					type="button"
-					onClick={handleFilterButton}
-				>
-					{translation[language].button.filter}
-				</button>
-				<button
-					className={style.filterButton}
+					color="brown"
+					textContent={translation[language].button.filter}
+					onClickFunction={handleFilterButton}
+				/>
+				<ButtonComponent
 					type="button"
-					onClick={resetFilters}
-				>
-					{translation[language].button.resetFilter}
-				</button>
+					color="brown"
+					textContent={translation[language].button.resetFilter}
+					onClickFunction={resetFilters}
+					isSelected={false}
+				/>
 			</div>
 		</div>
 	);

@@ -106,6 +106,7 @@ export const authController = {
 			if (userId === "all") {
 				const users = await User.find({
 					select: ["id", "username", "pseudo", "status"],
+					order: { pseudo: "ASC" },
 				});
 				res.status(200).json(users);
 				return;

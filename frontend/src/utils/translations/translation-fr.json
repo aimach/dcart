@@ -158,6 +158,7 @@
 				"delete": "Supprimer"
 			},
 			"pointSetForm": {
+				"addNewPointSet": "Ajouter un nouveau jeu de points",
 				"pointSetName": {
 					"label": "Nom du jeu de points",
 					"description": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques."
@@ -214,6 +215,7 @@
 			"addMapIntro": "Ajouter les informations de la carte",
 			"addMapPoints": "Ajouter les points de la carte",
 			"uploadPoints": "Charger les points",
+
 			"addFilters": "Ajouter des filtres",
 			"filterIntroduction": "Il est possible d'ajouter jusqu'2 filtres par carte, en plus du filtre temporel toujours affiché.",
 			"locationFilter": {
@@ -297,8 +299,11 @@
 				"imageToLeft": "Image à gauche",
 				"imageToRight": "Image à droite",
 				"scrollMapStepList": "Liste des étapes de la carte déroulante",
+				"goToSteps": "Aller aux étapes",
 				"addStep": "Ajouter cette étape",
-				"modifyStep": "Modifier cette étape"
+				"modifyStep": "Modifier cette étape",
+				"modifyTextNow": "Modifier le texte directement",
+				"modifyImageNow": "Modifier l'image directement"
 			}
 		},
 		"userManagement": {

@@ -380,27 +380,30 @@ const ComparisonMapForm = () => {
 					</div>
 
 					<div className={style.formButtonNavigation}>
-						<button
+						<ButtonComponent
 							type="button"
-							onClick={() => {
+							color="brown"
+							textContent={translation[language].common.back}
+							onClickFunction={() => {
 								updateFormType("blockChoice");
 								setSearchParams(undefined);
 							}}
-						>
-							<ChevronLeft />
-							{translation[language].common.back}
-						</button>
-						<button
+							icon={<ChevronLeft />}
+						/>
+						<ButtonComponent
 							type="submit"
-							disabled={
+							color="brown"
+							textContent={
+								action === "create"
+									? translation[language].backoffice.storymapFormPage.form
+											.create
+									: translation[language].backoffice.storymapFormPage.form.edit
+							}
+							isDisabled={
 								(action === "create" && !pointSets.left?.attestationIds) ||
 								!pointSets.right?.attestationIds
 							}
-						>
-							{action === "create"
-								? translation[language].backoffice.storymapFormPage.form.create
-								: translation[language].backoffice.storymapFormPage.form.edit}
-						</button>
+						/>
 					</div>
 				</form>
 			</>

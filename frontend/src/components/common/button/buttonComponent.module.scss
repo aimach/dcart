@@ -2,6 +2,8 @@
 @use '../../../styles/variable' as v;
 
 .simpleButton {
+    @include m.flexbox(flex, row, wrap, center, center);
+    gap: v.$space-xs;
     @include m.unbuttonize;
     cursor: pointer;
     color: v.$color-neutral-100;
@@ -12,7 +14,7 @@
     transition: transform 0.1s ease-in-out;
 
     &:hover {
-        transform: scale(1.1);
+        transform: scale(1.05);
     }
 }
 
@@ -29,6 +31,11 @@
 .red {
     background-color: v.$color-error;
     border: 1px solid v.$color-error;
+}
+
+.green {
+    background-color: v.$color-validation;
+    border: 1px solid v.$color-validation;
 }
 
 .unselected {

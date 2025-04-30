@@ -1,6 +1,8 @@
 // import des bibliothèques
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
+// import des composants
+import ButtonComponent from "../button/ButtonComponent";
 // import du contexte
 import { SessionContext } from "../../../context/SessionContext";
 // import des custom hooks
@@ -56,9 +58,12 @@ const StayConnectedContent = () => {
 			<br />
 			{translation[language].backoffice.disconnectInOneMinute}
 			<div className={style.buttonContainer}>
-				<button type="button" onClick={handleStayConnected}>
-					{translation[language].modal.yes}
-				</button>
+				<ButtonComponent
+					type="button"
+					color="green"
+					textContent={translation[language].modal.yes}
+					onClickFunction={handleStayConnected}
+				/>
 			</div>
 		</div>
 	);

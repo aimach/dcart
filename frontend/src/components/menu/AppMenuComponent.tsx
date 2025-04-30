@@ -121,6 +121,18 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 						imgWidth={100}
 					/>
 				</section>
+				<section className={style.legalPageSection}>
+					<Link to="/mentions-legales" onClick={() => setMenuIsOpen(false)}>
+						Mentions légales
+					</Link>
+					<Link
+						to="/politique-de-confidentialite"
+						onClick={() => setMenuIsOpen(false)}
+					>
+						Politique de confidentialité
+					</Link>
+				</section>
+				<p>© 2025 Projet dCART. Tous droits réservés.</p>
 			</section>
 			<section className={style.menuPageImageSection}>
 				<X onClick={() => setMenuIsOpen(false)} />

@@ -67,7 +67,8 @@ export const storymapContentControllers = {
 					query.where("storymap.isActive = :isActive", { isActive });
 				}
 				const allStorymaps = await query
-					.orderBy("block.position", "ASC")
+					.orderBy("storymap.id")
+					.addOrderBy("block.position", "ASC")
 					.getMany();
 
 				res.status(200).send(allStorymaps);

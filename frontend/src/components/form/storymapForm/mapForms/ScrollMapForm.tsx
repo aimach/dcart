@@ -7,6 +7,7 @@ import StepPanel from "./StepPanel";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
 import StepForm from "./StepForm";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -174,30 +175,37 @@ const ScrollMapForm = () => {
 							}
 						})}
 						<div className={style.formButtonNavigation}>
-							<button
+							<ButtonComponent
 								type="button"
-								onClick={() => {
+								color="brown"
+								textContent={translation[language].common.back}
+								onClickFunction={() => {
 									updateFormType("blockChoice");
 									setSearchParams(undefined);
 								}}
-							>
-								<ChevronLeft />
-								{translation[language].common.back}
-							</button>
-							<button type="submit">
-								{
+								icon={<ChevronLeft />}
+							/>
+							<ButtonComponent
+								type="submit"
+								color="brown"
+								textContent={
 									translation[language].backoffice.storymapFormPage.form[
 										action === "create" ? "create" : "edit"
 									]
 								}
-							</button>
+							/>
 							{action === "edit" && (
-								<button
+								<ButtonComponent
 									type="button"
-									onClick={() => setSearchParams({ stepAction: "create" })}
-								>
-									Aller aux étapes
-								</button>
+									color="brown"
+									textContent={
+										translation[language].backoffice.storymapFormPage.form
+											.goToSteps
+									}
+									onClickFunction={() =>
+										setSearchParams({ stepAction: "create" })
+									}
+								/>
 							)}
 						</div>
 					</form>

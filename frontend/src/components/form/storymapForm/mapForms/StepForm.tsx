@@ -8,6 +8,7 @@ import FormTitleComponent from "../common/FormTitleComponent";
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 import EditorComponent from "../wysiwygBlock/EditorComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -388,22 +389,26 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					</div>
 				</div>
 				<div className={style.formButtonNavigation}>
-					<button
+					<ButtonComponent
 						type="button"
-						onClick={() => {
+						onClickFunction={() => {
 							updateFormType("scroll_map");
 							setSearchParams({ action: "edit" });
 						}}
-					>
-						<ChevronLeft />
-						{translation[language].common.back}
-					</button>
-					<button type="submit">
-						{stepAction === "create"
-							? translation[language].backoffice.storymapFormPage.form.addStep
-							: translation[language].backoffice.storymapFormPage.form
-									.modifyStep}
-					</button>
+						color="brown"
+						textContent={translation[language].common.back}
+						icon={<ChevronLeft />}
+					/>
+					<ButtonComponent
+						type="submit"
+						color="brown"
+						textContent={
+							stepAction === "create"
+								? translation[language].backoffice.storymapFormPage.form.addStep
+								: translation[language].backoffice.storymapFormPage.form
+										.modifyStep
+						}
+					/>
 				</div>
 			</form>
 		</>

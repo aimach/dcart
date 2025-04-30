@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 // import des composants
 import FormTitleComponent from "../common/FormTitleComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -232,24 +233,26 @@ const TableForm = () => {
 					</div>
 				</div>
 				<div className={style.formButtonNavigation}>
-					<button
+					<ButtonComponent
 						type="button"
-						onClick={() => {
+						onClickFunction={() => {
 							updateFormType("blockChoice");
 							setSearchParams(undefined);
 						}}
-					>
-						<ChevronLeft />
-						{translation[language].common.back}
-					</button>
-					<button type="submit">
-						{
+						color="brown"
+						textContent={translation[language].common.back}
+						icon={<ChevronLeft />}
+					/>
+					<ButtonComponent
+						type="submit"
+						color="brown"
+						textContent={
 							translation[language].backoffice.storymapFormPage.form[
 								action === "create" ? "create" : "edit"
 							]
 						}
-						<ChevronRight />
-					</button>
+						icon={<ChevronRight />}
+					/>
 				</div>
 			</form>
 		</>

@@ -37,14 +37,15 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 	const { language, translation } = useTranslation();
 
 	// récupération de l'id de la carte en cours
-	const { mapId } = useParams();
+	const { mapId, mapSlug } = useParams();
+	const mapIdentifier = mapId || mapSlug;
 
 	// définition de la chaîne de caractères contenant les dates
 	const datationSentence = getDatationSentence(source, translation, language);
 
 	// définition d'un état permettant de stocker les attestations (si la carte est en mode exploration, on stocke un tableau vide car elles ne sont pas encore chargées)
 	const [attestations, setAttestations] = useState<AttestationType[]>(
-		mapId === "exploration" ? [] : source.attestations,
+		mapIdentifier === "exploration" ? [] : source.attestations,
 	);
 
 	// définition d'un état permettant de savoir si la source est sélectionnée

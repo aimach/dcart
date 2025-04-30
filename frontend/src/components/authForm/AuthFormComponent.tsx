@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
 import ErrorComponent from "../form/errorComponent/ErrorComponent";
+import ButtonComponent from "../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import du contexte
@@ -91,9 +92,11 @@ const AuthFormComponent = () => {
 						/>
 					)}
 				</div>
-				<button type="submit">
-					{translation[language].backoffice.authPage.login}
-				</button>
+				<ButtonComponent
+					type="submit"
+					color="brown"
+					textContent={translation[language].backoffice.authPage.login}
+				/>
 			</form>
 		</section>
 	);
