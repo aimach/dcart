@@ -49,7 +49,7 @@ const MapIntroductionContent = ({
 				<SearchFormComponent setIsModalOpen={setIsModalOpen} />
 			)}
 			{mapInfos && (
-				<div className={style.introModalContent}>
+				<div className={style.modalIntroContent}>
 					<div className={style.modalTitleSection}>
 						<img src={delta} alt="decoration" width={30} />
 						<h3>{(mapInfos as MapInfoType)[`title_${language}`]}</h3>

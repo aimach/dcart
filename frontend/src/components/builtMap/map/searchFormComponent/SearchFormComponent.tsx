@@ -41,7 +41,8 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	const { translation, language } = useTranslation();
 
 	// récupération de l'id de la carte en cours
-	const { mapId } = useParams();
+	const { mapId, mapSlug } = useParams();
+	const mapIdentifier = mapId || mapSlug;
 
 	// récupération des données des stores
 	const { userFilters, setUserFilters } = useMapFiltersStore();
@@ -115,7 +116,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	const { fetchFilteredPoints } = useFilterSearch();
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		fetchFilteredPoints(mapId as string, userFilters);
+		fetchFilteredPoints(mapIdentifier as string, userFilters);
 		setIsModalOpen(false);
 	};
 
@@ -166,19 +167,20 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 								handleChange={handleChange}
 							/>{" "}
 						</div>
-						<ButtonComponent
-							type="submit"
-							color="brown"
-							textContent={translation[language].button.seeSources}
-						/>
+						<div className={style.searchFormButtonContainer}>
+							<ButtonComponent
+								type="submit"
+								color="brown"
+								textContent={translation[language].button.filter}
+							/>
+							<ButtonComponent
+								type="button"
+								color="brown"
+								textContent={translation[language].button.seeAll}
+								onClickFunction={() => () => setIsModalOpen(false)}
+							/>
+						</div>
 					</form>
-					<div>-- {translation[language].common.or} --</div>
-					<ButtonComponent
-						type="button"
-						color="brown"
-						textContent={translation[language].button.seeAll}
-						onClickFunction={() => () => setIsModalOpen(false)}
-					/>
 				</>
 			) : (
 				<LoaderComponent size={40} />

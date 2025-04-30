@@ -46,13 +46,11 @@ const MapPage = () => {
 	// fonction pour récupérer les informations de la carte
 	const fetchMapInfosAndPoints = useCallback(
 		async (mapIdentifier: string, type: string) => {
-			console.log(mapIdentifier, type);
 			let mapInfos = null;
 			if (type === "id") {
 				mapInfos = await getOneMapInfosById(mapIdentifier as string);
 			} else {
 				mapInfos = await getOneMapInfosBySlug(mapIdentifier as string);
-				console.log({ mapInfos });
 			}
 			// si la carte est une carte d'exploration, on réinitialise les filtres
 			if (mapIdentifier === "exploration") {

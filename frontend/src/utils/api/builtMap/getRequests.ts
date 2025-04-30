@@ -223,7 +223,6 @@ const getOneMapInfosBySlug = async (mapSlug: string) => {
 	try {
 		if (mapSlug !== "exploration") {
 			const response = await apiClient.get(`/dcart/maps/slug/${mapSlug}`);
-			console.log({ response });
 			const mapInfos = await response.data;
 			return mapInfos;
 		}
