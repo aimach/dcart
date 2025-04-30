@@ -1,3 +1,5 @@
+// import des composants
+import ButtonComponent from "../button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -6,7 +8,6 @@ import { deleteTag } from "../../../utils/api/builtMap/deleteRequests";
 import { notifyDeleteSuccess } from "../../../utils/functions/toast";
 // import du style
 import style from "./modalComponent.module.scss";
-import ButtonComponent from "../button/ButtonComponent";
 
 /**
  * Affiche le contenu du modal de suppression d'une étiquette : texte de validation et boutons de confirmation (oui/non)

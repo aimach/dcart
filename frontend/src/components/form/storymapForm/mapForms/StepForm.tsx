@@ -8,6 +8,7 @@ import FormTitleComponent from "../common/FormTitleComponent";
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 import EditorComponent from "../wysiwygBlock/EditorComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -36,7 +37,6 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
-import ButtonComponent from "../../../common/button/ButtonComponent";
 
 export type stepInputsType = {
 	content1_lang1: string;

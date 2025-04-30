@@ -7,6 +7,7 @@ import StepPanel from "./StepPanel";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
 import StepForm from "./StepForm";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -27,7 +28,6 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
-import ButtonComponent from "../../../common/button/ButtonComponent";
 
 export type scrollMapInputsType = {
 	content1_lang1: string;

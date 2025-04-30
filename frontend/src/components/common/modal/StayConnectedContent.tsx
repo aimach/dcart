@@ -1,6 +1,8 @@
 // import des bibliothèques
 import { useContext, useEffect } from "react";
 import { useNavigate } from "react-router";
+// import des composants
+import ButtonComponent from "../button/ButtonComponent";
 // import du contexte
 import { SessionContext } from "../../../context/SessionContext";
 // import des custom hooks
@@ -10,7 +12,6 @@ import { deleteSession, updateSession } from "../../../utils/api/sessionAPI";
 
 // import du style
 import style from "./modalComponent.module.scss";
-import ButtonComponent from "../button/ButtonComponent";
 
 /**
  * Affiche le contenu de la modal en cas d'atteinte du timeout de la session (rester connecté ou non)

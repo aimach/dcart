@@ -31,6 +31,7 @@ import PanelSection from "../../../../components/storymap/panel/PanelSection";
 import DeleteBlockModalContent from "../../../../components/common/modal/DeleteBlockModalContent";
 import TableForm from "../../../../components/form/storymapForm/tableForm/TableForm";
 import BlockChoiceForm from "../../../../components/form/storymapForm/blockChoiceForm/BlockChoiceForm";
+import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 // import du context
 import { SessionContext } from "../../../../context/SessionContext";
 // import des custom hooks
@@ -47,7 +48,6 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import style from "./storymapIntroPage.module.scss";
 // import des icônes
 import { ChevronRightCircle } from "lucide-react";
-import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 
 /**
  * Page d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.

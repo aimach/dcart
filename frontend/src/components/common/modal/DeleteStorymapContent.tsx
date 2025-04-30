@@ -1,3 +1,5 @@
+// import des composants
+import ButtonComponent from "../button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -5,7 +7,6 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import { deleteStorymap } from "../../../utils/api/storymap/deleteRequests";
 // import du style
 import style from "./modalComponent.module.scss";
-import ButtonComponent from "../button/ButtonComponent";
 
 /**
  * Affiche le contenu du modal de suppression d'une storymap : texte de validation et boutons de confirmation (oui/non)

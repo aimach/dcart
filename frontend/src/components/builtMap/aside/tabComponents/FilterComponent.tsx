@@ -6,6 +6,7 @@ import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent
 import ElementFilterComponent from "../filterComponents/ElementFilterComponent";
 import MultiSelectFilterComponent from "../filterComponents/MultiSelectFilterComponent";
 import DivinityNbComponent from "../filterComponents/DivinityNbFilterComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -18,7 +19,6 @@ import { useShallow } from "zustand/shallow";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
-import ButtonComponent from "../../../common/button/ButtonComponent";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];

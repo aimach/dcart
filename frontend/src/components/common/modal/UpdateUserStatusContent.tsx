@@ -1,9 +1,10 @@
+// import des composants
+import ButtonComponent from "../button/ButtonComponent";
 // import des custom hooks
 import { updateUserStatus } from "../../../utils/api/profileAPI";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
-import ButtonComponent from "../button/ButtonComponent";
 // import du style
 import style from "./modalComponent.module.scss";
 

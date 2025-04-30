@@ -6,6 +6,7 @@ import { useForm } from "react-hook-form";
 // import des composants
 import FormTitleComponent from "../common/FormTitleComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -30,7 +31,6 @@ import {
 	CircleCheck,
 	CircleHelp,
 } from "lucide-react";
-import ButtonComponent from "../../../common/button/ButtonComponent";
 
 export type tableInputsType = {
 	content1_lang1: string;

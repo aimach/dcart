@@ -1,3 +1,5 @@
+// import des composants
+import ButtonComponent from "../button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -7,7 +9,6 @@ import { deleteBlock } from "../../../utils/api/storymap/deleteRequests";
 // import des types
 // import du style
 import style from "./modalComponent.module.scss";
-import ButtonComponent from "../button/ButtonComponent";
 
 /**
  * Affiche le contenu du modal de suppression d'un block : texte de validation et boutons de confirmation (oui/non)

@@ -4,6 +4,7 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
 import ErrorComponent from "../form/errorComponent/ErrorComponent";
+import ButtonComponent from "../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import du contexte
@@ -17,7 +18,6 @@ import type { SubmitHandler } from "react-hook-form";
 import type { JwtPayload } from "jwt-decode";
 // import du style
 import style from "./authFormComponent.module.scss";
-import ButtonComponent from "../common/button/ButtonComponent";
 
 /**
  * Composant de formulaire d'authentification

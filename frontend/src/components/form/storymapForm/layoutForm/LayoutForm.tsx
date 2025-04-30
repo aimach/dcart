@@ -5,6 +5,7 @@ import { useParams, useSearchParams } from "react-router";
 import ImageForm from "../imageForm/imageForm";
 import TextForm from "../textForm/TextForm";
 import FormTitleComponent from "../common/FormTitleComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -24,7 +25,6 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import style from "./layoutForm.module.scss";
 // import des icônes
 import { ChevronLeft, ChevronRight, LayoutList } from "lucide-react";
-import ButtonComponent from "../../../common/button/ButtonComponent";
 
 /**
  * Formulaire pour la création d'un bloc de type "layout"

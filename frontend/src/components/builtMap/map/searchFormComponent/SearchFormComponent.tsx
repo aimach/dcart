@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
 import MultiSelectComponent from "../../../common/multiSelect/MultiSelectComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import useFilterSearch from "../../../../utils/hooks/useFilterSearch";
@@ -25,7 +26,6 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { MultiValue } from "react-select";
 // import du style
 import style from "./searchFormComponent.module.scss";
-import ButtonComponent from "../../../common/button/ButtonComponent";
 
 interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;

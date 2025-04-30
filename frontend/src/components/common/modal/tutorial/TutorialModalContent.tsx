@@ -1,5 +1,7 @@
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import des composants
+import ButtonComponent from "../../button/ButtonComponent";
 // import des services
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
@@ -7,9 +9,8 @@ import { useShallow } from "zustand/shallow";
 import { modalContentArray } from "../../../../utils/menu/modalArray";
 // import du style
 import style from "./tutorialModalContent.module.scss";
-// import des images
+// import des images et icônes
 import delta from "../../../../assets/delta.png";
-import ButtonComponent from "../../button/ButtonComponent";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const TutorialModalContent = () => {

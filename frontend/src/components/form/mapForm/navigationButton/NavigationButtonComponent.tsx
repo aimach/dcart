@@ -1,5 +1,7 @@
 // import des bibliothèques
 import { useLocation } from "react-router";
+// import des composants
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -10,7 +12,6 @@ import { useShallow } from "zustand/shallow";
 import style from "./navigationButtonComponent.module.scss";
 // import des icônes
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import ButtonComponent from "../../../common/button/ButtonComponent";
 
 type NavigationButtonComponentProps = {
 	step: number;

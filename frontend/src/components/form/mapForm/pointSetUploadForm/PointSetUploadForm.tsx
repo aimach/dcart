@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 // import des composants
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -17,7 +18,6 @@ import type { PointSetType } from "../../../../utils/types/mapTypes";
 import style from "../introForm/introForm.module.scss";
 // import des icônes
 import { CircleCheck } from "lucide-react";
-import ButtonComponent from "../../../common/button/ButtonComponent";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;

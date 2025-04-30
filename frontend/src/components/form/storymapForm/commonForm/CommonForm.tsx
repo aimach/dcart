@@ -5,6 +5,8 @@ import { useSearchParams } from "react-router";
 // import des composants
 import EditorComponent from "../wysiwygBlock/EditorComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
+import LabelComponent from "../../inputComponent/LabelComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -27,8 +29,6 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import style from "./commonForm.module.scss";
 // import des icônes
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import LabelComponent from "../../inputComponent/LabelComponent";
-import ButtonComponent from "../../../common/button/ButtonComponent";
 
 type CommonFormProps = {
 	onSubmit: SubmitHandler<allInputsType>;
