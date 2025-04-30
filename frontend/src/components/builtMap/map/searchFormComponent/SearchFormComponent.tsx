@@ -177,7 +177,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 								type="button"
 								color="brown"
 								textContent={translation[language].button.seeAll}
-								onClickFunction={() => () => setIsModalOpen(false)}
+								onClickFunction={() => setIsModalOpen(false)}
 							/>
 						</div>
 					</form>
