@@ -4,6 +4,8 @@ import { useMapStore } from "../../../utils/stores/builtMap/mapStore";
 import type React from "react";
 // import du style
 import style from "./modalComponent.module.scss";
+// import des icônes
+import { CircleX } from "lucide-react";
 
 interface ModalComponentProps {
 	onClose?: () => void;
@@ -30,7 +32,7 @@ const ModalComponent = ({ onClose, children }: ModalComponentProps) => {
 		>
 			<div className={style.modalContent}>
 				<button type="button" className={style.modalClose} onClick={onClose}>
-					&times;
+					<CircleX />
 				</button>
 				{children}
 			</div>

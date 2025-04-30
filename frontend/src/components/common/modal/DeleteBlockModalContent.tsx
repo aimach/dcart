@@ -7,6 +7,7 @@ import { deleteBlock } from "../../../utils/api/storymap/deleteRequests";
 // import des types
 // import du style
 import style from "./modalComponent.module.scss";
+import ButtonComponent from "../button/ButtonComponent";
 
 /**
  * Affiche le contenu du modal de suppression d'un block : texte de validation et boutons de confirmation (oui/non)
@@ -32,12 +33,18 @@ const DeleteBlockModalContent = () => {
 			<div className={style.modalCustomContentContainer}>
 				{translation[language].modal.deleteBlockText}
 				<div className={style.buttonContainer}>
-					<button type="button" onClick={() => handleBlockDelete(block.id)}>
-						{translation[language].modal.yes}
-					</button>
-					<button type="button" onClick={() => closeDeleteModal()}>
-						{translation[language].modal.no}
-					</button>
+					<ButtonComponent
+						type="button"
+						onClickFunction={() => handleBlockDelete(block.id)}
+						color="green"
+						textContent={translation[language].modal.yes}
+					/>
+					<ButtonComponent
+						type="button"
+						onClickFunction={closeDeleteModal}
+						color="red"
+						textContent={translation[language].modal.no}
+					/>
 				</div>
 			</div>
 		)

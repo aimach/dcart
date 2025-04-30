@@ -6,6 +6,7 @@ import { deleteTag } from "../../../utils/api/builtMap/deleteRequests";
 import { notifyDeleteSuccess } from "../../../utils/functions/toast";
 // import du style
 import style from "./modalComponent.module.scss";
+import ButtonComponent from "../button/ButtonComponent";
 
 /**
  * Affiche le contenu du modal de suppression d'une étiquette : texte de validation et boutons de confirmation (oui/non)
@@ -31,12 +32,18 @@ const DeleteTagContent = () => {
 		<div className={style.modalCustomContentContainer}>
 			{translation[language].modal.deleteTagText}
 			<div className={style.buttonContainer}>
-				<button type="button" onClick={() => handleTagDelete(idToDelete)}>
-					{translation[language].modal.yes}
-				</button>
-				<button type="button" onClick={() => closeDeleteModal()}>
-					{translation[language].modal.no}
-				</button>
+				<ButtonComponent
+					type="button"
+					onClickFunction={() => handleTagDelete(idToDelete)}
+					color="green"
+					textContent={translation[language].modal.yes}
+				/>
+				<ButtonComponent
+					type="button"
+					onClickFunction={closeDeleteModal}
+					color="red"
+					textContent={translation[language].modal.no}
+				/>
 			</div>
 		</div>
 	);

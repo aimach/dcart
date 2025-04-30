@@ -18,6 +18,7 @@ import { useShallow } from "zustand/shallow";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
@@ -216,20 +217,19 @@ const FilterComponent = ({
 				)}
 			</div>
 			<div className={style.filterButtonContainer}>
-				<button
-					className={style.filterButton}
+				<ButtonComponent
 					type="button"
-					onClick={handleFilterButton}
-				>
-					{translation[language].button.filter}
-				</button>
-				<button
-					className={style.filterButton}
+					color="brown"
+					textContent={translation[language].button.filter}
+					onClickFunction={handleFilterButton}
+				/>
+				<ButtonComponent
 					type="button"
-					onClick={resetFilters}
-				>
-					{translation[language].button.resetFilter}
-				</button>
+					color="brown"
+					textContent={translation[language].button.resetFilter}
+					onClickFunction={resetFilters}
+					isSelected={false}
+				/>
 			</div>
 		</div>
 	);

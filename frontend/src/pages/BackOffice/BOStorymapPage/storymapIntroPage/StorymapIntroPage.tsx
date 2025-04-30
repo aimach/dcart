@@ -47,6 +47,7 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import style from "./storymapIntroPage.module.scss";
 // import des icônes
 import { ChevronRightCircle } from "lucide-react";
+import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 
 /**
  * Page d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.
@@ -159,11 +160,14 @@ const StorymapIntroPage = () => {
 			<aside className={style.storymapFormAside}>
 				{storymapId !== "create" && (
 					<div className={style.buttonContainer}>
-						<Link to={`/backoffice/storymaps/preview/${storymapId}`}>
-							<button type="button" className={style.previewButton}>
-								{translation[language].backoffice.storymapFormPage.preview}
-							</button>
-						</Link>
+						<ButtonComponent
+							type="route"
+							color="brown"
+							textContent={
+								translation[language].backoffice.storymapFormPage.preview
+							}
+							link={`/backoffice/storymaps/preview/${storymapId}`}
+						/>
 					</div>
 				)}
 

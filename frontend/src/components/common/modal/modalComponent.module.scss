@@ -53,7 +53,7 @@
 
       >button:first-child {
         width: 100px;
-        @include m.buttonStyle(rgb(79, 148, 79), white);
+        @include m.buttonStyle(#4f944f, white);
       }
 
       >button:last-child {

@@ -17,6 +17,8 @@ import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 import type { MapType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./managementContainer.module.scss";
+// import des icônes
+import { CirclePlus } from "lucide-react";
 
 type ManagementContainerProps = {
 	type: string;
@@ -60,11 +62,12 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 			<ButtonComponent
 				type="button"
 				color="gold"
-				textContent={`+ ${translation[language].backoffice.createA} ${translation[language].common[type === "map" ? "map" : "storymap"]}`}
+				textContent={`${translation[language].backoffice.createA} ${translation[language].common[type === "map" ? "map" : "storymap"]}`}
 				onClickFunction={() => {
 					navigate(`/backoffice/${type}s/create`);
 					resetMapInfos();
 				}}
+				icon={<CirclePlus />}
 			/>
 			<section className={style.managementContainer}>
 				<table className={style.managementTable}>

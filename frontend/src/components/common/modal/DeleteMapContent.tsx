@@ -5,6 +5,7 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import { deleteMap } from "../../../utils/api/storymap/deleteRequests";
 // import du style
 import style from "./modalComponent.module.scss";
+import ButtonComponent from "../button/ButtonComponent";
 
 /**
  * Affiche le contenu du modal de suppression d'une carte : texte de validation et boutons de confirmation (oui/non)
@@ -30,12 +31,18 @@ const DeleteMapContent = () => {
 		<div className={style.modalCustomContentContainer}>
 			{translation[language].modal.deteleMapText}
 			<div className={style.buttonContainer}>
-				<button type="button" onClick={() => handleMapDelete(idToDelete)}>
-					{translation[language].modal.yes}
-				</button>
-				<button type="button" onClick={() => closeDeleteModal()}>
-					{translation[language].modal.no}
-				</button>
+				<ButtonComponent
+					type="button"
+					onClickFunction={() => handleMapDelete(idToDelete)}
+					color="green"
+					textContent={translation[language].modal.yes}
+				/>
+				<ButtonComponent
+					type="button"
+					onClickFunction={closeDeleteModal}
+					color="red"
+					textContent={translation[language].modal.no}
+				/>
 			</div>
 		</div>
 	);

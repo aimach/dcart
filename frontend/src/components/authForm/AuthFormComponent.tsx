@@ -17,6 +17,7 @@ import type { SubmitHandler } from "react-hook-form";
 import type { JwtPayload } from "jwt-decode";
 // import du style
 import style from "./authFormComponent.module.scss";
+import ButtonComponent from "../common/button/ButtonComponent";
 
 /**
  * Composant de formulaire d'authentification
@@ -91,9 +92,11 @@ const AuthFormComponent = () => {
 						/>
 					)}
 				</div>
-				<button type="submit">
-					{translation[language].backoffice.authPage.login}
-				</button>
+				<ButtonComponent
+					type="submit"
+					color="brown"
+					textContent={translation[language].backoffice.authPage.login}
+				/>
 			</form>
 		</section>
 	);

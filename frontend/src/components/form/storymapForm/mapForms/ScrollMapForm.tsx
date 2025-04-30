@@ -27,6 +27,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 
 export type scrollMapInputsType = {
 	content1_lang1: string;
@@ -174,30 +175,37 @@ const ScrollMapForm = () => {
 							}
 						})}
 						<div className={style.formButtonNavigation}>
-							<button
+							<ButtonComponent
 								type="button"
-								onClick={() => {
+								color="brown"
+								textContent={translation[language].common.back}
+								onClickFunction={() => {
 									updateFormType("blockChoice");
 									setSearchParams(undefined);
 								}}
-							>
-								<ChevronLeft />
-								{translation[language].common.back}
-							</button>
-							<button type="submit">
-								{
+								icon={<ChevronLeft />}
+							/>
+							<ButtonComponent
+								type="submit"
+								color="brown"
+								textContent={
 									translation[language].backoffice.storymapFormPage.form[
 										action === "create" ? "create" : "edit"
 									]
 								}
-							</button>
+							/>
 							{action === "edit" && (
-								<button
+								<ButtonComponent
 									type="button"
-									onClick={() => setSearchParams({ stepAction: "create" })}
-								>
-									Aller aux étapes
-								</button>
+									color="brown"
+									textContent={
+										translation[language].backoffice.storymapFormPage.form
+											.goToSteps
+									}
+									onClickFunction={() =>
+										setSearchParams({ stepAction: "create" })
+									}
+								/>
 							)}
 						</div>
 					</form>

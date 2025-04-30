@@ -5,12 +5,13 @@ import style from "./buttonComponent.module.scss";
 
 interface ButtonComponentProps {
 	type: "route" | "button" | "submit";
-	color: "gold" | "brown" | "red";
+	color: "gold" | "brown" | "red" | "blue" | "green";
 	textContent: string;
 	onClickFunction?: () => void;
 	link?: string;
 	isSelected?: boolean;
 	icon?: React.ReactNode;
+	isDisabled?: boolean;
 }
 
 /**
@@ -22,6 +23,7 @@ interface ButtonComponentProps {
  * @param {string} link - Si de type "route", lien vers lequel rediriger
  * @param {boolean} isSelected - Si le bouton est sélectionné
  * @param {string} icon - Icône à afficher dans le bouton (optionnel)
+ * @param {isDisabled} isDisabled - Si le bouton est désactivé
  */
 const ButtonComponent = ({
 	type,
@@ -31,6 +33,7 @@ const ButtonComponent = ({
 	link,
 	isSelected = true,
 	icon,
+	isDisabled = false,
 }: ButtonComponentProps) => {
 	if (type === "route") {
 		return (
@@ -47,6 +50,7 @@ const ButtonComponent = ({
 		return (
 			<button
 				type="button"
+				disabled={isDisabled}
 				onClick={onClickFunction}
 				className={`${style.simpleButton} ${isSelected ? style[color] : style.unselected}`}
 			>
@@ -59,6 +63,7 @@ const ButtonComponent = ({
 		return (
 			<button
 				type="submit"
+				disabled={isDisabled}
 				onClick={onClickFunction}
 				className={`${style.simpleButton} ${isSelected ? style[color] : style.unselected}`}
 			>

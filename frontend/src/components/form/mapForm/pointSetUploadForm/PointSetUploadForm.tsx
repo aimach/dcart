@@ -17,6 +17,7 @@ import type { PointSetType } from "../../../../utils/types/mapTypes";
 import style from "../introForm/introForm.module.scss";
 // import des icônes
 import { CircleCheck } from "lucide-react";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
@@ -189,21 +190,22 @@ const PointSetUploadForm = ({
 						/>
 					</div>
 				</div>
+				<ButtonComponent
+					type="button"
+					color="brown"
+					textContent={translation[language].button[pointSet ? "edit" : "add"]}
+				/>
 
-				<button type="submit" className={style.commonFormButton}>
-					{translation[language].button[pointSet ? "edit" : "add"]}
-				</button>
 				{action === "edit" && (
-					<button
+					<ButtonComponent
 						type="button"
-						className={style.commonFormButton}
-						onClick={() => {
+						color="red"
+						textContent={translation[language].button.cancel}
+						onClickFunction={() => {
 							cancelFunction();
 							setSelectedFile(null);
 						}}
-					>
-						{translation[language].button.cancel}
-					</button>
+					/>
 				)}
 			</form>
 		)

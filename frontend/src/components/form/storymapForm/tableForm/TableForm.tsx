@@ -30,6 +30,7 @@ import {
 	CircleCheck,
 	CircleHelp,
 } from "lucide-react";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 
 export type tableInputsType = {
 	content1_lang1: string;
@@ -232,24 +233,26 @@ const TableForm = () => {
 					</div>
 				</div>
 				<div className={style.formButtonNavigation}>
-					<button
+					<ButtonComponent
 						type="button"
-						onClick={() => {
+						onClickFunction={() => {
 							updateFormType("blockChoice");
 							setSearchParams(undefined);
 						}}
-					>
-						<ChevronLeft />
-						{translation[language].common.back}
-					</button>
-					<button type="submit">
-						{
+						color="brown"
+						textContent={translation[language].common.back}
+						icon={<ChevronLeft />}
+					/>
+					<ButtonComponent
+						type="submit"
+						color="brown"
+						textContent={
 							translation[language].backoffice.storymapFormPage.form[
 								action === "create" ? "create" : "edit"
 							]
 						}
-						<ChevronRight />
-					</button>
+						icon={<ChevronRight />}
+					/>
 				</div>
 			</form>
 		</>

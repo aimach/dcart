@@ -25,6 +25,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { MultiValue } from "react-select";
 // import du style
 import style from "./searchFormComponent.module.scss";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 
 interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -165,18 +166,19 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 								handleChange={handleChange}
 							/>{" "}
 						</div>
-						<button type="submit">
-							{translation[language].button.seeSources}
-						</button>
+						<ButtonComponent
+							type="submit"
+							color="brown"
+							textContent={translation[language].button.seeSources}
+						/>
 					</form>
 					<div>-- {translation[language].common.or} --</div>
-					<button
+					<ButtonComponent
 						type="button"
-						onClick={() => setIsModalOpen(false)}
-						onKeyUp={() => setIsModalOpen(false)}
-					>
-						{translation[language].button.seeAll}
-					</button>
+						color="brown"
+						textContent={translation[language].button.seeAll}
+						onClickFunction={() => () => setIsModalOpen(false)}
+					/>
 				</>
 			) : (
 				<LoaderComponent size={40} />

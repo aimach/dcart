@@ -28,15 +28,16 @@ import style from "./commonForm.module.scss";
 // import des icônes
 import { ChevronLeft, ChevronRight } from "lucide-react";
 import LabelComponent from "../../inputComponent/LabelComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 
 type CommonFormProps = {
 	onSubmit: SubmitHandler<allInputsType>;
 	inputs: InputType[];
 	defaultValues?:
-	| storymapInputsType
-	| BlockContentType
-	| undefined
-	| StorymapType;
+		| storymapInputsType
+		| BlockContentType
+		| undefined
+		| StorymapType;
 	action?: string;
 	children?: React.ReactNode;
 	childrenLabelContent?: {
@@ -83,7 +84,6 @@ const CommonForm = ({
 	} = useForm<allInputsType>({
 		defaultValues: defaultValues ?? {},
 	});
-
 
 	// si des valeurs par défaut sont passées, injection dans l'input des catégories
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -228,8 +228,8 @@ const CommonForm = ({
 											defaultValue={
 												defaultValues
 													? defaultValues[
-													`${input.name}` as keyof typeof defaultValues
-													]
+															`${input.name}` as keyof typeof defaultValues
+														]
 													: null
 											}
 										/>
@@ -257,22 +257,26 @@ const CommonForm = ({
 				</div>
 			))}
 			<div className={style.commonFormContainerButton}>
-				<button
+				<ButtonComponent
 					type="button"
-					onClick={() => {
+					color="brown"
+					textContent={translation[language].common.back}
+					onClickFunction={() => {
 						updateFormType("blockChoice");
 						setSearchParams(undefined);
 					}}
-				>
-					<ChevronLeft />
-					{translation[language].common.back}
-				</button>
-				<button type="submit">
-					{action === "create"
-						? translation[language].backoffice.storymapFormPage.form.create
-						: translation[language].backoffice.storymapFormPage.form.edit}
-					<ChevronRight />
-				</button>
+					icon={<ChevronLeft />}
+				/>
+				<ButtonComponent
+					type="submit"
+					color="brown"
+					textContent={
+						action === "create"
+							? translation[language].backoffice.storymapFormPage.form.create
+							: translation[language].backoffice.storymapFormPage.form.edit
+					}
+					icon={<ChevronRight />}
+				/>
 			</div>
 		</form>
 	);

@@ -5,6 +5,7 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import { deleteUser } from "../../../utils/api/profileAPI";
 // import du style
 import style from "./modalComponent.module.scss";
+import ButtonComponent from "../button/ButtonComponent";
 
 /**
  * Affiche le contenu du modal de suppression d'un utilisateur : texte de validation et boutons de confirmation (oui/non)
@@ -30,12 +31,18 @@ const DeleteUserContent = () => {
 		<div className={style.modalCustomContentContainer}>
 			{translation[language].modal.deleteUserText}
 			<div className={style.buttonContainer}>
-				<button type="button" onClick={() => handleUserDelete(idToDelete)}>
-					{translation[language].modal.yes}
-				</button>
-				<button type="button" onClick={() => closeDeleteModal()}>
-					{translation[language].modal.no}
-				</button>
+				<ButtonComponent
+					type="button"
+					onClickFunction={() => handleUserDelete(idToDelete)}
+					color="green"
+					textContent={translation[language].modal.yes}
+				/>
+				<ButtonComponent
+					type="button"
+					onClickFunction={closeDeleteModal}
+					color="red"
+					textContent={translation[language].modal.no}
+				/>
 			</div>
 		</div>
 	);

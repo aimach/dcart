@@ -10,6 +10,7 @@ import { deleteSession, updateSession } from "../../../utils/api/sessionAPI";
 
 // import du style
 import style from "./modalComponent.module.scss";
+import ButtonComponent from "../button/ButtonComponent";
 
 /**
  * Affiche le contenu de la modal en cas d'atteinte du timeout de la session (rester connecté ou non)
@@ -56,9 +57,12 @@ const StayConnectedContent = () => {
 			<br />
 			{translation[language].backoffice.disconnectInOneMinute}
 			<div className={style.buttonContainer}>
-				<button type="button" onClick={handleStayConnected}>
-					{translation[language].modal.yes}
-				</button>
+				<ButtonComponent
+					type="button"
+					color="green"
+					textContent={translation[language].modal.yes}
+					onClickFunction={handleStayConnected}
+				/>
 			</div>
 		</div>
 	);

@@ -9,6 +9,8 @@ import { modalContentArray } from "../../../../utils/menu/modalArray";
 import style from "./tutorialModalContent.module.scss";
 // import des images
 import delta from "../../../../assets/delta.png";
+import ButtonComponent from "../../button/ButtonComponent";
+import { ChevronLeft, ChevronRight } from "lucide-react";
 
 const TutorialModalContent = () => {
 	const { translation, language } = useTranslation();
@@ -77,38 +79,33 @@ const TutorialModalContent = () => {
 			})}
 			<div className={style.buttonContainer}>
 				{tutorialStep > 1 && (
-					<button
+					<ButtonComponent
 						type="button"
-						onClick={() => handleDecrementTutorialStep(tutorialStep)}
-						onKeyDown={() => handleDecrementTutorialStep(tutorialStep)}
-					>
-						{translation[language].common.previous}
-					</button>
+						color="brown"
+						textContent={translation[language].common.previous}
+						onClickFunction={() => handleDecrementTutorialStep(tutorialStep)}
+						icon={<ChevronLeft />}
+					/>
 				)}
 				{tutorialStep < modalContentArray.length ? (
-					<button
+					<ButtonComponent
 						type="button"
-						onClick={() => handleIncrementTutorialStep(tutorialStep)}
-						onKeyDown={() => handleIncrementTutorialStep(tutorialStep)}
-					>
-						{translation[language].common.next}
-					</button>
+						color="brown"
+						textContent={translation[language].common.next}
+						onClickFunction={() => handleIncrementTutorialStep(tutorialStep)}
+						icon={<ChevronRight />}
+					/>
 				) : (
-					<button
+					<ButtonComponent
 						type="button"
-						onClick={() => {
+						color="brown"
+						textContent={translation[language].common.close}
+						onClickFunction={() => {
 							closeTutorial();
 							setIsPanelDisplayed(false);
 							setSelectedMarker(undefined);
 						}}
-						onKeyDown={() => {
-							closeTutorial();
-							setIsPanelDisplayed(false);
-							setSelectedMarker(undefined);
-						}}
-					>
-						{translation[language].common.close}
-					</button>
+					/>
 				)}
 			</div>
 		</div>

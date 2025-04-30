@@ -247,25 +247,34 @@ const SimpleMapForm = () => {
 						}
 					})}
 					<div className={style.formButtonNavigation}>
-						<button
+						<ButtonComponent
 							type="button"
-							onClick={() => {
+							onClickFunction={() => {
 								updateFormType("blockChoice");
 								setSearchParams(undefined);
 							}}
-						>
-							<ChevronLeft />
-							{translation[language].common.back}
-						</button>
-						<button type="submit">
-							{action === "create"
-								? translation[language].backoffice.storymapFormPage.form.create
-								: translation[language].backoffice.storymapFormPage.form.edit}
-						</button>
+							color="brown"
+							textContent={translation[language].common.back}
+							icon={<ChevronLeft />}
+						/>
+						<ButtonComponent
+							type="submit"
+							color="brown"
+							textContent={
+								action === "create"
+									? translation[language].backoffice.storymapFormPage.form
+											.create
+									: translation[language].backoffice.storymapFormPage.form.edit
+							}
+						/>
+
 						{block?.id && (
-							<button type="button" onClick={() => setStep(2)}>
-								Aller aux jeux de points
-							</button>
+							<ButtonComponent
+								type="button"
+								color="brown"
+								onClickFunction={() => setStep(2)}
+								textContent="Aller au jeux de points"
+							/>
 						)}
 					</div>
 				</form>
@@ -277,7 +286,10 @@ const SimpleMapForm = () => {
 							<ButtonComponent
 								type="button"
 								color="brown"
-								textContent="Ajouter un nouveau jeu de points"
+								textContent={
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.addNewPointSet
+								}
 								onClickFunction={() =>
 									setIsAlreadyAPointSet(!isAlreadyAPointSet)
 								}
