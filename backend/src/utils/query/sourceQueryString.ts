@@ -116,7 +116,12 @@ SELECT
 FROM source
 JOIN sources_without_duplicate ON source.id = sources_without_duplicate.source_id 
 INNER JOIN attestation ON attestation.ID_source = source.ID
-LEFT JOIN localisation AS localisation_source ON source.localisation_DECOUVERTE_ID = localisation_source.ID
+LEFT JOIN localisation AS localisation_source ON
+  (
+    (source.localisation_origine_id = location_source.id)
+    OR
+    (source.localisation_decouverte_id = localisation_source.id)
+  )
 INNER JOIN sous_region ON sous_region.ID = localisation_source.sous_region_ID
 INNER JOIN grande_region ON grande_region.ID = localisation_source.grande_region_ID
 INNER JOIN formule ON formule.attestation_ID = attestation.ID
@@ -277,7 +282,12 @@ SELECT
 FROM source
 JOIN sources_without_duplicate ON source.id = sources_without_duplicate.source_id 
 INNER JOIN attestation ON attestation.ID_source = source.ID
-LEFT JOIN localisation AS localisation_source ON source.localisation_DECOUVERTE_ID = localisation_source.ID
+LEFT JOIN localisation AS localisation_source ON
+  (
+    (source.localisation_origine_id = localisation_source.id)
+    OR
+    (source.localisation_decouverte_id = localisation_source.id)
+  )
 INNER JOIN sous_region ON sous_region.ID = localisation_source.sous_region_ID
 INNER JOIN grande_region ON grande_region.ID = localisation_source.grande_region_ID
 INNER JOIN formule ON formule.attestation_ID = attestation.ID
