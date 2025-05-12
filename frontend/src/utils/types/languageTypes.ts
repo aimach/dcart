@@ -122,6 +122,8 @@ type LanguageObject = {
 			agents: string;
 			noAgent: string;
 			noDesignation: string;
+			introContent: string;
+			dontShowAgain: string;
 		};
 	};
 	backoffice: {
@@ -300,6 +302,7 @@ type LanguageObject = {
 			"homepage.title": string;
 			"homepage.description": string;
 			"menu.description": string;
+			"mapPage.introContent": string;
 		};
 		tagManagement: {
 			title: string;
