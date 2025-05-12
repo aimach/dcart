@@ -24,6 +24,7 @@ const newMapContentSchema = Joi.object({
 		"string.base": "Le lien de l'image doit être une chaîne de caractères",
 	}),
 	tags: Joi.string(),
+	divinity_in_chart: Joi.boolean().required(),
 });
 
 const updateMapContentSchema = newMapContentSchema.keys({
@@ -48,6 +49,7 @@ const updateMapContentSchema = newMapContentSchema.keys({
 	uploadPointsLastDate: Joi.date().required(),
 	filterMapContent: Joi.array().required(),
 	attestations: Joi.array().required(),
+	divinity_in_chart: Joi.boolean().required(),
 });
 
 export const validateNewMapContentBody = (

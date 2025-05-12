@@ -145,6 +145,14 @@
 					"label": "Etiquettes de la carte",
 					"description": "Les étiquettes permettent de classer les cartes et de les retrouver plus facilement.",
 					"placeholder": "Choisir une ou plusieurs étiquettes"
+				},
+				"divinityInChart": {
+					"label": "Graphique des éléments",
+					"description": "Choisissez si vous souhaitez afficher le nombre des divinités ou le nombre des épithètes dans le graphique.",
+					"checkbox": {
+						"divinity": "Afficher le nombre de divinités",
+						"epithet": "Afficher le nombre d'épithètes"
+					}
 				}
 			},
 			"aside": {

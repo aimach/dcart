@@ -80,6 +80,7 @@ type MapInfoType = {
 	filterMapContent?: FilterMapContentType[];
 	isLayered: boolean;
 	isNbDisplayed: boolean;
+	divinity_in_chart: boolean;
 };
 
 type MapType = {
@@ -100,6 +101,7 @@ type MapType = {
 	createdAt: string;
 	updatedAt: string;
 	uploadPointsLastDate: string;
+	divinity_in_chart: boolean;
 	filters: {
 		id: number;
 		options: Record<string, string> | null;

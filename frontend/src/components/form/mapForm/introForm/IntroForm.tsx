@@ -140,6 +140,8 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		}));
 	}, [language]);
 
+	console.log(mapInfos);
+
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
@@ -279,6 +281,53 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 								.placeholder
 						}
 					/>
+				</div>
+			</div>
+			<div className={style.commonFormInputContainer}>
+				<LabelComponent
+					htmlFor="divinity_in_chart"
+					label={
+						translation[language].backoffice.mapFormPage.intro.divinityInChart
+							.label
+					}
+					description={
+						translation[language].backoffice.mapFormPage.intro.divinityInChart
+							.description
+					}
+				/>
+				<div className={style.inputContainer}>
+					<div>
+						<label htmlFor="true">
+							{
+								translation[language].backoffice.mapFormPage.intro
+									.divinityInChart.checkbox.divinity
+							}
+						</label>
+						<input
+							{...register("divinity_in_chart")}
+							type="radio"
+							id="true"
+							name="divinity_in_chart"
+							value="true"
+							defaultChecked={mapInfos?.divinity_in_chart}
+						/>
+					</div>
+					<div>
+						<label htmlFor="false">
+							{
+								translation[language].backoffice.mapFormPage.intro
+									.divinityInChart.checkbox.epithet
+							}
+						</label>
+						<input
+							{...register("divinity_in_chart")}
+							type="radio"
+							id="false"
+							name="divinity_in_chart"
+							value="false"
+							defaultChecked={!mapInfos?.divinity_in_chart}
+						/>
+					</div>
 				</div>
 			</div>
 			<NavigationButtonComponent step={step} nextButtonDisplayed={true} />
