@@ -4,8 +4,6 @@ import { useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
 import LoaderComponent from "../../../components/common/loader/LoaderComponent";
-import ModalComponent from "../../../components/common/modal/ModalComponent";
-import DeleteTagContent from "../../../components/common/modal/DeleteTagContent";
 import LabelComponent from "../../../components/form/inputComponent/LabelComponent";
 import ErrorComponent from "../../../components/form/errorComponent/ErrorComponent";
 import ButtonComponent from "../../../components/common/button/ButtonComponent";
@@ -16,12 +14,15 @@ import { AuthContext } from "../../../context/AuthContext";
 // import des services
 import { getDivinityIdsList } from "../../../utils/api/builtMap/getRequests";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
-import { addNewTag } from "../../../utils/api/builtMap/postRequests";
-import { notifyCreateSuccess } from "../../../utils/functions/toast";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../utils/functions/toast";
 // import des types
-import type { DivinityListType, TagType } from "../../../utils/types/mapTypes";
+import type { DivinityListType } from "../../../utils/types/mapTypes";
 // import des styles
 import style from "./divinityManagementPage.module.scss";
+import { updateDivinityList } from "../../../utils/api/builtMap/putRequests";
 
 const DivinityManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -40,45 +41,42 @@ const DivinityManagementPage = () => {
 	}, [isAdmin, navigate]);
 
 	const [divinityList, setDivinityList] = useState<string>("");
-	// biome-ignore lint/correctness/useExhaustiveDependencies: force le re-render pour le rafraîchissement de la liste
 	useEffect(() => {
 		const fetchDivinityIdsList = async () => {
 			const dinvityIdsList = await getDivinityIdsList();
 			setDivinityList(dinvityIdsList);
+			setValue("divinity_list", dinvityIdsList);
 		};
 		fetchDivinityIdsList();
-	}, [reload]);
+	}, []);
 
 	// import des sevice de formulaire
 	const {
 		register,
 		handleSubmit,
+		setValue,
 		formState: { errors },
 	} = useForm<DivinityListType>();
 
-	console.log(divinityList);
-
 	const handleCreateTag = async (data: DivinityListType) => {
-		console.log("data", data);
-		// const statusResponse = await addNewTag(data);
-		// if (statusResponse === 201) {
-		// 	notifyCreateSuccess("Etiquette", true);
-		// 	setReload(!reload);
-		// }
+		const statusResponse = await updateDivinityList(data);
+		if (statusResponse === 201) {
+			notifyEditSuccess("Liste des divinités", true);
+			setReload(!reload);
+			setValue("divinity_list", data.divinity_list);
+		}
 	};
 
 	return divinityList !== "" ? (
 		<section className={style.tagManagementSection}>
-			{isUpdateModalOpen && (
-				<ModalComponent onClose={() => closeUpdateModal()}>
-					<DeleteTagContent />
-				</ModalComponent>
-			)}
 			<h4>{translation[language].backoffice.tagManagement.title}</h4>
 
 			<div className={style.tagManagementContainer}>
 				{
-					<form onSubmit={handleSubmit(handleCreateTag)}>
+					<form
+						onSubmit={handleSubmit(handleCreateTag)}
+						key={reload.toString()}
+					>
 						<div className={style.tagManagementForm}>
 							<div className={style.tagManagementRow}>
 								<div className={style.tagInputContainer}>

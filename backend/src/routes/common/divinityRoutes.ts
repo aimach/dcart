@@ -5,5 +5,8 @@ import { dcartControllers } from "../../controllers/builtMap/dcartControllers";
 
 export const divinityRoutes = express.Router();
 
-// récupère toutes les icônes ou une icône en particulier
+// récupère la liste des identifiants de divinités
 divinityRoutes.get("/all", dcartControllers.getAllDivinityIds);
+
+// modifier la liste des divinités
+divinityRoutes.put("/", dcartControllers.updateDivinityIds);

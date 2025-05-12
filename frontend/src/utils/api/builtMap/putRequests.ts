@@ -6,7 +6,12 @@ import {
 	notifyPublicationSuccess,
 } from "../../functions/toast";
 // import des types
-import type { MapInfoType, PointSetType, TagType } from "../../types/mapTypes";
+import type {
+	DivinityListType,
+	MapInfoType,
+	PointSetType,
+	TagType,
+} from "../../types/mapTypes";
 
 /**
  * Envoie une requête PUT pour mettre à jour une carte
@@ -131,6 +136,26 @@ const updateTag = async (body: TagType) => {
 	}
 };
 
+/**
+ * Envoie une requête PUT pour modifier la liste des divinités
+ * @param body - La nouvelle liste des divinités
+ * @returns {Promise} - La réponse de la requête
+ */
+const updateDivinityList = async (body: DivinityListType) => {
+	try {
+		const response = await apiClient("dcart/divinities", {
+			method: "PUT",
+			data: body,
+		});
+		return response.status;
+	} catch (error) {
+		console.error(
+			"Erreur lors de la modification de la liste des divinités:",
+			error,
+		);
+	}
+};
+
 export {
 	updateMap,
 	updateFiltersToMap,
@@ -138,4 +163,5 @@ export {
 	updateMapFilterOptions,
 	updatePointSet,
 	updateTag,
+	updateDivinityList,
 };
