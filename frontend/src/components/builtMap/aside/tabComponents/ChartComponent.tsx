@@ -30,7 +30,6 @@ import type { MapColorType, PointType } from "../../../../utils/types/mapTypes";
 import style from "./tabComponent.module.scss";
 // import des icônes
 import { ChartColumnBig, ChartPie } from "lucide-react";
-import { all } from "axios";
 
 // import des éléments de chart.js
 ChartJS.register(
@@ -51,7 +50,9 @@ const ChartComponent = () => {
 	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
-	const { includedElementId, selectedMarker } = useMapStore((state) => state);
+	const { mapInfos, includedElementId, selectedMarker } = useMapStore(
+		(state) => state,
+	);
 
 	// déclaration d'un état pour le type de données à afficher
 	const [dataType, setDataType] = useState<string>("epithet");
@@ -84,6 +85,7 @@ const ChartComponent = () => {
 					selectedMarker as PointType,
 					language,
 					allDivinityIds,
+					mapInfos?.divinity_in_chart ?? false,
 				));
 				break;
 			case "gender":
@@ -104,7 +106,14 @@ const ChartComponent = () => {
 
 		setLabels(labels);
 		setDataSets(dataSets);
-	}, [dataType, selectedMarker, language, includedElementId, allDivinityIds]);
+	}, [
+		dataType,
+		selectedMarker,
+		language,
+		includedElementId,
+		allDivinityIds,
+		mapInfos?.divinity_in_chart,
+	]);
 
 	const [colors, setColors] = useState<string[]>([]);
 	useEffect(() => {

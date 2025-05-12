@@ -159,6 +159,7 @@ const getEpithetLabelsAndNb = (
 	point: PointType,
 	language: Language,
 	allDivinityIds: string,
+	isDivinityInChart: boolean,
 ) => {
 	// en premier lieu, on stocke tous les éléments dans un tableau, excepté l'includedElement
 	const allElementsOfPoint: ElementType[] = [];
@@ -174,8 +175,10 @@ const getEpithetLabelsAndNb = (
 
 	// en second lieu, on filtre les éléments pour ne garder que ceux qui ne sont pas des divinités
 	const allDivinityIdsArray = allDivinityIds.split(", ");
-	const filteredElementsOfPoint = allElementsOfPoint.filter(
-		(element) => !allDivinityIdsArray.includes(element.element_id.toString()),
+	const filteredElementsOfPoint = allElementsOfPoint.filter((element) =>
+		isDivinityInChart
+			? allDivinityIdsArray.includes(element.element_id.toString())
+			: !allDivinityIdsArray.includes(element.element_id.toString()),
 	);
 
 	// ensuite, on stocke le label et le nombre d'occurence pour chaque élément
