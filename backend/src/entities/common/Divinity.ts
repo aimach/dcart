@@ -1,8 +1,8 @@
 // import des bibliothèques
-import { Entity, Column, BaseEntity } from "typeorm";
+import { Entity, BaseEntity, PrimaryColumn } from "typeorm";
 
 @Entity()
 export class Divinity extends BaseEntity {
-	@Column({ type: "text" })
+	@PrimaryColumn({ type: "text" })
 	divinity_list?: string;
 }
