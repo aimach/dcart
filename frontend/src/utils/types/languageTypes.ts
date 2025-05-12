@@ -122,6 +122,8 @@ type LanguageObject = {
 			agents: string;
 			noAgent: string;
 			noDesignation: string;
+			introContent: string;
+			dontShowAgain: string;
 		};
 	};
 	backoffice: {

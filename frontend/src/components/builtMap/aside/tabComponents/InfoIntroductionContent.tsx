@@ -24,19 +24,12 @@ const InfoIntroductionContent = ({
 
 	return (
 		<div className={style.introContentContainer}>
-			<p>
-				Ce panneau vous permet d ’explorer en détail les données associées au
-				point que vous avez sélectionné sur la carte. Vous y trouverez des
-				statistiques spécifiques, comme un aperçu chiffré des divinités ou
-				épithètes présents dans les sources ou consulter les données relatives
-				aux agents : genre, activité, etc. Vous pouvez également y trouver la
-				liste complète des sources et attestations associées liées à ce point
-				avec de nombreux détails : date, versino originale, traduction,
-				agents...
-			</p>
+			<p>{translation[language].mapPage.aside.introContent}</p>
 			<div className={style.checkboxContainer}>
 				<input type="checkbox" id="showIntro" onChange={handleCheckbox} />
-				<label htmlFor="showIntro">Ne plus afficher ce message</label>
+				<label htmlFor="showIntro">
+					{translation[language].mapPage.aside.dontShowAgain}
+				</label>
 			</div>
 			<ButtonComponent
 				type="button"
