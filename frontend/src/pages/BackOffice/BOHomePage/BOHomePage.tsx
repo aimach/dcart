@@ -31,25 +31,28 @@ const BOHomePage = () => {
 						</Link>
 					</li>
 					{isAdmin && (
-						<li>
-							<Link to="/backoffice/translation">
-								{translation[language].navigation.translation}
-							</Link>
-						</li>
-					)}
-					{isAdmin && (
-						<li>
-							<Link to="/backoffice/users">
-								{translation[language].navigation.users}
-							</Link>
-						</li>
-					)}
-					{isAdmin && (
-						<li>
-							<Link to="/backoffice/tags">
-								{translation[language].navigation.tags}
-							</Link>
-						</li>
+						<>
+							<li>
+								<Link to="/backoffice/translation">
+									{translation[language].navigation.translation}
+								</Link>
+							</li>
+							<li>
+								<Link to="/backoffice/users">
+									{translation[language].navigation.users}
+								</Link>
+							</li>
+							<li>
+								<Link to="/backoffice/tags">
+									{translation[language].navigation.tags}
+								</Link>
+							</li>
+							<li>
+								<Link to="/backoffice/divinities">
+									{translation[language].navigation.divinities}
+								</Link>
+							</li>
+						</>
 					)}
 				</ul>
 			</nav>

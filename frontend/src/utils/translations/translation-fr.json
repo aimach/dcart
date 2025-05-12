@@ -13,7 +13,8 @@
 		"discover": "DECOUVRIR",
 		"explore": "EXPLORER",
 		"users": "UTILISATEURS",
-		"tags": "ÉTIQUETTES"
+		"tags": "ÉTIQUETTES",
+		"divinities": "DIVINITÉS"
 	},
 	"alert": {
 		"maxReached": "Nombre maximum de filtres atteint"

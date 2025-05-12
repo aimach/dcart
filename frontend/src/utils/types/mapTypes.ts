@@ -39,6 +39,8 @@ type TagType = {
 	}[];
 };
 
+type DivinityListType = { divinity_list: string };
+
 type DivinityType = {
 	id: number;
 	nom_fr: string;
@@ -225,6 +227,7 @@ export type {
 	PointSetType,
 	MapColorType,
 	FilterMapContentType,
+	DivinityListType,
 };
 
 export { isMapType };

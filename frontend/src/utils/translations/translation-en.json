@@ -13,7 +13,8 @@
 		"discover": "DISCOVER",
 		"explore": "EXPLORE",
 		"users": "USERS",
-		"tags": "TAGS"
+		"tags": "TAGS",
+		"divinities": "DIVINITIES"
 	},
 	"alert": {
 		"maxReached": "Maximum number of filters reached"

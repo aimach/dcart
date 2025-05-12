@@ -18,6 +18,7 @@ type LanguageObject = {
 		discover: string;
 		users: string;
 		tags: string;
+		divinities: string;
 	};
 	alert: {
 		maxReached: string;

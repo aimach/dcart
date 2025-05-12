@@ -27,6 +27,7 @@ import { SessionProvider } from "./context/SessionContext.tsx";
 // import du style
 import "./index.css";
 import TagManagementPage from "./pages/BackOffice/BOTagManagementPage/BOTagManagementPage.tsx";
+import DivinityManagementPage from "./pages/BackOffice/BODivinityManagementPage/BODivinityManagementPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -80,6 +81,10 @@ if (rootElement) {
 										/>
 										<Route path="users" element={<UserManagementPage />} />
 										<Route path="tags" element={<TagManagementPage />} />
+										<Route
+											path="divinities"
+											element={<DivinityManagementPage />}
+										/>
 									</Route>
 								</Routes>
 								<ToastContainer />
