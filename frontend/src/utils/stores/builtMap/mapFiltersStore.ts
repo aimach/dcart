@@ -38,6 +38,7 @@ const emptyUserFilters: UserFilterType = {
 	sourceTypeId: undefined,
 	agentActivityId: undefined,
 	agentNameId: undefined,
+	agentGender: undefined,
 };
 
 export const useMapFiltersStore = create<State & Action>((set, get) => ({

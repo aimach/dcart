@@ -108,6 +108,10 @@ type LanguageObject = {
 			divinityNb: string;
 			sourceType: string;
 			agentActivity: string;
+			agentGender: string;
+			male: string;
+			female: string;
+			nonbinary: string;
 			agentName: string;
 			seeStat: string;
 			seeSources: string;
@@ -229,6 +233,7 @@ type LanguageObject = {
 			sourceTypeFilter: { label: string; description: string };
 			agentActivityFilter: { label: string; description: string };
 			agentNameFilter: { label: string; description: string };
+			agentGenderFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;

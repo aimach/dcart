@@ -104,7 +104,11 @@
 			"divinityNb": "Element number",
 			"sourceType": "Source type",
 			"agentActivity": "Agent activity",
+			"agentGender": "Agent gender",
 			"agentName": "Agent name",
+			"male": "Male",
+			"female": "Female",
+			"nonbinary": "Non-binary",
 			"seeStat": "See statistics",
 			"seeSources": "See sources",
 			"searchForLocation": "Search for a location...",
@@ -254,8 +258,12 @@
 				"description": "Displays a select/options element with the list of agent activities from all displayed attestations"
 			},
 			"agentNameFilter": {
-				"label": "Agent type filter",
+				"label": "Agent name filter",
 				"description": "Displays a select/options element with the list of agent names from all displayed attestations"
+			},
+			"agentGenderFilter": {
+				"label": "Agent gender filter",
+				"description": "Displays checkboxes with male, female or nonbinary options"
 			},
 			"noFilter": {
 				"label": "I don't want to add a filter",

@@ -19,6 +19,7 @@ import { useShallow } from "zustand/shallow";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
+import AgentGenderFilterComponent from "../filterComponents/AgentGenderFilterComponent";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
@@ -192,22 +193,30 @@ const FilterComponent = ({
 								</div>
 							);
 						}
-						if (filter.filter.type === "agentName") {
+						if (filter.filter.type === "agentGender") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.agentName}</h4>
-									<MultiSelectFilterComponent
-										key={filter.id}
-										optionsArray={agentNameOptions}
-										setValues={setAgentActivityValues}
-										userFilterId="agentNameId"
-										placeholder={
-											translation[language].mapPage.aside.searchForAgentName
-										}
-									/>
+									<h4>{translation[language].mapPage.aside.agentGender}</h4>
+									<AgentGenderFilterComponent />
 								</div>
 							);
 						}
+						// if (filter.filter.type === "agentName") {
+						// 	return (
+						// 		<div className={style.filterContainer} key={filter.id}>
+						// 			<h4>{translation[language].mapPage.aside.agentName}</h4>
+						// 			<MultiSelectFilterComponent
+						// 				key={filter.id}
+						// 				optionsArray={agentNameOptions}
+						// 				setValues={setAgentActivityValues}
+						// 				userFilterId="agentNameId"
+						// 				placeholder={
+						// 					translation[language].mapPage.aside.searchForAgentName
+						// 				}
+						// 			/>
+						// 		</div>
+						// 	);
+						// }
 					})}
 				{mapFilters.length === 0 && (
 					<div className={style.filterContainer}>
