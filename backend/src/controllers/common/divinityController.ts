@@ -1,11 +1,10 @@
 // import des entités
-import { Color } from "../../entities/common/Color";
+import { Divinity } from "../../entities/common/Divinity";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
-import { Divinity } from "../../entities/common/Divinity";
 
 export const divinityController = {
 	// récupère tous les ids des divinités

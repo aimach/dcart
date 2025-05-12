@@ -14,15 +14,12 @@ import { AuthContext } from "../../../context/AuthContext";
 // import des services
 import { getDivinityIdsList } from "../../../utils/api/builtMap/getRequests";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../utils/functions/toast";
+import { notifyEditSuccess } from "../../../utils/functions/toast";
+import { updateDivinityList } from "../../../utils/api/builtMap/putRequests";
 // import des types
 import type { DivinityListType } from "../../../utils/types/mapTypes";
 // import des styles
 import style from "./divinityManagementPage.module.scss";
-import { updateDivinityList } from "../../../utils/api/builtMap/putRequests";
 
 const DivinityManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -31,8 +28,7 @@ const DivinityManagementPage = () => {
 
 	const navigate = useNavigate();
 
-	const { closeUpdateModal, isUpdateModalOpen, reload, setReload } =
-		useModalStore();
+	const { reload, setReload } = useModalStore();
 
 	useEffect(() => {
 		if (!isAdmin) {
@@ -58,7 +54,7 @@ const DivinityManagementPage = () => {
 		formState: { errors },
 	} = useForm<DivinityListType>();
 
-	const handleCreateTag = async (data: DivinityListType) => {
+	const handleUpdateDivinityIdsList = async (data: DivinityListType) => {
 		const statusResponse = await updateDivinityList(data);
 		if (statusResponse === 201) {
 			notifyEditSuccess("Liste des divinités", true);
@@ -74,7 +70,7 @@ const DivinityManagementPage = () => {
 			<div className={style.tagManagementContainer}>
 				{
 					<form
-						onSubmit={handleSubmit(handleCreateTag)}
+						onSubmit={handleSubmit(handleUpdateDivinityIdsList)}
 						key={reload.toString()}
 					>
 						<div className={style.tagManagementForm}>
@@ -99,7 +95,7 @@ const DivinityManagementPage = () => {
 								type="button"
 								color="brown"
 								textContent={translation[language].button.edit}
-								onClickFunction={handleSubmit(handleCreateTag)}
+								onClickFunction={handleSubmit(handleUpdateDivinityIdsList)}
 							/>
 
 							{Object.keys(errors).length > 0 && (
