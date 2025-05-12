@@ -141,8 +141,6 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		}));
 	}, [language]);
 
-	console.log(mapInfos);
-
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
