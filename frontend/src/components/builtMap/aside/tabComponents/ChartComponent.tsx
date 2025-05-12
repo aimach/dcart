@@ -20,13 +20,17 @@ import {
 	getAgentActivityLabelsAndNb,
 } from "../../../../utils/functions/chart";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-import { getAllColors } from "../../../../utils/api/builtMap/getRequests";
+import {
+	getAllColors,
+	getDivinityIdsList,
+} from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { MapColorType, PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./tabComponent.module.scss";
 // import des icônes
 import { ChartColumnBig, ChartPie } from "lucide-react";
+import { all } from "axios";
 
 // import des éléments de chart.js
 ChartJS.register(
@@ -59,6 +63,15 @@ const ChartComponent = () => {
 	const [labels, setLabels] = useState<string[]>([]);
 	const [dataSets, setDataSets] = useState<number[]>([]);
 
+	const [allDivinityIds, setAllDivinityIds] = useState<string>("");
+	useEffect(() => {
+		const fetchDivinityIdsList = async () => {
+			const dinvityIdsList = await getDivinityIdsList();
+			setAllDivinityIds(dinvityIdsList);
+		};
+		fetchDivinityIdsList();
+	}, []);
+
 	// mise à jour des labels et données en fonction du type de données, du marqueur sélectionné et de la langue
 	useEffect(() => {
 		if (!selectedMarker?.sources[0].attestations) return;
@@ -70,6 +83,7 @@ const ChartComponent = () => {
 					includedElementId as string,
 					selectedMarker as PointType,
 					language,
+					allDivinityIds,
 				));
 				break;
 			case "gender":
@@ -90,19 +104,19 @@ const ChartComponent = () => {
 
 		setLabels(labels);
 		setDataSets(dataSets);
-	}, [dataType, selectedMarker, language, includedElementId]);
+	}, [dataType, selectedMarker, language, includedElementId, allDivinityIds]);
 
 	const [colors, setColors] = useState<string[]>([]);
 	useEffect(() => {
 		const fetchAllColors = async () => {
 			const fetchedColors = await getAllColors();
-			const codeHexaArray = fetchedColors.map((color: MapColorType) =>
-				color.code_hex
+			const codeHexaArray = fetchedColors.map(
+				(color: MapColorType) => color.code_hex,
 			);
 			setColors(codeHexaArray);
-		}
+		};
 		fetchAllColors();
-	}, [])
+	}, []);
 
 	// options pour le graphique en barres
 	const barOptions = {
@@ -145,7 +159,6 @@ const ChartComponent = () => {
 		},
 	};
 
-
 	// données finales pour le graphique
 	const finalData = {
 		labels,
@@ -157,10 +170,10 @@ const ChartComponent = () => {
 		],
 	};
 
-
 	return (
 		labels.length &&
-		dataSets.length && colors.length && (
+		dataSets.length &&
+		colors.length && (
 			<section className={style.chartContainer}>
 				<fieldset className={style.chartRadio}>
 					<ChartPie
