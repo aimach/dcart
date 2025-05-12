@@ -6,6 +6,7 @@ import { colorController } from "../../common/colorController";
 import { filterController } from "./filterController";
 import { iconController } from "../../common/iconController";
 import { mapContentController } from "./mapContentController";
+import { divinityController } from "../../common/divinityController";
 
 export const dcartControllers = {
 	...authController,
@@ -15,4 +16,5 @@ export const dcartControllers = {
 	...iconController,
 	...attestationController,
 	...colorController,
+	...divinityController,
 };

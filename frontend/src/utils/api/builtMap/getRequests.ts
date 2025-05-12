@@ -28,7 +28,7 @@ const getAllAttestationsFromSourceId = async (sourceId: string) => {
  */
 const getDivinityIdsList = async () => {
 	try {
-		const response = await apiClient.get("/dcart/divinity/all");
+		const response = await apiClient.get("/dcart/divinities/all");
 		return response.data;
 	} catch (error) {
 		console.error(
