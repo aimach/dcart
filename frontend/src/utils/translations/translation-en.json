@@ -13,7 +13,8 @@
 		"discover": "DISCOVER",
 		"explore": "EXPLORE",
 		"users": "USERS",
-		"tags": "TAGS"
+		"tags": "TAGS",
+		"divinities": "DIVINITIES"
 	},
 	"alert": {
 		"maxReached": "Maximum number of filters reached"
@@ -144,6 +145,14 @@
 					"label": "Map tags",
 					"description": "These tags will be used to filter the maps in the list of maps. You can choose one or more tags.",
 					"placeholder": "Choose one or more tags"
+				},
+				"divinityInChart": {
+					"label": "Element chart",
+					"description": "Choose if you want to display the divinities or the epithets number in the chart.",
+					"checkbox": {
+						"divinity": "Display the number of divinities",
+						"epithet": "Display the number of epithets"
+					}
 				}
 			},
 			"aside": {

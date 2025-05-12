@@ -18,6 +18,7 @@ type LanguageObject = {
 		discover: string;
 		users: string;
 		tags: string;
+		divinities: string;
 	};
 	alert: {
 		maxReached: string;
@@ -145,6 +146,14 @@ type LanguageObject = {
 		mapFormPage: {
 			intro: {
 				tags: { label: string; description: string; placeholder: string };
+				divinityInChart: {
+					label: string;
+					description: string;
+					checkbox: {
+						divinity: string;
+						epithet: string;
+					};
+				};
 			};
 			aside: {
 				informations: string;

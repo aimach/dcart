@@ -20,7 +20,10 @@ import {
 	getAgentActivityLabelsAndNb,
 } from "../../../../utils/functions/chart";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-import { getAllColors } from "../../../../utils/api/builtMap/getRequests";
+import {
+	getAllColors,
+	getDivinityIdsList,
+} from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { MapColorType, PointType } from "../../../../utils/types/mapTypes";
 // import du style
@@ -47,7 +50,9 @@ const ChartComponent = () => {
 	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
-	const { includedElementId, selectedMarker } = useMapStore((state) => state);
+	const { mapInfos, includedElementId, selectedMarker } = useMapStore(
+		(state) => state,
+	);
 
 	// déclaration d'un état pour le type de données à afficher
 	const [dataType, setDataType] = useState<string>("epithet");
@@ -58,6 +63,15 @@ const ChartComponent = () => {
 	// déclaration d'états pour les labels et les données
 	const [labels, setLabels] = useState<string[]>([]);
 	const [dataSets, setDataSets] = useState<number[]>([]);
+
+	const [allDivinityIds, setAllDivinityIds] = useState<string>("");
+	useEffect(() => {
+		const fetchDivinityIdsList = async () => {
+			const dinvityIdsList = await getDivinityIdsList();
+			setAllDivinityIds(dinvityIdsList);
+		};
+		fetchDivinityIdsList();
+	}, []);
 
 	// mise à jour des labels et données en fonction du type de données, du marqueur sélectionné et de la langue
 	useEffect(() => {
@@ -70,6 +84,8 @@ const ChartComponent = () => {
 					includedElementId as string,
 					selectedMarker as PointType,
 					language,
+					allDivinityIds,
+					mapInfos?.divinity_in_chart ?? false,
 				));
 				break;
 			case "gender":
@@ -90,19 +106,26 @@ const ChartComponent = () => {
 
 		setLabels(labels);
 		setDataSets(dataSets);
-	}, [dataType, selectedMarker, language, includedElementId]);
+	}, [
+		dataType,
+		selectedMarker,
+		language,
+		includedElementId,
+		allDivinityIds,
+		mapInfos?.divinity_in_chart,
+	]);
 
 	const [colors, setColors] = useState<string[]>([]);
 	useEffect(() => {
 		const fetchAllColors = async () => {
 			const fetchedColors = await getAllColors();
-			const codeHexaArray = fetchedColors.map((color: MapColorType) =>
-				color.code_hex
+			const codeHexaArray = fetchedColors.map(
+				(color: MapColorType) => color.code_hex,
 			);
 			setColors(codeHexaArray);
-		}
+		};
 		fetchAllColors();
-	}, [])
+	}, []);
 
 	// options pour le graphique en barres
 	const barOptions = {
@@ -145,7 +168,6 @@ const ChartComponent = () => {
 		},
 	};
 
-
 	// données finales pour le graphique
 	const finalData = {
 		labels,
@@ -157,10 +179,10 @@ const ChartComponent = () => {
 		],
 	};
 
-
 	return (
 		labels.length &&
-		dataSets.length && colors.length && (
+		dataSets.length &&
+		colors.length && (
 			<section className={style.chartContainer}>
 				<fieldset className={style.chartRadio}>
 					<ChartPie

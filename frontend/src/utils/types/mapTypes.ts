@@ -39,6 +39,8 @@ type TagType = {
 	}[];
 };
 
+type DivinityListType = { divinity_list: string };
+
 type DivinityType = {
 	id: number;
 	nom_fr: string;
@@ -78,6 +80,7 @@ type MapInfoType = {
 	filterMapContent?: FilterMapContentType[];
 	isLayered: boolean;
 	isNbDisplayed: boolean;
+	divinity_in_chart: boolean;
 };
 
 type MapType = {
@@ -98,6 +101,7 @@ type MapType = {
 	createdAt: string;
 	updatedAt: string;
 	uploadPointsLastDate: string;
+	divinity_in_chart: boolean;
 	filters: {
 		id: number;
 		options: Record<string, string> | null;
@@ -225,6 +229,7 @@ export type {
 	PointSetType,
 	MapColorType,
 	FilterMapContentType,
+	DivinityListType,
 };
 
 export { isMapType };

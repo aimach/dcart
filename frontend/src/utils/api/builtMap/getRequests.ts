@@ -24,6 +24,22 @@ const getAllAttestationsFromSourceId = async (sourceId: string) => {
 
 /**
  * Récupère tous les tags
+ * @returns {Promise} - Une liste des ids des divinités
+ */
+const getDivinityIdsList = async () => {
+	try {
+		const response = await apiClient.get("/dcart/divinities/all");
+		return response.data;
+	} catch (error) {
+		console.error(
+			"Erreur lors du chargement de la liste des divinités :",
+			error,
+		);
+	}
+};
+
+/**
+ * Récupère la liste des divinités
  * @returns {Promise} - Toutes les catégories
  */
 const getAllTags = async () => {
@@ -326,4 +342,5 @@ export {
 	getAllTagsWithMapsAndStorymaps,
 	getTagWithMapsAndStorymaps,
 	getAllSourceTypes,
+	getDivinityIdsList,
 };

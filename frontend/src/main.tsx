@@ -19,6 +19,7 @@ import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPa
 import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
 import UserManagementPage from "./pages/BackOffice/BOUserManagementPage/BOUserManagementPage.tsx";
 import TagManagementPage from "./pages/BackOffice/BOTagManagementPage/BOTagManagementPage.tsx";
+import DivinityManagementPage from "./pages/BackOffice/BODivinityManagementPage/BODivinityManagementPage.tsx";
 import PrivacyPolicyPage from "./pages/Legal/PrivacyPolicyPage.tsx";
 import LegalNoticePage from "./pages/Legal/LegalNoticePage.tsx";
 // import du contexte
@@ -87,6 +88,10 @@ if (rootElement) {
 										/>
 										<Route path="users" element={<UserManagementPage />} />
 										<Route path="tags" element={<TagManagementPage />} />
+										<Route
+											path="divinities"
+											element={<DivinityManagementPage />}
+										/>
 									</Route>
 									<Route
 										path="authentification"
