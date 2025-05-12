@@ -118,7 +118,7 @@
 			"agents": "Agents",
 			"noAgent": "No agent",
 			"noDesignation": "unspecified",
-			"introContent": "This panel allows you to explore in detail the data associated with the point you selected on the map. You will find specific statistics, such as a numerical overview of the divinities or epithets present in the sources, or consult data related to agents, such as their names, activities, and designations. You can also view the sources associated with the selected point, which will be displayed in a table format. This table includes information such as the title of the source, its type, and its date. ",
+			"introContent": "This panel allows you to explore in detail the data associated with the point you selected on the map. You will find specific statistics, such as a numerical overview of the divinities or epithets present in the sources, or consult data related to agents, such as their names, activities, and designations. You can also view the sources associated with the selected point, which will be displayed in a table format. This table includes information such as the title of the source, its type, and its date.",
 			"dontShowAgain": "don't show this message again"
 		}
 	},
@@ -332,7 +332,8 @@
 			"englishTranslation": "English translation",
 			"homepage.title": "Title of the homepage",
 			"homepage.description": "Description of the homepage",
-			"menu.description": "Content of the menu"
+			"menu.description": "Content of the menu",
+			"mapPage.introContent": "Introduction of the selection panel in the map (before charts and sources)"
 		},
 		"tagManagement": {
 			"title": "Tags management",

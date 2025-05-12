@@ -302,6 +302,7 @@ type LanguageObject = {
 			"homepage.title": string;
 			"homepage.description": string;
 			"menu.description": string;
+			"mapPage.introContent": string;
 		};
 		tagManagement: {
 			title: string;
