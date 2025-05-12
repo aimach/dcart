@@ -9,6 +9,8 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import du style
 import style from "./tabComponent.module.scss";
+import { useState } from "react";
+import InfoIntroductionContent from "./InfoIntroductionContent";
 
 /**
  * Affiche les informations du point sélectionné
@@ -24,6 +26,10 @@ const InfoComponent = () => {
 	// récupération des données des stores
 	const { selectedMarker } = useMapStore((state) => state);
 
+	const [isIntroDisplayed, setIsIntroDisplayed] = useState(
+		sessionStorage.getItem("showIntro") !== "false",
+	);
+
 	return (
 		selectedMarker && (
 			<section className={style.selectionDetailsContainer}>
@@ -33,34 +39,42 @@ const InfoComponent = () => {
 					{selectedMarker.sources.length}{" "}
 					{selectedMarker.sources.length > 1 ? "sources" : "source"}
 				</h4>
-				{mapIdentifier !== "exploration" && (
-					<details className={style.chartDetails} open>
-						<summary>{translation[language].mapPage.aside.seeStat}</summary>
-						<ChartComponent />
-					</details>
-				)}
-				{mapIdentifier !== "exploration" ? (
-					<details className={style.sourceDetails}>
-						<summary>{translation[language].mapPage.aside.seeSources}</summary>
-						{selectedMarker.sources.map((source) => {
-							return (
-								<SourceDetailsComponent
-									key={source.source_id}
-									source={source}
-								/>
-							);
-						})}
-					</details>
+				{isIntroDisplayed ? (
+					<InfoIntroductionContent setIsIntroDisplayed={setIsIntroDisplayed} />
 				) : (
 					<>
-						{selectedMarker.sources.map((source) => {
-							return (
-								<SourceDetailsComponent
-									key={source.source_id}
-									source={source}
-								/>
-							);
-						})}
+						{mapIdentifier !== "exploration" && (
+							<details className={style.chartDetails} open>
+								<summary>{translation[language].mapPage.aside.seeStat}</summary>
+								<ChartComponent />
+							</details>
+						)}
+						{mapIdentifier !== "exploration" ? (
+							<details className={style.sourceDetails}>
+								<summary>
+									{translation[language].mapPage.aside.seeSources}
+								</summary>
+								{selectedMarker.sources.map((source) => {
+									return (
+										<SourceDetailsComponent
+											key={source.source_id}
+											source={source}
+										/>
+									);
+								})}
+							</details>
+						) : (
+							<>
+								{selectedMarker.sources.map((source) => {
+									return (
+										<SourceDetailsComponent
+											key={source.source_id}
+											source={source}
+										/>
+									);
+								})}
+							</>
+						)}
 					</>
 				)}
 			</section>

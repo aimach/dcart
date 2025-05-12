@@ -143,3 +143,22 @@
     border: 1px solid v.$color-dark-lava;
   }
 }
+
+.introContentContainer {
+  margin: v.$space-s;
+  padding: v.$space-s;
+  @include m.flexbox(flex, column, nowrap, center, center);
+
+  >p {
+    margin-bottom: v.$space-s;
+    text-align: justify;
+  }
+
+  .checkboxContainer {
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$space-s;
+  }
+
+
+
+}
