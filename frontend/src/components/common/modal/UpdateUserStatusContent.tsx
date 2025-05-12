@@ -1,3 +1,5 @@
+// import des composants
+import ButtonComponent from "../button/ButtonComponent";
 // import des custom hooks
 import { updateUserStatus } from "../../../utils/api/profileAPI";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
@@ -30,12 +32,18 @@ const UpdateUserStatusContent = () => {
 		<div className={style.modalCustomContentContainer}>
 			{translation[language].modal.modifyUserStatusText}
 			<div className={style.buttonContainer}>
-				<button type="button" onClick={() => handleUserUpdate(idToUpdate)}>
-					{translation[language].modal.yes}
-				</button>
-				<button type="button" onClick={() => closeUpdateModal()}>
-					{translation[language].modal.no}
-				</button>
+				<ButtonComponent
+					type="button"
+					onClickFunction={() => handleUserUpdate(idToUpdate)}
+					color="green"
+					textContent={translation[language].modal.yes}
+				/>
+				<ButtonComponent
+					type="button"
+					onClickFunction={closeUpdateModal}
+					color="red"
+					textContent={translation[language].modal.no}
+				/>
 			</div>
 		</div>
 	);

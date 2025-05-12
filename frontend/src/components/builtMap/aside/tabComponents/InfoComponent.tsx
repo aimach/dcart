@@ -18,7 +18,8 @@ const InfoComponent = () => {
 	const { translation, language } = useTranslation();
 
 	// récupération de l'id de la carte
-	const { mapId } = useParams();
+	const { mapId, mapSlug } = useParams();
+	const mapIdentifier = mapId || mapSlug;
 
 	// récupération des données des stores
 	const { selectedMarker } = useMapStore((state) => state);
@@ -32,13 +33,13 @@ const InfoComponent = () => {
 					{selectedMarker.sources.length}{" "}
 					{selectedMarker.sources.length > 1 ? "sources" : "source"}
 				</h4>
-				{mapId !== "exploration" && (
+				{mapIdentifier !== "exploration" && (
 					<details className={style.chartDetails} open>
 						<summary>{translation[language].mapPage.aside.seeStat}</summary>
 						<ChartComponent />
 					</details>
 				)}
-				{mapId !== "exploration" ? (
+				{mapIdentifier !== "exploration" ? (
 					<details className={style.sourceDetails}>
 						<summary>{translation[language].mapPage.aside.seeSources}</summary>
 						{selectedMarker.sources.map((source) => {

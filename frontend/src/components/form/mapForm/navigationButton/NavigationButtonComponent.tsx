@@ -1,5 +1,7 @@
 // import des bibliothèques
 import { useLocation } from "react-router";
+// import des composants
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -39,34 +41,41 @@ const NavigationButtonComponent = ({
 	return (
 		<div className={style.navigationButtonContainer}>
 			{step > 1 && (
-				<button
+				<ButtonComponent
 					type="button"
-					onClick={() => decrementStep(step)}
-					onKeyUp={() => decrementStep(step)}
-				>
-					<ChevronLeft /> {translation[language].common.previous}
-				</button>
+					color="brown"
+					textContent={translation[language].common.previous}
+					onClickFunction={() => {
+						decrementStep(step);
+					}}
+					icon={<ChevronLeft />}
+				/>
 			)}
 			{step === 2 && nextButtonDisplayed && (
-				<button
+				<ButtonComponent
 					type="button"
-					onClick={() => incrementStep(step)}
-					onKeyUp={() => incrementStep(step)}
-				>
-					{translation[language].common.next}
-					<ChevronRight />
-				</button>
+					color="brown"
+					textContent={translation[language].common.next}
+					onClickFunction={() => {
+						incrementStep(step);
+					}}
+					icon={<ChevronRight />}
+				/>
 			)}
 
 			{step !== 2 && nextButtonDisplayed && (
-				<button type="submit">
-					{step <= 2
-						? translation[language].common.next
-						: translation[language].backoffice.mapFormPage[
-								pathname.includes("create") ? "create" : "edit"
-							]}{" "}
-					<ChevronRight />
-				</button>
+				<ButtonComponent
+					type="submit"
+					color="brown"
+					textContent={
+						step <= 2
+							? translation[language].common.next
+							: translation[language].backoffice.mapFormPage[
+									pathname.includes("create") ? "create" : "edit"
+								]
+					}
+					icon={<ChevronRight />}
+				/>
 			)}
 		</div>
 	);

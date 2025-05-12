@@ -57,6 +57,7 @@ const MapPage = () => {
 				mapStore.setIncludedElementId(undefined);
 				mapStore.setMapInfos(null);
 				setMapFilters([]);
+				fetchAllPoints("exploration");
 			} else {
 				// sinon on charge les informations de la carte
 				mapStore.setIncludedElementId(mapInfos.divinityIds);
@@ -91,7 +92,6 @@ const MapPage = () => {
 		<section className={style.mapSection}>
 			<section className={style.mapSectionMain}>
 				{isPanelDisplayed ? <AsideContainer /> : <AsideReducedMenuComponent />}
-
 				<section
 					className={mapStore.mapReady ? undefined : style.mapSectionLoaded}
 				>

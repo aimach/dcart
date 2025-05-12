@@ -5,6 +5,7 @@ import { useParams, useSearchParams } from "react-router";
 import ImageForm from "../imageForm/imageForm";
 import TextForm from "../textForm/TextForm";
 import FormTitleComponent from "../common/FormTitleComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -134,36 +135,42 @@ const LayoutForm = () => {
 						</div>
 					</div>
 					<div className={style.navigationButtonContainer}>
-						<button
+						<ButtonComponent
 							type="button"
-							onClick={() => {
+							color="brown"
+							textContent={translation[language].common.back}
+							onClickFunction={() => {
 								updateFormType("blockChoice");
 								setSearchParams(undefined);
 							}}
-						>
-							<ChevronLeft />
-							{translation[language].common.back}
-						</button>
+							icon={<ChevronLeft />}
+						/>
 						{action === "edit" && (
 							<>
-								<button
+								<ButtonComponent
 									type="button"
-									onClick={() => {
+									color="brown"
+									textContent={
+										translation[language].backoffice.storymapFormPage.form
+											.modifyTextNow
+									}
+									onClickFunction={() => {
 										setStep(2);
 									}}
-								>
-									Modifier directement le texte
-									<ChevronRight />
-								</button>
-								<button
+									icon={<ChevronRight />}
+								/>
+								<ButtonComponent
 									type="button"
-									onClick={() => {
+									color="brown"
+									textContent={
+										translation[language].backoffice.storymapFormPage.form
+											.modifyImageNow
+									}
+									onClickFunction={() => {
 										setStep(3);
 									}}
-								>
-									Modifier directement l'image
-									<ChevronRight />
-								</button>
+									icon={<ChevronRight />}
+								/>
 							</>
 						)}
 					</div>

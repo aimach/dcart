@@ -48,7 +48,8 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 
 	const { pathname, state } = useLocation();
 
-	const { mapId } = useParams();
+	const { mapId, mapSlug } = useParams();
+	const mapIdentifier = mapId ?? mapSlug;
 
 	// récupération des données des stores
 	const { mapInfos, setMapInfos, step, incrementStep } = useMapFormStore(
@@ -97,13 +98,13 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 
 	useEffect(() => {
 		const fetchMapInfos = async () => {
-			const allMapInfos = await getOneMapInfosById(mapId as string);
+			const allMapInfos = await getOneMapInfosById(mapIdentifier as string);
 			setMapInfos(allMapInfos);
 		};
 		if (state?.from.includes("/maps/preview/")) {
 			fetchMapInfos();
 		}
-	}, [mapId, state]);
+	}, [mapIdentifier, state]);
 
 	// à chaque changement dans les inputs, mise à jour du store avec les informations des inputs
 	// biome-ignore lint/correctness/useExhaustiveDependencies:

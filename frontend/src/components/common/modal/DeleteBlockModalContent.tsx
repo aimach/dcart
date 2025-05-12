@@ -1,3 +1,5 @@
+// import des composants
+import ButtonComponent from "../button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -32,12 +34,18 @@ const DeleteBlockModalContent = () => {
 			<div className={style.modalCustomContentContainer}>
 				{translation[language].modal.deleteBlockText}
 				<div className={style.buttonContainer}>
-					<button type="button" onClick={() => handleBlockDelete(block.id)}>
-						{translation[language].modal.yes}
-					</button>
-					<button type="button" onClick={() => closeDeleteModal()}>
-						{translation[language].modal.no}
-					</button>
+					<ButtonComponent
+						type="button"
+						onClickFunction={() => handleBlockDelete(block.id)}
+						color="green"
+						textContent={translation[language].modal.yes}
+					/>
+					<ButtonComponent
+						type="button"
+						onClickFunction={closeDeleteModal}
+						color="red"
+						textContent={translation[language].modal.no}
+					/>
 				</div>
 			</div>
 		)

@@ -20,6 +20,8 @@ import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/Storyma
 import UserManagementPage from "./pages/BackOffice/BOUserManagementPage/BOUserManagementPage.tsx";
 import TagManagementPage from "./pages/BackOffice/BOTagManagementPage/BOTagManagementPage.tsx";
 import DivinityManagementPage from "./pages/BackOffice/BODivinityManagementPage/BODivinityManagementPage.tsx";
+import PrivacyPolicyPage from "./pages/Legal/PrivacyPolicyPage.tsx";
+import LegalNoticePage from "./pages/Legal/LegalNoticePage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -51,11 +53,16 @@ if (rootElement) {
 											path="storymap/:storymapSlug"
 											element={<StorymapPage />}
 										/>
+										<Route
+											path="politique-de-confidentialite"
+											element={<PrivacyPolicyPage />}
+										/>
+										<Route
+											path="mentions-legales"
+											element={<LegalNoticePage />}
+										/>
 									</Route>
-									<Route
-										path="authentification"
-										element={<AuthentificationPage />}
-									/>
+
 									<Route path="backoffice" element={<ProtectedLayout />}>
 										<Route index element={<BOHomePage />} />
 										<Route path="maps">
@@ -86,6 +93,10 @@ if (rootElement) {
 											element={<DivinityManagementPage />}
 										/>
 									</Route>
+									<Route
+										path="authentification"
+										element={<AuthentificationPage />}
+									/>
 								</Routes>
 								<ToastContainer />
 							</TagOptionsProvider>

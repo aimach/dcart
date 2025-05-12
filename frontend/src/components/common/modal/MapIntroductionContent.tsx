@@ -31,7 +31,7 @@ const MapIntroductionContent = ({
 	const { translation, language } = useTranslation();
 
 	// récupération de l'id de la carte en cours
-	const { mapId } = useParams();
+	const { mapSlug } = useParams();
 
 	// récupération des données des stores
 	const { mapInfos } = useMapStore();
@@ -45,11 +45,11 @@ const MapIntroductionContent = ({
 
 	return (
 		<>
-			{mapId === "exploration" && (
+			{mapSlug === "exploration" && (
 				<SearchFormComponent setIsModalOpen={setIsModalOpen} />
 			)}
 			{mapInfos && (
-				<div className={style.introModalContent}>
+				<div className={style.modalIntroContent}>
 					<div className={style.modalTitleSection}>
 						<img src={delta} alt="decoration" width={30} />
 						<h3>{(mapInfos as MapInfoType)[`title_${language}`]}</h3>

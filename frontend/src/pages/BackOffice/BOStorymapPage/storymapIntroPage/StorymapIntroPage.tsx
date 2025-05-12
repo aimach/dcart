@@ -31,6 +31,7 @@ import PanelSection from "../../../../components/storymap/panel/PanelSection";
 import DeleteBlockModalContent from "../../../../components/common/modal/DeleteBlockModalContent";
 import TableForm from "../../../../components/form/storymapForm/tableForm/TableForm";
 import BlockChoiceForm from "../../../../components/form/storymapForm/blockChoiceForm/BlockChoiceForm";
+import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 // import du context
 import { SessionContext } from "../../../../context/SessionContext";
 // import des custom hooks
@@ -159,11 +160,14 @@ const StorymapIntroPage = () => {
 			<aside className={style.storymapFormAside}>
 				{storymapId !== "create" && (
 					<div className={style.buttonContainer}>
-						<Link to={`/backoffice/storymaps/preview/${storymapId}`}>
-							<button type="button" className={style.previewButton}>
-								{translation[language].backoffice.storymapFormPage.preview}
-							</button>
-						</Link>
+						<ButtonComponent
+							type="route"
+							color="brown"
+							textContent={
+								translation[language].backoffice.storymapFormPage.preview
+							}
+							link={`/backoffice/storymaps/preview/${storymapId}`}
+						/>
 					</div>
 				)}
 

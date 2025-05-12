@@ -61,7 +61,7 @@ export const mapContentController = {
 					const isActive = req.query.isActive === "true";
 					query.where("map.isActive = :isActive", { isActive });
 				}
-				const allMaps = await query.getMany();
+				const allMaps = await query.orderBy("map.id").getMany();
 
 				res.status(200).send(allMaps);
 				return;

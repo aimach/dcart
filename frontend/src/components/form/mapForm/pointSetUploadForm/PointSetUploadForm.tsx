@@ -3,6 +3,7 @@ import { useContext, useState } from "react";
 // import des composants
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -189,21 +190,22 @@ const PointSetUploadForm = ({
 						/>
 					</div>
 				</div>
+				<ButtonComponent
+					type="button"
+					color="brown"
+					textContent={translation[language].button[pointSet ? "edit" : "add"]}
+				/>
 
-				<button type="submit" className={style.commonFormButton}>
-					{translation[language].button[pointSet ? "edit" : "add"]}
-				</button>
 				{action === "edit" && (
-					<button
+					<ButtonComponent
 						type="button"
-						className={style.commonFormButton}
-						onClick={() => {
+						color="red"
+						textContent={translation[language].button.cancel}
+						onClickFunction={() => {
 							cancelFunction();
 							setSelectedFile(null);
 						}}
-					>
-						{translation[language].button.cancel}
-					</button>
+					/>
 				)}
 			</form>
 		)

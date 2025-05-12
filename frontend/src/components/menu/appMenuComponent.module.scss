@@ -93,4 +93,16 @@
             cursor: pointer;
         }
     }
+
+}
+
+.legalPageSection {
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$space-xxl;
+    margin-top: v.$font-space-xxxl;
+
+    >a {
+        text-decoration: underline;
+        color: v.$color-dark-lava;
+    }
 }

@@ -167,6 +167,7 @@ type LanguageObject = {
 				delete: string;
 			};
 			pointSetForm: {
+				addNewPointSet: string;
 				pointSetName: {
 					label: string;
 					description: string;
@@ -275,8 +276,11 @@ type LanguageObject = {
 				imageToLeft: string;
 				imageToRight: string;
 				scrollMapStepList: string;
+				goToSteps: string;
 				addStep: string;
 				modifyStep: string;
+				modifyTextNow: string;
+				modifyImageNow: string;
 			};
 		};
 		userManagement: {
