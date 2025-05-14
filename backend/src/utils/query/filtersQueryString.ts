@@ -118,22 +118,15 @@ const getQueryStringForLocalisationFilter = (
 	}
 
 	if (locationLevel === "location") {
-		// on check le nombre d'ids
-		if (locationId.includes("|")) {
-			const locationIds = locationId
-				.split("|")
-				.map((locationName) => `'${locationName}'`) // ajout des quotes
-				.join(", ");
-			return `AND ${tableName}.${fieldName} IN (${locationIds})`;
-		}
-		return `AND ${tableName}.${fieldName} = '${locationId}'`; // ajout des quotes
-	}
-	// on check le nombre d'ids
-	if (locationId.includes("|")) {
-		const locationIds = locationId.split("|").join(", ");
+		const locationIds = locationId
+			.split("|")
+			.map((locationName) => `'${locationName}'`) // ajout des quotes
+			.join(", ");
 		return `AND ${tableName}.${fieldName} IN (${locationIds})`;
 	}
-	return `AND ${tableName}.${fieldName} = ${locationId}`;
+
+	const locationIds = locationId.split("|").join(", ");
+	return `AND ${tableName}.${fieldName} IN (${locationIds})`;
 };
 
 export {

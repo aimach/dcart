@@ -172,15 +172,11 @@ export const sourceController = {
 				}
 
 				if (sourceTypeId) {
-					if (sourceTypeId.includes("|")) {
-						const sourceTypeIds = sourceTypeId
-							.split("|")
-							.map((sourceTypeName: string) => `'${sourceTypeName}'`) // ajout des quotes
-							.join(", ");
-						querySourceType = `WHERE type_source.nom_fr IN (${sourceTypeIds})`;
-					} else {
-						querySourceType = `WHERE type_source.nom_fr = '${sourceTypeId}'`;
-					}
+					const sourceTypeIds = sourceTypeId
+						.split("|")
+						.map((sourceTypeName: string) => `'${sourceTypeName}'`) // ajout des quotes
+						.join(", ");
+					querySourceType = `WHERE type_source.nom_fr IN (${sourceTypeIds})`;
 				}
 
 				if (agentGender) {
