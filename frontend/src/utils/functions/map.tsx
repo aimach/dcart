@@ -3,6 +3,7 @@ import DOMPurify from "dompurify";
 import * as LucideIcons from "lucide-react";
 import { renderToStaticMarkup } from "react-dom/server";
 import L from "leaflet";
+import html2canvas from "html2canvas";
 // import des types
 import type { Language, TranslationType } from "../types/languageTypes";
 import type {
@@ -372,6 +373,46 @@ const getClosestCluster = (
 	return null;
 };
 
+/**
+ * Fonction pour charger la carte en png
+ */
+const uploadMapImage = (
+	isMapReady: boolean,
+	mapInfos: MapInfoType,
+	language: Language,
+) => {
+	if (isMapReady) {
+		const mapElement = document.getElementsByClassName(
+			"leaflet-container",
+		)[0] as HTMLElement; // le premier élément de la classe leaflet-container
+
+		html2canvas(mapElement, { useCORS: true, allowTaint: true }).then(
+			(canvas) => {
+				const imgData = canvas.toDataURL("image/png");
+
+				// Télécharger l'image
+				const link = document.createElement("a");
+				link.href = imgData;
+				link.download = `carte-${slugify(mapInfos[`title_${language}`])}.png`;
+				link.click();
+			},
+		);
+	}
+};
+
+/**
+ * Fonction utilisée pour "sluger" une chaîne de caractères
+ * @param str - La chaîne de caractères à sluger
+ * @returns string - La chaîne de caractères slugée
+ */
+const slugify = (str: string) =>
+	str
+		.toLowerCase()
+		.normalize("NFD")
+		.replace(/[\u0300-\u036f]/g, "") // accents en caractères normaux
+		.replace(/[^a-z0-9]+/g, "-") // caractères spéciaux en tirets
+		.replace(/^-+|-+$/g, ""); // trim tirets
+
 export {
 	getAgentsArrayWithoutDuplicates,
 	getAllAttestationsIdsFromParsedPoints,
@@ -386,4 +427,5 @@ export {
 	handleClusterClick,
 	handleSpiderfyPosition,
 	zoomOnSelectedMarkerCluster,
+	uploadMapImage,
 };

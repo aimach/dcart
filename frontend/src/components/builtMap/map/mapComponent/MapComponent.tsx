@@ -8,6 +8,7 @@ import {
 } from "react-leaflet";
 import { Link, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
+
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
 import ModalComponent from "../../../common/modal/ModalComponent";
