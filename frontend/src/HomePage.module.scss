@@ -1,18 +1,7 @@
 @use './styles/mixin' as m;
 @use './styles/variable' as v;
 
-/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
-@media (max-width: 768px) {
-    .heroContainer {
-        >h1 {
-            font-size: v.$font-size-l;
-        }
 
-        >p {
-            margin: v.$space-xxl;
-        }
-    }
-}
 
 /* Ciblé pour les téléphones ≤ 480px */
 @media (max-width: 480px) {}
@@ -33,6 +22,7 @@
         background-position: top;
         background-repeat: no-repeat;
         @include m.flexbox(flex, column, nowrap, center, center);
+        gap: v.$space-xxl;
 
         >h1 {
             margin: 0 v.$space-xxl;
@@ -100,4 +90,21 @@
     }
 
 
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+    .mainPage {
+        .heroContainer {
+            gap: 0;
+
+            >h1 {
+                font-size: v.$font-size-xxxxl;
+            }
+
+            >p {
+                margin: v.$space-l;
+            }
+        }
+    }
 }

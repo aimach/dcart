@@ -4,15 +4,17 @@ export function useWindowSize() {
 	const [windowSize, setWindowSize] = useState({
 		width: window.innerWidth,
 		height: window.innerHeight,
-		isMobile: window.innerWidth < 768,
+		isMobile: window.innerWidth < 481,
+		isTablet: window.innerWidth <= 768 && window.innerWidth > 480,
+		isDesktop: window.innerWidth > 768,
 	});
-
-	console.log(windowSize);
 
 	useEffect(() => {
 		function handleResize() {
 			setWindowSize({
-				isMobile: window.innerWidth < 768,
+				isMobile: window.innerWidth < 481,
+				isTablet: window.innerWidth <= 768 && window.innerWidth > 480,
+				isDesktop: window.innerWidth > 768,
 				width: window.innerWidth,
 				height: window.innerHeight,
 			});

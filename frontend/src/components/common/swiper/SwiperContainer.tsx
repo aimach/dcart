@@ -22,11 +22,13 @@ type SwiperContainerProps = {
 };
 
 const SwiperContainer = ({ items }: SwiperContainerProps) => {
-	const { isMobile } = useWindowSize();
-	console.log(isMobile);
+	const { isMobile, isTablet } = useWindowSize();
+
+	console.log(isTablet);
+
 	return (
 		<Swiper
-			slidesPerView={isMobile ? 1 : 3}
+			slidesPerView={isMobile ? 1 : isTablet ? 2 : 3}
 			spaceBetween={30}
 			pagination={{
 				clickable: true,
