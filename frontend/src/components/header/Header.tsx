@@ -8,6 +8,7 @@ import ButtonComponent from "../common/button/ButtonComponent";
 import { AuthContext } from "../../context/AuthContext";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 // import des services
 import { logoutUser } from "../../utils/api/authAPI";
 import {
@@ -21,7 +22,7 @@ import style from "./header.module.scss";
 // import des images
 import MAPLogo from "../../assets/map_logo.png";
 // import des icônes
-import { MenuIcon } from "lucide-react";
+import { Home, MenuIcon } from "lucide-react";
 
 interface HeaderComponentProps {
 	type: "visitor" | "backoffice";
@@ -41,6 +42,8 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	// récupération des données de traduction
 	const { language, translation, setLanguage } = useTranslation();
 
+	const { isMobile } = useWindowSize();
+
 	// récupération de l'url de la page en cours pour savoir si l'utilisateur est sur la page d'accueil
 	const { pathname } = useLocation();
 
@@ -57,19 +60,25 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	return (
 		<header className={style.header}>
 			{type === "visitor" ? (
-				<ImageWithLink
-					type="link"
-					link={"https://map-polytheisms.huma-num.fr/"}
-					ariaLabel={"Visiter le site MAP"}
-					buttonClassName={style.headerLogo}
-					imgSrc={MAPLogo}
-					imgAlt={"MAP logo"}
-					imgWidth={50}
-				/>
+				isMobile && pathname !== "/" ? (
+					<Link to="/">
+						<Home />
+					</Link>
+				) : (
+					<ImageWithLink
+						type="link"
+						link={"https://map-polytheisms.huma-num.fr/"}
+						ariaLabel={"Visiter le site MAP"}
+						buttonClassName={style.headerLogo}
+						imgSrc={MAPLogo}
+						imgAlt={"MAP logo"}
+						imgWidth={50}
+					/>
+				)
 			) : (
 				<Link to="/">{translation[language].navigation.back}</Link>
 			)}
-			{pathname !== "/" && !pathname.includes("backoffice") && (
+			{pathname !== "/" && !pathname.includes("backoffice") && !isMobile && (
 				<Link to="/" className={style.headerLogo}>
 					<h1>{translation[language].title as string}</h1>
 				</Link>
@@ -94,6 +103,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 							selectedElement={language}
 							liClasseName={style.languageSelected}
 						/>
+
 						<MenuIcon onClick={() => setMenuIsOpen(true)} />
 					</>
 				)}
