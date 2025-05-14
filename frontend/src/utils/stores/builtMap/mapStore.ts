@@ -16,6 +16,7 @@ type State = {
 	tileLayerURL: string;
 	isTutorialOpen: boolean;
 	tutorialStep: number;
+	mapIsDownloading: boolean;
 };
 
 type Action = {
@@ -37,6 +38,7 @@ type Action = {
 	incrementTutorialStep: (step: number) => void;
 	decrementTutorialStep: (step: number) => void;
 	resetTutorialStep: () => void;
+	setMapIsDownloading: (mapIsDownloading: boolean) => void;
 };
 
 export const useMapStore = create<State & Action>((set) => ({
@@ -79,4 +81,6 @@ export const useMapStore = create<State & Action>((set) => ({
 	incrementTutorialStep: (step) => set(() => ({ tutorialStep: step + 1 })),
 	decrementTutorialStep: (step) => set(() => ({ tutorialStep: step - 1 })),
 	resetTutorialStep: () => set(() => ({ tutorialStep: 1 })),
+	mapIsDownloading: false,
+	setMapIsDownloading: (mapIsDownloading) => set(() => ({ mapIsDownloading })),
 }));
