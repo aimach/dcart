@@ -1,5 +1,3 @@
-import { query } from "express";
-
 /**
  * Fonction qui renvoie la query string pour les filtres de date
  * @param {string | null} ante - la date "avant"

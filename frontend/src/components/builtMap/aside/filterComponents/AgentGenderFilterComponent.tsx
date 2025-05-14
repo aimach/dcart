@@ -17,6 +17,7 @@ const AgentGenderFilterComponent = () => {
 		useShallow((state) => state),
 	);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: pas nécessaire de surveiller le changement d'état des filtres
 	useEffect(() => {
 		// si aucune case n'est cochée, on coche toutes les cases
 		if (userFilters.agentGender === undefined) {
@@ -57,7 +58,7 @@ const AgentGenderFilterComponent = () => {
 			</div>
 			<div>
 				<input
-					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
+					key={isReset.toString()}
 					type="checkbox"
 					id="female"
 					name="female"
@@ -72,7 +73,7 @@ const AgentGenderFilterComponent = () => {
 			</div>
 			<div>
 				<input
-					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
+					key={isReset.toString()}
 					type="checkbox"
 					id="nonBinary"
 					name="nonBinary"

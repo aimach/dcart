@@ -23,7 +23,7 @@ import {
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { PointType } from "../../../utils/types/mapTypes";
-import { query, type Request, type Response } from "express";
+import type { Request, Response } from "express";
 
 export const sourceController = {
 	// récupérer toutes les sources à partir de l'id de la carte

@@ -30,5 +30,5 @@ export const mapDataSource = new DataSource({
 	username: process.env.MAP_DB_USERNAME,
 	password: process.env.MAP_DB_PASSWORD,
 	database: process.env.MAP_DB_NAME,
-	logging: true, // Active les logs pour le debug
+	logging: false, // Active les logs pour le debug
 });

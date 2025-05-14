@@ -7,6 +7,7 @@ import ElementFilterComponent from "../filterComponents/ElementFilterComponent";
 import MultiSelectFilterComponent from "../filterComponents/MultiSelectFilterComponent";
 import DivinityNbComponent from "../filterComponents/DivinityNbFilterComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import AgentGenderFilterComponent from "../filterComponents/AgentGenderFilterComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -19,7 +20,6 @@ import { useShallow } from "zustand/shallow";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
-import AgentGenderFilterComponent from "../filterComponents/AgentGenderFilterComponent";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
@@ -43,7 +43,6 @@ const FilterComponent = ({
 	elementOptions,
 	sourceTypeOptions,
 	agentActivityOptions,
-	agentNameOptions,
 }: FilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
