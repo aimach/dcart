@@ -28,9 +28,9 @@ const filterSchema = Joi.object({
 		"any.required": "Le booléen 'agentActivity' est requis",
 		"boolean.base": "'agentActivity' doit être un booléen",
 	}),
-	agentName: Joi.boolean().required().messages({
-		"any.required": "Le booléen 'agentName' est requis",
-		"boolean.base": "'agentName' doit être un booléen",
+	agentGender: Joi.boolean().required().messages({
+		"any.required": "Le booléen 'agentGender' est requis",
+		"boolean.base": "'agentGender' doit être un booléen",
 	}),
 });
 

@@ -116,7 +116,12 @@ SELECT
 FROM source
 JOIN sources_without_duplicate ON source.id = sources_without_duplicate.source_id 
 INNER JOIN attestation ON attestation.ID_source = source.ID
-LEFT JOIN localisation AS localisation_source ON source.localisation_DECOUVERTE_ID = localisation_source.ID
+LEFT JOIN localisation AS localisation_source ON
+  (
+    (source.localisation_origine_id = location_source.id)
+    OR
+    (source.localisation_decouverte_id = localisation_source.id)
+  )
 INNER JOIN sous_region ON sous_region.ID = localisation_source.sous_region_ID
 INNER JOIN grande_region ON grande_region.ID = localisation_source.grande_region_ID
 INNER JOIN formule ON formule.attestation_ID = attestation.ID
@@ -164,6 +169,7 @@ export const getSourcesQueryWithDetails = (
 	queryIncludedElements: string,
 	queryDivinityNb: string,
 	querySourceType: string,
+	queryAgentGender: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -210,6 +216,7 @@ sources_with_attestations AS (
                       FROM agent_genre 
                       JOIN genre ON genre.id = agent_genre.id_genre 
                       WHERE agent_genre.id_agent = agent.id
+                      ${queryAgentGender}
                     ) AS genres -- Tableaux des genres pour l'agent
                     FROM agent 
                     LEFT JOIN agent_activite ON agent_activite.id_agent = agent.id
@@ -239,14 +246,20 @@ sources_with_attestations AS (
 sources_without_duplicate AS (
   SELECT 
     source.id AS source_id,
-		json_agg(DISTINCT nom_fr) AS type_source_fr,
-		json_agg(DISTINCT nom_en) AS type_source_en,
+		json_build_object(
+      'type_source_fr', json_agg(DISTINCT type_fr),
+      'type_source_en', json_agg(DISTINCT type_en),
+      'category_source_fr', json_agg(category_fr),
+      'category_source_en', json_agg(category_en)
+    ) as type_source,
 	  json_agg(DISTINCT attestations) AS sources
   FROM (
-    SELECT DISTINCT sources_with_attestations.source_id, sources_with_attestations.attestations, type_source.nom_fr, type_source.nom_en
+    SELECT DISTINCT sources_with_attestations.source_id, sources_with_attestations.attestations, type_source.nom_fr AS type_fr, type_source.nom_en AS type_en, 
+	 categorie_source.nom_fr AS category_fr, categorie_source.nom_en AS category_en
     FROM sources_with_attestations
 	  LEFT JOIN source_type_source ON source_type_source.id_source = sources_with_attestations.source_id
   	LEFT JOIN type_source ON type_source.id = source_type_source.id_type_source 
+    LEFT JOIN categorie_source ON categorie_source.id = type_source.categorie_source_id
     ${querySourceType}
   ) AS subquery
   JOIN source ON source.id = subquery.source_id
@@ -270,14 +283,18 @@ SELECT
       'attestations', sources_without_duplicate.sources,
       'post_quem', datation.post_quem,
       'ante_quem', datation.ante_quem,
-      'type_source_fr', sources_without_duplicate.type_source_fr,
-      'type_source_en', sources_without_duplicate.type_source_en
+      'types', sources_without_duplicate.type_source
     )
   ) AS sources
 FROM source
 JOIN sources_without_duplicate ON source.id = sources_without_duplicate.source_id 
 INNER JOIN attestation ON attestation.ID_source = source.ID
-LEFT JOIN localisation AS localisation_source ON source.localisation_DECOUVERTE_ID = localisation_source.ID
+LEFT JOIN localisation AS localisation_source ON
+  (
+    (source.localisation_origine_id = localisation_source.id)
+    OR
+    (source.localisation_decouverte_id = localisation_source.id)
+  )
 INNER JOIN sous_region ON sous_region.ID = localisation_source.sous_region_ID
 INNER JOIN grande_region ON grande_region.ID = localisation_source.grande_region_ID
 INNER JOIN formule ON formule.attestation_ID = attestation.ID

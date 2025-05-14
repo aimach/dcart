@@ -155,8 +155,12 @@ type SourceType = {
 	support_fr: string;
 	materiau_en: string;
 	materiau_fr: string;
-	type_source_fr: string[];
-	type_source_en: string[];
+	types: {
+		type_source_en: string[];
+		type_source_fr: string[];
+		category_source_en: string[];
+		category_source_fr: string[];
+	};
 	attestations: AttestationType[];
 };
 

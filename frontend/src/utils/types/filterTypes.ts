@@ -20,6 +20,7 @@ type UserFilterType = {
 	maxDivinityNb?: string;
 	agentActivityId?: string;
 	agentNameId?: string;
+	agentGender?: { male?: boolean; female?: boolean; nonBinary?: boolean };
 };
 
 type LotType = {

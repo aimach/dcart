@@ -17,7 +17,6 @@ import type {
 import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
-import { all } from "axios";
 
 /**
  * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
@@ -214,6 +213,15 @@ const getFilterLabel = (
 				description:
 					translation[language as keyof TranslationType].backoffice.mapFormPage
 						.agentNameFilter.description,
+			};
+		case "agentGender":
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.agentGenderFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.agentGenderFilter.description,
 			};
 		default:
 			return {
@@ -504,15 +512,25 @@ const getAllSourceTypeFromPoints = (
 	const sourceTypes = new Set<string>();
 	points.map((point) => {
 		point.sources.map((source) => {
-			source[`type_source_${language}`].map((type_source: string, index) => {
-				if (sourceTypes.has(type_source)) {
+			const typeSourceArray = source.types[`type_source_${language}`];
+			const categorySourceArray = source.types[`category_source_${language}`];
+			const typeAndCategorySourceArray = typeSourceArray.map((type, index) => {
+				if (type && categorySourceArray[index]) {
+					return `${categorySourceArray[index]} > ${type}`;
+				}
+				return type;
+			});
+
+			typeAndCategorySourceArray.map((typeAndCategorySource: string, index) => {
+				if (sourceTypes.has(typeAndCategorySource)) {
 					return;
 				}
-				if (type_source) {
-					sourceTypes.add(type_source);
+				if (typeAndCategorySource) {
+					sourceTypes.add(typeAndCategorySource);
 					allSourceTypes.push({
-						nom_fr: source.type_source_fr[index],
-						nom_en: source.type_source_en[index],
+						type_fr: source.types.type_source_fr[index],
+						type_en: source.types.type_source_en[index],
+						label: typeAndCategorySource,
 					});
 				}
 			});
@@ -522,8 +540,8 @@ const getAllSourceTypeFromPoints = (
 	// formattage des options pour le select
 	return allSourceTypes
 		.map((option) => ({
-			value: option.nom_fr,
-			label: option[`nom_${language}`],
+			value: option.type_fr,
+			label: option.label,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
 };

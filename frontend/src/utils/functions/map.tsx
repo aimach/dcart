@@ -109,9 +109,18 @@ const getSanitizedAgent = (
 
 	const sanitizedAgent = DOMPurify.sanitize(agentElement.designation);
 	const sanitizedAgentInSelectedLanguage = sanitizedAgent.split("<br>");
+
+	let genderString = "";
+	if (agentElement.genres?.length === 1) {
+		genderString =
+			agentElement.genres[0].nom_fr === "Masculin" ? " (M)" : " (F)";
+	} else if (agentElement.genres?.length > 1) {
+		genderString = " (M/F)";
+	}
+
 	return sanitizedAgentInSelectedLanguage.length > 1
-		? sanitizedAgentInSelectedLanguage[language === "fr" ? 0 : 1]
-		: sanitizedAgentInSelectedLanguage[0];
+		? sanitizedAgentInSelectedLanguage[language === "fr" ? 0 : 1] + genderString
+		: sanitizedAgentInSelectedLanguage[0] + genderString;
 };
 
 /**
