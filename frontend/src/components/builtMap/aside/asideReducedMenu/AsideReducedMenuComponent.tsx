@@ -20,6 +20,7 @@ import {
 	Filter,
 	ImageDown,
 	ListCollapse,
+	Loader,
 	MapPin,
 } from "lucide-react";
 
@@ -31,8 +32,15 @@ import {
 const AsideReducedMenuComponent = () => {
 	// récupération des données des stores
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
-	const { mapInfos, mapReady, openTutorial, tutorialStep, resetTutorialStep } =
-		useMapStore();
+	const {
+		mapInfos,
+		mapReady,
+		openTutorial,
+		tutorialStep,
+		resetTutorialStep,
+		mapIsDownloading,
+		setMapIsDownloading,
+	} = useMapStore();
 
 	const { language } = useTranslation();
 
@@ -71,9 +79,18 @@ const AsideReducedMenuComponent = () => {
 		},
 		{
 			id: "screenshot",
-			title: <ImageDown />,
+			title: mapIsDownloading ? (
+				<Loader className={style.spin} />
+			) : (
+				<ImageDown />
+			),
 			onClickFunction: () => {
-				uploadMapImage(mapReady, mapInfos as MapInfoType, language);
+				uploadMapImage(
+					mapReady,
+					mapInfos as MapInfoType,
+					language,
+					setMapIsDownloading,
+				);
 			},
 			route: undefined,
 		},

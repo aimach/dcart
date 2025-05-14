@@ -380,8 +380,10 @@ const uploadMapImage = (
 	isMapReady: boolean,
 	mapInfos: MapInfoType,
 	language: Language,
+	setMapIsDownloading: (isDownloading: boolean) => void,
 ) => {
 	if (isMapReady) {
+		setMapIsDownloading(true);
 		const mapElement = document.getElementsByClassName(
 			"leaflet-container",
 		)[0] as HTMLElement; // le premier élément de la classe leaflet-container
@@ -395,6 +397,7 @@ const uploadMapImage = (
 				link.href = imgData;
 				link.download = `carte-${slugify(mapInfos[`title_${language}`])}.png`;
 				link.click();
+				setMapIsDownloading(false);
 			},
 		);
 	}
