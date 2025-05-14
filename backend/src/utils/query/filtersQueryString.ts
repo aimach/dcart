@@ -1,3 +1,5 @@
+import { query } from "express";
+
 /**
  * Fonction qui renvoie la query string pour les filtres de date
  * @param {string | null} ante - la date "avant"
@@ -72,6 +74,30 @@ const getQueryStringForLanguage = (language: string, queryLanguage: string) => {
 };
 
 /**
+ * Fonction qui renvoie la query string pour les filtres de langue
+ * @param {string} language - la langue sélectionnée (greek, semitic)
+ * @param {string} queryLanguage - la variable de langue dans la query (si jamais la fonction est utilisée plusieurs fois, pour aditionner les query strings)
+ * @returns {string} - la query string
+ */
+const getQueryStringForAgentGender = (
+	agentGenderFilter: Record<string, boolean>,
+) => {
+	const queryArray = [];
+	if (agentGenderFilter.male) {
+		queryArray.push("'Masculin'");
+	}
+	if (agentGenderFilter.female) {
+		queryArray.push("'Féminin'");
+	}
+	if (agentGenderFilter.nonBinary) {
+		queryArray.push("'Non binaire'");
+	}
+	return queryArray.length > 0
+		? ` AND genre.nom_fr IN (${queryArray.join(", ")}) `
+		: "";
+};
+
+/**
  * Fonction qui renvoie la query string pour filtrer par localisation
  * @param {string} mapId - l'id de la carte (exploration ou un uuid)
  * @param {string} locationId - l'id de la localisation
@@ -116,4 +142,5 @@ export {
 	getQueryStringForIncludedElements,
 	getQueryStringForLanguage,
 	getQueryStringForLocalisationFilter,
+	getQueryStringForAgentGender,
 };

@@ -169,6 +169,7 @@ export const getSourcesQueryWithDetails = (
 	queryIncludedElements: string,
 	queryDivinityNb: string,
 	querySourceType: string,
+	queryAgentGender: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -215,6 +216,7 @@ sources_with_attestations AS (
                       FROM agent_genre 
                       JOIN genre ON genre.id = agent_genre.id_genre 
                       WHERE agent_genre.id_agent = agent.id
+                      ${queryAgentGender}
                     ) AS genres -- Tableaux des genres pour l'agent
                     FROM agent 
                     LEFT JOIN agent_activite ON agent_activite.id_agent = agent.id

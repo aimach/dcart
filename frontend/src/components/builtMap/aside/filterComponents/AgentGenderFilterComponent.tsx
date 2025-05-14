@@ -1,4 +1,5 @@
 // import des custom hooks
+import { useEffect } from "react";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
@@ -16,6 +17,20 @@ const AgentGenderFilterComponent = () => {
 		useShallow((state) => state),
 	);
 
+	useEffect(() => {
+		// si aucune case n'est cochée, on coche toutes les cases
+		if (userFilters.agentGender === undefined) {
+			setUserFilters({
+				...userFilters,
+				agentGender: {
+					male: false,
+					female: false,
+					nonBinary: false,
+				},
+			});
+		}
+	}, []);
+
 	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
 	function handleChangeCheckbox(checked: boolean, name: string) {
 		const newLanguageFiltersObject = {
@@ -24,8 +39,6 @@ const AgentGenderFilterComponent = () => {
 		};
 		setUserFilters(newLanguageFiltersObject);
 	}
-
-	console.log(userFilters);
 
 	return (
 		<div>

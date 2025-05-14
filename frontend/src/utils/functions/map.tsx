@@ -107,8 +107,6 @@ const getSanitizedAgent = (
 		return translation[language].mapPage.aside.noDesignation;
 	}
 
-	console.log(agentElement);
-
 	const sanitizedAgent = DOMPurify.sanitize(agentElement.designation);
 	const sanitizedAgentInSelectedLanguage = sanitizedAgent.split("<br>");
 
