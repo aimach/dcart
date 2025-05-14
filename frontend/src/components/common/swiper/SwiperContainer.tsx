@@ -3,6 +3,8 @@ import { Swiper, SwiperSlide } from "swiper/react";
 import { Navigation, Pagination, Autoplay } from "swiper/modules";
 // import des composants
 import ItemContainer from "../itemContainer/ItemContainer";
+// import des custom hooks
+import { useWindowSize } from "../../../utils/hooks/useWindowSize";
 // import des types
 import type { TagWithItemsType } from "../../../utils/types/commonTypes";
 // import du style
@@ -20,9 +22,11 @@ type SwiperContainerProps = {
 };
 
 const SwiperContainer = ({ items }: SwiperContainerProps) => {
+	const { isMobile } = useWindowSize();
+	console.log(isMobile);
 	return (
 		<Swiper
-			slidesPerView={3}
+			slidesPerView={isMobile ? 1 : 3}
 			spaceBetween={30}
 			pagination={{
 				clickable: true,

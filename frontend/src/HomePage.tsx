@@ -13,7 +13,8 @@ import { useTranslation } from "./utils/hooks/useTranslation";
 // import des types
 import type { TagWithItemsType } from "./utils/types/commonTypes";
 // import du style
-import style from "./App.module.scss";
+import "./App.module.scss";
+import style from "./HomePage.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
 

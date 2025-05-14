@@ -7,10 +7,12 @@ export function useWindowSize() {
 		isMobile: window.innerWidth < 768,
 	});
 
+	console.log(windowSize);
+
 	useEffect(() => {
 		function handleResize() {
 			setWindowSize({
-				...windowSize,
+				isMobile: window.innerWidth < 768,
 				width: window.innerWidth,
 				height: window.innerHeight,
 			});

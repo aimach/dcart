@@ -1,6 +1,8 @@
 @use '../../../styles/mixin' as m;
 @use '../../../styles/variable' as v;
 
+
+
 .itemIcon {
     position: relative;
     width: 35px;
@@ -58,5 +60,20 @@
 
         @include m.flexbox(flex, row, wrap, center, center);
         gap: v.$space-xs;
+    }
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .itemSwiper {
+        width: 70vw;
+
+        .itemText {
+            height: 100px;
+
+        }
     }
 }

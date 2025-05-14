@@ -13,7 +13,6 @@ import { logoutUser } from "../../utils/api/authAPI";
 import {
 	getBackofficeNavigationList,
 	getTranslationNavigationList,
-	getVisitorNavigationList,
 } from "../../utils/menu/menuListArrays";
 // import des types
 import { useContext, type Dispatch, type SetStateAction } from "react";
