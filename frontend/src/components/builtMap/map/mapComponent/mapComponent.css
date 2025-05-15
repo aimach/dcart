@@ -6,6 +6,18 @@
 	/* hauteur totale - 60px de mainHeader - 50px de mapHeader - 20px pour laisser la place au filtre du temps */
 }
 
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+	#built-map .leaflet-container {
+		height: calc(100vh - 60px);
+		/* hauteur totale - 60px de mainHeader  */
+	}
+}
+
 /* Supprimer les checkbox dans la fenêtre des calques */
 .hide-layer-checkboxes input[type="checkbox"] {
 	display: none;

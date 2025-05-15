@@ -113,6 +113,7 @@ type LanguageObject = {
 			female: string;
 			nonbinary: string;
 			agentName: string;
+			timeLimits: string;
 			seeStat: string;
 			seeSources: string;
 			searchForLocation: string;

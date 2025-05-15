@@ -5,4 +5,9 @@
     display: flex;
     flex-direction: column;
     padding: 0 v.$space-xl;
+
+    >h4 {
+        font-size: v.$font-size-l;
+        margin: v.$space-m 0;
+    }
 }

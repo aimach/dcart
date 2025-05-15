@@ -106,6 +106,7 @@
 			"agentActivity": "Activité de l'agent",
 			"agentGender": "Genre de l'agent",
 			"agentName": "Nom de l'agent",
+			"timeLimits": "Bornes temporelles",
 			"male": "Masculin",
 			"female": "Féminin",
 			"nonbinary": "Non-binaire",
