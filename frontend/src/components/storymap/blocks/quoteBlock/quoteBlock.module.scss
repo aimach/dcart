@@ -21,3 +21,10 @@
         line-height: v.$font-space-xxxl;
     }
 }
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .quoteBlockContainer {
+        width: 90vw;
+    }
+}

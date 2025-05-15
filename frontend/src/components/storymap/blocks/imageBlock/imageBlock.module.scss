@@ -14,3 +14,12 @@
         font-style: italic;
     }
 }
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .imageSection {
+        img {
+            max-width: 70vw;
+        }
+    }
+}

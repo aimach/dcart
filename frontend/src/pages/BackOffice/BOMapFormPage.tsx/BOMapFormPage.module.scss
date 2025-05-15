@@ -3,11 +3,11 @@
 
 .BOmapFormPageContainer {
     @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
-    height: calc(100vh - v.$main-header-height);
+    height: calc(100dvh - v.$main-header-height);
 
     >div:first-child {
         width: 50%;
-        height: calc(100vh - v.$main-header-height);
+        height: calc(100dvh - v.$main-header-height);
         border-right: 1px solid grey;
         overflow-y: scroll;
         overflow-x: hidden;
@@ -27,7 +27,7 @@
 
 .mapFormPageContainer {
     @include m.flexbox(flex, row, nowrap, space-between, flex-start);
-    height: calc(100vh - v.$main-header-height);
+    height: calc(100dvh - v.$main-header-height);
 }
 
 .mapFormAside {

@@ -116,7 +116,7 @@
 
 .scrollMapFormContainer {
     @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
-    height: calc(100vh - v.$main-header-height);
+    height: calc(100dvh - v.$main-header-height);
 
     .stepPanelSection {
         width: 20vw;

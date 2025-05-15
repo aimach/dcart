@@ -77,12 +77,9 @@ const createBlock = async (body: blockType) => {
  */
 const updateBlock = async (body: blockType, blockId: string) => {
 	try {
-		// ajout des clés manquantes avec une valeur null si elles ne sont pas complétées
-		const newBody = normalizeBody(body, requiredBlockKeys);
-
 		const response = await apiClient(`/storymap/blocks/${blockId}`, {
 			method: "PUT",
-			data: JSON.stringify(newBody),
+			data: JSON.stringify(body),
 		});
 		return response.data;
 	} catch (error) {

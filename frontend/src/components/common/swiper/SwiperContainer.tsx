@@ -24,8 +24,6 @@ type SwiperContainerProps = {
 const SwiperContainer = ({ items }: SwiperContainerProps) => {
 	const { isMobile, isTablet } = useWindowSize();
 
-	console.log(isTablet);
-
 	return (
 		<Swiper
 			slidesPerView={isMobile ? 1 : isTablet ? 2 : 3}

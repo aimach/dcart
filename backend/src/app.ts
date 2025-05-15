@@ -24,6 +24,7 @@ app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(
 	cors({
+		// origin: [`http://${ipAdress}:${process.env.FRONTEND_PORT}`],
 		origin: [`http://localhost:${process.env.FRONTEND_PORT}`],
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,
@@ -53,6 +54,8 @@ app.use("/storymap", storymapRoutes);
 app.use("/translation", translationRoutes);
 
 // Démarrage du serveur
-app.listen(PORT, () =>
+// app.listen(6001, "0.0.0.0", () =>
+app.listen(6001, () =>
+	// console.log(`Server running on http://0.0.0.0:${PORT}`),
 	console.log(`Server running on http://localhost:${PORT}`),
 );

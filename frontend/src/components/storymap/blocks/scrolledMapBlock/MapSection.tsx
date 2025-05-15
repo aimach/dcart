@@ -21,6 +21,7 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./scrolledMapBlock.module.scss";
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 
 interface MapSectionProps {
 	blockContent: BlockContentType;
@@ -38,6 +39,8 @@ const MapSection = ({
 	pointIndex,
 }: MapSectionProps) => {
 	const mapCenter: LatLngTuple = [40.43, 16.52];
+
+	const { isMobile } = useWindowSize();
 
 	// on récupère les informations du context
 	const [map, setMap] = useState<LeafletMap | null>(null);
@@ -74,10 +77,10 @@ const MapSection = ({
 				bounds.push([point.latitude, point.longitude]);
 			}
 			if (map) {
-				map.fitBounds(bounds, { padding: [300, 300] });
+				map.fitBounds(bounds, { padding: isMobile ? [0, 0] : [300, 300] });
 			}
 		}
-	}, [map, points]);
+	}, [map, points, isMobile]);
 
 	const littleIcon = getLittleCircleIcon(style);
 
@@ -96,8 +99,13 @@ const MapSection = ({
 				scrollWheelZoom={false}
 				minZoom={4}
 				maxZoom={11}
+				zoomControl={!isMobile}
 				ref={setMap}
-				style={{ height: "100vh", width: "70vw" }}
+				style={{
+					height: "100dvh",
+					width: isMobile ? "90vwh" : "70vw",
+					zIndex: 0,
+				}}
 			>
 				<>
 					<TileLayer
@@ -135,6 +143,7 @@ const MapSection = ({
 						<div>Aucun résultat</div>
 					)}
 					<ScaleControl position="bottomright" />
+					{/* {isMobile && <ZoomControl position="bottomleft" />} */}
 				</>
 			</MapContainer>
 		</div>

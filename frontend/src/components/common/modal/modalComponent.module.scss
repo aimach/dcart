@@ -124,7 +124,7 @@
     bottom: 0;
     right: 0;
     width: 50%;
-    height: calc(100vh - v.$main-header-height);
+    height: calc(100dvh - v.$main-header-height);
     background: rgba(0, 0, 0, 0.5);
     /* Couleur de fond semi-transparente */
     display: flex;

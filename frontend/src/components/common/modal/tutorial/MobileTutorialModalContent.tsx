@@ -13,12 +13,7 @@ import style from "./tutorialModalContent.module.scss";
 import delta from "../../../../assets/delta.png";
 
 const MobileTutorialModalContent = () => {
-	const { translation, language } = useTranslation();
-
-	const { closeTutorial, setSelectedMarker } = useMapStore(
-		useShallow((state) => state),
-	);
-	const { setIsPanelDisplayed } = useMapAsideMenuStore();
+	const { language } = useTranslation();
 
 	return (
 		<div className={style.tutorialModalContent}>
@@ -29,18 +24,6 @@ const MobileTutorialModalContent = () => {
 					<img src={delta} alt="decoration" width={30} />
 				</div>
 				<p>{mobileTutorialContent[`content_${language}`]}</p>
-			</div>
-			<div className={style.buttonContainer}>
-				<ButtonComponent
-					type="button"
-					color="brown"
-					textContent={translation[language].common.close}
-					onClickFunction={() => {
-						closeTutorial();
-						setIsPanelDisplayed(false);
-						setSelectedMarker(undefined);
-					}}
-				/>
 			</div>
 		</div>
 	);

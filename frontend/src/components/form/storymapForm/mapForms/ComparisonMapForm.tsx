@@ -147,7 +147,7 @@ const ComparisonMapForm = () => {
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: comparisonMapInputsType) => {
 		await uploadParsedPointsForComparisonMap(
-			data as blockType,
+			{ ...data, id: block?.id } as blockType,
 			pointSets as Record<string, PointSetType>,
 			storymapId as string,
 			"comparison_map",

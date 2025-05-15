@@ -11,3 +11,10 @@
         font-size: v.$font-size-l;
     }
 }
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .textBlockContainer {
+        width: 90vw;
+    }
+}

@@ -94,3 +94,32 @@
     text-align: center;
     font-style: italic;
 }
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .mapContainer {
+        display: block;
+        width: 80vw;
+    }
+
+    .infoElement {
+        margin: 0 v.$space-s;
+        margin-bottom: v.$space-xxxl;
+
+        >h4 {
+            font-size: v.$font-size-l;
+        }
+
+        >p {
+            font-size: v.$font-size-s;
+            line-height: 1.2;
+            text-align: justify;
+        }
+
+    }
+
+    .scrolledSection {
+        z-index: 10;
+        position: relative;
+    }
+}

@@ -102,7 +102,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 				description_lang1: data.description_lang1,
 				description_lang2: data.description_lang2,
 				category_id: data.category_id,
-				img_url: data.img_url,
+				image_url: data.image_url,
 				author: data.author,
 				lang1: data.lang1,
 				lang2: data.lang2,

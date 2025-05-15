@@ -1,6 +1,8 @@
 // import des bibliothèques
 import { useMemo } from "react";
 import DOMPurify from "dompurify";
+// import des custom hooks
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des services
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getAllowedTags } from "../../../../utils/functions/block";
@@ -16,6 +18,8 @@ interface LayoutBlockProps {
 
 const LayoutBlock = ({ blockContent }: LayoutBlockProps) => {
 	const { selectedLanguage } = useStorymapLanguageStore();
+
+	const { isMobile } = useWindowSize();
 
 	const imageSide = blockContent.content1_lang1;
 
@@ -33,7 +37,24 @@ const LayoutBlock = ({ blockContent }: LayoutBlockProps) => {
 		return [imageBlock, textBlock];
 	}, [blockContent]);
 
-	return (
+	return isMobile ? (
+		<section className={style.layoutSection}>
+			<img
+				src={textAndImageBlockInOrder[0][`content1_${selectedLanguage}`]}
+				alt={textAndImageBlockInOrder[0][`content2_${selectedLanguage}`]}
+			/>
+			<div
+				// biome-ignore lint/security/noDangerouslySetInnerHtml: le texte est nettoyé avec DOMPurify
+				dangerouslySetInnerHTML={{
+					__html: DOMPurify.sanitize(
+						textAndImageBlockInOrder[1][`content1_${selectedLanguage}`],
+						getAllowedTags(),
+					),
+				}}
+				className="ql-editor" // permet d'avoir le style de Quill
+			/>
+		</section>
+	) : (
 		<section className={`${style.layoutSection} ${style[imageSide]}`}>
 			{textAndImageBlockInOrder.map((child) => {
 				if (child.type.name === "text") {

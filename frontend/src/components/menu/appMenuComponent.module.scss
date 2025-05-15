@@ -4,7 +4,7 @@
 .menuPage {
     &Container {
         @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
-        height: 100vh;
+        height: 100dvh;
     }
 
     &Menu {
@@ -57,7 +57,7 @@
             }
 
             &Background {
-                height: 100vh;
+                height: 100dvh;
                 width: 60%;
                 position: absolute;
                 top: 0;
