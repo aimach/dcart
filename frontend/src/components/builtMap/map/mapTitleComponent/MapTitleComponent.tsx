@@ -1,14 +1,15 @@
 // import des custom hooks
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { displayFiltersTags } from "../../../../utils/functions/filter";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import du style
 import style from "./mapTitleComponent.module.scss";
 // import des icônes
-import { Info } from "lucide-react";
-import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
+import { CircleHelp, Info, PanelLeft } from "lucide-react";
 
 type MapTitleComponentProps = {
 	setIsModalOpen: (isOpen: boolean) => void;
@@ -24,7 +25,10 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 	const { isMobile } = useWindowSize();
 
 	// récupération des données du store
-	const { mapInfos, tutorialStep } = useMapStore();
+	const { mapInfos, tutorialStep, openTutorial, resetTutorialStep } =
+		useMapStore();
+
+	const { setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const {
 		userFilters,
@@ -52,8 +56,18 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 			}
 		>
 			<div className={style.titleAndInfoContainer}>
-				<h2>{mapInfos ? mapInfos[`title_${language}`] : "Exploration"}</h2>
+				{!isMobile && (
+					<h2>{mapInfos ? mapInfos[`title_${language}`] : "Exploration"}</h2>
+				)}
+
 				<Info onClick={() => setIsModalOpen(true)} />
+				<PanelLeft onClick={() => setIsPanelDisplayed(true)} />
+				<CircleHelp
+					onClick={() => {
+						resetTutorialStep();
+						openTutorial();
+					}}
+				/>
 			</div>
 			{!isMobile && (
 				<div>

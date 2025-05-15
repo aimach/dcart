@@ -45,12 +45,9 @@
 /* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
 @media (max-width: 768px) {
     .mapTitleContainer {
-        left: 5px;
-        right: auto;
         padding: v.$space-xs;
 
         .titleAndInfoContainer {
-
 
             >h2 {
                 font-size: v.$font-size-m;
@@ -62,4 +59,15 @@
 }
 
 /* Ciblé pour les téléphones ≤ 480px */
-@media (max-width: 480px) {}
+@media (max-width: 480px) {
+    .mapTitleContainer {
+        .titleAndInfoContainer {
+            >svg {
+                cursor: pointer;
+                color: v.$color-umber;
+            }
+
+
+        }
+    }
+}
