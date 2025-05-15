@@ -7,7 +7,8 @@
   height: calc(100vh - v.$main-header-height);
 
   &Opened {
-    flex: 1;
+    min-width: 25vw;
+    max-width: 25vw;
 
     >p {
       margin: v.$space-s;
@@ -44,5 +45,15 @@
 
   >svg {
     color: v.$color-grullo-light;
+  }
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+  .aside {
+    &Opened {
+      min-width: 40vw;
+      max-width: 40vw;
+    }
   }
 }
