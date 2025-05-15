@@ -40,6 +40,7 @@ import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
+import MobileTutorialModalContent from "../../../common/modal/tutorial/MobileTutorialModalContent";
 
 /**
  * Composant de la carte
@@ -224,7 +225,11 @@ const MapComponent = () => {
 								setIsPanelDisplayed(false);
 							}}
 						>
-							<TutorialModalContent />
+							{isMobile ? (
+								<MobileTutorialModalContent />
+							) : (
+								<TutorialModalContent />
+							)}
 						</ModalComponent>
 					)}
 					<MapContainer

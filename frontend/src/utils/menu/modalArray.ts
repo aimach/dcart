@@ -65,4 +65,13 @@ const modalContentArray = [
 	},
 ];
 
-export { modalContentArray };
+const mobileTutorialContent = {
+	title_fr: "Bienvenue sur le tutoriel de la carte",
+	title_en: "Welcome to the map tutorial",
+	content_fr:
+		"Ce court tutoriel vous présente les fonctionnalités de la carte : en version mobile, vous pouvez visualiser les points sur la carte, zoomer et cliquer sur un point pour voir le détail des informations. Pour ouvrir le panel latéral, cliquer sur l'icône entre l'icône d'information et celle du tutorial. Vous accéderez aux onglets 'Résultats', 'Filtres' et 'Sélection'. ",
+	content_en:
+		"This short tutorial presents the features of the map : in mobile versino, you can view the points on the mpa, zoom in and click on a point to see the details. To open the lateral panel, click on icon between the information icon and the tutorial icon. You will access the 'Results', 'Filters' and 'Selection' tabs.",
+};
+
+export { modalContentArray, mobileTutorialContent };

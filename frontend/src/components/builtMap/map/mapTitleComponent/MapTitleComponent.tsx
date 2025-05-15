@@ -61,13 +61,17 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 				)}
 
 				<Info onClick={() => setIsModalOpen(true)} />
-				<PanelLeft onClick={() => setIsPanelDisplayed(true)} />
-				<CircleHelp
-					onClick={() => {
-						resetTutorialStep();
-						openTutorial();
-					}}
-				/>
+				{isMobile && (
+					<>
+						<PanelLeft onClick={() => setIsPanelDisplayed(true)} />
+						<CircleHelp
+							onClick={() => {
+								resetTutorialStep();
+								openTutorial();
+							}}
+						/>
+					</>
+				)}
 			</div>
 			{!isMobile && (
 				<div>

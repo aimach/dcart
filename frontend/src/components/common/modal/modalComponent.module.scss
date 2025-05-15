@@ -158,11 +158,30 @@
 
 /* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
 @media (max-width: 768px) {
-  .header {
-    border-bottom: none;
-    ;
+  .modal {
+    &Content {
+      width: 40vw;
+
+      &ToRight {
+        margin-left: v.$space-xxxl * 2;
+      }
+    }
+
+
   }
 }
 
 /* Ciblé pour les téléphones ≤ 480px */
-@media (max-width: 480px) {}
+@media (max-width: 480px) {
+  .modal {
+    &Content {
+      width: 90vw;
+    }
+
+    &TitleSection {
+      >h3 {
+        font-size: v.$font-size-xl;
+      }
+    }
+  }
+}
