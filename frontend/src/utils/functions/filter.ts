@@ -71,7 +71,7 @@ const formatDataForReactSelect = (
 const getAllDatationLabels = (
 	minVal: number | string,
 	maxVal: number | string,
-	isMobile: boolean,
+	isDesktop: boolean,
 ) => {
 	const minValNumber =
 		typeof minVal === "string" ? Number.parseInt(minVal, 10) : minVal;
@@ -79,7 +79,7 @@ const getAllDatationLabels = (
 		typeof maxVal === "string" ? Number.parseInt(maxVal, 10) : maxVal;
 
 	const labelsArray = [];
-	const stepLabel = isMobile ? 200 : 100;
+	const stepLabel = isDesktop ? 100 : 200;
 	for (let i = minValNumber; i <= maxValNumber; i += stepLabel) {
 		if (!(i % 10)) {
 			// si i finit par 0

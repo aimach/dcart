@@ -13,7 +13,6 @@ import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests"
 // import du style
 import style from "./filtersComponent.module.scss";
 import "./timeFilterComponent.css";
-import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 
 interface TimeFilterComponentProps {
 	disabled: boolean;
@@ -27,7 +26,7 @@ interface TimeFilterComponentProps {
  */
 const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 	const { translation, language } = useTranslation();
-	const { isMobile } = useWindowSize();
+	const { isMobile, isDesktop } = useWindowSize();
 
 	// récupération des données des stores
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
@@ -40,8 +39,6 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		setMapReady,
 		setSelectedMarker,
 	} = useMapStore(useShallow((state) => state));
-
-	const { setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	// ATTENTION : l'utilisation de setUserFilters entraînait malheureusement une boucle infinie, réglée grâce à l'usage d'un state indépendant
 	const [timeValues, setTimeValues] = useState<{ ante: number; post: number }>({
@@ -107,7 +104,7 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 				maxValue={
 					userFilters.ante === undefined ? 400 : (userFilters.ante as number)
 				}
-				labels={getAllDatationLabels(-1000, 400, isMobile)}
+				labels={getAllDatationLabels(-1000, 400, isDesktop)}
 				onChange={(e) => {
 					handleTimeFilter(e);
 					changeUserFilters(e);
