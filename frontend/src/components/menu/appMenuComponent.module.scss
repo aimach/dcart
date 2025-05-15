@@ -30,7 +30,6 @@
         }
 
 
-
         .goldenLineLong {
             width: v.$space-xxl* 5;
             height: v.$border-width-l;
@@ -104,5 +103,22 @@
     >a {
         text-decoration: underline;
         color: v.$color-dark-lava;
+    }
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+
+    .menuPageContainer {
+        height: 100%;
+    }
+
+    .menuPageMenuSection {
+        width: 100vw;
+        height: 100%;
+    }
+
+    .menuPageMenuSectionBackground {
+        width: 100vw;
     }
 }

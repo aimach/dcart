@@ -17,6 +17,7 @@ import { X } from "lucide-react";
 import labexLogo from "../../assets/logo_SMS.png";
 import HNLogo from "../../assets/huma_num_logo.png";
 import mapLogo from "../../assets/map_logo.png";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -31,6 +32,8 @@ interface AppMenuComponentProps {
 const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 	// import des données de traduction
 	const { language, translation } = useTranslation();
+
+	const { isDesktop } = useWindowSize();
 
 	// récupération des éléments de navigation
 	const navigationList = getMenuPageMenuList(translation, language);
@@ -72,6 +75,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 	return (
 		<main className={style.menuPageContainer}>
 			<section className={style.menuPageMenuSection}>
+				{!isDesktop && <X onClick={() => setMenuIsOpen(false)} />}
 				<nav className={style.menuPageMenu}>
 					<ul>
 						{navigationList.map((element) => (
@@ -134,9 +138,12 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 				</section>
 				<p>© 2025 Projet dCART. Tous droits réservés.</p>
 			</section>
-			<section className={style.menuPageImageSection}>
-				<X onClick={() => setMenuIsOpen(false)} />
-			</section>
+			{isDesktop && (
+				<section className={style.menuPageImageSection}>
+					<X onClick={() => setMenuIsOpen(false)} />
+				</section>
+			)}
+
 			<div className={style.menuPageMenuSectionBackground} />
 		</main>
 	);
