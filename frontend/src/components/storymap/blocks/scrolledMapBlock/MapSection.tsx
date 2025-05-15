@@ -40,7 +40,7 @@ const MapSection = ({
 }: MapSectionProps) => {
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
-	const { isMobile } = useWindowSize();
+	const { isMobile, isDesktop } = useWindowSize();
 
 	// on récupère les informations du context
 	const [map, setMap] = useState<LeafletMap | null>(null);
@@ -77,7 +77,7 @@ const MapSection = ({
 				bounds.push([point.latitude, point.longitude]);
 			}
 			if (map) {
-				map.fitBounds(bounds, { padding: isMobile ? [0, 0] : [300, 300] });
+				map.fitBounds(bounds, { padding: isDesktop ? [300, 300] : [0, 0] });
 			}
 		}
 	}, [map, points, isMobile]);
