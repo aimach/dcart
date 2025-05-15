@@ -1,6 +1,5 @@
 // import des bibliothèques
 import { useState } from "react";
-import { useParams } from "react-router";
 import MultiRangeSlider from "multi-range-slider-react";
 // import des custom hooks
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
@@ -14,6 +13,7 @@ import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests"
 // import du style
 import style from "./filtersComponent.module.scss";
 import "./timeFilterComponent.css";
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 
 interface TimeFilterComponentProps {
 	disabled: boolean;
@@ -40,6 +40,8 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		setMapReady,
 		setSelectedMarker,
 	} = useMapStore(useShallow((state) => state));
+
+	const { setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	// ATTENTION : l'utilisation de setUserFilters entraînait malheureusement une boucle infinie, réglée grâce à l'usage d'un state indépendant
 	const [timeValues, setTimeValues] = useState<{ ante: number; post: number }>({

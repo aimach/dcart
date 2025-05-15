@@ -55,7 +55,7 @@ const FilterComponent = ({
 	const { mapInfos, setAllPoints, setAllResults, setMapReady } = useMapStore(
 		useShallow((state) => state),
 	);
-	const { mapFilters } = useMapAsideMenuStore();
+	const { mapFilters, setIsPanelDisplayed } = useMapAsideMenuStore();
 	const {
 		userFilters,
 		resetUserFilters,
@@ -104,6 +104,7 @@ const FilterComponent = ({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,
 		});
+		isMobile && setIsPanelDisplayed(false);
 	};
 
 	// fonction pour gérer le reset des filtres

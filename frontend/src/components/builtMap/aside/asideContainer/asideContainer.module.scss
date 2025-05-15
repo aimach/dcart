@@ -57,3 +57,13 @@
     }
   }
 }
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+  .aside {
+    &Opened {
+      min-width: 90vw;
+      max-width: 90vw;
+    }
+  }
+}
