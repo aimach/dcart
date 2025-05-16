@@ -312,9 +312,9 @@ const getAllTagsWithMapsAndStorymaps = async () => {
 	}
 };
 
-const getTagWithMapsAndStorymaps = async (tagId: string) => {
+const getTagWithMapsAndStorymaps = async (tagSlug: string) => {
 	try {
-		const response = await apiClient.get(`/dcart/tags/${tagId}`);
+		const response = await apiClient.get(`/dcart/tags/${tagSlug}`);
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des cartes et storyamps :", error);

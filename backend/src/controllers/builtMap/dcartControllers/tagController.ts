@@ -3,6 +3,7 @@ import { Tag } from "../../../entities/common/Tag";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
+import { generateUniqueSlug } from "../../../utils/functions/builtMap";
 // import des types
 import type { Request, Response } from "express";
 
@@ -10,10 +11,10 @@ export const tagController = {
 	// récupère tous ou un tag en particulier
 	getTags: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { tagId } = req.params;
+			const { tagSlug } = req.params;
 
 			let results = null;
-			if (tagId === "all") {
+			if (tagSlug === "all") {
 				results = await dcartDataSource.getRepository(Tag).find();
 
 				res.status(200).json(results);
@@ -37,6 +38,7 @@ export const tagController = {
 					"tag.name_en",
 					"tag.description_fr",
 					"tag.description_en",
+					"tag.slug",
 					"map.id",
 					"map.title_fr",
 					"map.title_en",
@@ -55,14 +57,16 @@ export const tagController = {
 					"storymapTag",
 				]);
 
-			if (tagId === "items") {
+			if (tagSlug === "items") {
 				results = await tagQuery.getMany();
 
 				res.status(200).json(results);
 				return;
 			}
 
-			results = await tagQuery.andWhere("tag.id = :tagId", { tagId }).getOne();
+			results = await tagQuery
+				.andWhere("tag.slug = :tagSlug", { tagSlug })
+				.getOne();
 
 			if (!results) {
 				res.status(404).json("Aucun tag trouvé");
@@ -91,6 +95,7 @@ export const tagController = {
 						"tag.name_en",
 						"tag.description_fr",
 						"tag.description_en",
+						"tag.slug",
 						"map.id",
 						"map.title_fr",
 						"map.title_en",
@@ -125,6 +130,7 @@ export const tagController = {
 					"tag.name_en",
 					"tag.description_fr",
 					"tag.description_en",
+					"tag.slug",
 					"map.id",
 					"map.title_fr",
 					"map.title_en",
@@ -143,6 +149,11 @@ export const tagController = {
 
 	createTag: async (req: Request, res: Response): Promise<void> => {
 		try {
+			const slug = await generateUniqueSlug(
+				req.body.name_fr,
+				dcartDataSource.getRepository(Tag),
+			);
+			req.body.slug = slug;
 			const newTag = dcartDataSource.getRepository(Tag).create(req.body);
 			const createdTag = await dcartDataSource.getRepository(Tag).save(newTag);
 			res.status(201).json(createdTag);
@@ -162,6 +173,14 @@ export const tagController = {
 			if (!tagToUpdate) {
 				res.status(404).json("Aucune étiquette trouvée");
 				return;
+			}
+
+			if (tagToUpdate.name_fr !== req.body.name_fr) {
+				const newSlug = await generateUniqueSlug(
+					req.body.name_fr,
+					dcartDataSource.getRepository(Tag),
+				);
+				req.body.slug = newSlug;
 			}
 
 			const updatedTag = await dcartDataSource

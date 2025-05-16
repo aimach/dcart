@@ -101,7 +101,7 @@ function HomePage() {
 						items.length > 0 && (
 							<div key={tagWithItems.id} className={style.tagItemContainer}>
 								<h3>
-									<Link to={`tag/${tagWithItems.id}`}>
+									<Link to={`tag/${tagWithItems.slug}`}>
 										{tagWithItems[`name_${language}`]} <ChevronRight />
 									</Link>
 								</h3>
