@@ -3,6 +3,7 @@
 	"homeDescription": "Nullam quis arcu in magna pulvinar tincidunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam hendrerit nulla ut cursus laoreet. Nullam elementum lorem vel facilisis laoreet. Cras ac turpis vel erat vehicula venenatis.",
 	"en": "EN",
 	"fr": "FR",
+	"noAuthInMobile": "Vous devez vous connecter sur un ordinateur pour accéder à cette page.",
 	"navigation": {
 		"home": "ACCUEIL",
 		"maps": "CARTES",

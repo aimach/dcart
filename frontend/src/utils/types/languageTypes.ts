@@ -1,5 +1,3 @@
-import { deleteTag } from "../api/builtMap/deleteRequests";
-
 type Language = "en" | "fr";
 
 type LanguageObject = {
@@ -7,6 +5,7 @@ type LanguageObject = {
 	homeDescription: string;
 	en: string;
 	fr: string;
+	noAuthInMobile: string;
 	navigation: {
 		home: string;
 		maps: string;
