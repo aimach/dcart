@@ -92,8 +92,8 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 							return (
 								<li
 									key={tag.id}
-									onClick={() => closeMenuAndNavigate(`/tag/${tag.id}`)}
-									onKeyUp={() => closeMenuAndNavigate(`/tag/${tag.id}`)}
+									onClick={() => closeMenuAndNavigate(`/tag/${tag.slug}`)}
+									onKeyUp={() => closeMenuAndNavigate(`/tag/${tag.slug}`)}
 								>
 									<ChevronRightCircle />
 									{tag[`name_${language}`]}

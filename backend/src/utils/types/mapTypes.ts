@@ -28,6 +28,7 @@ type TagType = {
 	name_en: string;
 	description_fr?: string;
 	description_en?: string;
+	slug: string;
 	maps: {
 		id: string;
 		title_fr: string;

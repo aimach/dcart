@@ -23,7 +23,7 @@ const TagPage = () => {
 	// Récupération des données externes (context, store, params, etc.)
 	const { language } = useTranslation();
 
-	const { tagId } = useParams();
+	const { tagSlug } = useParams();
 
 	const [tagWithItems, setTagWithItems] = useState<TagWithItemsType | null>(
 		null,
@@ -31,14 +31,14 @@ const TagPage = () => {
 	const [tagItems, setTagItems] = useState<TagWithItemsType | null>(null);
 	useEffect(() => {
 		const fetchAllTagsWithMapsAndStorymaps = async () => {
-			const fetchedTag = await getTagWithMapsAndStorymaps(tagId as string);
+			const fetchedTag = await getTagWithMapsAndStorymaps(tagSlug as string);
 			setTagWithItems(fetchedTag);
 			const items = shuffleArray(fetchedTag.maps.concat(fetchedTag.storymaps));
 			setTagItems(items);
 		};
 
 		fetchAllTagsWithMapsAndStorymaps();
-	}, [tagId]);
+	}, [tagSlug]);
 
 	return (
 		tagWithItems && (

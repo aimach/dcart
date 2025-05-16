@@ -22,6 +22,9 @@ export class Tag extends BaseEntity {
 	@Column({ type: "varchar" })
 	name_en!: string;
 
+	@Column({ type: "text", unique: true, nullable: false })
+	slug!: string;
+
 	@Column({ type: "text", nullable: true })
 	description_fr: string | undefined | null;
 

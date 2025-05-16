@@ -3,6 +3,7 @@ import type { Repository } from "typeorm";
 import type { AttestationType, SourceType } from "../types/mapTypes";
 import type { MapContent } from "../../entities/builtMap/MapContent";
 import type { Storymap } from "../../entities/storymap/Storymap";
+import { Tag } from "../../entities/common/Tag";
 
 /**
  * Fonction pour trier les sources par date (post quem puis ante quem)
@@ -61,7 +62,7 @@ const slugify = (str: string) =>
 
 const generateUniqueSlug = async (
 	str: string,
-	repository: Repository<MapContent | Storymap>,
+	repository: Repository<MapContent | Storymap | Tag>,
 ) => {
 	const baseSlug = slugify(str);
 	let slug = baseSlug;
