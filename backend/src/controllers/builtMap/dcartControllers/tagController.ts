@@ -3,9 +3,9 @@ import { Tag } from "../../../entities/common/Tag";
 // import des services
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
+import { generateUniqueSlug } from "../../../utils/functions/builtMap";
 // import des types
 import type { Request, Response } from "express";
-import { generateUniqueSlug } from "../../../utils/functions/builtMap";
 
 export const tagController = {
 	// récupère tous ou un tag en particulier

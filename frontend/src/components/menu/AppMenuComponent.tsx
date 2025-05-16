@@ -8,13 +8,11 @@ import { useTranslation } from "../../utils/hooks/useTranslation";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 // import des services
 import { getTranslations } from "../../utils/api/translationAPI";
-import {
-	getAllTags,
-	getAllTagsWithMapsAndStorymaps,
-} from "../../utils/api/builtMap/getRequests";
+import { getAllTagsWithMapsAndStorymaps } from "../../utils/api/builtMap/getRequests";
+import { shuffleArray } from "../../utils/functions/common";
 // import des types
+import type { TagWithItemsType } from "../../utils/types/commonTypes";
 import type { Dispatch, SetStateAction } from "react";
-import type { TagType } from "../../utils/types/mapTypes";
 // import du style
 import style from "./appMenuComponent.module.scss";
 // import des icones et images
@@ -22,8 +20,6 @@ import { ChevronRightCircle, X } from "lucide-react";
 import labexLogo from "../../assets/logo_SMS.png";
 import HNLogo from "../../assets/huma_num_logo.png";
 import mapLogo from "../../assets/map_logo.png";
-import { shuffleArray } from "../../utils/functions/common";
-import { TagWithItemsType } from "../../utils/types/commonTypes";
 
 interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
