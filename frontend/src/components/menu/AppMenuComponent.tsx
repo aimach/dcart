@@ -8,7 +8,10 @@ import { useTranslation } from "../../utils/hooks/useTranslation";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 // import des services
 import { getTranslations } from "../../utils/api/translationAPI";
-import { getAllTags } from "../../utils/api/builtMap/getRequests";
+import {
+	getAllTags,
+	getAllTagsWithMapsAndStorymaps,
+} from "../../utils/api/builtMap/getRequests";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { TagType } from "../../utils/types/mapTypes";
@@ -20,6 +23,7 @@ import labexLogo from "../../assets/logo_SMS.png";
 import HNLogo from "../../assets/huma_num_logo.png";
 import mapLogo from "../../assets/map_logo.png";
 import { shuffleArray } from "../../utils/functions/common";
+import { TagWithItemsType } from "../../utils/types/commonTypes";
 
 interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -60,10 +64,10 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 		return translation[language].menu.content;
 	}, [databaseTranslation, language, translation]);
 
-	const [tags, setTags] = useState<TagType[]>([]);
+	const [tags, setTags] = useState<TagWithItemsType[]>([]);
 	useEffect(() => {
 		const fetchAllTags = async () => {
-			const fetchedTags = await getAllTags();
+			const fetchedTags = await getAllTagsWithMapsAndStorymaps();
 			const slicedTags = shuffleArray(fetchedTags).slice(0, 5); // Limiter à 5 tags
 			setTags(slicedTags);
 		};
@@ -89,16 +93,18 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 							{translation[language].navigation.explore}
 						</li>
 						{tags.map((tag) => {
-							return (
-								<li
-									key={tag.id}
-									onClick={() => closeMenuAndNavigate(`/tag/${tag.slug}`)}
-									onKeyUp={() => closeMenuAndNavigate(`/tag/${tag.slug}`)}
-								>
-									<ChevronRightCircle />
-									{tag[`name_${language}`]}
-								</li>
-							);
+							if (tag.maps.length > 0 || tag.storymaps.length > 0) {
+								return (
+									<li
+										key={tag.id}
+										onClick={() => closeMenuAndNavigate(`/tag/${tag.slug}`)}
+										onKeyUp={() => closeMenuAndNavigate(`/tag/${tag.slug}`)}
+									>
+										<ChevronRightCircle />
+										{tag[`name_${language}`]}
+									</li>
+								);
+							}
 						})}
 					</ul>
 				</nav>
