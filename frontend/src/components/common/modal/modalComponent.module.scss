@@ -124,7 +124,7 @@
     bottom: 0;
     right: 0;
     width: 50%;
-    height: calc(100vh - v.$main-header-height);
+    height: calc(100dvh - v.$main-header-height);
     background: rgba(0, 0, 0, 0.5);
     /* Couleur de fond semi-transparente */
     display: flex;
@@ -153,5 +153,35 @@
     font-size: 24px;
     cursor: pointer;
     color: #333;
+  }
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+  .modal {
+    &Content {
+      width: 40vw;
+
+      &ToRight {
+        margin-left: v.$space-xxxl * 2;
+      }
+    }
+
+
+  }
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+  .modal {
+    &Content {
+      width: 90vw;
+    }
+
+    &TitleSection {
+      >h3 {
+        font-size: v.$font-size-xl;
+      }
+    }
   }
 }

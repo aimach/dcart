@@ -8,8 +8,10 @@ import MultiSelectFilterComponent from "../filterComponents/MultiSelectFilterCom
 import DivinityNbComponent from "../filterComponents/DivinityNbFilterComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import AgentGenderFilterComponent from "../filterComponents/AgentGenderFilterComponent";
+import TimeFilterComponent from "../filterComponents/TimeFilterComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des services
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
@@ -47,11 +49,13 @@ const FilterComponent = ({
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
+	const { isMobile } = useWindowSize();
+
 	// récupération des données depuis les stores
 	const { mapInfos, setAllPoints, setAllResults, setMapReady } = useMapStore(
 		useShallow((state) => state),
 	);
-	const { mapFilters } = useMapAsideMenuStore();
+	const { mapFilters, setIsPanelDisplayed } = useMapAsideMenuStore();
 	const {
 		userFilters,
 		resetUserFilters,
@@ -100,6 +104,7 @@ const FilterComponent = ({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,
 		});
+		isMobile && setIsPanelDisplayed(false);
 	};
 
 	// fonction pour gérer le reset des filtres
@@ -223,6 +228,7 @@ const FilterComponent = ({
 						<LanguageFilterComponent />
 					</div>
 				)}
+				{isMobile && <TimeFilterComponent disabled={false} />}
 			</div>
 			<div className={style.filterButtonContainer}>
 				<ButtonComponent

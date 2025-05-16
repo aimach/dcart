@@ -3,7 +3,7 @@
 
 .resultContainer {
   overflow: scroll;
-  height: calc(100vh - v.$main-header-height - v.$aside-header-height - v.$space-xs);
+  height: calc(100dvh - v.$main-header-height - v.$aside-header-height - v.$space-xs);
   background-color: v.$color-neutral-100;
 }
 
@@ -22,7 +22,7 @@
 .selectionDetailsContainer {
   padding: v.$space-s 0 0 0;
   overflow: scroll;
-  height: calc(100vh - v.$main-header-height - v.$aside-header-height - v.$space-xs);
+  height: calc(100dvh - v.$main-header-height - v.$aside-header-height - v.$space-xs);
 
   >h4 {
     font-size: v.$font-size-l;

@@ -3,8 +3,6 @@
 
 .storymapContainer {
     @include m.flexbox(flex, column, nowrap, center, center);
-
-    padding: v.$font-space-xxxxl;
     gap: v.$font-space-xxxl;
 }
 

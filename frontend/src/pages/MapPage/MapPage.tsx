@@ -18,6 +18,7 @@ import { useMapAsideMenuStore } from "../../utils/stores/builtMap/mapAsideMenuSt
 import type { PointSetType } from "../../utils/types/mapTypes";
 // import du style
 import style from "./mapPage.module.scss";
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 /**
  * Page de la carte
@@ -26,6 +27,8 @@ import style from "./mapPage.module.scss";
 const MapPage = () => {
 	// récupération des paramètres de l'URL : l'id de la carte en cours
 	const { mapSlug, mapId } = useParams();
+
+	const { isMobile } = useWindowSize();
 
 	// récupération des données des stores
 	const { setMapFilters, isPanelDisplayed, setIsPanelDisplayed } =
@@ -91,7 +94,11 @@ const MapPage = () => {
 	return (
 		<section className={style.mapSection}>
 			<section className={style.mapSectionMain}>
-				{isPanelDisplayed ? <AsideContainer /> : <AsideReducedMenuComponent />}
+				{isPanelDisplayed ? (
+					<AsideContainer />
+				) : !isMobile ? (
+					<AsideReducedMenuComponent />
+				) : null}
 				<section
 					className={mapStore.mapReady ? undefined : style.mapSectionLoaded}
 				>

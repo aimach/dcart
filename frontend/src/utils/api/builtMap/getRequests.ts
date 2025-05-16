@@ -39,7 +39,7 @@ const getDivinityIdsList = async () => {
 };
 
 /**
- * Récupère la liste des divinités
+ * Récupère la liste des étiquettes
  * @returns {Promise} - Toutes les catégories
  */
 const getAllTags = async () => {

@@ -39,6 +39,8 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
+import MobileTutorialModalContent from "../../../common/modal/tutorial/MobileTutorialModalContent";
 
 /**
  * Composant de la carte
@@ -47,6 +49,8 @@ import "./mapComponent.css";
 const MapComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
+
+	const { isMobile } = useWindowSize();
 
 	const { mapSlug, mapId } = useParams();
 
@@ -221,7 +225,11 @@ const MapComponent = () => {
 								setIsPanelDisplayed(false);
 							}}
 						>
-							<TutorialModalContent />
+							{isMobile ? (
+								<MobileTutorialModalContent />
+							) : (
+								<TutorialModalContent />
+							)}
 						</ModalComponent>
 					)}
 					<MapContainer
@@ -281,7 +289,7 @@ const MapComponent = () => {
 						)}
 					</MapContainer>
 				</section>
-				{mapReady && (
+				{mapReady && !isMobile && (
 					<section
 						className={
 							tutorialStep === 4

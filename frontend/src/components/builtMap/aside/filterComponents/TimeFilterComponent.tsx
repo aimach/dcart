@@ -1,7 +1,9 @@
 // import des bibliothèques
 import { useState } from "react";
-import { useParams } from "react-router";
 import MultiRangeSlider from "multi-range-slider-react";
+// import des custom hooks
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
@@ -23,27 +25,20 @@ interface TimeFilterComponentProps {
  * @returns MultiRangeSlider
  */
 const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
-	// récupération de l'id de la carte en cours
-	const { mapId, mapSlug } = useParams();
-	const mapIdentifier = mapId ?? mapSlug;
+	const { translation, language } = useTranslation();
+	const { isMobile, isDesktop } = useWindowSize();
 
 	// récupération des données des stores
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
-		useShallow((state) => ({
-			userFilters: state.userFilters,
-			setUserFilters: state.setUserFilters,
-			isReset: state.isReset,
-		})),
+		useShallow((state) => state),
 	);
-	const { setAllPoints, setAllResults, setMapReady, setSelectedMarker } =
-		useMapStore(
-			useShallow((state) => ({
-				setAllPoints: state.setAllPoints,
-				setAllResults: state.setAllResults,
-				setMapReady: state.setMapReady,
-				setSelectedMarker: state.setSelectedMarker,
-			})),
-		);
+	const {
+		mapInfos,
+		setAllPoints,
+		setAllResults,
+		setMapReady,
+		setSelectedMarker,
+	} = useMapStore(useShallow((state) => state));
 
 	// ATTENTION : l'utilisation de setUserFilters entraînait malheureusement une boucle infinie, réglée grâce à l'usage d'un state indépendant
 	const [timeValues, setTimeValues] = useState<{ ante: number; post: number }>({
@@ -81,7 +76,7 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		setTimeValues({ ante: e.maxValue, post: e.minValue });
 		setMapReady(false);
 
-		const points = await getAllPointsByMapId(mapIdentifier as string, {
+		const points = await getAllPointsByMapId(mapInfos?.id as string, {
 			...userFilters,
 			ante: e.maxValue,
 			post: e.minValue,
@@ -94,6 +89,7 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 
 	return (
 		<div className={style.rangeContainer}>
+			{isMobile && <h4>{translation[language].mapPage.aside.timeLimits}</h4>}
 			<MultiRangeSlider
 				disabled={disabled}
 				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
@@ -108,7 +104,7 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 				maxValue={
 					userFilters.ante === undefined ? 400 : (userFilters.ante as number)
 				}
-				labels={getAllDatationLabels(-1000, 400)}
+				labels={getAllDatationLabels(-1000, 400, isDesktop)}
 				onChange={(e) => {
 					handleTimeFilter(e);
 					changeUserFilters(e);

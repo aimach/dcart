@@ -4,10 +4,11 @@
 .aside {
   border-right: 1px solid v.$color-grullo;
   background-color: v.$color-neutral-100;
-  height: calc(100vh - v.$main-header-height);
+  height: calc(100dvh - v.$main-header-height);
 
   &Opened {
-    flex: 1;
+    min-width: 25vw;
+    max-width: 25vw;
 
     >p {
       margin: v.$space-s;
@@ -44,5 +45,25 @@
 
   >svg {
     color: v.$color-grullo-light;
+  }
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+  .aside {
+    &Opened {
+      min-width: 40vw;
+      max-width: 40vw;
+    }
+  }
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+  .aside {
+    &Opened {
+      min-width: 90vw;
+      max-width: 90vw;
+    }
   }
 }

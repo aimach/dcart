@@ -23,7 +23,6 @@ type StorymapType = {
 		pseudo: string;
 	};
 	blocks?: BlockContentType[];
-	img_url: string;
 	publication_date?: string;
 	relatedMap?: string;
 	tags?: TagType[] | string;
@@ -36,7 +35,7 @@ type StorymapBodyType = {
 	description_lang1: string;
 	description_lang2: string;
 	category_id: string;
-	img_url: string;
+	image_url: string;
 	author: string;
 	lang1: string;
 	lang2: string;

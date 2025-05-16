@@ -4,5 +4,12 @@
 
 .itemSwiperContainer {
     width: 70vw;
-    height: 370px;
+    height: 410px;
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) and (min-width: 481px) {
+    .itemSwiperContainer {
+        width: 85vw;
+    }
 }

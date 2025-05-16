@@ -83,7 +83,7 @@ const TutorialModalContent = () => {
 					<ButtonComponent
 						type="button"
 						color="brown"
-						textContent={translation[language].common.previous}
+						textContent=""
 						onClickFunction={() => handleDecrementTutorialStep(tutorialStep)}
 						icon={<ChevronLeft />}
 					/>
@@ -92,7 +92,7 @@ const TutorialModalContent = () => {
 					<ButtonComponent
 						type="button"
 						color="brown"
-						textContent={translation[language].common.next}
+						textContent=""
 						onClickFunction={() => handleIncrementTutorialStep(tutorialStep)}
 						icon={<ChevronRight />}
 					/>

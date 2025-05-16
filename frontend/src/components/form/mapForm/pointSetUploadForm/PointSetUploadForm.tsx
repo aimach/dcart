@@ -191,7 +191,7 @@ const PointSetUploadForm = ({
 					</div>
 				</div>
 				<ButtonComponent
-					type="button"
+					type="submit"
 					color="brown"
 					textContent={translation[language].button[pointSet ? "edit" : "add"]}
 				/>

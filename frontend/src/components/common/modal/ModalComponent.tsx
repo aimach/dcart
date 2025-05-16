@@ -30,7 +30,13 @@ const ModalComponent = ({ onClose, children }: ModalComponentProps) => {
 					: style.modalOverlay
 			}
 		>
-			<div className={style.modalContent}>
+			<div
+				className={
+					tutorialStep >= 6
+						? `${style.modalContent} ${style.modalContentToRight}`
+						: style.modalContent
+				}
+			>
 				<button type="button" className={style.modalClose} onClick={onClose}>
 					<CircleX />
 				</button>

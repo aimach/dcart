@@ -30,3 +30,15 @@
         }
     }
 }
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .introductionContainer {
+
+
+
+        .contentContainer {
+            width: 80vw;
+        }
+    }
+}
