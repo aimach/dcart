@@ -44,7 +44,7 @@ if (rootElement) {
 								<Routes>
 									<Route element={<NavigationLayout />}>
 										<Route index element={<HomePage />} />
-										<Route path="tag/:tagId">
+										<Route path="tag/:tagSlug">
 											<Route index element={<TagPage />} />
 										</Route>
 										<Route path="map/:mapSlug" element={<MapPage />} />
