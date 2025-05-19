@@ -41,6 +41,7 @@ import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 import MobileTutorialModalContent from "../../../common/modal/tutorial/MobileTutorialModalContent";
+import OrientationControl from "../controls/OrientationControlComponent";
 
 /**
  * Composant de la carte
@@ -285,6 +286,7 @@ const MapComponent = () => {
 								)}
 								<ZoomControl position="bottomleft" />
 								<ScaleControl position="bottomleft" />
+								<OrientationControl />
 								{/* <ResetControl mapBounds={bounds} /> */}
 							</>
 						)}
