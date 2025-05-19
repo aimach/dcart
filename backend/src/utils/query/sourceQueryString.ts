@@ -161,6 +161,7 @@ ORDER BY grande_region_fr, sous_region_fr, localisation_source.nom_ville`;
  * @param querySourceType - Une chaîne de caractères permettant de filtrer par nom de type de source.
  * @param queryAgentGender - Une chaîne de caractères permettant de filtrer par le genre de l'agent.
  * @param queryAgentStatus - Une chaîne de caractères permettant de filtrer par le statut de l'agent.
+ * @param queryAgentivityName - Une chaîne de caractères permettant de filtrer par l'agentivité de l'agent.
  * @returns Une chaîne de caractères contenant la requête SQL.
  */
 export const getSourcesQueryWithDetails = (
@@ -173,6 +174,7 @@ export const getSourcesQueryWithDetails = (
 	querySourceType: string,
 	queryAgentGender: string,
 	queryAgentStatus: string,
+	queryAgentivityName: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -221,6 +223,7 @@ sources_with_attestations AS (
                       FROM agentivite 
                       JOIN agent_agentivite ON agent_agentivite.id_agentivite = agentivite.id
                       WHERE agent_agentivite.id_agent = agent.id
+                      ${queryAgentivityName}
                     ) AS agentivites, -- Tableaux des agentivités pour l'agent
                     (
                       SELECT 

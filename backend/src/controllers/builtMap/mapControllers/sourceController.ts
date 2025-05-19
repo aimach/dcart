@@ -16,6 +16,7 @@ import {
 	getQueryStringForLanguage,
 	getQueryStringForAgentGender,
 	getQueryStringForAgentStatus,
+	getQueryStringForAgentivity,
 } from "../../../utils/query/filtersQueryString";
 import {
 	attestationMatchesLot,
@@ -47,6 +48,7 @@ export const sourceController = {
 				agentNameId,
 				agentGender,
 				agentStatusName,
+				agentivityName,
 			} = req.body;
 
 			// on prépare la variable à renvoyer
@@ -129,6 +131,7 @@ export const sourceController = {
 				let querySourceType = "";
 				let queryAgentGender = "";
 				let queryAgentStatus = "";
+				let queryAgentivityName = "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (locationId) {
@@ -190,6 +193,10 @@ export const sourceController = {
 					queryAgentStatus = getQueryStringForAgentStatus(agentStatusName);
 				}
 
+				if (agentivityName) {
+					queryAgentivityName = getQueryStringForAgentivity(agentivityName);
+				}
+
 				const { attestations } = mapInfos as MapContent;
 				results = await Promise.all(
 					attestations.map(async (attestation: Attestation) => {
@@ -203,6 +210,7 @@ export const sourceController = {
 							querySourceType,
 							queryAgentGender,
 							queryAgentStatus,
+							queryAgentivityName,
 						);
 
 						const queryResults = await mapDataSource.query(sqlQuery);
@@ -262,7 +270,12 @@ export const sourceController = {
 						}
 
 						// on filtre les sources si agentActivityId, agentNameId sont présents
-						if (agentActivityId || agentNameId || agentStatusName) {
+						if (
+							agentActivityId ||
+							agentNameId ||
+							agentStatusName ||
+							agentivityName
+						) {
 							filteredResults = filteredResults
 								.map((point: PointType) => {
 									const filteredSources = point.sources
@@ -274,6 +287,7 @@ export const sourceController = {
 															let activityBoolean = true;
 															let nameBoolean = true;
 															let statusBoolean = true;
+															let agentivityBoolean = true;
 															if (agentActivityId) {
 																if (agent.activite_id) {
 																	if (agentActivityId.includes("|")) {
@@ -322,8 +336,30 @@ export const sourceController = {
 																	statusBoolean = false;
 																}
 															}
+															if (agentivityName) {
+																if (agent.agentivites) {
+																	for (const agentivity of agent.agentivites) {
+																		if (agentivity.nom_fr === agentivityName) {
+																			if (agentivityName.includes("|")) {
+																				const agentivityNames =
+																					agentivityName.split("|");
+																				agentivityBoolean =
+																					agentivityNames.includes(agentivity);
+																			} else {
+																				agentivityBoolean =
+																					agentivity === agentivityName;
+																			}
+																		}
+																	}
+																} else {
+																	agentivityBoolean = false;
+																}
+															}
 															return (
-																nameBoolean && activityBoolean && statusBoolean
+																nameBoolean &&
+																activityBoolean &&
+																statusBoolean &&
+																agentivityBoolean
 															);
 														},
 													);
@@ -476,6 +512,7 @@ export const sourceController = {
 						"",
 						"",
 						"",
+						"",
 					);
 
 					const queryResults = await mapDataSource.query(sqlQuery);
@@ -512,6 +549,7 @@ export const sourceController = {
 			// on récupère le texte de la requête SQL
 			const sqlQuery = getSourcesQueryWithDetails(
 				attestationIds,
+				"",
 				"",
 				"",
 				"",
