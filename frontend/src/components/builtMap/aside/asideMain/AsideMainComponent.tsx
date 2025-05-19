@@ -11,6 +11,7 @@ import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAside
 import {
 	fetchElementOptions,
 	getAllAgentActivityFromPoints,
+	getAllAgentivityFromPoints,
 	getAllAgentNameFromPoints,
 	getAllAgentStatusFromPoints,
 	getAllLocationsFromPoints,
@@ -129,6 +130,17 @@ const AsideMainComponent = () => {
 		}
 		return [];
 	}, [allPoints, language, mapInfos]);
+
+	// --- RECUPERATION DES OPTIONS AGENTIVITÉ POUR LES FILTRES
+	const agentivityOptions = useMemo(() => {
+		const agentivityFilter = isSelectedFilterInThisMap(mapInfos, "agentivity");
+		if (agentivityFilter) {
+			return getAllAgentivityFromPoints(allPoints, language);
+		}
+		return [];
+	}, [allPoints, language, mapInfos]);
+
+	console.log("agentivityOptions", agentivityOptions);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {

@@ -698,6 +698,46 @@ const getAllAgentStatusFromPoints = (points: PointType[], language: string) => {
 };
 
 /**
+ * Fonction qui renvoie toutes les agentivités d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des agentivités
+ */
+const getAllAgentivityFromPoints = (points: PointType[], language: string) => {
+	const allAgentivity: Record<string, string>[] = [];
+	const agentivities = new Set<string>();
+
+	for (const point of points) {
+		for (const sources of point.sources) {
+			for (const attestations of sources.attestations) {
+				if (attestations.agents && attestations.agents.length > 0) {
+					for (const agent of attestations.agents) {
+						if (!agent.agentivites) continue;
+						for (const agentivity of agent.agentivites) {
+							const agentivityFr = agentivity.nom_fr;
+							const agentivityEn = agentivity.nom_en;
+							if (agentivities.has(agentivityFr)) continue;
+							agentivities.add(agentivityFr);
+							allAgentivity.push({
+								nom_fr: agentivityFr,
+								nom_en: agentivityEn,
+							});
+						}
+					}
+				}
+			}
+		}
+	}
+	// formattage des options pour le select
+	return allAgentivity
+		.map((agentivity) => ({
+			value: agentivity.nom_fr,
+			label: agentivity[`nom_${language}`],
+		}))
+		.sort((a, b) => a.label.localeCompare(b.label));
+};
+
+/**
  * Fonction qui renvoie un booléen pour savoir si le filtre est sélectionné dans la carte
  * @param mapInfos - les infos de la carte
  * @param filterName - le nom du filtre
@@ -734,4 +774,5 @@ export {
 	getAllAgentNameFromPoints,
 	isSelectedFilterInThisMap,
 	getAllAgentStatusFromPoints,
+	getAllAgentivityFromPoints,
 };
