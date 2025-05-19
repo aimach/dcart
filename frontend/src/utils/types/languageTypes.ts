@@ -96,6 +96,7 @@ type LanguageObject = {
 		onlySemitic: string;
 		onlyGreek: string;
 		withElements: string;
+		withStatus: string;
 		aside: {
 			filters: string;
 			sources: string;

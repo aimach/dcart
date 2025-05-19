@@ -94,6 +94,7 @@
 		"onlySemitic": "only in semitic",
 		"onlyGreek": "only in greek",
 		"withElements": "with elements",
+		"withStatus": "with status",
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
