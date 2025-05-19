@@ -225,6 +225,15 @@ const getFilterLabel = (
 					translation[language as keyof TranslationType].backoffice.mapFormPage
 						.agentGenderFilter.description,
 			};
+		case "agentStatus":
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.agentStatusFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.agentStatusFilter.description,
+			};
 		default:
 			return {
 				label:

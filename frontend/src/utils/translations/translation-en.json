@@ -267,6 +267,10 @@
 				"label": "Agent gender filter",
 				"description": "Displays checkboxes with male, female or nonbinary options"
 			},
+			"agentStatusFilter": {
+				"label": "Agent status filter",
+				"description": "Displays a select/options element with the list of agent status from all displayed attestations"
+			},
 			"noFilter": {
 				"label": "I don't want to add a filter",
 				"description": "No filter will be added to the map."

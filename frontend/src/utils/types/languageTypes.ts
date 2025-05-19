@@ -234,6 +234,7 @@ type LanguageObject = {
 			agentActivityFilter: { label: string; description: string };
 			agentNameFilter: { label: string; description: string };
 			agentGenderFilter: { label: string; description: string };
+			agentStatusFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;

@@ -253,19 +253,23 @@
 			},
 			"sourceTypeFilter": {
 				"label": "Filtre du type de source",
-				"description": "Afficher un select/options avec la liste des types de sources de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des types de sources de l'ensemble des attestations affichées"
 			},
 			"agentActivityFilter": {
 				"label": "Filtre de l'activité des agents",
-				"description": "Afficher un select/options avec la liste des activités des agents de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des activités des agents de l'ensemble des attestations affichées"
 			},
 			"agentNameFilter": {
 				"label": "Filtre du nom des agents",
-				"description": "Afficher un select/options avec la liste des noms des agents de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des noms des agents de l'ensemble des attestations affichées"
 			},
 			"agentGenderFilter": {
 				"label": "Filtre du genre des agents",
 				"description": "Affiche trois checkbox avec un choix 'masculin', un choix 'féminin' et un choix 'non binaire'."
+			},
+			"agentStatusFilter": {
+				"label": "Filtre du statut des agents",
+				"description": "DAffiche un select/options avec la liste des status des agents de l'ensemble des attestations affichées"
 			},
 			"noFilter": {
 				"label": "Je ne souhaite pas ajouter de filtre",
