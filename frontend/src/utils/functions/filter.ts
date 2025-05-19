@@ -13,6 +13,7 @@ import type {
 	GreatRegionType,
 	TimeMarkersType,
 	DivinityType,
+	MapInfoType,
 } from "../types/mapTypes";
 import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
@@ -602,10 +603,10 @@ const getAllAgentActivityFromPoints = (
 };
 
 /**
- * Fonction qui renvoie toutes les activités des agents d'une liste de points donnée
+ * Fonction qui renvoie toutes les noms des agents d'une liste de points donnée
  * @param {PointType[]} points - Les points
  * @param {Language} language - La langue sélectionnée par l'utilisateur
- * @returns {Record<string, string>[]} - Le tableau des options des activités
+ * @returns {Record<string, string>[]} - Le tableau des options des noms
  */
 const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
 	const allAgentNames: Record<string, string>[] = [];
@@ -640,6 +641,59 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
 		.sort((a, b) => a.label.localeCompare(b.label));
 };
 
+/**
+ * Fonction qui renvoie toutes les status des agents d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des statuts
+ */
+const getAllAgentStatusFromPoints = (points: PointType[], language: string) => {
+	const allAgentStatus: Record<string, string>[] = [];
+	const status = new Set<string>();
+
+	for (const point of points) {
+		for (const sources of point.sources) {
+			for (const attestations of sources.attestations) {
+				if (attestations.agents && attestations.agents.length > 0) {
+					for (const agent of attestations.agents) {
+						if (!agent.statut_fr) continue;
+						const statutFr = agent.statut_fr;
+						const statutEn = agent.statut_en;
+						if (status.has(statutFr)) continue;
+						status.add(statutFr);
+						allAgentStatus.push({
+							nom_fr: statutFr,
+							nom_en: statutEn,
+						});
+					}
+				}
+			}
+		}
+	}
+	// formattage des options pour le select
+	return allAgentStatus
+		.map((status) => ({
+			value: status.nom_fr,
+			label: status[`nom_${language}`],
+		}))
+		.sort((a, b) => a.label.localeCompare(b.label));
+};
+
+/**
+ * Fonction qui renvoie un booléen pour savoir si le filtre est sélectionné dans la carte
+ * @param mapInfos - les infos de la carte
+ * @param filterName - le nom du filtre
+ * @returns boolean
+ */
+const isSelectedFilterInThisMap = (
+	mapInfos: MapInfoType | null,
+	filterName: string,
+) => {
+	return mapInfos?.filterMapContent?.find(
+		(filter) => filter.filter.type === filterName,
+	);
+};
+
 export {
 	alreadyTwoFiltersChecked,
 	createTimeOptions,
@@ -660,4 +714,6 @@ export {
 	getAllSourceTypeFromPoints,
 	getAllAgentActivityFromPoints,
 	getAllAgentNameFromPoints,
+	isSelectedFilterInThisMap,
+	getAllAgentStatusFromPoints,
 };

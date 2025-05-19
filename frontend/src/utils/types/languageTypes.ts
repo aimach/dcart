@@ -108,6 +108,7 @@ type LanguageObject = {
 			sourceType: string;
 			agentActivity: string;
 			agentGender: string;
+			agentStatus: string;
 			male: string;
 			female: string;
 			nonbinary: string;
@@ -119,6 +120,7 @@ type LanguageObject = {
 			searchForElement: string;
 			searchForSourceType: string;
 			searchForAgentActivity: string;
+			searchForAgentStatus: string;
 			searchForAgentName: string;
 			noSelectedMarker: string;
 			traduction: string;
