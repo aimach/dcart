@@ -217,6 +217,13 @@ sources_with_attestations AS (
 					          statut_affiche.nom_en AS statut_en,
                     (
                       SELECT 
+                      jsonb_agg(jsonb_build_object('nom_fr', agentivite.nom_fr, 'nom_en', agentivite.nom_en)) 
+                      FROM agentivite 
+                      JOIN agent_agentivite ON agent_agentivite.id_agentivite = agentivite.id
+                      WHERE agent_agentivite.id_agent = agent.id
+                    ) AS agentivites, -- Tableaux des agentivités pour l'agent
+                    (
+                      SELECT 
                       jsonb_agg(jsonb_build_object('nom_fr', genre.nom_fr, 'nom_en', genre.nom_en)) 
                       FROM agent_genre 
                       JOIN genre ON genre.id = agent_genre.id_genre 
