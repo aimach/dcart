@@ -30,6 +30,7 @@ interface FilterComponentProps {
 	agentActivityOptions: OptionType[];
 	agentNameOptions: OptionType[];
 	agentStatusOptions: OptionType[];
+	agentivityOptions: OptionType[];
 }
 
 /**

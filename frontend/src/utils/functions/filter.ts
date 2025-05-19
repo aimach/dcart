@@ -756,6 +756,42 @@ const getAllAgentivityFromPoints = (points: PointType[], language: string) => {
 };
 
 /**
+ * Fonction qui renvoie tous les supports de source d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des supports de source
+ */
+const getAllSourceMaterialFromPoints = (
+	points: PointType[],
+	language: string,
+) => {
+	const allSourceMaterial: Record<string, string>[] = [];
+	const sourceMaterials = new Set<string>();
+
+	for (const point of points) {
+		for (const source of point.sources) {
+			if (!source.types.material_fr) continue;
+
+			const materialFr = source.types.material_fr;
+			const materialEn = source.types.material_en;
+			if (sourceMaterials.has(materialFr)) continue;
+			sourceMaterials.add(materialFr);
+			allSourceMaterial.push({
+				nom_fr: materialFr,
+				nom_en: materialEn,
+			});
+		}
+	}
+	// formattage des options pour le select
+	return allSourceMaterial
+		.map((material) => ({
+			value: material.nom_fr,
+			label: material[`nom_${language}`],
+		}))
+		.sort((a, b) => a.label.localeCompare(b.label));
+};
+
+/**
  * Fonction qui renvoie un booléen pour savoir si le filtre est sélectionné dans la carte
  * @param mapInfos - les infos de la carte
  * @param filterName - le nom du filtre
@@ -793,4 +829,5 @@ export {
 	isSelectedFilterInThisMap,
 	getAllAgentStatusFromPoints,
 	getAllAgentivityFromPoints,
+	getAllSourceMaterialFromPoints,
 };

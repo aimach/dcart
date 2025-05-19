@@ -15,6 +15,7 @@ import {
 	getAllAgentNameFromPoints,
 	getAllAgentStatusFromPoints,
 	getAllLocationsFromPoints,
+	getAllSourceMaterialFromPoints,
 	getAllSourceTypeFromPoints,
 	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
@@ -136,6 +137,18 @@ const AsideMainComponent = () => {
 		const agentivityFilter = isSelectedFilterInThisMap(mapInfos, "agentivity");
 		if (agentivityFilter) {
 			return getAllAgentivityFromPoints(allPoints, language);
+		}
+		return [];
+	}, [allPoints, language, mapInfos]);
+
+	// --- RECUPERATION DES OPTIONS SUPPORTS DE SOURCE POUR LES FILTRES
+	const sourceMaterialOptions = useMemo(() => {
+		const sourceMaterialFilter = isSelectedFilterInThisMap(
+			mapInfos,
+			"sourceMaterial",
+		);
+		if (sourceMaterialFilter) {
+			return getAllSourceMaterialFromPoints(allPoints, language);
 		}
 		return [];
 	}, [allPoints, language, mapInfos]);
