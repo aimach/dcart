@@ -115,11 +115,17 @@ const FilterComponent = ({
 		fetchAllPoints("filter");
 		setLocationNames(locationNameValues);
 		setElementNames(elementNameValues);
-		setSourceTypeNames(sourceTypeValues);
+		const sourceTypeWithoutCategory = sourceTypeValues.map(
+			(sourceTypeValue) => sourceTypeValue.split(">")[1],
+		);
+		setSourceTypeNames(sourceTypeWithoutCategory);
 		setAgentActivityNames(agentActivityValues);
 		setAgentStatusNames(agentStatusValues);
 		setAgentivityNames(agentivityValues);
-		setSourceMaterialValues(sourceMaterialValues);
+		const sourceMaterialValuesWithoutCategory = sourceMaterialValues.map(
+			(sourceMaterialValue) => sourceMaterialValue.split(">")[1],
+		);
+		setSourceMaterialNames(sourceMaterialValuesWithoutCategory);
 		setLanguageValues({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,

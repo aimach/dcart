@@ -95,7 +95,8 @@
 		"onlyGreek": "uniquement en grec",
 		"withElements": "avec les éléments",
 		"withStatus": "avec les status",
-		"withAgentivities": "with les agentivités",
+		"withAgentivities": "avec les agentivités",
+		"withSourceMaterials": "avec les supports",
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",

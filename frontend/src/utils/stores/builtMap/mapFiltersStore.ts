@@ -12,7 +12,7 @@ type State = {
 	agentActivityNames: string[];
 	agentStatusNames: string[];
 	agentivityNames: string[];
-	sourceMaterialName: string[];
+	sourceMaterialNames: string[];
 	languageValues: Record<string, boolean>;
 };
 
@@ -74,9 +74,9 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 	setAgentStatusNames: (agentStatusNames) => set(() => ({ agentStatusNames })),
 	agentivityNames: [],
 	setAgentivityNames: (agentivityNames) => set(() => ({ agentivityNames })),
-	sourceMaterialName: [],
-	setSourceMaterialNames: (sourceMaterialName) =>
-		set(() => ({ sourceMaterialName })),
+	sourceMaterialNames: [],
+	setSourceMaterialNames: (sourceMaterialNames) =>
+		set(() => ({ sourceMaterialNames })),
 	languageValues: { greek: false, semitic: false },
 	setLanguageValues: (languageValues) => set(() => ({ languageValues })),
 	resetLanguageValues: () =>

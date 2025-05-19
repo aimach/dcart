@@ -408,6 +408,7 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
  * @param {Record<string, boolean>} languageValues - Un objet contenant les booléens des langues sélectionnées
  * @param {string[]} agentStatusNames - Un objet contenant la liste des statuts sélectionnés
  * @param {string[]} agentivityNames - Un objet contenant la liste des agentivités sélectionnées
+ * @param {string[]} sourceMaterialNames - Un objet contenant la liste des supports des sources sélectionnées
  * @param {TranslationType} translationObject - Les objets de traduction
  * @returns {Array} - Un tableau de strings
  */
@@ -418,6 +419,7 @@ const displayFiltersTags = (
 	sourceTypeNames: string[],
 	agentStatusNames: string[],
 	agentivityNames: string[],
+	sourceMaterialNames: string[],
 	languageValues: Record<string, boolean>,
 	translationObject: LanguageObject,
 ) => {
@@ -451,13 +453,13 @@ const displayFiltersTags = (
 	// affichage des éléments
 	if (elementNames.length)
 		stringArray.push(
-			`${translationObject.mapPage.withElements}  : ${elementNames.join(", ")}`,
+			`${translationObject.mapPage.withElements} : ${elementNames.join(", ")}`,
 		);
 
 	// affichage des types de source
 	if (sourceTypeNames.length) {
 		stringArray.push(
-			`${translationObject.common.typeOf} ${sourceTypeNames.join(", ")}`,
+			`${translationObject.common.typeOf} : ${sourceTypeNames.join(", ")}`,
 		);
 	}
 
@@ -472,6 +474,15 @@ const displayFiltersTags = (
 	if (agentivityNames.length) {
 		stringArray.push(
 			`${translationObject.mapPage.withAgentivities} : ${agentivityNames.join(", ")}`,
+		);
+	}
+
+	// affichage des supports de source
+	if (sourceMaterialNames.length) {
+		stringArray.push(
+			`${translationObject.mapPage.withSourceMaterials} : ${sourceMaterialNames.join(
+				", ",
+			)}`,
 		);
 	}
 

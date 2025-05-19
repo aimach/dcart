@@ -98,6 +98,7 @@ type LanguageObject = {
 		withElements: string;
 		withStatus: string;
 		withAgentivities: string;
+		withSourceMaterials: string;
 		aside: {
 			filters: string;
 			sources: string;
