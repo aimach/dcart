@@ -380,10 +380,17 @@ const uploadMapImage = (
 	isMapReady: boolean,
 	mapInfos: MapInfoType,
 	language: Language,
+	map: LeafletMap,
 	setMapIsDownloading: (isDownloading: boolean) => void,
 ) => {
 	if (isMapReady) {
 		setMapIsDownloading(true);
+		const controlZoomElements = document.querySelectorAll(
+			".leaflet-control-zoom",
+		);
+		for (const element of controlZoomElements) {
+			element.style.display = "none";
+		}
 		const mapElement = document.getElementsByClassName(
 			"leaflet-container",
 		)[0] as HTMLElement; // le premier élément de la classe leaflet-container
@@ -398,6 +405,9 @@ const uploadMapImage = (
 				link.download = `carte-${slugify(mapInfos[`title_${language}`])}.png`;
 				link.click();
 				setMapIsDownloading(false);
+				for (const element of controlZoomElements) {
+					element.style.display = "block";
+				}
 			},
 		);
 	}

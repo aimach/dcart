@@ -73,6 +73,7 @@ const MapComponent = () => {
 		isTutorialOpen,
 		closeTutorial,
 		resetTutorialStep,
+		mapIsDownloading,
 	} = useMapStore(useShallow((state) => state));
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(useShallow((state) => state));

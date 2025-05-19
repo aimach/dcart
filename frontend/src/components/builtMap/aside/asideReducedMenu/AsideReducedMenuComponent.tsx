@@ -12,6 +12,7 @@ import type {
 	MapInfoType,
 	MenuTabType,
 } from "../../../../utils/types/mapTypes";
+import type { Map as LeafletMap } from "leaflet";
 // import du style
 import style from "./asideReducedMenuComponent.module.scss";
 // import des icones
@@ -33,6 +34,7 @@ const AsideReducedMenuComponent = () => {
 	// récupération des données des stores
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 	const {
+		map,
 		mapInfos,
 		mapReady,
 		openTutorial,
@@ -89,6 +91,7 @@ const AsideReducedMenuComponent = () => {
 					mapReady,
 					mapInfos as MapInfoType,
 					language,
+					map as LeafletMap,
 					setMapIsDownloading,
 				);
 			},
