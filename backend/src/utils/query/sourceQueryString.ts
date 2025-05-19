@@ -159,6 +159,8 @@ ORDER BY grande_region_fr, sous_region_fr, localisation_source.nom_ville`;
  * @param queryIncludedElements - Une chaîne de caractères permettant de filtrer par élément.
  * @param queryDivinityNb - Une chaîne de caractères permettant de filtrer par nombre de puissances divines
  * @param querySourceType - Une chaîne de caractères permettant de filtrer par nom de type de source.
+ * @param queryAgentGender - Une chaîne de caractères permettant de filtrer par le genre de l'agent.
+ * @param queryAgentStatus - Une chaîne de caractères permettant de filtrer par le statut de l'agent.
  * @returns Une chaîne de caractères contenant la requête SQL.
  */
 export const getSourcesQueryWithDetails = (
@@ -170,6 +172,7 @@ export const getSourcesQueryWithDetails = (
 	queryDivinityNb: string,
 	querySourceType: string,
 	queryAgentGender: string,
+	queryAgentStatus: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -227,7 +230,8 @@ sources_with_attestations AS (
                     LEFT JOIN genre on genre.id = agent_genre.id_genre 
                     LEFT JOIN agent_statut ON agent_statut.id_agent = agent.id
 					          LEFT JOIN statut_affiche ON statut_affiche.id = agent_statut.id_statut
-                    WHERE agent.id_attestation = attestation.id 
+                    WHERE agent.id_attestation = attestation.id
+                    ${queryAgentStatus} 
                     GROUP BY 
                       agent.designation, 
                       activite_agent.nom_fr, 

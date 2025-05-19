@@ -72,9 +72,8 @@ const getQueryStringForLanguage = (language: string, queryLanguage: string) => {
 };
 
 /**
- * Fonction qui renvoie la query string pour les filtres de langue
- * @param {string} language - la langue sélectionnée (greek, semitic)
- * @param {string} queryLanguage - la variable de langue dans la query (si jamais la fonction est utilisée plusieurs fois, pour aditionner les query strings)
+ * Fonction qui renvoie la query string pour les filtres du genre des agents
+ * @param {Record<string, boolean>} agentGenderFilter - la liste des genres des agents à appliquer (séparés par des "|")
  * @returns {string} - la query string
  */
 const getQueryStringForAgentGender = (
@@ -93,6 +92,20 @@ const getQueryStringForAgentGender = (
 	return queryArray.length > 0
 		? ` AND genre.nom_fr IN (${queryArray.join(", ")}) `
 		: "";
+};
+
+/**
+ * Fonction qui renvoie la query string pour les filtres du statut des agents
+ * @param {string} language - la langue sélectionnée (greek, semitic)
+ * @param {string} queryLanguage - la variable de langue dans la query (si jamais la fonction est utilisée plusieurs fois, pour aditionner les query strings)
+ * @returns {string} - la query string
+ */
+const getQueryStringForAgentStatus = (agentStatusName: string) => {
+	const statusString = agentStatusName
+		.split("|")
+		.map((status) => `'${status}'`) // ajout des quotes
+		.join(", ");
+	return `AND statut_affiche.nom_fr IN (${statusString})`;
 };
 
 /**
@@ -134,4 +147,5 @@ export {
 	getQueryStringForLanguage,
 	getQueryStringForLocalisationFilter,
 	getQueryStringForAgentGender,
+	getQueryStringForAgentStatus,
 };
