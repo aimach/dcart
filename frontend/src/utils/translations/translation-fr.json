@@ -272,7 +272,11 @@
 			},
 			"agentStatusFilter": {
 				"label": "Filtre du statut des agents",
-				"description": "DAffiche un select/options avec la liste des status des agents de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des status des agents de l'ensemble des attestations affichées"
+			},
+			"agentivityFilter": {
+				"label": "Filtre de l'agentivité",
+				"description": "Affiche un select/options avec la liste des agentivités de l'ensemble des attestations affichées"
 			},
 			"noFilter": {
 				"label": "Je ne souhaite pas ajouter de filtre",
