@@ -181,6 +181,7 @@ const AsideMainComponent = () => {
 					agentNameOptions={agentNameOptions}
 					agentStatusOptions={agentStatusOptions}
 					agentivityOptions={agentivityOptions}
+					sourceMaterialOptions={sourceMaterialOptions}
 				/>
 			);
 		case "infos":

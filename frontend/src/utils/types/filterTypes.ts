@@ -23,6 +23,7 @@ type UserFilterType = {
 	agentGender?: { male?: boolean; female?: boolean; nonBinary?: boolean };
 	agentStatusName?: string;
 	agentivityName?: string;
+	sourceMaterialName?: string;
 };
 
 type LotType = {
