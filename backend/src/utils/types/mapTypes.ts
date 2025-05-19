@@ -121,8 +121,10 @@ type SourceType = {
 	source_id: number;
 	support_en: string;
 	support_fr: string;
-	materiau_en: string;
-	materiau_fr: string;
+	material_en: string;
+	material_fr: string;
+	material_category_fr: string;
+	material_category_en: string;
 	attestations: AttestationType[];
 };
 

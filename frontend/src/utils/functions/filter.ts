@@ -779,6 +779,7 @@ const getAllSourceMaterialFromPoints = (
 			allSourceMaterial.push({
 				nom_fr: materialFr,
 				nom_en: materialEn,
+				label: `${source.types[`material_category_${language}`]} > ${source.types[`material_${language}`]}`,
 			});
 		}
 	}
@@ -786,7 +787,7 @@ const getAllSourceMaterialFromPoints = (
 	return allSourceMaterial
 		.map((material) => ({
 			value: material.nom_fr,
-			label: material[`nom_${language}`],
+			label: material.label,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
 };
