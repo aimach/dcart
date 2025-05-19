@@ -242,6 +242,7 @@ type LanguageObject = {
 			agentGenderFilter: { label: string; description: string };
 			agentStatusFilter: { label: string; description: string };
 			agentivityFilter: { label: string; description: string };
+			sourceMaterialFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;

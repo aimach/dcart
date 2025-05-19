@@ -244,6 +244,15 @@ const getFilterLabel = (
 					translation[language as keyof TranslationType].backoffice.mapFormPage
 						.agentivityFilter.description,
 			};
+		case "sourceMaterial":
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.sourceMaterialFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.sourceMaterialFilter.description,
+			};
 		default:
 			return {
 				label:

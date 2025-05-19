@@ -281,6 +281,10 @@
 				"label": "Filtre de l'agentivité",
 				"description": "Affiche un select/options avec la liste des agentivités de l'ensemble des attestations affichées"
 			},
+			"sourceMaterialFilter": {
+				"label": "Filtre du support de la source",
+				"description": "Affiche un select/options avec la liste des supports de source de l'ensemble des attestations affichées"
+			},
 			"noFilter": {
 				"label": "Je ne souhaite pas ajouter de filtre",
 				"description": "Aucun filtre ne sera ajouté à la carte"
