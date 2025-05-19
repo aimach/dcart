@@ -30,6 +30,8 @@ interface FilterComponentProps {
 	agentActivityOptions: OptionType[];
 	agentNameOptions: OptionType[];
 	agentStatusOptions: OptionType[];
+	agentivityOptions: OptionType[];
+	sourceMaterialOptions: OptionType[];
 }
 
 /**
@@ -41,6 +43,7 @@ interface FilterComponentProps {
  * @param {OptionType[]} props.agentActivityOptions - Liste des activités des agents pour le filtre des activités
  * @param {OptionType[]} props.agentStatusOptions - Liste des statuts des agents pour le filtre des activités
  * @param {OptionType[]} props.agentivityOptions - Liste des statuts des agents pour le filtre des activités
+ * @param {OptionType[]} props.sourceMaterialOptions - Liste des supports des sources pour le filtre des activités
  * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
  */
 const FilterComponent = ({
@@ -50,6 +53,7 @@ const FilterComponent = ({
 	agentActivityOptions,
 	agentStatusOptions,
 	agentivityOptions,
+	sourceMaterialOptions,
 }: FilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
@@ -73,6 +77,7 @@ const FilterComponent = ({
 		setAgentActivityNames,
 		setAgentStatusNames,
 		setAgentivityNames,
+		setSourceMaterialNames,
 		resetLanguageValues,
 	} = useMapFiltersStore(useShallow((state) => state));
 
@@ -83,6 +88,9 @@ const FilterComponent = ({
 	const [agentActivityValues, setAgentActivityValues] = useState<string[]>([]);
 	const [agentStatusValues, setAgentStatusValues] = useState<string[]>([]);
 	const [agentivityValues, setAgentivityValues] = useState<string[]>([]);
+	const [sourceMaterialValues, setSourceMaterialValues] = useState<string[]>(
+		[],
+	);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -107,10 +115,17 @@ const FilterComponent = ({
 		fetchAllPoints("filter");
 		setLocationNames(locationNameValues);
 		setElementNames(elementNameValues);
-		setSourceTypeNames(sourceTypeValues);
+		const sourceTypeWithoutCategory = sourceTypeValues.map(
+			(sourceTypeValue) => sourceTypeValue.split(">")[1],
+		);
+		setSourceTypeNames(sourceTypeWithoutCategory);
 		setAgentActivityNames(agentActivityValues);
 		setAgentStatusNames(agentStatusValues);
 		setAgentivityNames(agentivityValues);
+		const sourceMaterialValuesWithoutCategory = sourceMaterialValues.map(
+			(sourceMaterialValue) => sourceMaterialValue.split(">")[1],
+		);
+		setSourceMaterialNames(sourceMaterialValuesWithoutCategory);
 		setLanguageValues({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,
@@ -131,6 +146,7 @@ const FilterComponent = ({
 		setAgentActivityNames([]);
 		setAgentStatusNames([]);
 		setAgentivityNames([]);
+		setSourceMaterialNames([]);
 		resetLanguageValues();
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
@@ -245,7 +261,24 @@ const FilterComponent = ({
 										setValues={setAgentivityValues}
 										userFilterId="agentivityName"
 										placeholder={
-											translation[language].mapPage.aside.searchForAgentStatus
+											translation[language].mapPage.aside.searchForAgentivity
+										}
+									/>
+								</div>
+							);
+						}
+						if (filter.filter.type === "sourceMaterial") {
+							return (
+								<div className={style.filterContainer} key={filter.id}>
+									<h4>{translation[language].mapPage.aside.sourceMaterial}</h4>
+									<MultiSelectFilterComponent
+										key={filter.id}
+										optionsArray={sourceMaterialOptions}
+										setValues={setSourceMaterialValues}
+										userFilterId="sourceMaterialName"
+										placeholder={
+											translation[language].mapPage.aside
+												.searchForSourceMaterial
 										}
 									/>
 								</div>

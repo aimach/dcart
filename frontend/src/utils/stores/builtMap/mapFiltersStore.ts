@@ -12,6 +12,7 @@ type State = {
 	agentActivityNames: string[];
 	agentStatusNames: string[];
 	agentivityNames: string[];
+	sourceMaterialNames: string[];
 	languageValues: Record<string, boolean>;
 };
 
@@ -25,6 +26,7 @@ type Action = {
 	setAgentActivityNames: (agentActivityNames: string[]) => void;
 	setAgentStatusNames: (agentStatusNames: string[]) => void;
 	setAgentivityNames: (agentivityNames: string[]) => void;
+	setSourceMaterialNames: (sourceMaterialName: string[]) => void;
 	setLanguageValues: (languageValues: Record<string, boolean>) => void;
 	resetLanguageValues: () => void;
 };
@@ -45,6 +47,7 @@ const emptyUserFilters: UserFilterType = {
 	agentGender: undefined,
 	agentStatusName: undefined,
 	agentivityName: undefined,
+	sourceMaterialName: undefined,
 };
 
 export const useMapFiltersStore = create<State & Action>((set, get) => ({
@@ -71,6 +74,9 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 	setAgentStatusNames: (agentStatusNames) => set(() => ({ agentStatusNames })),
 	agentivityNames: [],
 	setAgentivityNames: (agentivityNames) => set(() => ({ agentivityNames })),
+	sourceMaterialNames: [],
+	setSourceMaterialNames: (sourceMaterialNames) =>
+		set(() => ({ sourceMaterialNames })),
 	languageValues: { greek: false, semitic: false },
 	setLanguageValues: (languageValues) => set(() => ({ languageValues })),
 	resetLanguageValues: () =>

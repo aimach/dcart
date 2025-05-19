@@ -96,6 +96,7 @@
 		"withElements": "with elements",
 		"withStatus": "with status",
 		"withAgentivities": "with agentivities",
+		"withSourceMaterials": "with source materials",
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
@@ -111,6 +112,7 @@
 			"agentName": "Agent name",
 			"agentStatus": "Agent status",
 			"agentivity": "Agentivity",
+			"sourceMaterial": "Source material",
 			"timeLimits": "Time limits",
 			"male": "Male",
 			"female": "Female",
@@ -122,6 +124,7 @@
 			"searchForSourceType": "Search for a source type...",
 			"searchForAgentActivity": "Search for an agent activity...",
 			"searchForAgentStatus": "Search for an agent status...",
+			"searchForSourceMaterial": "Search for a source material...",
 			"searchForAgentivity": "Search for an agentivity...",
 			"searchForAgentName": "Search for an agent name...",
 			"noSelectedMarker": "Select a marker to see details",
@@ -280,6 +283,10 @@
 			"agentivityFilter": {
 				"label": "Agentivity filter",
 				"description": "Displays a select/options element with the list of agentivity from all displayed attestations"
+			},
+			"sourceMaterialFilter": {
+				"label": "Source material filter",
+				"description": "Displays a select/options element with the list of materials from all displayed attestations"
 			},
 			"noFilter": {
 				"label": "I don't want to add a filter",

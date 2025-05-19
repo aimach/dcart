@@ -95,7 +95,8 @@
 		"onlyGreek": "uniquement en grec",
 		"withElements": "avec les éléments",
 		"withStatus": "avec les status",
-		"withAgentivities": "with les agentivités",
+		"withAgentivities": "avec les agentivités",
+		"withSourceMaterials": "avec les supports",
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",
@@ -111,6 +112,7 @@
 			"agentName": "Nom de l'agent",
 			"agentStatus": "Statut de l'agent",
 			"agentivity": "Agentivité",
+			"sourceMaterial": "Support de la source",
 			"timeLimits": "Bornes temporelles",
 			"male": "Masculin",
 			"female": "Féminin",
@@ -122,6 +124,7 @@
 			"searchForSourceType": "Rechercher un type de source...",
 			"searchForAgentActivity": "Rechercher une activité d'agent...",
 			"searchForAgentStatus": "Rechercher un statut d'agent...",
+			"searchForSourceMaterial": "Rechercher un support de source...",
 			"searchForAgentivity": "Rechercher une agentivité...",
 			"searchForAgentName": "Rechercher un nom d'agent...",
 			"noSelectedMarker": "Sélectionner un point pour voir les détails",
@@ -280,6 +283,10 @@
 			"agentivityFilter": {
 				"label": "Filtre de l'agentivité",
 				"description": "Affiche un select/options avec la liste des agentivités de l'ensemble des attestations affichées"
+			},
+			"sourceMaterialFilter": {
+				"label": "Filtre du support de la source",
+				"description": "Affiche un select/options avec la liste des supports de source de l'ensemble des attestations affichées"
 			},
 			"noFilter": {
 				"label": "Je ne souhaite pas ajouter de filtre",

@@ -244,6 +244,15 @@ const getFilterLabel = (
 					translation[language as keyof TranslationType].backoffice.mapFormPage
 						.agentivityFilter.description,
 			};
+		case "sourceMaterial":
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.sourceMaterialFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.sourceMaterialFilter.description,
+			};
 		default:
 			return {
 				label:
@@ -399,6 +408,7 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
  * @param {Record<string, boolean>} languageValues - Un objet contenant les booléens des langues sélectionnées
  * @param {string[]} agentStatusNames - Un objet contenant la liste des statuts sélectionnés
  * @param {string[]} agentivityNames - Un objet contenant la liste des agentivités sélectionnées
+ * @param {string[]} sourceMaterialNames - Un objet contenant la liste des supports des sources sélectionnées
  * @param {TranslationType} translationObject - Les objets de traduction
  * @returns {Array} - Un tableau de strings
  */
@@ -409,6 +419,7 @@ const displayFiltersTags = (
 	sourceTypeNames: string[],
 	agentStatusNames: string[],
 	agentivityNames: string[],
+	sourceMaterialNames: string[],
 	languageValues: Record<string, boolean>,
 	translationObject: LanguageObject,
 ) => {
@@ -442,13 +453,13 @@ const displayFiltersTags = (
 	// affichage des éléments
 	if (elementNames.length)
 		stringArray.push(
-			`${translationObject.mapPage.withElements}  : ${elementNames.join(", ")}`,
+			`${translationObject.mapPage.withElements} : ${elementNames.join(", ")}`,
 		);
 
 	// affichage des types de source
 	if (sourceTypeNames.length) {
 		stringArray.push(
-			`${translationObject.common.typeOf} ${sourceTypeNames.join(", ")}`,
+			`${translationObject.common.typeOf} : ${sourceTypeNames.join(", ")}`,
 		);
 	}
 
@@ -463,6 +474,15 @@ const displayFiltersTags = (
 	if (agentivityNames.length) {
 		stringArray.push(
 			`${translationObject.mapPage.withAgentivities} : ${agentivityNames.join(", ")}`,
+		);
+	}
+
+	// affichage des supports de source
+	if (sourceMaterialNames.length) {
+		stringArray.push(
+			`${translationObject.mapPage.withSourceMaterials} : ${sourceMaterialNames.join(
+				", ",
+			)}`,
 		);
 	}
 
@@ -747,6 +767,43 @@ const getAllAgentivityFromPoints = (points: PointType[], language: string) => {
 };
 
 /**
+ * Fonction qui renvoie tous les supports de source d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des supports de source
+ */
+const getAllSourceMaterialFromPoints = (
+	points: PointType[],
+	language: string,
+) => {
+	const allSourceMaterial: Record<string, string>[] = [];
+	const sourceMaterials = new Set<string>();
+
+	for (const point of points) {
+		for (const source of point.sources) {
+			if (!source.types.material_fr) continue;
+
+			const materialFr = source.types.material_fr;
+			const materialEn = source.types.material_en;
+			if (sourceMaterials.has(materialFr)) continue;
+			sourceMaterials.add(materialFr);
+			allSourceMaterial.push({
+				nom_fr: materialFr,
+				nom_en: materialEn,
+				label: `${source.types[`material_category_${language}`]} > ${source.types[`material_${language}`]}`,
+			});
+		}
+	}
+	// formattage des options pour le select
+	return allSourceMaterial
+		.map((material) => ({
+			value: material.nom_fr,
+			label: material.label,
+		}))
+		.sort((a, b) => a.label.localeCompare(b.label));
+};
+
+/**
  * Fonction qui renvoie un booléen pour savoir si le filtre est sélectionné dans la carte
  * @param mapInfos - les infos de la carte
  * @param filterName - le nom du filtre
@@ -784,4 +841,5 @@ export {
 	isSelectedFilterInThisMap,
 	getAllAgentStatusFromPoints,
 	getAllAgentivityFromPoints,
+	getAllSourceMaterialFromPoints,
 };

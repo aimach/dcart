@@ -15,6 +15,7 @@ import {
 	getAllAgentNameFromPoints,
 	getAllAgentStatusFromPoints,
 	getAllLocationsFromPoints,
+	getAllSourceMaterialFromPoints,
 	getAllSourceTypeFromPoints,
 	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
@@ -140,6 +141,18 @@ const AsideMainComponent = () => {
 		return [];
 	}, [allPoints, language, mapInfos]);
 
+	// --- RECUPERATION DES OPTIONS SUPPORTS DE SOURCE POUR LES FILTRES
+	const sourceMaterialOptions = useMemo(() => {
+		const sourceMaterialFilter = isSelectedFilterInThisMap(
+			mapInfos,
+			"sourceMaterial",
+		);
+		if (sourceMaterialFilter) {
+			return getAllSourceMaterialFromPoints(allPoints, language);
+		}
+		return [];
+	}, [allPoints, language, mapInfos]);
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (mapInfos && allPoints) {
@@ -168,6 +181,7 @@ const AsideMainComponent = () => {
 					agentNameOptions={agentNameOptions}
 					agentStatusOptions={agentStatusOptions}
 					agentivityOptions={agentivityOptions}
+					sourceMaterialOptions={sourceMaterialOptions}
 				/>
 			);
 		case "infos":

@@ -121,6 +121,27 @@ const getQueryStringForAgentivity = (agentivityName: string) => {
 };
 
 /**
+ * Fonction qui renvoie la query string pour les filtres du support de sources
+ * @param {string} sourceMaterialName - la liste des support à appliquer (séparés par des "|")
+ * @param {string} querySourceType - la string de la query pour le type de source (mettre WHERE ou AND en fonction de la présence d'autres filtres)
+ * @returns {string} - la query string
+ */
+const getQueryStringForSourceMaterial = (
+	sourceMaterialName: string,
+	querySourceType: string,
+) => {
+	const sourceMaterialString = sourceMaterialName
+		.split("|")
+		.map((material) => `'${material}'`) // ajout des quotes
+		.join(", ");
+	let operator = "WHERE";
+	if (querySourceType !== "") {
+		operator = " AND ";
+	}
+	return `${operator} type_support.nom_fr IN (${sourceMaterialString})`;
+};
+
+/**
  * Fonction qui renvoie la query string pour filtrer par localisation
  * @param {string} mapId - l'id de la carte (exploration ou un uuid)
  * @param {string} locationId - l'id de la localisation
@@ -161,4 +182,5 @@ export {
 	getQueryStringForAgentGender,
 	getQueryStringForAgentStatus,
 	getQueryStringForAgentivity,
+	getQueryStringForSourceMaterial,
 };

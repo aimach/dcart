@@ -98,6 +98,7 @@ type LanguageObject = {
 		withElements: string;
 		withStatus: string;
 		withAgentivities: string;
+		withSourceMaterials: string;
 		aside: {
 			filters: string;
 			sources: string;
@@ -112,6 +113,7 @@ type LanguageObject = {
 			agentGender: string;
 			agentStatus: string;
 			agentivity: string;
+			sourceMaterial: string;
 			male: string;
 			female: string;
 			nonbinary: string;
@@ -124,6 +126,7 @@ type LanguageObject = {
 			searchForSourceType: string;
 			searchForAgentActivity: string;
 			searchForAgentStatus: string;
+			searchForSourceMaterial: string;
 			searchForAgentivity: string;
 			searchForAgentName: string;
 			noSelectedMarker: string;
@@ -242,6 +245,7 @@ type LanguageObject = {
 			agentGenderFilter: { label: string; description: string };
 			agentStatusFilter: { label: string; description: string };
 			agentivityFilter: { label: string; description: string };
+			sourceMaterialFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;
