@@ -398,6 +398,7 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
  * @param {string[]} elementNames - Les noms des éléments sélectionnés
  * @param {Record<string, boolean>} languageValues - Un objet contenant les booléens des langues sélectionnées
  * @param {string[]} agentStatusNames - Un objet contenant la liste des statuts sélectionnés
+ * @param {string[]} agentivityNames - Un objet contenant la liste des agentivités sélectionnées
  * @param {TranslationType} translationObject - Les objets de traduction
  * @returns {Array} - Un tableau de strings
  */
@@ -407,6 +408,7 @@ const displayFiltersTags = (
 	elementNames: string[],
 	sourceTypeNames: string[],
 	agentStatusNames: string[],
+	agentivityNames: string[],
 	languageValues: Record<string, boolean>,
 	translationObject: LanguageObject,
 ) => {
@@ -454,6 +456,13 @@ const displayFiltersTags = (
 	if (agentStatusNames.length) {
 		stringArray.push(
 			`${translationObject.mapPage.withStatus} : ${agentStatusNames.join(", ")}`,
+		);
+	}
+
+	// affichage des agentivités
+	if (agentivityNames.length) {
+		stringArray.push(
+			`${translationObject.mapPage.withAgentivities} : ${agentivityNames.join(", ")}`,
 		);
 	}
 

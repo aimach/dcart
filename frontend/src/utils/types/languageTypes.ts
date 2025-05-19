@@ -97,6 +97,7 @@ type LanguageObject = {
 		onlyGreek: string;
 		withElements: string;
 		withStatus: string;
+		withAgentivities: string;
 		aside: {
 			filters: string;
 			sources: string;
