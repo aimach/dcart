@@ -15,6 +15,7 @@ import {
 	getQueryStringForIncludedElements,
 	getQueryStringForLanguage,
 	getQueryStringForAgentGender,
+	getQueryStringForAgentStatus,
 } from "../../../utils/query/filtersQueryString";
 import {
 	attestationMatchesLot,
@@ -45,6 +46,7 @@ export const sourceController = {
 				agentActivityId,
 				agentNameId,
 				agentGender,
+				agentStatusName,
 			} = req.body;
 
 			// on prépare la variable à renvoyer
@@ -126,6 +128,7 @@ export const sourceController = {
 				let queryDivinityNb = "";
 				let querySourceType = "";
 				let queryAgentGender = "";
+				let queryAgentStatus = "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (locationId) {
@@ -183,6 +186,10 @@ export const sourceController = {
 					queryAgentGender = getQueryStringForAgentGender(agentGender);
 				}
 
+				if (agentStatusName) {
+					queryAgentStatus = getQueryStringForAgentStatus(agentStatusName);
+				}
+
 				const { attestations } = mapInfos as MapContent;
 				results = await Promise.all(
 					attestations.map(async (attestation: Attestation) => {
@@ -195,6 +202,7 @@ export const sourceController = {
 							queryDivinityNb,
 							querySourceType,
 							queryAgentGender,
+							queryAgentStatus,
 						);
 
 						const queryResults = await mapDataSource.query(sqlQuery);
@@ -254,7 +262,7 @@ export const sourceController = {
 						}
 
 						// on filtre les sources si agentActivityId, agentNameId sont présents
-						if (agentActivityId || agentNameId) {
+						if (agentActivityId || agentNameId || agentStatusName) {
 							filteredResults = filteredResults
 								.map((point: PointType) => {
 									const filteredSources = point.sources
@@ -263,8 +271,9 @@ export const sourceController = {
 												?.map((attestation) => {
 													const filteredAgents = attestation.agents?.filter(
 														(agent) => {
-															let activityBoolean = agent.activite_id !== null;
-															let nameBoolean = agent.designation !== null;
+															let activityBoolean = true;
+															let nameBoolean = true;
+															let statusBoolean = true;
 															if (agentActivityId) {
 																if (agent.activite_id) {
 																	if (agentActivityId.includes("|")) {
@@ -273,10 +282,11 @@ export const sourceController = {
 																		activityBoolean = agentActivityIds.includes(
 																			agent.activite_id.toString(),
 																		);
+																	} else {
+																		activityBoolean =
+																			agent.activite_id.toString() ===
+																			agentActivityId;
 																	}
-																	activityBoolean =
-																		agent.activite_id.toString() ===
-																		agentActivityId;
 																} else {
 																	activityBoolean = false;
 																}
@@ -288,14 +298,33 @@ export const sourceController = {
 																		nameBoolean = agentNameIds.includes(
 																			agent.designation,
 																		);
+																	} else {
+																		nameBoolean =
+																			agent.designation === agentNameId;
 																	}
-																	nameBoolean =
-																		agent.designation === agentNameId;
 																} else {
 																	nameBoolean = false;
 																}
 															}
-															return nameBoolean && activityBoolean;
+															if (agentStatusName) {
+																if (agent.statut_fr) {
+																	if (agentStatusName.includes("|")) {
+																		const agentStatusNames =
+																			agentStatusName.split("|");
+																		statusBoolean = agentStatusNames.includes(
+																			agent.statut_fr,
+																		);
+																	} else {
+																		statusBoolean =
+																			agent.statut_fr === agentStatusName;
+																	}
+																} else {
+																	statusBoolean = false;
+																}
+															}
+															return (
+																nameBoolean && activityBoolean && statusBoolean
+															);
 														},
 													);
 													if (filteredAgents && filteredAgents.length > 0) {
@@ -326,6 +355,7 @@ export const sourceController = {
 								})
 								.filter((point: PointType) => point !== null);
 						}
+
 						// on filtre si agentGender est présent pour enlever les agents null
 						if (agentGender) {
 							filteredResults = filteredResults
@@ -445,6 +475,7 @@ export const sourceController = {
 						"",
 						"",
 						"",
+						"",
 					);
 
 					const queryResults = await mapDataSource.query(sqlQuery);
@@ -481,6 +512,7 @@ export const sourceController = {
 			// on récupère le texte de la requête SQL
 			const sqlQuery = getSourcesQueryWithDetails(
 				attestationIds,
+				"",
 				"",
 				"",
 				"",

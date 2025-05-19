@@ -36,6 +36,7 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 		elementNames,
 		languageValues,
 		sourceTypeNames,
+		agentStatusNames,
 	} = useMapFiltersStore();
 
 	const filtersDetails = displayFiltersTags(
@@ -43,6 +44,7 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 		locationNames,
 		elementNames,
 		sourceTypeNames,
+		agentStatusNames,
 		languageValues,
 		translation[language],
 	);

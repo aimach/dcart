@@ -12,8 +12,10 @@ import {
 	fetchElementOptions,
 	getAllAgentActivityFromPoints,
 	getAllAgentNameFromPoints,
+	getAllAgentStatusFromPoints,
 	getAllLocationsFromPoints,
 	getAllSourceTypeFromPoints,
+	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
@@ -38,9 +40,7 @@ const AsideMainComponent = () => {
 	let sourceTypeOptions: OptionType[] = [];
 
 	sourceTypeOptions = useMemo(() => {
-		const sourceTypeFilter = mapInfos?.filterMapContent?.find(
-			(filter) => filter.filter.type === "sourceType",
-		);
+		const sourceTypeFilter = isSelectedFilterInThisMap(mapInfos, "sourceType");
 		if (sourceTypeFilter) {
 			// récupération de toutes les sources depuis la liste des points
 			return getAllSourceTypeFromPoints(allPoints, language);
@@ -52,9 +52,7 @@ const AsideMainComponent = () => {
 	let locationOptions: OptionType[] = [];
 	// si le filtre de localisation est activé, utilisation du hook useMemo
 	locationOptions = useMemo(() => {
-		const locationFilter = mapInfos?.filterMapContent?.find(
-			(filter) => filter.filter.type === "location",
-		);
+		const locationFilter = isSelectedFilterInThisMap(mapInfos, "location");
 		if (locationFilter) {
 			// récupération de toutes les localités depuis la liste des points
 			let value = "grande_region_id";
@@ -99,14 +97,15 @@ const AsideMainComponent = () => {
 
 	// --- RECUPERATION DES OPTIONS ACTIVITES D'AGENTS POUR LES FILTRES
 	const agentActivityOptions = useMemo(() => {
-		const agentActivityFilter = mapInfos?.filterMapContent?.find(
-			(filter) => filter.filter.type === "agentActivity",
+		const agentActivityFilter = isSelectedFilterInThisMap(
+			mapInfos,
+			"agentActivity",
 		);
 		if (agentActivityFilter) {
 			return getAllAgentActivityFromPoints(allPoints, language);
 		}
 		return [];
-	}, [allPoints, language, mapInfos?.filterMapContent]);
+	}, [allPoints, language, mapInfos]);
 
 	// --- RECUPERATION DES OPTIONS NOMS D'AGENTS POUR LES FILTRES
 	const agentNameOptions = useMemo(() => {
@@ -118,6 +117,18 @@ const AsideMainComponent = () => {
 		}
 		return [];
 	}, [allPoints, language, mapInfos?.filterMapContent]);
+
+	// --- RECUPERATION DES OPTIONS STATUTS D'AGENTS POUR LES FILTRES
+	const agentStatusOptions = useMemo(() => {
+		const agentActivityFilter = isSelectedFilterInThisMap(
+			mapInfos,
+			"agentStatus",
+		);
+		if (agentActivityFilter) {
+			return getAllAgentStatusFromPoints(allPoints, language);
+		}
+		return [];
+	}, [allPoints, language, mapInfos]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
@@ -145,6 +156,7 @@ const AsideMainComponent = () => {
 					sourceTypeOptions={sourceTypeOptions}
 					agentActivityOptions={agentActivityOptions}
 					agentNameOptions={agentNameOptions}
+					agentStatusOptions={agentStatusOptions}
 				/>
 			);
 		case "infos":

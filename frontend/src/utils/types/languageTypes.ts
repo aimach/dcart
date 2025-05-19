@@ -96,6 +96,7 @@ type LanguageObject = {
 		onlySemitic: string;
 		onlyGreek: string;
 		withElements: string;
+		withStatus: string;
 		aside: {
 			filters: string;
 			sources: string;
@@ -108,6 +109,7 @@ type LanguageObject = {
 			sourceType: string;
 			agentActivity: string;
 			agentGender: string;
+			agentStatus: string;
 			male: string;
 			female: string;
 			nonbinary: string;
@@ -119,6 +121,7 @@ type LanguageObject = {
 			searchForElement: string;
 			searchForSourceType: string;
 			searchForAgentActivity: string;
+			searchForAgentStatus: string;
 			searchForAgentName: string;
 			noSelectedMarker: string;
 			traduction: string;
@@ -234,6 +237,7 @@ type LanguageObject = {
 			agentActivityFilter: { label: string; description: string };
 			agentNameFilter: { label: string; description: string };
 			agentGenderFilter: { label: string; description: string };
+			agentStatusFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;

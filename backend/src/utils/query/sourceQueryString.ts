@@ -159,6 +159,8 @@ ORDER BY grande_region_fr, sous_region_fr, localisation_source.nom_ville`;
  * @param queryIncludedElements - Une chaîne de caractères permettant de filtrer par élément.
  * @param queryDivinityNb - Une chaîne de caractères permettant de filtrer par nombre de puissances divines
  * @param querySourceType - Une chaîne de caractères permettant de filtrer par nom de type de source.
+ * @param queryAgentGender - Une chaîne de caractères permettant de filtrer par le genre de l'agent.
+ * @param queryAgentStatus - Une chaîne de caractères permettant de filtrer par le statut de l'agent.
  * @returns Une chaîne de caractères contenant la requête SQL.
  */
 export const getSourcesQueryWithDetails = (
@@ -170,6 +172,7 @@ export const getSourcesQueryWithDetails = (
 	queryDivinityNb: string,
 	querySourceType: string,
 	queryAgentGender: string,
+	queryAgentStatus: string,
 ) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
@@ -210,6 +213,8 @@ sources_with_attestations AS (
                     agent.designation, 
                     activite_agent.nom_fr AS activite_fr, 
                     activite_agent.nom_en AS activite_en, 
+                    statut_affiche.nom_fr AS statut_fr,
+					          statut_affiche.nom_en AS statut_en,
                     (
                       SELECT 
                       jsonb_agg(jsonb_build_object('nom_fr', genre.nom_fr, 'nom_en', genre.nom_en)) 
@@ -223,11 +228,16 @@ sources_with_attestations AS (
                     LEFT JOIN activite_agent ON activite_agent.id = agent_activite.id_activite
                     LEFT JOIN agent_genre ON agent_genre.id_agent = agent.id 
                     LEFT JOIN genre on genre.id = agent_genre.id_genre 
-                    WHERE agent.id_attestation = attestation.id 
+                    LEFT JOIN agent_statut ON agent_statut.id_agent = agent.id
+					          LEFT JOIN statut_affiche ON statut_affiche.id = agent_statut.id_statut
+                    WHERE agent.id_attestation = attestation.id
+                    ${queryAgentStatus} 
                     GROUP BY 
                       agent.designation, 
                       activite_agent.nom_fr, 
                       activite_agent.nom_en, 
+                      statut_affiche.nom_fr,
+					            statut_affiche.nom_en,
                       agent.id
                     ) 
                   AS agents

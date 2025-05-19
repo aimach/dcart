@@ -94,6 +94,7 @@
 		"onlySemitic": "uniquement en sémitique",
 		"onlyGreek": "uniquement en grec",
 		"withElements": "avec les éléments",
+		"withStatus": "avec les status",
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",
@@ -107,6 +108,7 @@
 			"agentActivity": "Activité de l'agent",
 			"agentGender": "Genre de l'agent",
 			"agentName": "Nom de l'agent",
+			"agentStatus": "Statut de l'agent",
 			"timeLimits": "Bornes temporelles",
 			"male": "Masculin",
 			"female": "Féminin",
@@ -117,6 +119,7 @@
 			"searchForElement": "Rechercher un element...",
 			"searchForSourceType": "Rechercher un type de source...",
 			"searchForAgentActivity": "Rechercher une activité d'agent...",
+			"searchForAgentStatus": "Rechercher un statut d'agent...",
 			"searchForAgentName": "Rechercher un nom d'agent...",
 			"noSelectedMarker": "Sélectionner un point pour voir les détails",
 			"traduction": "Traduction",
@@ -253,19 +256,23 @@
 			},
 			"sourceTypeFilter": {
 				"label": "Filtre du type de source",
-				"description": "Afficher un select/options avec la liste des types de sources de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des types de sources de l'ensemble des attestations affichées"
 			},
 			"agentActivityFilter": {
 				"label": "Filtre de l'activité des agents",
-				"description": "Afficher un select/options avec la liste des activités des agents de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des activités des agents de l'ensemble des attestations affichées"
 			},
 			"agentNameFilter": {
 				"label": "Filtre du nom des agents",
-				"description": "Afficher un select/options avec la liste des noms des agents de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des noms des agents de l'ensemble des attestations affichées"
 			},
 			"agentGenderFilter": {
 				"label": "Filtre du genre des agents",
 				"description": "Affiche trois checkbox avec un choix 'masculin', un choix 'féminin' et un choix 'non binaire'."
+			},
+			"agentStatusFilter": {
+				"label": "Filtre du statut des agents",
+				"description": "DAffiche un select/options avec la liste des status des agents de l'ensemble des attestations affichées"
 			},
 			"noFilter": {
 				"label": "Je ne souhaite pas ajouter de filtre",

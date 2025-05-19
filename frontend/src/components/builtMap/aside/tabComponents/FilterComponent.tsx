@@ -29,6 +29,7 @@ interface FilterComponentProps {
 	sourceTypeOptions: OptionType[];
 	agentActivityOptions: OptionType[];
 	agentNameOptions: OptionType[];
+	agentStatusOptions: OptionType[];
 }
 
 /**
@@ -38,6 +39,7 @@ interface FilterComponentProps {
  * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
  * @param {OptionType[]} props.sourceTypeOptions - Liste des types de source pour le filtre des épithètes
  * @param {OptionType[]} props.agentActivityOptions - Liste des activités des agents pour le filtre des activités
+ * @param {OptionType[]} props.agentStatusOptions - Liste des statuts des agents pour le filtre des activités
  * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
  */
 const FilterComponent = ({
@@ -45,6 +47,7 @@ const FilterComponent = ({
 	elementOptions,
 	sourceTypeOptions,
 	agentActivityOptions,
+	agentStatusOptions,
 }: FilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
@@ -66,6 +69,7 @@ const FilterComponent = ({
 		setLanguageValues,
 		setSourceTypeNames,
 		setAgentActivityNames,
+		setAgentStatusNames,
 		resetLanguageValues,
 	} = useMapFiltersStore(useShallow((state) => state));
 
@@ -74,6 +78,7 @@ const FilterComponent = ({
 	const [elementNameValues, setElementNameValues] = useState<string[]>([]);
 	const [sourceTypeValues, setSourceTypeValues] = useState<string[]>([]);
 	const [agentActivityValues, setAgentActivityValues] = useState<string[]>([]);
+	const [agentStatusValues, setAgentStatusValues] = useState<string[]>([]);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -100,6 +105,7 @@ const FilterComponent = ({
 		setElementNames(elementNameValues);
 		setSourceTypeNames(sourceTypeValues);
 		setAgentActivityNames(agentActivityValues);
+		setAgentStatusNames(agentStatusValues);
 		setLanguageValues({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,
@@ -117,6 +123,8 @@ const FilterComponent = ({
 		setLocationNames([]);
 		setElementNames([]);
 		setSourceTypeValues([]);
+		setAgentActivityNames([]);
+		setAgentStatusNames([]);
 		resetLanguageValues();
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
@@ -202,6 +210,22 @@ const FilterComponent = ({
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.agentGender}</h4>
 									<AgentGenderFilterComponent />
+								</div>
+							);
+						}
+						if (filter.filter.type === "agentStatus") {
+							return (
+								<div className={style.filterContainer} key={filter.id}>
+									<h4>{translation[language].mapPage.aside.agentStatus}</h4>
+									<MultiSelectFilterComponent
+										key={filter.id}
+										optionsArray={agentStatusOptions}
+										setValues={setAgentStatusValues}
+										userFilterId="agentStatusName"
+										placeholder={
+											translation[language].mapPage.aside.searchForAgentStatus
+										}
+									/>
 								</div>
 							);
 						}

@@ -32,6 +32,10 @@ const filterSchema = Joi.object({
 		"any.required": "Le booléen 'agentGender' est requis",
 		"boolean.base": "'agentGender' doit être un booléen",
 	}),
+	agentStatus: Joi.boolean().required().messages({
+		"any.required": "Le booléen 'agentStatus' est requis",
+		"boolean.base": "'agentStatus' doit être un booléen",
+	}),
 });
 
 export const validateFilterBody = (

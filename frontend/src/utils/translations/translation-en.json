@@ -94,6 +94,7 @@
 		"onlySemitic": "only in semitic",
 		"onlyGreek": "only in greek",
 		"withElements": "with elements",
+		"withStatus": "with status",
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
@@ -107,6 +108,7 @@
 			"agentActivity": "Agent activity",
 			"agentGender": "Agent gender",
 			"agentName": "Agent name",
+			"agentStatus": "Agent status",
 			"timeLimits": "Time limits",
 			"male": "Male",
 			"female": "Female",
@@ -117,6 +119,7 @@
 			"searchForElement": "Search for an element...",
 			"searchForSourceType": "Search for a source type...",
 			"searchForAgentActivity": "Search for an agent activity...",
+			"searchForAgentStatus": "Search for an agent status...",
 			"searchForAgentName": "Search for an agent name...",
 			"noSelectedMarker": "Select a marker to see details",
 			"traduction": "Traduction",
@@ -266,6 +269,10 @@
 			"agentGenderFilter": {
 				"label": "Agent gender filter",
 				"description": "Displays checkboxes with male, female or nonbinary options"
+			},
+			"agentStatusFilter": {
+				"label": "Agent status filter",
+				"description": "Displays a select/options element with the list of agent status from all displayed attestations"
 			},
 			"noFilter": {
 				"label": "I don't want to add a filter",
