@@ -140,8 +140,6 @@ const AsideMainComponent = () => {
 		return [];
 	}, [allPoints, language, mapInfos]);
 
-	console.log("agentivityOptions", agentivityOptions);
-
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (mapInfos && allPoints) {
@@ -169,6 +167,7 @@ const AsideMainComponent = () => {
 					agentActivityOptions={agentActivityOptions}
 					agentNameOptions={agentNameOptions}
 					agentStatusOptions={agentStatusOptions}
+					agentivityOptions={agentivityOptions}
 				/>
 			);
 		case "infos":

@@ -40,6 +40,7 @@ interface FilterComponentProps {
  * @param {OptionType[]} props.sourceTypeOptions - Liste des types de source pour le filtre des épithètes
  * @param {OptionType[]} props.agentActivityOptions - Liste des activités des agents pour le filtre des activités
  * @param {OptionType[]} props.agentStatusOptions - Liste des statuts des agents pour le filtre des activités
+ * @param {OptionType[]} props.agentivityOptions - Liste des statuts des agents pour le filtre des activités
  * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
  */
 const FilterComponent = ({
@@ -48,6 +49,7 @@ const FilterComponent = ({
 	sourceTypeOptions,
 	agentActivityOptions,
 	agentStatusOptions,
+	agentivityOptions,
 }: FilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
@@ -70,6 +72,7 @@ const FilterComponent = ({
 		setSourceTypeNames,
 		setAgentActivityNames,
 		setAgentStatusNames,
+		setAgentivityNames,
 		resetLanguageValues,
 	} = useMapFiltersStore(useShallow((state) => state));
 
@@ -79,6 +82,7 @@ const FilterComponent = ({
 	const [sourceTypeValues, setSourceTypeValues] = useState<string[]>([]);
 	const [agentActivityValues, setAgentActivityValues] = useState<string[]>([]);
 	const [agentStatusValues, setAgentStatusValues] = useState<string[]>([]);
+	const [agentivityValues, setAgentivityValues] = useState<string[]>([]);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -106,6 +110,7 @@ const FilterComponent = ({
 		setSourceTypeNames(sourceTypeValues);
 		setAgentActivityNames(agentActivityValues);
 		setAgentStatusNames(agentStatusValues);
+		setAgentivityNames(agentivityValues);
 		setLanguageValues({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,
@@ -125,6 +130,7 @@ const FilterComponent = ({
 		setSourceTypeValues([]);
 		setAgentActivityNames([]);
 		setAgentStatusNames([]);
+		setAgentivityNames([]);
 		resetLanguageValues();
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
@@ -222,6 +228,22 @@ const FilterComponent = ({
 										optionsArray={agentStatusOptions}
 										setValues={setAgentStatusValues}
 										userFilterId="agentStatusName"
+										placeholder={
+											translation[language].mapPage.aside.searchForAgentivity
+										}
+									/>
+								</div>
+							);
+						}
+						if (filter.filter.type === "agentivity") {
+							return (
+								<div className={style.filterContainer} key={filter.id}>
+									<h4>{translation[language].mapPage.aside.agentivity}</h4>
+									<MultiSelectFilterComponent
+										key={filter.id}
+										optionsArray={agentivityOptions}
+										setValues={setAgentivityValues}
+										userFilterId="agentivityName"
 										placeholder={
 											translation[language].mapPage.aside.searchForAgentStatus
 										}
