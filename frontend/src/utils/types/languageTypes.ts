@@ -97,6 +97,7 @@ type LanguageObject = {
 		onlyGreek: string;
 		withElements: string;
 		withStatus: string;
+		withAgentivities: string;
 		aside: {
 			filters: string;
 			sources: string;
@@ -110,6 +111,7 @@ type LanguageObject = {
 			agentActivity: string;
 			agentGender: string;
 			agentStatus: string;
+			agentivity: string;
 			male: string;
 			female: string;
 			nonbinary: string;
@@ -122,6 +124,7 @@ type LanguageObject = {
 			searchForSourceType: string;
 			searchForAgentActivity: string;
 			searchForAgentStatus: string;
+			searchForAgentivity: string;
 			searchForAgentName: string;
 			noSelectedMarker: string;
 			traduction: string;
@@ -238,6 +241,7 @@ type LanguageObject = {
 			agentNameFilter: { label: string; description: string };
 			agentGenderFilter: { label: string; description: string };
 			agentStatusFilter: { label: string; description: string };
+			agentivityFilter: { label: string; description: string };
 			noFilter: { label: string; description: string };
 			create: string;
 			edit: string;

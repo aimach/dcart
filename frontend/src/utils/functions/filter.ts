@@ -235,6 +235,15 @@ const getFilterLabel = (
 					translation[language as keyof TranslationType].backoffice.mapFormPage
 						.agentStatusFilter.description,
 			};
+		case "agentivity":
+			return {
+				label:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.agentivityFilter.label,
+				description:
+					translation[language as keyof TranslationType].backoffice.mapFormPage
+						.agentivityFilter.description,
+			};
 		default:
 			return {
 				label:
@@ -389,6 +398,7 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
  * @param {string[]} elementNames - Les noms des éléments sélectionnés
  * @param {Record<string, boolean>} languageValues - Un objet contenant les booléens des langues sélectionnées
  * @param {string[]} agentStatusNames - Un objet contenant la liste des statuts sélectionnés
+ * @param {string[]} agentivityNames - Un objet contenant la liste des agentivités sélectionnées
  * @param {TranslationType} translationObject - Les objets de traduction
  * @returns {Array} - Un tableau de strings
  */
@@ -398,6 +408,7 @@ const displayFiltersTags = (
 	elementNames: string[],
 	sourceTypeNames: string[],
 	agentStatusNames: string[],
+	agentivityNames: string[],
 	languageValues: Record<string, boolean>,
 	translationObject: LanguageObject,
 ) => {
@@ -445,6 +456,13 @@ const displayFiltersTags = (
 	if (agentStatusNames.length) {
 		stringArray.push(
 			`${translationObject.mapPage.withStatus} : ${agentStatusNames.join(", ")}`,
+		);
+	}
+
+	// affichage des agentivités
+	if (agentivityNames.length) {
+		stringArray.push(
+			`${translationObject.mapPage.withAgentivities} : ${agentivityNames.join(", ")}`,
 		);
 	}
 
@@ -689,6 +707,46 @@ const getAllAgentStatusFromPoints = (points: PointType[], language: string) => {
 };
 
 /**
+ * Fonction qui renvoie toutes les agentivités d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des agentivités
+ */
+const getAllAgentivityFromPoints = (points: PointType[], language: string) => {
+	const allAgentivity: Record<string, string>[] = [];
+	const agentivities = new Set<string>();
+
+	for (const point of points) {
+		for (const sources of point.sources) {
+			for (const attestations of sources.attestations) {
+				if (attestations.agents && attestations.agents.length > 0) {
+					for (const agent of attestations.agents) {
+						if (!agent.agentivites) continue;
+						for (const agentivity of agent.agentivites) {
+							const agentivityFr = agentivity.nom_fr;
+							const agentivityEn = agentivity.nom_en;
+							if (agentivities.has(agentivityFr)) continue;
+							agentivities.add(agentivityFr);
+							allAgentivity.push({
+								nom_fr: agentivityFr,
+								nom_en: agentivityEn,
+							});
+						}
+					}
+				}
+			}
+		}
+	}
+	// formattage des options pour le select
+	return allAgentivity
+		.map((agentivity) => ({
+			value: agentivity.nom_fr,
+			label: agentivity[`nom_${language}`],
+		}))
+		.sort((a, b) => a.label.localeCompare(b.label));
+};
+
+/**
  * Fonction qui renvoie un booléen pour savoir si le filtre est sélectionné dans la carte
  * @param mapInfos - les infos de la carte
  * @param filterName - le nom du filtre
@@ -725,4 +783,5 @@ export {
 	getAllAgentNameFromPoints,
 	isSelectedFilterInThisMap,
 	getAllAgentStatusFromPoints,
+	getAllAgentivityFromPoints,
 };

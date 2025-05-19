@@ -95,6 +95,7 @@
 		"onlyGreek": "uniquement en grec",
 		"withElements": "avec les éléments",
 		"withStatus": "avec les status",
+		"withAgentivities": "with les agentivités",
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",
@@ -109,6 +110,7 @@
 			"agentGender": "Genre de l'agent",
 			"agentName": "Nom de l'agent",
 			"agentStatus": "Statut de l'agent",
+			"agentivity": "Agentivité",
 			"timeLimits": "Bornes temporelles",
 			"male": "Masculin",
 			"female": "Féminin",
@@ -120,6 +122,7 @@
 			"searchForSourceType": "Rechercher un type de source...",
 			"searchForAgentActivity": "Rechercher une activité d'agent...",
 			"searchForAgentStatus": "Rechercher un statut d'agent...",
+			"searchForAgentivity": "Rechercher une agentivité...",
 			"searchForAgentName": "Rechercher un nom d'agent...",
 			"noSelectedMarker": "Sélectionner un point pour voir les détails",
 			"traduction": "Traduction",
@@ -272,7 +275,11 @@
 			},
 			"agentStatusFilter": {
 				"label": "Filtre du statut des agents",
-				"description": "DAffiche un select/options avec la liste des status des agents de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des status des agents de l'ensemble des attestations affichées"
+			},
+			"agentivityFilter": {
+				"label": "Filtre de l'agentivité",
+				"description": "Affiche un select/options avec la liste des agentivités de l'ensemble des attestations affichées"
 			},
 			"noFilter": {
 				"label": "Je ne souhaite pas ajouter de filtre",

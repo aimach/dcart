@@ -5,6 +5,10 @@ type AgentType = {
 			nom_fr: string;
 		},
 	];
+	agentivites: {
+		nom_en: string;
+		nom_fr: string;
+	}[];
 	activite_en: string;
 	activite_fr: string;
 	activite_id: string;

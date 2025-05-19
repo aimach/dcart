@@ -95,6 +95,7 @@
 		"onlyGreek": "only in greek",
 		"withElements": "with elements",
 		"withStatus": "with status",
+		"withAgentivities": "with agentivities",
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
@@ -109,6 +110,7 @@
 			"agentGender": "Agent gender",
 			"agentName": "Agent name",
 			"agentStatus": "Agent status",
+			"agentivity": "Agentivity",
 			"timeLimits": "Time limits",
 			"male": "Male",
 			"female": "Female",
@@ -120,6 +122,7 @@
 			"searchForSourceType": "Search for a source type...",
 			"searchForAgentActivity": "Search for an agent activity...",
 			"searchForAgentStatus": "Search for an agent status...",
+			"searchForAgentivity": "Search for an agentivity...",
 			"searchForAgentName": "Search for an agent name...",
 			"noSelectedMarker": "Select a marker to see details",
 			"traduction": "Traduction",
@@ -273,6 +276,10 @@
 			"agentStatusFilter": {
 				"label": "Agent status filter",
 				"description": "Displays a select/options element with the list of agent status from all displayed attestations"
+			},
+			"agentivityFilter": {
+				"label": "Agentivity filter",
+				"description": "Displays a select/options element with the list of agentivity from all displayed attestations"
 			},
 			"noFilter": {
 				"label": "I don't want to add a filter",
