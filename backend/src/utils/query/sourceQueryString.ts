@@ -270,20 +270,31 @@ sources_without_duplicate AS (
       'type_source_fr', json_agg(DISTINCT type_fr),
       'type_source_en', json_agg(DISTINCT type_en),
       'category_source_fr', json_agg(category_fr),
-      'category_source_en', json_agg(category_en)
+      'category_source_en', json_agg(category_en),
+      'material_fr', material_fr,
+		  'material_en', material_en
     ) as type_source,
 	  json_agg(DISTINCT attestations) AS sources
   FROM (
-    SELECT DISTINCT sources_with_attestations.source_id, sources_with_attestations.attestations, type_source.nom_fr AS type_fr, type_source.nom_en AS type_en, 
-	 categorie_source.nom_fr AS category_fr, categorie_source.nom_en AS category_en
+    SELECT DISTINCT 
+      sources_with_attestations.source_id, 
+      sources_with_attestations.attestations, 
+      type_source.nom_fr AS type_fr, 
+      type_source.nom_en AS type_en, 
+      categorie_source.nom_fr AS category_fr, 
+      categorie_source.nom_en AS category_en,
+      type_support.nom_fr AS material_fr,
+      type_support.nom_en AS material_en
     FROM sources_with_attestations
 	  LEFT JOIN source_type_source ON source_type_source.id_source = sources_with_attestations.source_id
   	LEFT JOIN type_source ON type_source.id = source_type_source.id_type_source 
     LEFT JOIN categorie_source ON categorie_source.id = type_source.categorie_source_id
+    LEFT JOIN source ON source.id = sources_with_attestations.source_id
+	  LEFT JOIN type_support ON type_support.id = source.type_support_id
     ${querySourceType}
   ) AS subquery
   JOIN source ON source.id = subquery.source_id
-  GROUP BY source.id
+  GROUP BY source.id, material_fr, material_en
 )
 
 -- on regroupe les sources par localité et on récupère les métadonnées
