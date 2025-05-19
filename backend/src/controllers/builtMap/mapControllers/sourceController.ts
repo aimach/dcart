@@ -17,6 +17,7 @@ import {
 	getQueryStringForAgentGender,
 	getQueryStringForAgentStatus,
 	getQueryStringForAgentivity,
+	getQueryStringForSourceMaterial,
 } from "../../../utils/query/filtersQueryString";
 import {
 	attestationMatchesLot,
@@ -49,6 +50,7 @@ export const sourceController = {
 				agentGender,
 				agentStatusName,
 				agentivityName,
+				sourceMaterialName,
 			} = req.body;
 
 			// on prépare la variable à renvoyer
@@ -132,6 +134,7 @@ export const sourceController = {
 				let queryAgentGender = "";
 				let queryAgentStatus = "";
 				let queryAgentivityName = "";
+				let querySourceMaterialName = "";
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (locationId) {
@@ -197,6 +200,13 @@ export const sourceController = {
 					queryAgentivityName = getQueryStringForAgentivity(agentivityName);
 				}
 
+				if (sourceMaterialName) {
+					querySourceMaterialName = getQueryStringForSourceMaterial(
+						sourceMaterialName,
+						querySourceType,
+					);
+				}
+
 				const { attestations } = mapInfos as MapContent;
 				results = await Promise.all(
 					attestations.map(async (attestation: Attestation) => {
@@ -211,6 +221,7 @@ export const sourceController = {
 							queryAgentGender,
 							queryAgentStatus,
 							queryAgentivityName,
+							querySourceMaterialName,
 						);
 
 						const queryResults = await mapDataSource.query(sqlQuery);
@@ -513,6 +524,7 @@ export const sourceController = {
 						"",
 						"",
 						"",
+						"",
 					);
 
 					const queryResults = await mapDataSource.query(sqlQuery);
@@ -549,6 +561,7 @@ export const sourceController = {
 			// on récupère le texte de la requête SQL
 			const sqlQuery = getSourcesQueryWithDetails(
 				attestationIds,
+				"",
 				"",
 				"",
 				"",
