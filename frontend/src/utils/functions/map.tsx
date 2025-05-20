@@ -385,12 +385,23 @@ const uploadMapImage = (
 ) => {
 	if (isMapReady) {
 		setMapIsDownloading(true);
+
+		// on cache le control zoom
 		const controlZoomElements = document.querySelectorAll(
 			".leaflet-control-zoom",
 		);
 		for (const element of controlZoomElements) {
 			element.style.display = "none";
 		}
+
+		// on cache les checkbox de la légende
+		const legendCheckboxs = document.querySelectorAll(
+			".leaflet-control-layers-selector",
+		);
+		for (const input of legendCheckboxs) {
+			input.style.display = "none";
+		}
+
 		const mapElement = document.getElementsByClassName(
 			"leaflet-container",
 		)[0] as HTMLElement; // le premier élément de la classe leaflet-container
@@ -405,8 +416,13 @@ const uploadMapImage = (
 				link.download = `carte-${slugify(mapInfos[`title_${language}`])}.png`;
 				link.click();
 				setMapIsDownloading(false);
+				// on remet le control zoom
 				for (const element of controlZoomElements) {
 					element.style.display = "block";
+				}
+				// on remet les checkbox de la légende
+				for (const checkbox of legendCheckboxs) {
+					checkbox.style.display = "inline-block";
 				}
 			},
 		);
