@@ -68,7 +68,7 @@ const ComparisonMapBlock = ({
 		comparisonMap.createPane("right");
 
 		const attribution =
-			'&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+			'dCART | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
 
 		const rightLayer = L.tileLayer(blockContent.content2_lang2, {
 			pane: "right",

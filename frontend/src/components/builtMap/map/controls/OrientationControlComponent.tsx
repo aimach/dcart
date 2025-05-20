@@ -6,7 +6,7 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import du type
 import type { Map as LeafletMap } from "leaflet";
 // import des images
-import northIcon from "../../../../assets/nord-icon.png";
+import northIcon from "../../../../assets/icon-nord.png";
 
 /**
  * Composant qui affiche une image d'indication du nord sur la carte

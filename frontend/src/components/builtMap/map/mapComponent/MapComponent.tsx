@@ -273,7 +273,7 @@ const MapComponent = () => {
 							<>
 								<TileLayer
 									opacity={0.6}
-									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+									attribution='dCART | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 									url={tileLayerURL}
 								/>
 								{!mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
