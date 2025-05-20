@@ -91,7 +91,6 @@ const AsideReducedMenuComponent = () => {
 					mapReady,
 					mapInfos as MapInfoType,
 					language,
-					map as LeafletMap,
 					setMapIsDownloading,
 				);
 			},

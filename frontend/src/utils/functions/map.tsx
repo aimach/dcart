@@ -380,7 +380,6 @@ const uploadMapImage = (
 	isMapReady: boolean,
 	mapInfos: MapInfoType,
 	language: Language,
-	map: LeafletMap,
 	setMapIsDownloading: (isDownloading: boolean) => void,
 ) => {
 	if (isMapReady) {
@@ -421,8 +420,10 @@ const uploadMapImage = (
 					element.style.display = "block";
 				}
 				// on remet les checkbox de la légende
-				for (const checkbox of legendCheckboxs) {
-					checkbox.style.display = "inline-block";
+				if (mapInfos.isLayered) {
+					for (const checkbox of legendCheckboxs) {
+						checkbox.style.display = "inline-block";
+					}
 				}
 			},
 		);
