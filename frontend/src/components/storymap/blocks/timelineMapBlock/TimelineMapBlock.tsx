@@ -33,7 +33,7 @@ const TimelineMapBlock = () => {
 				>
 					<TileLayer
 						url="https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png"
-						attribution="&copy; OpenStreetMap contributors"
+						attribution="dCART | &copy; OpenStreetMap contributors"
 					/>
 
 					<Marker position={timelineData[currentIndex].coords as LatLngTuple}>

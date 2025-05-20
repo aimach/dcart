@@ -41,6 +41,7 @@ import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 import MobileTutorialModalContent from "../../../common/modal/tutorial/MobileTutorialModalContent";
+import OrientationControl from "../controls/OrientationControlComponent";
 
 /**
  * Composant de la carte
@@ -73,6 +74,7 @@ const MapComponent = () => {
 		isTutorialOpen,
 		closeTutorial,
 		resetTutorialStep,
+		mapIsDownloading,
 	} = useMapStore(useShallow((state) => state));
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(useShallow((state) => state));
@@ -271,7 +273,7 @@ const MapComponent = () => {
 							<>
 								<TileLayer
 									opacity={0.6}
-									attribution='&copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+									attribution='dCART | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
 									url={tileLayerURL}
 								/>
 								{!mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
@@ -284,6 +286,7 @@ const MapComponent = () => {
 								)}
 								<ZoomControl position="bottomleft" />
 								<ScaleControl position="bottomleft" />
+								<OrientationControl />
 								{/* <ResetControl mapBounds={bounds} /> */}
 							</>
 						)}
