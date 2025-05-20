@@ -285,7 +285,7 @@ const MapComponent = () => {
 									/>
 								)}
 								<ZoomControl position="bottomleft" />
-								<ScaleControl position="bottomleft" />
+								<ScaleControl position="bottomright" />
 								<OrientationControl />
 								{/* <ResetControl mapBounds={bounds} /> */}
 							</>
