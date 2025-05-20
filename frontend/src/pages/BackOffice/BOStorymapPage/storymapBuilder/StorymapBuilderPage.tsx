@@ -46,6 +46,7 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import style from "./storymapBuilderPage.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
+import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
 
 /**
  * Page contenant un panel avec la liste des blocs de la storymap et des formulaires pour ajouter de nouveaux blocs
@@ -59,10 +60,7 @@ const StorymapBuilderPage = () => {
 
 	// récupération des données des stores
 	const { formType, updateFormType } = useBuilderStore(
-		useShallow((state) => ({
-			formType: state.formType,
-			updateFormType: state.updateFormType,
-		})),
+		useShallow((state) => state),
 	);
 	const { isDeleteModalOpen, closeDeleteModal } = useModalStore();
 
@@ -87,6 +85,9 @@ const StorymapBuilderPage = () => {
 			break;
 		case "link":
 			formComponent = <LinkForm />;
+			break;
+		case "itemLink":
+			formComponent = <ItemLinkForm />;
 			break;
 		case "quote":
 			formComponent = <QuoteForm />;

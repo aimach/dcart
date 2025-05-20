@@ -6,6 +6,7 @@ import type { blockType, parsedPointType } from "../types/formTypes";
 // import des icônes
 import {
 	Columns2,
+	ExternalLink,
 	GalleryVerticalEnd,
 	Heading1,
 	Heading2,
@@ -97,6 +98,8 @@ const getTypeIcon = (typeName: string) => {
 			return <LetterText />;
 		case "link":
 			return <Link />;
+		case "itemLink":
+			return <ExternalLink />;
 		case "image":
 			return <Image />;
 		case "quote":

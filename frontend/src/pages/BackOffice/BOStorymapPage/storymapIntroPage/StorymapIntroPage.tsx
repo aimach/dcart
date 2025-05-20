@@ -48,6 +48,7 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import style from "./storymapIntroPage.module.scss";
 // import des icônes
 import { ChevronRightCircle } from "lucide-react";
+import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
 
 /**
  * Page d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.
@@ -101,6 +102,9 @@ const StorymapIntroPage = () => {
 			break;
 		case "link":
 			formComponent = <LinkForm />;
+			break;
+		case "itemLink":
+			formComponent = <ItemLinkForm />;
 			break;
 		case "quote":
 			formComponent = <QuoteForm />;

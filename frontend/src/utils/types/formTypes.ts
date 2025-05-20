@@ -47,6 +47,7 @@ type FormType =
 	| "subtitle"
 	| "text"
 	| "link"
+	| "itemLink"
 	| "image"
 	| "quote"
 	| "layout"

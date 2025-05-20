@@ -264,6 +264,7 @@ type LanguageObject = {
 				text: string;
 				image: string;
 				link: string;
+				itemLink: string;
 				quote: string;
 				layout: string;
 				simple_map: string;

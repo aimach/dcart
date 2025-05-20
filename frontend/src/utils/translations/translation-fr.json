@@ -310,6 +310,7 @@
 				"text": "Texte",
 				"image": "Image",
 				"link": "Lien",
+				"itemLink": "Lien carte ou storymap",
 				"quote": "Citation",
 				"layout": "Texte et image",
 				"simple_map": "Carte simple",

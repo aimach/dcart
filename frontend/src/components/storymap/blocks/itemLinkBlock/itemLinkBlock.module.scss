@@ -1,0 +1,10 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.linkBlock {
+    background-color: v.$color-grullo-light;
+    font-size: v.$font-size-xl;
+    padding: v.$space-l;
+    border-radius: v.$border-radius-base;
+    cursor: pointer;
+}

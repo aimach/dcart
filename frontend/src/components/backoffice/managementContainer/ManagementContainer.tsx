@@ -46,7 +46,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 			setAllMapsInfos(maps);
 		};
 		const fetchAllStorymapsInfos = async () => {
-			const storymaps = await getAllStorymapsInfos();
+			const storymaps = await getAllStorymapsInfos(false);
 			setAllStorymapsInfos(storymaps);
 		};
 		if (type === "map") {

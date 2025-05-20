@@ -309,6 +309,7 @@
 				"text": "Text",
 				"image": "Image",
 				"link": "Link",
+				"itemLink": "Link to map or storymap",
 				"quote": "Quote",
 				"layout": "Text and image",
 				"simple_map": "Simple map",
