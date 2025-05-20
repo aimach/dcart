@@ -16,6 +16,7 @@ import TitleBlock from "../../../../components/storymap/blocks/titleBlock/TitleB
 import SimpleMapBlock from "../../../../components/storymap/blocks/simpleMapBlock/SimpleMapBlock";
 import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
 import ButtonComponent from "../../../../components/common/button/ButtonComponent";
+import ItemLinkBlock from "../../../../components/storymap/blocks/itemLinkBlock/ItemLinkBlock";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -49,6 +50,8 @@ export const getBlockComponentFromType = (
 			return <ImageBlock key={key} blockContent={block} />;
 		case "link":
 			return <LinkBlock key={key} blockContent={block} />;
+		case "itemLink":
+			return <ItemLinkBlock key={key} blockContent={block} />;
 		case "separator":
 			return <SeparatorBlock key={key} />;
 		case "quote":
