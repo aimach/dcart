@@ -63,8 +63,7 @@ if (rootElement) {
 										/>
 									</Route>
 
-									{/* <Route path="backoffice" element={<ProtectedLayout />}> */}
-									<Route path="backoffice" element={<NavigationLayout />}>
+									<Route path="backoffice" element={<ProtectedLayout />}>
 										<Route index element={<BOHomePage />} />
 										<Route path="maps">
 											<Route index element={<BackofficeMapPage />} />

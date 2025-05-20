@@ -1,9 +1,14 @@
 // import des bibliothèques
-import Select, { SingleValue } from "react-select";
+import { useEffect, useState } from "react";
+import Select from "react-select";
+import { useForm } from "react-hook-form";
 import { useParams, useSearchParams } from "react-router";
 // import des composants
 import FormTitleComponent from "../common/FormTitleComponent";
-// import du context
+import LabelComponent from "../../inputComponent/LabelComponent";
+import ButtonComponent from "../../../common/button/ButtonComponent";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
@@ -11,28 +16,23 @@ import {
 	createBlock,
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
-// import des types
-import { set, useForm, type SubmitHandler } from "react-hook-form";
-import type { allInputsType } from "../../../../utils/types/formTypes";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
-// import du style
-import style from "../commonForm/commonForm.module.scss";
-import LabelComponent from "../../inputComponent/LabelComponent";
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
-import MultiSelectComponent from "../../../common/multiSelect/MultiSelectComponent";
-import { useEffect, useState } from "react";
-import type { MapType } from "../../../../utils/types/mapTypes";
-import type { StorymapType } from "../../../../utils/types/storymapTypes";
 import {
 	getAllMapsInfos,
 	getAllStorymapsInfos,
 } from "../../../../utils/api/builtMap/getRequests";
-import ButtonComponent from "../../../common/button/ButtonComponent";
+// import des types
+import type { SubmitHandler } from "react-hook-form";
+import type { MapType } from "../../../../utils/types/mapTypes";
+import type { StorymapType } from "../../../../utils/types/storymapTypes";
+import type { OptionType } from "../../../../utils/types/commonTypes";
+// import du style
+import style from "../commonForm/commonForm.module.scss";
+// import des icônes
 import { ChevronLeft, ChevronRight } from "lucide-react";
-import { OptionType } from "../../../../utils/types/commonTypes";
 
 export type ItemLinkFormInputs = {
 	content1_lang1: string;
@@ -73,20 +73,17 @@ const ItemLinkForm = () => {
 				{
 					...block,
 					...data,
-					content1_lang2: data.content1_lang1,
 					storymapId: storymapId,
-					typeName: "link",
+					typeName: "itemLink",
 				},
 				block?.id.toString() as string,
 			);
-			notifyEditSuccess("Bloc lien", false);
+			notifyEditSuccess("Bloc lien de carte ou storymap", false);
 		}
 		setReload(!reload);
 		updateFormType("blockChoice");
 		setSearchParams(undefined);
 	};
-
-	const [selectedType, setSelectedType] = useState("map");
 
 	const [activeMaps, setActiveMaps] = useState<OptionType[]>([]);
 	const [activeStorymaps, setActiveStorymaps] = useState<OptionType[]>([]);
@@ -99,7 +96,9 @@ const ItemLinkForm = () => {
 				value: map.id,
 			}));
 			setActiveMaps(formatedMap);
-			setItemOptions(formatedMap);
+			if (!block || block?.content1_lang1 === "map") {
+				setItemOptions(formatedMap);
+			}
 		};
 		const fetchStorymapInfos = async () => {
 			const activeStorymaps = await getAllStorymapsInfos(true);
@@ -110,117 +109,125 @@ const ItemLinkForm = () => {
 				}),
 			);
 			setActiveStorymaps(formatedStorymap);
+			if (block?.content1_lang1 === "storymap") {
+				setItemOptions(formatedStorymap);
+			}
 		};
 		fetchMapInfos();
 		fetchStorymapInfos();
-	}, [language]);
+	}, [language, block]);
 
 	// import des sevice de formulaire
-	const {
-		control,
-		register,
-		handleSubmit,
-		setValue,
-		formState: { errors },
-		watch,
-	} = useForm<allInputsType>({
+	const { handleSubmit, setValue, watch } = useForm<ItemLinkFormInputs>({
 		defaultValues: {
 			content1_lang1: block?.content1_lang1 ?? "map",
-			content1_lang2: block?.content1_lang2 ?? "",
 		},
 	});
+	const [selectedItem, setSelectedItem] = useState<OptionType | null>(null);
+	useEffect(() => {
+		if (block?.content1_lang2) {
+			const selectedOption =
+				itemOptions.find((option) => option.value === block?.content1_lang2) ??
+				null;
+			setSelectedItem(selectedOption);
+		}
+	}, [block?.content1_lang2, itemOptions]);
+
+	const isEditFormReady = action === "edit" && selectedItem;
 
 	return (
-		<>
-			<FormTitleComponent action={action as string} translationKey="itemLink" />
-			<form
-				onSubmit={handleSubmit(onSubmit)}
-				className={style.commonFormContainer}
-			>
-				<div className={style.commonFormInputContainer}>
-					<LabelComponent
-						label="Type de contenu"
-						description="Choisir entre une carte ou un storymap"
-						htmlFor="content1_lang1"
-					/>
-					<div className={style.inputContainer}>
-						<div>
-							<input
-								type="radio"
-								id="content1_lang1"
-								name="itemType"
-								value="map"
-								checked={selectedType === "map"}
-								onChange={() => {
-									setSelectedType("map");
-									setItemOptions(activeMaps);
-									setValue("content1_lang1", "map");
-								}}
-							/>
-							<label htmlFor="content1_lang1">
-								{translation[language].common.map}
-							</label>
-						</div>
-						<div>
-							<input
-								type="radio"
-								id="content1_lang1"
-								name="itemType"
-								value="storymap"
-								checked={selectedType === "storymap"}
-								onChange={() => {
-									setSelectedType("storymap");
-									setItemOptions(activeStorymaps);
-									setValue("content1_lang1", "storymap");
-								}}
-							/>
-							<label htmlFor="content1_lang1">
-								{translation[language].common.storymap}
-							</label>
+		(action === "create" || isEditFormReady) && (
+			<>
+				<FormTitleComponent
+					action={action as string}
+					translationKey="itemLink"
+				/>
+				<form
+					onSubmit={handleSubmit(onSubmit)}
+					className={style.commonFormContainer}
+				>
+					<div className={style.commonFormInputContainer}>
+						<LabelComponent
+							label="Type de contenu"
+							description="Choisir entre une carte ou un storymap"
+							htmlFor="content1_lang1"
+						/>
+						<div className={style.inputContainer}>
+							<div>
+								<input
+									type="radio"
+									id="content1_lang1"
+									name="itemType"
+									value="map"
+									checked={watch("content1_lang1") === "map"}
+									onChange={() => {
+										setItemOptions(activeMaps);
+										setValue("content1_lang1", "map");
+									}}
+								/>
+								<label htmlFor="content1_lang1">
+									{translation[language].common.map}
+								</label>
+							</div>
+							<div>
+								<input
+									type="radio"
+									id="content1_lang1"
+									name="itemType"
+									value="storymap"
+									checked={watch("content1_lang1") === "storymap"}
+									onChange={() => {
+										setItemOptions(activeStorymaps);
+										setValue("content1_lang1", "storymap");
+									}}
+								/>
+								<label htmlFor="content1_lang1">
+									{translation[language].common.storymap}
+								</label>
+							</div>
 						</div>
 					</div>
-				</div>
-				<div className={style.commonFormInputContainer}>
-					<LabelComponent
-						label="Contenu à afficher"
-						description="Sélectionner dans la liste déroulante (seuls les éléments déjà publiés sont affichés)"
-						htmlFor="content1_lang2"
-					/>
-					<div className={style.inputContainer}>
-						<Select
-							options={itemOptions}
-							placeholder="Sélectionner un élément"
-							onChange={(newValue) =>
-								setValue("content1_lang2", newValue?.value as string)
+					<div className={style.commonFormInputContainer}>
+						<LabelComponent
+							label="Contenu à afficher"
+							description="Sélectionner dans la liste déroulante (seuls les éléments déjà publiés sont affichés)"
+							htmlFor="content1_lang2"
+						/>
+						<div className={style.inputContainer}>
+							<Select
+								options={itemOptions}
+								placeholder="Sélectionner un élément"
+								onChange={(newValue) =>
+									setValue("content1_lang2", newValue?.value as string)
+								}
+								blurInputOnSelect
+								defaultValue={selectedItem}
+							/>
+						</div>
+					</div>
+					<div className={style.commonFormContainerButton}>
+						<ButtonComponent
+							type="button"
+							color="brown"
+							textContent={translation[language].common.back}
+							onClickFunction={() => {
+								updateFormType("blockChoice");
+								setSearchParams(undefined);
+							}}
+							icon={<ChevronLeft />}
+						/>
+						<ButtonComponent
+							type="submit"
+							color="brown"
+							textContent={
+								translation[language].backoffice.storymapFormPage.form[action]
 							}
-							blurInputOnSelect
+							icon={<ChevronRight />}
 						/>
 					</div>
-				</div>
-				<div className={style.commonFormContainerButton}>
-					<ButtonComponent
-						type="button"
-						color="brown"
-						textContent={translation[language].common.back}
-						onClickFunction={() => {
-							updateFormType("blockChoice");
-							setSearchParams(undefined);
-						}}
-						icon={<ChevronLeft />}
-					/>
-					<ButtonComponent
-						type="submit"
-						color="brown"
-						textContent={
-							action === "create"
-								? translation[language].backoffice.storymapFormPage.form.create
-								: translation[language].backoffice.storymapFormPage.form.edit
-						}
-						icon={<ChevronRight />}
-					/>
-				</div>
-			</form>
-		</>
+				</form>
+			</>
+		)
 	);
 };
 
