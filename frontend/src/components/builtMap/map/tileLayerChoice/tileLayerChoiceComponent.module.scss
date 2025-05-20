@@ -13,6 +13,7 @@
     height: 50px;
     cursor: pointer;
     transition: transform 0.2s;
+    border-radius: v.$border-radius-rounded;
 
     >img {
         width: 100%;
@@ -24,4 +25,8 @@
     &:hover {
         transform: scale(1.1);
     }
+}
+
+.selected {
+    border: v.$border-width-m solid v.$color-umber;
 }
