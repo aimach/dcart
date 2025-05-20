@@ -1,4 +1,5 @@
 // import des bibliothèques
+import Select, { SingleValue } from "react-select";
 import { useParams, useSearchParams } from "react-router";
 // import des composants
 import FormTitleComponent from "../common/FormTitleComponent";
@@ -11,7 +12,7 @@ import {
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
 // import des types
-import { set, type SubmitHandler } from "react-hook-form";
+import { set, useForm, type SubmitHandler } from "react-hook-form";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 import {
 	notifyCreateSuccess,
@@ -29,9 +30,13 @@ import {
 	getAllMapsInfos,
 	getAllStorymapsInfos,
 } from "../../../../utils/api/builtMap/getRequests";
+import ButtonComponent from "../../../common/button/ButtonComponent";
+import { ChevronLeft, ChevronRight } from "lucide-react";
+import { OptionType } from "../../../../utils/types/commonTypes";
 
 export type ItemLinkFormInputs = {
 	content1_lang1: string;
+	content1_lang2: string;
 };
 
 /**
@@ -55,40 +60,37 @@ const ItemLinkForm = () => {
 	const { storymapId } = useParams();
 
 	// fonction appelée lors de la soumission du formulaire
-	// const onSubmit: SubmitHandler<ItemLinkFormInputs> = async (data) => {
-	// 	if (action === "create") {
-	// 		await createBlock({
-	// 			...data,
-	// 			content1_lang2: data.content1_lang1,
-	// 			storymapId: storymapId,
-	// 			typeName: "link",
-	// 		});
-	// 		notifyCreateSuccess("Bloc lien", false);
-	// 	} else if (action === "edit") {
-	// 		await updateBlock(
-	// 			{
-	// 				...block,
-	// 				...data,
-	// 				content1_lang2: data.content1_lang1,
-	// 				storymapId: storymapId,
-	// 				typeName: "link",
-	// 			},
-	// 			block?.id.toString() as string,
-	// 		);
-	// 		notifyEditSuccess("Bloc lien", false);
-	// 	}
-	// 	setReload(!reload);
-	// 	updateFormType("blockChoice");
-	// 	setSearchParams(undefined);
-	// };
+	const onSubmit: SubmitHandler<ItemLinkFormInputs> = async (data) => {
+		if (action === "create") {
+			await createBlock({
+				...data,
+				storymapId: storymapId,
+				typeName: "itemLink",
+			});
+			notifyCreateSuccess("Bloc lien de carte ou storymap", false);
+		} else if (action === "edit") {
+			await updateBlock(
+				{
+					...block,
+					...data,
+					content1_lang2: data.content1_lang1,
+					storymapId: storymapId,
+					typeName: "link",
+				},
+				block?.id.toString() as string,
+			);
+			notifyEditSuccess("Bloc lien", false);
+		}
+		setReload(!reload);
+		updateFormType("blockChoice");
+		setSearchParams(undefined);
+	};
 
 	const [selectedType, setSelectedType] = useState("map");
 
-	const [activeMaps, setActiveMaps] = useState<MapType[]>([]);
-	const [activeStorymaps, setActiveStorymaps] = useState<StorymapType[]>([]);
-	const [itemOptions, setItemOptions] = useState<MapType[] | StorymapType[]>(
-		[] as MapType[] | StorymapType[],
-	);
+	const [activeMaps, setActiveMaps] = useState<OptionType[]>([]);
+	const [activeStorymaps, setActiveStorymaps] = useState<OptionType[]>([]);
+	const [itemOptions, setItemOptions] = useState<OptionType[]>([]);
 	useEffect(() => {
 		const fetchMapInfos = async () => {
 			const activeMaps = await getAllMapsInfos(true);
@@ -97,6 +99,7 @@ const ItemLinkForm = () => {
 				value: map.id,
 			}));
 			setActiveMaps(formatedMap);
+			setItemOptions(formatedMap);
 		};
 		const fetchStorymapInfos = async () => {
 			const activeStorymaps = await getAllStorymapsInfos(true);
@@ -112,11 +115,26 @@ const ItemLinkForm = () => {
 		fetchStorymapInfos();
 	}, [language]);
 
+	// import des sevice de formulaire
+	const {
+		control,
+		register,
+		handleSubmit,
+		setValue,
+		formState: { errors },
+		watch,
+	} = useForm<allInputsType>({
+		defaultValues: {
+			content1_lang1: block?.content1_lang1 ?? "map",
+			content1_lang2: block?.content1_lang2 ?? "",
+		},
+	});
+
 	return (
 		<>
 			<FormTitleComponent action={action as string} translationKey="itemLink" />
 			<form
-				// onSubmit={handleSubmit(onSubmit)}
+				onSubmit={handleSubmit(onSubmit)}
 				className={style.commonFormContainer}
 			>
 				<div className={style.commonFormInputContainer}>
@@ -136,6 +154,7 @@ const ItemLinkForm = () => {
 								onChange={() => {
 									setSelectedType("map");
 									setItemOptions(activeMaps);
+									setValue("content1_lang1", "map");
 								}}
 							/>
 							<label htmlFor="content1_lang1">
@@ -152,6 +171,7 @@ const ItemLinkForm = () => {
 								onChange={() => {
 									setSelectedType("storymap");
 									setItemOptions(activeStorymaps);
+									setValue("content1_lang1", "storymap");
 								}}
 							/>
 							<label htmlFor="content1_lang1">
@@ -167,13 +187,37 @@ const ItemLinkForm = () => {
 						htmlFor="content1_lang2"
 					/>
 					<div className={style.inputContainer}>
-						<MultiSelectComponent
+						<Select
 							options={itemOptions}
-							selectKey=""
-							placeholder="Sélectionner..."
-							handleChange={() => console.log("coucou")}
+							placeholder="Sélectionner un élément"
+							onChange={(newValue) =>
+								setValue("content1_lang2", newValue?.value as string)
+							}
+							blurInputOnSelect
 						/>
 					</div>
+				</div>
+				<div className={style.commonFormContainerButton}>
+					<ButtonComponent
+						type="button"
+						color="brown"
+						textContent={translation[language].common.back}
+						onClickFunction={() => {
+							updateFormType("blockChoice");
+							setSearchParams(undefined);
+						}}
+						icon={<ChevronLeft />}
+					/>
+					<ButtonComponent
+						type="submit"
+						color="brown"
+						textContent={
+							action === "create"
+								? translation[language].backoffice.storymapFormPage.form.create
+								: translation[language].backoffice.storymapFormPage.form.edit
+						}
+						icon={<ChevronRight />}
+					/>
 				</div>
 			</form>
 		</>
