@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useState, useContext, useEffect } from "react";
-import { Link, useLocation, useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import {
 	DndContext,
 	PointerSensor,
@@ -32,6 +32,7 @@ import DeleteBlockModalContent from "../../../../components/common/modal/DeleteB
 import TableForm from "../../../../components/form/storymapForm/tableForm/TableForm";
 import BlockChoiceForm from "../../../../components/form/storymapForm/blockChoiceForm/BlockChoiceForm";
 import ButtonComponent from "../../../../components/common/button/ButtonComponent";
+import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
 // import du context
 import { SessionContext } from "../../../../context/SessionContext";
 // import des custom hooks
@@ -48,7 +49,6 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import style from "./storymapIntroPage.module.scss";
 // import des icônes
 import { ChevronRightCircle } from "lucide-react";
-import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
 
 /**
  * Page d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.

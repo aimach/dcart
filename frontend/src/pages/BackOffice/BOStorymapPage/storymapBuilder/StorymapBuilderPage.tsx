@@ -30,6 +30,7 @@ import ModalComponent from "../../../../components/common/modal/ModalComponent";
 import DeleteBlockModalContent from "../../../../components/common/modal/DeleteBlockModalContent";
 import TableForm from "../../../../components/form/storymapForm/tableForm/TableForm";
 import StayConnectedContent from "../../../../components/common/modal/StayConnectedContent";
+import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des contextes
@@ -46,7 +47,6 @@ import type { DragEndEvent } from "@dnd-kit/core";
 import style from "./storymapBuilderPage.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
-import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
 
 /**
  * Page contenant un panel avec la liste des blocs de la storymap et des formulaires pour ajouter de nouveaux blocs

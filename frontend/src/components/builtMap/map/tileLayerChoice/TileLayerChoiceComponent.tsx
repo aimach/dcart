@@ -1,7 +1,6 @@
 // import des services
 import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-// import des types
 // import du style
 import style from "./tileLayerChoiceComponent.module.scss";
 

@@ -13,7 +13,8 @@ import type {
 import type { MapType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./itemLinkBlock.module.scss";
-import { BookOpenText, ExternalLink, MapPin } from "lucide-react";
+// import des icônes
+import { BookOpenText, MapPin } from "lucide-react";
 
 interface ItemLinkBlockProps {
 	blockContent: BlockContentType;
