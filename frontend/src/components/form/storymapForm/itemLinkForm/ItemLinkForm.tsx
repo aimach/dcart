@@ -128,7 +128,7 @@ const ItemLinkForm = () => {
 		if (block?.content1_lang2) {
 			const selectedOption =
 				itemOptions.find((option) => option.value === block?.content1_lang2) ??
-				null;
+				itemOptions[0];
 			setSelectedItem(selectedOption);
 		}
 	}, [block?.content1_lang2, itemOptions]);
@@ -163,6 +163,9 @@ const ItemLinkForm = () => {
 									onChange={() => {
 										setItemOptions(activeMaps);
 										setValue("content1_lang1", "map");
+										if (action === "edit") {
+											setSelectedItem(activeMaps[0]);
+										}
 									}}
 								/>
 								<label htmlFor="content1_lang1">
@@ -179,6 +182,9 @@ const ItemLinkForm = () => {
 									onChange={() => {
 										setItemOptions(activeStorymaps);
 										setValue("content1_lang1", "storymap");
+										if (action === "edit") {
+											setSelectedItem(activeStorymaps[0]);
+										}
 									}}
 								/>
 								<label htmlFor="content1_lang1">
