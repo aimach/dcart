@@ -30,6 +30,7 @@ import ModalComponent from "../../../../components/common/modal/ModalComponent";
 import DeleteBlockModalContent from "../../../../components/common/modal/DeleteBlockModalContent";
 import TableForm from "../../../../components/form/storymapForm/tableForm/TableForm";
 import StayConnectedContent from "../../../../components/common/modal/StayConnectedContent";
+import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des contextes
@@ -59,10 +60,7 @@ const StorymapBuilderPage = () => {
 
 	// récupération des données des stores
 	const { formType, updateFormType } = useBuilderStore(
-		useShallow((state) => ({
-			formType: state.formType,
-			updateFormType: state.updateFormType,
-		})),
+		useShallow((state) => state),
 	);
 	const { isDeleteModalOpen, closeDeleteModal } = useModalStore();
 
@@ -87,6 +85,9 @@ const StorymapBuilderPage = () => {
 			break;
 		case "link":
 			formComponent = <LinkForm />;
+			break;
+		case "itemLink":
+			formComponent = <ItemLinkForm />;
 			break;
 		case "quote":
 			formComponent = <QuoteForm />;

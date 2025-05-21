@@ -65,7 +65,9 @@ const BlockChoiceForm = () => {
 			allBlockTypes
 				.filter(
 					(blockType) =>
-						blockType.name === "link" || blockType.name === "image",
+						blockType.name === "link" ||
+						blockType.name === "itemLink" ||
+						blockType.name === "image",
 				)
 				.map((blockType: TypeType) => (
 					<BlockChoiceItem key={blockType.id} blockType={blockType} />

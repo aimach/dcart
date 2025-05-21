@@ -20,6 +20,8 @@ import SimpleLayerComponent from "../simpleLayerComponent/SimpleLayerComponent";
 import MultipleLayerComponent from "../multipleLayerComponent/MultipleLayerComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import TutorialModalContent from "../../../common/modal/tutorial/TutorialModalContent";
+import MobileTutorialModalContent from "../../../common/modal/tutorial/MobileTutorialModalContent";
+import OrientationControl from "../controls/OrientationControlComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -33,15 +35,13 @@ import {
 	getOneMapInfosById,
 	getOneMapInfosBySlug,
 } from "../../../../utils/api/builtMap/getRequests";
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des types
 import type { LatLngTuple } from "leaflet";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
-import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
-import MobileTutorialModalContent from "../../../common/modal/tutorial/MobileTutorialModalContent";
-import OrientationControl from "../controls/OrientationControlComponent";
 
 /**
  * Composant de la carte
@@ -285,7 +285,7 @@ const MapComponent = () => {
 									/>
 								)}
 								<ZoomControl position="bottomleft" />
-								<ScaleControl position="bottomleft" />
+								<ScaleControl position="bottomright" />
 								<OrientationControl />
 								{/* <ResetControl mapBounds={bounds} /> */}
 							</>

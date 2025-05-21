@@ -13,6 +13,7 @@ type StorymapType = {
 	publishedAt: string;
 	lang1: { name: string; id: string };
 	lang2: { name: string; id: string };
+	slug: string;
 	createdAt: string;
 	updatedAt: string;
 	uploadPointsLastDate: string;

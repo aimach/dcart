@@ -1,10 +1,6 @@
-// import des bibliothèques
-// import des composants
-// import du context
 // import des services
 import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-// import des types
 // import du style
 import style from "./tileLayerChoiceComponent.module.scss";
 
@@ -35,42 +31,33 @@ const TileLayerChoiceComponent = () => {
 			url: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 			urlMini: `https://${s}.tile.openstreetmap.org/${z}/${x}/${y}.png`,
 		},
-		{
-			name: "Stamen Toner Background",
-			url: "https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}{r}.png",
-			urlMini: `https://tiles.stadiamaps.com/tiles/stamen_toner_background/${z}/${x}/${y}.png`,
-		},
-		{
-			name: "Stamen Watercolor",
-			url: "https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.png",
-			urlMini: `https://tiles.stadiamaps.com/tiles/stamen_watercolor/${z}/${x}/${y}.png`,
-		},
 	];
 
 	// récuépration des données du store
-	const { setTileLayerURL } = useMapStore(
-		useShallow((state) => ({
-			tileLayerURL: state.tileLayerURL,
-			setTileLayerURL: state.setTileLayerURL,
-		})),
+	const { tileLayerURL, setTileLayerURL } = useMapStore(
+		useShallow((state) => state),
 	);
 
 	return (
 		<div className={style.tileLayerChoiceContainer}>
-			{tileLayers.map((tileLayer) => (
-				<div
-					key={tileLayer.name}
-					className={style.tileLayerChoice}
-					onClick={() => setTileLayerURL(tileLayer.url)}
-					onKeyUp={() => setTileLayerURL(tileLayer.url)}
-				>
-					<img
-						src={tileLayer.urlMini}
-						alt={tileLayer.name}
-						title={tileLayer.name}
-					/>
-				</div>
-			))}
+			{tileLayers.map((tileLayer) => {
+				const isSelected = tileLayerURL === tileLayer.url;
+				return (
+					<button
+						key={tileLayer.name}
+						type="button"
+						className={`${style.tileLayerChoice} ${isSelected ? style.selected : ""}`}
+						onClick={() => setTileLayerURL(tileLayer.url)}
+						onKeyUp={() => setTileLayerURL(tileLayer.url)}
+					>
+						<img
+							src={tileLayer.urlMini}
+							alt={tileLayer.name}
+							title={tileLayer.name}
+						/>
+					</button>
+				);
+			})}
 		</div>
 	);
 };

@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useState, useContext, useEffect } from "react";
-import { Link, useLocation, useParams } from "react-router";
+import { useLocation, useParams } from "react-router";
 import {
 	DndContext,
 	PointerSensor,
@@ -32,6 +32,7 @@ import DeleteBlockModalContent from "../../../../components/common/modal/DeleteB
 import TableForm from "../../../../components/form/storymapForm/tableForm/TableForm";
 import BlockChoiceForm from "../../../../components/form/storymapForm/blockChoiceForm/BlockChoiceForm";
 import ButtonComponent from "../../../../components/common/button/ButtonComponent";
+import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
 // import du context
 import { SessionContext } from "../../../../context/SessionContext";
 // import des custom hooks
@@ -101,6 +102,9 @@ const StorymapIntroPage = () => {
 			break;
 		case "link":
 			formComponent = <LinkForm />;
+			break;
+		case "itemLink":
+			formComponent = <ItemLinkForm />;
 			break;
 		case "quote":
 			formComponent = <QuoteForm />;

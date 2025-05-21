@@ -1,0 +1,29 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.itemLinkBlock {
+    width: 300px;
+    height: 100px;
+    border: v.$border-width-m solid v.$color-grullo;
+    box-shadow: 0 2px 10px rgba(0, 0, 0, 0.3);
+    @include m.flexbox(flex, row, nowrap, flex-start, center);
+    border-radius: v.$border-radius-base;
+    cursor: pointer;
+    margin: v.$space-s;
+
+
+    .linkText {
+        padding: v.$space-s;
+        font-size: v.$font-size-l;
+        position: relative;
+        width: 100%;
+    }
+
+    .itemIcon {
+        position: absolute;
+        width: 35px;
+        height: 35px;
+        right: 0;
+        top: 0;
+    }
+}

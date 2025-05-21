@@ -104,6 +104,7 @@ type MapType = {
 	divinityOperator: string;
 	locationType: string;
 	locationId: number;
+	slug: string;
 	ante: number;
 	post: number;
 	isActive: boolean;

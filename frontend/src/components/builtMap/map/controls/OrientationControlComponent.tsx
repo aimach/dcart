@@ -16,7 +16,7 @@ const OrientationControl = () => {
 	const map = useMapStore((state) => state.map);
 
 	useEffect(() => {
-		const control = L.control({ position: "topleft" });
+		const control = L.control({ position: "bottomright" });
 
 		// Contenu HTML du bouton
 		control.onAdd = () => {

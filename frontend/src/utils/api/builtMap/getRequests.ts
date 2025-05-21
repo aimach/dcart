@@ -200,9 +200,11 @@ const getAllPointsForDemoMap = async (attestationIds: string) => {
  * Récupère les informations de toutes les cartes qui sont actives
  * @returns {Promise} - Toutes les informations des cartes actives
  */
-const getAllStorymapsInfos = async () => {
+const getAllStorymapsInfos = async (isActive: boolean) => {
 	try {
-		const response = await apiClient.get("/storymap/storymap/id/all");
+		let url = "/storymap/storymap/id/all";
+		if (isActive) url += "?isActive=true";
+		const response = await apiClient.get(url);
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des cartes :", error);
