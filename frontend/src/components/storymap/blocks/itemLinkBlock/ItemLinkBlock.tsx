@@ -1,5 +1,7 @@
-// import des custom hooks
+// import des bibliothèques
 import { useEffect, useState } from "react";
+import { Link } from "react-router";
+// import des services
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 import { getStorymapInfosAndBlocksById } from "../../../../utils/api/storymap/getRequests";
@@ -10,7 +12,8 @@ import type {
 } from "../../../../utils/types/storymapTypes";
 import type { MapType } from "../../../../utils/types/mapTypes";
 // import du style
-import style from "./itemlinkBlock.module.scss";
+import style from "./itemLinkBlock.module.scss";
+import { BookOpenText, ExternalLink, MapPin } from "lucide-react";
 
 interface ItemLinkBlockProps {
 	blockContent: BlockContentType;
@@ -42,15 +45,38 @@ const ItemLinkBlock = ({ blockContent }: ItemLinkBlockProps) => {
 		fetchItemInfos();
 	}, [blockContent]);
 
+	const isMap = blockContent.content1_lang1 === "map";
+
 	return (
-		<a
-			href={blockContent[`content2_${selectedLanguage}`]}
-			target="_blank"
-			rel="noopener noreferrer"
-			className={style.linkBlock}
-		>
-			{blockContent[`content1_${selectedLanguage}`]}
-		</a>
+		itemInfos && (
+			<Link
+				to={`/${blockContent.content1_lang1}/${itemInfos.slug}`}
+				target="_blank"
+				rel="noopener noreferrer"
+			>
+				<div className={style.itemLinkBlock}>
+					{itemInfos.image_url && (
+						<div
+							style={{
+								backgroundImage: `url(${itemInfos.image_url})`,
+								backgroundSize: "cover",
+								backgroundPosition: "center",
+								width: "100px",
+								height: "100px",
+							}}
+						/>
+					)}
+					<div className={style.linkText}>
+						<div className={style.itemIcon}>
+							{isMap ? <MapPin /> : <BookOpenText />}
+						</div>
+						{isMap
+							? itemInfos[`title_fr`]
+							: itemInfos[`title_${selectedLanguage}`]}
+					</div>
+				</div>
+			</Link>
+		)
 	);
 };
 
