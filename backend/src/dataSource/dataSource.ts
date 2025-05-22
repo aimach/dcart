@@ -12,8 +12,9 @@ export const dcartDataSource = new DataSource({
 	username: process.env.DCART_DB_USERNAME,
 	password: process.env.DCART_DB_PASSWORD,
 	database: process.env.DCART_DB_NAME,
-	synchronize: true, // Crée automatiquement les tables
+	synchronize: process.env.APP_HOST === "localhost",
 	logging: false, // Active les logs pour le debug
+	migrations: ["src/migrations/*.ts"],
 	entities: [
 		`${__dirname}/../entities/builtMap/*.ts`,
 		`${__dirname}/../entities/storymap/*.ts`,
