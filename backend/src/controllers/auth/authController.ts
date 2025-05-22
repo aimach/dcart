@@ -1,5 +1,6 @@
 // import des bibliothèques
 import argon2 from "argon2";
+import { randomBytes } from "node:crypto";
 // import des entités
 import { User } from "../../entities/auth/User";
 import { RefreshToken } from "../../entities/auth/RefreshToken";
@@ -209,5 +210,31 @@ export const authController = {
 		} catch (error) {
 			handleError(res, error as Error);
 		}
+	},
+
+	resetPassword: async (req: Request, res: Response): Promise<void> => {
+		const { email } = req.body;
+
+		const user = await dcartDataSource.getRepository(User).findOneBy({
+			email,
+		});
+
+		if (!user) {
+			res.status(404).json({ message: "Utilisateur non trouvé." });
+			return;
+		}
+
+		const resetToken = randomBytes(32).toString("hex");
+		user.resetToken = resetToken;
+		user.resetTokenExpiration = new Date(Date.now() + 1000 * 60 * 60); // 1h
+
+		await dcartDataSource.getRepository(User).save(user);
+
+		const resetLink = `http://${process.env.APP_HOST}:${process.env.APP_PORT}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
+
+		// TODO: envoie l'email ici (Mailjet, Sendinblue, etc)
+		console.log(`Envoyer à ${email}: ${resetLink}`);
+
+		res.json({ message: "Lien de réinitialisation envoyé" });
 	},
 };

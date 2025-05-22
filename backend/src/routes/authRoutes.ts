@@ -48,7 +48,4 @@ authRoutes.delete(
 );
 
 // reset du mot de passe
-authRoutes.post(
-	"/request-reset-password",
-	dcartControllers.requestResetPassword,
-);
+authRoutes.post("/request-reset-password", dcartControllers.resetPassword);
