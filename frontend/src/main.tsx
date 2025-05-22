@@ -22,6 +22,8 @@ import TagManagementPage from "./pages/BackOffice/BOTagManagementPage/BOTagManag
 import DivinityManagementPage from "./pages/BackOffice/BODivinityManagementPage/BODivinityManagementPage.tsx";
 import PrivacyPolicyPage from "./pages/Legal/PrivacyPolicyPage.tsx";
 import LegalNoticePage from "./pages/Legal/LegalNoticePage.tsx";
+import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
+import NewPasswordPage from "./pages/ResetPasswordPage/NewPasswordPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -62,7 +64,6 @@ if (rootElement) {
 											element={<LegalNoticePage />}
 										/>
 									</Route>
-
 									<Route path="backoffice" element={<ProtectedLayout />}>
 										<Route index element={<BOHomePage />} />
 										<Route path="maps">
@@ -97,6 +98,11 @@ if (rootElement) {
 										path="authentification"
 										element={<AuthentificationPage />}
 									/>
+									<Route
+										path="forgot-password"
+										element={<ResetPasswordPage />}
+									/>
+									<Route path="reset-password" element={<NewPasswordPage />} />
 								</Routes>
 								<ToastContainer />
 							</TagOptionsProvider>

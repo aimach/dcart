@@ -154,7 +154,12 @@
 			"login": "Log in",
 			"username": "Username",
 			"password": "Password",
-			"requiredField": "Required field"
+			"requiredField": "Required field",
+			"forgotPassword": "Forgot password?",
+			"enterEmail": "Enter your email address",
+			"sendResetLink": "Send reset link",
+			"newPassword": "New password",
+			"saveNewPassword": "Save new password"
 		},
 		"mapFormPage": {
 			"intro": {

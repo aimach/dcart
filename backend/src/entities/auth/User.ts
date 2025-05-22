@@ -21,6 +21,9 @@ export class User extends BaseEntity {
 	@Column({ type: "varchar", length: 255, nullable: false })
 	username!: string;
 
+	@Column({ type: "varchar", length: 255, nullable: false })
+	email!: string;
+
 	@Column({ type: "varchar", nullable: false })
 	password!: string;
 
@@ -30,6 +33,12 @@ export class User extends BaseEntity {
 		default: "writer",
 	})
 	status!: string;
+
+	@Column({ type: "text", nullable: true })
+	resetToken?: string | null;
+
+	@Column({ type: "timestamp", nullable: true })
+	resetTokenExpiration?: Date | null;
 
 	@OneToMany(
 		() => MapContent,
