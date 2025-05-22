@@ -2,6 +2,8 @@
 import { apiClient } from "./apiClient";
 // import des types
 import type { User } from "../types/userTypes";
+import { notifyError } from "../functions/toast";
+import { toast } from "react-toastify";
 
 /**
  * Récupération du profile de l'utilisateur
@@ -78,4 +80,35 @@ const refreshAccessToken = async () => {
 	}
 };
 
-export { loginUser, logoutUser, getProfile, refreshAccessToken };
+/**
+ * Fonction d'envoi d'un email de réinitialisation de mot de passe
+ * @param email - l'email de l'utilisateur
+ */
+const sendResetPasswordRequest = async (email: string) => {
+	try {
+		const response = await apiClient.post("/auth/request-reset-password", {
+			email,
+		});
+		if (response.status === 200) {
+			toast.success("Demande envoyée", {
+				position: "top-right",
+				autoClose: 2000,
+				closeOnClick: true,
+				pauseOnHover: false,
+				theme: "light",
+			});
+		}
+	} catch (error) {
+		notifyError(
+			"Erreur lors de l'envoi de la demande de réinitialisation du mot de passe",
+		);
+	}
+};
+
+export {
+	loginUser,
+	logoutUser,
+	getProfile,
+	refreshAccessToken,
+	sendResetPasswordRequest,
+};

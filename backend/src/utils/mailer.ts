@@ -30,6 +30,4 @@ export const sendPasswordResetEmail = async (to: string, resetLink: string) => {
 			},
 		],
 	});
-
-	console.log("Email envoyé :", response.body);
 };

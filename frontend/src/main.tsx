@@ -30,6 +30,7 @@ import { TagOptionsProvider } from "./context/TagContext.tsx";
 import { SessionProvider } from "./context/SessionContext.tsx";
 // import du style
 import "./index.css";
+import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -62,7 +63,6 @@ if (rootElement) {
 											element={<LegalNoticePage />}
 										/>
 									</Route>
-
 									<Route path="backoffice" element={<ProtectedLayout />}>
 										<Route index element={<BOHomePage />} />
 										<Route path="maps">
@@ -96,6 +96,10 @@ if (rootElement) {
 									<Route
 										path="authentification"
 										element={<AuthentificationPage />}
+									/>
+									<Route
+										path="reset-password"
+										element={<ResetPasswordPage />}
 									/>
 								</Routes>
 								<ToastContainer />

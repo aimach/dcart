@@ -157,6 +157,9 @@ type LanguageObject = {
 			username: string;
 			password: string;
 			requiredField: string;
+			forgotPassword: string;
+			enterEmail: string;
+			sendResetLink: string;
 		};
 		mapFormPage: {
 			intro: {
