@@ -31,6 +31,7 @@ import { SessionProvider } from "./context/SessionContext.tsx";
 // import du style
 import "./index.css";
 import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
+import NewPasswordPage from "./pages/ResetPasswordPage/NewPasswordPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -98,9 +99,10 @@ if (rootElement) {
 										element={<AuthentificationPage />}
 									/>
 									<Route
-										path="reset-password"
+										path="forgot-password"
 										element={<ResetPasswordPage />}
 									/>
+									<Route path="reset-password" element={<NewPasswordPage />} />
 								</Routes>
 								<ToastContainer />
 							</TagOptionsProvider>

@@ -97,7 +97,7 @@ const AuthFormComponent = () => {
 					color="brown"
 					textContent={translation[language].backoffice.authPage.login}
 				/>
-				<Link to="/reset-password">
+				<Link to="/forgot-password">
 					{translation[language].backoffice.authPage.forgotPassword}
 				</Link>
 			</form>

@@ -232,7 +232,7 @@ export const authController = {
 
 		await dcartDataSource.getRepository(User).save(user);
 
-		const resetLink = `http://${process.env.APP_HOST}:${process.env.APP_PORT}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
+		const resetLink = `http://${process.env.APP_HOST}:${process.env.FRONTEND_PORT}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
 
 		// TODO: envoie l'email ici (Mailjet, Sendinblue, etc)
 		await sendPasswordResetEmail(email, resetLink);

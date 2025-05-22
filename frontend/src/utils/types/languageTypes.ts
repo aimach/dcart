@@ -160,6 +160,8 @@ type LanguageObject = {
 			forgotPassword: string;
 			enterEmail: string;
 			sendResetLink: string;
+			newPassword: string;
+			saveNewPassword: string;
 		};
 		mapFormPage: {
 			intro: {
