@@ -105,10 +105,42 @@ const sendResetPasswordRequest = async (email: string) => {
 	}
 };
 
+/**
+ * Fonction d'envoi de réinitialisation de mot de passe
+ * @param email - l'email de l'utilisateur
+ * @param token - le token de réinitialisation
+ * @param newPassword - le nouveau mot de passe
+ */
+const resetPassword = async (
+	email: string,
+	token: string,
+	newPassword: string,
+) => {
+	try {
+		const response = await apiClient.post("/auth/reset-password", {
+			email,
+			token,
+			newPassword,
+		});
+		if (response.status === 200) {
+			toast.success("Mot de passe réinitialisé", {
+				position: "top-right",
+				autoClose: 2000,
+				closeOnClick: true,
+				pauseOnHover: false,
+				theme: "light",
+			});
+		}
+	} catch (error) {
+		notifyError("Erreur lors de la réinitialisation du mot de passe");
+	}
+};
+
 export {
 	loginUser,
 	logoutUser,
 	getProfile,
 	refreshAccessToken,
 	sendResetPasswordRequest,
+	resetPassword,
 };

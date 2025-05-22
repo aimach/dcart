@@ -34,11 +34,11 @@ export class User extends BaseEntity {
 	})
 	status!: string;
 
-	@Column({ nullable: true })
-	resetToken?: string;
+	@Column({ type: "text", nullable: true })
+	resetToken?: string | null;
 
 	@Column({ type: "timestamp", nullable: true })
-	resetTokenExpiration?: Date;
+	resetTokenExpiration?: Date | null;
 
 	@OneToMany(
 		() => MapContent,

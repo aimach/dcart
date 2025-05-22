@@ -247,7 +247,7 @@ export const authController = {
 			email,
 		});
 
-		console.log();
+		console.log((user?.resetTokenExpiration as Date) < new Date());
 
 		if (
 			!user ||
@@ -260,8 +260,8 @@ export const authController = {
 
 		const hashedPassword = await argon2.hash(newPassword);
 		user.password = hashedPassword;
-		user.resetToken = undefined;
-		user.resetTokenExpiration = undefined;
+		user.resetToken = null;
+		user.resetTokenExpiration = null;
 
 		await dcartDataSource.getRepository(User).save(user);
 		res.status(200).json({ message: "Mot de passe réinitialisé" });

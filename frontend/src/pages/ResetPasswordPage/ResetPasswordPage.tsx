@@ -21,7 +21,6 @@ const ResetPasswordPage = () => {
 	const handleSendReset = async () => {
 		if (email) {
 			await sendResetPasswordRequest(email);
-			setEmail("");
 			navigate("/authentification");
 		}
 	};
