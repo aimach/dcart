@@ -214,7 +214,7 @@ export const authController = {
 		}
 	},
 
-	resetPassword: async (req: Request, res: Response): Promise<void> => {
+	resetPasswordRequest: async (req: Request, res: Response): Promise<void> => {
 		const { email } = req.body;
 
 		const user = await dcartDataSource.getRepository(User).findOneBy({
@@ -238,5 +238,32 @@ export const authController = {
 		await sendPasswordResetEmail(email, resetLink);
 
 		res.json({ message: "Lien de réinitialisation envoyé" });
+	},
+
+	resetPassword: async (req: Request, res: Response): Promise<void> => {
+		const { email, token, newPassword } = req.body;
+
+		const user = await dcartDataSource.getRepository(User).findOneBy({
+			email,
+		});
+
+		console.log();
+
+		if (
+			!user ||
+			user.resetToken !== token ||
+			(user.resetTokenExpiration as Date) < new Date()
+		) {
+			res.status(404).json({ message: "Lien invalide ou expiré." });
+			return;
+		}
+
+		const hashedPassword = await argon2.hash(newPassword);
+		user.password = hashedPassword;
+		user.resetToken = undefined;
+		user.resetTokenExpiration = undefined;
+
+		await dcartDataSource.getRepository(User).save(user);
+		res.status(200).json({ message: "Mot de passe réinitialisé" });
 	},
 };

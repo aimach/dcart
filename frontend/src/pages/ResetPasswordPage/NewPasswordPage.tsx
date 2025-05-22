@@ -30,7 +30,6 @@ const NewPasswordPage = () => {
 		}
 	};
 
-	console.log(token, email);
 	return (
 		<div className={style.resetPasswordPage}>
 			<h3>{translation[language].backoffice.authPage.newPassword}</h3>
