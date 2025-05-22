@@ -2,15 +2,15 @@ services:
   frontend:
     build:
       context: ./frontend
-      dockerfile: Dockerfile
+      dockerfile: Dockerfile.dev
     ports:
       - "3000:3000" # Port local mappé sur le port exposé par le conteneur
     environment:
-      - NODE_ENV=development # Définit l'environnement en mode développement
+      - NODE_ENV=development 
     volumes:
-      - ./frontend:/app # Monte le code source local dans le conteneur
-      - /app/node_modules # Empêche le conflit avec node_modules local
-    command: ["npm", "run", "dev"] # Commande redéfinie pour npm run dev
+      - ./frontend:/app 
+      - /app/node_modules 
+    command: ["npm", "run", "dev"] 
 
   backend:
     build:

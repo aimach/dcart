@@ -154,7 +154,12 @@
 			"login": "Se connecter",
 			"username": "Nom d'utilisateur",
 			"password": "Mot de passe",
-			"requiredField": "Ce champ est requis"
+			"requiredField": "Ce champ est requis",
+			"forgotPassword": "Mot de passe oublié ?",
+			"enterEmail": "Entrez votre adresse e-mail",
+			"sendResetLink": "Envoyer le lien de réinitialisation",
+			"newPassword": "Nouveau mot de passe",
+			"saveNewPassword": "Enregistrer le nouveau mot de passe"
 		},
 		"mapFormPage": {
 			"intro": {

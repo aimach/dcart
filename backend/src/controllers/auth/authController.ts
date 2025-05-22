@@ -1,5 +1,7 @@
 // import des bibliothèques
+import type jwt from "jsonwebtoken";
 import argon2 from "argon2";
+import { randomBytes } from "node:crypto";
 // import des entités
 import { User } from "../../entities/auth/User";
 import { RefreshToken } from "../../entities/auth/RefreshToken";
@@ -7,9 +9,9 @@ import { dcartDataSource } from "../../dataSource/dataSource";
 // import des services
 import { jwtService } from "../../utils/jwt";
 import { handleError } from "../../utils/errorHandler/errorHandler";
+import { sendPasswordResetEmail } from "../../utils/mailer";
 // import des types
 import type { Request, Response } from "express";
-import type jwt from "jsonwebtoken";
 
 export const authController = {
 	// cette route existe pour l'instant pour les besoins de développement mais sera supprimée lors de la mise en prod
@@ -209,5 +211,56 @@ export const authController = {
 		} catch (error) {
 			handleError(res, error as Error);
 		}
+	},
+
+	resetPasswordRequest: async (req: Request, res: Response): Promise<void> => {
+		const { email } = req.body;
+
+		const user = await dcartDataSource.getRepository(User).findOneBy({
+			email,
+		});
+
+		if (!user) {
+			res.status(404).json({ message: "Utilisateur non trouvé." });
+			return;
+		}
+
+		const resetToken = randomBytes(32).toString("hex");
+		user.resetToken = resetToken;
+		user.resetTokenExpiration = new Date(Date.now() + 1000 * 60 * 60); // 1h
+
+		await dcartDataSource.getRepository(User).save(user);
+
+		const resetLink = `http://${process.env.APP_HOST}:${process.env.FRONTEND_PORT}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
+
+		// TODO: envoie l'email ici (Mailjet, Sendinblue, etc)
+		await sendPasswordResetEmail(email, resetLink);
+
+		res.json({ message: "Lien de réinitialisation envoyé" });
+	},
+
+	resetPassword: async (req: Request, res: Response): Promise<void> => {
+		const { email, token, newPassword } = req.body;
+
+		const user = await dcartDataSource.getRepository(User).findOneBy({
+			email,
+		});
+
+		if (
+			!user ||
+			user.resetToken !== token ||
+			(user.resetTokenExpiration as Date) < new Date()
+		) {
+			res.status(404).json({ message: "Lien invalide ou expiré." });
+			return;
+		}
+
+		const hashedPassword = await argon2.hash(newPassword);
+		user.password = hashedPassword;
+		user.resetToken = null;
+		user.resetTokenExpiration = null;
+
+		await dcartDataSource.getRepository(User).save(user);
+		res.status(200).json({ message: "Mot de passe réinitialisé" });
 	},
 };

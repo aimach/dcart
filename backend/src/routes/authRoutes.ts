@@ -46,3 +46,12 @@ authRoutes.delete(
 	authenticateAdmin,
 	dcartControllers.deleteUser,
 );
+
+// gestion de la demande de reste du mot de passe
+authRoutes.post(
+	"/request-reset-password",
+	dcartControllers.resetPasswordRequest,
+);
+
+// reset du mot de passe
+authRoutes.post("/reset-password", dcartControllers.resetPassword);
