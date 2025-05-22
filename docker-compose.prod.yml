@@ -1,0 +1,35 @@
+services:
+  frontend:
+    build: ./frontend
+    ports:
+      - "3000:3000"
+    env_file: ./frontend/.env.production
+    command: serve -s build
+
+  backend:
+    build: ./backend
+    ports:
+      - "6001:6001" # Backend accessible sur localhost:6001
+    depends_on:
+      - db
+    env_file: ./backend/.env.production
+    volumes:
+      - ./postgres-data:/var/lib/postgresql/data
+      - ./backend/script/initDbUser.sql:/docker-entrypoint-initdb.d/init.sql
+
+  db:
+    image: postgres
+    ports:
+      - "1234:5432"
+    env_file: .env.production
+
+  adminer:
+    image: adminer
+    container_name: adminer
+    ports:
+      - "8080:8080" # Accessible sur localhost:8080
+    depends_on:
+      - db
+
+volumes:
+  postgres-data:

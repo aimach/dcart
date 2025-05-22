@@ -22,14 +22,10 @@ const PORT = process.env.APP_PORT;
 // middleware
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
-app.use(
-	cors({
-		// origin: [`http://${ipAdress}:${process.env.FRONTEND_PORT}`],
-		origin: [`http://localhost:${process.env.FRONTEND_PORT}`],
-		methods: ["GET", "POST", "PUT", "DELETE"],
-		credentials: true,
-	}),
-);
+app.use(cors({
+	origin: `http://${process.env.APP_HOST}:3000`,
+	credentials:true
+}));
 
 // Connection aux bases de données : DCART et MAP
 dcartDataSource
