@@ -1,4 +1,5 @@
 // import des bibliothèques
+import type jwt from "jsonwebtoken";
 import argon2 from "argon2";
 import { randomBytes } from "node:crypto";
 // import des entités
@@ -8,11 +9,9 @@ import { dcartDataSource } from "../../dataSource/dataSource";
 // import des services
 import { jwtService } from "../../utils/jwt";
 import { handleError } from "../../utils/errorHandler/errorHandler";
+import { sendPasswordResetEmail } from "../../utils/mailer";
 // import des types
 import type { Request, Response } from "express";
-import type jwt from "jsonwebtoken";
-import { send } from "node:process";
-import { sendPasswordResetEmail } from "../../utils/mailer";
 
 export const authController = {
 	// cette route existe pour l'instant pour les besoins de développement mais sera supprimée lors de la mise en prod
@@ -246,8 +245,6 @@ export const authController = {
 		const user = await dcartDataSource.getRepository(User).findOneBy({
 			email,
 		});
-
-		console.log((user?.resetTokenExpiration as Date) < new Date());
 
 		if (
 			!user ||

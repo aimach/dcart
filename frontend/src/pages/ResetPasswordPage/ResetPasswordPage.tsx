@@ -7,7 +7,6 @@ import ButtonComponent from "../../components/common/button/ButtonComponent";
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import des services
 import { sendResetPasswordRequest } from "../../utils/api/authAPI";
-// import des types
 // import du style
 import style from "./ResetPasswordPage.module.scss";
 

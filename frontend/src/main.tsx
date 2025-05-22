@@ -22,6 +22,8 @@ import TagManagementPage from "./pages/BackOffice/BOTagManagementPage/BOTagManag
 import DivinityManagementPage from "./pages/BackOffice/BODivinityManagementPage/BODivinityManagementPage.tsx";
 import PrivacyPolicyPage from "./pages/Legal/PrivacyPolicyPage.tsx";
 import LegalNoticePage from "./pages/Legal/LegalNoticePage.tsx";
+import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
+import NewPasswordPage from "./pages/ResetPasswordPage/NewPasswordPage.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -30,8 +32,6 @@ import { TagOptionsProvider } from "./context/TagContext.tsx";
 import { SessionProvider } from "./context/SessionContext.tsx";
 // import du style
 import "./index.css";
-import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
-import NewPasswordPage from "./pages/ResetPasswordPage/NewPasswordPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {

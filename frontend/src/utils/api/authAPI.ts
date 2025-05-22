@@ -1,9 +1,9 @@
 // import des services
 import { apiClient } from "./apiClient";
-// import des types
-import type { User } from "../types/userTypes";
 import { notifyError } from "../functions/toast";
 import { toast } from "react-toastify";
+// import des types
+import type { User } from "../types/userTypes";
 
 /**
  * Récupération du profile de l'utilisateur
