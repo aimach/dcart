@@ -6,12 +6,12 @@ const mailjet = Mailjet.apiConnect(
 );
 
 export const sendPasswordResetEmail = async (to: string, resetLink: string) => {
-	await mailjet.post("send", { version: "v3.1" }).request({
+	const response = await mailjet.post("send", { version: "v3.1" }).request({
 		Messages: [
 			{
 				From: {
-					Email: "ton.email@tondomaine.com",
-					Name: "TonApp Support",
+					Email: "vigneron.mh@gmail.com",
+					Name: "Application dCART",
 				},
 				To: [
 					{
@@ -30,4 +30,6 @@ export const sendPasswordResetEmail = async (to: string, resetLink: string) => {
 			},
 		],
 	});
+
+	console.log("Email envoyé :", response.body);
 };

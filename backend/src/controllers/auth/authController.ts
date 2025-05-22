@@ -11,6 +11,8 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type jwt from "jsonwebtoken";
+import { send } from "node:process";
+import { sendPasswordResetEmail } from "../../utils/mailer";
 
 export const authController = {
 	// cette route existe pour l'instant pour les besoins de développement mais sera supprimée lors de la mise en prod
@@ -233,7 +235,7 @@ export const authController = {
 		const resetLink = `http://${process.env.APP_HOST}:${process.env.APP_PORT}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
 
 		// TODO: envoie l'email ici (Mailjet, Sendinblue, etc)
-		console.log(`Envoyer à ${email}: ${resetLink}`);
+		await sendPasswordResetEmail(email, resetLink);
 
 		res.json({ message: "Lien de réinitialisation envoyé" });
 	},
