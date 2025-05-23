@@ -1,16 +1,18 @@
 // import des bibliothèques
-// import des composants
-// import du context
-// import des services
-// import des types
-// import du style
 import { useForm } from "react-hook-form";
-import style from "../storymapForm/commonForm/commonForm.module.scss";
+// import des composants
 import LabelComponent from "../inputComponent/LabelComponent";
 import ErrorComponent from "../errorComponent/ErrorComponent";
-import userInputArray from "../../../utils/forms/userInputArray";
-import { useTranslation } from "../../../utils/hooks/useTranslation";
 import ButtonComponent from "../../common/button/ButtonComponent";
+// import des custom hooks
+import { useTranslation } from "../../../utils/hooks/useTranslation";
+// import des services
+import userInputArray from "../../../utils/forms/userInputArray";
+// import des types
+// import du style
+import style from "../storymapForm/commonForm/commonForm.module.scss";
+// import des icônes
+import { CircleAlert } from "lucide-react";
 
 export type userInputType = {
 	username: string;
@@ -76,6 +78,15 @@ const AddUserForm = ({ onSubmit, setAddUserForm }: AddUserFormProps) => {
 						translation[language].backoffice.storymapFormPage.form.create
 					}
 				/>
+			</div>
+			<div className={style.alertContainer}>
+				<CircleAlert color="#9d2121" />
+				<p>
+					{
+						translation[language].backoffice.userManagement
+							.passwordManagementMessage
+					}
+				</p>
 			</div>
 		</form>
 	);

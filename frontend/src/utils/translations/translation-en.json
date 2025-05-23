@@ -363,7 +363,8 @@
 			"toAdmin": "Become admin",
 			"admin": "Admin",
 			"writer": "Writer",
-			"addUser": "Add a new user"
+			"addUser": "Add a new user",
+			"passwordManagementMessage": "The password will be set by the user when he first logs in."
 		},
 		"translationManagement": {
 			"frenchTranslation": "French translation",

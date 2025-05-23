@@ -22,6 +22,7 @@ import type { userInputType } from "../../../components/form/userForm/AddUserFor
 import style from "./userManagementPage.module.scss";
 // import des icônes
 import { Trash } from "lucide-react";
+import { createNewUser } from "../../../utils/api/authAPI";
 
 const UserManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -75,7 +76,8 @@ const UserManagementPage = () => {
 	const [addUserForm, setAddUserForm] = useState(false);
 
 	const handleAddUserSubmit = async (data: userInputType) => {
-		console.log(data);
+		await createNewUser(data);
+		setAddUserForm(false);
 	};
 
 	return users.length > 0 ? (
@@ -96,13 +98,15 @@ const UserManagementPage = () => {
 				color="gold"
 				textContent={translation[language].backoffice.userManagement.addUser}
 				onClickFunction={() => {
-					setAddUserForm(true);
+					setAddUserForm(!addUserForm);
 				}}
 			/>
-			<AddUserForm
-				onSubmit={handleAddUserSubmit}
-				setAddUserForm={setAddUserForm}
-			/>
+			{addUserForm && (
+				<AddUserForm
+					onSubmit={handleAddUserSubmit}
+					setAddUserForm={setAddUserForm}
+				/>
+			)}
 			<div className={style.userManagementTableContainer}>
 				<table className={style.managementTable}>
 					<thead>

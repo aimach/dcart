@@ -21,11 +21,11 @@ export class User extends BaseEntity {
 	@Column({ type: "varchar", length: 255, nullable: false })
 	username!: string;
 
-	@Column({ type: "varchar", length: 255, nullable: true })
+	@Column({ type: "varchar", length: 255, nullable: false, unique: true })
 	email!: string;
 
-	@Column({ type: "varchar", nullable: false })
-	password!: string;
+	@Column({ type: "varchar", nullable: true })
+	password!: string | null;
 
 	@Column({
 		type: "enum",

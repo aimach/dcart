@@ -364,7 +364,8 @@
 			"toAdmin": "Devenir administrateur",
 			"admin": "Administrateur",
 			"writer": "Auteur",
-			"addUser": "Ajout un nouveal utilisateur"
+			"addUser": "Ajout un nouvel utilisateur",
+			"passwordManagementMessage": "Le mot de passe sera défini par l'utilisateur lors de la première connexion."
 		},
 		"translationManagement": {
 			"frenchTranslation": "Traduction en français",
