@@ -362,7 +362,8 @@
 			"toAuthor": "Become writer",
 			"toAdmin": "Become admin",
 			"admin": "Admin",
-			"writer": "Writer"
+			"writer": "Writer",
+			"addUser": "Add a new user"
 		},
 		"translationManagement": {
 			"frenchTranslation": "French translation",

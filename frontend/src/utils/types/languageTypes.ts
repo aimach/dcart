@@ -318,6 +318,7 @@ type LanguageObject = {
 			toAdmin: string;
 			admin: string;
 			writer: string;
+			addUser: string;
 		};
 		translationManagement: {
 			frenchTranslation: string;

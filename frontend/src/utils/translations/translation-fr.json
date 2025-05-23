@@ -363,7 +363,8 @@
 			"toAuthor": "Devenir auteur",
 			"toAdmin": "Devenir administrateur",
 			"admin": "Administrateur",
-			"writer": "Auteur"
+			"writer": "Auteur",
+			"addUser": "Ajout un nouveal utilisateur"
 		},
 		"translationManagement": {
 			"frenchTranslation": "Traduction en français",
