@@ -8,7 +8,6 @@ import ButtonComponent from "../../common/button/ButtonComponent";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import userInputArray from "../../../utils/forms/userInputArray";
-// import des types
 // import du style
 import style from "../storymapForm/commonForm/commonForm.module.scss";
 // import des icônes

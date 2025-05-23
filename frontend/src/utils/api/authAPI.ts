@@ -4,7 +4,7 @@ import { notifyCreateSuccess, notifyError } from "../functions/toast";
 import { toast } from "react-toastify";
 // import des types
 import type { User } from "../types/userTypes";
-import { userInputType } from "../../components/form/userForm/AddUserForm";
+import type { userInputType } from "../../components/form/userForm/AddUserForm";
 
 /**
  * Récupération du profile de l'utilisateur

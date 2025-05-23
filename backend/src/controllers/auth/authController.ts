@@ -60,7 +60,10 @@ export const authController = {
 			}
 
 			// vérification que le mot de passe correspond, sinon message d'erreur
-			const isMatch = await argon2.verify((user as User).password, password);
+			const isMatch = await argon2.verify(
+				(user as User).password as string,
+				password,
+			);
 			if (!isMatch) {
 				res.status(403).json({ message: "Mot de passe incorrect." });
 				return;
