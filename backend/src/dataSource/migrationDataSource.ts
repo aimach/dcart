@@ -1,3 +1,3 @@
-import { dcartDataSource } from "./dataSource/dataSource";
+import { dcartDataSource } from "./dataSource";
 
 export default dcartDataSource;
