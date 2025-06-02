@@ -1,6 +1,8 @@
 @use '../../../../styles/mixin' as m;
 @use '../../../../styles/variable' as v;
 
+@use "sass:color";
+
 .commonFormContainer {
     @include m.flexbox(flex, column, nowrap, center, flex-start);
     gap: v.$space-l;
@@ -74,4 +76,13 @@
         }
     }
 
+}
+
+.alertContainer {
+    color: v.$color-error;
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$space-s;
+    background-color: color.adjust(v.$color-error, $lightness: 60%);
+    padding: v.$space-l;
+    border-radius: v.$border-radius-rounded;
 }

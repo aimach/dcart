@@ -1,9 +1,10 @@
 // import des services
 import { apiClient } from "./apiClient";
-import { notifyError } from "../functions/toast";
+import { notifyCreateSuccess, notifyError } from "../functions/toast";
 import { toast } from "react-toastify";
 // import des types
 import type { User } from "../types/userTypes";
+import type { userInputType } from "../../components/form/userForm/AddUserForm";
 
 /**
  * Récupération du profile de l'utilisateur
@@ -136,6 +137,21 @@ const resetPassword = async (
 	}
 };
 
+/**
+ * Fonction de création d'un utilisateur
+ * @param body - les données de l'utilisateur
+ */
+const createNewUser = async (body: userInputType) => {
+	try {
+		const response = await apiClient.post("/auth/register", body);
+		if (response.status === 201) {
+			notifyCreateSuccess("Utilisateur", false);
+		}
+	} catch (error) {
+		notifyError("Erreur lors de la réinitialisation du mot de passe");
+	}
+};
+
 export {
 	loginUser,
 	logoutUser,
@@ -143,4 +159,5 @@ export {
 	refreshAccessToken,
 	sendResetPasswordRequest,
 	resetPassword,
+	createNewUser,
 };
