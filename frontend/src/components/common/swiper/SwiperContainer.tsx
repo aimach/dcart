@@ -9,7 +9,6 @@ import { useWindowSize } from "../../../utils/hooks/useWindowSize";
 import type { TagWithItemsType } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./swiper.module.scss";
-import "./swiper.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
