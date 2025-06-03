@@ -6,7 +6,7 @@
 
 
 .mainPage {
-    width: 100vw;
+    width: 100%;
     @include m.flexbox(flex, column, nowrap, flex-start, center);
     gap: v.$space-xxl;
     background-position-y: 43%;
@@ -14,7 +14,7 @@
     background-size: cover;
 
     .heroContainer {
-        width: 100vw;
+        width: 100%;
         height: 100dvh;
         background-image: url('./assets/home_bg.png');
         background-size: cover;

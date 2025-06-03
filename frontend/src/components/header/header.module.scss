@@ -6,6 +6,7 @@
   padding: 0 v.$font-space-xl;
   @include m.flexbox(flex, row, nowrap, space-between, center);
   border-bottom: v.$border-width-l solid v.$color-umber;
+  width: 100%; // ajusté à cause de la scrollbar
 
 
 
