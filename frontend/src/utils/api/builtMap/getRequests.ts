@@ -305,9 +305,13 @@ const getAllColors = async () => {
 	}
 };
 
-const getAllTagsWithMapsAndStorymaps = async () => {
+const getAllTagsWithMapsAndStorymaps = async (itemFilter: {
+	map: boolean;
+	storymap: boolean;
+}) => {
 	try {
-		const response = await apiClient.get("/dcart/tags/items");
+		const filter = `?map=${itemFilter.map}&storymap=${itemFilter.storymap}`;
+		const response = await apiClient.get(`/dcart/tags/items${filter}`);
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des cartes et storyamps :", error);
