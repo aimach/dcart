@@ -43,7 +43,7 @@ const ItemContainer = ({ item }: ItemContainerProps) => {
 				<div className={style.itemText}>
 					<h4>{isMap ? item[`title_${language}`] : item.title_lang1}</h4>
 					<div className={style.itemTags}>
-						{item.tags.map((tag: TagType) => (
+						{item.tags.slice(0, 3).map((tag: TagType) => (
 							<p key={tag.id}>#{tag[`name_${language}`]}</p>
 						))}
 					</div>
