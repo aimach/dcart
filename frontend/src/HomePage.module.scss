@@ -82,10 +82,26 @@
         gap: v.$space-xxl;
 
         .tagItemContainer {
-            >h3 {
-                font-size: v.$font-size-xxl;
-                margin-bottom: v.$space-l;
+            &Title {
+                padding-bottom: v.$space-s;
+                margin-bottom: v.$space-s;
+                border-bottom: v.$border-width-m solid v.$color-black-chocolate;
+                @include m.flexbox(flex, row, wrap, space-between, center);
+
+                >h3 {
+                    font-size: v.$font-size-xxl;
+                }
+
+                .textButtonContainer {
+                    @include m.flexbox(flex, row, wrap, space-between, center);
+                    transition: transform 0.2s ease;
+                }
+
+                .textButtonContainer:hover {
+                    transform: scale(1.05);
+                }
             }
+
         }
     }
 

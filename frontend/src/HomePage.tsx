@@ -100,11 +100,14 @@ function HomePage() {
 					return (
 						items.length > 0 && (
 							<div key={tagWithItems.id} className={style.tagItemContainer}>
-								<h3>
-									<Link to={`tag/${tagWithItems.slug}`}>
-										{tagWithItems[`name_${language}`]} <ChevronRight />
+								<div className={style.tagItemContainerTitle}>
+									<h3>{tagWithItems[`name_${language}`]}</h3>
+									<Link to={`/tag/${tagWithItems.slug}`}>
+										<div className={style.textButtonContainer}>
+											{translation[language].button.seeAll} <ChevronRight />
+										</div>
 									</Link>
-								</h3>
+								</div>
 								<SwiperContainer items={items} />
 							</div>
 						)

@@ -41,7 +41,7 @@ const ButtonComponent = ({
 				to={link as string}
 				className={`${style.simpleButton} ${isSelected ? style[color] : style.unselected}`}
 			>
-				{textContent}
+				{icon ?? ""} {textContent}
 			</Link>
 		);
 	}
