@@ -11,8 +11,8 @@ import type { TagWithItemsType } from "../../../utils/types/commonTypes";
 import style from "./itemContainer.module.scss";
 // import des icônes et images
 import { MapPin, BookOpenText } from "lucide-react";
-import mapPinBG from "../../../assets/map-pin-bg.png";
-import bookOpenBG from "../../../assets/book-open-bg.png";
+import mapPinBG from "../../../assets/pin-bg.png";
+import bookOpenBG from "../../../assets/sm-bg.png";
 
 type ItemContainerProps = {
 	item:
