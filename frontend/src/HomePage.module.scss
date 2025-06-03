@@ -30,9 +30,10 @@
         }
 
         >p {
-            margin: 0 v.$space-xxl;
-            text-align: center;
+            text-align: justify;
             line-height: v.$space-l;
+            font-size: v.$font-size-l;
+            width: 70vw;
         }
 
     }
