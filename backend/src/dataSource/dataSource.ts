@@ -12,7 +12,7 @@ export const dcartDataSource = new DataSource({
 	username: process.env.DCART_DB_USERNAME,
 	password: process.env.DCART_DB_PASSWORD,
 	database: process.env.DCART_DB_NAME,
-	synchronize: process.env.APP_HOST === "localhost",
+	synchronize: true,
 	logging: false, // Active les logs pour le debug
 	migrations: ["src/migrations/*.ts"],
 	entities: [
