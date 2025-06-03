@@ -41,8 +41,16 @@ function HomePage() {
 	);
 	useEffect(() => {
 		const fetchAllTagsWithMapsAndStorymaps = async () => {
-			const fetchedTags = await getAllTagsWithMapsAndStorymaps();
-			setAllTagsWithItems(fetchedTags);
+			const fetchedTags: TagWithItemsType[] =
+				await getAllTagsWithMapsAndStorymaps();
+			const sortedTags = fetchedTags.sort((a, b) => {
+				const mapsNbA = a.maps.length;
+				const mapsNbB = b.maps.length;
+				const storymapsNbA = a.storymaps.length;
+				const storymapsNbB = b.storymaps.length;
+				return mapsNbB + storymapsNbB - (mapsNbA + storymapsNbA);
+			});
+			setAllTagsWithItems(sortedTags);
 		};
 
 		fetchAllTagsWithMapsAndStorymaps();
