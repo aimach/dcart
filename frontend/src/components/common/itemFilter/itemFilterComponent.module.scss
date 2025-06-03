@@ -1,0 +1,12 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.filterContainer {
+    @include m.flexbox(flex, row, wrap, center, center);
+    gap: v.$space-l;
+
+    .filterInputContainer {
+        @include m.flexbox(flex, row, wrap, center, center);
+
+    }
+}

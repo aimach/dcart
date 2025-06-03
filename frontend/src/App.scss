@@ -156,3 +156,28 @@ table {
 button {
 	@include m.unbuttonize;
 }
+
+input[type="checkbox"] {
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	border: 2px solid #999;
+	border-radius: 4px;
+	cursor: pointer;
+	position: relative;
+	background-color: transparent;
+}
+
+input[type="checkbox"]:checked {
+	background-color: white;
+	border-color: #AD9A85;
+}
+
+input[type="checkbox"]:checked::after {
+	content: "✔";
+	color: #4A3E31;
+	position: absolute;
+	top: 0;
+	left: 3px;
+	font-size: 16px;
+}

@@ -4,6 +4,7 @@ import { Link } from "react-router";
 // import des composants
 import SwiperContainer from "./components/common/swiper/SwiperContainer";
 import ButtonComponent from "./components/common/button/ButtonComponent";
+import ItemFilterComponent from "./components/common/itemFilter/ItemFilterComponent";
 // import des services
 import { getAllTagsWithMapsAndStorymaps } from "./utils/api/builtMap/getRequests";
 import { shuffleArray } from "./utils/functions/common";
@@ -17,6 +18,8 @@ import "./App.scss";
 import style from "./HomePage.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
+
+type CheckboxType = { map: boolean; storymap: boolean };
 
 /**
  * Page d'accueil : titre, description et barre de navigation
@@ -36,17 +39,34 @@ function HomePage() {
 		tagContainerRef.current?.scrollIntoView({ behavior: "smooth" });
 	};
 
+	const [itemTypes, setItemTypes] = useState<CheckboxType>({
+		map: true,
+		storymap: true,
+	});
+
 	const [allTagsWithItems, setAllTagsWithItems] = useState<TagWithItemsType[]>(
 		[],
 	);
+
 	useEffect(() => {
-		const fetchAllTagsWithMapsAndStorymaps = async () => {
-			const fetchedTags = await getAllTagsWithMapsAndStorymaps();
-			setAllTagsWithItems(fetchedTags);
+		const fetchAllTagsWithMapsAndStorymaps = async (
+			itemTypes: CheckboxType,
+		) => {
+			const fetchedTags: TagWithItemsType[] =
+				await getAllTagsWithMapsAndStorymaps(itemTypes);
+
+			const sortedTags = fetchedTags.sort((a, b) => {
+				const mapsNbA = a.maps ? a.maps.length : 0;
+				const mapsNbB = b.maps ? b.maps.length : 0;
+				const storymapsNbA = a.storymaps ? a.storymaps.length : 0;
+				const storymapsNbB = b.storymaps ? b.storymaps.length : 0;
+				return mapsNbB + storymapsNbB - (mapsNbA + storymapsNbA);
+			});
+			setAllTagsWithItems(sortedTags);
 		};
 
-		fetchAllTagsWithMapsAndStorymaps();
-	}, []);
+		fetchAllTagsWithMapsAndStorymaps(itemTypes);
+	}, [itemTypes]);
 
 	useEffect(() => {
 		const fetchDatabaseTranslation = async () => {
@@ -72,6 +92,24 @@ function HomePage() {
 		};
 	}, [databaseTranslation, translation, language]);
 
+	const handleCheckboxChange = async (
+		e: React.ChangeEvent<HTMLInputElement>,
+		type: "map" | "storymap",
+	) => {
+		const otherType = type === "map" ? "storymap" : "map";
+		if (!e.target.checked && !itemTypes[otherType]) {
+			setItemTypes({
+				[otherType]: true,
+				[type]: e.target.checked,
+			} as CheckboxType);
+			return;
+		}
+		setItemTypes((prev) => ({
+			...prev,
+			[type]: e.target.checked,
+		}));
+	};
+
 	return (
 		<section className={style.mainPage}>
 			<section className={style.heroContainer}>
@@ -93,23 +131,34 @@ function HomePage() {
 				</div>
 			</section>
 			<section className={style.tagContainer} ref={tagContainerRef}>
-				{allTagsWithItems?.map((tagWithItems) => {
-					const items = shuffleArray(
-						tagWithItems.maps.concat(tagWithItems.storymaps),
-					);
-					return (
-						items.length > 0 && (
-							<div key={tagWithItems.id} className={style.tagItemContainer}>
-								<h3>
-									<Link to={`tag/${tagWithItems.slug}`}>
-										{tagWithItems[`name_${language}`]} <ChevronRight />
-									</Link>
-								</h3>
-								<SwiperContainer items={items} />
-							</div>
-						)
-					);
-				})}
+				<ItemFilterComponent
+					itemTypes={itemTypes}
+					handleCheckboxChange={handleCheckboxChange}
+				/>
+				<div>
+					{allTagsWithItems?.map((tagWithItems) => {
+						const itemsArray =
+							tagWithItems.maps && tagWithItems.storymaps
+								? tagWithItems.maps.concat(tagWithItems.storymaps)
+								: tagWithItems.maps || tagWithItems.storymaps || [];
+						const items = itemsArray.length > 0 ? shuffleArray(itemsArray) : [];
+						return (
+							items.length > 0 && (
+								<div key={tagWithItems.id} className={style.tagItemContainer}>
+									<div className={style.tagItemContainerTitle}>
+										<h3>{tagWithItems[`name_${language}`]}</h3>
+										<Link to={`/tag/${tagWithItems.slug}`}>
+											<div className={style.textButtonContainer}>
+												{translation[language].button.seeAll} <ChevronRight />
+											</div>
+										</Link>
+									</div>
+									<SwiperContainer items={items} />
+								</div>
+							)
+						);
+					})}
+				</div>
 			</section>
 		</section>
 	);
