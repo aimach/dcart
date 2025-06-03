@@ -8,7 +8,6 @@ import ItemContainer from "../../components/common/itemContainer/ItemContainer";
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import des services
 import { getTagWithMapsAndStorymaps } from "../../utils/api/builtMap/getRequests";
-import { shuffleArray } from "../../utils/functions/common";
 // import des types
 import type { TagWithItemsType } from "../../utils/types/commonTypes";
 // import du style

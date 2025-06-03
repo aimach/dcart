@@ -1,9 +1,5 @@
-// import des bibliothèques
-// import des composants
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
-// import des services
-// import des types
 // import du style
 import style from "./itemFilterComponent.module.scss";
 
