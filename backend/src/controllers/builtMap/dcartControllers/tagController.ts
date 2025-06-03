@@ -34,7 +34,7 @@ export const tagController = {
 				"tag.slug",
 			];
 
-			if (map === "true") {
+			if (map === "true" || map === undefined) {
 				tagQuery = tagQuery
 					.leftJoinAndSelect("tag.maps", "map", "map.isActive = true")
 					.leftJoinAndSelect("map.tags", "mapTag");
@@ -50,7 +50,7 @@ export const tagController = {
 				);
 			}
 
-			if (storymap === "true") {
+			if (storymap === "true" || storymap === undefined) {
 				tagQuery = tagQuery
 					.leftJoinAndSelect(
 						"tag.storymaps",
