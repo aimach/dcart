@@ -6,6 +6,8 @@ import LoaderComponent from "../../../components/common/loader/LoaderComponent";
 import ModalComponent from "../../../components/common/modal/ModalComponent";
 import DeleteUserContent from "../../../components/common/modal/DeleteUserContent";
 import UpdateUserStatusContent from "../../../components/common/modal/UpdateUserStatusContent";
+import ButtonComponent from "../../../components/common/button/ButtonComponent";
+import AddUserForm from "../../../components/form/userForm/AddUserForm";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du context
@@ -15,10 +17,12 @@ import { getAllUsers } from "../../../utils/api/profileAPI";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import des types
 import type { User } from "../../../utils/types/userTypes";
+import type { userInputType } from "../../../components/form/userForm/AddUserForm";
 // import des styles
 import style from "./userManagementPage.module.scss";
 // import des icônes
 import { Trash } from "lucide-react";
+import { createNewUser } from "../../../utils/api/authAPI";
 
 const UserManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -69,6 +73,13 @@ const UserManagementPage = () => {
 		setIdToUpdate(userId);
 	};
 
+	const [addUserForm, setAddUserForm] = useState(false);
+
+	const handleAddUserSubmit = async (data: userInputType) => {
+		await createNewUser(data);
+		setAddUserForm(false);
+	};
+
 	return users.length > 0 ? (
 		<section className={style.userManagementSection}>
 			{isDeleteModalOpen && (
@@ -82,6 +93,20 @@ const UserManagementPage = () => {
 				</ModalComponent>
 			)}
 			<h4>{translation[language].backoffice.userManagement.title}</h4>
+			<ButtonComponent
+				type="button"
+				color="gold"
+				textContent={translation[language].backoffice.userManagement.addUser}
+				onClickFunction={() => {
+					setAddUserForm(!addUserForm);
+				}}
+			/>
+			{addUserForm && (
+				<AddUserForm
+					onSubmit={handleAddUserSubmit}
+					setAddUserForm={setAddUserForm}
+				/>
+			)}
 			<div className={style.userManagementTableContainer}>
 				<table className={style.managementTable}>
 					<thead>

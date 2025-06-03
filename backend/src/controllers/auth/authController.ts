@@ -17,17 +17,16 @@ export const authController = {
 	// cette route existe pour l'instant pour les besoins de développement mais sera supprimée lors de la mise en prod
 	register: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { pseudo, username, password } = req.body;
+			const { pseudo, username, email } = req.body;
 
-			if (!username || !password) {
+			if (!username || !email || !pseudo) {
 				res.status(400).json({
-					message: "Username et password sont requis.",
+					message: "Données manquantes sont requis.",
 				});
 				return;
 			}
 
-			const hashedPassword = await argon2.hash(password);
-			const user = User.create({ username, pseudo, password: hashedPassword });
+			const user = User.create({ username, pseudo, email });
 			await user.save();
 
 			res.status(201).json({
@@ -61,7 +60,10 @@ export const authController = {
 			}
 
 			// vérification que le mot de passe correspond, sinon message d'erreur
-			const isMatch = await argon2.verify((user as User).password, password);
+			const isMatch = await argon2.verify(
+				(user as User).password as string,
+				password,
+			);
 			if (!isMatch) {
 				res.status(403).json({ message: "Mot de passe incorrect." });
 				return;

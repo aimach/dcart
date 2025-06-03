@@ -362,7 +362,9 @@
 			"toAuthor": "Become writer",
 			"toAdmin": "Become admin",
 			"admin": "Admin",
-			"writer": "Writer"
+			"writer": "Writer",
+			"addUser": "Add a new user",
+			"passwordManagementMessage": "The password will be set by the user when he first logs in."
 		},
 		"translationManagement": {
 			"frenchTranslation": "French translation",
