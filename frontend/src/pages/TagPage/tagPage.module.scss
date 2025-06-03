@@ -3,7 +3,8 @@
 
 .tagPageContainer {
     @include m.flexbox(flex, column, nowrap, center, center);
-    margin-bottom: v.$space-xxl;
+    padding-bottom: v.$space-xxl;
+
 
     .tagPageTitleContainer {
         height: 50vh;
