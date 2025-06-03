@@ -4,9 +4,7 @@
 .tagPageContainer {
     @include m.flexbox(flex, column, nowrap, center, center);
     padding-bottom: v.$space-xxl;
-    background-image: url('../../assets/map_bg.png');
-    background-position: bottom;
-    background-repeat: no-repeat;
+
 
     .tagPageTitleContainer {
         height: 50vh;

@@ -318,9 +318,13 @@ const getAllTagsWithMapsAndStorymaps = async (itemFilter: {
 	}
 };
 
-const getTagWithMapsAndStorymaps = async (tagSlug: string) => {
+const getTagWithMapsAndStorymaps = async (
+	tagSlug: string,
+	itemFilter: { map: boolean; storymap: boolean },
+) => {
 	try {
-		const response = await apiClient.get(`/dcart/tags/${tagSlug}`);
+		const filter = `?map=${itemFilter.map}&storymap=${itemFilter.storymap}`;
+		const response = await apiClient.get(`/dcart/tags/${tagSlug}${filter}`);
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des cartes et storyamps :", error);

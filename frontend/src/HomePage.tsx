@@ -4,6 +4,7 @@ import { Link } from "react-router";
 // import des composants
 import SwiperContainer from "./components/common/swiper/SwiperContainer";
 import ButtonComponent from "./components/common/button/ButtonComponent";
+import ItemFilterComponent from "./components/common/itemFilter/ItemFilterComponent";
 // import des services
 import { getAllTagsWithMapsAndStorymaps } from "./utils/api/builtMap/getRequests";
 import { shuffleArray } from "./utils/functions/common";
@@ -130,28 +131,10 @@ function HomePage() {
 				</div>
 			</section>
 			<section className={style.tagContainer} ref={tagContainerRef}>
-				<div className={style.filterContainer}>
-					<div className={style.filterInputContainer}>
-						<input
-							type="checkbox"
-							name="map"
-							id="map"
-							checked={itemTypes.map}
-							onChange={(e) => handleCheckboxChange(e, "map")}
-						/>
-						<legend>{translation[language].common.map}s</legend>
-					</div>
-					<div className={style.filterInputContainer}>
-						<input
-							type="checkbox"
-							name="storymap"
-							id="storymap"
-							checked={itemTypes.storymap}
-							onChange={(e) => handleCheckboxChange(e, "storymap")}
-						/>
-						<legend>{translation[language].common.storymap}s</legend>
-					</div>
-				</div>
+				<ItemFilterComponent
+					itemTypes={itemTypes}
+					handleCheckboxChange={handleCheckboxChange}
+				/>
 				<div>
 					{allTagsWithItems?.map((tagWithItems) => {
 						const itemsArray =

@@ -81,15 +81,7 @@
         @include m.flexbox(flex, column, wrap, center, center);
         gap: v.$space-xxl;
 
-        .filterContainer {
-            @include m.flexbox(flex, row, wrap, center, center);
-            gap: v.$space-l;
 
-            .filterInputContainer {
-                @include m.flexbox(flex, row, wrap, center, center);
-
-            }
-        }
 
         .tagItemContainer {
             &Title {
