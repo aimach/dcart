@@ -152,6 +152,7 @@ const createNewUser = async (body: userInputType) => {
 	}
 };
 
+
 export {
 	loginUser,
 	logoutUser,
@@ -159,5 +160,5 @@ export {
 	refreshAccessToken,
 	sendResetPasswordRequest,
 	resetPassword,
-	createNewUser,
+	createNewUser
 };
