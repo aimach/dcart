@@ -12,6 +12,7 @@ export const tagController = {
 	getTags: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { tagSlug } = req.params;
+			const { map, storymap } = req.query;
 
 			let results = null;
 			if (tagSlug === "all") {
@@ -21,24 +22,23 @@ export const tagController = {
 				return;
 			}
 
-			const tagQuery = await dcartDataSource
+			let tagQuery = await dcartDataSource
 				.getRepository(Tag)
-				.createQueryBuilder("tag")
-				.leftJoinAndSelect("tag.maps", "map", "map.isActive = true")
-				.leftJoinAndSelect(
-					"tag.storymaps",
-					"storymap",
-					"storymap.isActive = true",
-				)
-				.leftJoinAndSelect("map.tags", "mapTag")
-				.leftJoinAndSelect("storymap.tags", "storymapTag")
-				.select([
-					"tag.id",
-					"tag.name_fr",
-					"tag.name_en",
-					"tag.description_fr",
-					"tag.description_en",
-					"tag.slug",
+				.createQueryBuilder("tag");
+			const selectArray = [
+				"tag.id",
+				"tag.name_fr",
+				"tag.name_en",
+				"tag.description_fr",
+				"tag.description_en",
+				"tag.slug",
+			];
+
+			if (map === "true" || map === undefined) {
+				tagQuery = tagQuery
+					.leftJoinAndSelect("tag.maps", "map", "map.isActive = true")
+					.leftJoinAndSelect("map.tags", "mapTag");
+				selectArray.push(
 					"map.id",
 					"map.title_fr",
 					"map.title_en",
@@ -47,6 +47,18 @@ export const tagController = {
 					"map.image_url",
 					"map.slug",
 					"mapTag",
+				);
+			}
+
+			if (storymap === "true" || storymap === undefined) {
+				tagQuery = tagQuery
+					.leftJoinAndSelect(
+						"tag.storymaps",
+						"storymap",
+						"storymap.isActive = true",
+					)
+					.leftJoinAndSelect("storymap.tags", "storymapTag");
+				selectArray.push(
 					"storymap.id",
 					"storymap.title_lang1",
 					"storymap.title_lang2",
@@ -55,7 +67,10 @@ export const tagController = {
 					"storymap.image_url",
 					"storymap.slug",
 					"storymapTag",
-				]);
+				);
+			}
+
+			tagQuery.select(selectArray);
 
 			if (tagSlug === "items") {
 				results = await tagQuery.getMany();

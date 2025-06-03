@@ -1,16 +1,14 @@
 // import des bibliothèques
-import { Link, useLocation, useNavigate } from "react-router";
+import { Link, useLocation } from "react-router";
 // import des composants
 import NavComponent from "../common/NavComponent";
 import ImageWithLink from "../common/ImageWithLink";
-import ButtonComponent from "../common/button/ButtonComponent";
 // import du context
 import { AuthContext } from "../../context/AuthContext";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 // import des services
-import { logoutUser } from "../../utils/api/authAPI";
 import {
 	getBackofficeNavigationList,
 	getTranslationNavigationList,
@@ -37,7 +35,7 @@ interface HeaderComponentProps {
  */
 const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	// récupération des données de connexion
-	const { token, setToken } = useContext(AuthContext);
+	const { token } = useContext(AuthContext);
 
 	// récupération des données de traduction
 	const { language, translation, setLanguage } = useTranslation();
@@ -46,16 +44,6 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 
 	// récupération de l'url de la page en cours pour savoir si l'utilisateur est sur la page d'accueil
 	const { pathname } = useLocation();
-
-	// fonction de déconnexion de l'utilisateur
-	const navigate = useNavigate();
-	const handleLogoutClick = async () => {
-		const isLoggedOut = await logoutUser();
-		if (isLoggedOut) {
-			setToken(null);
-			navigate("/");
-		}
-	};
 
 	return (
 		<header className={style.header}>
@@ -80,7 +68,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 			)}
 			{pathname !== "/" && !pathname.includes("backoffice") && !isMobile && (
 				<Link to="/" className={style.headerLogo}>
-					<h1>{translation[language].title as string}</h1>
+					<h1>DCART - {translation[language].title as string}</h1>
 				</Link>
 			)}
 
@@ -129,14 +117,6 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 						/>
 					</>
 				)}
-				{/* {token && pathname.includes("backoffice") && (
-					<ButtonComponent
-						type="button"
-						color="gold"
-						textContent="deconnexion"
-						onClickFunction={handleLogoutClick}
-					/>
-				)} */}
 			</div>
 		</header>
 	);

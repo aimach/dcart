@@ -6,7 +6,7 @@
 
 
 .mainPage {
-    width: 100vw;
+    width: 100%;
     @include m.flexbox(flex, column, nowrap, flex-start, center);
     gap: v.$space-xxl;
     background-position-y: 43%;
@@ -14,7 +14,7 @@
     background-size: cover;
 
     .heroContainer {
-        width: 100vw;
+        width: 100%;
         height: 100dvh;
         background-image: url('./assets/home_bg.png');
         background-size: cover;
@@ -30,9 +30,10 @@
         }
 
         >p {
-            margin: 0 v.$space-xxl;
-            text-align: center;
+            text-align: justify;
             line-height: v.$space-l;
+            font-size: v.$font-size-l;
+            width: 70vw;
         }
 
     }
@@ -77,14 +78,40 @@
     .tagContainer {
         width: 100%;
         height: 100%;
-        @include m.flexbox(flex, row, wrap, center, center);
+        @include m.flexbox(flex, column, wrap, center, center);
         gap: v.$space-xxl;
 
-        .tagItemContainer {
-            >h3 {
-                font-size: v.$font-size-xxl;
-                margin-bottom: v.$space-l;
+        .filterContainer {
+            @include m.flexbox(flex, row, wrap, center, center);
+            gap: v.$space-l;
+
+            .filterInputContainer {
+                @include m.flexbox(flex, row, wrap, center, center);
+
             }
+        }
+
+        .tagItemContainer {
+            &Title {
+                padding-bottom: v.$space-s;
+                margin-bottom: v.$space-s;
+                border-bottom: v.$border-width-m solid v.$color-black-chocolate;
+                @include m.flexbox(flex, row, wrap, space-between, center);
+
+                >h3 {
+                    font-size: v.$font-size-xxl;
+                }
+
+                .textButtonContainer {
+                    @include m.flexbox(flex, row, wrap, space-between, center);
+                    transition: transform 0.2s ease;
+                }
+
+                .textButtonContainer:hover {
+                    transform: scale(1.05);
+                }
+            }
+
         }
     }
 
