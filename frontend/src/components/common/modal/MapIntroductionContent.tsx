@@ -63,18 +63,20 @@ const MapIntroductionContent = ({
 								className={style.modalImage}
 							/>
 						)}
-						<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-							dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
-						/>
+						<div className={style.textSection}>
+							<div // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+								dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+							/>
+							<ButtonComponent
+								type="button"
+								color="gold"
+								textContent={translation[language].button.discover}
+								onClickFunction={() => {
+									setIsModalOpen(false);
+								}}
+							/>
+						</div>
 					</div>
-					<ButtonComponent
-						type="button"
-						color="gold"
-						textContent={translation[language].button.discover}
-						onClickFunction={() => {
-							setIsModalOpen(false);
-						}}
-					/>
 				</div>
 			)}
 		</>
