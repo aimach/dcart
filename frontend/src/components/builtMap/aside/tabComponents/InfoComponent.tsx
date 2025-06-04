@@ -11,6 +11,7 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import style from "./tabComponent.module.scss";
 import { useState } from "react";
 import InfoIntroductionContent from "./InfoIntroductionContent";
+import { ChevronLeft, ChevronRight, SquareChevronRight } from "lucide-react";
 
 /**
  * Affiche les informations du point sélectionné
@@ -45,13 +46,17 @@ const InfoComponent = () => {
 					<>
 						{mapIdentifier !== "exploration" && (
 							<details className={style.chartDetails} open>
-								<summary>{translation[language].mapPage.aside.seeStat}</summary>
+								<summary>
+									<SquareChevronRight width={20} />
+									{translation[language].mapPage.aside.seeStat}
+								</summary>
 								<ChartComponent />
 							</details>
 						)}
 						{mapIdentifier !== "exploration" ? (
 							<details className={style.sourceDetails}>
 								<summary>
+									<SquareChevronRight width={20} />
 									{translation[language].mapPage.aside.seeSources}
 								</summary>
 								{selectedMarker.sources.map((source) => {

@@ -34,22 +34,43 @@
     cursor: default;
 
     >summary {
-      list-style-type: '>';
       cursor: pointer;
+      display: flex;
+      align-items: center;
+
+      >svg {
+        transition: transform 0.2s ease;
+      }
     }
 
   }
 
-  .selectionDetails[open]>summary {
-    list-style-type: '⌄';
+  .selectionDetails[open]>summary>svg {
+    transform: rotate(90deg);
   }
 
   .sourceDetails,
   .chartDetails {
     padding: v.$space-s;
 
+
     >summary {
       cursor: pointer;
+      display: flex;
+      align-items: center;
+      gap: v.$space-xs;
+
+      >svg {
+        transition: transform 0.2s ease;
+      }
+    }
+
+  }
+
+  .sourceDetails[open],
+  .chartDetails[open] {
+    >summary>svg {
+      transform: rotate(90deg);
     }
   }
 
@@ -60,8 +81,8 @@
   .chartDetails[open] {
     height: 50%;
   }
-}
 
+}
 
 .testimoniesInfo {
   margin: v.$space-s 0;
