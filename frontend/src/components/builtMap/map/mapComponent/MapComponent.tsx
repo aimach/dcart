@@ -42,6 +42,7 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
+import { getMapAttribution } from "../../../../utils/functions/map";
 
 /**
  * Composant de la carte
@@ -74,7 +75,6 @@ const MapComponent = () => {
 		isTutorialOpen,
 		closeTutorial,
 		resetTutorialStep,
-		mapIsDownloading,
 	} = useMapStore(useShallow((state) => state));
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(useShallow((state) => state));
@@ -187,6 +187,8 @@ const MapComponent = () => {
 		}
 	};
 
+	const tileAttribution = getMapAttribution(tileLayerURL);
+
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
@@ -273,7 +275,7 @@ const MapComponent = () => {
 							<>
 								<TileLayer
 									opacity={0.6}
-									attribution='dCART | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+									attribution={`dCART | &copy; ${tileAttribution}`}
 									url={tileLayerURL}
 								/>
 								{!mapInfos?.isLayered && allMemoizedPoints.length > 0 && (

@@ -30,6 +30,7 @@ import type {
 import style from "./simpleMapBlock.module.scss";
 import "leaflet/dist/leaflet.css";
 import "./simpleMapBlock.css";
+import { getMapAttribution } from "../../../../utils/functions/map";
 
 interface SimpleMapBlockProps {
 	blockContent: BlockContentType;
@@ -84,6 +85,10 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		}
 	}, [points]);
 
+	const tileAttribution = getMapAttribution(
+		blockContent[`content2_${selectedLanguage}`],
+	);
+
 	return (
 		<>
 			<div id={mapName}>
@@ -97,7 +102,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 				>
 					<>
 						<TileLayer
-							attribution='dCART | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+							attribution={`dCART | &copy; ${tileAttribution}`}
 							url={blockContent[`content2_${selectedLanguage}`]}
 						/>
 						<MarkerClusterGroup
