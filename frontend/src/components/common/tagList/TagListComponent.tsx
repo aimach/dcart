@@ -15,16 +15,20 @@ type TagListComponentProps = {
 	withLink: boolean;
 };
 
-const TagListComponent = ({ item }: TagListComponentProps) => {
+const TagListComponent = ({ item, withLink }: TagListComponentProps) => {
 	const { language } = useTranslation();
 
 	return (
 		<div className={style.itemTags}>
-			{(item.tags as TagType[]).slice(0, 3).map((tag: TagType) => (
-				<Link to={`/tag/${tag.slug}`} key={tag.id}>
-					<p>#{tag[`name_${language}`]}</p>
-				</Link>
-			))}
+			{(item.tags as TagType[]).slice(0, 3).map((tag: TagType) =>
+				withLink ? (
+					<Link to={`/tag/${tag.slug}`} key={tag.id}>
+						#{tag[`name_${language}`]}
+					</Link>
+				) : (
+					<p key={tag.id}>#{tag[`name_${language}`]}</p>
+				),
+			)}
 		</div>
 	);
 };

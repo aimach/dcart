@@ -179,12 +179,14 @@ const ChartComponent = () => {
 		],
 	};
 
+	console.log(mapInfos);
+
 	return (
 		labels.length &&
 		dataSets.length &&
 		colors.length && (
 			<section className={style.chartContainer}>
-				<fieldset className={style.chartRadio}>
+				<fieldset className={style.chartType}>
 					<ChartPie
 						size={24}
 						style={{ color: chartType === "doughnut" ? "#251F18" : "#a1afc4" }}
@@ -214,7 +216,11 @@ const ChartComponent = () => {
 							onChange={() => setDataType("epithet")}
 						/>
 						<label htmlFor="epithet">
-							{translation[language].button.epithet}
+							{
+								translation[language].button[
+									mapInfos?.divinity_in_chart ? "divinity" : "epithet"
+								]
+							}
 						</label>
 					</div>
 

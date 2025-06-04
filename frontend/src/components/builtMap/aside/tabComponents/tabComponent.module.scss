@@ -126,8 +126,15 @@
     height: 200px;
   }
 
-  .chartRadio {
+  .chartType {
     @include m.flexbox(flex, row, nowrap, flex-end, center);
+    gap: v.$space-s;
+    width: 100%;
+    margin-top: v.$space-s;
+  }
+
+  .chartRadio {
+    @include m.flexbox(flex, row, nowrap, center, center);
     gap: v.$space-s;
     width: 100%;
     margin-top: v.$space-s;
