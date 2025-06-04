@@ -179,8 +179,6 @@ const ChartComponent = () => {
 		],
 	};
 
-	console.log(mapInfos);
-
 	return (
 		labels.length &&
 		dataSets.length &&
