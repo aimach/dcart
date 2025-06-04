@@ -16,6 +16,7 @@ import type { Dispatch, SetStateAction } from "react";
 import style from "./modalComponent.module.scss";
 // import des images
 import delta from "../../../assets/delta.png";
+import TagListComponent from "../tagList/TagListComponent";
 
 interface MapIntroductionContentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -77,6 +78,7 @@ const MapIntroductionContent = ({
 							/>
 						</div>
 					</div>
+					<TagListComponent item={mapInfos} withLink={true} />
 				</div>
 			)}
 		</>
