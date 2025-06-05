@@ -71,7 +71,6 @@ const TutorialModalContent = () => {
 								<h4>{content[`title_${language}`]}</h4>
 								<img src={delta} alt="decoration" width={30} />
 							</div>
-
 							<p>{content[`content_${language}`]}</p>
 						</div>
 					);

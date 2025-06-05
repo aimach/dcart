@@ -31,6 +31,7 @@ type LanguageObject = {
 		seeSources: string;
 		seeAll: string;
 		epithet: string;
+		divinity: string;
 		gender: string;
 		activity: string;
 		doughnut: string;

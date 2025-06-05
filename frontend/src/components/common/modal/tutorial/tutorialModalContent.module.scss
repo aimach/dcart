@@ -7,6 +7,11 @@
     .contentContainer {
         margin-bottom: v.$space-l;
 
+        >p {
+            font-size: v.$font-size-m;
+            margin-top: v.$space-m;
+        }
+
         .modalTitleSection {
             @include m.flexbox(flex, row, nowrap, center, center);
 

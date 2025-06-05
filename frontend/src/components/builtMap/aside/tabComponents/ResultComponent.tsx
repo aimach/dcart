@@ -51,12 +51,12 @@ const ResultComponent = () => {
 		// filtre les points qui ne sont pas dans les calques sélectionnés
 		const allResultsFiltered = mapInfos?.isLayered
 			? allResults.filter((point: PointType) =>
-				mapInfos
-					? allLayers.some((string) =>
-						string.includes(`svg> ${point.layerName}`),
-					)
-					: point,
-			)
+					mapInfos
+						? allLayers.some((string) =>
+								string.includes(`svg> ${point.layerName}`),
+							)
+						: point,
+				)
 			: allResults;
 		// ajoute la classe "isSelected" aux points sélectionnés
 		const allResultsFilteredWithCSS = allResultsFiltered.map(
@@ -75,16 +75,17 @@ const ResultComponent = () => {
 
 		// trie les résultats par sous-région puis par nom de ville
 		const allResultsInAlphaOrder = allResultsFilteredWithCSS.sort((a, b) => {
-			if (
-				a[`sous_region_${language}`] === b[`sous_region_${language}`] &&
-				!a.nom_ville &&
-				!b.nom_ville
-			) {
-				return a.nom_ville.localeCompare(b.nom_ville);
-			}
-			return a[`sous_region_${language}`].localeCompare(
-				b[`sous_region_${language}`],
-			);
+			const subRegionA = a[`sous_region_${language}`] || "";
+			const subRegionB = b[`sous_region_${language}`] || "";
+			if (subRegionA < subRegionB) return -1;
+			if (subRegionA > subRegionB) return 1;
+
+			const cityA = a.nom_ville || "";
+			const cityB = b.nom_ville || "";
+			if (cityA < cityB) return -1;
+			if (cityA > cityB) return 1;
+
+			return 0;
 		});
 		return allResultsInAlphaOrder;
 	}, [allResults, selectedMarker, allLayers, mapInfos, language]);

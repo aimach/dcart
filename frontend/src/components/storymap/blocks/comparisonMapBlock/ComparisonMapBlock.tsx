@@ -8,6 +8,7 @@ import {
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
+import { getMapAttribution } from "../../../../utils/functions/map";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { LatLngTuple } from "leaflet";
@@ -67,8 +68,7 @@ const ComparisonMapBlock = ({
 		comparisonMap.createPane("left");
 		comparisonMap.createPane("right");
 
-		const attribution =
-			'dCART | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors';
+		const attribution = `dCART | ${getMapAttribution(blockContent.content2_lang2)}`;
 
 		const rightLayer = L.tileLayer(blockContent.content2_lang2, {
 			pane: "right",

@@ -22,6 +22,8 @@ import {
 import { getAllAttestationsFromSourceId } from "../../../../utils/api/builtMap/getRequests";
 // import du style
 import style from "./tabComponent.module.scss";
+// import des icônes
+import { ChevronRight } from "lucide-react";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;
@@ -133,6 +135,7 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 			className={style.selectionDetails}
 		>
 			<summary>
+				<ChevronRight />
 				Source #{source.source_id} {datationSentence}
 			</summary>
 			{attestations?.length ? (
