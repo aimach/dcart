@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { Marker, Tooltip } from "react-leaflet";
-import { useLocation, useParams } from "react-router";
+import { useLocation } from "react-router";
 // import des services
 import { isSelectedMarker } from "../../../../utils/functions/map";
 import { getIcon } from "../../../../utils/functions/icons";

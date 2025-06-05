@@ -1,12 +1,13 @@
 // import des bibiliothèques
 import DOMPurify from "dompurify";
+// import des services
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
+import { getAllowedTags } from "../../../../utils/functions/block";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./textBlock.module.scss";
 import "quill/dist/quill.snow.css";
-import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
-import { getAllowedTags } from "../../../../utils/functions/block";
 
 interface TextBlockProps {
 	blockContent: BlockContentType;

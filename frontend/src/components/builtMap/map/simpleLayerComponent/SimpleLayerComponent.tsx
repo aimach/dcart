@@ -1,6 +1,7 @@
 // import des bibliothèques
 import { useEffect, useMemo, useRef } from "react";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+import { LayerGroup, LayersControl } from "react-leaflet";
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import des services
@@ -15,6 +16,7 @@ import {
 	handleSpiderfyPosition,
 	zoomOnSelectedMarkerCluster,
 } from "../../../../utils/functions/map";
+import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 // import des types
 import type L from "leaflet";
 import type {
@@ -24,8 +26,6 @@ import type {
 } from "../../../../utils/types/mapTypes";
 // import du style
 import "./simpleLayerChoice.css";
-import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
-import { LayerGroup, LayersControl } from "react-leaflet";
 
 type SimpleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
