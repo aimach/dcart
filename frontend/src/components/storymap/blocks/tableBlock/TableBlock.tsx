@@ -31,7 +31,9 @@ const TableBlock = ({ blockContent }: TableBlockProps) => {
 
 	return (
 		<section className={style.tableSection}>
-			<table className={style.tableBlock}>
+			<table
+				className={`${style.tableBlock} ${style[`tableBlock${blockContent.content3}`]}`}
+			>
 				<tbody>
 					{tableContent.map((row, rowIndex) => (
 						// biome-ignore lint/suspicious/noArrayIndexKey:

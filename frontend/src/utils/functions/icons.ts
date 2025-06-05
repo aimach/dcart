@@ -1,5 +1,6 @@
 // import des bibliothèques
-import L, { icon } from "leaflet";
+import L from "leaflet";
+import tinycolor from "tinycolor2";
 // import des types
 import type { PointType } from "../types/mapTypes";
 import type { MarkerOptions, Marker, MarkerCluster } from "leaflet";
@@ -10,7 +11,6 @@ interface CustomMarkerOptions extends MarkerOptions {
 		shape: string;
 	};
 }
-import tinycolor from "tinycolor2";
 
 /**
  * Retourne une icone de taille petite

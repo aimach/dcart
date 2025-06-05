@@ -8,6 +8,7 @@ type StorymapType = {
 	description_lang2: string;
 	description_lang1: string;
 	image_url?: string;
+	background_color?: string;
 	author?: string;
 	isActive: boolean;
 	publishedAt: string;
@@ -37,6 +38,7 @@ type StorymapBodyType = {
 	description_lang2: string;
 	category_id: string;
 	image_url: string;
+	background_color: string;
 	author: string;
 	lang1: string;
 	lang2: string;
@@ -54,6 +56,7 @@ type BlockContentType = {
 	content1_lang1: string;
 	content2_lang1: string;
 	content2_lang2: string;
+	content3?: string | null;
 	points?: PointType[];
 	groupedPoints?: GroupedTyped[];
 	children: BlockContentType[];

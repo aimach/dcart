@@ -30,11 +30,12 @@ type TagWithItemsType = {
 	}[];
 	storymaps: {
 		id: string;
-		title_fr: string;
-		title_en: string;
-		description_fr: string;
-		description_en: string;
+		title_lang1: string;
+		title_lang2: string;
+		description_lang1: string;
+		description_lang2: string;
 		image_url: string;
+		background_color: string;
 		slug: string;
 		tags: Omit<TagType[], "maps">;
 	}[];

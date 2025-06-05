@@ -128,11 +128,11 @@ body {
 	line-height: 1;
 }
 
-// commenté pour le WYSIWYG
-// ol,
-// ul {
-// 	list-style: none;
-// }
+// résolution du problème de quill de réduire la taille de la police sur les li
+.textBlockLi li {
+	font-size: v.$font-size-l !important;
+	font-family: "Vollkorn", serif !important;
+}
 
 blockquote,
 q {

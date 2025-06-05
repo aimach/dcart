@@ -2,6 +2,7 @@
 import { useContext, useEffect, useMemo, useState } from "react";
 import { useNavigate, useParams } from "react-router";
 import Select from "react-select";
+import tinycolor from "tinycolor2";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
 // import du contexte
@@ -103,6 +104,9 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 				description_lang2: data.description_lang2,
 				category_id: data.category_id,
 				image_url: data.image_url,
+				background_color: data.background_color
+					? tinycolor(data.background_color).toHexString()
+					: "",
 				author: data.author,
 				lang1: data.lang1,
 				lang2: data.lang2,

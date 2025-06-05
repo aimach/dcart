@@ -299,6 +299,9 @@ type LanguageObject = {
 				forRightPane: string;
 				uploadTableFr: string;
 				uploadTableEn: string;
+				headerPosition: string;
+				headerPositionTop: string;
+				headerPositionLeft: string;
 				imageToLeft: string;
 				imageToRight: string;
 				scrollMapStepList: string;

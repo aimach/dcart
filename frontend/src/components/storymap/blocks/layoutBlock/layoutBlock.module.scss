@@ -3,6 +3,15 @@
 
 .layoutSection {
     width: 70vw;
+
+    >div {
+        p {
+            text-align: justify;
+            margin: v.$font-space-xxxxl 0;
+            line-height: v.$font-space-xxxl;
+            font-size: v.$font-size-l;
+        }
+    }
 }
 
 .left {
@@ -15,7 +24,7 @@
 
         >img {
             width: 80%;
-
+            border-radius: v.$border-radius-base;
         }
 
         >figcaption {
@@ -35,6 +44,7 @@
 
         >img {
             width: 80%;
+            border-radius: v.$border-radius-base;
         }
 
         >figcaption {
@@ -51,6 +61,7 @@
 
         >img {
             width: 100%;
+            border-radius: v.$border-radius-base;
         }
     }
 }
