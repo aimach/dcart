@@ -65,6 +65,7 @@ export const tagController = {
 					"storymap.description_lang1",
 					"storymap.description_lang2",
 					"storymap.image_url",
+					"storymap.background_color",
 					"storymap.slug",
 					"storymapTag",
 				);
