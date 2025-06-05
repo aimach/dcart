@@ -39,7 +39,7 @@ const SimpleLayerComponent = ({
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies:<
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (!map) return;
 

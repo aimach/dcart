@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { Marker, Tooltip } from "react-leaflet";
+import { useLocation, useParams } from "react-router";
 // import des services
 import { isSelectedMarker } from "../../../../utils/functions/map";
 import { getIcon } from "../../../../utils/functions/icons";
@@ -23,13 +24,13 @@ interface MarkerComponentProps {
  * @returns
  */
 const MarkerComponent = ({ point }: MarkerComponentProps) => {
+	const location = useLocation();
+	const itemType =
+		location.pathname.split("/")[1] === "map" ? "map" : "storymap";
+
 	// récupération des données des stores
 	const { selectedMarker, setSelectedMarker, mapInfos } = useMapStore(
-		useShallow((state) => ({
-			selectedMarker: state.selectedMarker,
-			setSelectedMarker: state.setSelectedMarker,
-			mapInfos: state.mapInfos,
-		})),
+		useShallow((state) => state),
 	);
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
@@ -38,14 +39,14 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur
 	const handleMarkerOnClick = (point: PointType) => {
-		// ouverture de l'onglet "infos"
-		setSelectedTabMenu("infos");
-		setIsPanelDisplayed?.(true);
+		if (itemType === "map") {
+			// ouverture de l'onglet "infos"
+			setSelectedTabMenu("infos");
+			setIsPanelDisplayed?.(true);
 
-		setSelectedMarker(point);
+			setSelectedMarker(point);
+		}
 	};
-
-
 
 	const customIcon = getIcon(
 		point,
