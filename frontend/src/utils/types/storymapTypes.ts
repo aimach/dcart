@@ -56,6 +56,7 @@ type BlockContentType = {
 	content1_lang1: string;
 	content2_lang1: string;
 	content2_lang2: string;
+	content3?: string | null;
 	points?: PointType[];
 	groupedPoints?: GroupedTyped[];
 	children: BlockContentType[];

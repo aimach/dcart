@@ -22,6 +22,7 @@ type blockType = {
 	content1_lang2?: string;
 	content2_lang1?: string | null;
 	content2_lang2?: string | null;
+	content3?: string | null;
 	parentId?: string | null;
 	storymapId?: string;
 	typeId?: string;

@@ -31,6 +31,9 @@ export class Block extends BaseEntity {
 	@Column({ type: "text", nullable: true })
 	content2_lang2!: string | null;
 
+	@Column({ type: "text", nullable: true })
+	content3?: string | null;
+
 	@Column({ type: "int", nullable: true })
 	position!: number | null;
 

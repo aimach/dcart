@@ -60,6 +60,7 @@ export const blockController = {
 				content1_lang2,
 				content2_lang1,
 				content2_lang2,
+				content3,
 				parentId,
 				storymapId,
 				typeName,
@@ -100,6 +101,7 @@ export const blockController = {
 				content1_lang2,
 				content2_lang1,
 				content2_lang2,
+				content3: content3 || null,
 				position: isLayoutChild ? null : position.max + 1,
 				parent: parentId,
 				storymap: storymapId,
@@ -154,6 +156,7 @@ export const blockController = {
 				content1_lang2,
 				content2_lang1,
 				content2_lang2,
+				content3,
 				parentId,
 			} = req.body;
 
@@ -163,6 +166,7 @@ export const blockController = {
 				content1_lang2,
 				content2_lang1,
 				content2_lang2,
+				content3,
 				parent: parentId,
 			});
 
