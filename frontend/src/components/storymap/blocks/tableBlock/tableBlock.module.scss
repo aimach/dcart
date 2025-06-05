@@ -19,8 +19,18 @@
         padding: v.$space-s;
     }
 
-    >tbody>tr:first-child>td {
-        background-color: v.$color-grullo-light;
-        padding: v.$space-s;
+    &left {
+        >tbody>tr>td:first-child {
+            background-color: v.$color-grullo-light;
+            padding: v.$space-s;
+        }
     }
+
+    &top {
+        >tbody>tr:first-child>td {
+            background-color: v.$color-grullo-light;
+            padding: v.$space-s;
+        }
+    }
+
 }
