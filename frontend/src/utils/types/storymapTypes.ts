@@ -8,6 +8,7 @@ type StorymapType = {
 	description_lang2: string;
 	description_lang1: string;
 	image_url?: string;
+	background_color?: string;
 	author?: string;
 	isActive: boolean;
 	publishedAt: string;
