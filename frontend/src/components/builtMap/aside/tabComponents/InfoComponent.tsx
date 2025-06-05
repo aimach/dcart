@@ -1,16 +1,18 @@
 // import des bibliothèques
+import { useState } from "react";
 import { useParams } from "react-router";
 // import des composants
 import SourceDetailsComponent from "./SourceDetailsComponent";
 import ChartComponent from "./ChartComponent";
+import InfoIntroductionContent from "./InfoIntroductionContent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import du style
 import style from "./tabComponent.module.scss";
-import { useState } from "react";
-import InfoIntroductionContent from "./InfoIntroductionContent";
+// import des icônes
+import { SquareChevronRight } from "lucide-react";
 
 /**
  * Affiche les informations du point sélectionné
@@ -45,13 +47,17 @@ const InfoComponent = () => {
 					<>
 						{mapIdentifier !== "exploration" && (
 							<details className={style.chartDetails} open>
-								<summary>{translation[language].mapPage.aside.seeStat}</summary>
+								<summary>
+									<SquareChevronRight width={20} />
+									{translation[language].mapPage.aside.seeStat}
+								</summary>
 								<ChartComponent />
 							</details>
 						)}
 						{mapIdentifier !== "exploration" ? (
 							<details className={style.sourceDetails}>
 								<summary>
+									<SquareChevronRight width={20} />
 									{translation[language].mapPage.aside.seeSources}
 								</summary>
 								{selectedMarker.sources.map((source) => {

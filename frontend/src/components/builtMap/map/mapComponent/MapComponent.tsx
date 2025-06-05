@@ -24,6 +24,7 @@ import MobileTutorialModalContent from "../../../common/modal/tutorial/MobileTut
 import OrientationControl from "../controls/OrientationControlComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des services
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
@@ -35,7 +36,7 @@ import {
 	getOneMapInfosById,
 	getOneMapInfosBySlug,
 } from "../../../../utils/api/builtMap/getRequests";
-import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
+import { getMapAttribution } from "../../../../utils/functions/map";
 // import des types
 import type { LatLngTuple } from "leaflet";
 // import du style
@@ -74,7 +75,6 @@ const MapComponent = () => {
 		isTutorialOpen,
 		closeTutorial,
 		resetTutorialStep,
-		mapIsDownloading,
 	} = useMapStore(useShallow((state) => state));
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(useShallow((state) => state));
@@ -187,6 +187,8 @@ const MapComponent = () => {
 		}
 	};
 
+	const tileAttribution = getMapAttribution(tileLayerURL);
+
 	return (
 		<>
 			{!mapReady && <LoaderComponent size={50} />}
@@ -273,7 +275,7 @@ const MapComponent = () => {
 							<>
 								<TileLayer
 									opacity={0.6}
-									attribution='dCART | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+									attribution={`dCART | &copy; ${tileAttribution}`}
 									url={tileLayerURL}
 								/>
 								{!mapInfos?.isLayered && allMemoizedPoints.length > 0 && (

@@ -18,6 +18,7 @@ import {
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
+import { getMapAttribution } from "../../../../utils/functions/map";
 // import des types
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
@@ -84,6 +85,10 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		}
 	}, [points]);
 
+	const tileAttribution = getMapAttribution(
+		blockContent[`content2_${selectedLanguage}`],
+	);
+
 	return (
 		<>
 			<div id={mapName}>
@@ -97,7 +102,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 				>
 					<>
 						<TileLayer
-							attribution='dCART | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
+							attribution={`dCART | &copy; ${tileAttribution}`}
 							url={blockContent[`content2_${selectedLanguage}`]}
 						/>
 						<MarkerClusterGroup

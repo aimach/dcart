@@ -48,18 +48,7 @@
 
     }
 
-    .itemTags {
-        padding: v.$space-xs;
 
-        >p {
-
-            color: v.$color-neutral-60;
-            font-size: v.$font-size-s;
-        }
-
-        @include m.flexbox(flex, row, wrap, center, center);
-        gap: v.$space-xs;
-    }
 }
 
 /* Ciblé pour les téléphones ≤ 480px */

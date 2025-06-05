@@ -7,12 +7,15 @@ import {
 	Marker,
 	Popup,
 } from "react-leaflet";
+// import des custom hooks
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des services
 import {
 	getLittleCircleIcon,
 	getIcon,
 } from "../../../../utils/functions/icons";
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
+import { getMapAttribution } from "../../../../utils/functions/map";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
@@ -21,7 +24,6 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./scrolledMapBlock.module.scss";
-import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 
 interface MapSectionProps {
 	blockContent: BlockContentType;
@@ -92,6 +94,8 @@ const MapSection = ({
 		}
 	};
 
+	const mapAttribution = getMapAttribution(blockContent.content2_lang1);
+
 	return (
 		<div id={mapName} className={style.mapSection}>
 			<MapContainer
@@ -109,8 +113,8 @@ const MapSection = ({
 			>
 				<>
 					<TileLayer
-						attribution='dCART | &copy; <a href="https://www.openstreetmap.org/copyright">OpenStreetMap</a> contributors'
-						url="https://cawm.lib.uiowa.edu/tiles/%7Bz%7D/%7Bx%7D/%7By%7D.png/tiles/{z}/{x}/{y}.png"
+						attribution={`dCART | &copy; ${mapAttribution}`}
+						url={blockContent.content2_lang1}
 					/>
 
 					{points.length ? (

@@ -89,6 +89,16 @@
   &ImageAndTextSection {
     margin-top: v.$space-xl;
 
+    .textSection {
+      @include m.flexbox(flex, column, nowrap, flex-start, center);
+      gap: v.$space-s;
+
+      >div>p {
+        text-align: justify;
+        font-size: v.$font-size-s;
+      }
+    }
+
     >img {
       width: 50%;
       float: left;
@@ -97,10 +107,6 @@
       border-radius: v.$border-radius-base;
     }
 
-    >p {
-      text-align: justify;
-      font-size: v.$font-size-s;
-    }
   }
 }
 

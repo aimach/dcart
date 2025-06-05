@@ -443,6 +443,16 @@ const slugify = (str: string) =>
 		.replace(/[^a-z0-9]+/g, "-") // caractères spéciaux en tirets
 		.replace(/^-+|-+$/g, ""); // trim tirets
 
+/**
+ * Fonction utilisée pour définir l'attribution de la carte en fonction de l'URL du layer
+ * @param {string} tileLayerURL - L'URL du layer
+ * @returns {string} - L'attribution de la carte
+ */
+const getMapAttribution = (tileLayerURL: string): string => {
+	return tileLayerURL.includes("openstreetmap")
+		? '<a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
+		: '<a href="https://cawm.lib.uiowa.edu/index.html" target="_blank">Consortium of Ancient World Mappers</a> contributors';
+};
 export {
 	getAgentsArrayWithoutDuplicates,
 	getAllAttestationsIdsFromParsedPoints,
@@ -458,4 +468,5 @@ export {
 	handleSpiderfyPosition,
 	zoomOnSelectedMarkerCluster,
 	uploadMapImage,
+	getMapAttribution,
 };
