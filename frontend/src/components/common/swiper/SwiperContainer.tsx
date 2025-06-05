@@ -40,7 +40,7 @@ const SwiperContainer = ({ items }: SwiperContainerProps) => {
 				"--swiper-pagination-bullet-horizontal-gap": "3px",
 			}}
 		>
-			{items.map((item) => {
+			{items.slice(0, 10).map((item) => {
 				return (
 					<SwiperSlide key={item.id} className={style.itemSwiperSlide}>
 						<ItemContainer item={item} />

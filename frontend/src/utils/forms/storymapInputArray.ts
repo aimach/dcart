@@ -122,6 +122,19 @@ const storymapInputs: InputType[] = [
 		},
 	},
 	{
+		label_fr: "Couleur de fond (si aucune image fournie)",
+		label_en: "Background color (if no image provided)",
+		description_fr:
+			"Si aucune image n'est fournie, la couleur de fond est utilisée pour le bloc d'introduction",
+		description_en:
+			"If no background image is prrovided, the background color is used for the introduction block",
+		name: "background_color",
+		type: "color",
+		required: {
+			value: false,
+		},
+	},
+	{
 		label_fr: "Auteur",
 		label_en: "Author",
 		description_fr:

@@ -37,6 +37,7 @@ type StorymapBodyType = {
 	description_lang2: string;
 	category_id: string;
 	image_url: string;
+	background_color: string;
 	author: string;
 	lang1: string;
 	lang2: string;
