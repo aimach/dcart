@@ -8,6 +8,7 @@ import {
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
+import { getMapAttribution } from "../../../../utils/functions/map";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { LatLngTuple } from "leaflet";
@@ -17,7 +18,6 @@ import style from "./comparisonMapBloc.module.scss";
 import "./comparisonMapBloc.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-side-by-side";
-import { getMapAttribution } from "../../../../utils/functions/map";
 
 interface ComparisonMapBlockProps {
 	blockContent: BlockContentType;

@@ -1,17 +1,18 @@
 // import des bibliothèques
+import { useState } from "react";
 import { useParams } from "react-router";
 // import des composants
 import SourceDetailsComponent from "./SourceDetailsComponent";
 import ChartComponent from "./ChartComponent";
+import InfoIntroductionContent from "./InfoIntroductionContent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import du style
 import style from "./tabComponent.module.scss";
-import { useState } from "react";
-import InfoIntroductionContent from "./InfoIntroductionContent";
-import { ChevronLeft, ChevronRight, SquareChevronRight } from "lucide-react";
+// import des icônes
+import { SquareChevronRight } from "lucide-react";
 
 /**
  * Affiche les informations du point sélectionné

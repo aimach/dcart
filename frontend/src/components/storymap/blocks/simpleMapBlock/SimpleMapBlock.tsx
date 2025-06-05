@@ -18,6 +18,7 @@ import {
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
+import { getMapAttribution } from "../../../../utils/functions/map";
 // import des types
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
@@ -30,7 +31,6 @@ import type {
 import style from "./simpleMapBlock.module.scss";
 import "leaflet/dist/leaflet.css";
 import "./simpleMapBlock.css";
-import { getMapAttribution } from "../../../../utils/functions/map";
 
 interface SimpleMapBlockProps {
 	blockContent: BlockContentType;

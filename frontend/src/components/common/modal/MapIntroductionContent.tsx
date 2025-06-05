@@ -1,10 +1,11 @@
 // import des bibliothèques
 import { useMemo } from "react";
-import { Link, useParams } from "react-router";
+import { useParams } from "react-router";
 import DOMPurify from "dompurify";
 // import des composants
 import SearchFormComponent from "../../builtMap/map/searchFormComponent/SearchFormComponent";
 import ButtonComponent from "../button/ButtonComponent";
+import TagListComponent from "../tagList/TagListComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -16,7 +17,6 @@ import type { Dispatch, SetStateAction } from "react";
 import style from "./modalComponent.module.scss";
 // import des images
 import delta from "../../../assets/delta.png";
-import TagListComponent from "../tagList/TagListComponent";
 
 interface MapIntroductionContentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;

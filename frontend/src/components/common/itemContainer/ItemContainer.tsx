@@ -1,5 +1,7 @@
 // import des bibliothèques
 import { Link } from "react-router";
+// import des composants
+import TagListComponent from "../tagList/TagListComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -13,7 +15,6 @@ import style from "./itemContainer.module.scss";
 import { MapPin, BookOpenText } from "lucide-react";
 import mapPinBG from "../../../assets/pin-bg.png";
 import bookOpenBG from "../../../assets/sm-bg.png";
-import TagListComponent from "../tagList/TagListComponent";
 
 type ItemContainerProps = {
 	item:

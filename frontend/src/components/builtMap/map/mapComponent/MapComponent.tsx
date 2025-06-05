@@ -24,6 +24,7 @@ import MobileTutorialModalContent from "../../../common/modal/tutorial/MobileTut
 import OrientationControl from "../controls/OrientationControlComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des services
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
@@ -35,14 +36,13 @@ import {
 	getOneMapInfosById,
 	getOneMapInfosBySlug,
 } from "../../../../utils/api/builtMap/getRequests";
-import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
+import { getMapAttribution } from "../../../../utils/functions/map";
 // import des types
 import type { LatLngTuple } from "leaflet";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
-import { getMapAttribution } from "../../../../utils/functions/map";
 
 /**
  * Composant de la carte

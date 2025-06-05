@@ -22,7 +22,8 @@ import {
 import { getAllAttestationsFromSourceId } from "../../../../utils/api/builtMap/getRequests";
 // import du style
 import style from "./tabComponent.module.scss";
-import { ChevronLeft, ChevronRight } from "lucide-react";
+// import des icônes
+import { ChevronRight } from "lucide-react";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;
