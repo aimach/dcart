@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useCallback, useEffect, useMemo, useState } from "react";
+import { useCallback, useEffect, useMemo, useRef, useState } from "react";
 import {
 	MapContainer,
 	TileLayer,
@@ -18,9 +18,12 @@ import {
 } from "../../../../utils/functions/icons";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
-import { getMapAttribution } from "../../../../utils/functions/map";
+import {
+	getMapAttribution,
+	handleClusterMouseOver,
+} from "../../../../utils/functions/map";
 // import des types
-import type { LatLngTuple, Map as LeafletMap } from "leaflet";
+import type { L, LatLngTuple, Map as LeafletMap } from "leaflet";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type {
 	MapColorType,
@@ -89,6 +92,21 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		blockContent[`content2_${selectedLanguage}`],
 	);
 
+	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
+
+	useEffect(() => {
+		if (!map) return;
+
+		const clusterGroup = clusterRef.current;
+		if (!clusterGroup) return;
+
+		clusterGroup.on("clustermouseover", (e) => handleClusterMouseOver(e));
+
+		return () => {
+			clusterGroup.off("clustermouseover", (e) => handleClusterMouseOver(e));
+		};
+	}, [map]);
+
 	return (
 		<>
 			<div id={mapName}>
@@ -106,6 +124,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 							url={blockContent[`content2_${selectedLanguage}`]}
 						/>
 						<MarkerClusterGroup
+							ref={clusterRef}
 							spiderfyOnClick={false}
 							spiderfyOnMaxZoom={false}
 							showCoverageOnHover={false}
@@ -119,7 +138,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 								points.map((point: PointType) => {
 									return (
 										<MarkerComponent
-											key={`${point.latitude}-${point.longitude}`}
+											key={`${point.latitude}-${point.longitude}-${point.color}-${point.shape}`}
 											point={point}
 										/>
 									);

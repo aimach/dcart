@@ -30,6 +30,7 @@ const requiredBlockKeys: string[] = [
 	"content1_lang2",
 	"content2_lang1",
 	"content2_lang2",
+	"content3",
 	"parentId",
 	"storymapId",
 	"typeName",

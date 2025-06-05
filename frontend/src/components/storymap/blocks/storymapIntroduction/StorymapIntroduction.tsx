@@ -15,11 +15,18 @@ const StorymapIntroduction = ({
 	// récupération des données des stores
 	const { selectedLanguage } = useStorymapLanguageStore();
 
+	const backgroundStyle = introductionContent.image_url
+		? {
+				backgroundImage: `url(${introductionContent.image_url})`,
+				backgroundSize: "cover",
+				backgroundPosition: "center",
+			}
+		: {
+				backgroundColor: introductionContent.background_color || "#f0f0f0",
+			};
+
 	return (
-		<section
-			className={style.introductionContainer}
-			style={{ backgroundImage: `url(${introductionContent.image_url})` }}
-		>
+		<section className={style.introductionContainer} style={backgroundStyle}>
 			<div className={style.contentContainer}>
 				<h2>{introductionContent[`title_${selectedLanguage}`]}</h2>
 				<p>{introductionContent[`description_${selectedLanguage}`]}</p>

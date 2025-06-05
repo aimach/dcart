@@ -33,7 +33,13 @@ const ItemContainer = ({ item }: ItemContainerProps) => {
 			: bookOpenBG;
 
 	return (
-		<Link to={isMap ? `/map/${item.slug}` : `/storymap/${item.slug}`}>
+		<Link
+			to={
+				isMap
+					? `/map/${item.slug}`
+					: `/storymap/${(item as TagWithItemsType["storymaps"][number]).slug}`
+			}
+		>
 			<div className={style.itemIcon}>
 				{isMap ? <MapPin /> : <BookOpenText />}
 			</div>
@@ -44,7 +50,11 @@ const ItemContainer = ({ item }: ItemContainerProps) => {
 				}}
 			>
 				<div className={style.itemText}>
-					<h4>{isMap ? item[`title_${language}`] : item.title_lang1}</h4>
+					<h4>
+						{isMap
+							? item[`title_${language}`]
+							: (item as TagWithItemsType["storymaps"][number]).title_lang1}
+					</h4>
 					<TagListComponent item={item} withLink={false} />
 				</div>
 			</div>

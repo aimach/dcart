@@ -1,12 +1,13 @@
 // import des bibiliothèques
 import DOMPurify from "dompurify";
+// import des services
+import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
+import { getAllowedTags } from "../../../../utils/functions/block";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./textBlock.module.scss";
 import "quill/dist/quill.snow.css";
-import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
-import { getAllowedTags } from "../../../../utils/functions/block";
 
 interface TextBlockProps {
 	blockContent: BlockContentType;
@@ -27,7 +28,7 @@ const TextBlock = ({ blockContent }: TextBlockProps) => {
 			<div
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: le texte est nettoyé avec DOMPurify
 				dangerouslySetInnerHTML={{ __html: sanitizedText }}
-				className="ql-editor" // permet d'avoir le style de Quill
+				className="ql-editor textBlockLi" // permet d'avoir le style de Quill
 			/>
 		</section>
 	);

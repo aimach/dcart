@@ -78,6 +78,7 @@ type MapInfoType = {
 	title_fr: string;
 	description_en: string;
 	description_fr: string;
+	slug: string;
 	tags: string | TagType[];
 	attestations: AttestationType[];
 	filters?: Record<string, string>[];

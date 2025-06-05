@@ -22,6 +22,7 @@ type blockType = {
 	content1_lang2?: string;
 	content2_lang1?: string | null;
 	content2_lang2?: string | null;
+	content3?: string | null;
 	parentId?: string | null;
 	storymapId?: string;
 	typeId?: string;
@@ -63,6 +64,7 @@ type storymapInputsType = {
 	description_lang1: string;
 	description_lang2: string;
 	image_url: string;
+	background_color: string;
 	author: string;
 	publication_date: string;
 	category_id: string;

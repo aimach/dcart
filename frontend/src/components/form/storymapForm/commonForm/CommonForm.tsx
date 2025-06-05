@@ -195,6 +195,32 @@ const CommonForm = ({
 							</div>
 							<div className={style.inputContainer}>
 								<input
+									type="text"
+									{...register(input.name as keyof storymapInputsType, {
+										required: input.required.value,
+									})}
+								/>
+
+								{input.required.value &&
+									errors[input.name as keyof allInputsType] && (
+										<ErrorComponent
+											message={input.required.message?.[language] as string}
+										/>
+									)}
+							</div>{" "}
+						</div>
+					);
+				}
+				if (input.type === "color") {
+					return (
+						<div key={input.name} className={style.commonFormInputContainer}>
+							<div className={style.labelContainer}>
+								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<p>{input[`description_${language}`] ?? ""}</p>
+							</div>
+							<div className={style.inputContainer}>
+								<input
+									type="color"
 									{...register(input.name as keyof storymapInputsType, {
 										required: input.required.value,
 									})}

@@ -30,11 +30,13 @@ import {
 	ChevronRight,
 	CircleCheck,
 	CircleHelp,
+	Watch,
 } from "lucide-react";
 
 export type tableInputsType = {
 	content1_lang1: string;
 	content1_lang2: string;
+	content3: string;
 };
 
 /**
@@ -89,6 +91,7 @@ const TableForm = () => {
 		register,
 		handleSubmit,
 		setValue,
+		watch,
 		formState: { errors },
 	} = useForm<tableInputsType>({
 		defaultValues: block as tableInputsType,
@@ -99,8 +102,10 @@ const TableForm = () => {
 		if (action === "create") {
 			await createBlock({
 				...data,
+				content1_lang1: `${data.content1_lang1}`,
 				content2_lang1: JSON.stringify(csvContentLang1),
 				content2_lang2: JSON.stringify(csvContentLang2),
+				content3: data.content3 ? data.content3 : "top",
 				storymapId: storymapId,
 				typeName: "table",
 			});
@@ -138,6 +143,7 @@ const TableForm = () => {
 		if (action === "edit" && block) {
 			setValue("content1_lang1", block.content1_lang1);
 			setValue("content1_lang2", block.content1_lang2);
+			setValue("content3", block.content3 || "top");
 		}
 	}, [action, block]);
 
@@ -230,6 +236,47 @@ const TableForm = () => {
 									: `Nouveau fichier chargé : ${selectedFiles.lang2.name}`}
 							</p>
 						)}
+					</div>
+				</div>
+				<div className={style.mapFormInputContainer}>
+					<LabelComponent
+						htmlFor="tableLang2"
+						label={
+							translation[language].backoffice.storymapFormPage.form
+								.headerPosition
+						}
+						description=""
+					/>
+					<div className={style.inputContainer}>
+						<div>
+							<input
+								id="headerPositionTop"
+								type="radio"
+								value="top"
+								{...register("content3", { required: true })}
+								defaultChecked
+							/>
+							<label htmlFor="headerPositionTop">
+								{
+									translation[language].backoffice.storymapFormPage.form
+										.headerPositionTop
+								}
+							</label>
+						</div>
+						<div>
+							<input
+								id="headerPositionLeft"
+								type="radio"
+								value="left"
+								{...register("content3", { required: true })}
+							/>
+							<label htmlFor="headerPositionLeft">
+								{
+									translation[language].backoffice.storymapFormPage.form
+										.headerPositionLeft
+								}
+							</label>
+						</div>
 					</div>
 				</div>
 				<div className={style.formButtonNavigation}>
