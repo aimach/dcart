@@ -32,6 +32,7 @@ export const storymapContentControllers = {
 		try {
 			const { id, slug } = req.params;
 			const identifier = id ?? slug;
+			const { isActive, searchText } = req.query;
 
 			if (identifier === "all") {
 				const query = await dcartDataSource
@@ -62,10 +63,20 @@ export const storymapContentControllers = {
 						"creator.pseudo",
 						"modifier.pseudo",
 					]);
-				if (req.query.isActive) {
-					const isActive = req.query.isActive === "true";
-					query.where("storymap.isActive = :isActive", { isActive });
+				if (isActive) {
+					const isActiveStatus = isActive === "true";
+					query.where("storymap.isActive = :isActive", {
+						isActive: isActiveStatus,
+					});
 				}
+
+				if (searchText) {
+					query.andWhere(
+						"storymap.title_lang1 ILIKE :searchText OR storymap.title_lang2 ILIKE :searchText",
+						{ searchText: `%${searchText}%` },
+					);
+				}
+
 				const allStorymaps = await query
 					.orderBy("storymap.id")
 					.addOrderBy("block.position", "ASC")

@@ -43,7 +43,8 @@
 		"cancel": "Cancel",
 		"publish": "Publish",
 		"unpublish": "Unpublish",
-		"editDisabled": "Edit disabled"
+		"editDisabled": "Edit disabled",
+		"search": "Search"
 	},
 	"common": {
 		"between": "between",

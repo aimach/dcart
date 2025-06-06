@@ -6,7 +6,6 @@
     @include m.flexbox(flex, row, wrap, center, center);
     @include m.buttonStyle(v.$color-dark-lava, v.$color-neutral-100, v.$space-s, v.$border-radius-rounded);
     gap: v.$space-xs;
-    margin: v.$space-m;
 }
 
 .gold {

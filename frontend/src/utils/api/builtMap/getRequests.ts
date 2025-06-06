@@ -110,10 +110,15 @@ const getAllGreatRegions = async () => {
  * Récupère les informations de toutes les cartes qui sont actives
  * @returns {Promise} - Toutes les informations des cartes actives
  */
-const getAllMapsInfos = async (isActive: boolean) => {
+const getAllMapsInfos = async (isActive: boolean, searchText: string) => {
 	try {
 		let url = "/dcart/maps/id/all";
-		if (isActive) url += "?isActive=true";
+		if (isActive || searchText) url += "?";
+		const queryArray: string[] = [];
+		if (isActive) queryArray.push("isActive=true");
+		if (searchText) queryArray.push(`searchText=${searchText}`);
+		if (queryArray.length > 0) url += queryArray.join("&");
+
 		const response = await apiClient.get(url);
 		return response.data;
 	} catch (error) {
@@ -200,10 +205,15 @@ const getAllPointsForDemoMap = async (attestationIds: string) => {
  * Récupère les informations de toutes les cartes qui sont actives
  * @returns {Promise} - Toutes les informations des cartes actives
  */
-const getAllStorymapsInfos = async (isActive: boolean) => {
+const getAllStorymapsInfos = async (isActive: boolean, searchText: string) => {
 	try {
 		let url = "/storymap/storymap/id/all";
-		if (isActive) url += "?isActive=true";
+		if (isActive || searchText) url += "?";
+		const queryArray: string[] = [];
+		if (isActive) queryArray.push("isActive=true");
+		if (searchText) queryArray.push(`searchText=${searchText}`);
+		if (queryArray.length > 0) url += queryArray.join("&");
+
 		const response = await apiClient.get(url);
 		return response.data;
 	} catch (error) {

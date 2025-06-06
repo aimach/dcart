@@ -1,9 +1,10 @@
 // import des bibliothèques
-import { useState, useEffect } from "react";
+import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router";
 // import des composants
 import ButtonComponent from "../../common/button/ButtonComponent";
 import ItemTableComponent from "../itemTable/ItemTableComponent";
+import LoaderComponent from "../../common/loader/LoaderComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -18,9 +19,8 @@ import type { MapType } from "../../../utils/types/mapTypes";
 // import du style
 import style from "./managementContainer.module.scss";
 // import des icônes
-import { CirclePlus } from "lucide-react";
-import LoaderComponent from "../../common/loader/LoaderComponent";
-import { set } from "react-hook-form";
+import { CirclePlus, ListRestart } from "lucide-react";
+import { useForm } from "react-hook-form";
 
 type ManagementContainerProps = {
 	type: string;
@@ -41,40 +41,89 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 	const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
 	// chargement des informations des cartes au montage du composant
+
+	// fonction pour charger les informations des cartes
+	const fetchAllMapsInfos = useCallback(async (searchText: string) => {
+		const maps = await getAllMapsInfos(false, searchText);
+		setAllMapsInfos(maps);
+		setIsLoaded(true);
+	}, []);
+	const fetchAllStorymapsInfos = useCallback(async (searchText: string) => {
+		const storymaps = await getAllStorymapsInfos(false, searchText);
+		setAllStorymapsInfos(storymaps);
+		setIsLoaded(true);
+	}, []);
 	// biome-ignore lint/correctness/useExhaustiveDependencies: permet de recharger les données à chaque changement sur la page (suppression, changement de statut)
 	useEffect(() => {
-		// fonction pour charger les informations des cartes
-		const fetchAllMapsInfos = async () => {
-			const maps = await getAllMapsInfos(false);
-			setAllMapsInfos(maps);
-			setIsLoaded(true);
-		};
-		const fetchAllStorymapsInfos = async () => {
-			const storymaps = await getAllStorymapsInfos(false);
-			setAllStorymapsInfos(storymaps);
-			setIsLoaded(true);
-		};
 		if (type === "map") {
-			fetchAllMapsInfos();
+			fetchAllMapsInfos("");
 		}
 		if (type === "storymap") {
-			fetchAllStorymapsInfos();
+			fetchAllStorymapsInfos("");
 		}
-	}, [type, reload]);
+	}, [type, reload, fetchAllMapsInfos, fetchAllStorymapsInfos]);
+
+	const { register, handleSubmit, resetField, watch } = useForm<{
+		searchText: string;
+	}>();
+
+	const handleSearch = (data: { searchText: string }) => {
+		if (type === "map") {
+			fetchAllMapsInfos(data.searchText);
+		}
+		if (type === "storymap") {
+			fetchAllStorymapsInfos(data.searchText);
+		}
+	};
+
+	const handleReset = () => {
+		if (type === "map") {
+			fetchAllMapsInfos("");
+		}
+		if (type === "storymap") {
+			fetchAllStorymapsInfos("");
+		}
+		resetField("searchText");
+	};
 
 	return (
 		<>
 			<section className={style.managementContainer}>
-				<ButtonComponent
-					type="button"
-					color="brown"
-					textContent={`${translation[language].backoffice.createA} ${translation[language].common[type === "map" ? "map" : "storymap"]}`}
-					onClickFunction={() => {
-						navigate(`/backoffice/${type}s/create`);
-						resetMapInfos();
-					}}
-					icon={<CirclePlus />}
-				/>
+				<div className={style.managementHeader}>
+					<ButtonComponent
+						type="button"
+						color="brown"
+						textContent={`${translation[language].backoffice.createA} ${translation[language].common[type === "map" ? "map" : "storymap"]}`}
+						onClickFunction={() => {
+							navigate(`/backoffice/${type}s/create`);
+							resetMapInfos();
+						}}
+						icon={<CirclePlus />}
+					/>
+					<div className={style.searchContainer}>
+						<form onSubmit={handleSubmit(handleSearch)}>
+							<input
+								type="text"
+								{...register("searchText")}
+								placeholder={`${translation[language].button.search}...`}
+							/>
+							<ButtonComponent
+								type="submit"
+								color="brown"
+								textContent={translation[language].button.search}
+							/>
+						</form>
+						{watch("searchText") && (
+							<ButtonComponent
+								type="button"
+								color="brown"
+								textContent=""
+								onClickFunction={handleReset}
+								icon={<ListRestart />}
+							/>
+						)}
+					</div>
+				</div>
 				<table className={style.managementTable}>
 					{!isLoaded ? (
 						<div className={style.loaderContainer}>

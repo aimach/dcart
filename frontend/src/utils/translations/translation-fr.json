@@ -43,7 +43,8 @@
 		"cancel": "Annuler",
 		"publish": "Publier",
 		"unpublish": "Dépublier",
-		"editDisabled": "Modifier désactivé"
+		"editDisabled": "Modifier désactivé",
+		"search": "Rechercher"
 	},
 	"common": {
 		"between": "entre",

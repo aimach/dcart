@@ -8,6 +8,37 @@
     border-radius: v.$border-radius-base;
 }
 
+.managementHeader {
+    @include m.flexbox(flex, row, nowrap, space-between, center);
+    padding: v.$space-m 0;
+
+    .searchContainer {
+        @include m.flexbox(flex, row, nowrap, center, center);
+        gap: v.$space-s;
+
+        >form {
+            @include m.flexbox(flex, row, nowrap, center, center);
+
+        }
+
+    }
+
+    input {
+        margin-right: v.$space-m;
+        padding: v.$space-s v.$space-m;
+        font-size: v.$font-size-m;
+        border: v.$border-width-m solid v.$color-grullo-light;
+        border-radius: v.$border-radius-base;
+        background-color: v.$background-color-base;
+        font-family: "Vollkorn";
+
+        &:focus {
+            outline: none;
+            border-color: v.$color-grullo;
+        }
+    }
+}
+
 .managementTable {
     width: 100%;
     min-height: 200px;

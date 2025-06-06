@@ -32,6 +32,7 @@ export const mapContentController = {
 		try {
 			const { mapId, mapSlug } = req.params;
 			const identifier = mapId ?? mapSlug;
+			const { isActive, searchText } = req.query;
 
 			if (identifier === "all") {
 				const query = await dcartDataSource
@@ -57,9 +58,16 @@ export const mapContentController = {
 						"modifier.username",
 					]);
 
-				if (req.query.isActive) {
-					const isActive = req.query.isActive === "true";
-					query.where("map.isActive = :isActive", { isActive });
+				if (isActive) {
+					const isActiveStatus = isActive === "true";
+					query.where("map.isActive = :isActive", { isActive: isActiveStatus });
+				}
+
+				if (searchText) {
+					query.andWhere(
+						"map.title_fr ILIKE :searchText OR map.title_en ILIKE :searchText",
+						{ searchText: `%${searchText}%` },
+					);
 				}
 				const allMaps = await query.orderBy("map.id").getMany();
 

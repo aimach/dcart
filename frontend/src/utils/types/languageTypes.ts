@@ -46,6 +46,7 @@ type LanguageObject = {
 		publish: string;
 		unpublish: string;
 		editDisabled: string;
+		search: string;
 	};
 	common: {
 		between: string;
