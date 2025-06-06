@@ -25,6 +25,8 @@ import type { StorymapType } from "../../../utils/types/storymapTypes";
 import style from "./itemTableComponent.module.scss";
 // import des icônes
 import { Eye, EyeOff, ImageOff, Pen, PenOff, Trash } from "lucide-react";
+import { Tooltip } from "react-leaflet";
+import TooltipComponent from "../../common/tooltip/TooltipComponent";
 
 type ItemTableComponentProps = {
 	itemInfos: MapType | StorymapType;
@@ -117,15 +119,16 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 				</div>
 			</td>
 			<td>
-				{type === "map"
-					? (itemInfos as MapType)[`title_${language}`]
-					: (itemInfos as StorymapType)[`title_${selectedLanguage}`]}
-				<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
-					dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
-					className={style.descriptionCell}
-				/>
+				<div className={style.itemTableTitleCell}>
+					{type === "map"
+						? (itemInfos as MapType)[`title_${language}`]
+						: (itemInfos as StorymapType)[`title_${selectedLanguage}`]}
+					<p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
+						dangerouslySetInnerHTML={{ __html: sanitizedDescription }}
+						className={style.descriptionCell}
+					/>
+				</div>
 			</td>
-
 			<td>
 				{itemInfos.isActive ? (
 					<TagComponent
@@ -140,44 +143,60 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 				)}
 			</td>
 			<td>
-				{new Date(itemInfos.createdAt).toLocaleDateString(language, {
-					year: "numeric",
-					month: "long",
-					day: "numeric",
-				})}
+				<div className={style.itemCellCentered}>
+					{new Date(itemInfos.createdAt).toLocaleDateString(language, {
+						year: "numeric",
+						month: "long",
+						day: "numeric",
+					})}
+				</div>
 			</td>
 			<td>
-				{itemInfos.modifier
-					? new Date(itemInfos.updatedAt).toLocaleDateString(language, {
-							year: "numeric",
-							month: "long",
-							day: "numeric",
-						})
-					: ""}
+				<div className={style.itemCellCentered}>
+					{itemInfos.modifier
+						? new Date(itemInfos.updatedAt).toLocaleDateString(language, {
+								year: "numeric",
+								month: "long",
+								day: "numeric",
+							})
+						: ""}
+				</div>
 			</td>
 			<td>
-				{itemInfos.modifier
-					? (itemInfos.modifier?.pseudo ?? "utilisateur supprimé")
-					: (itemInfos.creator?.pseudo ?? "utilisateur supprimé")}
+				<div className={style.itemCellCentered}>
+					{itemInfos.modifier
+						? (itemInfos.modifier?.username ?? "utilisateur supprimé")
+						: (itemInfos.creator?.username ?? "utilisateur supprimé")}
+				</div>
 			</td>
 			<td>
-				{isAdmin &&
-					(itemInfos.isActive ? (
-						<EyeOff onClick={() => handlePublicationClick(type, false)} />
+				<div className={style.itemTableActions}>
+					{isAdmin &&
+						(itemInfos.isActive ? (
+							<TooltipComponent text={translation[language].button.unpublish}>
+								<EyeOff onClick={() => handlePublicationClick(type, false)} />
+							</TooltipComponent>
+						) : (
+							<TooltipComponent text={translation[language].button.publish}>
+								<Eye onClick={() => handlePublicationClick(type, true)} />
+							</TooltipComponent>
+						))}
+					{isModifiedByAnotherUser ? (
+						<PenOff />
 					) : (
-						<Eye onClick={() => handlePublicationClick(type, true)} />
-					))}
-				{isModifiedByAnotherUser ? (
-					<PenOff />
-				) : (
-					<Pen onClick={() => handleModifyClick(itemInfos.id)} />
-				)}
-				{isAdmin && (
-					<Trash
-						color="#9d2121"
-						onClick={() => handleDeleteClick(itemInfos.id)}
-					/>
-				)}
+						<TooltipComponent text={translation[language].button.edit}>
+							<Pen onClick={() => handleModifyClick(itemInfos.id)} />
+						</TooltipComponent>
+					)}
+					{isAdmin && (
+						<TooltipComponent text={translation[language].button.delete}>
+							<Trash
+								color="#9d2121"
+								onClick={() => handleDeleteClick(itemInfos.id)}
+							/>
+						</TooltipComponent>
+					)}
+				</div>
 			</td>
 		</tr>
 	);

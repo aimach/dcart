@@ -40,7 +40,10 @@
 		"save": "Sauvegarder",
 		"delete": "Supprimer",
 		"edit": "Modifier",
-		"cancel": "Annuler"
+		"cancel": "Annuler",
+		"publish": "Publier",
+		"unpublish": "Dépublier",
+		"editDisabled": "Modifier désactivé"
 	},
 	"common": {
 		"between": "entre",

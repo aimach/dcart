@@ -67,7 +67,9 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 			) : (
 				<button
 					type="button"
-					onClick={() => navigate(-1)}
+					onClick={() => {
+						pathname === "/backoffice" ? navigate("/") : navigate(-1);
+					}}
 					className={style.headerBackButton}
 				>
 					<MoveLeft />

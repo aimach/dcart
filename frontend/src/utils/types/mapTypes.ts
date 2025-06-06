@@ -119,10 +119,10 @@ type MapType = {
 	}[];
 	category: TagType;
 	creator?: {
-		pseudo: string;
+		username: string;
 	};
 	modifier?: {
-		pseudo: string;
+		username: string;
 	};
 	image_url?: string;
 };

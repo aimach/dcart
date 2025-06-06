@@ -40,7 +40,10 @@
 		"save": "Save",
 		"delete": "Delete",
 		"edit": "Edit",
-		"cancel": "Cancel"
+		"cancel": "Cancel",
+		"publish": "Publish",
+		"unpublish": "Unpublish",
+		"editDisabled": "Edit disabled"
 	},
 	"common": {
 		"between": "between",

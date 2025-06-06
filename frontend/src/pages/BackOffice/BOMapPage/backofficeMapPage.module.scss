@@ -2,6 +2,6 @@
 @use '../../../styles/variable' as v;
 
 .backofficeManagementPageContainer {
-    @include m.flexbox(flex, column, nowrap, flex-flex-end, flex-end);
-
+    @include m.flexbox(flex, column, nowrap, flex-end, flex-end);
+    background-color: v.$background-color-soft;
 }

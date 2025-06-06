@@ -53,8 +53,8 @@ export const mapContentController = {
 						"attestations",
 						"attestations.icon",
 						"attestations.color",
-						"creator.pseudo",
-						"modifier.pseudo",
+						"creator.username",
+						"modifier.username",
 					]);
 
 				if (req.query.isActive) {

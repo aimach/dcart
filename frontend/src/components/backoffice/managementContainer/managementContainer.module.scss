@@ -5,19 +5,20 @@
     width: 90vw;
     margin: 0 auto;
     background-color: v.$background-color-soft;
-    border-radius: v.$border-radius-rounded;
-    padding: v.$space-l;
-
+    border-radius: v.$border-radius-base;
+    @include m.shadow();
 }
 
 .managementTable {
     width: 100%;
+    background-color: v.$background-color-base;
+    border-radius: v.$border-radius-base;
 
     >thead {
-        border-bottom: v.$border-width-m solid v.$color-grullo;
+        border-bottom: v.$border-width-m solid v.$color-grullo-light;
 
         >tr>th {
-            padding-bottom: v.$space-m;
+            padding: v.$space-m 0;
         }
 
     }
