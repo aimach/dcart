@@ -63,23 +63,25 @@ const BOMapFormPage = () => {
 				</ModalComponent>
 			)}
 			<aside className={style.mapFormAside}>
-				<ButtonComponent
-					type="button"
-					textContent={
-						translation[language].backoffice.storymapFormPage.preview
-					}
-					color="brown"
-					onClickFunction={() => {
-						navigate(`/backoffice/maps/preview/${mapInfos?.id}`);
-					}}
-				/>
+				<div className={style.mapFormAsideHeader}>
+					<ButtonComponent
+						type="button"
+						textContent={
+							translation[language].backoffice.storymapFormPage.preview
+						}
+						color="brown"
+						onClickFunction={() => {
+							navigate(`/backoffice/maps/preview/${mapInfos?.id}`);
+						}}
+					/>
+				</div>
 				<ul>
 					<li
 						onClick={() => setStep(1)}
 						onKeyUp={() => setStep(1)}
 						className={step === 1 ? style.isSelected : ""}
 					>
-						<FileText />
+						<FileText size={20} />
 						{translation[language].backoffice.mapFormPage.aside.informations}
 					</li>
 					<li
@@ -89,7 +91,7 @@ const BOMapFormPage = () => {
 							step === 2 && style.isSelected
 						}`}
 					>
-						<MapPin />
+						<MapPin size={20} />
 						{translation[language].backoffice.mapFormPage.aside.pointSets}
 					</li>
 					<li
@@ -99,7 +101,7 @@ const BOMapFormPage = () => {
 							step === 3 && style.isSelected
 						}`}
 					>
-						<Filter />
+						<Filter size={20} />
 						{translation[language].backoffice.mapFormPage.aside.filters}
 					</li>
 					{mapFilters.element && (
@@ -108,7 +110,7 @@ const BOMapFormPage = () => {
 							onKeyUp={() => setStep(4)}
 							className={`${step === 4 && style.isSelected}`}
 						>
-							<ListTodo />
+							<ListTodo size={20} />
 							Options filtre éléments
 						</li>
 					)}
@@ -118,7 +120,7 @@ const BOMapFormPage = () => {
 							onKeyUp={() => setStep(5)}
 							className={`${step === 5 && style.isSelected}`}
 						>
-							<MapPinCheck />
+							<MapPinCheck size={20} />
 							Options filtre lieux
 						</li>
 					)}
