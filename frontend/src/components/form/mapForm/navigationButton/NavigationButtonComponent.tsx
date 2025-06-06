@@ -62,7 +62,6 @@ const NavigationButtonComponent = ({
 					icon={<ChevronRight />}
 				/>
 			)}
-
 			{step !== 2 && nextButtonDisplayed && (
 				<ButtonComponent
 					type="submit"

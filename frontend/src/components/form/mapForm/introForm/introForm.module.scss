@@ -83,6 +83,27 @@
 
 }
 
+.uploadFormContainer {
+    margin: v.$space-xxl;
+
+    .titleAndHelpContainer {
+        @include m.flexbox(flex, row, nowrap, space-between, center);
+        margin-bottom: v.$space-l;
+
+        >h4 {
+            font-size: v.$font-size-l;
+            font-weight: v.$font-weight-bold;
+        }
+
+        .helpContainer {
+            >a {
+                @include m.flexbox(flex, row, nowrap, space-center, center);
+                gap: v.$space-xs;
+            }
+        }
+    }
+}
+
 .userFilterInputContainer {
     @include m.flexbox(flex, row, nowrap, space-between, flex-start);
     gap: v.$space-s;
@@ -95,29 +116,14 @@
 
 }
 
-.titleAndHelpContainer {
-    @include m.flexbox(flex, row, nowrap, space-between, center);
-    margin: v.$space-l;
 
-    >h4 {
-        font-size: v.$font-size-l;
-        font-weight: v.$font-weight-bold;
-    }
-
-    .helpContainer {
-        >a {
-            @include m.flexbox(flex, row, nowrap, space-center, center);
-            gap: v.$space-xs;
-        }
-    }
-}
 
 .pointSetTable {
-    width: 90%;
-    margin: v.$space-l auto;
+    width: 100%;
+    margin: v.$space-l 0;
 
     >thead {
-        border-bottom: v.$border-width-m solid v.$color-grullo;
+        border-bottom: v.$border-width-m solid v.$color-grullo-light;
 
         >tr>th {
             padding-bottom: v.$space-m;
@@ -132,7 +138,7 @@
         text-align: left;
         background-color: v.$background-color-base;
         padding: v.$space-l 0;
-        border-bottom: v.$border-width-m solid v.$color-grullo;
+        border-bottom: v.$border-width-m solid v.$color-grullo-light;
         max-width: 100px;
     }
 
@@ -143,7 +149,7 @@
     }
 
     >td:last-of-type {
-        text-align: center;
+        text-align: right;
 
         >svg {
             cursor: pointer;

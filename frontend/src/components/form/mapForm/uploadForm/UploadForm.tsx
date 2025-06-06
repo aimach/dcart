@@ -35,7 +35,7 @@ import type {
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des images
-import { CircleHelp, Pen, X } from "lucide-react";
+import { CircleHelp, Pen, PlusCircle, X } from "lucide-react";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -129,7 +129,7 @@ const UploadForm = () => {
 	};
 
 	return (
-		<div>
+		<section className={style.uploadFormContainer}>
 			<div className={style.titleAndHelpContainer}>
 				<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
 				<div className={style.helpContainer}>
@@ -149,6 +149,7 @@ const UploadForm = () => {
 					color="brown"
 					textContent="Ajouter un nouveau jeu de points"
 					onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
+					icon={<PlusCircle />}
 				/>
 			)}
 
@@ -228,8 +229,8 @@ const UploadForm = () => {
 							})}
 						</tbody>
 					</table>
-					{mapInfos?.attestations.length > 1 && (
-						<div>
+					<div>
+						{mapInfos?.attestations.length > 1 && (
 							<div className={style.isLayeredContainer}>
 								<input
 									id="isLayered"
@@ -250,28 +251,28 @@ const UploadForm = () => {
 									}
 								</label>
 							</div>
-							<div className={style.isLayeredContainer}>
-								<input
-									id="isNbDisplayed"
-									name="isNbDisplayed"
-									type="checkbox"
-									onChange={(event) =>
-										handleCheckboxChange(
-											event.target.name,
-											event.target.checked.toString(),
-										)
-									}
-									defaultChecked={mapInfos.isNbDisplayed}
-								/>
-								<label htmlFor="isNbDisplayed">
-									{
-										translation[language].backoffice.mapFormPage.pointSetForm
-											.isNbDisplayedLabel
-									}
-								</label>
-							</div>
+						)}
+						<div className={style.isLayeredContainer}>
+							<input
+								id="isNbDisplayed"
+								name="isNbDisplayed"
+								type="checkbox"
+								onChange={(event) =>
+									handleCheckboxChange(
+										event.target.name,
+										event.target.checked.toString(),
+									)
+								}
+								defaultChecked={mapInfos.isNbDisplayed}
+							/>
+							<label htmlFor="isNbDisplayed">
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.isNbDisplayedLabel
+								}
+							</label>
 						</div>
-					)}
+					</div>
 				</>
 			)}
 			{isAlreadyAPointSet && (
@@ -280,7 +281,7 @@ const UploadForm = () => {
 					nextButtonDisplayed={nextButtonDisplayed}
 				/>
 			)}
-		</div>
+		</section>
 	);
 };
 

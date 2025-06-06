@@ -13,7 +13,10 @@ import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functio
 import { parseCSVFile } from "../../../../utils/functions/csv";
 // import des types
 import type { FormEvent, ChangeEvent } from "react";
-import type { PointSetType } from "../../../../utils/types/mapTypes";
+import type {
+	MapIconType,
+	PointSetType,
+} from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des icônes
@@ -148,7 +151,15 @@ const PointSetUploadForm = ({
 								translation[language].backoffice.mapFormPage.pointSetForm
 									.chooseColor
 							}
-							options={colors}
+							options={[
+								...colors,
+								{
+									code_hex: "null",
+									id: "",
+									name_fr: "défaut",
+									name_en: "default",
+								},
+							]}
 							onChangeFunction={(event) =>
 								setPointSet({
 									...pointSet,
@@ -179,7 +190,12 @@ const PointSetUploadForm = ({
 								translation[language].backoffice.mapFormPage.pointSetForm
 									.chooseIcon
 							}
-							options={icons}
+							options={
+								[
+									...icons,
+									{ id: "", name_fr: "défaut", name_en: "default" },
+								] as MapIconType[]
+							}
 							onChangeFunction={(event) =>
 								setPointSet({
 									...pointSet,

@@ -157,25 +157,30 @@ const UserMapFilterForm = () => {
 					);
 					if (filter.type !== "time") {
 						return (
-							<div key={filter.type} className={style.commonFormInputContainer}>
+							<div
+								key={filter.type}
+								className={style.commonFormInputContainer}
+								style={{ justifyContent: "flex-start" }}
+							>
 								<div className={style.labelContainer}>
 									<label htmlFor={filter.type}>{label}</label>
 									<p>{description}</p>
 								</div>
-								<div className={style.inputContainer}>
-									<input
-										id={filter.type}
-										name={filter.type}
-										type="checkbox"
-										checked={mapFilters[filter.type]}
-										onChange={(event) => handleCheckboxChange(event)}
-									/>
-								</div>
+								<input
+									id={filter.type}
+									name={filter.type}
+									type="checkbox"
+									checked={mapFilters[filter.type]}
+									onChange={(event) => handleCheckboxChange(event)}
+								/>
 							</div>
 						);
 					}
 				})}
-				<div className={style.commonFormInputContainer}>
+				<div
+					className={style.commonFormInputContainer}
+					style={{ justifyContent: "flex-start" }}
+				>
 					<div className={style.labelContainer}>
 						<label htmlFor="noFilter">
 							{translation[language].backoffice.mapFormPage.noFilter.label}
@@ -187,15 +192,13 @@ const UserMapFilterForm = () => {
 							}
 						</p>
 					</div>
-					<div className={style.inputContainer}>
-						<input
-							id="noFilter"
-							name="noFilter"
-							type="checkbox"
-							checked={noFilterChecked(mapFilters)}
-							onChange={resetMapFilters}
-						/>
-					</div>
+					<input
+						id="noFilter"
+						name="noFilter"
+						type="checkbox"
+						checked={noFilterChecked(mapFilters)}
+						onChange={resetMapFilters}
+					/>
 				</div>
 
 				<NavigationButtonComponent step={step} nextButtonDisplayed={true} />
