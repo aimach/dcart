@@ -3,9 +3,12 @@
 
 
 .itemTableRow {
+    &:hover {
+        background-color: v.$background-color-soft;
+    }
+
     >td {
         text-align: left;
-        background-color: v.$background-color-base;
         padding: v.$space-xs;
         border-bottom: v.$border-width-m solid v.$color-grullo-light;
         max-width: 100px;
@@ -23,6 +26,10 @@
     >td:first-of-type {
         div {
             text-align: center;
+
+            >img {
+                border-radius: v.$border-radius-base;
+            }
         }
     }
 

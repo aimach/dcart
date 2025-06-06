@@ -6,7 +6,6 @@
     margin: 0 auto;
     background-color: v.$background-color-soft;
     border-radius: v.$border-radius-base;
-    @include m.shadow();
 }
 
 .managementTable {
@@ -14,6 +13,7 @@
     min-height: 200px;
     background-color: v.$background-color-base;
     border-radius: v.$border-radius-base;
+    @include m.shadow();
 
     .loaderContainer {
         width: 100%;

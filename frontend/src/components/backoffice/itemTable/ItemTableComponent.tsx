@@ -5,6 +5,7 @@ import DOMPurify from "dompurify";
 import truncate from "truncate-html";
 // import des composants
 import TagComponent from "../../common/tag/TagComponent";
+import TooltipComponent from "../../common/tooltip/TooltipComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du contexte
@@ -25,8 +26,6 @@ import type { StorymapType } from "../../../utils/types/storymapTypes";
 import style from "./itemTableComponent.module.scss";
 // import des icônes
 import { Eye, EyeOff, ImageOff, Pen, PenOff, Trash } from "lucide-react";
-import { Tooltip } from "react-leaflet";
-import TooltipComponent from "../../common/tooltip/TooltipComponent";
 
 type ItemTableComponentProps = {
 	itemInfos: MapType | StorymapType;

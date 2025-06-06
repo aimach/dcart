@@ -64,17 +64,17 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 
 	return (
 		<>
-			<ButtonComponent
-				type="button"
-				color="gold"
-				textContent={`${translation[language].backoffice.createA} ${translation[language].common[type === "map" ? "map" : "storymap"]}`}
-				onClickFunction={() => {
-					navigate(`/backoffice/${type}s/create`);
-					resetMapInfos();
-				}}
-				icon={<CirclePlus />}
-			/>
 			<section className={style.managementContainer}>
+				<ButtonComponent
+					type="button"
+					color="brown"
+					textContent={`${translation[language].backoffice.createA} ${translation[language].common[type === "map" ? "map" : "storymap"]}`}
+					onClickFunction={() => {
+						navigate(`/backoffice/${type}s/create`);
+						resetMapInfos();
+					}}
+					icon={<CirclePlus />}
+				/>
 				<table className={style.managementTable}>
 					{!isLoaded ? (
 						<div className={style.loaderContainer}>
