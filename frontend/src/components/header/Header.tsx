@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { Link, useLocation } from "react-router";
+import { Link, useLocation, useNavigate } from "react-router";
 // import des composants
 import NavComponent from "../common/NavComponent";
 import ImageWithLink from "../common/ImageWithLink";
@@ -20,7 +20,7 @@ import style from "./header.module.scss";
 // import des images
 import MAPLogo from "../../assets/map_logo.png";
 // import des icônes
-import { Home, MenuIcon } from "lucide-react";
+import { Home, MenuIcon, MoveLeft } from "lucide-react";
 
 interface HeaderComponentProps {
 	type: "visitor" | "backoffice";
@@ -44,6 +44,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 
 	// récupération de l'url de la page en cours pour savoir si l'utilisateur est sur la page d'accueil
 	const { pathname } = useLocation();
+	const navigate = useNavigate();
 
 	return (
 		<header className={style.header}>
@@ -64,7 +65,14 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 					/>
 				)
 			) : (
-				<Link to="/">{translation[language].navigation.back}</Link>
+				<button
+					type="button"
+					onClick={() => navigate(-1)}
+					className={style.headerBackButton}
+				>
+					<MoveLeft />
+					{translation[language].navigation.back}
+				</button>
 			)}
 			{pathname !== "/" && !pathname.includes("backoffice") && !isMobile && (
 				<Link to="/" className={style.headerLogo}>
@@ -97,13 +105,15 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 				)}
 				{type === "backoffice" && (
 					<>
-						<NavComponent
-							type="route"
-							navClassName={style.headerNavigationMenu}
-							list={getBackofficeNavigationList(translation, language)}
-							selectedElement={language}
-							liClasseName={style.languageSelected}
-						/>
+						{pathname !== "/backoffice" && (
+							<NavComponent
+								type="route"
+								navClassName={style.headerNavigationMenu}
+								list={getBackofficeNavigationList(translation, language)}
+								selectedElement={language}
+								liClasseName={style.languageSelected}
+							/>
+						)}
 						<NavComponent
 							type="list"
 							navClassName={style.headerTranslationMenu}
