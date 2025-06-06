@@ -64,16 +64,18 @@ const BOMapFormPage = () => {
 			)}
 			<aside className={style.mapFormAside}>
 				<div className={style.mapFormAsideHeader}>
-					<ButtonComponent
-						type="button"
-						textContent={
-							translation[language].backoffice.storymapFormPage.preview
-						}
-						color="brown"
-						onClickFunction={() => {
-							navigate(`/backoffice/maps/preview/${mapInfos?.id}`);
-						}}
-					/>
+					{isMapCreated && (
+						<ButtonComponent
+							type="button"
+							textContent={
+								translation[language].backoffice.storymapFormPage.preview
+							}
+							color="brown"
+							onClickFunction={() => {
+								navigate(`/backoffice/maps/preview/${mapInfos?.id}`);
+							}}
+						/>
+					)}
 				</div>
 				<ul>
 					<li
