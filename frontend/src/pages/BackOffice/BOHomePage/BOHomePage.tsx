@@ -7,6 +7,14 @@ import { useTranslation } from "../../../utils/hooks/useTranslation";
 import { AuthContext } from "../../../context/AuthContext";
 // import du style
 import style from "./BOHomePage.module.scss";
+import {
+	BookOpenText,
+	ChartPie,
+	Languages,
+	MapPin,
+	Tag,
+	UserRound,
+} from "lucide-react";
 
 /**
  * Page d'accueil du backoffice avec liens vers toutes les pages
@@ -21,11 +29,13 @@ const BOHomePage = () => {
 			<nav className={style.homeNav}>
 				<ul>
 					<li>
+						<MapPin />
 						<Link to="/backoffice/maps">
 							{translation[language].navigation.maps}
 						</Link>
 					</li>
 					<li>
+						<BookOpenText />
 						<Link to="/backoffice/storymaps">
 							{translation[language].navigation.storymaps}
 						</Link>
@@ -33,21 +43,25 @@ const BOHomePage = () => {
 					{isAdmin && (
 						<>
 							<li>
+								<Languages />
 								<Link to="/backoffice/translation">
 									{translation[language].navigation.translation}
 								</Link>
 							</li>
 							<li>
+								<UserRound />
 								<Link to="/backoffice/users">
 									{translation[language].navigation.users}
 								</Link>
 							</li>
 							<li>
+								<Tag />
 								<Link to="/backoffice/tags">
 									{translation[language].navigation.tags}
 								</Link>
 							</li>
 							<li>
+								<ChartPie />
 								<Link to="/backoffice/divinities">
 									{translation[language].navigation.divinities}
 								</Link>
