@@ -19,6 +19,8 @@ import type { MapType } from "../../../utils/types/mapTypes";
 import style from "./managementContainer.module.scss";
 // import des icônes
 import { CirclePlus } from "lucide-react";
+import LoaderComponent from "../../common/loader/LoaderComponent";
+import { set } from "react-hook-form";
 
 type ManagementContainerProps = {
 	type: string;
@@ -36,6 +38,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 	// état pour stocker les informations des cartes
 	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
 	const [allStorymapsInfos, setAllStorymapsInfos] = useState<MapType[]>([]);
+	const [isLoaded, setIsLoaded] = useState<boolean>(false);
 
 	// chargement des informations des cartes au montage du composant
 	// biome-ignore lint/correctness/useExhaustiveDependencies: permet de recharger les données à chaque changement sur la page (suppression, changement de statut)
@@ -44,10 +47,12 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 		const fetchAllMapsInfos = async () => {
 			const maps = await getAllMapsInfos(false);
 			setAllMapsInfos(maps);
+			setIsLoaded(true);
 		};
 		const fetchAllStorymapsInfos = async () => {
 			const storymaps = await getAllStorymapsInfos(false);
 			setAllStorymapsInfos(storymaps);
+			setIsLoaded(true);
 		};
 		if (type === "map") {
 			fetchAllMapsInfos();
@@ -71,44 +76,59 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 			/>
 			<section className={style.managementContainer}>
 				<table className={style.managementTable}>
-					<thead>
-						<tr>
-							<th scope="col">
-								{translation[language].backoffice.managementTable.image}
-							</th>
-							<th scope="col">
-								{translation[language].backoffice.managementTable.name}
-							</th>
-							<th scope="col">
-								{translation[language].backoffice.managementTable.status}
-							</th>
-							<th scope="col">
-								{translation[language].backoffice.managementTable.createdOn}
-							</th>
-							<th scope="col">
-								{translation[language].backoffice.managementTable.updatedOn}
-							</th>
-							<th scope="col">
-								{translation[language].backoffice.managementTable.lastUploadBy}
-							</th>
-							<th scope="col">
-								{translation[language].backoffice.managementTable.links}
-							</th>
-						</tr>
-					</thead>
-					<tbody>
-						{type === "map"
-							? allMapsInfos.map((map) => (
-									<ItemTableComponent key={map.id} itemInfos={map} type="map" />
-								))
-							: allStorymapsInfos.map((storymap) => (
-									<ItemTableComponent
-										key={storymap.id}
-										itemInfos={storymap}
-										type="storymap"
-									/>
-								))}
-					</tbody>
+					{!isLoaded ? (
+						<div className={style.loaderContainer}>
+							<LoaderComponent size={50} />
+						</div>
+					) : (
+						<>
+							<thead>
+								<tr>
+									<th scope="col">
+										{translation[language].backoffice.managementTable.image}
+									</th>
+									<th scope="col">
+										{translation[language].backoffice.managementTable.name}
+									</th>
+									<th scope="col">
+										{translation[language].backoffice.managementTable.status}
+									</th>
+									<th scope="col">
+										{translation[language].backoffice.managementTable.createdOn}
+									</th>
+									<th scope="col">
+										{translation[language].backoffice.managementTable.updatedOn}
+									</th>
+									<th scope="col">
+										{
+											translation[language].backoffice.managementTable
+												.lastUploadBy
+										}
+									</th>
+									<th scope="col">
+										{translation[language].backoffice.managementTable.links}
+									</th>
+								</tr>
+							</thead>
+							<tbody>
+								{type === "map"
+									? allMapsInfos.map((map) => (
+											<ItemTableComponent
+												key={map.id}
+												itemInfos={map}
+												type="map"
+											/>
+										))
+									: allStorymapsInfos.map((storymap) => (
+											<ItemTableComponent
+												key={storymap.id}
+												itemInfos={storymap}
+												type="storymap"
+											/>
+										))}
+							</tbody>
+						</>
+					)}
 				</table>
 			</section>
 		</>

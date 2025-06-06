@@ -11,8 +11,15 @@
 
 .managementTable {
     width: 100%;
+    min-height: 200px;
     background-color: v.$background-color-base;
     border-radius: v.$border-radius-base;
+
+    .loaderContainer {
+        width: 100%;
+        height: 100%;
+        @include m.flexbox(flex, column, nowrap, center, center);
+    }
 
     >thead {
         border-bottom: v.$border-width-m solid v.$color-grullo-light;
@@ -22,4 +29,6 @@
         }
 
     }
+
+
 }
