@@ -55,8 +55,6 @@ const UserMapFilterForm = () => {
 		[],
 	);
 
-	console.log("mapInfos", mapInfos);
-
 	// au montage du composant, récupération de tous les filtres utilisateurs de la BDD
 	// si en mode édition, mise à jour des filtres de la carte
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
