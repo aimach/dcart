@@ -33,6 +33,19 @@ type Action = {
 	setMapReady: (mapReady: boolean) => void;
 };
 
+const initialMapFilters: MapFilterType = {
+	location: false,
+	language: false,
+	element: false,
+	divinityNb: false,
+	sourceType: false,
+	agentGender: false,
+	agentStatus: false,
+	agentivity: false,
+	sourceMaterial: false,
+	agentActivity: false,
+};
+
 export const useMapFormStore = create<State & Action>((set) => ({
 	step: 1,
 	setStep: (step) => set(() => ({ step })),
@@ -41,28 +54,11 @@ export const useMapFormStore = create<State & Action>((set) => ({
 	map: null,
 	setMap: (map) => set(() => ({ map })),
 	mapInfos: null,
-	mapFilters: {
-		location: false,
-		language: false,
-		element: false,
-		divinityNb: false,
-		sourceType: false,
-		agentActivity: false,
-		agentName: false,
-		agentGender: false,
-	},
+	mapFilters: initialMapFilters,
 	setMapFilters: (mapFilters) => set(() => ({ mapFilters })),
 	resetMapFilters: () =>
 		set(() => ({
-			mapFilters: {
-				location: false,
-				language: false,
-				element: false,
-				divinityNb: false,
-				sourceType: false,
-				agentActivity: false,
-				agentName: false,
-			},
+			mapFilters: initialMapFilters,
 		})),
 	setMapInfos: (mapInfos) => set(() => ({ mapInfos })),
 	resetMapInfos: () => set(() => ({ mapInfos: null })),

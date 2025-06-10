@@ -69,7 +69,10 @@ type MapFilterType = {
 	divinityNb: boolean;
 	sourceType: boolean;
 	agentActivity: boolean;
-	agentName: boolean;
+	agentGender: boolean;
+	agentStatus: boolean;
+	agentivity: boolean;
+	sourceMaterial: boolean;
 };
 
 type MapInfoType = {

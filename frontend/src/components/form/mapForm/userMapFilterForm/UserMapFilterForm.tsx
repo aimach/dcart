@@ -41,13 +41,14 @@ const UserMapFilterForm = () => {
 	// récupération des données des stores
 	const {
 		mapInfos,
+		setMapInfos,
 		resetMapInfos,
 		resetAllPoints,
 		mapFilters,
 		setMapFilters,
 		resetMapFilters,
 		step,
-		setMapInfos,
+		setStep,
 	} = useMapFormStore(useShallow((state) => state));
 
 	// définition d'un état pour stocker tous les filtres utilisateur de la BDD
@@ -113,6 +114,16 @@ const UserMapFilterForm = () => {
 				const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
 				setMapInfos(newMapInfos);
 				notifyEditSuccess("Jeu de filtres", false);
+				if (mapFilters.element || mapFilters.location) {
+					if (mapFilters.element) setStep(4);
+					if (mapFilters.location) setStep(5);
+				} else {
+					// si aucun filtre n'est sélectionné, on redirige vers la page de la carte
+					resetMapInfos();
+					resetAllPoints();
+					resetMapFilters();
+					navigate("/backoffice/maps");
+				}
 			}
 		} else if (pathname.includes("create")) {
 			if (noFilterChecked(mapFilters)) {

@@ -109,17 +109,6 @@ const AsideMainComponent = () => {
 		return [];
 	}, [allPoints, language, mapInfos]);
 
-	// --- RECUPERATION DES OPTIONS NOMS D'AGENTS POUR LES FILTRES
-	const agentNameOptions = useMemo(() => {
-		const agentActivityFilter = mapInfos?.filterMapContent?.find(
-			(filter) => filter.filter.type === "agentName",
-		);
-		if (agentActivityFilter) {
-			return getAllAgentNameFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos?.filterMapContent]);
-
 	// --- RECUPERATION DES OPTIONS STATUTS D'AGENTS POUR LES FILTRES
 	const agentStatusOptions = useMemo(() => {
 		const agentActivityFilter = isSelectedFilterInThisMap(
@@ -178,7 +167,6 @@ const AsideMainComponent = () => {
 					elementOptions={elementOptions}
 					sourceTypeOptions={sourceTypeOptions}
 					agentActivityOptions={agentActivityOptions}
-					agentNameOptions={agentNameOptions}
 					agentStatusOptions={agentStatusOptions}
 					agentivityOptions={agentivityOptions}
 					sourceMaterialOptions={sourceMaterialOptions}
