@@ -22,6 +22,7 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import style from "./BOMapFormPage.module.scss";
 // import des icônes
 import { FileText, Filter, ListTodo, MapPin, MapPinCheck } from "lucide-react";
+import { isSelectedFilterInThisMap } from "../../../utils/functions/filter";
 
 /**
  * Page du formulaire de création de carte
@@ -106,7 +107,8 @@ const BOMapFormPage = () => {
 						<Filter size={20} />
 						{translation[language].backoffice.mapFormPage.aside.filters}
 					</li>
-					{mapFilters.element && (
+					{(isSelectedFilterInThisMap(mapInfos, "element") ||
+						mapFilters.element) && (
 						<li
 							onClick={() => setStep(4)}
 							onKeyUp={() => setStep(4)}
@@ -116,7 +118,8 @@ const BOMapFormPage = () => {
 							Options filtre éléments
 						</li>
 					)}
-					{mapFilters.location && (
+					{(isSelectedFilterInThisMap(mapInfos, "location") ||
+						mapFilters.location) && (
 						<li
 							onClick={() => setStep(5)}
 							onKeyUp={() => setStep(5)}

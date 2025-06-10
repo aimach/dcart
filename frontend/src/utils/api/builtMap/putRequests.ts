@@ -20,7 +20,6 @@ import type {
  */
 const updateMap = async (body: MapInfoType) => {
 	try {
-		console.log("Updating map with body:", body);
 		const response = await apiClient(`dcart/maps/${body.id}`, {
 			method: "PUT",
 			data: JSON.stringify(body),

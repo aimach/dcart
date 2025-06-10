@@ -8,7 +8,10 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
-import { getUserFilters } from "../../../../utils/api/builtMap/getRequests";
+import {
+	getOneMapInfosById,
+	getUserFilters,
+} from "../../../../utils/api/builtMap/getRequests";
 import { addFiltersToMap } from "../../../../utils/api/builtMap/postRequests";
 import {
 	alreadyTwoFiltersChecked,
@@ -44,12 +47,15 @@ const UserMapFilterForm = () => {
 		setMapFilters,
 		resetMapFilters,
 		step,
+		setMapInfos,
 	} = useMapFormStore(useShallow((state) => state));
 
 	// définition d'un état pour stocker tous les filtres utilisateur de la BDD
 	const [userMapFilterTypes, setUserMapFilterTypes] = useState<FilterType[]>(
 		[],
 	);
+
+	console.log("mapInfos", mapInfos);
 
 	// au montage du composant, récupération de tous les filtres utilisateurs de la BDD
 	// si en mode édition, mise à jour des filtres de la carte
@@ -106,11 +112,9 @@ const UserMapFilterForm = () => {
 				mapFilters,
 			);
 			if (updatedFiltersResponse?.status === 200) {
-				resetMapInfos();
-				resetMapFilters();
-				resetAllPoints();
+				const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
+				setMapInfos(newMapInfos);
 				notifyEditSuccess("Jeu de filtres", false);
-				navigate("/backoffice/maps");
 			}
 		} else if (pathname.includes("create")) {
 			if (noFilterChecked(mapFilters)) {
