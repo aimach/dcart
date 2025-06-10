@@ -1,4 +1,5 @@
 // import des bibliothèques
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
@@ -16,6 +17,7 @@ import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
@@ -36,14 +38,8 @@ interface TextFormProps {
  * Formulaire pour la création d'un bloc de type "text"
  */
 const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
-	const { updateFormType, block, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
-	);
+	const { storymapInfos, updateFormType, block, reload, setReload } =
+		useBuilderStore(useShallow((state) => state));
 
 	const [searchParams, _] = useSearchParams();
 	const action = searchParams.get("action");
@@ -56,7 +52,7 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 			return;
 		}
 		if (!data.content1_lang2 || data.content1_lang2 === "<p><br></p>") {
-			return;
+			data.content1_lang2 = "";
 		}
 		if (action === "create") {
 			await createBlock({
@@ -87,13 +83,21 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 		}
 	};
 
+	const [inputs, setInputs] = useState(textInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = removeLang2Inputs(textInputs);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		<>
 			<FormTitleComponent action={action as string} translationKey="text" />
 			<CommonForm
 				key={block ? block.id : "text"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
-				inputs={textInputs}
+				inputs={inputs}
 				defaultValues={(defaultValues ?? block) as BlockContentType}
 				action={action as string}
 			/>

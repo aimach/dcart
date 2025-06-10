@@ -41,7 +41,7 @@ type StorymapBodyType = {
 	background_color: string;
 	author: string;
 	lang1: string;
-	lang2: string;
+	lang2: string | null;
 	publication_date: string;
 	tags: string;
 };

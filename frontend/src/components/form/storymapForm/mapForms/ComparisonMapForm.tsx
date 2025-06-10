@@ -17,6 +17,7 @@ import { uploadParsedPointsForComparisonMap } from "../../../../utils/api/storym
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 import { parseCSVFile } from "../../../../utils/functions/csv";
 // import des types
 import type { blockType } from "../../../../utils/types/formTypes";
@@ -51,14 +52,8 @@ const ComparisonMapForm = () => {
 
 	const { icons, colors } = useContext(IconOptionsContext);
 
-	const { updateFormType, block, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
-	);
+	const { storymapInfos, updateFormType, block, reload, setReload } =
+		useBuilderStore(useShallow((state) => state));
 
 	const [formSide, setFormSide] = useState("left");
 
@@ -174,6 +169,16 @@ const ComparisonMapForm = () => {
 		right: new File([], ""),
 	});
 
+	const [inputs, setInputs] = useState(comparisonMapInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = comparisonMapInputs.filter(
+				(input) => input.name !== "content1_lang2",
+			);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		isLoaded && (
 			<>
@@ -185,7 +190,7 @@ const ComparisonMapForm = () => {
 					onSubmit={handleSubmit(handlePointSubmit)}
 					className={style.mapFormContainer}
 				>
-					{comparisonMapInputs.map((input) => {
+					{inputs.map((input) => {
 						if (input.type === "text") {
 							return (
 								<div key={input.name} className={style.mapFormInputContainer}>

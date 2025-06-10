@@ -27,6 +27,7 @@ import {
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
 import { updatePointSet } from "../../../../utils/api/builtMap/putRequests";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -53,16 +54,14 @@ const SimpleMapForm = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	const { updateFormType, block, updateBlockContent, reload, setReload } =
-		useBuilderStore(
-			useShallow((state) => ({
-				block: state.block,
-				updateFormType: state.updateFormType,
-				reload: state.reload,
-				setReload: state.setReload,
-				updateBlockContent: state.updateBlockContent,
-			})),
-		);
+	const {
+		storymapInfos,
+		updateFormType,
+		block,
+		updateBlockContent,
+		reload,
+		setReload,
+	} = useBuilderStore(useShallow((state) => state));
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const action = searchParams.get("action") as "create" | "edit";
@@ -179,6 +178,14 @@ const SimpleMapForm = () => {
 		}
 	};
 
+	const [inputs, setInputs] = useState(simpleMapInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = removeLang2Inputs(simpleMapInputs);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		<>
 			<FormTitleComponent
@@ -190,7 +197,7 @@ const SimpleMapForm = () => {
 					onSubmit={handleSubmit(handleMapFormSubmit)}
 					className={style.mapFormContainer}
 				>
-					{simpleMapInputs.map((input) => {
+					{inputs.map((input) => {
 						if (input.type === "text") {
 							return (
 								<div key={input.name} className={style.mapFormInputContainer}>

@@ -10,6 +10,7 @@ type State = {
 	block: BlockContentType | null;
 	reload: boolean;
 	storymapInfos: StorymapType | null;
+	lang2Value: string | null;
 };
 
 type Action = {
@@ -18,6 +19,7 @@ type Action = {
 	setReload: (reload: boolean) => void;
 	setStorymapInfos: (storymapInfos: State["storymapInfos"]) => void;
 	resetStorymapInfos: () => void;
+	setLang2Value: (lang2Value: string | null) => void;
 };
 
 export const useBuilderStore = create<State & Action>((set) => ({
@@ -36,4 +38,6 @@ export const useBuilderStore = create<State & Action>((set) => ({
 	storymapInfos: null,
 	setStorymapInfos: (storymapInfos) => set(() => ({ storymapInfos })),
 	resetStorymapInfos: () => set(() => ({ storymapInfos: null })),
+	lang2Value: null,
+	setLang2Value: (lang2Value) => set(() => ({ lang2Value })),
 }));

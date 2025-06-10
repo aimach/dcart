@@ -46,12 +46,7 @@ const ItemLinkForm = () => {
 	const { translation, language } = useTranslation();
 
 	const { updateFormType, block, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
+		useShallow((state) => state),
 	);
 
 	const [searchParams, setSearchParams] = useSearchParams();

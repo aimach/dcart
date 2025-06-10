@@ -22,7 +22,7 @@ import {
 } from "../../../../utils/api/storymap/postRequests";
 import { createLanguageOptions } from "../../../../utils/functions/storymap";
 // import des types
-import type { SubmitHandler } from "react-hook-form";
+import { useFormContext, type SubmitHandler } from "react-hook-form";
 import type {
 	StorymapBodyType,
 	StorymapLanguageType,
@@ -37,6 +37,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { TagType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../commonForm/commonForm.module.scss";
+import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -95,7 +96,11 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	const navigate = useNavigate();
 	const onSubmit: SubmitHandler<storymapInputsType> = async (data) => {
 		if (storymapId === "create") {
-			const newStorymap = await createStorymap({ ...data, tags: selectedTags });
+			const newStorymap = await createStorymap({
+				...data,
+				lang2: data.lang2 === "0" ? null : data.lang2,
+				tags: selectedTags,
+			});
 			setStorymapInfos(newStorymap);
 			navigate(`/backoffice/storymaps/${newStorymap.id}`);
 		} else {
@@ -112,7 +117,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 					: "",
 				author: data.author,
 				lang1: data.lang1,
-				lang2: data.lang2,
+				lang2: data.lang2 === "0" ? null : data.lang2,
 				publication_date: data.publication_date,
 				tags: selectedTags
 					? selectedTags

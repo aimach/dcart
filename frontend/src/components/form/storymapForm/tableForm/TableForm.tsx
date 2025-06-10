@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { parse } from "papaparse";
 import { useForm } from "react-hook-form";
@@ -30,8 +30,12 @@ import {
 	ChevronRight,
 	CircleCheck,
 	CircleHelp,
-	Watch,
 } from "lucide-react";
+import {
+	addLangageBetweenBrackets,
+	removeLang2Inputs,
+} from "../../../../utils/functions/storymap";
+import { StorymapType } from "../../../../utils/types/storymapTypes";
 
 export type tableInputsType = {
 	content1_lang1: string;
@@ -45,14 +49,8 @@ export type tableInputsType = {
 const TableForm = () => {
 	const { translation, language } = useTranslation();
 
-	const { updateFormType, block, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
-	);
+	const { storymapInfos, updateFormType, block, reload, setReload } =
+		useBuilderStore(useShallow((state) => state));
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const action = searchParams.get("action");
@@ -91,7 +89,6 @@ const TableForm = () => {
 		register,
 		handleSubmit,
 		setValue,
-		watch,
 		formState: { errors },
 	} = useForm<tableInputsType>({
 		defaultValues: block as tableInputsType,
@@ -147,6 +144,19 @@ const TableForm = () => {
 		}
 	}, [action, block]);
 
+	const [inputs, setInputs] = useState(tableInputs);
+	useEffect(() => {
+		let newInputs = tableInputs;
+		if (!storymapInfos?.lang2) {
+			newInputs = removeLang2Inputs(tableInputs);
+		}
+		const newInputsWithLangInLabel = addLangageBetweenBrackets(
+			newInputs,
+			storymapInfos as StorymapType,
+		);
+		setInputs(newInputsWithLangInLabel);
+	}, [storymapInfos]);
+
 	return (
 		<>
 			<FormTitleComponent action={action as string} translationKey="table" />
@@ -165,7 +175,7 @@ const TableForm = () => {
 				onSubmit={handleSubmit(handlePointSubmit)}
 				className={style.mapFormContainer}
 			>
-				{tableInputs.map((input) => (
+				{inputs.map((input) => (
 					<div key={input.name} className={style.mapFormInputContainer}>
 						<div className={style.labelContainer}>
 							<label htmlFor={input.name}>{input[`label_${language}`]}</label>
@@ -189,10 +199,10 @@ const TableForm = () => {
 				<div className={style.mapFormInputContainer}>
 					<LabelComponent
 						htmlFor="tableLang1"
-						label={
+						label={`${
 							translation[language].backoffice.storymapFormPage.form
 								.uploadTableFr
-						}
+						} (${storymapInfos?.lang1?.name.toUpperCase()})`}
 						description=""
 					/>
 					<div className={style.inputContainer}>
@@ -212,35 +222,40 @@ const TableForm = () => {
 						)}
 					</div>
 				</div>
-				<div className={style.mapFormInputContainer}>
-					<LabelComponent
-						htmlFor="tableLang2"
-						label={
-							translation[language].backoffice.storymapFormPage.form
-								.uploadTableEn
-						}
-						description=""
-					/>
-					<div className={style.inputContainer}>
-						<input
-							id="tableLang2"
-							type="file"
-							accept=".csv"
-							onChange={(event) => handleFileUpload(event, 2)}
+				{storymapInfos?.lang2 && (
+					<div className={style.mapFormInputContainer}>
+						<LabelComponent
+							htmlFor="tableLang2"
+							label={`${
+								translation[language].backoffice.storymapFormPage.form
+									.uploadTableFr
+							} (${storymapInfos?.lang2?.name.toUpperCase()})`}
+							description=""
 						/>
-						{action === "edit" && (
-							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-								<CircleCheck color="green" />
-								{selectedFiles.lang2.name === ""
-									? "Un fichier est déjà chargé"
-									: `Nouveau fichier chargé : ${selectedFiles.lang2.name}`}
-							</p>
-						)}
+						<div className={style.inputContainer}>
+							<input
+								id="tableLang2"
+								type="file"
+								accept=".csv"
+								onChange={(event) => handleFileUpload(event, 2)}
+							/>
+							{action === "edit" && (
+								<p
+									style={{ display: "flex", alignItems: "center", gap: "5px" }}
+								>
+									<CircleCheck color="green" />
+									{selectedFiles.lang2.name === ""
+										? "Un fichier est déjà chargé"
+										: `Nouveau fichier chargé : ${selectedFiles.lang2.name}`}
+								</p>
+							)}
+						</div>
 					</div>
-				</div>
+				)}
+
 				<div className={style.mapFormInputContainer}>
 					<LabelComponent
-						htmlFor="tableLang2"
+						htmlFor="headerPositionTop"
 						label={
 							translation[language].backoffice.storymapFormPage.form
 								.headerPosition

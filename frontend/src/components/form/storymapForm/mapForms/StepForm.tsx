@@ -37,6 +37,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -59,16 +60,14 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	const { icons, colors } = useContext(IconOptionsContext);
 
 	// récupération des données des stores
-	const { block, updateFormType, updateBlockContent, reload, setReload } =
-		useBuilderStore(
-			useShallow((state) => ({
-				block: state.block,
-				updateFormType: state.updateFormType,
-				reload: state.reload,
-				setReload: state.setReload,
-				updateBlockContent: state.updateBlockContent,
-			})),
-		);
+	const {
+		storymapInfos,
+		block,
+		updateFormType,
+		updateBlockContent,
+		reload,
+		setReload,
+	} = useBuilderStore(useShallow((state) => state));
 
 	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
@@ -194,6 +193,14 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 
 	const quillRef = useRef<Quill | null>(null);
 
+	const [inputs, setInputs] = useState(stepInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = removeLang2Inputs(stepInputs);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		<>
 			<FormTitleComponent action={stepAction as string} translationKey="step" />
@@ -202,7 +209,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				className={style.mapFormContainer}
 				key={stepAction}
 			>
-				{stepInputs.map((input) => {
+				{inputs.map((input) => {
 					if (input.type === "text") {
 						return (
 							<div key={input.name} className={style.mapFormInputContainer}>

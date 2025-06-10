@@ -24,14 +24,14 @@ export class Storymap extends BaseEntity {
 	@Column({ type: "varchar", length: 255, nullable: false })
 	title_lang1!: string;
 
-	@Column({ type: "varchar", length: 255, nullable: false })
-	title_lang2!: string;
+	@Column({ type: "varchar", length: 255, nullable: true })
+	title_lang2?: string | null;
 
 	@Column({ type: "text", nullable: false })
 	description_lang1!: string;
 
-	@Column({ type: "text", nullable: false })
-	description_lang2!: string;
+	@Column({ type: "text", nullable: true })
+	description_lang2?: string | null;
 
 	@Column({ type: "text", nullable: true })
 	image_url!: string | null;

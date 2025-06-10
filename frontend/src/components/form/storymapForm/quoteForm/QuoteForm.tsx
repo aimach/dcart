@@ -1,4 +1,5 @@
 // import des bibliothèques
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
@@ -16,6 +17,7 @@ import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
@@ -30,14 +32,8 @@ export type quoteInputsType = {
  * Formulaire pour la création d'un bloc de type "quote"
  */
 const QuoteForm = () => {
-	const { updateFormType, block, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
-	);
+	const { storymapInfos, updateFormType, block, reload, setReload } =
+		useBuilderStore(useShallow((state) => state));
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const action = searchParams.get("action");
@@ -72,13 +68,21 @@ const QuoteForm = () => {
 		setSearchParams(undefined);
 	};
 
+	const [inputs, setInputs] = useState(quoteInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = removeLang2Inputs(quoteInputs);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		<>
 			<FormTitleComponent action={action as string} translationKey="quote" />
 			<CommonForm
 				key={block ? block.id : "quote"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
-				inputs={quoteInputs}
+				inputs={inputs}
 				defaultValues={block as BlockContentType}
 				action={action as string}
 			/>

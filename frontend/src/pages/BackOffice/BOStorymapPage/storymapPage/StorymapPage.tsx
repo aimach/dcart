@@ -143,7 +143,7 @@ const StorymapPage = () => {
 						</div>
 					)}
 					<div className={style.linkAndLanguageContainer}>
-						{storymapInfos.lang2.name && (
+						{storymapInfos.lang2?.name && (
 							<ul className={style.languageSelectionContainer}>
 								<li
 									onClick={() => setSelectedLanguage("lang1")}

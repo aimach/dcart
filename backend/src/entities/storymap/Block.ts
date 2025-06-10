@@ -22,8 +22,8 @@ export class Block extends BaseEntity {
 	@Column({ type: "text", nullable: false })
 	content1_lang1!: string;
 
-	@Column({ type: "text", nullable: false })
-	content1_lang2!: string;
+	@Column({ type: "text", nullable: true })
+	content1_lang2!: string | null;
 
 	@Column({ type: "text", nullable: true })
 	content2_lang1!: string | null;

@@ -88,9 +88,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		}
 	}, [points]);
 
-	const tileAttribution = getMapAttribution(
-		blockContent[`content2_${selectedLanguage}`],
-	);
+	const tileAttribution = getMapAttribution(blockContent.content2_lang1);
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
 
@@ -121,7 +119,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 					<>
 						<TileLayer
 							attribution={`dCART | &copy; ${tileAttribution}`}
-							url={blockContent[`content2_${selectedLanguage}`]}
+							url={blockContent.content2_lang1}
 						/>
 						<MarkerClusterGroup
 							ref={clusterRef}

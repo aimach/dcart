@@ -33,12 +33,7 @@ const LayoutForm = () => {
 	const { translation, language } = useTranslation();
 
 	const { block, reload, setReload, updateFormType } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
+		useShallow((state) => state),
 	);
 
 	const [searchParams, setSearchParams] = useSearchParams();
