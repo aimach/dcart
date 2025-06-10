@@ -3,7 +3,7 @@ import express from "express";
 // import des controllers
 import { dcartControllers } from "../controllers/builtMap/dcartControllers";
 // import des validateurs
-import { validateLoginBody } from "../utils/validator/login";
+import { validateLoginBody, validatePassword } from "../utils/validator/auth";
 import {
 	authenticateAdmin,
 	authenticateUser,
@@ -54,4 +54,8 @@ authRoutes.post(
 );
 
 // reset du mot de passe
-authRoutes.post("/reset-password", dcartControllers.resetPassword);
+authRoutes.post(
+	"/reset-password",
+	validatePassword,
+	dcartControllers.resetPassword,
+);

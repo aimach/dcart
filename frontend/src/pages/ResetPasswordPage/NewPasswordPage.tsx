@@ -21,10 +21,16 @@ const NewPasswordPage = () => {
 
 	const navigate = useNavigate();
 
+	const [error, setError] = useState<string | null>(null);
+
 	const handleSendReset = async () => {
 		if (newPassword && token && email) {
-			await resetPassword(email, token, newPassword);
-			navigate("/authentification");
+			const response = await resetPassword(email, token, newPassword);
+			if (response.message) {
+				setError(response.message);
+			} else {
+				navigate("/authentification");
+			}
 		}
 	};
 
@@ -36,6 +42,7 @@ const NewPasswordPage = () => {
 				value={newPassword}
 				onChange={(e) => setNewPassword(e.target.value)}
 			/>
+			{error && <p className={style.error}>{error}</p>}
 			<ButtonComponent
 				onClickFunction={handleSendReset}
 				type="button"
