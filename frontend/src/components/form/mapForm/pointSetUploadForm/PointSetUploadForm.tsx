@@ -65,6 +65,8 @@ const PointSetUploadForm = ({
 		});
 	};
 
+	console.log("pointSet", pointSet);
+
 	return (
 		icons.length && (
 			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
@@ -209,7 +211,9 @@ const PointSetUploadForm = ({
 				<ButtonComponent
 					type="submit"
 					color="brown"
-					textContent={translation[language].button[pointSet ? "edit" : "add"]}
+					textContent={
+						translation[language].button[action === "create" ? "add" : "edit"]
+					}
 				/>
 
 				{action === "edit" && (
