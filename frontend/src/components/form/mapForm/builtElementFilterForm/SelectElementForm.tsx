@@ -130,6 +130,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 										translation[language].mapPage.aside.searchForElement
 									}
 									isClearable={true}
+									isLoading={elementOptions.length === 0}
 								/>
 							</div>
 							<div className={style.selectContainer}>
@@ -159,6 +160,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 										translation[language].mapPage.aside.searchForElement
 									}
 									isClearable={true}
+									isLoading={elementOptions.length === 0}
 								/>
 							</div>
 							<ButtonComponent
