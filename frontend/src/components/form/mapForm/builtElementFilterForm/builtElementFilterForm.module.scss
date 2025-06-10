@@ -6,14 +6,25 @@
 
     .allSelectContainer {
         border-bottom: v.$border-width-m solid v.$color-grullo-light;
+        @include m.flexbox(flex, row, nowrap, space-between, center);
+        gap: v.$space-xxl;
+
+        >div:first-child {
+            width: 100%;
+        }
     }
 }
 
 .selectContainer {
-    width: 100%;
 
     >div {
+        width: 100%;
         margin: 1rem;
     }
 
+}
+
+.buttonContainer {
+    @include m.flexbox(flex, column, nowrap, flex-end, center);
+    gap: v.$space-m;
 }
