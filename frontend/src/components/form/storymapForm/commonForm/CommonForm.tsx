@@ -273,14 +273,7 @@ const CommonForm = ({
 				}
 			})}
 			{React.Children.map(children, (child, index) => (
-				<div className={style.commonFormInputContainer} key={index}>
-					<LabelComponent
-						htmlFor="tags"
-						label="Etiquettes de la carte"
-						description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
-					/>
-					<div className={style.inputContainer}>{child}</div>
-				</div>
+				<>{child}</>
 			))}
 			<div className={style.commonFormContainerButton}>
 				<ButtonComponent

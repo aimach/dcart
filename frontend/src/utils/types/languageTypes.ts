@@ -313,6 +313,11 @@ type LanguageObject = {
 				modifyStep: string;
 				modifyTextNow: string;
 				modifyImageNow: string;
+				tags: {
+					label: string;
+					description: string;
+					placeholder: string;
+				};
 			};
 		};
 		userManagement: {

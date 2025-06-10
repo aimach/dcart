@@ -358,7 +358,12 @@
 				"addStep": "Ajouter cette étape",
 				"modifyStep": "Modifier cette étape",
 				"modifyTextNow": "Modifier le texte directement",
-				"modifyImageNow": "Modifier l'image directement"
+				"modifyImageNow": "Modifier l'image directement",
+				"tags": {
+					"label": "Etiquettes de la storymap",
+					"description": "Les étiquettes permettent de classer les storymaps et de les retrouver plus facilement.",
+					"placeholder": "Choisir une ou plusieurs étiquettes"
+				}
 			}
 		},
 		"userManagement": {

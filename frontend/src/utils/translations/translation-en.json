@@ -357,7 +357,12 @@
 				"addStep": "Add this step",
 				"modifyStep": "Modify this step",
 				"modifyTextNow": "Edit the text directly",
-				"modifyImageNow": "Edit the image directly"
+				"modifyImageNow": "Edit the image directly",
+				"tags": {
+					"label": "Storymap tags",
+					"description": "These tags will be used to filter the storymaps in the list of storymaps. You can choose one or more tags.",
+					"placeholder": "Choose one or more tags"
+				}
 			}
 		},
 		"userManagement": {
