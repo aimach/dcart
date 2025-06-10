@@ -200,10 +200,13 @@ const hasRequiredKeys = (
 ): boolean => {
 	if (storymapInfos?.lang2) {
 		if (block.type.name === "layout") {
-			if (
-				!block.children[0].content1_lang2 &&
-				!block.children[1].content2_lang2
-			) {
+			const textChildren = block.children.filter(
+				(child) => child.type.name === "text",
+			)[0];
+			const imageChildren = block.children.filter(
+				(child) => child.type.name === "image",
+			)[0];
+			if (!textChildren.content1_lang2 || !imageChildren.content2_lang2) {
 				return true;
 			}
 		}

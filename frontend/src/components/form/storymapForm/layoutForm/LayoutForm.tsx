@@ -45,7 +45,9 @@ const LayoutForm = () => {
 	const [step, setStep] = useState(1);
 
 	// déclaration d'un état pour stocker l'id du bloc layout parent
-	const [layoutBlockId, setLayoutBlockId] = useState("");
+	const [layoutBlockId, setLayoutBlockId] = useState(
+		block?.id.toString() || "",
+	);
 
 	// définition de la fonction appelée lors du clic sur le choix de la disposition de l'image (création ou mise à jour du bloc layout)
 	const handleClick = async (position: string) => {
