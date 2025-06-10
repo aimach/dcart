@@ -16,6 +16,7 @@ import { ChevronLeft, ChevronRight } from "lucide-react";
 type NavigationButtonComponentProps = {
 	step: number;
 	nextButtonDisplayed: boolean;
+	onChangeFunction?: () => void;
 };
 
 /**
@@ -23,10 +24,12 @@ type NavigationButtonComponentProps = {
  * @param {Object} props
  * @param {number} props.step - L'étape actuelle
  * @param {number} props.nextButtonDisplayed - Booléen pour afficher ou non le bouton suivant
+ * @param {Function} props.onChangeFunction - Fonction à appeler lors du changement d'étape
  */
 const NavigationButtonComponent = ({
 	step,
 	nextButtonDisplayed,
+	onChangeFunction,
 }: NavigationButtonComponentProps) => {
 	// récupération des données de la langue
 	const { translation, language } = useTranslation();
@@ -58,6 +61,9 @@ const NavigationButtonComponent = ({
 					textContent={translation[language].common.next}
 					onClickFunction={() => {
 						incrementStep(step);
+						if (onChangeFunction) {
+							onChangeFunction();
+						}
 					}}
 					icon={<ChevronRight />}
 				/>

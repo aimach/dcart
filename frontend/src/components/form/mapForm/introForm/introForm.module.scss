@@ -84,23 +84,31 @@
 }
 
 .uploadFormContainer {
-    margin: v.$space-xxl;
+    margin: v.$space-xxl v.$space-xxl 0 v.$space-xxl;
+    min-height: 90%;
+    @include m.flexbox(flex, column, nowrap, space-between, center);
 
     .titleAndHelpContainer {
         @include m.flexbox(flex, row, nowrap, space-between, center);
         margin-bottom: v.$space-l;
+        width: 100%;
 
         >h4 {
             font-size: v.$font-size-l;
             font-weight: v.$font-weight-bold;
         }
 
-        .helpContainer {
-            >a {
-                @include m.flexbox(flex, row, nowrap, space-center, center);
-                gap: v.$space-xs;
-            }
+    }
+
+    .helpContainer {
+        >a {
+            @include m.flexbox(flex, row, nowrap, space-center, center);
+            gap: v.$space-xs;
         }
+
+        background-color: v.$background-color-soft;
+        padding: v.$space-l;
+        border-radius: v.$border-radius-rounded;
     }
 }
 

@@ -21,7 +21,6 @@ import {
 	notifyCreateSuccess,
 	notifyDeleteSuccess,
 	notifyEditSuccess,
-	notifySuccessWithCustomMessage,
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
 // import des types
@@ -62,6 +61,7 @@ const UploadForm = () => {
 	const [action, setAction] = useState<"create" | "edit">("create");
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
+
 		if (action === "create") {
 			const newPointSet = await createPointSet(pointSet as PointSetType);
 			if (newPointSet?.status === 201) {
@@ -119,40 +119,52 @@ const UploadForm = () => {
 		}
 	};
 
-	const handleCheckboxChange = async (fieldName: string, boolean: string) => {
-		const result = await updateMap({
+	const [isLayered, setIsLayered] = useState<boolean>(
+		mapInfos?.isLayered ?? false,
+	);
+	const [isNbDisplayed, setIsNbDisplayed] = useState<boolean>(
+		mapInfos?.isNbDisplayed ?? false,
+	);
+	const handleCheckboxChange = async (
+		isLayered: boolean,
+		isNbDisplayed: boolean,
+	) => {
+		const newMapInfos = await updateMap({
 			...(mapInfos as MapInfoType),
-			[fieldName]: boolean === "true",
+			isLayered,
+			isNbDisplayed,
 		});
-		setMapInfos(result?.data);
-		notifySuccessWithCustomMessage("Modification prise en compte");
+		setMapInfos({
+			...mapInfos,
+			isLayered: newMapInfos?.data.isLayered,
+			isNbDisplayed: newMapInfos?.data.isNbDisplayed,
+		} as MapInfoType);
 	};
 
 	return (
 		<section className={style.uploadFormContainer}>
 			<div className={style.titleAndHelpContainer}>
 				<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
-				<div className={style.helpContainer}>
-					<a
-						href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9?pvs=4"
-						target="_blank"
-						rel="noreferrer"
-					>
-						<CircleHelp color="grey" />
-						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
-					</a>
-				</div>
+				{isAlreadyAPointSet && (
+					<ButtonComponent
+						type="button"
+						color="brown"
+						textContent="Ajouter un nouveau jeu de points"
+						onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
+						icon={<PlusCircle />}
+					/>
+				)}
 			</div>
-			{isAlreadyAPointSet && (
-				<ButtonComponent
-					type="button"
-					color="brown"
-					textContent="Ajouter un nouveau jeu de points"
-					onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
-					icon={<PlusCircle />}
-				/>
-			)}
-
+			<div className={style.helpContainer}>
+				<a
+					href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9?pvs=4"
+					target="_blank"
+					rel="noreferrer"
+				>
+					<CircleHelp color="grey" />
+					{translation[language].backoffice.mapFormPage.uploadPointsHelp}
+				</a>
+			</div>
 			{!isAlreadyAPointSet && (
 				<PointSetUploadForm
 					pointSet={pointSet}
@@ -236,12 +248,7 @@ const UploadForm = () => {
 									id="isLayered"
 									name="isLayered"
 									type="checkbox"
-									onChange={(event) =>
-										handleCheckboxChange(
-											event.target.name,
-											event.target.checked.toString(),
-										)
-									}
+									onChange={(event) => setIsLayered(event.target.checked)}
 									defaultChecked={mapInfos.isLayered}
 								/>
 								<label htmlFor="isLayered">
@@ -257,12 +264,7 @@ const UploadForm = () => {
 								id="isNbDisplayed"
 								name="isNbDisplayed"
 								type="checkbox"
-								onChange={(event) =>
-									handleCheckboxChange(
-										event.target.name,
-										event.target.checked.toString(),
-									)
-								}
+								onChange={(event) => setIsNbDisplayed(event.target.checked)}
 								defaultChecked={mapInfos.isNbDisplayed}
 							/>
 							<label htmlFor="isNbDisplayed">
@@ -279,6 +281,9 @@ const UploadForm = () => {
 				<NavigationButtonComponent
 					step={step}
 					nextButtonDisplayed={nextButtonDisplayed}
+					onChangeFunction={() => {
+						handleCheckboxChange(isLayered, isNbDisplayed);
+					}}
 				/>
 			)}
 		</section>

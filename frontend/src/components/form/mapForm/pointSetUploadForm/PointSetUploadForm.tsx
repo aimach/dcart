@@ -156,7 +156,7 @@ const PointSetUploadForm = ({
 								{
 									code_hex: "null",
 									id: "",
-									name_fr: "défaut",
+									name_fr: "icône par défaut",
 									name_en: "default",
 								},
 							]}
