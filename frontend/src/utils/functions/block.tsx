@@ -1,7 +1,7 @@
 // import des bibliothèques
 import DOMPurify from "dompurify";
 // import des types
-import type { BlockContentType } from "../types/storymapTypes";
+import type { BlockContentType, StorymapType } from "../types/storymapTypes";
 import type { blockType, parsedPointType } from "../types/formTypes";
 // import des icônes
 import {
@@ -188,6 +188,40 @@ const getAllowedTags = () => {
 	};
 };
 
+/**
+ * Fonction qui retourne un booléen si le bloc ne possède pas toutes les clés requises
+ * @param block - le bloc à vérifier
+ * @param storymapInfos - les informations de la storymap
+ * @returns {boolean} - true si le bloc ne possède pas toutes les clés requises, false sinon
+ */
+const hasRequiredKeys = (
+	block: BlockContentType,
+	storymapInfos: StorymapType,
+): boolean => {
+	if (storymapInfos?.lang2) {
+		if (block.type.name === "layout") {
+			if (
+				!block.children[0].content1_lang2 &&
+				!block.children[1].content2_lang2
+			) {
+				return true;
+			}
+		}
+		if (block.type.name === "image") {
+			if (!block.content2_lang2) {
+				return true;
+			}
+		}
+		if (block.type.name === "separator") {
+			return false;
+		}
+		if (!block.content1_lang2) {
+			return true;
+		}
+	}
+	return false;
+};
+
 export {
 	addPanelToPoints,
 	requiredBlockKeys,
@@ -195,4 +229,5 @@ export {
 	getTypeIcon,
 	normalizeBody,
 	getAllowedTags,
+	hasRequiredKeys,
 };
