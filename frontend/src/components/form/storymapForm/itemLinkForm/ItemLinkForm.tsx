@@ -85,7 +85,7 @@ const ItemLinkForm = () => {
 	const [itemOptions, setItemOptions] = useState<OptionType[]>([]);
 	useEffect(() => {
 		const fetchMapInfos = async () => {
-			const activeMaps = await getAllMapsInfos(true);
+			const activeMaps = await getAllMapsInfos(true, "");
 			const formatedMap = activeMaps.map((map: MapType) => ({
 				label: map[`title_${language}`],
 				value: map.id,
@@ -96,21 +96,24 @@ const ItemLinkForm = () => {
 			}
 		};
 		const fetchStorymapInfos = async () => {
-			const activeStorymaps = await getAllStorymapsInfos(true);
+			const activeStorymaps = await getAllStorymapsInfos(true, "");
 			const formatedStorymap = activeStorymaps.map(
 				(storymap: StorymapType) => ({
 					label: storymap.title_lang1,
 					value: storymap.id,
 				}),
 			);
-			setActiveStorymaps(formatedStorymap);
+			const optionsWithoutCurrentStorymap = formatedStorymap.filter(
+				(storymapOption: OptionType) => storymapOption.value !== storymapId,
+			);
+			setActiveStorymaps(optionsWithoutCurrentStorymap);
 			if (block?.content1_lang1 === "storymap") {
-				setItemOptions(formatedStorymap);
+				setItemOptions(optionsWithoutCurrentStorymap);
 			}
 		};
 		fetchMapInfos();
 		fetchStorymapInfos();
-	}, [language, block]);
+	}, [language, block, storymapId]);
 
 	// import des sevice de formulaire
 	const { handleSubmit, setValue, watch } = useForm<ItemLinkFormInputs>({
@@ -203,6 +206,7 @@ const ItemLinkForm = () => {
 								}
 								blurInputOnSelect
 								defaultValue={selectedItem}
+								isLoading={!itemOptions.length}
 							/>
 						</div>
 					</div>
