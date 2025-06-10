@@ -11,16 +11,6 @@ const tileOptions = [
 		label: "Open Street Map Basic",
 		value: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 	},
-	{
-		label: "Stamen Toner Background",
-		value:
-			"https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}{r}.png",
-	},
-	{
-		label: "Stamen Watercolor",
-		value:
-			"https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.png",
-	},
 ];
 
 const storymapInputs: InputType[] = [
