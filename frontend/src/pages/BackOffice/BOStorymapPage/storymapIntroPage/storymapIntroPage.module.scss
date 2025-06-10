@@ -1,6 +1,8 @@
 @use '../../../../styles/mixin' as m;
 @use '../../../../styles/variable' as v;
 
+@use "sass:color";
+
 .storymapIntroContainer {
     @include m.flexbox(flex, column, nowrap, center, center);
 }
@@ -11,34 +13,42 @@
 }
 
 .storymapFormAside {
-    width: 20vw;
+    width: 25vw;
     min-width: 250px;
     height: 100%;
     overflow-y: scroll;
     background-color: v.$background-color-soft;
     padding-top: v.$space-l;
-    text-align: center;
-    border-right: v.$border-width-m solid v.$color-neutral-80;
 
     >ul {
-
         list-style-type: none;
         @include m.flexbox(flex, column, nowrap, space-between, flex-start);
-        gap: v.$space-l;
+        padding: 0;
 
         >li {
-            @include m.flexbox(flex, row, nowrap, center, center);
+            @include m.flexbox(flex, row, nowrap, flex-start, center);
             gap: v.$space-s;
             cursor: pointer;
+            width: calc(100% - v.$space-s);
+            padding: v.$space-s 0 v.$space-s v.$space-s;
 
+            &:hover {
+                background-color: color.adjust(v.$color-grullo-light, $lightness: 10%);
+            }
         }
+
+        .isSelected {
+            background-color: v.$color-grullo-light ;
+        }
+
     }
 
-    .isSelected {
-        font-weight: v.$font-weight-bold;
-        font-size: v.$font-size-l;
-        color: v.$color-umber;
+    &Header {
+        width: 100%;
+        @include m.flexbox(flex, row, nowrap, center, center);
     }
+
+
 
     .disabled {
         color: v.$color-neutral-60;

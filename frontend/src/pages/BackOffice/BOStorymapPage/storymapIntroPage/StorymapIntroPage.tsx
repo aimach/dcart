@@ -47,8 +47,6 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./storymapIntroPage.module.scss";
-// import des icônes
-import { ChevronRightCircle } from "lucide-react";
 
 /**
  * Page d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.
@@ -162,8 +160,8 @@ const StorymapIntroPage = () => {
 				</ModalComponent>
 			)}
 			<aside className={style.storymapFormAside}>
-				{storymapId !== "create" && (
-					<div className={style.buttonContainer}>
+				<div className={style.storymapFormAsideHeader}>
+					{storymapId !== "create" && (
 						<ButtonComponent
 							type="route"
 							color="brown"
@@ -172,8 +170,8 @@ const StorymapIntroPage = () => {
 							}
 							link={`/backoffice/storymaps/preview/${storymapId}`}
 						/>
-					</div>
-				)}
+					)}
+				</div>
 
 				<ul>
 					<li
@@ -181,7 +179,7 @@ const StorymapIntroPage = () => {
 						onKeyUp={() => setStep(1)}
 						className={step === 1 ? style.isSelected : ""}
 					>
-						{step === 1 && <ChevronRightCircle />} Introduction
+						Introduction
 					</li>
 					{storymapId !== "create" && (
 						<li
@@ -195,7 +193,7 @@ const StorymapIntroPage = () => {
 							}}
 							className={step === 2 ? style.isSelected : ""}
 						>
-							{step === 2 && <ChevronRightCircle />}Blocs
+							Blocs
 						</li>
 					)}
 				</ul>

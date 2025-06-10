@@ -12,6 +12,6 @@
 }
 
 .panelSectionContainer {
-    @include m.flexbox(flex, column, nowrap, center, flex-end);
+    @include m.flexbox(flex, column, nowrap, center, center);
 
 }

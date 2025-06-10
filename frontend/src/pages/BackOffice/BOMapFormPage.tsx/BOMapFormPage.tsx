@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useContext, useEffect, useState } from "react";
-import { useLocation, useNavigate } from "react-router";
+import { useLocation } from "react-router";
 // import du contexte
 import { SessionContext } from "../../../context/SessionContext";
 // import des composants
@@ -31,8 +31,6 @@ const BOMapFormPage = () => {
 	const { translation, language } = useTranslation();
 
 	const { pathname } = useLocation();
-
-	const navigate = useNavigate();
 
 	// récupération des données des stores
 	const { mapInfos, mapFilters, step, setStep } = useMapFormStore(
@@ -67,14 +65,12 @@ const BOMapFormPage = () => {
 				<div className={style.mapFormAsideHeader}>
 					{isMapCreated && (
 						<ButtonComponent
-							type="button"
+							type="route"
+							color="brown"
 							textContent={
 								translation[language].backoffice.storymapFormPage.preview
 							}
-							color="brown"
-							onClickFunction={() => {
-								navigate(`/backoffice/maps/preview/${mapInfos?.id}`);
-							}}
+							link={`/backoffice/maps/preview/${mapInfos?.id}`}
 						/>
 					)}
 				</div>
