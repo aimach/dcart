@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext } from "react";
+import { useContext, useState } from "react";
 import { Link, useNavigate } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
@@ -18,6 +18,7 @@ import type { SubmitHandler } from "react-hook-form";
 import type { JwtPayload } from "jwt-decode";
 // import du style
 import style from "./authFormComponent.module.scss";
+import { TriangleAlert } from "lucide-react";
 
 /**
  * Composant de formulaire d'authentification
@@ -27,25 +28,31 @@ const AuthFormComponent = () => {
 
 	const { setToken, setIsAdmin, setUserId } = useContext(AuthContext);
 
+	const [displayError, setDisplayError] = useState(false);
+
 	// fonction de gestion du bouton "Se connecter"
 	const navigate = useNavigate();
 	const handleConnectionButtonClick: SubmitHandler<User> = async (data) => {
 		const loginUserResponse = await loginUser(data);
-		setToken(loginUserResponse.accessToken as string);
-		if (loginUserResponse.accessToken) {
-			const decodedToken = jwtService.verifyToken(
-				loginUserResponse.accessToken as string,
-			);
-			if ((decodedToken as JwtPayload & { userStatus: string }).userStatus) {
-				setIsAdmin(
-					(decodedToken as JwtPayload & { userStatus: string }).userStatus ===
-						"admin",
+		if (loginUserResponse) {
+			setToken(loginUserResponse.accessToken as string);
+			if (loginUserResponse.accessToken) {
+				const decodedToken = jwtService.verifyToken(
+					loginUserResponse.accessToken as string,
 				);
-				setUserId(
-					(decodedToken as JwtPayload & { userId: string }).userId || null,
-				);
+				if ((decodedToken as JwtPayload & { userStatus: string }).userStatus) {
+					setIsAdmin(
+						(decodedToken as JwtPayload & { userStatus: string }).userStatus ===
+							"admin",
+					);
+					setUserId(
+						(decodedToken as JwtPayload & { userId: string }).userId || null,
+					);
+				}
+				navigate("/backoffice");
 			}
-			navigate("/backoffice");
+		} else {
+			setDisplayError(true);
 		}
 	};
 
@@ -92,6 +99,12 @@ const AuthFormComponent = () => {
 						/>
 					)}
 				</div>
+				{displayError && (
+					<div className={style.errorMessage}>
+						<TriangleAlert />
+						{translation[language].invalidAuth}
+					</div>
+				)}
 				<ButtonComponent
 					type="submit"
 					color="brown"

@@ -4,6 +4,7 @@
 	"en": "EN",
 	"fr": "FR",
 	"noAuthInMobile": "You must log in on a computer to access this page.",
+	"invalidAuth": "Invalid username or password.",
 	"navigation": {
 		"home": "HOME",
 		"maps": "MAPS",

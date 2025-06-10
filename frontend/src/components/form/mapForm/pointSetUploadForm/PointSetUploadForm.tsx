@@ -65,8 +65,6 @@ const PointSetUploadForm = ({
 		});
 	};
 
-	console.log("pointSet", pointSet);
-
 	return (
 		icons.length && (
 			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
