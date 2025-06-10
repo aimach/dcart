@@ -48,7 +48,7 @@ const getPreviewText = (
 	if (block.type.name === "text") {
 		const sanitizedText = DOMPurify.sanitize(
 			block[`content1_${selectedLanguage}`],
-		).slice(0, 50);
+		).slice(0, 30);
 		return (
 			<p
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: texte est nettoyé avec DOMPurify
@@ -76,7 +76,7 @@ const getPreviewText = (
 		);
 	}
 	return (
-		<p style={{ fontSize: "13px" }}>
+		<p style={{ fontSize: "13px", lineBreak: "anywhere" }}>
 			{block[`content1_${selectedLanguage}`].length > 30
 				? `${block[`content1_${selectedLanguage}`].slice(0, 30)}...`
 				: block[`content1_${selectedLanguage}`]}
