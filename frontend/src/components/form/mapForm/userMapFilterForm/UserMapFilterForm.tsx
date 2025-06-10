@@ -162,34 +162,42 @@ const UserMapFilterForm = () => {
 						<p>{translation[language].alert.maxReached}</p>
 					</div>
 				)}
-				{userMapFilterTypes.map((filter: FilterType) => {
-					const { label, description } = getFilterLabel(
-						filter.type,
-						translation,
-						language,
-					);
-					if (filter.type !== "time") {
-						return (
-							<div
-								key={filter.type}
-								className={style.commonFormInputContainer}
-								style={{ justifyContent: "flex-start" }}
-							>
-								<div className={style.labelContainer}>
-									<label htmlFor={filter.type}>{label}</label>
-									<p>{description}</p>
-								</div>
-								<input
-									id={filter.type}
-									name={filter.type}
-									type="checkbox"
-									checked={mapFilters[filter.type]}
-									onChange={(event) => handleCheckboxChange(event)}
-								/>
-							</div>
+				{userMapFilterTypes
+					.sort((option1, option2) =>
+						option1.type < option2.type
+							? -1
+							: option1.type > option2.type
+								? 1
+								: 0,
+					)
+					.map((filter: FilterType) => {
+						const { label, description } = getFilterLabel(
+							filter.type,
+							translation,
+							language,
 						);
-					}
-				})}
+						if (filter.type !== "time") {
+							return (
+								<div
+									key={filter.type}
+									className={style.commonFormInputContainer}
+									style={{ justifyContent: "flex-start" }}
+								>
+									<div className={style.labelContainer}>
+										<label htmlFor={filter.type}>{label}</label>
+										<p>{description}</p>
+									</div>
+									<input
+										id={filter.type}
+										name={filter.type}
+										type="checkbox"
+										checked={mapFilters[filter.type]}
+										onChange={(event) => handleCheckboxChange(event)}
+									/>
+								</div>
+							);
+						}
+					})}
 				<div
 					className={style.commonFormInputContainer}
 					style={{ justifyContent: "flex-start" }}
