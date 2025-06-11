@@ -26,9 +26,11 @@ export const dcartDataSource = new DataSource({
 		`${__dirname}/../entities/session/*.ts`,
 	],
 	ssl: {
-		rejectUnauthorized: false, // Désactive la vérification du certificat SSL
+		rejectUnauthorized: false,
 	},
 });
+
+console.log("SSL activé ? =>", dcartDataSource.options);
 
 export const mapDataSource = new DataSource({
 	type: "postgres",
