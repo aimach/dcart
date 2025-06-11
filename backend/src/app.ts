@@ -22,7 +22,6 @@ dotenv.config({ path: path.resolve(__dirname, `../${envFile}`) });
 const app: Application = express();
 const PORT = process.env.APP_PORT;
 const HOST = process.env.APP_HOST;
-console.log(HOST, PORT);
 
 // middleware
 app.use(express.json({ limit: "10mb" }));
