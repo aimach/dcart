@@ -15,10 +15,8 @@ import { translationRoutes } from "./routes/translationRoutes";
 
 // on charge les variables d'environnement
 const envFile =
-	process.env.NODE_ENV === "production" ? ".env.production" : ".env.dev";
-dotenv.config({ path: envFile });
-
-console.log(process.env);
+	process.env.NODE_ENV === "production" ? ".env.production" : ".env";
+dotenv.config({ path: `../${envFile}` });
 
 const app: Application = express();
 const PORT = process.env.APP_PORT;
