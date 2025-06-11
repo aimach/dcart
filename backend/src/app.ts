@@ -3,6 +3,7 @@ import express, { type Application } from "express";
 import dotenv from "dotenv";
 import cors from "cors";
 import cookieParser from "cookie-parser";
+import path from "node:path";
 // import des dataSources
 import { dcartDataSource, mapDataSource } from "./dataSource/dataSource";
 // import des routes
@@ -16,7 +17,7 @@ import { translationRoutes } from "./routes/translationRoutes";
 // on charge les variables d'environnement
 const envFile =
 	process.env.NODE_ENV === "production" ? ".env.production" : ".env";
-dotenv.config({ path: `../${envFile}` });
+dotenv.config({ path: path.resolve(__dirname, `../${envFile}`) });
 
 const app: Application = express();
 const PORT = process.env.APP_PORT;
