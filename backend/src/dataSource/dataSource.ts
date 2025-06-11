@@ -25,6 +25,9 @@ export const dcartDataSource = new DataSource({
 		`${__dirname}/../entities/auth/*.ts`,
 		`${__dirname}/../entities/session/*.ts`,
 	],
+	ssl: {
+		rejectUnauthorized: false,
+	},
 });
 
 export const mapDataSource = new DataSource({
