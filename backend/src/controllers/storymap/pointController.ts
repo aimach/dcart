@@ -95,12 +95,14 @@ export const pointController = {
 		if (pane) {
 			await dcartDataSource
 				.getRepository(Point)
+				// @ts-ignore
 				.delete({ block: mapBlock, pane: pane as pane });
 			res.status(200).send("Données supprimées avec succès !");
 			return;
 		}
 
 		// sinon, on les supprime tous
+		// @ts-ignore
 		await dcartDataSource.getRepository(Point).delete({ block: mapBlock });
 
 		res.status(200).send("Données supprimées avec succès !");
