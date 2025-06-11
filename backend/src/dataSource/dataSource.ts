@@ -1,9 +1,12 @@
 // import des bibliothèques
 import { DataSource } from "typeorm";
 import dotenv from "dotenv";
+import path from "node:path";
 
 // on charge les variables d'environnement
-dotenv.config();
+const envFile =
+	process.env.NODE_ENV === "production" ? ".env.production" : ".env";
+dotenv.config({ path: path.resolve(__dirname, `../../${envFile}`) });
 
 export const dcartDataSource = new DataSource({
 	type: "postgres",
