@@ -30,8 +30,6 @@ export const dcartDataSource = new DataSource({
 	},
 });
 
-console.log("SSL activé ? =>", dcartDataSource.options);
-
 export const mapDataSource = new DataSource({
 	type: "postgres",
 	host: process.env.MAP_DB_HOST,
