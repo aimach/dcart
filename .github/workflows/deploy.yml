@@ -17,11 +17,19 @@ jobs:
       with:
         node-version: 22
 
+    - name: Upload .env to frontend
+      run: |
+        echo -e "${{ secrets.FRONTEND_ENV }}" | ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "cat > ${{ secrets.DEPLOY_PATH }}/frontend/.env"
+
     - name: Install dependencies and build frontend
       working-directory: frontend
       run: |
         npm install
         npm run build
+
+    - name: Upload .env to backend
+      run: |
+        echo -e "${{ secrets.BACKEND_ENV }}" | ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "cat > ${{ secrets.DEPLOY_PATH }}/backend/.env"
 
     - name: Install dependencies and build backend
       working-directory: backend
