@@ -1,6 +1,6 @@
 // import des bibliothèques
 import type jwt from "jsonwebtoken";
-import argon2 from "argon2";
+import bcrypt from "bcryptjs";
 import { randomBytes } from "node:crypto";
 // import des entités
 import { User } from "../../entities/auth/User";
@@ -12,6 +12,8 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import { sendPasswordResetEmail } from "../../utils/mailer";
 // import des types
 import type { Request, Response } from "express";
+
+const saltRounds = 10;
 
 export const authController = {
 	// cette route existe pour l'instant pour les besoins de développement mais sera supprimée lors de la mise en prod
@@ -60,9 +62,9 @@ export const authController = {
 			}
 
 			// vérification que le mot de passe correspond, sinon message d'erreur
-			const isMatch = await argon2.verify(
-				(user as User).password as string,
+			const isMatch = await bcrypt.compare(
 				password,
+				(user as User).password as string,
 			);
 			if (!isMatch) {
 				res.status(403).json({ message: "Mot de passe incorrect." });
@@ -235,7 +237,7 @@ export const authController = {
 
 		const resetLink = `http://${process.env.APP_HOST}:${process.env.FRONTEND_PORT}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
 
-		// await sendPasswordResetEmail(email, resetLink);
+		await sendPasswordResetEmail(email, resetLink);
 
 		res.json({ message: "Lien de réinitialisation envoyé" });
 	},
@@ -256,7 +258,7 @@ export const authController = {
 			return;
 		}
 
-		const hashedPassword = await argon2.hash(newPassword);
+		const hashedPassword = await bcrypt.hash(newPassword, saltRounds);
 		user.password = hashedPassword;
 		user.resetToken = null;
 		user.resetTokenExpiration = null;
