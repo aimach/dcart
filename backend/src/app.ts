@@ -14,10 +14,15 @@ import { sessionRoutes } from "./routes/sessionRoutes";
 import { translationRoutes } from "./routes/translationRoutes";
 
 // on charge les variables d'environnement
-dotenv.config();
+const envFile =
+	process.env.NODE_ENV === "production" ? ".env.production" : ".env.dev";
+dotenv.config({ path: envFile });
+
+console.log(process.env);
 
 const app: Application = express();
 const PORT = process.env.APP_PORT;
+const HOST = process.env.APP_HOST;
 
 // middleware
 app.use(express.json({ limit: "10mb" }));
@@ -56,5 +61,5 @@ app.use("/translation", translationRoutes);
 // app.listen(6001, "0.0.0.0", () =>
 app.listen(6001, () =>
 	// console.log(`Server running on http://0.0.0.0:${PORT}`),
-	console.log(`Server running on http://localhost:${PORT}`),
+	console.log(`Server running on http://${HOST}:${PORT}`),
 );
