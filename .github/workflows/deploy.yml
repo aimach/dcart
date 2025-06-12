@@ -1,0 +1,60 @@
+# name: Deploy dcart app
+
+# on:
+#   push:
+#     branches: [dev] # ou 'develop', selon ton cas
+
+# jobs:
+#   build-and-deploy:
+#     runs-on: ubuntu-latest
+
+#     steps:
+#     - name: Checkout code
+#       uses: actions/checkout@v3
+
+#     - name: Set up Node.js
+#       uses: actions/setup-node@v3
+#       with:
+#         node-version: 22
+
+#     - name: Setup SSH
+#       run: |
+#         mkdir -p ~/.ssh
+#         echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+#         chmod 600 ~/.ssh/id_rsa
+#         ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
+#     - name: Upload .env to frontend
+#       run: |
+#         echo -e "${{ secrets.FRONTEND_ENV }}" | ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "cat > ${{ secrets.DEPLOY_PATH }}/frontend/.env"
+
+#     - name: Install dependencies and build frontend
+#       working-directory: frontend
+#       run: |
+#         npm install
+#         npm run build
+
+#     - name: Upload .env to backend
+#       run: |
+#         echo -e "${{ secrets.BACKEND_ENV }}" | ssh ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }} "cat > ${{ secrets.DEPLOY_PATH }}/backend/.env"
+
+#     - name: Install dependencies and build backend
+#       working-directory: backend
+#       run: |
+#         npm install
+#         npm run start-build
+
+#     - name: Setup SSH
+#       run: |
+#         mkdir -p ~/.ssh
+#         echo "${{ secrets.DEPLOY_KEY }}" > ~/.ssh/id_rsa
+#         chmod 600 ~/.ssh/id_rsa
+#         ssh-keyscan -H ${{ secrets.DEPLOY_HOST }} >> ~/.ssh/known_hosts
+
+#     - name: Deploy frontend via SCP
+#       run: |
+#         scp -r frontend/dist/* ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/frontend
+
+#     - name: Deploy backend via SCP
+#       run: |
+#         scp -r backend/dist/* ${{ secrets.DEPLOY_USER }}@${{ secrets.DEPLOY_HOST }}:${{ secrets.DEPLOY_PATH }}/backend
