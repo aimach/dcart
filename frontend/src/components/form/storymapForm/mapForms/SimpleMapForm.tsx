@@ -133,6 +133,7 @@ const SimpleMapForm = () => {
 				const newBlockInfos = await getBlockInfos(block?.id as string);
 				updateBlockContent(newBlockInfos);
 				notifyCreateSuccess("Jeu de points", false);
+				setPointSet(null);
 			}
 		}
 		if (pointSetFormAction === "edit") {
@@ -141,6 +142,7 @@ const SimpleMapForm = () => {
 				const newBlockInfos = await getBlockInfos(block?.id as string);
 				updateBlockContent(newBlockInfos);
 				notifyEditSuccess("Jeu de points", false);
+				setPointSet(null);
 			}
 		}
 	};
