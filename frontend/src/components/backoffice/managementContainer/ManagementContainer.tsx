@@ -1,6 +1,7 @@
 // import des bibliothèques
 import { useState, useEffect, useCallback } from "react";
 import { useNavigate } from "react-router";
+import { useForm } from "react-hook-form";
 // import des composants
 import ButtonComponent from "../../common/button/ButtonComponent";
 import ItemTableComponent from "../itemTable/ItemTableComponent";
@@ -20,7 +21,6 @@ import type { MapType } from "../../../utils/types/mapTypes";
 import style from "./managementContainer.module.scss";
 // import des icônes
 import { CirclePlus, ListRestart } from "lucide-react";
-import { useForm } from "react-hook-form";
 
 type ManagementContainerProps = {
 	type: string;

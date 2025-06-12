@@ -24,6 +24,7 @@ import { notifyCreateSuccess } from "../../../utils/functions/toast";
 import type { TagType } from "../../../utils/types/mapTypes";
 // import des styles
 import style from "./tagManagementPage.module.scss";
+import { CirclePlus } from "lucide-react";
 
 const TagManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -81,8 +82,8 @@ const TagManagementPage = () => {
 					<DeleteTagContent />
 				</ModalComponent>
 			)}
-			<h4>{translation[language].backoffice.tagManagement.title}</h4>
-			<div>
+
+			<div className={style.tagManagementHeader}>
 				{isCreateForm ? (
 					<ButtonComponent
 						type="button"
@@ -96,6 +97,7 @@ const TagManagementPage = () => {
 						textContent={translation[language].button.add}
 						color="brown"
 						onClickFunction={() => setIsCreateForm(!isCreateForm)}
+						icon={<CirclePlus />}
 					/>
 				)}
 			</div>

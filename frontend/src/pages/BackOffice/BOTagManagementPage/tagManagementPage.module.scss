@@ -3,6 +3,8 @@
 
 .tagManagementSection {
     @include m.flexbox(flex, column, nowrap, center, center);
+    background-color: v.$background-color-soft;
+    min-height: calc(100vh - v.$main-header-height);
 
     >h4 {
         font-size: v.$font-size-xxl;
@@ -11,12 +13,20 @@
     }
 }
 
+.tagManagementHeader {
+    width: 90vw;
+    margin: 0 auto;
+    @include m.flexbox(flex, row, nowrap, flex-start, center);
+    padding: v.$space-m 0;
+}
+
 .tagManagementContainer {
     width: 90vw;
     margin: 0 auto;
-    background-color: v.$background-color-soft;
+    background-color: v.$background-color-base;
     border-radius: v.$border-radius-rounded;
     padding: v.$space-xl;
+    @include m.shadow();
 
     >form {
         @include m.flexbox(flex, row, nowrap, flex-start, center);
@@ -58,6 +68,7 @@
         @include m.flexbox(flex, column, nowrap, center, center);
         width: 100px;
         margin-top: v.$space-l;
+        gap: v.$space-s;
 
     }
 }
