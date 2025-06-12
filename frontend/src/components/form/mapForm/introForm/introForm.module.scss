@@ -199,3 +199,10 @@
     padding: v.$space-l;
     border-radius: v.$border-radius-rounded;
 }
+
+.errorMessage {
+    color: v.$color-error;
+    font-size: v.$font-size-s;
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$space-xs;
+}

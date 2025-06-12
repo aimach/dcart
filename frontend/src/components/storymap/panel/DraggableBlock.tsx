@@ -124,8 +124,17 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 						<br />
 						{previewText}
 						{displayWarning && (
-							<p style={{ color: "red", fontSize: "12px" }}>
-								<TriangleAlert size={20} /> Données manquantes
+							<p
+								style={{
+									color: "#9d2121",
+									fontSize: "0.875rem",
+									display: "flex",
+									alignItems: "center",
+									gap: "10px",
+								}}
+							>
+								<TriangleAlert size={20} />{" "}
+								{translation[language].alert.missingTranslation}
 							</p>
 						)}
 					</div>

@@ -19,7 +19,9 @@
 		"divinities": "DIVINITIES"
 	},
 	"alert": {
-		"maxReached": "Maximum number of filters reached"
+		"maxReached": "Maximum number of filters reached",
+		"noTagAssociated": "No tag associated",
+		"missingTranslation": "Missing translation"
 	},
 	"button": {
 		"freeExploration": "Free exploration",
@@ -85,7 +87,7 @@
 		"deteleMapText": "Are you sure you want to delete this map?",
 		"deleteUserText": "Are you sure you want to delete this user? This action is irreversible.",
 		"modifyUserStatusText": "Are you sure you want to change the status of this user?",
-		"deleteTag": "Are you sure you want to delete this tag?",
+		"deleteTagText": "Are you sure you want to delete this tag? If this tag only is used in a map or a storymap, it will be removed from the home page or tag page.",
 		"associatedStorymap": "See associated storymap",
 		"associatedMap": "See associated map"
 	},

@@ -22,6 +22,8 @@ type LanguageObject = {
 	};
 	alert: {
 		maxReached: string;
+		noTagAssociated: string;
+		missingTranslation: string;
 	};
 	button: {
 		freeExploration: string;

@@ -19,7 +19,9 @@
 		"divinities": "DIVINITÉS"
 	},
 	"alert": {
-		"maxReached": "Nombre maximum de filtres atteint"
+		"maxReached": "Nombre maximum de filtres atteint",
+		"noTagAssociated": "Etiquette manquante",
+		"missingTranslation": "Traduction manquante"
 	},
 	"button": {
 		"freeExploration": "Exploration libre",
@@ -85,7 +87,7 @@
 		"deteleMapText": "Êtes-vous sûr de vouloir supprimer cette carte ?",
 		"deleteUserText": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible !",
 		"modifyUserStatusText": "Êtes-vous sûr de vouloir modifier le statut de cet utilisateur ?",
-		"deleteTag": "Êtes-vous sûr de vouloir supprimer cette étiquette ?",
+		"deleteTagText": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Si une carte ou une storymap est associée à cette seule étiquette, elle ne sera plus visible par les utilisateurs.",
 		"associatedStorymap": "Voir la storymap associée",
 		"associatedMap": "Voir la carte associée"
 	},

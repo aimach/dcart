@@ -22,7 +22,7 @@ import {
 } from "../../../../utils/api/storymap/postRequests";
 import { createLanguageOptions } from "../../../../utils/functions/storymap";
 // import des types
-import { useFormContext, type SubmitHandler } from "react-hook-form";
+import type { SubmitHandler } from "react-hook-form";
 import type {
 	StorymapBodyType,
 	StorymapLanguageType,
@@ -37,7 +37,8 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { TagType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../commonForm/commonForm.module.scss";
-import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
+// import des icônes
+import { TriangleAlert } from "lucide-react";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -204,6 +205,12 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 								}}
 								placeholder="Choisir une ou plusieurs étiquette"
 							/>
+							{storymapId !== "create" && storymapInfos?.tags?.length === 0 && (
+								<p className={style.errorMessage}>
+									<TriangleAlert size={20} />{" "}
+									{translation[language].alert.noTagAssociated}
+								</p>
+							)}
 						</div>
 					</div>
 				</CommonForm>
