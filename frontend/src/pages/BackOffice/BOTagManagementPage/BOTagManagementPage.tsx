@@ -60,6 +60,7 @@ const TagManagementPage = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
+		reset,
 	} = useForm<TagType>();
 
 	const handleCreateTag = async (data: TagType) => {
@@ -69,6 +70,7 @@ const TagManagementPage = () => {
 			notifyCreateSuccess("Etiquette", true);
 			setReload(!reload);
 			setReloadTags(!reloadTags); // Force le rechargement des tags
+			reset(); // Réinitialise le formulaire
 		}
 	};
 
