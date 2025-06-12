@@ -7,16 +7,19 @@ import { TranslationContext } from "./TranslationContext";
 import type { ReactNode } from "react";
 import type { OptionType } from "../utils/types/commonTypes";
 import type { TagType } from "../utils/types/mapTypes";
-import { set } from "react-hook-form";
 
 type TagOptionsContextType = {
 	tagOptions: OptionType[];
 	tags: TagType[];
+	reloadTags: boolean;
+	setReloadTags: (value: boolean) => void;
 };
 
 export const TagOptionsContext = createContext<TagOptionsContextType>({
 	tagOptions: [],
 	tags: [],
+	reloadTags: false,
+	setReloadTags: () => {},
 });
 
 interface TagOptionsProviderProps {
@@ -28,6 +31,7 @@ export const TagOptionsProvider = ({ children }: TagOptionsProviderProps) => {
 
 	const [tags, setTags] = useState<TagType[]>([]);
 	const [tagOptions, setTagOptions] = useState<OptionType[]>([]);
+	const [reloadTags, setReloadTags] = useState(false);
 
 	useEffect(() => {
 		const fetchAllTags = async () => {
@@ -43,10 +47,12 @@ export const TagOptionsProvider = ({ children }: TagOptionsProviderProps) => {
 			setTagOptions(formatedTagOptions);
 		};
 		fetchAllTags();
-	}, [language]);
+	}, [language, reloadTags]);
 
 	return (
-		<TagOptionsContext.Provider value={{ tagOptions, tags }}>
+		<TagOptionsContext.Provider
+			value={{ tagOptions, tags, reloadTags, setReloadTags }}
+		>
 			{children}
 		</TagOptionsContext.Provider>
 	);

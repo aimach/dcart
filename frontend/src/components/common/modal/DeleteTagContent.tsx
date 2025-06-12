@@ -1,5 +1,9 @@
+// import des bibliothèques
+import { useContext } from "react";
 // import des composants
 import ButtonComponent from "../button/ButtonComponent";
+// import du contexte
+import { TagOptionsContext } from "../../../context/TagContext";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
@@ -16,6 +20,8 @@ const DeleteTagContent = () => {
 	// récupération des données de traduction
 	const { language, translation } = useTranslation();
 
+	const { reloadTags, setReloadTags } = useContext(TagOptionsContext);
+
 	// récupération des données des stores
 	const { closeDeleteModal, idToDelete, reload, setReload } = useModalStore();
 
@@ -26,6 +32,7 @@ const DeleteTagContent = () => {
 			closeDeleteModal();
 			setReload(!reload);
 			notifyDeleteSuccess("Étiquette", true);
+			setReloadTags(!reloadTags); // Force le rechargement des tags
 		}
 	};
 

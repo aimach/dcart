@@ -14,6 +14,7 @@ import ButtonComponent from "../../../components/common/button/ButtonComponent";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du context
 import { AuthContext } from "../../../context/AuthContext";
+import { TagOptionsContext } from "../../../context/TagContext";
 // import des services
 import { getAllTags } from "../../../utils/api/builtMap/getRequests";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
@@ -28,6 +29,8 @@ const TagManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
 
 	const { translation, language } = useTranslation();
+
+	const { reloadTags, setReloadTags } = useContext(TagOptionsContext);
 
 	const navigate = useNavigate();
 
@@ -65,6 +68,7 @@ const TagManagementPage = () => {
 			setIsCreateForm(false);
 			notifyCreateSuccess("Etiquette", true);
 			setReload(!reload);
+			setReloadTags(!reloadTags); // Force le rechargement des tags
 		}
 	};
 
