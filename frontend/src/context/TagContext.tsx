@@ -33,6 +33,7 @@ export const TagOptionsProvider = ({ children }: TagOptionsProviderProps) => {
 	const [tagOptions, setTagOptions] = useState<OptionType[]>([]);
 	const [reloadTags, setReloadTags] = useState(false);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: force le rechargement des tags
 	useEffect(() => {
 		const fetchAllTags = async () => {
 			const fetchedTags = await getAllTags();

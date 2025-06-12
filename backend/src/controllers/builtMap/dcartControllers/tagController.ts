@@ -16,7 +16,12 @@ export const tagController = {
 
 			let results = null;
 			if (tagSlug === "all") {
-				results = await dcartDataSource.getRepository(Tag).find();
+				results = await dcartDataSource.getRepository(Tag).find({
+					order: {
+						name_fr: "ASC",
+						name_en: "ASC",
+					},
+				});
 
 				res.status(200).json(results);
 				return;
