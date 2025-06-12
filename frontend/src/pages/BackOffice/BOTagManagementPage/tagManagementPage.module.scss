@@ -5,12 +5,6 @@
     @include m.flexbox(flex, column, nowrap, center, center);
     background-color: v.$background-color-soft;
     min-height: calc(100vh - v.$main-header-height);
-
-    >h4 {
-        font-size: v.$font-size-xxl;
-        text-align: center;
-        margin: v.$space-xxl 0;
-    }
 }
 
 .tagManagementHeader {

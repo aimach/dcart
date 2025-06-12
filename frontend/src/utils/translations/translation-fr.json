@@ -21,7 +21,8 @@
 	"alert": {
 		"maxReached": "Nombre maximum de filtres atteint",
 		"noTagAssociated": "Etiquette manquante",
-		"missingTranslation": "Traduction manquante"
+		"missingTranslation": "Traduction manquante",
+		"copied": "Copié dans le presse-papier"
 	},
 	"button": {
 		"freeExploration": "Exploration libre",
@@ -47,7 +48,8 @@
 		"publish": "Publier",
 		"unpublish": "Dépublier",
 		"editDisabled": "Modifier désactivé",
-		"search": "Rechercher"
+		"search": "Rechercher",
+		"copyRequest": "Copier la requête SQL"
 	},
 	"common": {
 		"between": "entre",

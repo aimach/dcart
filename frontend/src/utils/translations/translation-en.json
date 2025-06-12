@@ -21,7 +21,8 @@
 	"alert": {
 		"maxReached": "Maximum number of filters reached",
 		"noTagAssociated": "No tag associated",
-		"missingTranslation": "Missing translation"
+		"missingTranslation": "Missing translation",
+		"copied": "Copied to clipboard"
 	},
 	"button": {
 		"freeExploration": "Free exploration",
@@ -47,7 +48,8 @@
 		"publish": "Publish",
 		"unpublish": "Unpublish",
 		"editDisabled": "Edit disabled",
-		"search": "Search"
+		"search": "Search",
+		"copyRequest": "Copy SQL request"
 	},
 	"common": {
 		"between": "between",

@@ -24,6 +24,7 @@ type LanguageObject = {
 		maxReached: string;
 		noTagAssociated: string;
 		missingTranslation: string;
+		copied: string;
 	};
 	button: {
 		freeExploration: string;
@@ -50,6 +51,7 @@ type LanguageObject = {
 		unpublish: string;
 		editDisabled: string;
 		search: string;
+		copyRequest: string;
 	};
 	common: {
 		between: string;
