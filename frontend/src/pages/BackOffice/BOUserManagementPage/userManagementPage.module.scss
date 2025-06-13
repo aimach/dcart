@@ -2,47 +2,53 @@
 @use '../../../styles/variable' as v;
 
 .userManagementSection {
+    min-height: calc(100vh - v.$main-header-height);
+    @include m.flexbox(flex, column, nowrap, flex-start, center);
+    gap: v.$space-l;
+    background-color: v.$background-color-soft;
+    padding: v.$space-l 0;
+}
 
-
-    >h4 {
-        font-size: v.$font-size-xxl;
-        text-align: center;
-        margin: v.$space-xxl 0;
-    }
+.userManagementHeader {
+    width: 90vw;
+    @include m.flexbox(flex, row, nowrap, flex-start, center);
 }
 
 .userManagementTableContainer {
     width: 90vw;
     margin: 0 auto;
-    background-color: v.$background-color-soft;
-    border-radius: v.$border-radius-rounded;
-    padding: v.$space-xl;
 
     .managementTable {
         width: 100%;
+        background-color: v.$background-color-base;
+        border-radius: v.$border-radius-base;
+        @include m.shadow();
 
         >thead {
-            border-bottom: v.$border-width-m solid v.$color-grullo;
+            border-bottom: v.$border-width-m solid v.$color-grullo-light;
 
             >tr>th {
-                padding-bottom: v.$space-m;
-                font-weight: v.$font-weight-bold;
+                padding: v.$space-m 0;
             }
 
         }
 
         .userTableRow {
+            &:hover {
+                background-color: v.$background-color-soft;
+            }
+
             >td {
                 text-align: center;
-                background-color: v.$background-color-base;
                 padding: v.$space-l 0;
-                border-bottom: v.$border-width-m solid v.$color-grullo;
+                border-bottom: v.$border-width-m solid v.$color-grullo-light;
                 max-width: 100px;
                 vertical-align: middle;
             }
 
-            >td:last-of-type {
-                text-align: center;
+            >td:last-of-type>div {
+                @include m.flexbox(flex, column, nowrap, center, center);
+                gap: v.$space-s;
 
                 >svg,
                 button {
@@ -63,4 +69,10 @@
             }
         }
     }
+}
+
+.addUserFormContainer {
+    background-color: v.$background-color-base;
+    border-radius: v.$border-radius-base;
+    @include m.shadow();
 }

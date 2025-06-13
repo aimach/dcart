@@ -18,11 +18,11 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import des types
 import type { User } from "../../../utils/types/userTypes";
 import type { userInputType } from "../../../components/form/userForm/AddUserForm";
+import { createNewUser } from "../../../utils/api/authAPI";
 // import des styles
 import style from "./userManagementPage.module.scss";
 // import des icônes
-import { Trash } from "lucide-react";
-import { createNewUser } from "../../../utils/api/authAPI";
+import { CirclePlus, Trash } from "lucide-react";
 
 const UserManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -44,6 +44,7 @@ const UserManagementPage = () => {
 		closeUpdateModal,
 		isUpdateModalOpen,
 		reload,
+		setReload,
 	} = useModalStore();
 
 	useEffect(() => {
@@ -78,6 +79,7 @@ const UserManagementPage = () => {
 	const handleAddUserSubmit = async (data: userInputType) => {
 		await createNewUser(data);
 		setAddUserForm(false);
+		setReload(!reload);
 	};
 
 	return users.length > 0 ? (
@@ -92,15 +94,21 @@ const UserManagementPage = () => {
 					<UpdateUserStatusContent />
 				</ModalComponent>
 			)}
-			<h4>{translation[language].backoffice.userManagement.title}</h4>
-			<ButtonComponent
-				type="button"
-				color="gold"
-				textContent={translation[language].backoffice.userManagement.addUser}
-				onClickFunction={() => {
-					setAddUserForm(!addUserForm);
-				}}
-			/>
+			<div className={style.userManagementHeader}>
+				<ButtonComponent
+					type="button"
+					color="brown"
+					textContent={
+						addUserForm
+							? translation[language].button.cancel
+							: translation[language].backoffice.userManagement.addUser
+					}
+					onClickFunction={() => {
+						setAddUserForm(!addUserForm);
+					}}
+					icon={addUserForm ? null : <CirclePlus />}
+				/>
+			</div>
 			{addUserForm && (
 				<AddUserForm
 					onSubmit={handleAddUserSubmit}
@@ -128,24 +136,26 @@ const UserManagementPage = () => {
 									{translation[language].backoffice.userManagement[user.status]}
 								</td>
 								<td>
-									{userId !== user.id && (
-										<>
-											<button
-												type="button"
-												onClick={() => handleStatusClick(user.id as string)}
-											>
-												{user.status === "admin"
-													? translation[language].backoffice.userManagement
-															.toAuthor
-													: translation[language].backoffice.userManagement
-															.toAdmin}
-											</button>
-											<Trash
-												color="#9d2121"
-												onClick={() => handleDeleteClick(user.id as string)}
-											/>
-										</>
-									)}
+									<div>
+										{userId !== user.id && (
+											<>
+												<button
+													type="button"
+													onClick={() => handleStatusClick(user.id as string)}
+												>
+													{user.status === "admin"
+														? translation[language].backoffice.userManagement
+																.toAuthor
+														: translation[language].backoffice.userManagement
+																.toAdmin}
+												</button>
+												<Trash
+													color="#9d2121"
+													onClick={() => handleDeleteClick(user.id as string)}
+												/>
+											</>
+										)}
+									</div>
 								</td>
 							</tr>
 						))}
