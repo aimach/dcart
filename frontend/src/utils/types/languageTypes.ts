@@ -190,7 +190,8 @@ type LanguageObject = {
 				filters: string;
 			};
 			pointSetTable: {
-				name: string;
+				nameLang1: string;
+				nameLang2: string;
 				color: string;
 				icon: string;
 				delete: string;
@@ -198,8 +199,10 @@ type LanguageObject = {
 			pointSetForm: {
 				addNewPointSet: string;
 				pointSetName: {
-					label: string;
-					description: string;
+					label_fr: string;
+					description_fr: string;
+					label_en: string;
+					description_en: string;
 				};
 				attestationIds: {
 					label: string;

@@ -11,6 +11,8 @@ import {
 import MarkerClusterGroup from "react-leaflet-markercluster";
 // import des composants
 import MarkerComponent from "../../../builtMap/map/MarkerComponent/MarkerComponent";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import {
 	createClusterCustomIcon,
@@ -43,6 +45,7 @@ interface SimpleMapBlockProps {
 const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
+	const { language } = useTranslation();
 	// récupération des données des stores
 	const { selectedLanguage } = useStorymapLanguageStore();
 
@@ -71,11 +74,14 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 
 	// récupérer les formes et les couleurs des attestations
 	const allColorsAndShapes = useMemo(() => {
-		return (blockContent.attestations ?? []).map(({ name, color, icon }) => ({
-			name,
-			color: (color as MapColorType).code_hex,
-			shape: (icon as MapIconType).name_en,
-		}));
+		return (blockContent.attestations ?? []).map(
+			({ name_fr, name_en, color, icon }) => ({
+				name_fr,
+				name_en,
+				color: (color as MapColorType).code_hex,
+				shape: (icon as MapIconType).name_en,
+			}),
+		);
 	}, [blockContent.attestations]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: volontaire, sinon s'exécute trop tôt

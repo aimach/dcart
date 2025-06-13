@@ -188,7 +188,13 @@ const UploadForm = () => {
 								<th scope="col">
 									{
 										translation[language].backoffice.mapFormPage.pointSetTable
-											.name
+											.nameLang1
+									}
+								</th>
+								<th scope="col">
+									{
+										translation[language].backoffice.mapFormPage.pointSetTable
+											.nameLang2
 									}
 								</th>
 								<th scope="col">
@@ -208,7 +214,8 @@ const UploadForm = () => {
 								);
 								return (
 									<tr key={pointSet.id} className={style.pointSetTableRow}>
-										<td>{pointSet[`name_${language}`]}</td>
+										<td>{pointSet.name_fr}</td>
+										<td>{pointSet.name_en}</td>
 										<td>
 											<p
 												// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code

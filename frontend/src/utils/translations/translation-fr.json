@@ -192,7 +192,8 @@
 				"filters": "Filtres associés"
 			},
 			"pointSetTable": {
-				"name": "Nom du jeu",
+				"nameLang1": "Nom du jeu en langue 1",
+				"nameLang2": "Nom du jeu en langue 2",
 				"color": "Couleur",
 				"icon": "Icône",
 				"delete": "Supprimer"
@@ -200,8 +201,10 @@
 			"pointSetForm": {
 				"addNewPointSet": "Ajouter un nouveau jeu de points",
 				"pointSetName": {
-					"label": "Nom du jeu de points",
-					"description": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques."
+					"label_fr": "Nom français du jeu de points",
+					"description_fr": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques.",
+					"label_en": "Nom anglais du jeu de points",
+					"description_en": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques."
 				},
 				"attestationIds": {
 					"label": "Charger les points",

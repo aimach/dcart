@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { useContext, useState } from "react";
+import { useLocation } from "react-router";
 // import des composants
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
@@ -11,6 +12,7 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 import { parseCSVFile } from "../../../../utils/functions/csv";
+import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 // import des types
 import type { FormEvent, ChangeEvent } from "react";
 import type {
@@ -48,6 +50,11 @@ const PointSetUploadForm = ({
 
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
+	const location = useLocation();
+	const isStorymap = location.pathname.includes("storymaps");
+
+	const { storymapInfos } = useBuilderStore();
+
 	const handleFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
 			event,
@@ -70,31 +77,70 @@ const PointSetUploadForm = ({
 			<form onSubmit={handleSubmit} className={style.commonFormContainer}>
 				<div className={style.commonFormInputContainer}>
 					<LabelComponent
-						htmlFor="name"
+						htmlFor="name_fr"
 						label={
-							translation[language].backoffice.mapFormPage.pointSetForm
-								.pointSetName.label
+							isStorymap
+								? `${
+										translation[language].backoffice.mapFormPage.pointSetTable
+											.nameLang1
+									} (${storymapInfos?.lang1?.name.toUpperCase()})`
+								: translation[language].backoffice.mapFormPage.pointSetForm
+										.pointSetName.label_fr
 						}
 						description={
 							translation[language].backoffice.mapFormPage.pointSetForm
-								.pointSetName.description
+								.pointSetName.description_en
 						}
 					/>
 					<div className={style.inputContainer}>
 						<input
-							id="name"
-							name="name"
+							id="name_fr"
+							name="name_fr"
 							type="text"
-							defaultValue={pointSet?.[`name_${language}`] ?? ""}
+							defaultValue={pointSet?.name_fr ?? ""}
 							onChange={(event) =>
 								setPointSet({
 									...pointSet,
-									name: event.target.value,
+									name_fr: event.target.value,
 								} as PointSetType)
 							}
 						/>
 					</div>
 				</div>
+				{(!isStorymap || storymapInfos?.lang2) && (
+					<div className={style.commonFormInputContainer}>
+						<LabelComponent
+							htmlFor="name_en"
+							label={
+								isStorymap
+									? `${
+											translation[language].backoffice.mapFormPage.pointSetTable
+												.nameLang2
+										} (${storymapInfos?.lang2?.name.toUpperCase()})`
+									: translation[language].backoffice.mapFormPage.pointSetForm
+											.pointSetName.label_en
+							}
+							description={
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.pointSetName.description_en
+							}
+						/>
+						<div className={style.inputContainer}>
+							<input
+								id="name_en"
+								name="name_en"
+								type="text"
+								defaultValue={pointSet?.name_en ?? ""}
+								onChange={(event) =>
+									setPointSet({
+										...pointSet,
+										name_en: event.target.value,
+									} as PointSetType)
+								}
+							/>
+						</div>
+					</div>
+				)}
 				<div className={style.commonFormInputContainer}>
 					<LabelComponent
 						htmlFor="attestationIds"
