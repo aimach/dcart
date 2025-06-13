@@ -31,8 +31,7 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
 		if (session) {
 			const startTime = new Date(session.createdAt).getTime();
 			const now = Date.now();
-			// const timeoutDuration = startTime + 29 * 60 * 1000 - now; // 29 minutes après la création de la session
-			const timeoutDuration = startTime + 0.2 * 60 * 1000 - now; // 29 minutes après la création de la session
+			const timeoutDuration = startTime + 29 * 60 * 1000 - now; // 29 minutes après la création de la session
 
 			if (timeoutDuration <= 0) {
 				setIsTimeoutReached(true);

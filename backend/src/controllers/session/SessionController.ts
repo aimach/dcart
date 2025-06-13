@@ -25,6 +25,25 @@ export const sessionController = {
 				return;
 			}
 
+			if (itemId === "user") {
+				const session = await dcartDataSource
+					.getRepository(UpdateSession)
+					.findOne({ where: { user: { id: req.user?.userId } } });
+				if (!session) {
+					res.status(404).json({
+						sessionExists: false,
+						message: "Aucune session trouvée pour l'utilisateur",
+					});
+					return;
+				}
+
+				res.status(200).json({
+					sessionExists: true,
+					message: "Session trouvée pour l'utilisateur",
+				});
+				return;
+			}
+
 			const session = await dcartDataSource
 				.getRepository(UpdateSession)
 				.findOne({ where: { itemId } });
@@ -72,6 +91,14 @@ export const sessionController = {
 					message: "Carte ou storymap non trouvé",
 				});
 				return;
+			}
+
+			// vérification si une session existe déjà pour l'utilisateur
+			const existingSession = await dcartDataSource
+				.getRepository(UpdateSession)
+				.findOne({ where: { user: { id: userId } } });
+			if (existingSession) {
+				sessionController.deleteInactiveSession(existingSession.id);
 			}
 
 			const newSession = await dcartDataSource

@@ -40,8 +40,7 @@ const StayConnectedContent = () => {
 			() => {
 				deleteSessionAfterInactivity();
 			},
-			// 1 * 60 * 1000, // 1 minute pour l'utilisateur pour rester connecté
-			0.2 * 60 * 1000, // 1 minute pour l'utilisateur pour rester connecté
+			1 * 60 * 1000, // 1 minute pour l'utilisateur pour rester connecté
 		);
 
 		return () => clearTimeout(timeout);

@@ -12,7 +12,10 @@ import { useTranslation } from "../../../utils/hooks/useTranslation";
 import { AuthContext } from "../../../context/AuthContext";
 import { SessionContext } from "../../../context/SessionContext";
 // import des services
-import { createSession, getSessionById } from "../../../utils/api/sessionAPI";
+import {
+	createSession,
+	getSessionByItemId,
+} from "../../../utils/api/sessionAPI";
 import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
 import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
@@ -59,7 +62,7 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 		useState<boolean>(false);
 	useEffect(() => {
 		const checkSession = async () => {
-			const sessionResponse = await getSessionById(itemInfos.id);
+			const sessionResponse = await getSessionByItemId(itemInfos.id);
 			if (sessionResponse?.data.sessionExists) {
 				setIsModifiedByAnotherUser(true);
 			}
