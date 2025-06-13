@@ -7,9 +7,8 @@
     position: relative;
     width: 35px;
     height: 35px;
-    top: 40px;
-    left: 5px;
-    border: v.$border-width-m solid v.$color-dark-lava;
+    top: 45px;
+    left: 10px;
     border-radius: v.$border-radius-circle;
     background-color: v.$color-neutral-100;
     @include m.flexbox(flex, column, wrap, center, center);
@@ -20,12 +19,17 @@
     height: 300px;
     @include m.flexbox(flex, column, wrap, flex-end, center);
     background-color: white;
-    border: v.$border-width-m solid v.$color-grullo;
     border-radius: v.$border-radius-base;
     background-size: cover;
     background-position: center;
     background-repeat: no-repeat;
-    box-shadow: rgba(99, 99, 99, 0.2) 0px 2px 8px 0px;
+    @include m.shadow();
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
 
 
     .itemText {
