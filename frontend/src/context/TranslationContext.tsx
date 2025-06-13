@@ -15,7 +15,6 @@ export interface I18nContextType {
 
 const getBrowserLanguage = () => {
 	const lang = navigator.language;
-	console.log(lang);
 	if (lang.startsWith("fr")) return "fr";
 	return "en"; // fallback
 };

@@ -5,7 +5,7 @@ import { getHomePageMenuList } from "./utils/menu/menuListArrays";
 // import des custom hooks
 import { useTranslation } from "./utils/hooks/useTranslation";
 // import du style
-import style from "./App.module.scss";
+import "./App.scss";
 
 /**
  * Page d'accueil : titre, description et barre de navigation
@@ -16,9 +16,9 @@ function App() {
 	const { language, translation } = useTranslation();
 
 	return (
-		<section className={style.mainPage}>
+		<section>
 			<h1>{translation[language].title as string}</h1>
-			<div className={style.verticalSeparator} />
+			<div />
 			<p>
 				Lorem ipsum dolor sit amet consectetur adipisicing elit. Mollitia, iure
 				amet tempore ut itaque dolor repellendus repellat officiis natus!
@@ -30,7 +30,7 @@ function App() {
 			</p>
 			<NavComponent
 				type="route"
-				navClassName={style.homeMenu}
+				navClassName=""
 				list={getHomePageMenuList(translation, language)}
 			/>
 		</section>
