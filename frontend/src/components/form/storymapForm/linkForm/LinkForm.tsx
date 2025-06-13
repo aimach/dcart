@@ -14,14 +14,14 @@ import {
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
 import { removeLang2Inputs } from "../../../../utils/functions/storymap";
-// import des types
-import type { SubmitHandler } from "react-hook-form";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
-import type { allInputsType } from "../../../../utils/types/formTypes";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+// import des types
+import type { SubmitHandler } from "react-hook-form";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type linkFormInputs = {
 	content1_lang1: string;

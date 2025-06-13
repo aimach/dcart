@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 // import des composants
 import SelectElementForm from "./SelectElementForm";
-import LoaderComponent from "../../../common/loader/LoaderComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
@@ -30,6 +29,7 @@ const BuiltElementFilterForm = () => {
 
 	const { mapInfos, setMapInfos } = useMapFormStore();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: forcer le rechargement des options d'éléments
 	useEffect(() => {
 		const elementFilter = isSelectedFilterInThisMap(mapInfos, "element");
 		if (elementFilter?.options?.solution === "manual") {

@@ -9,7 +9,6 @@ import { SessionContext } from "../../../context/SessionContext";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { deleteSession, updateSession } from "../../../utils/api/sessionAPI";
-
 // import du style
 import style from "./modalComponent.module.scss";
 

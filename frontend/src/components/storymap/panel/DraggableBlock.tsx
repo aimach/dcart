@@ -22,14 +22,13 @@ import type {
 	StorymapType,
 } from "../../../utils/types/storymapTypes";
 // import du style
-// import "draggableBlockSctyle.ts";
-// import des icones
-import { Pen, Trash2, TriangleAlert } from "lucide-react";
 import {
 	draggableBlockActionContainerStyle,
 	draggableBlockTextContainerStyle,
 	draggableBlockTitleStyle,
 } from "./draggableBlockSctyle";
+// import des icones
+import { Pen, Trash2, TriangleAlert } from "lucide-react";
 
 type DraggableBlockProps = {
 	block: BlockContentType;

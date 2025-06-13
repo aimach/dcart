@@ -104,10 +104,14 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		const clusterGroup = clusterRef.current;
 		if (!clusterGroup) return;
 
-		clusterGroup.on("clustermouseover", (e) => handleClusterMouseOver(e));
+		clusterGroup.on("clustermouseover", (e: L.LeafletEvent) =>
+			handleClusterMouseOver(e),
+		);
 
 		return () => {
-			clusterGroup.off("clustermouseover", (e) => handleClusterMouseOver(e));
+			clusterGroup.off("clustermouseover", (e: L.LeafletEvent) =>
+				handleClusterMouseOver(e),
+			);
 		};
 	}, [map]);
 

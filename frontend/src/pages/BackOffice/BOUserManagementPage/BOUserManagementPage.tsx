@@ -133,7 +133,11 @@ const UserManagementPage = () => {
 								<td>{user.username}</td>
 								<td>{user.pseudo}</td>
 								<td>
-									{translation[language].backoffice.userManagement[user.status]}
+									{
+										translation[language].backoffice.userManagement[
+											user.status as "admin" | "writer"
+										]
+									}
 								</td>
 								<td>
 									<div>

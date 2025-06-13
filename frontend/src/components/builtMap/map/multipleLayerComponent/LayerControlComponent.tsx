@@ -7,31 +7,26 @@ import MarkerComponent from "../MarkerComponent/MarkerComponent";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
-import type { Dispatch, SetStateAction } from "react";
 // import du style
 // @ts-ignore: pas de déclaration de type
 import "react-leaflet-markercluster/styles";
 
 type LayerControlComponentProps = {
 	layer: { name: string; attestations: PointType[] };
-	setPanelDisplayed: Dispatch<SetStateAction<boolean>>;
-	duplicatesCoordinates: string[];
 };
 
-const LayerControlComponent = ({
-	layer,
-	setPanelDisplayed,
-	duplicatesCoordinates,
-}: LayerControlComponentProps) => {
+const LayerControlComponent = ({ layer }: LayerControlComponentProps) => {
 	const { language } = useTranslation();
 
 	return (
 		<LayersControl.Overlay
-			name={layer[`name_${language}`]}
-			key={layer[`name_${language}`]}
+			name={layer[`name_${language}` as keyof typeof layer] as string}
+			key={layer[`name_${language}` as keyof typeof layer] as string}
 			checked
 		>
-			<LayerGroup key={layer[`name_${language}`]}>
+			<LayerGroup
+				key={layer[`name_${language}` as keyof typeof layer] as string}
+			>
 				<MarkerClusterGroup
 					spiderfyOnMaxZoom={true}
 					spiderfyOnEveryZoom={true}
@@ -41,14 +36,7 @@ const LayerControlComponent = ({
 				>
 					{layer.attestations.map((point) => {
 						const pointKey = `${point.latitude}-${point.longitude}`;
-						return (
-							<MarkerComponent
-								key={pointKey}
-								point={point}
-								setPanelDisplayed={setPanelDisplayed}
-								duplicatesCoordinates={duplicatesCoordinates}
-							/>
-						);
+						return <MarkerComponent key={pointKey} point={point} />;
 					})}
 				</MarkerClusterGroup>
 			</LayerGroup>

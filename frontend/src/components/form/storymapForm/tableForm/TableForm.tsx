@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { parse } from "papaparse";
 import { useForm } from "react-hook-form";
@@ -7,6 +7,7 @@ import { useForm } from "react-hook-form";
 import FormTitleComponent from "../common/FormTitleComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -19,9 +20,13 @@ import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+import {
+	addLangageBetweenBrackets,
+	removeLang2Inputs,
+} from "../../../../utils/functions/storymap";
 // import des types
 import type { ChangeEvent } from "react";
-import ErrorComponent from "../../errorComponent/ErrorComponent";
+import type { StorymapType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "../mapForms/mapForms.module.scss";
 // import des icônes
@@ -31,11 +36,6 @@ import {
 	CircleCheck,
 	CircleHelp,
 } from "lucide-react";
-import {
-	addLangageBetweenBrackets,
-	removeLang2Inputs,
-} from "../../../../utils/functions/storymap";
-import { StorymapType } from "../../../../utils/types/storymapTypes";
 
 export type tableInputsType = {
 	content1_lang1: string;

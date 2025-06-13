@@ -5,7 +5,6 @@ import { useSearchParams } from "react-router";
 // import des composants
 import EditorComponent from "../wysiwygBlock/EditorComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
-import LabelComponent from "../../inputComponent/LabelComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
@@ -22,14 +21,11 @@ import type {
 	InputType,
 	storymapInputsType,
 } from "../../../../utils/types/formTypes";
-
 import type Quill from "quill";
 import type {
 	BlockContentType,
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
-
-import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./commonForm.module.scss";
 // import des icônes

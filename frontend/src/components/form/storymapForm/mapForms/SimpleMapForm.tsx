@@ -40,7 +40,6 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleHelp, CirclePlus, Pen, X } from "lucide-react";
-import { point } from "leaflet";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;

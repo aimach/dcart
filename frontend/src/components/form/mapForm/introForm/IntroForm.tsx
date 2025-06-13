@@ -30,6 +30,7 @@ import type { MultiValue } from "react-select";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./introForm.module.scss";
+// import des icônes
 import { TriangleAlert } from "lucide-react";
 
 type IntroFormProps = {
@@ -97,6 +98,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 		defaultValues: mapInfos ?? {},
 	});
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const fetchMapInfos = async () => {
 			const allMapInfos = await getOneMapInfosById(mapIdentifier as string);

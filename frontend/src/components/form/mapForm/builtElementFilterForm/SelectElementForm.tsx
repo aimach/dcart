@@ -11,7 +11,7 @@ import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putReques
 import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
-import type { LotType } from "../../../../utils/types/filterTypes";
+import type { FilterType, LotType } from "../../../../utils/types/filterTypes";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 // import du style
 import style from "./builtElementFilterForm.module.scss";
@@ -32,16 +32,20 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 			(filter) => filter.filter.type === "element",
 		);
 
-		if (elementFilter?.options?.checkbox?.length > 0) {
-			setCheckboxArray(elementFilter?.options.checkbox as LotType[]);
+		if (
+			elementFilter?.options?.checkbox !== undefined &&
+			elementFilter?.options?.checkbox.length > 0
+		) {
+			setCheckboxArray(elementFilter?.options?.checkbox as LotType[]);
 			setLots([
-				...elementFilter?.options.checkbox,
+				...(elementFilter?.options?.checkbox as LotType[]),
 				{ firstLevelIds: [], secondLevelIds: [] },
 			]);
 		} else {
 			setLots([{ firstLevelIds: [], secondLevelIds: [] }]);
 		}
 	}, [mapInfos]);
+
 	const handleMultiSelectChange = async (index: number) => {
 		const lotsWithoutEmpty = lots.filter(
 			(lot) => lot.firstLevelIds.length > 0 && lot.secondLevelIds.length > 0,

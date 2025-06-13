@@ -7,7 +7,6 @@ import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { isMapType } from "../../../utils/types/mapTypes";
 // import des types
-import type { TagType } from "../../../utils/types/storymapTypes";
 import type { TagWithItemsType } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./swiper.module.scss";
@@ -51,10 +50,15 @@ const SwiperHomePage = ({ items }: SwiperHomePageProps) => {
 								</div>
 								<div className={style.itemText}>
 									<h4>
-										{isMap ? item[`title_${language}`] : item.title_lang1}
+										{isMap
+											? (item as TagWithItemsType["maps"][number])[
+													`title_${language}`
+												]
+											: (item as TagWithItemsType["storymaps"][number])
+													.title_lang1}
 									</h4>
 									<div className={style.itemTags}>
-										{item.tags.map((tag: TagType) => (
+										{item.tags.map((tag) => (
 											<p key={tag.id}>#{tag[`name_${language}`]}</p>
 										))}
 									</div>

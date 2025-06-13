@@ -4,6 +4,8 @@ import { LayerGroup, LayersControl } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import {
@@ -22,7 +24,6 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 import type L from "leaflet";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];

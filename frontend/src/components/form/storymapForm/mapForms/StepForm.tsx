@@ -36,14 +36,14 @@ import type {
 	BlockContentType,
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
-// import du style
-import style from "./mapForms.module.scss";
-// import des icônes
-import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
 import {
 	addLangageBetweenBrackets,
 	removeLang2Inputs,
 } from "../../../../utils/functions/storymap";
+// import du style
+import style from "./mapForms.module.scss";
+// import des icônes
+import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
 
 export type stepInputsType = {
 	content1_lang1: string;

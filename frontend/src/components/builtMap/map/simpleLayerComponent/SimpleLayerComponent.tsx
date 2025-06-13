@@ -106,7 +106,7 @@ const SimpleLayerComponent = ({
 				".leaflet-control-layers-selector",
 			);
 			for (const input of inputs) {
-				input.style.display = "none";
+				(input as HTMLElement).style.display = "none";
 			}
 		}
 	}, [allColorsAndShapes, language]);

@@ -17,7 +17,6 @@ import { uploadParsedPointsForComparisonMap } from "../../../../utils/api/storym
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
-import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 import { parseCSVFile } from "../../../../utils/functions/csv";
 // import des types
 import type { blockType } from "../../../../utils/types/formTypes";

@@ -12,7 +12,6 @@ import {
 	fetchElementOptions,
 	getAllAgentActivityFromPoints,
 	getAllAgentivityFromPoints,
-	getAllAgentNameFromPoints,
 	getAllAgentStatusFromPoints,
 	getAllLocationsFromPoints,
 	getAllSourceMaterialFromPoints,

@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router";
 import {
 	DndContext,
@@ -32,8 +32,6 @@ import TableForm from "../../../../components/form/storymapForm/tableForm/TableF
 import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
-// import des contextes
-import { SessionContext } from "../../../../context/SessionContext";
 // import des services
 import { useShallow } from "zustand/shallow";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";

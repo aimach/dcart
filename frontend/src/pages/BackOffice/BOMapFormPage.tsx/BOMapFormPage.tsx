@@ -14,11 +14,11 @@ import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { firstStepInputs } from "../../../utils/forms/mapInputArray";
 import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
+import { isSelectedFilterInThisMap } from "../../../utils/functions/filter";
 // import du style
 import style from "./BOMapFormPage.module.scss";
 // import des icônes
 import { FileText, Filter, ListTodo, MapPin, MapPinCheck } from "lucide-react";
-import { isSelectedFilterInThisMap } from "../../../utils/functions/filter";
 
 /**
  * Page du formulaire de création de carte

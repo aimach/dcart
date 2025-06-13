@@ -132,10 +132,11 @@ const getTypeIcon = (typeName: string) => {
  */
 const normalizeBody = (body: blockType, keys: string[]) => {
 	return keys.reduce((acc: Record<string, string | null>, key) => {
-		// biome-ignore lint/suspicious/noPrototypeBuiltins: <explanation>
+		// biome-ignore lint/suspicious/noPrototypeBuiltins:
 		const value = body.hasOwnProperty(key)
 			? (body[key as keyof blockType] as string)
 			: null;
+		// biome-ignore lint/performance/noAccumulatingSpread:
 		return { ...acc, [key]: value };
 	}, {});
 };

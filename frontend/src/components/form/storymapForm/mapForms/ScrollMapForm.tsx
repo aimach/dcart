@@ -22,13 +22,13 @@ import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
-import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 
 export type scrollMapInputsType = {
 	content1_lang1: string;

@@ -18,6 +18,7 @@ import type { SubmitHandler } from "react-hook-form";
 import type { JwtPayload } from "jwt-decode";
 // import du style
 import style from "./authFormComponent.module.scss";
+// import des icônes
 import { TriangleAlert } from "lucide-react";
 
 /**

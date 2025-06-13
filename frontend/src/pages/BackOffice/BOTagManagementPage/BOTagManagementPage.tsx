@@ -24,6 +24,7 @@ import { notifyCreateSuccess } from "../../../utils/functions/toast";
 import type { TagType } from "../../../utils/types/mapTypes";
 // import des styles
 import style from "./tagManagementPage.module.scss";
+// import des icônes
 import { CirclePlus } from "lucide-react";
 
 const TagManagementPage = () => {

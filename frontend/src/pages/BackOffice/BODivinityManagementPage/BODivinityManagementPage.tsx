@@ -16,13 +16,13 @@ import { getDivinityIdsList } from "../../../utils/api/builtMap/getRequests";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import { notifyEditSuccess } from "../../../utils/functions/toast";
 import { updateDivinityList } from "../../../utils/api/builtMap/putRequests";
+import { divinityRequest } from "../../../utils/forms/divinityRequest";
 // import des types
 import type { DivinityListType } from "../../../utils/types/mapTypes";
 // import des styles
 import style from "./divinityManagementPage.module.scss";
 // import des icônes
-import { CircleHelp, TriangleAlert } from "lucide-react";
-import { divinityRequest } from "../../../utils/forms/divinityRequest";
+import { CircleHelp } from "lucide-react";
 
 const DivinityManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
