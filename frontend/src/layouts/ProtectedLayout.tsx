@@ -4,8 +4,13 @@ import { Outlet, useNavigate } from "react-router";
 // import des composants
 import HeaderComponent from "../components/header/Header";
 import AppMenuComponent from "../components/menu/AppMenuComponent";
+import StayConnectedContent from "../components/common/modal/StayConnectedContent";
+import ModalComponent from "../components/common/modal/ModalComponent";
 // import du contexte
 import { AuthContext } from "../context/AuthContext";
+import { SessionContext } from "../context/SessionContext";
+// import des services
+import { useModalStore } from "../utils/stores/storymap/modalStore";
 
 /**
  * Layout de la partie backoffice, qui vérifie si l'utilisateur est connecté
@@ -29,10 +34,18 @@ const ProtectedLayout = () => {
 	// définition de l'état pour l'affichage du menu
 	const [menuIsOpen, setMenuIsOpen] = useState<boolean>(false);
 
+	const { isTimeoutReached } = useContext(SessionContext);
+	const { closeDeleteModal } = useModalStore();
+
 	return menuIsOpen ? (
 		<AppMenuComponent setMenuIsOpen={setMenuIsOpen} />
 	) : (
 		<div>
+			{isTimeoutReached && (
+				<ModalComponent onClose={() => closeDeleteModal()}>
+					<StayConnectedContent />
+				</ModalComponent>
+			)}
 			<HeaderComponent type={"backoffice"} setMenuIsOpen={setMenuIsOpen} />
 			<main>
 				<Outlet />

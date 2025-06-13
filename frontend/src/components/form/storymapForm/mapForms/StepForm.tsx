@@ -213,8 +213,6 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 		setInputs(newInputsWithLangInLabel);
 	}, [storymapInfos]);
 
-	console.log(inputs);
-
 	return (
 		<>
 			<FormTitleComponent action={stepAction as string} translationKey="step" />

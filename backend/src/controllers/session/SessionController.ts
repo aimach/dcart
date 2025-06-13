@@ -157,7 +157,7 @@ export const sessionController = {
 	checkInactiveSessions: () => {
 		const now = Date.now();
 		activeSessions.forEach((lastPing, sessionId) => {
-			if (now - lastPing > 60000) {
+			if (now - lastPing > 30000) {
 				// 1 minute sans ping
 				sessionController.deleteInactiveSession(sessionId);
 				activeSessions.delete(sessionId);

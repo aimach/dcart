@@ -34,13 +34,14 @@ const StayConnectedContent = () => {
 			// suppression de la session en cours
 			await deleteSession();
 			// redirection vers la page d'accueil
-			navigate("/");
+			navigate("/backoffice");
 		};
 		const timeout = setTimeout(
 			() => {
 				deleteSessionAfterInactivity();
 			},
-			1 * 60 * 1000, // 1 minute pour l'utilisateur pour rester connecté
+			// 1 * 60 * 1000, // 1 minute pour l'utilisateur pour rester connecté
+			0.2 * 60 * 1000, // 1 minute pour l'utilisateur pour rester connecté
 		);
 
 		return () => clearTimeout(timeout);

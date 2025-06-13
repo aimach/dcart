@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router";
 import {
 	DndContext,
@@ -16,7 +16,6 @@ import {
 // import des composants
 import IntroductionForm from "../../../../components/form/storymapForm/introductionForm/IntroductionForm";
 import ModalComponent from "../../../../components/common/modal/ModalComponent";
-import StayConnectedContent from "../../../../components/common/modal/StayConnectedContent";
 import LinkForm from "../../../../components/form/storymapForm/linkForm/LinkForm";
 import SimpleMapForm from "../../../../components/form/storymapForm/mapForms/SimpleMapForm";
 import QuoteForm from "../../../../components/form/storymapForm/quoteForm/QuoteForm";
@@ -33,8 +32,6 @@ import TableForm from "../../../../components/form/storymapForm/tableForm/TableF
 import BlockChoiceForm from "../../../../components/form/storymapForm/blockChoiceForm/BlockChoiceForm";
 import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
-// import du context
-import { SessionContext } from "../../../../context/SessionContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -54,8 +51,6 @@ import style from "./storymapIntroPage.module.scss";
  */
 const StorymapIntroPage = () => {
 	const { translation, language } = useTranslation();
-	// récupération des données du contexte
-	const { isTimeoutReached } = useContext(SessionContext);
 
 	const [step, setStep] = useState(1);
 
@@ -152,11 +147,6 @@ const StorymapIntroPage = () => {
 			{isDeleteModalOpen && (
 				<ModalComponent onClose={() => closeDeleteModal()}>
 					<DeleteBlockModalContent />
-				</ModalComponent>
-			)}
-			{isTimeoutReached && (
-				<ModalComponent onClose={() => closeDeleteModal()}>
-					<StayConnectedContent />
 				</ModalComponent>
 			)}
 			<aside className={style.storymapFormAside}>
