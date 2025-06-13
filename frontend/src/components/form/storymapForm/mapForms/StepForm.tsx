@@ -32,12 +32,18 @@ import type {
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
 import type Quill from "quill";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
-import { removeLang2Inputs } from "../../../../utils/functions/storymap";
+import {
+	addLangageBetweenBrackets,
+	removeLang2Inputs,
+} from "../../../../utils/functions/storymap";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -118,6 +124,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					pointSetWithName = {
 						...pointSet,
 						name_fr: data.content1_lang1,
+						name_en: data.content1_lang2,
 					};
 					// création du bloc de la carte
 					await uploadParsedPointsForSimpleMap(
@@ -195,11 +202,18 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 
 	const [inputs, setInputs] = useState(stepInputs);
 	useEffect(() => {
+		let newInputs = stepInputs;
 		if (!storymapInfos?.lang2) {
-			const newInputs = removeLang2Inputs(stepInputs);
-			setInputs(newInputs);
+			newInputs = removeLang2Inputs(stepInputs);
 		}
+		const newInputsWithLangInLabel = addLangageBetweenBrackets(
+			newInputs,
+			storymapInfos as StorymapType,
+		);
+		setInputs(newInputsWithLangInLabel);
 	}, [storymapInfos]);
+
+	console.log(inputs);
 
 	return (
 		<>
@@ -306,33 +320,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						)}
 					</div>
 				</div>
-				<div className={style.mapFormInputContainer}>
-					<LabelComponent
-						htmlFor="name"
-						label={
-							translation[language].backoffice.mapFormPage.pointSetForm
-								.pointSetName.label
-						}
-						description={
-							translation[language].backoffice.mapFormPage.pointSetForm
-								.pointSetName.description
-						}
-					/>
-					<div className={style.inputContainer}>
-						<input
-							id="name"
-							name="name"
-							type="text"
-							onChange={(event) =>
-								setPointSet({
-									...pointSet,
-									name: event.target.value,
-								} as PointSetType)
-							}
-							value={(pointSet?.name as string) ?? ""}
-						/>
-					</div>
-				</div>
+
 				<div className={style.mapFormInputContainer}>
 					<LabelComponent
 						htmlFor="colorId"
