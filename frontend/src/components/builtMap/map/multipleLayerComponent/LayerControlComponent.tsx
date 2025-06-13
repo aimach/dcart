@@ -3,6 +3,8 @@ import { LayersControl, LayerGroup } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des types
 import type { PointType } from "../../../../utils/types/mapTypes";
 import type { Dispatch, SetStateAction } from "react";
@@ -21,9 +23,15 @@ const LayerControlComponent = ({
 	setPanelDisplayed,
 	duplicatesCoordinates,
 }: LayerControlComponentProps) => {
+	const { language } = useTranslation();
+
 	return (
-		<LayersControl.Overlay name={layer.name} key={layer.name} checked>
-			<LayerGroup key={layer.name}>
+		<LayersControl.Overlay
+			name={layer[`name_${language}`]}
+			key={layer[`name_${language}`]}
+			checked
+		>
+			<LayerGroup key={layer[`name_${language}`]}>
 				<MarkerClusterGroup
 					spiderfyOnMaxZoom={true}
 					spiderfyOnEveryZoom={true}

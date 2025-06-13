@@ -18,7 +18,10 @@ export class Attestation extends BaseEntity {
 	id!: string;
 
 	@Column({ type: "varchar", length: 255, nullable: false })
-	name!: string;
+	name_fr!: string;
+
+	@Column({ type: "varchar", length: 255, nullable: false })
+	name_en!: string;
 
 	@Column({ type: "text", nullable: false })
 	attestationIds!: string;

@@ -22,6 +22,7 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 import type L from "leaflet";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
@@ -30,23 +31,30 @@ type MultipleLayerComponentProps = {
 const MultipleLayerComponent = ({
 	allMemoizedPoints,
 }: MultipleLayerComponentProps) => {
+	const { language } = useTranslation();
+
 	const { mapInfos, allLayers, map, selectedMarker, setSelectedMarker } =
 		useMapStore();
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
-
-
 	const layersArrayForControl = useMemo(() => {
 		const layersArray: {
-			name: string;
+			name_fr: string;
+			name_en: string;
 			shape: string | null;
 			color: string | null;
 		}[] = [];
 
 		allMemoizedPoints.map((result: PointType) => {
-			if (!layersArray.some((layer) => layer.name === result.layerName)) {
+			if (
+				!layersArray.some(
+					(layer) =>
+						layer[`name_${language}`] === result[`layerName${language}`],
+				)
+			) {
 				layersArray.push({
-					name: result.layerName as string,
+					name_fr: result.layerNamefr as string,
+					name_en: result.layerNameen as string,
 					shape: result.shape ?? null,
 					color: result.color ?? null,
 				});
@@ -58,24 +66,27 @@ const MultipleLayerComponent = ({
 				shapeCode: getShapeForLayerName(
 					layer.shape as string,
 					layer.color as string,
-				)
+				),
 			};
 		});
-	}, [allMemoizedPoints]);
-
+	}, [allMemoizedPoints, language]);
 
 	const allResultsWithLayerFilter = useMemo(() => {
 		const allLayersWithOnlySVG = allLayers.filter((layerName) =>
-			layerName.includes("svg"),
+			layerName?.includes("svg"),
 		);
+
 		return allMemoizedPoints.filter((point) => {
 			if (
-				allLayersWithOnlySVG.some((layerName) => layerName.replace(/<svg[\s\S]*?<\/svg>/, '').trim() === point.layerName)
+				allLayersWithOnlySVG.some(
+					(layerName) =>
+						layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
+						point[`layerName${language}`],
+				)
 			)
 				return point;
 		});
-	}, [allLayers, allMemoizedPoints]);
-
+	}, [allLayers, allMemoizedPoints, language]);
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
 
@@ -86,9 +97,7 @@ const MultipleLayerComponent = ({
 		const clusterGroup = clusterRef.current;
 		if (!clusterGroup) return;
 
-		clusterGroup.on("clustermouseover", (e) =>
-			handleClusterMouseOver(e),
-		);
+		clusterGroup.on("clustermouseover", (e) => handleClusterMouseOver(e));
 		clusterGroup.on("clusterclick", (e) =>
 			handleClusterClick(
 				e,
@@ -101,9 +110,7 @@ const MultipleLayerComponent = ({
 		);
 
 		return () => {
-			clusterGroup.off("clustermouseover", (e) =>
-				handleClusterMouseOver(e),
-			);
+			clusterGroup.off("clustermouseover", (e) => handleClusterMouseOver(e));
 			clusterGroup.off("clusterclick", (e) =>
 				handleClusterClick(
 					e,
@@ -123,7 +130,6 @@ const MultipleLayerComponent = ({
 			zoomOnSelectedMarkerCluster(map, selectedMarker, mapInfos);
 		}
 	}, [map, selectedMarker, mapInfos]);
-
 
 	return (
 		<LayersControl position="bottomright" collapsed={false}>
@@ -146,8 +152,12 @@ const MultipleLayerComponent = ({
 			</MarkerClusterGroup>
 			{layersArrayForControl.map((layer) => {
 				return (
-					<LayersControl.Overlay name={`${layer.shapeCode} ${layer.name}`} key={layer.name} checked>
-						<LayerGroup key={layer.name} />
+					<LayersControl.Overlay
+						name={`${layer.shapeCode} ${layer[`name_${language}`]}`}
+						key={layer[`name_${language}`]}
+						checked
+					>
+						<LayerGroup key={layer[`name_${language}`]} />
 					</LayersControl.Overlay>
 				);
 			})}

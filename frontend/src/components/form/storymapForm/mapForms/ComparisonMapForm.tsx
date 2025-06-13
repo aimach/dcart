@@ -67,13 +67,15 @@ const ComparisonMapForm = () => {
 		left: {
 			color: "0",
 			icon: "0",
-			name: "",
+			name_fr: "",
+			name_en: "",
 			attestationIds: "",
 		},
 		right: {
 			color: "0",
 			icon: "0",
-			name: "",
+			name_fr: "",
+			name_en: "",
 			attestationIds: "",
 		},
 	});
@@ -106,10 +108,10 @@ const ComparisonMapForm = () => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const leftPointsSet = block?.attestations?.find(
-			(pointSet) => pointSet.name === "left",
+			(pointSet) => pointSet[`name_${language}`] === "left",
 		);
 		const rightPointsSet = block?.attestations?.find(
-			(pointSet) => pointSet.name === "right",
+			(pointSet) => pointSet[`name_${language}`] === "right",
 		);
 
 		setPointsSets({
@@ -118,14 +120,14 @@ const ComparisonMapForm = () => {
 				color: (leftPointsSet?.color as MapColorType)?.id,
 				icon: (leftPointsSet?.icon as MapIconType)?.id,
 				attestationIds: leftPointsSet?.attestationIds as string,
-				name: "left",
+				name_fr: "left",
 			},
 			right: {
 				...pointSets.right,
 				color: (rightPointsSet?.color as MapColorType)?.id,
 				icon: (rightPointsSet?.icon as MapIconType)?.id,
 				attestationIds: rightPointsSet?.attestationIds as string,
-				name: "right",
+				name_fr: "right",
 			},
 		});
 

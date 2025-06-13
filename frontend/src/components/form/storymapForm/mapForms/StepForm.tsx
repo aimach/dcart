@@ -117,12 +117,12 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				if (pointSet) {
 					pointSetWithName = {
 						...pointSet,
-						name: data.content1_lang1,
+						name_fr: data.content1_lang1,
 					};
 					// création du bloc de la carte
 					await uploadParsedPointsForSimpleMap(
 						data as blockType,
-						pointSet.name ? pointSet : pointSetWithName,
+						pointSet[`name_${language}`] ? pointSet : pointSetWithName,
 						storymapId as string,
 						"step",
 						stepAction as string,
@@ -184,7 +184,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				attestationIds: defaultPointSet?.attestationIds,
 				color: (defaultPointSet?.color as MapColorType)?.id,
 				icon: (defaultPointSet?.icon as MapIconType)?.id,
-				name: defaultPointSet?.name,
+				name_fr: defaultPointSet?.[`name_${language}`],
 			} as PointSetType);
 		}
 	}, [stepAction, block]);

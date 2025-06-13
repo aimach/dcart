@@ -85,7 +85,7 @@ const PointSetUploadForm = ({
 							id="name"
 							name="name"
 							type="text"
-							defaultValue={pointSet?.name ?? ""}
+							defaultValue={pointSet?.[`name_${language}`] ?? ""}
 							onChange={(event) =>
 								setPointSet({
 									...pointSet,

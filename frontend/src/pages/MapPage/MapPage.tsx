@@ -5,6 +5,9 @@ import { useParams } from "react-router";
 import MapComponent from "../../components/builtMap/map/mapComponent/MapComponent";
 import AsideContainer from "../../components/builtMap/aside/asideContainer/AsideContainer";
 import AsideReducedMenuComponent from "../../components/builtMap/aside/asideReducedMenu/AsideReducedMenuComponent";
+// import des custom hooks
+import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import { useTranslation } from "../../utils/hooks/useTranslation";
 // import des services
 import {
 	getAllPointsByMapId,
@@ -18,7 +21,6 @@ import { useMapAsideMenuStore } from "../../utils/stores/builtMap/mapAsideMenuSt
 import type { PointSetType } from "../../utils/types/mapTypes";
 // import du style
 import style from "./mapPage.module.scss";
-import { useWindowSize } from "../../utils/hooks/useWindowSize";
 
 /**
  * Page de la carte
@@ -29,6 +31,8 @@ const MapPage = () => {
 	const { mapSlug, mapId } = useParams();
 
 	const { isMobile } = useWindowSize();
+
+	const { language } = useTranslation();
 
 	// récupération des données des stores
 	const { setMapFilters, isPanelDisplayed, setIsPanelDisplayed } =
@@ -67,7 +71,8 @@ const MapPage = () => {
 				mapStore.setMapInfos(mapInfos);
 				mapStore.setAllLayers(
 					mapInfos.attestations.map(
-						(attestation: PointSetType) => attestation.name as string,
+						(attestation: PointSetType) =>
+							attestation[`name_${language}`] as string,
 					),
 				);
 				setMapFilters(mapInfos.filterMapContent);
@@ -75,7 +80,7 @@ const MapPage = () => {
 			}
 			return mapInfos;
 		},
-		[mapStore, setMapFilters, fetchAllPoints],
+		[mapStore, setMapFilters, fetchAllPoints, language],
 	);
 
 	// chargement des données de la carte au montage du composant et réinitialisation des états

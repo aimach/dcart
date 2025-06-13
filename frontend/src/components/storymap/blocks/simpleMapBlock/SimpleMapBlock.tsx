@@ -149,7 +149,8 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 							<LayersControl position="bottomright" collapsed={false}>
 								{allColorsAndShapes.map((layer) => {
 									const icon =
-										getShapeForLayerName(layer.shape, layer.color) + layer.name;
+										getShapeForLayerName(layer.shape, layer.color) +
+										layer[`name_${language}`];
 									return (
 										<LayersControl.Overlay name={icon} key={icon}>
 											<LayerGroup key={icon} />

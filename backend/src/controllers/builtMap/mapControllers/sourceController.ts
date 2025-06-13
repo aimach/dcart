@@ -467,7 +467,8 @@ export const sourceController = {
 								sources: sortSourcesByDate(point.sources),
 								color: attestation.color?.code_hex,
 								shape: attestation.icon?.name_en,
-								layerName: attestation.name,
+								layerNamefr: attestation.name_fr,
+								layerNameen: attestation.name_en,
 							};
 						});
 						return sortedResults;
@@ -500,7 +501,7 @@ export const sourceController = {
 				.where("block.id = :id", { id: blockId });
 
 			if (side) {
-				blockQuery.andWhere("attestations.name = :side", { side });
+				blockQuery.andWhere("attestations.name_fr = :side", { side });
 			}
 
 			const blockInfos = await blockQuery.getOne();
@@ -536,7 +537,8 @@ export const sourceController = {
 							sources: sortSourcesByDate(point.sources),
 							color: attestation.color?.code_hex,
 							shape: attestation.icon?.name_en,
-							layerName: attestation.name,
+							layerNamefr: attestation.name_fr,
+							layerNameen: attestation.name_en,
 						};
 					});
 					return sortedResults;

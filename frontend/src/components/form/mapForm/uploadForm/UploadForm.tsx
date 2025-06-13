@@ -208,7 +208,7 @@ const UploadForm = () => {
 								);
 								return (
 									<tr key={pointSet.id} className={style.pointSetTableRow}>
-										<td>{pointSet.name}</td>
+										<td>{pointSet[`name_${language}`]}</td>
 										<td>
 											<p
 												// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
