@@ -11,6 +11,8 @@ import {
 import MarkerClusterGroup from "react-leaflet-markercluster";
 // import des composants
 import MarkerComponent from "../../../builtMap/map/MarkerComponent/MarkerComponent";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import {
 	createClusterCustomIcon,
@@ -43,6 +45,7 @@ interface SimpleMapBlockProps {
 const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
+	const { language } = useTranslation();
 	// récupération des données des stores
 	const { selectedLanguage } = useStorymapLanguageStore();
 
@@ -71,11 +74,14 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 
 	// récupérer les formes et les couleurs des attestations
 	const allColorsAndShapes = useMemo(() => {
-		return (blockContent.attestations ?? []).map(({ name, color, icon }) => ({
-			name,
-			color: (color as MapColorType).code_hex,
-			shape: (icon as MapIconType).name_en,
-		}));
+		return (blockContent.attestations ?? []).map(
+			({ name_fr, name_en, color, icon }) => ({
+				name_fr,
+				name_en,
+				color: (color as MapColorType).code_hex,
+				shape: (icon as MapIconType).name_en,
+			}),
+		);
 	}, [blockContent.attestations]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: volontaire, sinon s'exécute trop tôt
@@ -88,9 +94,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		}
 	}, [points]);
 
-	const tileAttribution = getMapAttribution(
-		blockContent[`content2_${selectedLanguage}`],
-	);
+	const tileAttribution = getMapAttribution(blockContent.content2_lang1);
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
 
@@ -100,10 +104,14 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		const clusterGroup = clusterRef.current;
 		if (!clusterGroup) return;
 
-		clusterGroup.on("clustermouseover", (e) => handleClusterMouseOver(e));
+		clusterGroup.on("clustermouseover", (e: L.LeafletEvent) =>
+			handleClusterMouseOver(e),
+		);
 
 		return () => {
-			clusterGroup.off("clustermouseover", (e) => handleClusterMouseOver(e));
+			clusterGroup.off("clustermouseover", (e: L.LeafletEvent) =>
+				handleClusterMouseOver(e),
+			);
 		};
 	}, [map]);
 
@@ -121,7 +129,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 					<>
 						<TileLayer
 							attribution={`dCART | &copy; ${tileAttribution}`}
-							url={blockContent[`content2_${selectedLanguage}`]}
+							url={blockContent.content2_lang1}
 						/>
 						<MarkerClusterGroup
 							ref={clusterRef}
@@ -151,7 +159,8 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 							<LayersControl position="bottomright" collapsed={false}>
 								{allColorsAndShapes.map((layer) => {
 									const icon =
-										getShapeForLayerName(layer.shape, layer.color) + layer.name;
+										getShapeForLayerName(layer.shape, layer.color) +
+										layer[`name_${language}`];
 									return (
 										<LayersControl.Overlay name={icon} key={icon}>
 											<LayerGroup key={icon} />

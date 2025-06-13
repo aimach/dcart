@@ -28,7 +28,6 @@ interface FilterComponentProps {
 	elementOptions: OptionType[];
 	sourceTypeOptions: OptionType[];
 	agentActivityOptions: OptionType[];
-	agentNameOptions: OptionType[];
 	agentStatusOptions: OptionType[];
 	agentivityOptions: OptionType[];
 	sourceMaterialOptions: OptionType[];
@@ -284,22 +283,6 @@ const FilterComponent = ({
 								</div>
 							);
 						}
-						// if (filter.filter.type === "agentName") {
-						// 	return (
-						// 		<div className={style.filterContainer} key={filter.id}>
-						// 			<h4>{translation[language].mapPage.aside.agentName}</h4>
-						// 			<MultiSelectFilterComponent
-						// 				key={filter.id}
-						// 				optionsArray={agentNameOptions}
-						// 				setValues={setAgentActivityValues}
-						// 				userFilterId="agentNameId"
-						// 				placeholder={
-						// 					translation[language].mapPage.aside.searchForAgentName
-						// 				}
-						// 			/>
-						// 		</div>
-						// 	);
-						// }
 					})}
 				{mapFilters.length === 0 && (
 					<div className={style.filterContainer}>

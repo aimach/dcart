@@ -27,6 +27,7 @@ import {
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
 import { updatePointSet } from "../../../../utils/api/builtMap/putRequests";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -38,7 +39,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleHelp, Pen, X } from "lucide-react";
+import { ChevronLeft, CircleHelp, CirclePlus, Pen, X } from "lucide-react";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -53,16 +54,14 @@ const SimpleMapForm = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	const { updateFormType, block, updateBlockContent, reload, setReload } =
-		useBuilderStore(
-			useShallow((state) => ({
-				block: state.block,
-				updateFormType: state.updateFormType,
-				reload: state.reload,
-				setReload: state.setReload,
-				updateBlockContent: state.updateBlockContent,
-			})),
-		);
+	const {
+		storymapInfos,
+		updateFormType,
+		block,
+		updateBlockContent,
+		reload,
+		setReload,
+	} = useBuilderStore(useShallow((state) => state));
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const action = searchParams.get("action") as "create" | "edit";
@@ -127,21 +126,29 @@ const SimpleMapForm = () => {
 		event,
 	) => {
 		event.preventDefault();
+		let pointSetData = pointSet as PointSetType;
+		if (!pointSet?.name_en)
+			pointSetData = {
+				...pointSetData,
+				name_en: pointSet?.name_fr,
+			} as PointSetType;
 		if (pointSetFormAction === "create") {
-			const newPointSet = await createPointSet(pointSet as PointSetType);
+			const newPointSet = await createPointSet(pointSetData as PointSetType);
 			if (newPointSet?.status === 201) {
 				setIsAlreadyAPointSet(true);
 				const newBlockInfos = await getBlockInfos(block?.id as string);
 				updateBlockContent(newBlockInfos);
 				notifyCreateSuccess("Jeu de points", false);
+				setPointSet(null);
 			}
 		}
 		if (pointSetFormAction === "edit") {
-			const newPointSet = await updatePointSet(pointSet as PointSetType);
+			const newPointSet = await updatePointSet(pointSetData as PointSetType);
 			if (newPointSet?.status === 200) {
 				const newBlockInfos = await getBlockInfos(block?.id as string);
 				updateBlockContent(newBlockInfos);
 				notifyEditSuccess("Jeu de points", false);
+				setPointSet(null);
 			}
 		}
 	};
@@ -179,6 +186,14 @@ const SimpleMapForm = () => {
 		}
 	};
 
+	const [inputs, setInputs] = useState(simpleMapInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = removeLang2Inputs(simpleMapInputs);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		<>
 			<FormTitleComponent
@@ -190,7 +205,7 @@ const SimpleMapForm = () => {
 					onSubmit={handleSubmit(handleMapFormSubmit)}
 					className={style.mapFormContainer}
 				>
-					{simpleMapInputs.map((input) => {
+					{inputs.map((input) => {
 						if (input.type === "text") {
 							return (
 								<div key={input.name} className={style.mapFormInputContainer}>
@@ -286,13 +301,11 @@ const SimpleMapForm = () => {
 							<ButtonComponent
 								type="button"
 								color="brown"
-								textContent={
-									translation[language].backoffice.mapFormPage.pointSetForm
-										.addNewPointSet
-								}
+								textContent={translation[language].button.add}
 								onClickFunction={() =>
 									setIsAlreadyAPointSet(!isAlreadyAPointSet)
 								}
+								icon={<CirclePlus />}
 								isSelected={true}
 							/>
 
@@ -333,11 +346,19 @@ const SimpleMapForm = () => {
 								<thead>
 									<tr>
 										<th scope="col">
-											{
+											{`${
 												translation[language].backoffice.mapFormPage
-													.pointSetTable.name
-											}
+													.pointSetTable.nameLang1
+											} (${storymapInfos?.lang1?.name.toUpperCase()})`}
 										</th>
+										{storymapInfos?.lang2 && (
+											<th scope="col">
+												{`${
+													translation[language].backoffice.mapFormPage
+														.pointSetTable.nameLang2
+												} (${storymapInfos?.lang2?.name.toUpperCase()})`}
+											</th>
+										)}
 										<th scope="col">
 											{
 												translation[language].backoffice.mapFormPage
@@ -355,7 +376,8 @@ const SimpleMapForm = () => {
 										);
 										return (
 											<tr key={pointSet.id} className={style.pointSetTableRow}>
-												<td>{pointSet.name}</td>
+												<td>{pointSet.name_fr}</td>
+												{storymapInfos?.lang2 && <td>{pointSet.name_en}</td>}
 												<td>
 													<p
 														// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code

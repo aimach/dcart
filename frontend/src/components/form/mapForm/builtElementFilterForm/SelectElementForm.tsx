@@ -11,7 +11,7 @@ import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putReques
 import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
-import type { LotType } from "../../../../utils/types/filterTypes";
+import type { FilterType, LotType } from "../../../../utils/types/filterTypes";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 // import du style
 import style from "./builtElementFilterForm.module.scss";
@@ -32,16 +32,20 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 			(filter) => filter.filter.type === "element",
 		);
 
-		if (elementFilter?.options?.checkbox?.length > 0) {
-			setCheckboxArray(elementFilter?.options.checkbox as LotType[]);
+		if (
+			elementFilter?.options?.checkbox !== undefined &&
+			elementFilter?.options?.checkbox.length > 0
+		) {
+			setCheckboxArray(elementFilter?.options?.checkbox as LotType[]);
 			setLots([
-				...elementFilter?.options.checkbox,
+				...(elementFilter?.options?.checkbox as LotType[]),
 				{ firstLevelIds: [], secondLevelIds: [] },
 			]);
 		} else {
 			setLots([{ firstLevelIds: [], secondLevelIds: [] }]);
 		}
 	}, [mapInfos]);
+
 	const handleMultiSelectChange = async (index: number) => {
 		const lotsWithoutEmpty = lots.filter(
 			(lot) => lot.firstLevelIds.length > 0 && lot.secondLevelIds.length > 0,
@@ -104,81 +108,87 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 							key={`${index}-${lot.secondLevelIds[-1]}`}
 							className={style.allSelectContainer}
 						>
-							<div className={style.selectContainer}>
-								<LabelComponent
-									htmlFor="firstLevelIds"
-									label={
-										translation[language].backoffice.mapFormPage.filterForm
-											.element.firstLevel
-									}
-									description=""
-								/>
-								<Select
-									options={elementOptions}
-									value={lot.firstLevelIds[0]}
-									onChange={(newValue) => {
-										const current = lots[index];
-										if (!current) return;
-										const newLots = [...lots];
-										newLots[index] = {
-											...current,
-											firstLevelIds: [newValue as OptionType],
-										};
-										setLots(newLots);
-									}}
-									placeholder={
-										translation[language].mapPage.aside.searchForElement
-									}
-									isClearable={true}
-								/>
+							<div>
+								<div className={style.selectContainer}>
+									<LabelComponent
+										htmlFor="firstLevelIds"
+										label={
+											translation[language].backoffice.mapFormPage.filterForm
+												.element.firstLevel
+										}
+										description=""
+									/>
+									<Select
+										options={elementOptions}
+										value={lot.firstLevelIds[0]}
+										onChange={(newValue) => {
+											const current = lots[index];
+											if (!current) return;
+											const newLots = [...lots];
+											newLots[index] = {
+												...current,
+												firstLevelIds: [newValue as OptionType],
+											};
+											setLots(newLots);
+										}}
+										placeholder={
+											translation[language].mapPage.aside.searchForElement
+										}
+										isClearable={true}
+										isLoading={elementOptions.length === 0}
+									/>
+								</div>
+								<div className={style.selectContainer}>
+									<LabelComponent
+										htmlFor="secondLevelIds"
+										label={
+											translation[language].backoffice.mapFormPage.filterForm
+												.element.secondLevel
+										}
+										description=""
+									/>
+									<Select
+										options={elementOptions}
+										value={lot.secondLevelIds}
+										isMulti
+										onChange={(newValue) => {
+											const current = lots[index];
+											if (!current) return;
+											const newLots = [...lots];
+											newLots[index] = {
+												...current,
+												secondLevelIds: newValue as OptionType[],
+											};
+											setLots(newLots);
+										}}
+										placeholder={
+											translation[language].mapPage.aside.searchForElement
+										}
+										isClearable={true}
+										isLoading={elementOptions.length === 0}
+									/>
+								</div>
 							</div>
-							<div className={style.selectContainer}>
-								<LabelComponent
-									htmlFor="firstLevelIds"
-									label={
-										translation[language].backoffice.mapFormPage.filterForm
-											.element.secondLevel
-									}
-									description=""
-								/>
-								<Select
-									options={elementOptions}
-									value={lot.secondLevelIds}
-									isMulti
-									onChange={(newValue) => {
-										const current = lots[index];
-										if (!current) return;
-										const newLots = [...lots];
-										newLots[index] = {
-											...current,
-											secondLevelIds: newValue as OptionType[],
-										};
-										setLots(newLots);
-									}}
-									placeholder={
-										translation[language].mapPage.aside.searchForElement
-									}
-									isClearable={true}
-								/>
-							</div>
-							<ButtonComponent
-								type="button"
-								color="brown"
-								onClickFunction={() => handleMultiSelectChange(index)}
-								textContent={translation[language].button.save}
-							/>
-							{checkboxArray.some(
-								(checkbox) =>
-									checkbox.firstLevelIds === lot.firstLevelIds &&
-									checkbox.secondLevelIds === lot.secondLevelIds,
-							) ? (
+							<div className={style.buttonContainer}>
 								<ButtonComponent
 									type="button"
-									color="red"
-									onClickFunction={() => handleDeleteMultiSelect(index)}
-									textContent={translation[language].button.delete}
+									color="brown"
+									onClickFunction={() => handleMultiSelectChange(index)}
+									textContent={translation[language].button.save}
 								/>
-							) : null}
+								{checkboxArray.some(
+									(checkbox) =>
+										checkbox.firstLevelIds === lot.firstLevelIds &&
+										checkbox.secondLevelIds === lot.secondLevelIds,
+								) ? (
+									<ButtonComponent
+										type="button"
+										color="red"
+										onClickFunction={() => handleDeleteMultiSelect(index)}
+										textContent={translation[language].button.delete}
+									/>
+								) : null}
+							</div>
 						</div>
 					);
 				})}

@@ -16,10 +16,13 @@ import { getDivinityIdsList } from "../../../utils/api/builtMap/getRequests";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import { notifyEditSuccess } from "../../../utils/functions/toast";
 import { updateDivinityList } from "../../../utils/api/builtMap/putRequests";
+import { divinityRequest } from "../../../utils/forms/divinityRequest";
 // import des types
 import type { DivinityListType } from "../../../utils/types/mapTypes";
 // import des styles
 import style from "./divinityManagementPage.module.scss";
+// import des icônes
+import { CircleHelp } from "lucide-react";
 
 const DivinityManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -63,19 +66,51 @@ const DivinityManagementPage = () => {
 		}
 	};
 
-	return divinityList !== "" ? (
-		<section className={style.tagManagementSection}>
-			<h4>{translation[language].backoffice.tagManagement.title}</h4>
+	const [copied, setCopied] = useState(false);
 
-			<div className={style.tagManagementContainer}>
+	const handleCopy = async () => {
+		try {
+			await navigator.clipboard.writeText(divinityRequest);
+			setCopied(true);
+
+			setTimeout(() => setCopied(false), 3000);
+		} catch (err) {
+			console.error(err);
+		}
+	};
+	return divinityList !== "" ? (
+		<section className={style.divinityManagementSection}>
+			<div className={style.divinityManagementHeader}>
+				<div>
+					<CircleHelp />
+					<p>
+						Cette page permet d'enregister la liste des identifiants des
+						éléments qui sont des divinités. Actuellement, cette liste a été
+						générée par une requête SQL qui récupère tous les ids des éléments
+						qui n'ont pas de catégorie.
+					</p>
+				</div>
+				<button type="button" onClick={handleCopy}>
+					{translation[language].button.copyRequest}
+				</button>
+				{copied && (
+					<p className={style.copiedMessage}>
+						{translation[language].alert.copied}
+					</p>
+				)}
+			</div>
+			<div className={style.divinityManagementContainer}>
 				{
 					<form
 						onSubmit={handleSubmit(handleUpdateDivinityIdsList)}
 						key={reload.toString()}
 					>
-						<div className={style.tagManagementForm}>
-							<div className={style.tagManagementRow}>
-								<div className={style.tagInputContainer}>
+						<div className={style.divinityManagementForm}>
+							<div className={style.divinityManagementRow}>
+								<div
+									className={style.tagInputContainer}
+									style={{ width: "100%" }}
+								>
 									<LabelComponent
 										htmlFor="divinity_list"
 										label="Liste des identifiants des divinités"

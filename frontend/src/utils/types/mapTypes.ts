@@ -75,6 +75,11 @@ type MapFilterType = {
 	element: boolean;
 	divinityNb: boolean;
 	sourceType: boolean;
+	agentGender: boolean;
+	agentStatus: boolean;
+	agentivity: boolean;
+	sourceMaterial: boolean;
+	agentActivity: boolean;
 };
 
 type MapInfoType = {
@@ -119,10 +124,10 @@ type MapType = {
 	}[];
 	category: TagType;
 	creator?: {
-		pseudo: string;
+		username: string;
 	};
 	modifier?: {
-		pseudo: string;
+		username: string;
 	};
 	image_url?: string;
 };
@@ -154,7 +159,8 @@ type PointType = {
 	color?: string;
 	shape?: string;
 	shapeCode?: string;
-	layerName?: string;
+	layerNamefr?: string;
+	layerNameen?: string;
 };
 
 type SourceType = {
@@ -197,7 +203,8 @@ type MapColorType = {
 
 type PointSetType = {
 	id?: string;
-	name: string;
+	name_fr: string;
+	name_en: string;
 	attestationIds: string;
 	color?: MapColorType | string;
 	icon?: MapIconType | string;

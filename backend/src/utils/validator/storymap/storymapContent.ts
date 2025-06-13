@@ -7,7 +7,7 @@ import { blockToEditSchema } from "./block";
 
 const storymapContentSchema = Joi.object({
 	title_lang1: Joi.string().max(255).required(),
-	title_lang2: Joi.string().max(255).required(),
+	title_lang2: Joi.string().optional().allow(""),
 	description_lang1: Joi.string().optional().allow(""),
 	description_lang2: Joi.string().optional().allow(""),
 	image_url: Joi.string().optional().allow(""),
@@ -15,7 +15,7 @@ const storymapContentSchema = Joi.object({
 	author: Joi.string().max(255).optional().allow(""),
 	publishedAt: Joi.string().optional().allow(""),
 	lang1: Joi.string().uuid().required(),
-	lang2: Joi.string().uuid().required(),
+	lang2: Joi.string().allow(null).allow(""),
 	tags: Joi.string().required(),
 	createdAt: Joi.date().optional(),
 	updatedAt: Joi.date().optional(),
@@ -39,7 +39,7 @@ export const validateStorymapContentBody = (
 const storymapToEditSchema = Joi.object({
 	id: Joi.string().uuid().required(),
 	title_lang1: Joi.string().max(255).required(),
-	title_lang2: Joi.string().max(255).required(),
+	title_lang2: Joi.string().optional().allow(""),
 	description_lang1: Joi.string().optional().allow(""),
 	description_lang2: Joi.string().optional().allow(""),
 	image_url: Joi.string().optional().allow(""),
@@ -49,7 +49,7 @@ const storymapToEditSchema = Joi.object({
 	publishedAt: Joi.string().optional().allow(""),
 	tags: Joi.string().required(),
 	lang1: Joi.string().uuid().required(),
-	lang2: Joi.string().uuid().required(),
+	lang2: Joi.string().allow(null).allow(""),
 });
 
 export const validateStorymapContentToEditBody = (

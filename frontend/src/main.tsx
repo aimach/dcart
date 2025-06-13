@@ -3,7 +3,6 @@ import { createRoot } from "react-dom/client";
 import { BrowserRouter, Routes, Route } from "react-router";
 import { ToastContainer } from "react-toastify";
 // import des composants
-import App from "./App.tsx";
 import NavigationLayout from "./layouts/NavigationLayout.tsx";
 import ProtectedLayout from "./layouts/ProtectedLayout.tsx";
 import AuthentificationPage from "./pages/BackOffice/AuthentificationPage/AuthentificationPage.tsx";

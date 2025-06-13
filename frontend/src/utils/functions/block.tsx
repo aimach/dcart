@@ -1,7 +1,7 @@
 // import des bibliothèques
 import DOMPurify from "dompurify";
 // import des types
-import type { BlockContentType } from "../types/storymapTypes";
+import type { BlockContentType, StorymapType } from "../types/storymapTypes";
 import type { blockType, parsedPointType } from "../types/formTypes";
 // import des icônes
 import {
@@ -48,7 +48,7 @@ const getPreviewText = (
 	if (block.type.name === "text") {
 		const sanitizedText = DOMPurify.sanitize(
 			block[`content1_${selectedLanguage}`],
-		).slice(0, 50);
+		).slice(0, 30);
 		return (
 			<p
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: texte est nettoyé avec DOMPurify
@@ -76,7 +76,7 @@ const getPreviewText = (
 		);
 	}
 	return (
-		<p style={{ fontSize: "13px" }}>
+		<p style={{ fontSize: "13px", lineBreak: "anywhere" }}>
 			{block[`content1_${selectedLanguage}`].length > 30
 				? `${block[`content1_${selectedLanguage}`].slice(0, 30)}...`
 				: block[`content1_${selectedLanguage}`]}
@@ -132,10 +132,11 @@ const getTypeIcon = (typeName: string) => {
  */
 const normalizeBody = (body: blockType, keys: string[]) => {
 	return keys.reduce((acc: Record<string, string | null>, key) => {
-		// biome-ignore lint/suspicious/noPrototypeBuiltins: <explanation>
+		// biome-ignore lint/suspicious/noPrototypeBuiltins:
 		const value = body.hasOwnProperty(key)
 			? (body[key as keyof blockType] as string)
 			: null;
+		// biome-ignore lint/performance/noAccumulatingSpread:
 		return { ...acc, [key]: value };
 	}, {});
 };
@@ -188,6 +189,43 @@ const getAllowedTags = () => {
 	};
 };
 
+/**
+ * Fonction qui retourne un booléen si le bloc ne possède pas toutes les clés requises
+ * @param block - le bloc à vérifier
+ * @param storymapInfos - les informations de la storymap
+ * @returns {boolean} - true si le bloc ne possède pas toutes les clés requises, false sinon
+ */
+const hasRequiredKeys = (
+	block: BlockContentType,
+	storymapInfos: StorymapType,
+): boolean => {
+	if (storymapInfos?.lang2) {
+		if (block.type.name === "layout") {
+			const textChildren = block.children.filter(
+				(child) => child.type.name === "text",
+			)[0];
+			const imageChildren = block.children.filter(
+				(child) => child.type.name === "image",
+			)[0];
+			if (!textChildren.content1_lang2 || !imageChildren.content2_lang2) {
+				return true;
+			}
+		}
+		if (block.type.name === "image") {
+			if (!block.content2_lang2) {
+				return true;
+			}
+		}
+		if (block.type.name === "separator") {
+			return false;
+		}
+		if (!block.content1_lang2) {
+			return true;
+		}
+	}
+	return false;
+};
+
 export {
 	addPanelToPoints,
 	requiredBlockKeys,
@@ -195,4 +233,5 @@ export {
 	getTypeIcon,
 	normalizeBody,
 	getAllowedTags,
+	hasRequiredKeys,
 };

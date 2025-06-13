@@ -46,6 +46,12 @@
     }
   }
 
+  &BackButton {
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$font-space-l;
+    cursor: pointer;
+  }
+
 
   &TranslationMenu {
     ul {

@@ -209,7 +209,7 @@ const uploadParsedPointsForComparisonMap = async (
 			// chargement des points pour les 2 panels
 			for (const panelSide in pointsSets) {
 				const pointSetFromPanelSide = updatedBlock.attestations.find(
-					(attestation: PointSetType) => attestation.name === panelSide,
+					(attestation: PointSetType) => attestation.name_fr === panelSide,
 				);
 
 				// s'il y a des points chargés, supression des anciens

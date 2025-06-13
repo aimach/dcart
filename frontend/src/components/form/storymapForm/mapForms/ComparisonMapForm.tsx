@@ -51,14 +51,8 @@ const ComparisonMapForm = () => {
 
 	const { icons, colors } = useContext(IconOptionsContext);
 
-	const { updateFormType, block, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
-	);
+	const { storymapInfos, updateFormType, block, reload, setReload } =
+		useBuilderStore(useShallow((state) => state));
 
 	const [formSide, setFormSide] = useState("left");
 
@@ -72,13 +66,15 @@ const ComparisonMapForm = () => {
 		left: {
 			color: "0",
 			icon: "0",
-			name: "",
+			name_fr: "",
+			name_en: "",
 			attestationIds: "",
 		},
 		right: {
 			color: "0",
 			icon: "0",
-			name: "",
+			name_fr: "",
+			name_en: "",
 			attestationIds: "",
 		},
 	});
@@ -111,10 +107,10 @@ const ComparisonMapForm = () => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const leftPointsSet = block?.attestations?.find(
-			(pointSet) => pointSet.name === "left",
+			(pointSet) => pointSet[`name_${language}`] === "left",
 		);
 		const rightPointsSet = block?.attestations?.find(
-			(pointSet) => pointSet.name === "right",
+			(pointSet) => pointSet[`name_${language}`] === "right",
 		);
 
 		setPointsSets({
@@ -123,14 +119,14 @@ const ComparisonMapForm = () => {
 				color: (leftPointsSet?.color as MapColorType)?.id,
 				icon: (leftPointsSet?.icon as MapIconType)?.id,
 				attestationIds: leftPointsSet?.attestationIds as string,
-				name: "left",
+				name_fr: "left",
 			},
 			right: {
 				...pointSets.right,
 				color: (rightPointsSet?.color as MapColorType)?.id,
 				icon: (rightPointsSet?.icon as MapIconType)?.id,
 				attestationIds: rightPointsSet?.attestationIds as string,
-				name: "right",
+				name_fr: "right",
 			},
 		});
 
@@ -174,6 +170,16 @@ const ComparisonMapForm = () => {
 		right: new File([], ""),
 	});
 
+	const [inputs, setInputs] = useState(comparisonMapInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = comparisonMapInputs.filter(
+				(input) => input.name !== "content1_lang2",
+			);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		isLoaded && (
 			<>
@@ -185,7 +191,7 @@ const ComparisonMapForm = () => {
 					onSubmit={handleSubmit(handlePointSubmit)}
 					className={style.mapFormContainer}
 				>
-					{comparisonMapInputs.map((input) => {
+					{inputs.map((input) => {
 						if (input.type === "text") {
 							return (
 								<div key={input.name} className={style.mapFormInputContainer}>

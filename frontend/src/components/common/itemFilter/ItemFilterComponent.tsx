@@ -26,7 +26,7 @@ const ItemFilterComponent = ({
 					checked={itemTypes.map}
 					onChange={(e) => handleCheckboxChange(e, "map")}
 				/>
-				<legend>{translation[language].common.map}s</legend>
+				<label htmlFor="map">{translation[language].common.map}s</label>
 			</div>
 			<div className={style.filterInputContainer}>
 				<input
@@ -36,7 +36,9 @@ const ItemFilterComponent = ({
 					checked={itemTypes.storymap}
 					onChange={(e) => handleCheckboxChange(e, "storymap")}
 				/>
-				<legend>{translation[language].common.storymap}s</legend>
+				<label htmlFor="storymap">
+					{translation[language].common.storymap}s
+				</label>
 			</div>
 		</div>
 	);

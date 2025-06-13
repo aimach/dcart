@@ -11,16 +11,6 @@ const tileOptions = [
 		label: "Open Street Map Basic",
 		value: "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png",
 	},
-	{
-		label: "Stamen Toner Background",
-		value:
-			"https://tiles.stadiamaps.com/tiles/stamen_toner_background/{z}/{x}/{y}{r}.png",
-	},
-	{
-		label: "Stamen Watercolor",
-		value:
-			"https://tiles.stadiamaps.com/tiles/stamen_watercolor/{z}/{x}/{y}.png",
-	},
 ];
 
 const storymapInputs: InputType[] = [
@@ -43,8 +33,8 @@ const storymapInputs: InputType[] = [
 	{
 		label_fr: "Langue 2",
 		label_en: "Language 2",
-		description_fr: "La langue secondaire de la storymap",
-		description_en: "The secondary language of the storymap",
+		description_fr: "La langue secondaire de la storymap (facultatif)",
+		description_en: "The secondary language of the storymap (optional)",
 		name: "lang2",
 		type: "select",
 		options: [],

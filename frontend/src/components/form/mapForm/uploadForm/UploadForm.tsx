@@ -21,7 +21,6 @@ import {
 	notifyCreateSuccess,
 	notifyDeleteSuccess,
 	notifyEditSuccess,
-	notifySuccessWithCustomMessage,
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
 // import des types
@@ -35,7 +34,7 @@ import type {
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des images
-import { CircleHelp, Pen, X } from "lucide-react";
+import { CircleHelp, Pen, PlusCircle, X } from "lucide-react";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -62,6 +61,7 @@ const UploadForm = () => {
 	const [action, setAction] = useState<"create" | "edit">("create");
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
+
 		if (action === "create") {
 			const newPointSet = await createPointSet(pointSet as PointSetType);
 			if (newPointSet?.status === 201) {
@@ -119,39 +119,52 @@ const UploadForm = () => {
 		}
 	};
 
-	const handleCheckboxChange = async (fieldName: string, boolean: string) => {
-		const result = await updateMap({
+	const [isLayered, setIsLayered] = useState<boolean>(
+		mapInfos?.isLayered ?? false,
+	);
+	const [isNbDisplayed, setIsNbDisplayed] = useState<boolean>(
+		mapInfos?.isNbDisplayed ?? false,
+	);
+	const handleCheckboxChange = async (
+		isLayered: boolean,
+		isNbDisplayed: boolean,
+	) => {
+		const newMapInfos = await updateMap({
 			...(mapInfos as MapInfoType),
-			[fieldName]: boolean === "true",
+			isLayered,
+			isNbDisplayed,
 		});
-		setMapInfos(result?.data);
-		notifySuccessWithCustomMessage("Modification prise en compte");
+		setMapInfos({
+			...mapInfos,
+			isLayered: newMapInfos?.data.isLayered,
+			isNbDisplayed: newMapInfos?.data.isNbDisplayed,
+		} as MapInfoType);
 	};
 
 	return (
-		<div>
+		<section className={style.uploadFormContainer}>
 			<div className={style.titleAndHelpContainer}>
 				<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
-				<div className={style.helpContainer}>
-					<a
-						href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9?pvs=4"
-						target="_blank"
-						rel="noreferrer"
-					>
-						<CircleHelp color="grey" />
-						{translation[language].backoffice.mapFormPage.uploadPointsHelp}
-					</a>
-				</div>
+				{isAlreadyAPointSet && (
+					<ButtonComponent
+						type="button"
+						color="brown"
+						textContent="Ajouter un nouveau jeu de points"
+						onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
+						icon={<PlusCircle />}
+					/>
+				)}
 			</div>
-			{isAlreadyAPointSet && (
-				<ButtonComponent
-					type="button"
-					color="brown"
-					textContent="Ajouter un nouveau jeu de points"
-					onClickFunction={() => setIsAlreadyAPointSet(!isAlreadyAPointSet)}
-				/>
-			)}
-
+			<div className={style.helpContainer}>
+				<a
+					href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9?pvs=4"
+					target="_blank"
+					rel="noreferrer"
+				>
+					<CircleHelp color="grey" />
+					{translation[language].backoffice.mapFormPage.uploadPointsHelp}
+				</a>
+			</div>
 			{!isAlreadyAPointSet && (
 				<PointSetUploadForm
 					pointSet={pointSet}
@@ -175,7 +188,13 @@ const UploadForm = () => {
 								<th scope="col">
 									{
 										translation[language].backoffice.mapFormPage.pointSetTable
-											.name
+											.nameLang1
+									}
+								</th>
+								<th scope="col">
+									{
+										translation[language].backoffice.mapFormPage.pointSetTable
+											.nameLang2
 									}
 								</th>
 								<th scope="col">
@@ -195,7 +214,8 @@ const UploadForm = () => {
 								);
 								return (
 									<tr key={pointSet.id} className={style.pointSetTableRow}>
-										<td>{pointSet.name}</td>
+										<td>{pointSet.name_fr}</td>
+										<td>{pointSet.name_en}</td>
 										<td>
 											<p
 												// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
@@ -228,19 +248,14 @@ const UploadForm = () => {
 							})}
 						</tbody>
 					</table>
-					{mapInfos?.attestations.length > 1 && (
-						<div>
+					<div>
+						{mapInfos?.attestations.length > 1 && (
 							<div className={style.isLayeredContainer}>
 								<input
 									id="isLayered"
 									name="isLayered"
 									type="checkbox"
-									onChange={(event) =>
-										handleCheckboxChange(
-											event.target.name,
-											event.target.checked.toString(),
-										)
-									}
+									onChange={(event) => setIsLayered(event.target.checked)}
 									defaultChecked={mapInfos.isLayered}
 								/>
 								<label htmlFor="isLayered">
@@ -250,37 +265,35 @@ const UploadForm = () => {
 									}
 								</label>
 							</div>
-							<div className={style.isLayeredContainer}>
-								<input
-									id="isNbDisplayed"
-									name="isNbDisplayed"
-									type="checkbox"
-									onChange={(event) =>
-										handleCheckboxChange(
-											event.target.name,
-											event.target.checked.toString(),
-										)
-									}
-									defaultChecked={mapInfos.isNbDisplayed}
-								/>
-								<label htmlFor="isNbDisplayed">
-									{
-										translation[language].backoffice.mapFormPage.pointSetForm
-											.isNbDisplayedLabel
-									}
-								</label>
-							</div>
+						)}
+						<div className={style.isLayeredContainer}>
+							<input
+								id="isNbDisplayed"
+								name="isNbDisplayed"
+								type="checkbox"
+								onChange={(event) => setIsNbDisplayed(event.target.checked)}
+								defaultChecked={mapInfos.isNbDisplayed}
+							/>
+							<label htmlFor="isNbDisplayed">
+								{
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.isNbDisplayedLabel
+								}
+							</label>
 						</div>
-					)}
+					</div>
 				</>
 			)}
 			{isAlreadyAPointSet && (
 				<NavigationButtonComponent
 					step={step}
 					nextButtonDisplayed={nextButtonDisplayed}
+					onChangeFunction={() => {
+						handleCheckboxChange(isLayered, isNbDisplayed);
+					}}
 				/>
 			)}
-		</div>
+		</section>
 	);
 };
 

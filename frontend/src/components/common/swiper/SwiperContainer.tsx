@@ -9,6 +9,7 @@ import { useWindowSize } from "../../../utils/hooks/useWindowSize";
 import type { TagWithItemsType } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./swiper.module.scss";
+import "./swiper.css";
 import "swiper/css";
 import "swiper/css/navigation";
 import "swiper/css/pagination";
@@ -33,12 +34,14 @@ const SwiperContainer = ({ items }: SwiperContainerProps) => {
 			}}
 			modules={[Pagination, Navigation, Autoplay]}
 			className={style.itemSwiperContainer}
-			style={{
-				"--swiper-pagination-color": "#4A3E31",
-				"--swiper-pagination-bullet-inactive-color": "#AD9A85",
-				"--swiper-pagination-bullet-size": "8px",
-				"--swiper-pagination-bullet-horizontal-gap": "3px",
-			}}
+			style={
+				{
+					"--swiper-pagination-color": "#4A3E31",
+					"--swiper-pagination-bullet-inactive-color": "#AD9A85",
+					"--swiper-pagination-bullet-size": "8px",
+					"--swiper-pagination-bullet-horizontal-gap": "3px",
+				} as React.CSSProperties & Record<string, string>
+			}
 		>
 			{items.slice(0, 10).map((item) => {
 				return (

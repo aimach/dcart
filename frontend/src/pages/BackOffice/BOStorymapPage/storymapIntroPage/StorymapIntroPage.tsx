@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useState, useContext, useEffect } from "react";
+import { useState, useEffect } from "react";
 import { useLocation, useParams } from "react-router";
 import {
 	DndContext,
@@ -16,7 +16,6 @@ import {
 // import des composants
 import IntroductionForm from "../../../../components/form/storymapForm/introductionForm/IntroductionForm";
 import ModalComponent from "../../../../components/common/modal/ModalComponent";
-import StayConnectedContent from "../../../../components/common/modal/StayConnectedContent";
 import LinkForm from "../../../../components/form/storymapForm/linkForm/LinkForm";
 import SimpleMapForm from "../../../../components/form/storymapForm/mapForms/SimpleMapForm";
 import QuoteForm from "../../../../components/form/storymapForm/quoteForm/QuoteForm";
@@ -33,8 +32,6 @@ import TableForm from "../../../../components/form/storymapForm/tableForm/TableF
 import BlockChoiceForm from "../../../../components/form/storymapForm/blockChoiceForm/BlockChoiceForm";
 import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
-// import du context
-import { SessionContext } from "../../../../context/SessionContext";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -47,8 +44,6 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./storymapIntroPage.module.scss";
-// import des icônes
-import { ChevronRightCircle } from "lucide-react";
 
 /**
  * Page d'introduction à la création d'une storymap : définition du titre, de la description, de l'image de couverture, etc.
@@ -56,8 +51,6 @@ import { ChevronRightCircle } from "lucide-react";
  */
 const StorymapIntroPage = () => {
 	const { translation, language } = useTranslation();
-	// récupération des données du contexte
-	const { isTimeoutReached } = useContext(SessionContext);
 
 	const [step, setStep] = useState(1);
 
@@ -156,14 +149,9 @@ const StorymapIntroPage = () => {
 					<DeleteBlockModalContent />
 				</ModalComponent>
 			)}
-			{isTimeoutReached && (
-				<ModalComponent onClose={() => closeDeleteModal()}>
-					<StayConnectedContent />
-				</ModalComponent>
-			)}
 			<aside className={style.storymapFormAside}>
-				{storymapId !== "create" && (
-					<div className={style.buttonContainer}>
+				<div className={style.storymapFormAsideHeader}>
+					{storymapId !== "create" && (
 						<ButtonComponent
 							type="route"
 							color="brown"
@@ -172,8 +160,8 @@ const StorymapIntroPage = () => {
 							}
 							link={`/backoffice/storymaps/preview/${storymapId}`}
 						/>
-					</div>
-				)}
+					)}
+				</div>
 
 				<ul>
 					<li
@@ -181,7 +169,7 @@ const StorymapIntroPage = () => {
 						onKeyUp={() => setStep(1)}
 						className={step === 1 ? style.isSelected : ""}
 					>
-						{step === 1 && <ChevronRightCircle />} Introduction
+						Introduction
 					</li>
 					{storymapId !== "create" && (
 						<li
@@ -195,7 +183,7 @@ const StorymapIntroPage = () => {
 							}}
 							className={step === 2 ? style.isSelected : ""}
 						>
-							{step === 2 && <ChevronRightCircle />}Blocs
+							Blocs
 						</li>
 					)}
 				</ul>

@@ -5,6 +5,7 @@ import Select from "react-select";
 import tinycolor from "tinycolor2";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
+import LabelComponent from "../../inputComponent/LabelComponent";
 // import du contexte
 import { TagOptionsContext } from "../../../../context/TagContext";
 // import des custom hooks
@@ -34,6 +35,10 @@ import type {
 } from "../../../../utils/types/formTypes";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { TagType } from "../../../../utils/types/mapTypes";
+// import du style
+import style from "../commonForm/commonForm.module.scss";
+// import des icônes
+import { TriangleAlert } from "lucide-react";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -46,7 +51,7 @@ type IntroductionFormProps = {
  */
 const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	// importation des données de traduction
-	const { language } = useTranslation();
+	const { translation, language } = useTranslation();
 
 	const { tagOptions } = useContext(TagOptionsContext);
 
@@ -92,7 +97,11 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 	const navigate = useNavigate();
 	const onSubmit: SubmitHandler<storymapInputsType> = async (data) => {
 		if (storymapId === "create") {
-			const newStorymap = await createStorymap({ ...data, tags: selectedTags });
+			const newStorymap = await createStorymap({
+				...data,
+				lang2: data.lang2 === "0" ? null : data.lang2,
+				tags: selectedTags,
+			});
 			setStorymapInfos(newStorymap);
 			navigate(`/backoffice/storymaps/${newStorymap.id}`);
 		} else {
@@ -109,7 +118,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 					: "",
 				author: data.author,
 				lang1: data.lang1,
-				lang2: data.lang2,
+				lang2: data.lang2 === "0" ? null : data.lang2,
 				publication_date: data.publication_date,
 				tags: selectedTags
 					? selectedTags
@@ -137,18 +146,36 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 					inputs={inputs}
 					action="create"
 				>
-					<Select
-						options={tagOptions}
-						delimiter="|"
-						isMulti
-						onChange={(newValue) => {
-							const tagIds = newValue
-								.map((tag: OptionType) => tag.value as string)
-								.join("|");
-							setSelectedTags(tagIds);
-						}}
-						placeholder="Choisir une ou plusieurs étiquette"
-					/>
+					<div className={style.commonFormInputContainer}>
+						<LabelComponent
+							htmlFor="tags"
+							label={
+								translation[language].backoffice.storymapFormPage.form.tags
+									.label
+							}
+							description={
+								translation[language].backoffice.storymapFormPage.form.tags
+									.description
+							}
+						/>
+						<div className={style.inputContainer}>
+							<Select
+								options={tagOptions}
+								delimiter="|"
+								isMulti
+								onChange={(newValue) => {
+									const tagIds = newValue
+										.map((tag: OptionType) => tag.value as string)
+										.join("|");
+									setSelectedTags(tagIds);
+								}}
+								placeholder={
+									translation[language].backoffice.storymapFormPage.form.tags
+										.placeholder
+								}
+							/>
+						</div>
+					</div>
 				</CommonForm>
 			)}
 			{isLoaded && (
@@ -158,19 +185,34 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 					defaultValues={{ ...storymapInfos } as StorymapType}
 					action="edit"
 				>
-					<Select
-						options={tagOptions}
-						defaultValue={storymapInfos ? defaultTagValues : []}
-						delimiter="|"
-						isMulti
-						onChange={(newValue) => {
-							const tagIds = newValue
-								.map((tag: OptionType) => tag.value as string)
-								.join("|");
-							setSelectedTags(tagIds);
-						}}
-						placeholder="Choisir une ou plusieurs étiquette"
-					/>
+					<div className={style.commonFormInputContainer}>
+						<LabelComponent
+							htmlFor="tags"
+							label="Etiquettes de la carte"
+							description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
+						/>
+						<div className={style.inputContainer}>
+							<Select
+								options={tagOptions}
+								defaultValue={storymapInfos ? defaultTagValues : []}
+								delimiter="|"
+								isMulti
+								onChange={(newValue) => {
+									const tagIds = newValue
+										.map((tag: OptionType) => tag.value as string)
+										.join("|");
+									setSelectedTags(tagIds);
+								}}
+								placeholder="Choisir une ou plusieurs étiquette"
+							/>
+							{storymapId !== "create" && storymapInfos?.tags?.length === 0 && (
+								<p className={style.errorMessage}>
+									<TriangleAlert size={20} />{" "}
+									{translation[language].alert.noTagAssociated}
+								</p>
+							)}
+						</div>
+					</div>
 				</CommonForm>
 			)}
 		</>

@@ -11,10 +11,7 @@ const blockToCreateSchema = Joi.object({
 		"any.required": "Le champ 'content1_lang1' est requis",
 		"string.base": "'content1_lang1' doit être une chaîne de caractères",
 	}),
-	content1_lang2: Joi.string().required().messages({
-		"any.required": "Le champ 'content2_lang1' est requis",
-		"string.base": "'content2_lang1' doit être une chaîne de caractères",
-	}),
+	content1_lang2: Joi.string().optional().allow("").allow(null),
 	content2_lang1: Joi.string().optional().allow("").allow(null),
 	content2_lang2: Joi.string().optional().allow("").allow(null),
 	content3: Joi.string().optional().allow(null),
@@ -50,7 +47,7 @@ const validateBlockBody = (req: Request, res: Response, next: NextFunction) => {
 export const blockToEditSchema = Joi.object({
 	id: Joi.string().uuid().required(),
 	content1_lang1: Joi.string().required(),
-	content1_lang2: Joi.string().required(),
+	content1_lang2: Joi.string().optional().allow("").allow(null),
 	content2_lang1: Joi.string().optional().allow(null),
 	content2_lang2: Joi.string().optional().allow(null),
 	content3: Joi.string().optional().allow(null),

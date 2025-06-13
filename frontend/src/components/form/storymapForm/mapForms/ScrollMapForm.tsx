@@ -22,6 +22,7 @@ import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
@@ -42,14 +43,8 @@ const ScrollMapForm = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	const { block, updateFormType, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
-	);
+	const { storymapInfos, block, updateFormType, reload, setReload } =
+		useBuilderStore(useShallow((state) => state));
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const action = searchParams.get("action");
@@ -106,6 +101,14 @@ const ScrollMapForm = () => {
 		}
 	}, [action, block, setValue]);
 
+	const [inputs, setInputs] = useState(scrollMapInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = removeLang2Inputs(scrollMapInputs);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		<section className={style.scrollMapFormContainer}>
 			<StepPanel scrollMapId={scrollMapId} />
@@ -119,7 +122,7 @@ const ScrollMapForm = () => {
 						onSubmit={handleSubmit(handleScrollMapSubmit)}
 						className={style.mapFormContainer}
 					>
-						{scrollMapInputs.map((input) => {
+						{inputs.map((input) => {
 							if (input.type === "text") {
 								return (
 									<div key={input.name} className={style.mapFormInputContainer}>

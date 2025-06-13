@@ -6,6 +6,7 @@ type LanguageObject = {
 	en: string;
 	fr: string;
 	noAuthInMobile: string;
+	invalidAuth: string;
 	navigation: {
 		home: string;
 		maps: string;
@@ -21,6 +22,9 @@ type LanguageObject = {
 	};
 	alert: {
 		maxReached: string;
+		noTagAssociated: string;
+		missingTranslation: string;
+		copied: string;
 	};
 	button: {
 		freeExploration: string;
@@ -43,6 +47,11 @@ type LanguageObject = {
 		delete: string;
 		edit: string;
 		cancel: string;
+		publish: string;
+		unpublish: string;
+		editDisabled: string;
+		search: string;
+		copyRequest: string;
 	};
 	common: {
 		between: string;
@@ -118,7 +127,6 @@ type LanguageObject = {
 			male: string;
 			female: string;
 			nonbinary: string;
-			agentName: string;
 			timeLimits: string;
 			seeStat: string;
 			seeSources: string;
@@ -182,7 +190,8 @@ type LanguageObject = {
 				filters: string;
 			};
 			pointSetTable: {
-				name: string;
+				nameLang1: string;
+				nameLang2: string;
 				color: string;
 				icon: string;
 				delete: string;
@@ -190,8 +199,10 @@ type LanguageObject = {
 			pointSetForm: {
 				addNewPointSet: string;
 				pointSetName: {
-					label: string;
-					description: string;
+					label_fr: string;
+					description_fr: string;
+					label_en: string;
+					description_en: string;
 				};
 				attestationIds: {
 					label: string;
@@ -310,6 +321,11 @@ type LanguageObject = {
 				modifyStep: string;
 				modifyTextNow: string;
 				modifyImageNow: string;
+				tags: {
+					label: string;
+					description: string;
+					placeholder: string;
+				};
 			};
 		};
 		userManagement: {

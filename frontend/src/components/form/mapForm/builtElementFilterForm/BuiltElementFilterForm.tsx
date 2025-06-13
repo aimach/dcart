@@ -2,7 +2,6 @@
 import { useEffect, useState } from "react";
 // import des composants
 import SelectElementForm from "./SelectElementForm";
-import LoaderComponent from "../../../common/loader/LoaderComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
@@ -13,7 +12,10 @@ import {
 	getAllPointsForDemoMap,
 	getOneMapInfosById,
 } from "../../../../utils/api/builtMap/getRequests";
-import { fetchElementOptions } from "../../../../utils/functions/filter";
+import {
+	fetchElementOptions,
+	isSelectedFilterInThisMap,
+} from "../../../../utils/functions/filter";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
@@ -27,40 +29,38 @@ const BuiltElementFilterForm = () => {
 
 	const { mapInfos, setMapInfos } = useMapFormStore();
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: forcer le rechargement des options d'éléments
 	useEffect(() => {
-		const getElementsOptionsByAttestationIds = async () => {
-			const attestationIdsArray = mapInfos?.attestations.map(
-				(attestation) => attestation.attestationIds,
-			);
+		const elementFilter = isSelectedFilterInThisMap(mapInfos, "element");
+		if (elementFilter?.options?.solution === "manual") {
+			const getElementsOptionsByAttestationIds = async () => {
+				const attestationIdsArray = mapInfos?.attestations.map(
+					(attestation) => attestation.attestationIds,
+				);
 
-			const allAttestationsIds = attestationIdsArray?.join(",").split(",");
-			const uniqueAttestationIds = new Set(allAttestationsIds);
+				const allAttestationsIds = attestationIdsArray?.join(",").split(",");
+				const uniqueAttestationIds = new Set(allAttestationsIds);
 
-			const allPoints = await getAllPointsForDemoMap(
-				[...uniqueAttestationIds].toString(),
-			);
+				const allPoints = await getAllPointsForDemoMap(
+					[...uniqueAttestationIds].toString(),
+				);
 
-			const allElementsOptions = await fetchElementOptions(
-				allPoints,
-				language,
-				false,
-			);
-			setElementOptions(allElementsOptions);
-		};
-		getElementsOptionsByAttestationIds();
+				const allElementsOptions = await fetchElementOptions(
+					allPoints,
+					language,
+					false,
+				);
+				setElementOptions(allElementsOptions);
+			};
+			getElementsOptionsByAttestationIds();
+		}
 	}, [mapInfos?.attestations, language]);
 
 	useEffect(() => {
 		if (mapInfos) {
-			const elementFilter = mapInfos.filterMapContent?.find(
-				(filter) =>
-					(filter.filter as Record<string, string>).type === "element",
-			);
+			const elementFilter = isSelectedFilterInThisMap(mapInfos, "element");
 			if (elementFilter) {
-				setSelectedOption(
-					(elementFilter.options as Record<string, string>)?.solution ??
-						"basic",
-				);
+				setSelectedOption(elementFilter.options?.solution ?? "basic");
 			}
 		}
 	}, [mapInfos]);
@@ -79,7 +79,7 @@ const BuiltElementFilterForm = () => {
 		setMapInfos(newMap);
 	};
 
-	return elementOptions.length > 0 ? (
+	return (
 		<form className={style.commonFormContainer}>
 			<h4>
 				{translation[language].backoffice.mapFormPage.filterForm.element.title}
@@ -132,8 +132,6 @@ const BuiltElementFilterForm = () => {
 				<SelectElementForm elementOptions={elementOptions} />
 			)}
 		</form>
-	) : (
-		<LoaderComponent size={40} />
 	);
 };
 

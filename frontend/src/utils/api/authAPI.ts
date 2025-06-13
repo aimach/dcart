@@ -132,8 +132,10 @@ const resetPassword = async (
 				theme: "light",
 			});
 		}
+		return response;
 	} catch (error) {
 		notifyError("Erreur lors de la réinitialisation du mot de passe");
+		return error.response.data.error[0];
 	}
 };
 
@@ -152,7 +154,6 @@ const createNewUser = async (body: userInputType) => {
 	}
 };
 
-
 export {
 	loginUser,
 	logoutUser,
@@ -160,5 +161,5 @@ export {
 	refreshAccessToken,
 	sendResetPasswordRequest,
 	resetPassword,
-	createNewUser
+	createNewUser,
 };

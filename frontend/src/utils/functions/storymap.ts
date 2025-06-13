@@ -2,7 +2,10 @@ import type { OptionType } from "../types/commonTypes";
 import type { InputType } from "../types/formTypes";
 import type { Language } from "../types/languageTypes";
 import type { MapType } from "../types/mapTypes";
-import type { StorymapLanguageType } from "../types/storymapTypes";
+import type {
+	StorymapLanguageType,
+	StorymapType,
+} from "../types/storymapTypes";
 
 /**
  * Fonction pour créer les options du select des tags
@@ -126,9 +129,49 @@ const getFlagEmoji = (language: string) => {
 	}
 };
 
+/**
+ * Fonction qui retourne un tableau contenant les inputs sans la lang2
+ * @param inputs - le tableau des inputs à modifier
+ * @returns un tableau contenant les inputs sans la lang2
+ */
+const removeLang2Inputs = (inputs: InputType[]) => {
+	const newInputs = inputs.filter((input) => !input.name.includes("_lang2"));
+	return newInputs;
+};
+
+/**
+ * Fonction qui ajoute au label des inputs la langue correspondante
+ * @param inputs - le tableau des inputs à modifier
+ * @returns un tableau contenant les inputs sans la lang2
+ */
+const addLangageBetweenBrackets = (
+	inputs: InputType[],
+	storymapInfos: StorymapType,
+) => {
+	return inputs.map((input) => {
+		if (input.label_fr.includes("langue 1")) {
+			return {
+				...input,
+				label_fr: `${input.label_fr} (${storymapInfos?.lang1?.name.toUpperCase()})`,
+				label_en: `${input.label_en} (${storymapInfos?.lang1?.name.toUpperCase()})`,
+			};
+		}
+		if (input.label_fr.includes("langue 2")) {
+			return {
+				...input,
+				label_fr: `${input.label_fr} (${storymapInfos?.lang2?.name.toUpperCase()})`,
+				label_en: `${input.label_en} ${storymapInfos?.lang2?.name.toUpperCase()})`,
+			};
+		}
+		return input;
+	});
+};
+
 export {
 	createTagOptions,
 	createLanguageOptions,
 	getFlagEmoji,
 	createMapOptions,
+	removeLang2Inputs,
+	addLangageBetweenBrackets,
 };

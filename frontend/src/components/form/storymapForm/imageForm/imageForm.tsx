@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { useParams, useSearchParams } from "react-router";
+import { useEffect, useState } from "react";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
 import FormTitleComponent from "../common/FormTitleComponent";
@@ -16,6 +17,7 @@ import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
@@ -37,14 +39,8 @@ interface ImageFormProps {
  * Formulaire pour la création d'un bloc de type "image"
  */
 const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
-	const { updateFormType, block, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
-	);
+	const { storymapInfos, updateFormType, block, reload, setReload } =
+		useBuilderStore(useShallow((state) => state));
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const action = searchParams.get("action");
@@ -82,13 +78,21 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
 		setSearchParams(undefined);
 	};
 
+	const [inputs, setInputs] = useState(imageInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = removeLang2Inputs(imageInputs);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		<>
 			<FormTitleComponent action={action as string} translationKey="image" />
 			<CommonForm
 				key={block ? block.id : "image"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
-				inputs={imageInputs}
+				inputs={inputs}
 				defaultValues={(defaultValues ?? block) as BlockContentType}
 				action={action as string}
 			/>

@@ -5,12 +5,15 @@ import { useSearchParams } from "react-router";
 // import des composants
 import EditorComponent from "../wysiwygBlock/EditorComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
-import LabelComponent from "../../inputComponent/LabelComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
+import {
+	addLangageBetweenBrackets,
+	removeLang2Inputs,
+} from "../../../../utils/functions/storymap";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import type {
@@ -18,13 +21,11 @@ import type {
 	InputType,
 	storymapInputsType,
 } from "../../../../utils/types/formTypes";
-
 import type Quill from "quill";
 import type {
 	BlockContentType,
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
-import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./commonForm.module.scss";
 // import des icônes
@@ -67,7 +68,7 @@ const CommonForm = ({
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
-	const { updateFormType } = useBuilderStore();
+	const { storymapInfos, updateFormType } = useBuilderStore();
 
 	const [_, setSearchParams] = useSearchParams();
 
@@ -107,56 +108,28 @@ const CommonForm = ({
 		}
 	}, [defaultValues]);
 
-	// gestion des select/options des langues pour ne pas avoir deux fois la même langue
-	const lang1Value = watch("lang1");
 	const lang2Value = watch("lang2");
-	const defaultLangValue: OptionType[] = useMemo(() => {
-		return inputs.filter((input) => input.name === "lang1")[0]?.options ?? [];
-	}, [inputs]);
-
 	useEffect(() => {
-		if (lang1Value && lang2Value) {
-			if (lang1Value !== "0") {
-				const lang2Input = inputs.find((input) => input.name === "lang2");
-				if (lang2Input) {
-					const lang2Options = defaultLangValue.filter(
-						(option) => option.value !== lang1Value,
-					);
-
-					const lang2Index = inputs.map((input) => input.name).indexOf("lang2");
-
-					// insertion des nouvelles données
-					const newInputs = inputs;
-					newInputs[lang2Index].options = lang2Options;
-					setFormInputs([...newInputs]);
-				}
-			}
-			if (lang2Value !== "0") {
-				const lang1Input = inputs.find((input) => input.name === "lang1");
-				if (lang1Input) {
-					const lang1Options = defaultLangValue.filter(
-						(option) => option.value !== lang2Value,
-					);
-
-					const lang1Index = inputs.map((input) => input.name).indexOf("lang1");
-
-					// insertion des nouvelles données
-					const newInputs = inputs;
-					newInputs[lang1Index].options = lang1Options;
-					setFormInputs([...newInputs]);
-				}
-			}
+		if (lang2Value === null || lang2Value === "0") {
+			const newFormInputs = removeLang2Inputs(inputs);
+			setFormInputs(newFormInputs);
+		} else {
+			setFormInputs(inputs);
 		}
-	}, [defaultLangValue, lang1Value, lang2Value, inputs]);
+	}, [lang2Value, inputs]);
 
 	const quillRef = useRef<Quill | null>(null);
+
+	const inputsWithLangInLabel = useMemo(() => {
+		return addLangageBetweenBrackets(formInputs, storymapInfos as StorymapType);
+	}, [formInputs, storymapInfos]);
 
 	return (
 		<form
 			onSubmit={handleSubmit(onSubmit)}
 			className={style.commonFormContainer}
 		>
-			{formInputs.map((input) => {
+			{inputsWithLangInLabel.map((input) => {
 				if (input.type === "select") {
 					return (
 						<div key={input.name} className={style.commonFormInputContainer}>
@@ -273,14 +246,7 @@ const CommonForm = ({
 				}
 			})}
 			{React.Children.map(children, (child, index) => (
-				<div className={style.commonFormInputContainer} key={index}>
-					<LabelComponent
-						htmlFor="tags"
-						label="Etiquettes de la carte"
-						description="Les étiquettes permettent de classer les cartes et de les retrouver plus facilement."
-					/>
-					<div className={style.inputContainer}>{child}</div>
-				</div>
+				<>{child}</>
 			))}
 			<div className={style.commonFormContainerButton}>
 				<ButtonComponent

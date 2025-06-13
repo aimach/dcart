@@ -7,6 +7,14 @@ import { useTranslation } from "../../../utils/hooks/useTranslation";
 import { AuthContext } from "../../../context/AuthContext";
 // import du style
 import style from "./BOHomePage.module.scss";
+import {
+	BookOpenText,
+	ChartPie,
+	Languages,
+	MapPin,
+	Tag,
+	UserRound,
+} from "lucide-react";
 
 /**
  * Page d'accueil du backoffice avec liens vers toutes les pages
@@ -20,38 +28,44 @@ const BOHomePage = () => {
 		<div className={style.homeNavContainer}>
 			<nav className={style.homeNav}>
 				<ul>
-					<li>
-						<Link to="/backoffice/maps">
+					<Link to="/backoffice/maps">
+						<li>
+							<MapPin />
 							{translation[language].navigation.maps}
-						</Link>
-					</li>
-					<li>
-						<Link to="/backoffice/storymaps">
+						</li>
+					</Link>
+					<Link to="/backoffice/storymaps">
+						<li>
+							<BookOpenText />
 							{translation[language].navigation.storymaps}
-						</Link>
-					</li>
+						</li>
+					</Link>
 					{isAdmin && (
 						<>
-							<li>
-								<Link to="/backoffice/translation">
+							<Link to="/backoffice/translation">
+								<li>
+									<Languages />
 									{translation[language].navigation.translation}
-								</Link>
-							</li>
-							<li>
-								<Link to="/backoffice/users">
+								</li>
+							</Link>
+							<Link to="/backoffice/users">
+								<li>
+									<UserRound />
 									{translation[language].navigation.users}
-								</Link>
-							</li>
-							<li>
-								<Link to="/backoffice/tags">
+								</li>
+							</Link>
+							<Link to="/backoffice/tags">
+								<li>
+									<Tag />
 									{translation[language].navigation.tags}
-								</Link>
-							</li>
-							<li>
-								<Link to="/backoffice/divinities">
+								</li>
+							</Link>
+							<Link to="/backoffice/divinities">
+								<li>
+									<ChartPie />
 									{translation[language].navigation.divinities}
-								</Link>
-							</li>
+								</li>
+							</Link>
 						</>
 					)}
 				</ul>

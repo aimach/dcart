@@ -14,6 +14,7 @@ import ButtonComponent from "../../../components/common/button/ButtonComponent";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import du context
 import { AuthContext } from "../../../context/AuthContext";
+import { TagOptionsContext } from "../../../context/TagContext";
 // import des services
 import { getAllTags } from "../../../utils/api/builtMap/getRequests";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
@@ -23,11 +24,15 @@ import { notifyCreateSuccess } from "../../../utils/functions/toast";
 import type { TagType } from "../../../utils/types/mapTypes";
 // import des styles
 import style from "./tagManagementPage.module.scss";
+// import des icônes
+import { CirclePlus } from "lucide-react";
 
 const TagManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
 
 	const { translation, language } = useTranslation();
+
+	const { reloadTags, setReloadTags } = useContext(TagOptionsContext);
 
 	const navigate = useNavigate();
 
@@ -57,6 +62,7 @@ const TagManagementPage = () => {
 		register,
 		handleSubmit,
 		formState: { errors },
+		reset,
 	} = useForm<TagType>();
 
 	const handleCreateTag = async (data: TagType) => {
@@ -65,6 +71,8 @@ const TagManagementPage = () => {
 			setIsCreateForm(false);
 			notifyCreateSuccess("Etiquette", true);
 			setReload(!reload);
+			setReloadTags(!reloadTags); // Force le rechargement des tags
+			reset(); // Réinitialise le formulaire
 		}
 	};
 
@@ -75,8 +83,8 @@ const TagManagementPage = () => {
 					<DeleteTagContent />
 				</ModalComponent>
 			)}
-			<h4>{translation[language].backoffice.tagManagement.title}</h4>
-			<div>
+
+			<div className={style.tagManagementHeader}>
 				{isCreateForm ? (
 					<ButtonComponent
 						type="button"
@@ -90,6 +98,7 @@ const TagManagementPage = () => {
 						textContent={translation[language].button.add}
 						color="brown"
 						onClickFunction={() => setIsCreateForm(!isCreateForm)}
+						icon={<CirclePlus />}
 					/>
 				)}
 			</div>

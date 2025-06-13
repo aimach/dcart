@@ -8,7 +8,10 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
-import { getUserFilters } from "../../../../utils/api/builtMap/getRequests";
+import {
+	getOneMapInfosById,
+	getUserFilters,
+} from "../../../../utils/api/builtMap/getRequests";
 import { addFiltersToMap } from "../../../../utils/api/builtMap/postRequests";
 import {
 	alreadyTwoFiltersChecked,
@@ -16,6 +19,10 @@ import {
 	noFilterChecked,
 } from "../../../../utils/functions/filter";
 import { updateFiltersToMap } from "../../../../utils/api/builtMap/putRequests";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+} from "../../../../utils/functions/toast";
 // import des types
 import type { FilterType } from "../../../../utils/types/filterTypes";
 import type { ChangeEvent, FormEventHandler } from "react";
@@ -23,10 +30,6 @@ import type { ChangeEvent, FormEventHandler } from "react";
 import style from "../introForm/introForm.module.scss";
 // import des icônes
 import { CircleAlert } from "lucide-react";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
 
 /**
  * Formulaire de la troisième étape : définition des filtres utilisateur pour la carte
@@ -38,12 +41,14 @@ const UserMapFilterForm = () => {
 	// récupération des données des stores
 	const {
 		mapInfos,
+		setMapInfos,
 		resetMapInfos,
 		resetAllPoints,
 		mapFilters,
 		setMapFilters,
 		resetMapFilters,
 		step,
+		setStep,
 	} = useMapFormStore(useShallow((state) => state));
 
 	// définition d'un état pour stocker tous les filtres utilisateur de la BDD
@@ -106,11 +111,19 @@ const UserMapFilterForm = () => {
 				mapFilters,
 			);
 			if (updatedFiltersResponse?.status === 200) {
-				resetMapInfos();
-				resetMapFilters();
-				resetAllPoints();
+				const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
+				setMapInfos(newMapInfos);
 				notifyEditSuccess("Jeu de filtres", false);
-				navigate("/backoffice/maps");
+				if (mapFilters.element || mapFilters.location) {
+					if (mapFilters.element) setStep(4);
+					if (mapFilters.location) setStep(5);
+				} else {
+					// si aucun filtre n'est sélectionné, on redirige vers la page de la carte
+					resetMapInfos();
+					resetAllPoints();
+					resetMapFilters();
+					navigate("/backoffice/maps");
+				}
 			}
 		} else if (pathname.includes("create")) {
 			if (noFilterChecked(mapFilters)) {
@@ -149,20 +162,31 @@ const UserMapFilterForm = () => {
 						<p>{translation[language].alert.maxReached}</p>
 					</div>
 				)}
-				{userMapFilterTypes.map((filter: FilterType) => {
-					const { label, description } = getFilterLabel(
-						filter.type,
-						translation,
-						language,
-					);
-					if (filter.type !== "time") {
-						return (
-							<div key={filter.type} className={style.commonFormInputContainer}>
-								<div className={style.labelContainer}>
-									<label htmlFor={filter.type}>{label}</label>
-									<p>{description}</p>
-								</div>
-								<div className={style.inputContainer}>
+				{userMapFilterTypes
+					.sort((option1, option2) =>
+						option1.type < option2.type
+							? -1
+							: option1.type > option2.type
+								? 1
+								: 0,
+					)
+					.map((filter: FilterType) => {
+						const { label, description } = getFilterLabel(
+							filter.type,
+							translation,
+							language,
+						);
+						if (filter.type !== "time") {
+							return (
+								<div
+									key={filter.type}
+									className={style.commonFormInputContainer}
+									style={{ justifyContent: "flex-start" }}
+								>
+									<div className={style.labelContainer}>
+										<label htmlFor={filter.type}>{label}</label>
+										<p>{description}</p>
+									</div>
 									<input
 										id={filter.type}
 										name={filter.type}
@@ -171,11 +195,13 @@ const UserMapFilterForm = () => {
 										onChange={(event) => handleCheckboxChange(event)}
 									/>
 								</div>
-							</div>
-						);
-					}
-				})}
-				<div className={style.commonFormInputContainer}>
+							);
+						}
+					})}
+				<div
+					className={style.commonFormInputContainer}
+					style={{ justifyContent: "flex-start" }}
+				>
 					<div className={style.labelContainer}>
 						<label htmlFor="noFilter">
 							{translation[language].backoffice.mapFormPage.noFilter.label}
@@ -187,15 +213,13 @@ const UserMapFilterForm = () => {
 							}
 						</p>
 					</div>
-					<div className={style.inputContainer}>
-						<input
-							id="noFilter"
-							name="noFilter"
-							type="checkbox"
-							checked={noFilterChecked(mapFilters)}
-							onChange={resetMapFilters}
-						/>
-					</div>
+					<input
+						id="noFilter"
+						name="noFilter"
+						type="checkbox"
+						checked={noFilterChecked(mapFilters)}
+						onChange={resetMapFilters}
+					/>
 				</div>
 
 				<NavigationButtonComponent step={step} nextButtonDisplayed={true} />

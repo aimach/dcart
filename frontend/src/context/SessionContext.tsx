@@ -55,7 +55,12 @@ export const SessionProvider: React.FC<{ children: React.ReactNode }> = ({
 			await deleteSession();
 		};
 
-		const allowedPaths = ["/maps/edit", "/storymaps/", "/storymaps/view"];
+		const allowedPaths = [
+			"/maps/edit",
+			"/maps/preview",
+			"/storymaps/",
+			"/storymaps/view",
+		];
 
 		if (
 			session &&

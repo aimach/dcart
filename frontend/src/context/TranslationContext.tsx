@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { createContext, useState } from "react";
+import { createContext, useState, useEffect } from "react";
 // import des types
 import type { ReactNode } from "react";
 import type { Language, TranslationType } from "../utils/types/languageTypes";
@@ -12,6 +12,12 @@ export interface I18nContextType {
 	setLanguage: (language: Language) => void;
 	translation: TranslationType;
 }
+
+const getBrowserLanguage = () => {
+	const lang = navigator.language;
+	if (lang.startsWith("fr")) return "fr";
+	return "en"; // fallback
+};
 
 const translation = {
 	en: translationEn,
@@ -32,6 +38,13 @@ export const TranslationProvider = ({ children }: TranslationProviderProps) => {
 	const [language, setLanguage] = useState<Language>(
 		(navigator.language.slice(0, 2) as Language) || "fr",
 	);
+
+	useEffect(() => {
+		const browserLanguage = getBrowserLanguage();
+		if (browserLanguage) {
+			setLanguage(browserLanguage as Language);
+		}
+	}, []);
 
 	return (
 		<TranslationContext.Provider value={{ language, setLanguage, translation }}>

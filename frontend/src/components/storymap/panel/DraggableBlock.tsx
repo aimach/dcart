@@ -10,19 +10,25 @@ import { useTranslation } from "../../../utils/hooks/useTranslation";
 import { useBuilderStore } from "../../../utils/stores/storymap/builderStore";
 import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 import { useShallow } from "zustand/shallow";
-import { getPreviewText, getTypeIcon } from "../../../utils/functions/block";
+import {
+	getPreviewText,
+	getTypeIcon,
+	hasRequiredKeys,
+} from "../../../utils/functions/block";
 import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
-import type { BlockContentType } from "../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../utils/types/storymapTypes";
 // import du style
-// import "draggableBlockSctyle.ts";
-// import des icones
-import { Pen, Trash2 } from "lucide-react";
 import {
 	draggableBlockActionContainerStyle,
 	draggableBlockTextContainerStyle,
 	draggableBlockTitleStyle,
 } from "./draggableBlockSctyle";
+// import des icones
+import { Pen, Trash2, TriangleAlert } from "lucide-react";
 
 type DraggableBlockProps = {
 	block: BlockContentType;
@@ -46,11 +52,8 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 
 	// récupération des données du store
 	const { openDeleteModal } = useModalStore();
-	const { updateFormType, updateBlockContent } = useBuilderStore(
-		useShallow((state) => ({
-			updateFormType: state.updateFormType,
-			updateBlockContent: state.updateBlockContent,
-		})),
+	const { storymapInfos, updateFormType, updateBlockContent } = useBuilderStore(
+		useShallow((state) => state),
 	);
 	const { selectedLanguage } = useStorymapLanguageStore();
 
@@ -108,6 +111,7 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 	};
 
 	const previewText = getPreviewText(block, selectedLanguage);
+	const displayWarning = hasRequiredKeys(block, storymapInfos as StorymapType);
 
 	return (
 		<>
@@ -118,6 +122,20 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 						<p>{titleText}</p>
 						<br />
 						{previewText}
+						{displayWarning && (
+							<p
+								style={{
+									color: "#9d2121",
+									fontSize: "0.875rem",
+									display: "flex",
+									alignItems: "center",
+									gap: "10px",
+								}}
+							>
+								<TriangleAlert size={20} />{" "}
+								{translation[language].alert.missingTranslation}
+							</p>
+						)}
 					</div>
 				</div>
 				<div style={draggableBlockActionContainerStyle}>

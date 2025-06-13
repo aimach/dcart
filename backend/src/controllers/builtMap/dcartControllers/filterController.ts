@@ -115,6 +115,22 @@ export const filterController = {
 				})
 				.getOne();
 
+			// si c'est le filtre "element", conserver les options existantes pour le type "manual"
+			if (filterType === "element" && filterMapContentToUpdate?.options) {
+				const existingOptions = filterMapContentToUpdate.options;
+				const checkboxMustBeSaved =
+					(existingOptions.solution === "manual" &&
+						req.body.solution === "basic") ||
+					(existingOptions.solution === "basic" &&
+						req.body.solution === "manual");
+				if (checkboxMustBeSaved) {
+					req.body = {
+						checkbox: existingOptions.checkbox,
+						...req.body,
+					};
+				}
+			}
+
 			const newfilterMapContent = await dcartDataSource
 				.getRepository(FilterMapContent)
 				.create({
@@ -126,9 +142,7 @@ export const filterController = {
 				.getRepository(FilterMapContent)
 				.save(newfilterMapContent);
 
-			const newMap = res
-				.status(201)
-				.json({ message: "Option ajoutée à la carte" });
+			res.status(201).json({ message: "Option ajoutée à la carte" });
 		} catch (error) {
 			handleError(res, error as Error);
 		}

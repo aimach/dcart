@@ -4,6 +4,7 @@
 	"en": "EN",
 	"fr": "FR",
 	"noAuthInMobile": "Vous devez vous connecter sur un ordinateur pour accéder à cette page.",
+	"invalidAuth": "Identifiants invalides",
 	"navigation": {
 		"home": "ACCUEIL",
 		"maps": "CARTES",
@@ -18,7 +19,10 @@
 		"divinities": "DIVINITÉS"
 	},
 	"alert": {
-		"maxReached": "Nombre maximum de filtres atteint"
+		"maxReached": "Nombre maximum de filtres atteint",
+		"noTagAssociated": "Etiquette manquante",
+		"missingTranslation": "Traduction manquante",
+		"copied": "Copié dans le presse-papier"
 	},
 	"button": {
 		"freeExploration": "Exploration libre",
@@ -40,7 +44,12 @@
 		"save": "Sauvegarder",
 		"delete": "Supprimer",
 		"edit": "Modifier",
-		"cancel": "Annuler"
+		"cancel": "Annuler",
+		"publish": "Publier",
+		"unpublish": "Dépublier",
+		"editDisabled": "Modifier désactivé",
+		"search": "Rechercher",
+		"copyRequest": "Copier la requête SQL"
 	},
 	"common": {
 		"between": "entre",
@@ -80,7 +89,7 @@
 		"deteleMapText": "Êtes-vous sûr de vouloir supprimer cette carte ?",
 		"deleteUserText": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible !",
 		"modifyUserStatusText": "Êtes-vous sûr de vouloir modifier le statut de cet utilisateur ?",
-		"deleteTag": "Êtes-vous sûr de vouloir supprimer cette étiquette ?",
+		"deleteTagText": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Si une carte ou une storymap est associée à cette seule étiquette, elle ne sera plus visible par les utilisateurs.",
 		"associatedStorymap": "Voir la storymap associée",
 		"associatedMap": "Voir la carte associée"
 	},
@@ -110,7 +119,6 @@
 			"sourceType": "Type de source",
 			"agentActivity": "Activité de l'agent",
 			"agentGender": "Genre de l'agent",
-			"agentName": "Nom de l'agent",
 			"agentStatus": "Statut de l'agent",
 			"agentivity": "Agentivité",
 			"sourceMaterial": "Support de la source",
@@ -184,7 +192,8 @@
 				"filters": "Filtres associés"
 			},
 			"pointSetTable": {
-				"name": "Nom du jeu",
+				"nameLang1": "Nom du jeu en langue 1",
+				"nameLang2": "Nom du jeu en langue 2",
 				"color": "Couleur",
 				"icon": "Icône",
 				"delete": "Supprimer"
@@ -192,8 +201,10 @@
 			"pointSetForm": {
 				"addNewPointSet": "Ajouter un nouveau jeu de points",
 				"pointSetName": {
-					"label": "Nom du jeu de points",
-					"description": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques."
+					"label_fr": "Nom français du jeu de points",
+					"description_fr": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques.",
+					"label_en": "Nom anglais du jeu de points",
+					"description_en": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques."
 				},
 				"attestationIds": {
 					"label": "Charger les points",
@@ -355,7 +366,12 @@
 				"addStep": "Ajouter cette étape",
 				"modifyStep": "Modifier cette étape",
 				"modifyTextNow": "Modifier le texte directement",
-				"modifyImageNow": "Modifier l'image directement"
+				"modifyImageNow": "Modifier l'image directement",
+				"tags": {
+					"label": "Etiquettes de la storymap",
+					"description": "Les étiquettes permettent de classer les storymaps et de les retrouver plus facilement.",
+					"placeholder": "Choisir une ou plusieurs étiquettes"
+				}
 			}
 		},
 		"userManagement": {

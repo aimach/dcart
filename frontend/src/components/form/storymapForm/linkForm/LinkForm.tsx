@@ -1,4 +1,5 @@
 // import des bibliothèques
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
@@ -12,14 +13,15 @@ import {
 	createBlock,
 	updateBlock,
 } from "../../../../utils/api/storymap/postRequests";
-// import des types
-import type { SubmitHandler } from "react-hook-form";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
-import type { allInputsType } from "../../../../utils/types/formTypes";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+// import des types
+import type { SubmitHandler } from "react-hook-form";
+import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type { allInputsType } from "../../../../utils/types/formTypes";
 
 export type linkFormInputs = {
 	content1_lang1: string;
@@ -29,14 +31,8 @@ export type linkFormInputs = {
  * Formulaire pour la création d'un bloc de type "link"
  */
 const LinkForm = () => {
-	const { updateFormType, block, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
-	);
+	const { storymapInfos, updateFormType, block, reload, setReload } =
+		useBuilderStore(useShallow((state) => state));
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const action = searchParams.get("action");
@@ -71,13 +67,21 @@ const LinkForm = () => {
 		setSearchParams(undefined);
 	};
 
+	const [inputs, setInputs] = useState(linkInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = removeLang2Inputs(linkInputs);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		<>
 			<FormTitleComponent action={action as string} translationKey="link" />
 			<CommonForm
 				key={block ? block.id : "link"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
-				inputs={linkInputs}
+				inputs={inputs}
 				defaultValues={block as BlockContentType}
 				action={action as string}
 			/>

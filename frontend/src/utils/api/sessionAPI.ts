@@ -50,7 +50,7 @@ const updateSession = async () => {
  * @param itemId - Id de l'item
  * @return {Promise<boolean>} - Renvoie true si une session est en cours, false sinon
  */
-const getSessionById = async (itemId: string) => {
+const getSessionByItemId = async (itemId: string) => {
 	try {
 		const response = await apiClient.get(`/session/${itemId}`, {
 			withCredentials: true,
@@ -69,6 +69,35 @@ const getSessionById = async (itemId: string) => {
 		} else {
 			// Erreur non axios (ex: problème JS)
 			console.error("Erreur inattendue :", error);
+		}
+	}
+};
+
+/**
+ * Fonction de récupération d'une session de modification
+ * @return {Promise<boolean>} - Renvoie true si une session est en cours, false sinon
+ */
+const getSessionByUserId = async () => {
+	try {
+		const response = await apiClient.get("/session/user", {
+			withCredentials: true,
+		});
+		return response;
+	} catch (error) {
+		if (axios.isAxiosError(error)) {
+			if (error.response?.status === 404) {
+				// Cas attendu : utilisateur non connecté, on ignore
+				return;
+			}
+			console.error(
+				"Erreur lors de la récupération d'une session de modification :",
+				error,
+			);
+		} else {
+			console.error(
+				"Erreur lors de la récupération de la session de modification :",
+				error,
+			);
 		}
 	}
 };
@@ -107,7 +136,8 @@ const pingSession = async (session: Record<string, string>) => {
 export {
 	createSession,
 	updateSession,
-	getSessionById,
+	getSessionByItemId,
 	deleteSession,
 	pingSession,
+	getSessionByUserId,
 };

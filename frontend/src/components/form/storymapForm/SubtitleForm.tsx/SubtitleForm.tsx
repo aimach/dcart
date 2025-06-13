@@ -1,4 +1,5 @@
 // import des bibliothèques
+import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
@@ -15,6 +16,7 @@ import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
+import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
 import FormTitleComponent from "../common/FormTitleComponent";
@@ -31,14 +33,8 @@ export type subtitleInputsType = {
  */
 const SubtitleForm = () => {
 	// récupération des données des stores
-	const { updateFormType, block, reload, setReload } = useBuilderStore(
-		useShallow((state) => ({
-			block: state.block,
-			updateFormType: state.updateFormType,
-			reload: state.reload,
-			setReload: state.setReload,
-		})),
-	);
+	const { storymapInfos, updateFormType, block, reload, setReload } =
+		useBuilderStore(useShallow((state) => state));
 
 	const [searchParams, setSearchParams] = useSearchParams();
 	const action = searchParams.get("action");
@@ -72,13 +68,21 @@ const SubtitleForm = () => {
 		setSearchParams(undefined);
 	};
 
+	const [inputs, setInputs] = useState(subtitleInputs);
+	useEffect(() => {
+		if (!storymapInfos?.lang2) {
+			const newInputs = removeLang2Inputs(subtitleInputs);
+			setInputs(newInputs);
+		}
+	}, [storymapInfos]);
+
 	return (
 		<>
 			<FormTitleComponent action={action as string} translationKey="subtitle" />
 			<CommonForm
 				key={block ? block.id : "subtitle"}
 				onSubmit={onSubmit as SubmitHandler<allInputsType>}
-				inputs={subtitleInputs}
+				inputs={inputs}
 				defaultValues={block as BlockContentType}
 				action={action as string}
 			/>

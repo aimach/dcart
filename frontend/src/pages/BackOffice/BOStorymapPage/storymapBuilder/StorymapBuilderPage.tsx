@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useState } from "react";
+import { useState } from "react";
 import { useSearchParams } from "react-router";
 import {
 	DndContext,
@@ -29,12 +29,9 @@ import PanelSection from "../../../../components/storymap/panel/PanelSection";
 import ModalComponent from "../../../../components/common/modal/ModalComponent";
 import DeleteBlockModalContent from "../../../../components/common/modal/DeleteBlockModalContent";
 import TableForm from "../../../../components/form/storymapForm/tableForm/TableForm";
-import StayConnectedContent from "../../../../components/common/modal/StayConnectedContent";
 import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
-// import des contextes
-import { SessionContext } from "../../../../context/SessionContext";
 // import des services
 import { useShallow } from "zustand/shallow";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
@@ -54,9 +51,6 @@ import { ChevronLeft } from "lucide-react";
 const StorymapBuilderPage = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
-
-	// récupération des données du contexte
-	const { isTimeoutReached } = useContext(SessionContext);
 
 	// récupération des données des stores
 	const { formType, updateFormType } = useBuilderStore(
@@ -137,11 +131,6 @@ const StorymapBuilderPage = () => {
 			{isDeleteModalOpen && (
 				<ModalComponent onClose={() => closeDeleteModal()}>
 					<DeleteBlockModalContent />
-				</ModalComponent>
-			)}
-			{isTimeoutReached && (
-				<ModalComponent onClose={() => closeDeleteModal()}>
-					<StayConnectedContent />
 				</ModalComponent>
 			)}
 			<section className={style.storymapBuilderPanelSection}>

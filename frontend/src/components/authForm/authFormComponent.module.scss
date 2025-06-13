@@ -43,3 +43,9 @@
 
 
 }
+
+.errorMessage {
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$space-xs;
+    color: v.$color-error;
+}

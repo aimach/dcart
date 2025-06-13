@@ -168,7 +168,8 @@ export const attestationController = {
 
 			attestationListToUpdate.icon = iconToAdd;
 			attestationListToUpdate.color = colorToAdd;
-			attestationListToUpdate.name = req.body.name;
+			attestationListToUpdate.name_fr = req.body.name_fr;
+			attestationListToUpdate.name_en = req.body.name_en;
 			attestationListToUpdate.attestationIds = req.body.attestationIds;
 
 			await dcartDataSource

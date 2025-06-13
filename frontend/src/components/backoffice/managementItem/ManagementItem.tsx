@@ -9,7 +9,10 @@ import { getOneMapInfosById } from "../../../utils/api/builtMap/getRequests";
 import { updateMapActiveStatus } from "../../../utils/api/builtMap/putRequests";
 import { updateStorymapStatus } from "../../../utils/api/storymap/putRequests";
 import { getCreationAndModificationString } from "../../../utils/functions/map";
-import { createSession, getSessionById } from "../../../utils/api/sessionAPI";
+import {
+	createSession,
+	getSessionByItemId,
+} from "../../../utils/api/sessionAPI";
 import { useStorymapLanguageStore } from "../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import { useNavigate } from "react-router";
@@ -44,7 +47,7 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 		useState<boolean>(false);
 	useEffect(() => {
 		const checkSession = async () => {
-			const sessionResponse = await getSessionById(itemInfos.id);
+			const sessionResponse = await getSessionByItemId(itemInfos.id);
 			if (sessionResponse?.data.sessionExists) {
 				setIsModifiedByAnotherUser(true);
 			}

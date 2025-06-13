@@ -50,6 +50,7 @@ const updateMapContentSchema = newMapContentSchema.keys({
 	filterMapContent: Joi.array().required(),
 	attestations: Joi.array().required(),
 	divinity_in_chart: Joi.boolean().required(),
+	modifier: Joi.string().optional().allow(null),
 });
 
 export const validateNewMapContentBody = (

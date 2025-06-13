@@ -32,7 +32,14 @@ import type {
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
 import type Quill from "quill";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
+import {
+	addLangageBetweenBrackets,
+	removeLang2Inputs,
+} from "../../../../utils/functions/storymap";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
@@ -59,16 +66,14 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	const { icons, colors } = useContext(IconOptionsContext);
 
 	// récupération des données des stores
-	const { block, updateFormType, updateBlockContent, reload, setReload } =
-		useBuilderStore(
-			useShallow((state) => ({
-				block: state.block,
-				updateFormType: state.updateFormType,
-				reload: state.reload,
-				setReload: state.setReload,
-				updateBlockContent: state.updateBlockContent,
-			})),
-		);
+	const {
+		storymapInfos,
+		block,
+		updateFormType,
+		updateBlockContent,
+		reload,
+		setReload,
+	} = useBuilderStore(useShallow((state) => state));
 
 	// récupération de l'id de la storymap
 	const { storymapId } = useParams();
@@ -118,12 +123,13 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				if (pointSet) {
 					pointSetWithName = {
 						...pointSet,
-						name: data.content1_lang1,
+						name_fr: data.content1_lang1,
+						name_en: data.content1_lang2,
 					};
 					// création du bloc de la carte
 					await uploadParsedPointsForSimpleMap(
 						data as blockType,
-						pointSet.name ? pointSet : pointSetWithName,
+						pointSet[`name_${language}`] ? pointSet : pointSetWithName,
 						storymapId as string,
 						"step",
 						stepAction as string,
@@ -185,7 +191,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				attestationIds: defaultPointSet?.attestationIds,
 				color: (defaultPointSet?.color as MapColorType)?.id,
 				icon: (defaultPointSet?.icon as MapIconType)?.id,
-				name: defaultPointSet?.name,
+				name_fr: defaultPointSet?.[`name_${language}`],
 			} as PointSetType);
 		}
 	}, [stepAction, block]);
@@ -193,6 +199,19 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	const [selectedFile, setSelectedFile] = useState<File | null>(null);
 
 	const quillRef = useRef<Quill | null>(null);
+
+	const [inputs, setInputs] = useState(stepInputs);
+	useEffect(() => {
+		let newInputs = stepInputs;
+		if (!storymapInfos?.lang2) {
+			newInputs = removeLang2Inputs(stepInputs);
+		}
+		const newInputsWithLangInLabel = addLangageBetweenBrackets(
+			newInputs,
+			storymapInfos as StorymapType,
+		);
+		setInputs(newInputsWithLangInLabel);
+	}, [storymapInfos]);
 
 	return (
 		<>
@@ -202,7 +221,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				className={style.mapFormContainer}
 				key={stepAction}
 			>
-				{stepInputs.map((input) => {
+				{inputs.map((input) => {
 					if (input.type === "text") {
 						return (
 							<div key={input.name} className={style.mapFormInputContainer}>
@@ -299,33 +318,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						)}
 					</div>
 				</div>
-				<div className={style.mapFormInputContainer}>
-					<LabelComponent
-						htmlFor="name"
-						label={
-							translation[language].backoffice.mapFormPage.pointSetForm
-								.pointSetName.label
-						}
-						description={
-							translation[language].backoffice.mapFormPage.pointSetForm
-								.pointSetName.description
-						}
-					/>
-					<div className={style.inputContainer}>
-						<input
-							id="name"
-							name="name"
-							type="text"
-							onChange={(event) =>
-								setPointSet({
-									...pointSet,
-									name: event.target.value,
-								} as PointSetType)
-							}
-							value={(pointSet?.name as string) ?? ""}
-						/>
-					</div>
-				</div>
+
 				<div className={style.mapFormInputContainer}>
 					<LabelComponent
 						htmlFor="colorId"

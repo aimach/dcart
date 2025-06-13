@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { In } from "typeorm";
+import type jwt from "jsonwebtoken";
 // import des entités
 import { MapContent } from "../../../entities/builtMap/MapContent";
 import { Tag } from "../../../entities/common/Tag";
@@ -10,7 +11,6 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 import { generateUniqueSlug } from "../../../utils/functions/builtMap";
 // import des types
 import type { Request, Response } from "express";
-import type jwt from "jsonwebtoken";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";
@@ -32,6 +32,7 @@ export const mapContentController = {
 		try {
 			const { mapId, mapSlug } = req.params;
 			const identifier = mapId ?? mapSlug;
+			const { isActive, searchText } = req.query;
 
 			if (identifier === "all") {
 				const query = await dcartDataSource
@@ -53,13 +54,20 @@ export const mapContentController = {
 						"attestations",
 						"attestations.icon",
 						"attestations.color",
-						"creator.pseudo",
-						"modifier.pseudo",
+						"creator.username",
+						"modifier.username",
 					]);
 
-				if (req.query.isActive) {
-					const isActive = req.query.isActive === "true";
-					query.where("map.isActive = :isActive", { isActive });
+				if (isActive) {
+					const isActiveStatus = isActive === "true";
+					query.where("map.isActive = :isActive", { isActive: isActiveStatus });
+				}
+
+				if (searchText) {
+					query.andWhere(
+						"map.title_fr ILIKE :searchText OR map.title_en ILIKE :searchText",
+						{ searchText: `%${searchText}%` },
+					);
 				}
 				const allMaps = await query.orderBy("map.id").getMany();
 
