@@ -8,6 +8,24 @@ const envFile =
 	process.env.NODE_ENV === "production" ? ".env.production" : ".env";
 dotenv.config({ path: path.resolve(__dirname, `../../${envFile}`) });
 
+const isCompiled = __dirname.includes("dist");
+
+const entities = isCompiled
+	? [
+			`${__dirname}/../../dist/entities/builtMap/*.js`,
+			`${__dirname}/../../dist/entities/storymap/*.js`,
+			`${__dirname}/../../dist/entities/common/*.js`,
+			`${__dirname}/../../dist/entities/auth/*.js`,
+			`${__dirname}/../../dist/entities/session/*.js`,
+		]
+	: [
+			`${__dirname}/../entities/builtMap/*.ts`,
+			`${__dirname}/../entities/storymap/*.ts`,
+			`${__dirname}/../entities/common/*.ts`,
+			`${__dirname}/../entities/auth/*.ts`,
+			`${__dirname}/../entities/session/*.ts`,
+		];
+
 export const dcartDataSource = new DataSource({
 	type: "postgres",
 	host: process.env.DCART_DB_HOST,
@@ -18,13 +36,7 @@ export const dcartDataSource = new DataSource({
 	synchronize: true,
 	logging: false, // Active les logs pour le debug
 	migrations: ["src/migrations/*.ts"],
-	entities: [
-		`${__dirname}/../entities/builtMap/*.ts`,
-		`${__dirname}/../entities/storymap/*.ts`,
-		`${__dirname}/../entities/common/*.ts`,
-		`${__dirname}/../entities/auth/*.ts`,
-		`${__dirname}/../entities/session/*.ts`,
-	],
+	entities,
 	...(process.env.NODE_ENV === "production" && {
 		ssl: {
 			rejectUnauthorized: false,
