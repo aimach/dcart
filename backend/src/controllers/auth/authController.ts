@@ -235,7 +235,12 @@ export const authController = {
 
 		await dcartDataSource.getRepository(User).save(user);
 
-		const resetLink = `http://${process.env.APP_HOST}:${process.env.FRONTEND_PORT}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
+		const hostURL =
+			process.env.NODE_ENV === "production"
+				? `https://${process.env.APP_HOST}`
+				: `http://${process.env.APP_HOST}:${process.env.FRONTEND_PORT}`;
+
+		const resetLink = `${hostURL}/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
 
 		await sendPasswordResetEmail(email, resetLink);
 
