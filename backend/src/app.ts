@@ -22,13 +22,17 @@ dotenv.config({ path: path.resolve(__dirname, `../${envFile}`) });
 const app: Application = express();
 const PORT = process.env.APP_PORT;
 const HOST = process.env.APP_HOST;
+const origin =
+	process.env.NODE_ENV === "production"
+		? `https://${process.env.APP_HOST}`
+		: `http://${process.env.APP_HOST}:${process.env.FRONTEND_PORT}`;
 
 // middleware
 app.use(express.json({ limit: "10mb" }));
 app.use(cookieParser());
 app.use(
 	cors({
-		origin: `http://${process.env.APP_HOST}:${process.env.FRONTEND_PORT}`,
+		origin,
 		methods: ["GET", "POST", "PUT", "DELETE"],
 		credentials: true,
 	}),

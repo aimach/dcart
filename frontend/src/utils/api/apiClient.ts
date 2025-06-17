@@ -2,8 +2,9 @@
 import axios from "axios";
 
 export const apiClient = axios.create({
-	// baseURL: `http://${ipAdress}:${import.meta.env.VITE_BACKEND_PORT}`,
-	baseURL: `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`,
+	baseURL: import.meta.env.DEV
+		? `http://${import.meta.env.VITE_BACKEND_HOST}:${import.meta.env.VITE_BACKEND_PORT}`
+		: `https://${import.meta.env.VITE_BACKEND_HOST_PROD}`,
 	headers: {
 		"Content-Type": "application/json",
 		Accept: "application/json",
