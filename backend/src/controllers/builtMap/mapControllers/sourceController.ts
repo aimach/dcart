@@ -508,6 +508,7 @@ export const sourceController = {
 
 			if (!blockInfos) {
 				res.status(404).send({ Erreur: "Block non trouvé" });
+				return;
 			}
 
 			const attestationsArray = blockInfos?.attestations ?? [];

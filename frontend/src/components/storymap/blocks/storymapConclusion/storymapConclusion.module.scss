@@ -1,0 +1,30 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.conclusionContainer {
+    @include m.flexbox(flex, column, nowrap, center, center);
+    width: 100%;
+    background-color: v.$background-color-soft;
+    padding-top: v.$space-s;
+
+
+
+    .storymapContainer {
+        @include m.flexbox(flex, row, nowrap, center, center);
+
+
+
+    }
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .conclusionContainer {
+
+
+
+        .contentContainer {
+            width: 80vw;
+        }
+    }
+}

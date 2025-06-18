@@ -7,6 +7,7 @@ type LanguageObject = {
 	fr: string;
 	noAuthInMobile: string;
 	invalidAuth: string;
+	seeAlso: string;
 	navigation: {
 		home: string;
 		maps: string;

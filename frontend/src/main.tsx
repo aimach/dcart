@@ -23,6 +23,7 @@ import PrivacyPolicyPage from "./pages/Legal/PrivacyPolicyPage.tsx";
 import LegalNoticePage from "./pages/Legal/LegalNoticePage.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
 import NewPasswordPage from "./pages/ResetPasswordPage/NewPasswordPage.tsx";
+import ScrollToTop from "./components/common/scroll/ScrollToTop.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -37,6 +38,7 @@ if (rootElement) {
 	// l'ajout d'un if/else permet de résoudre une erreur relevée par le linter
 	createRoot(rootElement).render(
 		<HashRouter>
+			<ScrollToTop />
 			<TranslationProvider>
 				<AuthProvider>
 					<SessionProvider>
