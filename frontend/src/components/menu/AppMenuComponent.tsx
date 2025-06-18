@@ -20,6 +20,7 @@ import { ChevronRightCircle, X } from "lucide-react";
 import labexLogo from "../../assets/logo_SMS.png";
 import HNLogo from "../../assets/huma_num_logo.png";
 import mapLogo from "../../assets/map_logo.png";
+import { set } from "react-hook-form";
 
 interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -39,31 +40,22 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 
 	const navigate = useNavigate();
 
-	const [databaseTranslation, setDatabaseTranslation] = useState<
-		Record<string, string>[]
-	>([]);
+	const [textContent, setTextContent] = useState<string>("");
 	useEffect(() => {
 		const fetchDatabaseTranslation = async () => {
-			const translations = await getTranslations();
-			setDatabaseTranslation(translations);
+			const title = await getTranslations("menu.description");
+			setTextContent(title[language]);
 		};
 		fetchDatabaseTranslation();
-	}, []);
-
-	const menuPageContent = useMemo(() => {
-		if (databaseTranslation?.length > 0) {
-			const translationObject = databaseTranslation.find(
-				(translation) => translation.language === language,
-			) as { translations: Record<string, string> } | undefined;
-			return translationObject?.translations["menu.description"];
-		}
-		return translation[language].menu.content;
-	}, [databaseTranslation, language, translation]);
+	}, [language]);
 
 	const [tags, setTags] = useState<TagWithItemsType[]>([]);
 	useEffect(() => {
 		const fetchAllTags = async () => {
-			const fetchedTags = await getAllTagsWithMapsAndStorymaps();
+			const fetchedTags = await getAllTagsWithMapsAndStorymaps({
+				map: true,
+				storymap: true,
+			});
 			const slicedTags = shuffleArray(fetchedTags).slice(0, 5); // Limiter à 5 tags
 			setTags(slicedTags);
 		};
@@ -104,7 +96,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 						})}
 					</ul>
 				</nav>
-				<p>{menuPageContent}</p>
+				<p>{textContent}</p>
 				<section className={style.menuPageLogoSection}>
 					<ImageWithLink
 						type="link"

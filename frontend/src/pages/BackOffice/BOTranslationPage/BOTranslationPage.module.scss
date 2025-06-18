@@ -3,36 +3,51 @@
 
 .translationPageContainer {
     width: 100vw;
-    margin: v.$space-xxl 0;
+    padding: v.$space-xxl 0;
     @include m.flexbox(flex, row, nowrap, center, center);
     gap: v.$space-xxl;
+    background-color: v.$background-color-soft;
 
     .translationContainer {
-        width: 45%;
+        width: 90vw;
         min-width: 300px;
         @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
         gap: v.$space-s;
 
-        >h3 {
-            text-align: center;
-            font-size: v.$font-size-xxl;
+        >form {
+            width: 100%;
+            @include m.flexbox(flex, row, nowrap, flex-start, center);
+            background-color: v.$background-color-base;
+            border-radius: v.$border-radius-rounded;
+            padding: v.$space-xl;
+            @include m.shadow();
+        }
+
+        .translationManagementForm {
+            @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+            gap: v.$space-l;
+            width: 100%;
+            padding: v.$space-l 0;
+
+        }
+
+        .translationManagementRow {
+            @include m.flexbox(flex, column, nowrap, space-between, flex-start);
+            width: 90%;
+            gap: v.$space-s;
+
+            >p {
+                font-size: v.$font-size-l;
+                margin-bottom: v.$space-s;
+            }
         }
 
         .translationInputContainer {
-            @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
-            gap: v.$space-s;
-            width: 100%;
-        }
-
-        .inputAndButton {
-            @include m.flexbox(flex, row, nowrap, center, center);
-            gap: v.$space-s;
             width: 100%;
 
-            >textarea {
-                flex: 2;
-                width: 70%;
-                height: 100px;
+            >input,
+            textarea {
+                width: 100%;
                 padding: v.$space-s;
                 border: v.$border-width-m solid v.$color-grullo-light;
                 border-radius: v.$border-radius-rounded;
@@ -43,6 +58,19 @@
                     outline: v.$border-width-m solid v.$color-umber;
                 }
             }
+        }
+
+        .buttonContainer {
+            @include m.flexbox(flex, column, nowrap, center, center);
+            width: 100px;
+            margin-top: v.$space-l;
+            gap: v.$space-s;
+        }
+
+
+        >h3 {
+            text-align: center;
+            font-size: v.$font-size-xxl;
         }
     }
 }

@@ -364,8 +364,10 @@ type TranslationType = {
 
 type TranslationObjectType = {
 	id: string;
-	language: "en" | "fr";
-	translations: Record<string, string>;
+	fr: string;
+	en: string;
+	key: string;
+	appLink?: string | null;
 };
 
 export type {

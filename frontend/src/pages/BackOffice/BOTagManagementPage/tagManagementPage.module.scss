@@ -5,6 +5,7 @@
     @include m.flexbox(flex, column, nowrap, center, center);
     background-color: v.$background-color-soft;
     min-height: calc(100vh - v.$main-header-height);
+    padding-bottom: v.$space-l;
 }
 
 .tagManagementHeader {
@@ -17,14 +18,17 @@
 .tagManagementContainer {
     width: 90vw;
     margin: 0 auto;
-    background-color: v.$background-color-base;
-    border-radius: v.$border-radius-rounded;
-    padding: v.$space-xl;
-    @include m.shadow();
+    @include m.flexbox(flex, column, nowrap, flex-start, center);
+    gap: v.$space-l;
+
 
     >form {
+        width: 100%;
         @include m.flexbox(flex, row, nowrap, flex-start, center);
-        border-bottom: 1px solid v.$color-grullo;
+        background-color: v.$background-color-base;
+        border-radius: v.$border-radius-rounded;
+        padding: v.$space-xl;
+        @include m.shadow();
     }
 
     .tagManagementForm {

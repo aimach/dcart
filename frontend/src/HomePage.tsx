@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useMemo, useRef, useState } from "react";
+import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 // import des composants
 import SwiperContainer from "./components/common/swiper/SwiperContainer";
@@ -28,10 +28,6 @@ type CheckboxType = { map: boolean; storymap: boolean };
 function HomePage() {
 	// récupération des données de traduction
 	const { language, translation } = useTranslation();
-
-	const [databaseTranslation, setDatabaseTranslation] = useState<
-		Record<string, string>[]
-	>([]);
 
 	const tagContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -68,29 +64,19 @@ function HomePage() {
 		fetchAllTagsWithMapsAndStorymaps(itemTypes);
 	}, [itemTypes]);
 
+	const [translationTitle, setTranslationTitle] = useState<string>("");
+	const [translationDescription, setTranslationDescription] =
+		useState<string>("");
 	useEffect(() => {
 		const fetchDatabaseTranslation = async () => {
-			const translations = await getTranslations();
-			setDatabaseTranslation(translations);
+			const title = await getTranslations("homepage.title");
+			console.log("title", title);
+			setTranslationTitle(title[language]);
+			const description = await getTranslations("homepage.description");
+			setTranslationDescription(description[language]);
 		};
 		fetchDatabaseTranslation();
-	}, []);
-
-	const homePageContent = useMemo(() => {
-		if (databaseTranslation?.length > 0) {
-			const translationObject = databaseTranslation.find(
-				(translation) => translation.language === language,
-			) as { translations: Record<string, string> } | undefined;
-			return {
-				title: translationObject?.translations["homepage.title"],
-				description: translationObject?.translations["homepage.description"],
-			};
-		}
-		return {
-			title: translation[language].title,
-			description: translation[language].homeDescription,
-		};
-	}, [databaseTranslation, translation, language]);
+	}, [language]);
 
 	const handleCheckboxChange = async (
 		e: React.ChangeEvent<HTMLInputElement>,
@@ -113,8 +99,8 @@ function HomePage() {
 	return (
 		<section className={style.mainPage}>
 			<section className={style.heroContainer}>
-				<h1>{homePageContent.title}</h1>
-				<p>{homePageContent.description}</p>
+				<h1>{translationTitle}</h1>
+				<p>{translationDescription}</p>
 				<div className={style.heroButtonContainer}>
 					<ButtonComponent
 						type="route"

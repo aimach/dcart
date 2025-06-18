@@ -38,35 +38,14 @@ const BackofficeTranslationPage = () => {
 
 	return databaseTranslations.length > 0 ? (
 		<section className={style.translationPageContainer}>
-			{databaseTranslations.map((translationObject) => {
-				return (
-					<div
-						key={translationObject.id}
-						className={style.translationContainer}
-					>
-						<h3>
-							{translationObject.language === "fr"
-								? "Traduction française"
-								: "Traduction anglaise"}
-						</h3>
-						{Object.entries(translationObject.translations).map(
-							([key, value]) => {
-								if (key === "id" || key === "language") {
-									return null;
-								}
-								return (
-									<TranslationInput
-										key={key}
-										id={translationObject.id}
-										translationKey={key}
-										value={value}
-									/>
-								);
-							},
-						)}
-					</div>
-				);
-			})}
+			<div className={style.translationContainer}>
+				{databaseTranslations.map((translation) => (
+					<TranslationInput
+						key={translation.key}
+						translationObject={translation}
+					/>
+				))}
+			</div>
 		</section>
 	) : (
 		<LoaderComponent size={50} />

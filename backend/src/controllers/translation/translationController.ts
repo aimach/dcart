@@ -11,28 +11,20 @@ export const translationController = {
 		try {
 			const { translationKey } = req.query;
 
-			let translations = [];
 			if (translationKey) {
-				translations = await dcartDataSource
+				const translation = await dcartDataSource
 					.getRepository(Translation)
-					.createQueryBuilder("translation")
-					.select([
-						"translation.id",
-						"translation.language",
-						`translation.translations->>'${translationKey}' as translation`,
-					])
-					.getRawMany();
+					.findOne({ where: { key: translationKey as string } });
 
-				res.status(200).send(translations);
+				res.status(200).send(translation);
 				return;
 			}
 
-			translations = await dcartDataSource
+			const translations = await dcartDataSource
 				.getRepository(Translation)
-				.createQueryBuilder("translation")
-				.select(["id", "language", "translations"])
-				.orderBy("translation.language")
-				.getRawMany();
+				.find({
+					order: { key: "ASC" },
+				});
 
 			res.status(200).send(translations);
 		} catch (error) {
@@ -45,21 +37,25 @@ export const translationController = {
 		try {
 			const { translationObjectId } = req.params;
 			const { translationKey } = req.query;
-			const safeKey = (translationKey as string).replace(/'/g, "''"); // échappe les éventuelles quotes simples dans la clé
-			const { translation } = req.body;
+			const { fr, en } = req.body;
 
-			await dcartDataSource
+			const safeKey = (translationKey as string).replace(/'/g, "''"); // échappe les éventuelles quotes simples dans la clé
+
+			const translationObjectToUpdate = await dcartDataSource
 				.getRepository(Translation)
-				.createQueryBuilder()
-				.update("translation")
-				.set({
-					translations: () =>
-						`translations || jsonb_build_object('${safeKey}', '${translation}')`,
-				})
-				.where("id = :id", {
-					id: translationObjectId,
-				})
-				.execute();
+				.findOne({ where: { id: translationObjectId, key: safeKey } });
+
+			if (!translationObjectToUpdate) {
+				res.status(404).send("Objet de traduction non trouvé");
+				return;
+			}
+
+			// Mettre à jour les valeurs de la traduction
+			translationObjectToUpdate.fr = fr;
+			translationObjectToUpdate.en = en;
+
+			await translationObjectToUpdate.save();
+
 			res.status(200).send("Objet de traduction modifié");
 		} catch (error) {
 			handleError(res, error as Error);

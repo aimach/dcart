@@ -9,21 +9,24 @@ import { updateTranslationFromKey } from "../../../utils/api/translationAPI";
 import { notifyEditSuccess, notifyError } from "../../../utils/functions/toast";
 // import du style
 import style from "./BOTranslationPage.module.scss";
+import { useForm } from "react-hook-form";
+import type { TranslationObjectType } from "../../../utils/types/languageTypes";
+import LabelComponent from "../../../components/form/inputComponent/LabelComponent";
+import ErrorComponent from "../../../components/form/errorComponent/ErrorComponent";
 
 type TranslationInputProps = {
-	id: string;
-	translationKey: string;
-	value: string | number;
+	translationObject: TranslationObjectType;
 };
 
-const TranslationInput = ({
-	id,
-	translationKey,
-	value,
-}: TranslationInputProps) => {
+const TranslationInput = ({ translationObject }: TranslationInputProps) => {
 	const { translation, language } = useTranslation();
-	const handleChange = async (id: string, key: string) => {
-		const responseStatus = await updateTranslationFromKey(id, key, inputValue);
+	const handleChange = async (data: TranslationObjectType) => {
+		const responseStatus = await updateTranslationFromKey(
+			data.id,
+			data.key,
+			data.fr,
+			data.en,
+		);
 		if (responseStatus === 200) {
 			notifyEditSuccess("Traduction", true);
 		} else {
@@ -31,26 +34,73 @@ const TranslationInput = ({
 		}
 	};
 
-	const [inputValue, setInputValue] = useState<string>(value as string);
+	// import des sevice de formulaire
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<TranslationObjectType>({
+		defaultValues: translationObject ?? {},
+	});
 
 	return (
-		<div key={id} className={style.translationInputContainer}>
-			<h4>
-				{translation[language].backoffice.translationManagement[translationKey]}
-			</h4>
-			<div className={style.inputAndButton}>
-				<textarea
-					defaultValue={inputValue}
-					onChange={(event) => setInputValue(event.target.value)}
-				/>
+		<form onSubmit={handleSubmit(handleChange)}>
+			<div className={style.translationManagementForm}>
+				<div className={style.translationManagementRow}>
+					<p>
+						{
+							translation[language].backoffice.translationManagement[
+								translationObject.key
+							]
+						}
+					</p>
+					<div className={style.translationInputContainer}>
+						<LabelComponent
+							htmlFor="fr"
+							label={
+								translation[language].backoffice.translationManagement
+									.frenchTranslation
+							}
+							description=""
+						/>
+						<textarea
+							id="fr"
+							defaultValue={translationObject.fr}
+							{...register("fr", {
+								required: "Le champ français est requis",
+							})}
+						/>
+					</div>
+					<div className={style.translationInputContainer}>
+						<LabelComponent
+							htmlFor="en"
+							label={
+								translation[language].backoffice.translationManagement
+									.englishTranslation
+							}
+							description=""
+						/>
+						<textarea
+							id="en"
+							defaultValue={translationObject.en}
+							{...register("en", {
+								required: "Le champ anglais est requis",
+							})}
+						/>
+					</div>
+				</div>
+				{Object.keys(errors).length > 0 && (
+					<ErrorComponent message={errors[Object.keys(errors)[0]].message} />
+				)}
+			</div>
+			<div className={style.buttonContainer}>
 				<ButtonComponent
-					type="button"
+					type="submit"
 					color="brown"
-					onClickFunction={() => handleChange(id, translationKey)}
-					textContent="Modifier"
+					textContent={translation[language].button.edit}
 				/>
 			</div>
-		</div>
+		</form>
 	);
 };
 

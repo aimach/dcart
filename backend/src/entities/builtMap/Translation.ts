@@ -4,11 +4,17 @@ import { Entity, PrimaryGeneratedColumn, Column, BaseEntity } from "typeorm";
 @Entity()
 export class Translation extends BaseEntity {
 	@PrimaryGeneratedColumn("uuid")
-	id!: number;
+	id!: string;
 
-	@Column({ type: "varchar", unique: true })
-	language!: string;
+	@Column({ type: "varchar", unique: true, nullable: false })
+	key!: string;
 
-	@Column({ type: "jsonb" })
-	translations!: Record<string, string>;
+	@Column({ type: "text", nullable: false })
+	fr!: string;
+
+	@Column({ type: "text", nullable: false })
+	en!: string;
+
+	@Column({ type: "text", nullable: true })
+	appLink?: string | null;
 }
