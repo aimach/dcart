@@ -71,3 +71,33 @@
 .languageSelected {
   font-weight: v.$font-weight-extrabold;
 }
+
+.headerBackofficeMenu {
+  @include m.flexbox(flex, row, nowrap, flex-end);
+  gap: v.$font-space-l;
+  list-style-type: none;
+
+  >a {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: #000;
+  }
+
+  a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background: v.$color-umber;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+  }
+
+  a:hover::after {
+    transform: scaleX(1);
+  }
+}
