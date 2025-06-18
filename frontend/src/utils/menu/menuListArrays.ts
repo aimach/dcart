@@ -141,8 +141,9 @@ const getAsideNavigationList = (
 	mapInfos: MapInfoType | null,
 ) => {
 	const allPointsLength = mapInfos
-		? allPoints.filter((point) => allLayers.includes(point.layerName as string))
-				.length
+		? allPoints.filter((point) =>
+				allLayers.includes(point.layerNamefr as string),
+			).length
 		: allPoints.length;
 	return [
 		{
