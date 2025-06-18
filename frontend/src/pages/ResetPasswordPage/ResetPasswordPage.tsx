@@ -33,6 +33,7 @@ const ResetPasswordPage = () => {
 				onChange={(e) => setEmail(e.target.value)}
 				placeholder={translation[language].backoffice.authPage.enterEmail}
 			/>
+
 			<ButtonComponent
 				onClickFunction={handleSendReset}
 				type="button"

@@ -9,6 +9,7 @@ import { useTranslation } from "../../utils/hooks/useTranslation";
 import { resetPassword } from "../../utils/api/authAPI";
 // import du style
 import style from "./ResetPasswordPage.module.scss";
+import { EyeClosed, EyeIcon } from "lucide-react";
 
 const NewPasswordPage = () => {
 	const { language, translation } = useTranslation();
@@ -22,6 +23,7 @@ const NewPasswordPage = () => {
 	const navigate = useNavigate();
 
 	const [error, setError] = useState<string | null>(null);
+	const [showPassword, setShowPassword] = useState(false);
 
 	const handleSendReset = async () => {
 		if (newPassword && token && email) {
@@ -37,12 +39,28 @@ const NewPasswordPage = () => {
 	return (
 		<div className={style.resetPasswordPage}>
 			<h3>{translation[language].backoffice.authPage.newPassword}</h3>
-			<input
-				type="password"
-				value={newPassword}
-				onChange={(e) => setNewPassword(e.target.value)}
-			/>
-			{error && <p className={style.error}>{error}</p>}
+			<div style={{ display: "flex", alignItems: "center" }}>
+				<input
+					type={showPassword ? "text" : "password"}
+					value={newPassword}
+					onChange={(e) => setNewPassword(e.target.value)}
+				/>
+				<button
+					type="button"
+					onClick={() => setShowPassword((prev) => !prev)}
+					style={{ marginLeft: 8 }}
+				>
+					{showPassword ? <EyeClosed /> : <EyeIcon />}
+				</button>
+			</div>
+			{error ? (
+				<p className={style.error}>{error}</p>
+			) : (
+				<p>
+					Le mot de passe doit contenir au moins 10 caractères, une majuscule,
+					une minuscule et un chiffre.
+				</p>
+			)}
 			<ButtonComponent
 				onClickFunction={handleSendReset}
 				type="button"
