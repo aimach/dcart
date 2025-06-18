@@ -26,7 +26,7 @@ interface MarkerComponentProps {
 const MarkerComponent = ({ point }: MarkerComponentProps) => {
 	const location = useLocation();
 	const itemType =
-		location.pathname.split("/")[1] === "map" ? "map" : "storymap";
+		location.pathname.split("/")[2] === "maps" ? "maps" : "storymap";
 
 	// récupération des données des stores
 	const { selectedMarker, setSelectedMarker, mapInfos } = useMapStore(
@@ -39,7 +39,7 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 
 	// fonction pour gérer le clic sur un marker par l'utilisateur
 	const handleMarkerOnClick = (point: PointType) => {
-		if (itemType === "map") {
+		if (itemType === "maps") {
 			// ouverture de l'onglet "infos"
 			setSelectedTabMenu("infos");
 			setIsPanelDisplayed?.(true);
