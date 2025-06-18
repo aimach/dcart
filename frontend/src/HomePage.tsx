@@ -58,6 +58,7 @@ function HomePage() {
 				const storymapsNbB = b.storymaps ? b.storymaps.length : 0;
 				return mapsNbB + storymapsNbB - (mapsNbA + storymapsNbA);
 			});
+			console.log(sortedTags);
 			setAllTagsWithItems(sortedTags);
 		};
 
@@ -70,7 +71,6 @@ function HomePage() {
 	useEffect(() => {
 		const fetchDatabaseTranslation = async () => {
 			const title = await getTranslations("homepage.title");
-			console.log("title", title);
 			setTranslationTitle(title[language]);
 			const description = await getTranslations("homepage.description");
 			setTranslationDescription(description[language]);
@@ -125,11 +125,10 @@ function HomePage() {
 					{allTagsWithItems?.map((tagWithItems) => {
 						const itemsArray =
 							tagWithItems.maps && tagWithItems.storymaps
-								? tagWithItems.maps.concat(tagWithItems.storymaps)
+								? tagWithItems.maps.concat(tagWithItems.storymaps).slice(0, 3)
 								: tagWithItems.maps || tagWithItems.storymaps || [];
-						const items = itemsArray.length > 0 ? shuffleArray(itemsArray) : [];
 						return (
-							items.length > 0 && (
+							itemsArray.length > 0 && (
 								<div key={tagWithItems.id} className={style.tagItemContainer}>
 									<div className={style.tagItemContainerTitle}>
 										<h3>{tagWithItems[`name_${language}`]}</h3>
@@ -139,7 +138,7 @@ function HomePage() {
 											</div>
 										</Link>
 									</div>
-									<SwiperContainer items={items} />
+									<SwiperContainer items={itemsArray} />
 								</div>
 							)
 						);

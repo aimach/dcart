@@ -42,7 +42,8 @@ export const tagController = {
 			if (map === "true" || map === undefined) {
 				tagQuery = tagQuery
 					.leftJoinAndSelect("tag.maps", "map", "map.isActive = true")
-					.leftJoinAndSelect("map.tags", "mapTag");
+					.leftJoinAndSelect("map.tags", "mapTag")
+					.orderBy("GREATEST(map.createdAt, map.updatedAt)", "DESC");
 				selectArray.push(
 					"map.id",
 					"map.title_fr",
@@ -62,7 +63,8 @@ export const tagController = {
 						"storymap",
 						"storymap.isActive = true",
 					)
-					.leftJoinAndSelect("storymap.tags", "storymapTag");
+					.leftJoinAndSelect("storymap.tags", "storymapTag")
+					.orderBy("GREATEST(storymap.createdAt, storymap.updatedAt)", "DESC");
 				selectArray.push(
 					"storymap.id",
 					"storymap.title_lang1",
