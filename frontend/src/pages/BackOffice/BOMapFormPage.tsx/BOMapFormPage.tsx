@@ -90,8 +90,7 @@ const BOMapFormPage = () => {
 						<Filter size={20} />
 						{translation[language].backoffice.mapFormPage.aside.filters}
 					</li>
-					{(isSelectedFilterInThisMap(mapInfos, "element") ||
-						mapFilters.element) && (
+					{isSelectedFilterInThisMap(mapInfos, "element") && (
 						<li
 							onClick={() => setStep(4)}
 							onKeyUp={() => setStep(4)}
@@ -101,8 +100,7 @@ const BOMapFormPage = () => {
 							Options filtre éléments
 						</li>
 					)}
-					{(isSelectedFilterInThisMap(mapInfos, "location") ||
-						mapFilters.location) && (
+					{isSelectedFilterInThisMap(mapInfos, "location") && (
 						<li
 							onClick={() => setStep(5)}
 							onKeyUp={() => setStep(5)}
