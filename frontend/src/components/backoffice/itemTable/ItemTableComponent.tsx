@@ -107,7 +107,10 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 	};
 	return (
 		<tr key={itemInfos.id} className={style.itemTableRow}>
-			<td>
+			<td
+				onClick={() => handleModifyClick(itemInfos.id)}
+				onKeyUp={() => handleModifyClick(itemInfos.id)}
+			>
 				<div>
 					{(itemInfos as StorymapType).image_url ? (
 						<img
