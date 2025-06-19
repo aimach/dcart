@@ -74,7 +74,7 @@ export const filterController = {
 					dcartDataSource.getRepository(FilterMapContent).save({
 						filter: filter,
 						map: map,
-						options: filter.type === "element" ? { solution: "manual" } : null,
+						options: filter.type === "element" ? { solution: "basic" } : null,
 					});
 				}),
 			);

@@ -91,7 +91,7 @@ const AsideMainComponent = () => {
 		const newElementOptions = await fetchElementOptions(
 			allPoints,
 			language,
-			true,
+			false,
 		);
 		setElementOptions(newElementOptions);
 	};
