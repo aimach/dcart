@@ -70,10 +70,10 @@ export const filterController = {
 
 			// on ajoute les filtres à la carte
 			Promise.all(
-				newFilters.map(async (filter: Filter) => {
-					await dcartDataSource.getRepository(FilterMapContent).save({
+				newFilters.map((filter: Filter) => {
+					dcartDataSource.getRepository(FilterMapContent).save({
 						filter: filter,
-						mapContent: map,
+						map: map,
 						options: filter.type === "element" ? { solution: "manual" } : null,
 					});
 				}),
@@ -132,7 +132,7 @@ export const filterController = {
 				}
 			}
 
-			const newfilterMapContent = await dcartDataSource
+			const newFilterMapContent = await dcartDataSource
 				.getRepository(FilterMapContent)
 				.create({
 					...filterMapContentToUpdate,
@@ -141,7 +141,7 @@ export const filterController = {
 
 			await dcartDataSource
 				.getRepository(FilterMapContent)
-				.save(newfilterMapContent);
+				.save(newFilterMapContent);
 
 			res.status(201).json({ message: "Option ajoutée à la carte" });
 		} catch (error) {
