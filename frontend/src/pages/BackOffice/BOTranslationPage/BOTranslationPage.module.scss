@@ -42,6 +42,18 @@
             }
         }
 
+        .translationInputRow {
+            @include m.flexbox(flex, row, nowrap, space-between, center);
+            gap: v.$space-xl;
+            width: 100%;
+
+            >div {
+                width: 100%;
+                @include m.flexbox(flex, column, nowrap, space-between, center);
+                gap: v.$space-m;
+            }
+        }
+
         .translationInputContainer {
             width: 100%;
 

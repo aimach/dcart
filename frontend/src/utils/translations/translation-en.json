@@ -17,7 +17,8 @@
 		"explore": "EXPLORE",
 		"users": "USERS",
 		"tags": "TAGS",
-		"divinities": "DIVINITIES"
+		"divinities": "DIVINITIES",
+		"website": "WEBSITE"
 	},
 	"alert": {
 		"maxReached": "Maximum number of filters reached",
@@ -270,8 +271,8 @@
 				"description": "Displays two checkboxes with the options 'Greek' and 'Semitic'."
 			},
 			"epithetFilter": {
-				"label": "Epithets filter",
-				"description": "Displays a select/options element with the list of epithets from all elements of the displayed attestations"
+				"label": "Elements filter",
+				"description": "Two options : displays a select/options element with the list of epithets from all elements of the displayed attestations or displays two levels of checkboxes: a first level with the theonyms and a second level with the epithets. These two levels are to be built on demand."
 			},
 			"divinityNbFilter": {
 				"label": "Divinity number filter",

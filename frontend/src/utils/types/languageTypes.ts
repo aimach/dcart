@@ -20,6 +20,7 @@ type LanguageObject = {
 		users: string;
 		tags: string;
 		divinities: string;
+		website: string;
 	};
 	alert: {
 		maxReached: string;

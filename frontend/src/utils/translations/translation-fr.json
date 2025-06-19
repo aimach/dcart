@@ -17,7 +17,8 @@
 		"explore": "EXPLORER",
 		"users": "UTILISATEURS",
 		"tags": "ÉTIQUETTES",
-		"divinities": "DIVINITÉS"
+		"divinities": "DIVINITÉS",
+		"website": "SITE"
 	},
 	"alert": {
 		"maxReached": "Nombre maximum de filtres atteint",
@@ -271,8 +272,8 @@
 				"description": "Affiche deux checkbox avec un choix 'grec' et un choix 'sémitique'."
 			},
 			"epithetFilter": {
-				"label": "Filtre avec les épithètes",
-				"description": "Affiche un select/options avec la liste des épithètes de l'ensemble des éléments des attestations affichées"
+				"label": "Filtre avec les éléments",
+				"description": "Deux options possibles : soit affiche un select/options avec la liste des éléments de l'ensemble des éléments des attestations affichées, soit affiche deux niveaux de checkbox : un premier niveau avec les théonymes et un second avec les épithètes. Ces deux niveaux sont à construire sur-mesure."
 			},
 			"divinityNbFilter": {
 				"label": "Filtre du nombre de divinités",
