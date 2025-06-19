@@ -58,7 +58,6 @@ function HomePage() {
 				const storymapsNbB = b.storymaps ? b.storymaps.length : 0;
 				return mapsNbB + storymapsNbB - (mapsNbA + storymapsNbA);
 			});
-			console.log(sortedTags);
 			setAllTagsWithItems(sortedTags);
 		};
 

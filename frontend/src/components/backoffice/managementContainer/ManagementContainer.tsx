@@ -33,7 +33,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 
 	// récupération des données des stores
 	const { reload } = useModalStore();
-	const { resetMapInfos } = useMapFormStore();
+	const { mapInfos, resetMapInfos, mapFilters } = useMapFormStore();
 
 	// état pour stocker les informations des cartes
 	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
