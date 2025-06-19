@@ -60,8 +60,8 @@ export const storymapContentControllers = {
 						"child",
 						"child_type",
 						"step_attestations",
-						"creator.pseudo",
-						"modifier.pseudo",
+						"creator.username",
+						"modifier.username",
 					]);
 				if (isActive) {
 					const isActiveStatus = isActive === "true";
@@ -72,7 +72,7 @@ export const storymapContentControllers = {
 
 				if (searchText) {
 					query.andWhere(
-						"storymap.title_lang1 ILIKE :searchText OR storymap.title_lang2 ILIKE :searchText",
+						"storymap.title_lang1 ILIKE :searchText OR storymap.title_lang2 ILIKE :searchText OR storymap.description_lang1 ILIKE :searchText OR storymap.description_lang2 ILIKE :searchText OR creator.username ILIKE :searchText OR modifier.username ILIKE :searchText",
 						{ searchText: `%${searchText}%` },
 					);
 				}

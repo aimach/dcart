@@ -65,7 +65,7 @@ export const mapContentController = {
 
 				if (searchText) {
 					query.andWhere(
-						"map.title_fr ILIKE :searchText OR map.title_en ILIKE :searchText",
+						"map.title_fr ILIKE :searchText OR map.title_en ILIKE :searchText OR map.description_fr ILIKE :searchText OR map.description_en ILIKE :searchText OR creator.username ILIKE :searchText OR modifier.username ILIKE :searchText",
 						{ searchText: `%${searchText}%` },
 					);
 				}
