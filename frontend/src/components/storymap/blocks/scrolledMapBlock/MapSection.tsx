@@ -48,7 +48,6 @@ const MapSection = ({
 	const [map, setMap] = useState<LeafletMap | null>(null);
 
 	const [points, setPoints] = useState<(PointType & { blockId: string })[]>([]);
-	const [pointBlockId, setPointBlockId] = useState<string>("");
 
 	const fetchPointsAndAddBlockId = async (childId: string) => {
 		// récupération de tous les points
@@ -81,7 +80,7 @@ const MapSection = ({
 				bounds.push([point.latitude, point.longitude]);
 			}
 			if (map) {
-				map.fitBounds(bounds, { padding: isDesktop ? [300, 300] : [0, 0] });
+				map.fitBounds(bounds, { padding: isDesktop ? [100, 100] : [0, 0] });
 			}
 		}
 	}, [map, points, isDesktop, pointIndex]);
@@ -113,6 +112,7 @@ const MapSection = ({
 			>
 				<>
 					<TileLayer
+						opacity={0.6}
 						attribution={`dCART | &copy; ${mapAttribution}`}
 						url={blockContent.content2_lang1}
 					/>
