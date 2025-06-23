@@ -51,7 +51,9 @@
 		"unpublish": "Dépublier",
 		"editDisabled": "Modifier désactivé",
 		"search": "Rechercher",
-		"copyRequest": "Copier la requête SQL"
+		"copyRequest": "Copier la requête SQL",
+		"myCreations": "Mes créations",
+		"allCreations": "Toutes les créations"
 	},
 	"common": {
 		"between": "entre",

@@ -12,6 +12,12 @@
     @include m.flexbox(flex, row, nowrap, space-between, center);
     padding: v.$space-m 0;
 
+    .buttonContainer {
+        @include m.flexbox(flex, row, nowrap, center, center);
+        gap: v.$space-s;
+
+    }
+
     .searchContainer {
         @include m.flexbox(flex, row, nowrap, center, center);
         gap: v.$space-s;

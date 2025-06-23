@@ -11,6 +11,7 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 import { generateUniqueSlug } from "../../utils/functions/builtMap";
 // import des types
 import type { Request, Response } from "express";
+import { jwtService } from "../../utils/jwt";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";
@@ -71,10 +72,44 @@ export const storymapContentControllers = {
 				}
 
 				if (searchText) {
-					query.andWhere(
-						"storymap.title_lang1 ILIKE :searchText OR storymap.title_lang2 ILIKE :searchText OR storymap.description_lang1 ILIKE :searchText OR storymap.description_lang2 ILIKE :searchText OR creator.username ILIKE :searchText OR modifier.username ILIKE :searchText",
-						{ searchText: `%${searchText}%` },
-					);
+					if (searchText === "myItems") {
+						const authHeader = req.headers.authorization;
+
+						// récupération du token après "Bearer"
+						const token = authHeader?.split(" ")[1];
+
+						const decoded = jwtService.verifyToken(
+							token as string,
+						) as UserPayload;
+
+						if (!decoded) {
+							res.status(401).send({ error: "Token invalide ou expiré" });
+							return;
+						}
+
+						// récupération de l'utilisateur
+						const authenticatedUser = await dcartDataSource
+							.getRepository("User")
+							.findOne({
+								where: { id: decoded.userId },
+								select: { id: true, status: true },
+							});
+
+						if (!authenticatedUser) {
+							res.status(401).json({ message: "Utilisateur non trouvé" });
+							return;
+						}
+
+						query.andWhere(
+							"storymap.creator.id = :userId OR storymap.modifier.id = :userId",
+							{ userId: authenticatedUser.id },
+						);
+					} else {
+						query.andWhere(
+							"storymap.title_lang1 ILIKE :searchText OR storymap.title_lang2 ILIKE :searchText OR storymap.description_lang1 ILIKE :searchText OR storymap.description_lang2 ILIKE :searchText OR creator.username ILIKE :searchText OR modifier.username ILIKE :searchText",
+							{ searchText: `%${searchText}%` },
+						);
+					}
 				}
 
 				const allStorymaps = await query

@@ -54,6 +54,8 @@ type LanguageObject = {
 		editDisabled: string;
 		search: string;
 		copyRequest: string;
+		myCreations: string;
+		allCreations: string;
 	};
 	common: {
 		between: string;
