@@ -9,4 +9,4 @@ COPY . .
 
 EXPOSE 6001
 
-CMD npm run dev
+CMD ["node", "dist/app.js"]
