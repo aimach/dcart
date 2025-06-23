@@ -26,7 +26,10 @@ interface MarkerComponentProps {
 const MarkerComponent = ({ point }: MarkerComponentProps) => {
 	const location = useLocation();
 	const itemType =
-		location.pathname.split("/")[1] === "map" ? "map" : "storymap";
+		location.pathname.split("/")[1] === "map" ||
+		location.pathname.split("/")[2] === "maps"
+			? "map"
+			: "storymap";
 
 	// récupération des données des stores
 	const { selectedMarker, setSelectedMarker, mapInfos } = useMapStore(

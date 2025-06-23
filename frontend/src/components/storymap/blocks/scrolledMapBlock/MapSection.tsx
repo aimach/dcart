@@ -73,18 +73,17 @@ const MapSection = ({
 
 	// on met à jour les limites de la carte
 	const bounds: LatLngTuple[] = [];
+	// biome-ignore lint/correctness/useExhaustiveDependencies: recalcule à chaque changement d'étape
 	useEffect(() => {
 		if (points.length) {
 			for (const point of points) {
 				bounds.push([point.latitude, point.longitude]);
 			}
 			if (map) {
-				map.fitBounds(bounds, { padding: isDesktop ? [300, 300] : [0, 0] });
+				map.fitBounds(bounds, { padding: isDesktop ? [100, 100] : [0, 0] });
 			}
 		}
-	}, [map, points, isMobile]);
-
-	const littleIcon = getLittleCircleIcon(style);
+	}, [map, points, isDesktop, pointIndex]);
 
 	// Fonction pour scroller au click sur le marker
 	const scrollToStep = (id: string) => {
@@ -113,34 +112,31 @@ const MapSection = ({
 			>
 				<>
 					<TileLayer
+						opacity={0.6}
 						attribution={`dCART | &copy; ${mapAttribution}`}
 						url={blockContent.content2_lang1}
 					/>
 
 					{points.length ? (
 						points.map((point: PointType & { blockId: string }) => {
-							const bigIcon = getIcon(
-								point,
-								style,
-								false,
-								false,
-								pointIndex.toString(),
-							);
+							const bigIcon = getIcon(point, style, false, true);
 
 							return (
-								<Marker
-									key={`${point.latitude} - ${point.longitude} + ${point.blockId}`}
-									position={[point.latitude, point.longitude]}
-									icon={currentPoint === point.blockId ? bigIcon : littleIcon}
-									eventHandlers={{
-										click: () => {
-											setCurrentPoint(point.blockId as string);
-											scrollToStep(point.blockId as string);
-										},
-									}}
-								>
-									<Popup>{point.nom_ville}</Popup>
-								</Marker>
+								currentPoint === point.blockId && (
+									<Marker
+										key={`${point.latitude} - ${point.longitude} + ${point.blockId}`}
+										position={[point.latitude, point.longitude]}
+										icon={bigIcon}
+										eventHandlers={{
+											click: () => {
+												setCurrentPoint(point.blockId as string);
+												scrollToStep(point.blockId as string);
+											},
+										}}
+									>
+										<Popup>{point.nom_ville}</Popup>
+									</Marker>
+								)
 							);
 						})
 					) : (

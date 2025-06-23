@@ -252,19 +252,19 @@ const ComparisonMapForm = () => {
 							);
 						}
 					})}
-					<div>
+					<div className={style.panelButtonContainer}>
 						<ButtonComponent
 							color="brown"
 							type="button"
 							onClickFunction={() => setFormSide("left")}
-							textContent="côté gauche"
+							textContent={translation[language].button.leftSide}
 							isSelected={formSide === "left"}
 						/>
 						<ButtonComponent
 							color="brown"
 							type="button"
 							onClickFunction={() => setFormSide("right")}
-							textContent="côté droit"
+							textContent={translation[language].button.rightSide}
 							isSelected={formSide === "right"}
 						/>
 					</div>

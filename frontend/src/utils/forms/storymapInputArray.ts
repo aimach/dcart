@@ -73,12 +73,12 @@ const storymapInputs: InputType[] = [
 		},
 	},
 	{
-		label_fr: "Description en langue 1",
-		label_en: "Description in language 1",
+		label_fr: "Sous-titre en langue 1",
+		label_en: "Subtitle in language 1",
 		description_fr:
-			"Lignes d'introduction de la storymap qui seront affichées dans le premier bloc",
+			"Ligne d'introduction de la storymap qui seront affichées dans le premier bloc",
 		description_en:
-			"Introduction lines of the storymap that will be displayed in the first block",
+			"Introduction line of the storymap that will be displayed in the first block",
 		name: "description_lang1",
 		type: "text",
 		required: {
@@ -86,12 +86,12 @@ const storymapInputs: InputType[] = [
 		},
 	},
 	{
-		label_fr: "Description en langue 2",
-		label_en: "Description in language 2",
+		label_fr: "Sous-titre en langue 2",
+		label_en: "Subtitle in language 2",
 		description_fr:
-			"Lignes d'introduction de la storymap qui seront affichées dans le premier bloc",
+			"Ligne d'introduction de la storymap qui seront affichées dans le premier bloc",
 		description_en:
-			"Introduction lines of the storymap that will be displayed in the first block",
+			"Introduction line of the storymap that will be displayed in the first block",
 		name: "description_lang2",
 		type: "text",
 		required: {

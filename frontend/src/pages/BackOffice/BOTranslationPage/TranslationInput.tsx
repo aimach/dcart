@@ -1,29 +1,52 @@
 // import des bibliothèques
-import { useState } from "react";
+import { useForm } from "react-hook-form";
 // import des composants
 import ButtonComponent from "../../../components/common/button/ButtonComponent";
+import LabelComponent from "../../../components/form/inputComponent/LabelComponent";
+import ErrorComponent from "../../../components/form/errorComponent/ErrorComponent";
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { updateTranslationFromKey } from "../../../utils/api/translationAPI";
 import { notifyEditSuccess, notifyError } from "../../../utils/functions/toast";
+// import des types
+import type { TranslationObjectType } from "../../../utils/types/languageTypes";
 // import du style
 import style from "./BOTranslationPage.module.scss";
+// import des images
+import homepageTitleImage from "../../../assets/homepage.title.png";
+import homepageDescriptionImage from "../../../assets/homepage.description.png";
+import menuDescription from "../../../assets/menu.description.png";
+import mapIntro from "../../../assets/mapPage.introContent.png";
 
 type TranslationInputProps = {
-	id: string;
-	translationKey: string;
-	value: string | number;
+	translationObject: TranslationObjectType;
 };
 
-const TranslationInput = ({
-	id,
-	translationKey,
-	value,
-}: TranslationInputProps) => {
+const getImageSrc = (key: string) => {
+	switch (key) {
+		case "homepage.title":
+			return homepageTitleImage;
+		case "homepage.description":
+			return homepageDescriptionImage;
+		case "menu.description":
+			return menuDescription;
+		case "mapPage.introContent":
+			return mapIntro;
+		default:
+			return ""; // or a default image
+	}
+};
+
+const TranslationInput = ({ translationObject }: TranslationInputProps) => {
 	const { translation, language } = useTranslation();
-	const handleChange = async (id: string, key: string) => {
-		const responseStatus = await updateTranslationFromKey(id, key, inputValue);
+	const handleChange = async (data: TranslationObjectType) => {
+		const responseStatus = await updateTranslationFromKey(
+			data.id,
+			data.key,
+			data.fr,
+			data.en,
+		);
 		if (responseStatus === 200) {
 			notifyEditSuccess("Traduction", true);
 		} else {
@@ -31,26 +54,84 @@ const TranslationInput = ({
 		}
 	};
 
-	const [inputValue, setInputValue] = useState<string>(value as string);
+	// import des sevice de formulaire
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+	} = useForm<TranslationObjectType>({
+		defaultValues: translationObject ?? {},
+	});
 
 	return (
-		<div key={id} className={style.translationInputContainer}>
-			<h4>
-				{translation[language].backoffice.translationManagement[translationKey]}
-			</h4>
-			<div className={style.inputAndButton}>
-				<textarea
-					defaultValue={inputValue}
-					onChange={(event) => setInputValue(event.target.value)}
-				/>
+		<form onSubmit={handleSubmit(handleChange)}>
+			<div className={style.translationManagementForm}>
+				<div className={style.translationManagementRow}>
+					<p>
+						{
+							translation[language].backoffice.translationManagement[
+								translationObject.key
+							]
+						}
+					</p>
+					<div className={style.translationInputRow}>
+						<img
+							src={getImageSrc(translationObject.key)}
+							alt="indication du texte sur le site"
+							width={200}
+						/>
+						<div>
+							<div className={style.translationInputContainer}>
+								<LabelComponent
+									htmlFor="fr"
+									label={
+										translation[language].backoffice.translationManagement
+											.frenchTranslation
+									}
+									description=""
+								/>
+								<textarea
+									id="fr"
+									defaultValue={translationObject.fr}
+									{...register("fr", {
+										required: "Le champ français est requis",
+									})}
+									rows={5}
+								/>
+							</div>
+							<div className={style.translationInputContainer}>
+								<LabelComponent
+									htmlFor="en"
+									label={
+										translation[language].backoffice.translationManagement
+											.englishTranslation
+									}
+									description=""
+								/>
+								<textarea
+									id="en"
+									defaultValue={translationObject.en}
+									{...register("en", {
+										required: "Le champ anglais est requis",
+									})}
+									rows={5}
+								/>
+							</div>
+						</div>
+					</div>
+				</div>
+				{Object.keys(errors).length > 0 && (
+					<ErrorComponent message={errors[Object.keys(errors)[0]].message} />
+				)}
+			</div>
+			<div className={style.buttonContainer}>
 				<ButtonComponent
-					type="button"
+					type="submit"
 					color="brown"
-					onClickFunction={() => handleChange(id, translationKey)}
-					textContent="Modifier"
+					textContent={translation[language].button.edit}
 				/>
 			</div>
-		</div>
+		</form>
 	);
 };
 

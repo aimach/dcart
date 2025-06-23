@@ -29,14 +29,15 @@ const getTranslations = async (translationKey?: string) => {
 const updateTranslationFromKey = async (
 	translationObjectId: string,
 	translationKey: string,
-	newValue: string,
+	frenchNewValue: string,
+	englishNewValue: string,
 ) => {
 	try {
 		const response = await apiClient(
 			`/translation/${translationObjectId}?translationKey=${translationKey}`,
 			{
 				method: "PUT",
-				data: { translation: newValue },
+				data: { fr: frenchNewValue, en: englishNewValue },
 			},
 		);
 		return response.status;

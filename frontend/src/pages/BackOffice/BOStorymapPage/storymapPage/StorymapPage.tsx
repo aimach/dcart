@@ -33,6 +33,7 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
+import StorymapConclusion from "../../../../components/storymap/blocks/storymapConclusion/StorymapConclusion";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -175,6 +176,7 @@ const StorymapPage = () => {
 						(storymapInfos.blocks as BlockContentType[]).map((block, index) =>
 							getBlockComponentFromType(block, index),
 						)}
+					<StorymapConclusion storymapInfos={storymapInfos} />
 				</section>
 			</>
 		)

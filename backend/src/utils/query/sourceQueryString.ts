@@ -52,6 +52,7 @@ sources_with_attestations AS (
                     agent.designation, 
                     activite_agent.nom_fr AS activite_fr, 
                     activite_agent.nom_en AS activite_en, 
+                    activite_agent.id AS activite_id,
                     (
                       SELECT 
                       jsonb_agg(jsonb_build_object('nom_fr', genre.nom_fr, 'nom_en', genre.nom_en)) 
@@ -69,6 +70,7 @@ sources_with_attestations AS (
                       agent.designation, 
                       activite_agent.nom_fr, 
                       activite_agent.nom_en, 
+                      activite_agent.id,
                       agent.id
                     ) 
                   AS agents
@@ -217,6 +219,7 @@ sources_with_attestations AS (
                     agent.designation, 
                     activite_agent.nom_fr AS activite_fr, 
                     activite_agent.nom_en AS activite_en, 
+                    activite_agent.id AS activite_id,
                     statut_affiche.nom_fr AS statut_fr,
 					          statut_affiche.nom_en AS statut_en,
                     (
@@ -248,6 +251,7 @@ sources_with_attestations AS (
                       agent.designation, 
                       activite_agent.nom_fr, 
                       activite_agent.nom_en, 
+                      activite_agent.id,
                       statut_affiche.nom_fr,
 					            statut_affiche.nom_en,
                       agent.id
@@ -405,6 +409,14 @@ sources_with_attestations AS (
                     agent.designation, 
                     activite_agent.nom_fr AS activite_fr, 
                     activite_agent.nom_en AS activite_en, 
+                    activite_agent.id AS activite_id,
+                    (
+                      SELECT 
+                      jsonb_agg(jsonb_build_object('nom_fr', genre.nom_fr, 'nom_en', genre.nom_en)) 
+                      FROM agent_genre 
+                      JOIN genre ON genre.id = agent_genre.id_genre 
+                      WHERE agent_genre.id_agent = agent.id
+                    ) AS genres -- Tableaux des genres pour l'agent
                     (
                       SELECT 
                       jsonb_agg(jsonb_build_object('nom_fr', genre.nom_fr, 'nom_en', genre.nom_en)) 
@@ -422,6 +434,7 @@ sources_with_attestations AS (
                       agent.designation, 
                       activite_agent.nom_fr, 
                       activite_agent.nom_en, 
+                      activite_agent.id,
                       agent.id
                     ) 
                   AS agents

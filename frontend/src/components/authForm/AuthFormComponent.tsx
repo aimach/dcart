@@ -19,7 +19,7 @@ import type { JwtPayload } from "jwt-decode";
 // import du style
 import style from "./authFormComponent.module.scss";
 // import des icônes
-import { TriangleAlert } from "lucide-react";
+import { EyeClosed, EyeIcon, TriangleAlert } from "lucide-react";
 
 /**
  * Composant de formulaire d'authentification
@@ -30,6 +30,7 @@ const AuthFormComponent = () => {
 	const { setToken, setIsAdmin, setUserId } = useContext(AuthContext);
 
 	const [displayError, setDisplayError] = useState(false);
+	const [showPassword, setShowPassword] = useState(false);
 
 	// fonction de gestion du bouton "Se connecter"
 	const navigate = useNavigate();
@@ -89,11 +90,21 @@ const AuthFormComponent = () => {
 					<label htmlFor="password">
 						{translation[language].backoffice.authPage.password}
 					</label>
-					<input
-						type="password"
-						id="password"
-						{...register("password", { required: true })}
-					/>
+					<div style={{ display: "flex", alignItems: "center", width: "100%" }}>
+						<input
+							type={showPassword ? "text" : "password"}
+							id="password"
+							{...register("password", { required: true })}
+						/>
+						<button
+							type="button"
+							onClick={() => setShowPassword((prev) => !prev)}
+							style={{ marginLeft: 8 }}
+						>
+							{showPassword ? <EyeClosed /> : <EyeIcon />}
+						</button>
+					</div>
+
 					{errors.password && (
 						<ErrorComponent
 							message={translation[language].backoffice.authPage.requiredField}

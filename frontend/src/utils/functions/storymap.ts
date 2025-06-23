@@ -148,6 +148,7 @@ const addLangageBetweenBrackets = (
 	inputs: InputType[],
 	storymapInfos: StorymapType,
 ) => {
+	if (!storymapInfos) return inputs;
 	return inputs.map((input) => {
 		if (input.label_fr.includes("langue 1")) {
 			return {

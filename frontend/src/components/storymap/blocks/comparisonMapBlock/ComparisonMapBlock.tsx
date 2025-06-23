@@ -73,11 +73,13 @@ const ComparisonMapBlock = ({
 		const rightLayer = L.tileLayer(blockContent.content2_lang2, {
 			pane: "right",
 			attribution,
+			opacity: 0.6,
 		}).addTo(comparisonMap);
 
 		const leftLayer = L.tileLayer(blockContent.content2_lang1, {
 			pane: "left",
 			attribution,
+			opacity: 0.6,
 		}).addTo(comparisonMap);
 
 		// on créé les points sur chaque pane

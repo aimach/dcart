@@ -154,6 +154,17 @@ const getAllStorymapLanguages = async () => {
 	}
 };
 
+const allStorymapsFromTag = async (tagId: string) => {
+	try {
+		const response = await apiClient.get(
+			`/storymap/tags/${tagId}/storymaps?isActive=true`,
+		);
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement des storymaps d'un tag :", error);
+	}
+};
+
 export {
 	getStorymapInfosAndBlocksById,
 	getStorymapInfosAndBlocksBySlug,
@@ -164,4 +175,5 @@ export {
 	getAllStorymapLanguages,
 	getAllPublishedStorymaps,
 	getRelatedMapId,
+	allStorymapsFromTag,
 };

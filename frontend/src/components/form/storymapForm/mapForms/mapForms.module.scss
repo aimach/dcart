@@ -126,6 +126,7 @@
         padding-top: v.$space-l;
         text-align: center;
         border-right: v.$border-width-m solid v.$color-neutral-80;
+        border-left: v.$border-width-m solid v.$color-neutral-80;
     }
 
     .scrollMapFormSection {
@@ -219,4 +220,9 @@
             scale: 1.1;
         }
     }
+}
+
+.panelButtonContainer {
+    @include m.flexbox(flex, row, nowrap, space-between, center);
+    gap: v.$space-s;
 }

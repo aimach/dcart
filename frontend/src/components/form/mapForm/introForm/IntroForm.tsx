@@ -229,7 +229,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 									control={control}
 									rules={{
 										required: input.required.value,
-										maxLength: 1000,
+										maxLength: 2000,
 									}}
 									render={({ field: { onChange } }) => (
 										<EditorComponent

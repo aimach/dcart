@@ -57,6 +57,7 @@ const BuiltElementFilterForm = () => {
 	}, [mapInfos?.attestations, language]);
 
 	useEffect(() => {
+		setSelectedOption("basic");
 		if (mapInfos) {
 			const elementFilter = isSelectedFilterInThisMap(mapInfos, "element");
 			if (elementFilter) {

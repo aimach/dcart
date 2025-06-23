@@ -7,6 +7,7 @@ type LanguageObject = {
 	fr: string;
 	noAuthInMobile: string;
 	invalidAuth: string;
+	seeAlso: string;
 	navigation: {
 		home: string;
 		maps: string;
@@ -19,6 +20,7 @@ type LanguageObject = {
 		users: string;
 		tags: string;
 		divinities: string;
+		website: string;
 	};
 	alert: {
 		maxReached: string;
@@ -52,6 +54,10 @@ type LanguageObject = {
 		editDisabled: string;
 		search: string;
 		copyRequest: string;
+		myCreations: string;
+		allCreations: string;
+		leftSide: string;
+		rightSide: string;
 	};
 	common: {
 		between: string;
@@ -363,8 +369,10 @@ type TranslationType = {
 
 type TranslationObjectType = {
 	id: string;
-	language: "en" | "fr";
-	translations: Record<string, string>;
+	fr: string;
+	en: string;
+	key: string;
+	appLink?: string | null;
 };
 
 export type {

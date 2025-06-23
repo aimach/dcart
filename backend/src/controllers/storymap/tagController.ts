@@ -46,4 +46,29 @@ export const tagController = {
 			handleError(res, error as Error);
 		}
 	},
+
+	getStorymapsByTag: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { id } = req.params;
+			const isActive = req.query.isActive === "true";
+
+			const tag = await dcartDataSource
+				.getRepository(Tag)
+				.createQueryBuilder("tag")
+				.leftJoinAndSelect("tag.storymaps", "storymaps")
+				.leftJoinAndSelect("storymaps.tags", "tags")
+				.where("tag.id = :id", { id })
+				.andWhere("storymaps.isActive = :isActive", { isActive })
+				.getOne();
+
+			if (!tag) {
+				res.status(404).send({ message: "Tag non trouvé" });
+				return;
+			}
+
+			res.status(200).send(tag.storymaps);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
 };

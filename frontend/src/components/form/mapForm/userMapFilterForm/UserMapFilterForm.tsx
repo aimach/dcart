@@ -113,10 +113,12 @@ const UserMapFilterForm = () => {
 			if (updatedFiltersResponse?.status === 200) {
 				const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
 				setMapInfos(newMapInfos);
-				notifyEditSuccess("Jeu de filtres", false);
 				if (mapFilters.element || mapFilters.location) {
-					if (mapFilters.element) setStep(4);
-					if (mapFilters.location) setStep(5);
+					if (mapFilters.element) {
+						setStep(4);
+					} else {
+						setStep(5);
+					}
 				} else {
 					// si aucun filtre n'est sélectionné, on redirige vers la page de la carte
 					resetMapInfos();
@@ -134,12 +136,20 @@ const UserMapFilterForm = () => {
 					mapFilters,
 				);
 				if (response?.status === 201) {
-					// réinitialisation des données du store
-					resetMapInfos();
-					resetMapFilters();
-					resetAllPoints();
-					notifyCreateSuccess("Jeu de filtres", false);
-					navigate("/backoffice/maps");
+					if (mapFilters.element || mapFilters.location) {
+						if (mapFilters.element) {
+							setStep(4);
+						} else {
+							setStep(5);
+						}
+					} else {
+						// réinitialisation des données du store
+						resetMapInfos();
+						resetMapFilters();
+						resetAllPoints();
+						notifyCreateSuccess("Jeu de filtres", false);
+						navigate("/backoffice/maps");
+					}
 				}
 			}
 		}

@@ -43,23 +43,29 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 	// chargement des informations des cartes au montage du composant
 
 	// fonction pour charger les informations des cartes
-	const fetchAllMapsInfos = useCallback(async (searchText: string) => {
-		const maps = await getAllMapsInfos(false, searchText);
-		setAllMapsInfos(maps);
-		setIsLoaded(true);
-	}, []);
-	const fetchAllStorymapsInfos = useCallback(async (searchText: string) => {
-		const storymaps = await getAllStorymapsInfos(false, searchText);
-		setAllStorymapsInfos(storymaps);
-		setIsLoaded(true);
-	}, []);
+	const fetchAllMapsInfos = useCallback(
+		async (searchText: string, myItems: boolean) => {
+			const maps = await getAllMapsInfos(false, searchText, myItems);
+			setAllMapsInfos(maps);
+			setIsLoaded(true);
+		},
+		[],
+	);
+	const fetchAllStorymapsInfos = useCallback(
+		async (searchText: string, myItems: boolean) => {
+			const storymaps = await getAllStorymapsInfos(false, searchText, myItems);
+			setAllStorymapsInfos(storymaps);
+			setIsLoaded(true);
+		},
+		[],
+	);
 	// biome-ignore lint/correctness/useExhaustiveDependencies: permet de recharger les données à chaque changement sur la page (suppression, changement de statut)
 	useEffect(() => {
 		if (type === "map") {
-			fetchAllMapsInfos("");
+			fetchAllMapsInfos("", isMyItems);
 		}
 		if (type === "storymap") {
-			fetchAllStorymapsInfos("");
+			fetchAllStorymapsInfos("", isMyItems);
 		}
 	}, [type, reload, fetchAllMapsInfos, fetchAllStorymapsInfos]);
 
@@ -69,38 +75,63 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 
 	const handleSearch = (data: { searchText: string }) => {
 		if (type === "map") {
-			fetchAllMapsInfos(data.searchText);
+			fetchAllMapsInfos(data.searchText, isMyItems);
 		}
 		if (type === "storymap") {
-			fetchAllStorymapsInfos(data.searchText);
+			fetchAllStorymapsInfos(data.searchText, isMyItems);
 		}
 	};
 
 	const handleReset = () => {
 		if (type === "map") {
-			fetchAllMapsInfos("");
+			fetchAllMapsInfos("", isMyItems);
 		}
 		if (type === "storymap") {
-			fetchAllStorymapsInfos("");
+			fetchAllStorymapsInfos("", isMyItems);
 		}
 		resetField("searchText");
+	};
+
+	const [isMyItems, setIsMyItems] = useState<boolean>(false);
+	const handleGetMyItems = () => {
+		const newIsMyItems = !isMyItems;
+		setIsMyItems(newIsMyItems);
+		const searchText = watch("searchText") || "";
+		if (type === "map") {
+			fetchAllMapsInfos(searchText, newIsMyItems);
+		}
+		if (type === "storymap") {
+			fetchAllStorymapsInfos(searchText, newIsMyItems);
+		}
 	};
 
 	return (
 		<>
 			<section className={style.managementContainer}>
 				<div className={style.managementHeader}>
-					<ButtonComponent
-						type="button"
-						color="brown"
-						textContent={`${translation[language].backoffice.createA} ${translation[language].common[type === "map" ? "map" : "storymap"]}`}
-						onClickFunction={() => {
-							navigate(`/backoffice/${type}s/create`);
-							resetMapInfos();
-						}}
-						icon={<CirclePlus />}
-					/>
+					<div className={style.buttonContainer}>
+						<ButtonComponent
+							type="button"
+							color="brown"
+							textContent={`${translation[language].backoffice.createA} ${translation[language].common[type === "map" ? "map" : "storymap"]}`}
+							onClickFunction={() => {
+								navigate(`/backoffice/${type}s/create`);
+								resetMapInfos();
+							}}
+							icon={<CirclePlus />}
+						/>
+					</div>
 					<div className={style.searchContainer}>
+						<ButtonComponent
+							type="button"
+							color="brown"
+							textContent={
+								isMyItems
+									? translation[language].button.allCreations
+									: translation[language].button.myCreations
+							}
+							onClickFunction={handleGetMyItems}
+						/>
 						<form onSubmit={handleSubmit(handleSearch)}>
 							<input
 								type="text"

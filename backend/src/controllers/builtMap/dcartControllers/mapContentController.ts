@@ -11,6 +11,7 @@ import { handleError } from "../../../utils/errorHandler/errorHandler";
 import { generateUniqueSlug } from "../../../utils/functions/builtMap";
 // import des types
 import type { Request, Response } from "express";
+import { jwtService } from "../../../utils/jwt";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";
@@ -32,7 +33,7 @@ export const mapContentController = {
 		try {
 			const { mapId, mapSlug } = req.params;
 			const identifier = mapId ?? mapSlug;
-			const { isActive, searchText } = req.query;
+			const { isActive, searchText, myItems } = req.query;
 
 			if (identifier === "all") {
 				const query = await dcartDataSource
@@ -63,12 +64,47 @@ export const mapContentController = {
 					query.where("map.isActive = :isActive", { isActive: isActiveStatus });
 				}
 
+				if (myItems) {
+					const authHeader = req.headers.authorization;
+
+					// récupération du token après "Bearer"
+					const token = authHeader?.split(" ")[1];
+
+					const decoded = jwtService.verifyToken(
+						token as string,
+					) as UserPayload;
+
+					if (!decoded) {
+						res.status(401).send({ error: "Token invalide ou expiré" });
+						return;
+					}
+
+					// récupération de l'utilisateur
+					const authenticatedUser = await dcartDataSource
+						.getRepository("User")
+						.findOne({
+							where: { id: decoded.userId },
+							select: { id: true, status: true },
+						});
+
+					if (!authenticatedUser) {
+						res.status(401).json({ message: "Utilisateur non trouvé" });
+						return;
+					}
+
+					query.andWhere(
+						"(map.creator.id = :userId OR map.modifier.id = :userId)",
+						{ userId: authenticatedUser.id },
+					);
+				}
+
 				if (searchText) {
 					query.andWhere(
-						"map.title_fr ILIKE :searchText OR map.title_en ILIKE :searchText",
+						"(map.title_fr ILIKE :searchText OR map.title_en ILIKE :searchText OR map.description_fr ILIKE :searchText OR map.description_en ILIKE :searchText OR creator.username ILIKE :searchText OR modifier.username ILIKE :searchText)",
 						{ searchText: `%${searchText}%` },
 					);
 				}
+
 				const allMaps = await query.orderBy("map.id").getMany();
 
 				res.status(200).send(allMaps);

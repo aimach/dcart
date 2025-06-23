@@ -128,6 +128,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 				>
 					<>
 						<TileLayer
+							opacity={0.6}
 							attribution={`dCART | &copy; ${tileAttribution}`}
 							url={blockContent.content2_lang1}
 						/>

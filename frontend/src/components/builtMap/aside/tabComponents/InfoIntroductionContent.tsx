@@ -24,31 +24,18 @@ const InfoIntroductionContent = ({
 		}
 	};
 
-	const [databaseTranslation, setDatabaseTranslation] = useState<
-		Record<string, string>[]
-	>([]);
-
+	const [textContent, setTextContent] = useState<string>("");
 	useEffect(() => {
 		const fetchDatabaseTranslation = async () => {
-			const translations = await getTranslations();
-			setDatabaseTranslation(translations);
+			const intro = await getTranslations("mapPage.introContent");
+			setTextContent(intro[language]);
 		};
 		fetchDatabaseTranslation();
-	}, []);
-
-	const introContent = useMemo(() => {
-		if (databaseTranslation?.length > 0) {
-			const translationObject = databaseTranslation.find(
-				(translation) => translation.language === language,
-			) as { translations: Record<string, string> } | undefined;
-			return translationObject?.translations["mapPage.introContent"];
-		}
-		return translation[language].mapPage.aside.introContent;
-	}, [databaseTranslation, translation, language]);
+	}, [language]);
 
 	return (
 		<div className={style.introContentContainer}>
-			<p>{introContent}</p>
+			<p>{textContent}</p>
 			<div className={style.checkboxContainer}>
 				<input type="checkbox" id="showIntro" onChange={handleCheckbox} />
 				<label htmlFor="showIntro">

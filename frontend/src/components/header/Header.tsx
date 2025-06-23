@@ -46,6 +46,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 	const { pathname } = useLocation();
 	const navigate = useNavigate();
 
+	const { isAdmin } = useContext(AuthContext);
 	return (
 		<header className={style.header}>
 			{type === "visitor" ? (
@@ -67,13 +68,11 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 			) : (
 				<button
 					type="button"
-					onClick={() => {
-						pathname === "/backoffice" ? navigate("/") : navigate(-1);
-					}}
+					onClick={() => navigate("/")}
 					className={style.headerBackButton}
 				>
 					<MoveLeft />
-					{translation[language].navigation.back}
+					{translation[language].navigation.website}
 				</button>
 			)}
 			{pathname !== "/" && !pathname.includes("backoffice") && !isMobile && (
@@ -108,13 +107,33 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 				{type === "backoffice" && (
 					<>
 						{pathname !== "/backoffice" && (
-							<NavComponent
-								type="route"
-								navClassName={style.headerNavigationMenu}
-								list={getBackofficeNavigationList(translation, language)}
-								selectedElement={language}
-								liClasseName={style.languageSelected}
-							/>
+							<ul className={style.headerBackofficeMenu}>
+								<Link to="/backoffice">
+									<li>{translation[language].navigation.backoffice}</li>
+								</Link>
+								<Link to="/backoffice/maps">
+									<li>{translation[language].navigation.maps}</li>
+								</Link>
+								<Link to="/backoffice/storymaps">
+									<li>{translation[language].navigation.storymaps}</li>
+								</Link>
+								{isAdmin && (
+									<>
+										<Link to="/backoffice/translation">
+											<li>{translation[language].navigation.translation}</li>
+										</Link>
+										<Link to="/backoffice/users">
+											<li>{translation[language].navigation.users}</li>
+										</Link>
+										<Link to="/backoffice/tags">
+											<li>{translation[language].navigation.tags}</li>
+										</Link>
+										<Link to="/backoffice/divinities">
+											<li>{translation[language].navigation.divinities}</li>
+										</Link>
+									</>
+								)}
+							</ul>
 						)}
 						<NavComponent
 							type="list"
