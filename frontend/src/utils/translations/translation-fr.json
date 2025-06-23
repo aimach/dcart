@@ -52,8 +52,10 @@
 		"editDisabled": "Modifier désactivé",
 		"search": "Rechercher",
 		"copyRequest": "Copier la requête SQL",
-		"myCreations": "Mes créations",
-		"allCreations": "Toutes les créations"
+		"myCreations": "Voir mes créations",
+		"allCreations": "Voir toutes les créations",
+		"leftSide": "Panneau de gauche",
+		"rightSide": "Panneau de droite"
 	},
 	"common": {
 		"between": "entre",

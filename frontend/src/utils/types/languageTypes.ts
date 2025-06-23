@@ -56,6 +56,8 @@ type LanguageObject = {
 		copyRequest: string;
 		myCreations: string;
 		allCreations: string;
+		leftSide: string;
+		rightSide: string;
 	};
 	common: {
 		between: string;
