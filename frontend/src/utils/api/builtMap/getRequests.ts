@@ -217,7 +217,7 @@ const getAllStorymapsInfos = async (
 ) => {
 	try {
 		let url = "/storymap/storymap/id/all";
-		if (isActive || searchText) url += "?";
+		if (isActive || searchText || myItems) url += "?";
 		const queryArray: string[] = [];
 		if (isActive) queryArray.push("isActive=true");
 		if (searchText) queryArray.push(`searchText=${searchText}`);
