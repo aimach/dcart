@@ -158,6 +158,11 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 			</td>
 			<td>
 				<div className={style.itemCellCentered}>
+					{itemInfos.creator?.username ?? "utilisateur supprimé"}
+				</div>
+			</td>
+			<td>
+				<div className={style.itemCellCentered}>
 					{itemInfos.modifier
 						? new Date(itemInfos.updatedAt).toLocaleDateString(language, {
 								year: "numeric",

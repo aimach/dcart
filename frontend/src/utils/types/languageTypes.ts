@@ -115,6 +115,11 @@ type LanguageObject = {
 		withStatus: string;
 		withAgentivities: string;
 		withSourceMaterials: string;
+		withAgentActivities: string;
+		noActivityDefined: string;
+		noSourceMaterialDefined: string;
+		noAgentivityDefined: string;
+		noStatusDefined: string;
 		aside: {
 			filters: string;
 			sources: string;
@@ -163,6 +168,7 @@ type LanguageObject = {
 			name: string;
 			status: string;
 			createdOn: string;
+			createdBy: string;
 			updatedOn: string;
 			lastUploadBy: string;
 			links: string;
@@ -350,7 +356,7 @@ type LanguageObject = {
 		translationManagement: {
 			frenchTranslation: string;
 			englishTranslation: string;
-			"homepage.title": string;
+			"homepage.atitle": string;
 			"homepage.description": string;
 			"menu.description": string;
 			"mapPage.introContent": string;

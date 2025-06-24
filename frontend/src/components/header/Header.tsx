@@ -9,10 +9,7 @@ import { AuthContext } from "../../context/AuthContext";
 import { useTranslation } from "../../utils/hooks/useTranslation";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
 // import des services
-import {
-	getBackofficeNavigationList,
-	getTranslationNavigationList,
-} from "../../utils/menu/menuListArrays";
+import { getTranslationNavigationList } from "../../utils/menu/menuListArrays";
 // import des types
 import { useContext, type Dispatch, type SetStateAction } from "react";
 // import du style
@@ -20,7 +17,7 @@ import style from "./header.module.scss";
 // import des images
 import MAPLogo from "../../assets/map_logo.png";
 // import des icônes
-import { Home, MenuIcon, MoveLeft } from "lucide-react";
+import { Home, MenuIcon } from "lucide-react";
 
 interface HeaderComponentProps {
 	type: "visitor" | "backoffice";
@@ -71,7 +68,6 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 					onClick={() => navigate("/")}
 					className={style.headerBackButton}
 				>
-					<MoveLeft />
 					{translation[language].navigation.website}
 				</button>
 			)}

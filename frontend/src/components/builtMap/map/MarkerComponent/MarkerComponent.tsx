@@ -45,8 +45,7 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 		if (itemType === "map") {
 			// ouverture de l'onglet "infos"
 			setSelectedTabMenu("infos");
-			setIsPanelDisplayed?.(true);
-
+			setIsPanelDisplayed(true);
 			setSelectedMarker(point);
 		}
 	};

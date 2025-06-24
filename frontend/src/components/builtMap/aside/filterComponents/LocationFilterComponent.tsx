@@ -30,7 +30,6 @@ const LocationFilterComponent = ({
 }: LocationFilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
-
 	// récupération des données depuis le store
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),

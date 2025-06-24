@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo } from "react";
+import { useState, useEffect, useMemo, useRef } from "react";
 // import des composants
 import ResultComponent from "../tabComponents/ResultComponent";
 import FilterComponent from "../tabComponents/FilterComponent";
@@ -16,6 +16,7 @@ import {
 	getAllLocationsFromPoints,
 	getAllSourceMaterialFromPoints,
 	getAllSourceTypeFromPoints,
+	getMinAndMaxElementNumbers,
 	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
 // import des types
@@ -155,6 +156,15 @@ const AsideMainComponent = () => {
 		}
 	}, [mapInfos, allPoints]);
 
+	// calcul des bornes temporelles pour le filtre de temps (évite de les recalculer à chaque re-render)
+	const timeBoundsRef = useRef(null as { min: number; max: number } | null);
+	useEffect(() => {
+		if (allPoints.length > 0 && !timeBoundsRef.current) {
+			const { min, max } = getMinAndMaxElementNumbers(allPoints);
+			timeBoundsRef.current = { min, max };
+		}
+	}, [allPoints]);
+
 	// définition du composant à rendre
 	switch (selectedTabMenu) {
 		case "results":
@@ -169,6 +179,7 @@ const AsideMainComponent = () => {
 					agentStatusOptions={agentStatusOptions}
 					agentivityOptions={agentivityOptions}
 					sourceMaterialOptions={sourceMaterialOptions}
+					timeBoundsRef={timeBoundsRef}
 				/>
 			);
 		case "infos":

@@ -31,6 +31,10 @@ interface FilterComponentProps {
 	agentStatusOptions: OptionType[];
 	agentivityOptions: OptionType[];
 	sourceMaterialOptions: OptionType[];
+	timeBoundsRef: React.MutableRefObject<{
+		min: number;
+		max: number;
+	} | null>;
 }
 
 /**
@@ -53,6 +57,7 @@ const FilterComponent = ({
 	agentStatusOptions,
 	agentivityOptions,
 	sourceMaterialOptions,
+	timeBoundsRef,
 }: FilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
@@ -139,13 +144,13 @@ const FilterComponent = ({
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
-		setLocationNames([]);
-		setElementNames([]);
+		setLocationNameValues([]);
+		setElementNameValues([]);
 		setSourceTypeValues([]);
-		setAgentActivityNames([]);
-		setAgentStatusNames([]);
-		setAgentivityNames([]);
-		setSourceMaterialNames([]);
+		setAgentActivityValues([]);
+		setAgentStatusValues([]);
+		setAgentivityValues([]);
+		setSourceMaterialValues([]);
 		resetLanguageValues();
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
@@ -182,7 +187,10 @@ const FilterComponent = ({
 							return (
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.divinityNb}</h4>
-									<DivinityNbComponent key={filter.id} />
+									<DivinityNbComponent
+										key={filter.id}
+										timeBoundsRef={timeBoundsRef}
+									/>
 								</div>
 							);
 						}
@@ -295,7 +303,7 @@ const FilterComponent = ({
 			<div className={style.filterButtonContainer}>
 				<ButtonComponent
 					type="button"
-					color="brown"
+					color="blue"
 					textContent={translation[language].button.filter}
 					onClickFunction={handleFilterButton}
 				/>
@@ -304,7 +312,6 @@ const FilterComponent = ({
 					color="brown"
 					textContent={translation[language].button.resetFilter}
 					onClickFunction={resetFilters}
-					isSelected={false}
 				/>
 			</div>
 		</div>

@@ -17,6 +17,7 @@ import type {
 import {
 	getAgentsArrayWithoutDuplicates,
 	getDatationSentence,
+	getOptionalCellValue,
 	getSanitizedAgent,
 } from "../../../../utils/functions/map";
 import { getAllAttestationsFromSourceId } from "../../../../utils/api/builtMap/getRequests";
@@ -24,6 +25,8 @@ import { getAllAttestationsFromSourceId } from "../../../../utils/api/builtMap/g
 import style from "./tabComponent.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+import { isSelectedFilterInThisMap } from "../../../../utils/functions/filter";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;
@@ -65,6 +68,8 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 			fetchAllAttestations();
 		}
 	}, [sourceIsSelected, source.source_id, attestations]);
+
+	const { mapInfos } = useMapStore();
 
 	// formatage des attestations avant affichage
 	const formattedAttestations = useMemo(() => {
@@ -121,12 +126,69 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 									<div>{agentsString}</div>
 								</td>
 							</tr>
+							{isSelectedFilterInThisMap(mapInfos, "agentActivity") && (
+								<tr>
+									<th>{translation[language].mapPage.aside.agentActivity}</th>
+									<td>
+										{getOptionalCellValue(
+											attestation,
+											`activite_${language}`,
+											translation[language].mapPage.noActivityDefined,
+										)}
+									</td>
+								</tr>
+							)}
+							{isSelectedFilterInThisMap(mapInfos, "agentStatus") && (
+								<tr>
+									<th>{translation[language].mapPage.aside.agentStatus}</th>
+									<td>
+										{getOptionalCellValue(
+											attestation,
+											`statut_${language}`,
+											translation[language].mapPage.noStatusDefined,
+										)}
+									</td>
+								</tr>
+							)}
+							{isSelectedFilterInThisMap(mapInfos, "agentivity") && (
+								<tr>
+									<th>{translation[language].mapPage.aside.agentivity}</th>
+									<td>
+										{getOptionalCellValue(
+											attestation,
+											"agentivity",
+											translation[language].mapPage.noAgentivityDefined,
+											language,
+										)}
+									</td>
+								</tr>
+							)}
+							{isSelectedFilterInThisMap(mapInfos, "sourceMaterial") && (
+								<tr>
+									<th>{translation[language].mapPage.aside.sourceMaterial}</th>
+									<td>
+										{source.types[`material_${language}`] ??
+											translation[language].mapPage.noSourceMaterialDefined}
+									</td>
+								</tr>
+							)}
+							{isSelectedFilterInThisMap(mapInfos, "sourceType") && (
+								<tr>
+									<th>{translation[language].mapPage.aside.sourceType}</th>
+									<td>
+										{source.types[`type_source_${language}`].reduce(
+											(acc, type) =>
+												type && acc.includes(type) ? acc : `${acc}, ${type}`,
+										)}
+									</td>
+								</tr>
+							)}
 						</tbody>
 					</table>
 				</div>
 			);
 		});
-	}, [attestations, language, translation]);
+	}, [attestations, language, translation, mapInfos]);
 
 	return (
 		<details

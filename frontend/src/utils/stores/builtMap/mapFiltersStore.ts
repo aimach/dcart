@@ -58,6 +58,11 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 		get().setElementNames([]);
 		get().setLocationNames([]);
 		get().setSourceTypeNames([]);
+		get().setAgentActivityNames([]);
+		get().setAgentStatusNames([]);
+		get().setAgentivityNames([]);
+		get().setSourceMaterialNames([]);
+		get().setLanguageValues({ greek: false, semitic: false });
 	},
 	isReset: false,
 	setIsReset: (isReset) => set(() => ({ isReset: isReset })),

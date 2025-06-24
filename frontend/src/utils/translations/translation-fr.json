@@ -18,7 +18,7 @@
 		"users": "UTILISATEURS",
 		"tags": "ÉTIQUETTES",
 		"divinities": "DIVINITÉS",
-		"website": "SITE"
+		"website": "RETOUR AU SITE"
 	},
 	"alert": {
 		"maxReached": "Nombre maximum de filtres atteint",
@@ -113,6 +113,11 @@
 		"withStatus": "avec les status",
 		"withAgentivities": "avec les agentivités",
 		"withSourceMaterials": "avec les supports",
+		"withAgentActivities": "avec les activités",
+		"noActivityDefined": "Pas d'activité définie",
+		"noSourceMaterialDefined": "Pas de support défini",
+		"noAgentivityDefined": "Pas d'agentivité définie",
+		"noStatusDefined": "Pas de statut défini",
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",
@@ -161,6 +166,7 @@
 			"name": "Nom/Description",
 			"status": "Statut",
 			"createdOn": "Date de création",
+			"createdBy": "Créé par",
 			"updatedOn": "Date de modification",
 			"lastUploadBy": "Dernière modification par",
 			"links": "Liens rapides"
@@ -396,7 +402,7 @@
 		"translationManagement": {
 			"frenchTranslation": "Traduction en français",
 			"englishTranslation": "Traduction en anglais",
-			"homepage.title": "Titre de la page d'accueil",
+			"homepage.atitle": "Titre de la page d'accueil",
 			"homepage.description": "Description de la page d'accueil",
 			"menu.description": "Contenu de la page de menu",
 			"mapPage.introContent": "Introduction du point sélectionné dans la carte (avant statistiques et sources)"

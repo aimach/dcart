@@ -177,6 +177,9 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 										{translation[language].backoffice.managementTable.createdOn}
 									</th>
 									<th scope="col">
+										{translation[language].backoffice.managementTable.createdBy}
+									</th>
+									<th scope="col">
 										{translation[language].backoffice.managementTable.updatedOn}
 									</th>
 									<th scope="col">

@@ -18,7 +18,7 @@
 		"users": "USERS",
 		"tags": "TAGS",
 		"divinities": "DIVINITIES",
-		"website": "WEBSITE"
+		"website": "BACK TO WEBSITE"
 	},
 	"alert": {
 		"maxReached": "Maximum number of filters reached",
@@ -113,6 +113,11 @@
 		"withStatus": "with status",
 		"withAgentivities": "with agentivities",
 		"withSourceMaterials": "with source materials",
+		"withAgentActivities": "with agent activities",
+		"noActivityDefined": "No activity defined",
+		"noSourceMaterialDefined": "No source material defined",
+		"noAgentivityDefined": "No agentivity defined",
+		"noStatusDefined": "No status defined",
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
@@ -161,6 +166,7 @@
 			"name": "Name/Description",
 			"status": "Status",
 			"createdOn": "Creation date",
+			"createdBy": "Created by",
 			"updatedOn": "Modification date",
 			"lastUploadBy": "Last upload by",
 			"links": "Quick links"
@@ -394,7 +400,7 @@
 		"translationManagement": {
 			"frenchTranslation": "French translation",
 			"englishTranslation": "English translation",
-			"homepage.title": "Title of the homepage",
+			"homepage.atitle": "Title of the homepage",
 			"homepage.description": "Description of the homepage",
 			"menu.description": "Content of the menu",
 			"mapPage.introContent": "Introduction of the selection panel in the map (before charts and sources)"
