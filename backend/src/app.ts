@@ -62,7 +62,7 @@ app.use("/translation", translationRoutes);
 
 // Démarrage du serveur
 // app.listen(6001, "0.0.0.0", () =>
-app.listen(6001, () =>
+app.listen(PORT, () =>
 	// console.log(`Server running on http://0.0.0.0:${PORT}`),
 	console.log(`Server running on http://${HOST}:${PORT}`),
 );
