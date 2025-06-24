@@ -113,6 +113,7 @@
 		"withStatus": "avec les status",
 		"withAgentivities": "avec les agentivités",
 		"withSourceMaterials": "avec les supports",
+		"withAgentActivities": "avec les activités",
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",

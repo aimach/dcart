@@ -115,6 +115,7 @@ type LanguageObject = {
 		withStatus: string;
 		withAgentivities: string;
 		withSourceMaterials: string;
+		withAgentActivities: string;
 		aside: {
 			filters: string;
 			sources: string;

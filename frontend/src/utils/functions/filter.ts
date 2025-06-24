@@ -415,6 +415,7 @@ const displayFiltersTags = (
 	sourceTypeNames: string[],
 	agentStatusNames: string[],
 	agentivityNames: string[],
+	agentActivityNames: string[],
 	sourceMaterialNames: string[],
 	languageValues: Record<string, boolean>,
 	translationObject: LanguageObject,
@@ -479,6 +480,13 @@ const displayFiltersTags = (
 			`${translationObject.mapPage.withSourceMaterials} : ${sourceMaterialNames.join(
 				", ",
 			)}`,
+		);
+	}
+
+	// affichage des activités des agents
+	if (agentActivityNames.length) {
+		stringArray.push(
+			`${translationObject.mapPage.withAgentActivities} : ${agentActivityNames.join(", ")}`,
 		);
 	}
 
