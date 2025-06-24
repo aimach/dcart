@@ -43,6 +43,7 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
+import MapClickHandler from "../controls/MapClickHandler";
 
 /**
  * Composant de la carte
@@ -289,6 +290,7 @@ const MapComponent = () => {
 								<ZoomControl position="bottomleft" />
 								<ScaleControl position="bottomright" />
 								<OrientationControl />
+								<MapClickHandler deselectFunction={resetSelectedMarker} />
 								{/* <ResetControl mapBounds={bounds} /> */}
 							</>
 						)}
