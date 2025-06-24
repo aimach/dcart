@@ -417,13 +417,6 @@ sources_with_attestations AS (
                       JOIN genre ON genre.id = agent_genre.id_genre 
                       WHERE agent_genre.id_agent = agent.id
                     ) AS genres -- Tableaux des genres pour l'agent
-                    (
-                      SELECT 
-                      jsonb_agg(jsonb_build_object('nom_fr', genre.nom_fr, 'nom_en', genre.nom_en)) 
-                      FROM agent_genre 
-                      JOIN genre ON genre.id = agent_genre.id_genre 
-                      WHERE agent_genre.id_agent = agent.id
-                    ) AS genres -- Tableaux des genres pour l'agent
                     FROM agent 
                     LEFT JOIN agent_activite ON agent_activite.id_agent = agent.id
                     LEFT JOIN activite_agent ON activite_agent.id = agent_activite.id_activite
