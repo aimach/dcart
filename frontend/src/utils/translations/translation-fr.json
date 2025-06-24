@@ -396,7 +396,7 @@
 		"translationManagement": {
 			"frenchTranslation": "Traduction en français",
 			"englishTranslation": "Traduction en anglais",
-			"homepage.title": "Titre de la page d'accueil",
+			"homepage.atitle": "Titre de la page d'accueil",
 			"homepage.description": "Description de la page d'accueil",
 			"menu.description": "Contenu de la page de menu",
 			"mapPage.introContent": "Introduction du point sélectionné dans la carte (avant statistiques et sources)"

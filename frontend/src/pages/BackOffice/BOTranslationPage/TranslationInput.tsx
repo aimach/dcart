@@ -25,7 +25,7 @@ type TranslationInputProps = {
 
 const getImageSrc = (key: string) => {
 	switch (key) {
-		case "homepage.title":
+		case "homepage.atitle":
 			return homepageTitleImage;
 		case "homepage.description":
 			return homepageDescriptionImage;

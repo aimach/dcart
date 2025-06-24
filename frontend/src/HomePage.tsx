@@ -69,7 +69,7 @@ function HomePage() {
 		useState<string>("");
 	useEffect(() => {
 		const fetchDatabaseTranslation = async () => {
-			const title = await getTranslations("homepage.title");
+			const title = await getTranslations("homepage.atitle");
 			setTranslationTitle(title[language]);
 			const description = await getTranslations("homepage.description");
 			setTranslationDescription(description[language]);

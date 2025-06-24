@@ -350,7 +350,7 @@ type LanguageObject = {
 		translationManagement: {
 			frenchTranslation: string;
 			englishTranslation: string;
-			"homepage.title": string;
+			"homepage.atitle": string;
 			"homepage.description": string;
 			"menu.description": string;
 			"mapPage.introContent": string;
