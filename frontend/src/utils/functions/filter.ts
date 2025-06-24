@@ -291,11 +291,16 @@ const getSelectDefaultValues = (
 	// convertir les valeurs en nombre
 	const defaultValues = userFiltersListId
 		.split("|")
-		.map((id) => (typeof id === "number" ? Number.parseInt(id, 10) : id));
+		.map((id) => (typeof id === "string" ? Number.parseInt(id, 10) : id));
 	// trouver les options correspondantes
-	return (listOptions ?? []).filter((option) =>
-		defaultValues.includes(option.value as number),
+	const filteredOptions = (listOptions ?? []).filter((option) =>
+		defaultValues.includes(
+			typeof option.value === "string"
+				? Number.parseInt(option.value, 10)
+				: option.value,
+		),
 	);
+	return filteredOptions;
 };
 
 const handleMultiSelectChange = (
