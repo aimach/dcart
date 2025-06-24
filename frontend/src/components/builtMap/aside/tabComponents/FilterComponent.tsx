@@ -295,7 +295,7 @@ const FilterComponent = ({
 			<div className={style.filterButtonContainer}>
 				<ButtonComponent
 					type="button"
-					color="brown"
+					color="blue"
 					textContent={translation[language].button.filter}
 					onClickFunction={handleFilterButton}
 				/>
@@ -304,7 +304,6 @@ const FilterComponent = ({
 					color="brown"
 					textContent={translation[language].button.resetFilter}
 					onClickFunction={resetFilters}
-					isSelected={false}
 				/>
 			</div>
 		</div>

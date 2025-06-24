@@ -19,10 +19,7 @@ import {
 	noFilterChecked,
 } from "../../../../utils/functions/filter";
 import { updateFiltersToMap } from "../../../../utils/api/builtMap/putRequests";
-import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-} from "../../../../utils/functions/toast";
+import { notifyCreateSuccess } from "../../../../utils/functions/toast";
 // import des types
 import type { FilterType } from "../../../../utils/types/filterTypes";
 import type { ChangeEvent, FormEventHandler } from "react";

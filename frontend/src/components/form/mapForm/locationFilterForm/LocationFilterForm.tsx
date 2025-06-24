@@ -24,12 +24,7 @@ const LocationFilterForm = () => {
 				(filter) =>
 					(filter.filter as Record<string, string>).type === "location",
 			);
-			if (locationFilter) {
-				setSelectedOption(
-					(locationFilter.options as Record<string, string>)?.solution ??
-						"greatRegion",
-				);
-			}
+			setSelectedOption(locationFilter?.options?.solution ?? "greatRegion");
 		}
 	}, [mapInfos]);
 
