@@ -13,6 +13,7 @@ import type {
 	MapType,
 	MenuTabType,
 	MapInfoType,
+	AttestationType,
 } from "../types/mapTypes";
 import type { LatLng, Map as LeafletMap, Point } from "leaflet";
 import type { StorymapType } from "../types/storymapTypes";
@@ -453,6 +454,44 @@ const getMapAttribution = (tileLayerURL: string): string => {
 		? '<a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
 		: '<a href="https://cawm.lib.uiowa.edu/index.html" target="_blank">Consortium of Ancient World Mappers</a> contributors';
 };
+
+const getOptionalCellValue = (
+	attestation: AttestationType,
+	key: string,
+	message: string,
+	language?: Language,
+) => {
+	if (!attestation.agents || attestation.agents.length === 0) {
+		return message;
+	}
+
+	if (key === "agentivity") {
+		return attestation.agents
+			.map((agent) => {
+				console.log(agent.agentivites);
+				if (!agent.agentivites) {
+					return message;
+				}
+				return agent.agentivites
+					.map((agentivity) => agentivity[`nom_${language}`])
+					.reduce((acc, agentivity) =>
+						agentivity && acc.includes(agentivity)
+							? acc
+							: `${acc}, ${agentivity}`,
+					);
+			})
+			.reduce((acc, agentivity) =>
+				agentivity && acc.includes(agentivity) ? acc : `${acc}, ${agentivity}`,
+			);
+	}
+
+	return (attestation.agents as AgentType[])
+		.map((agent) => agent[key])
+		.reduce((acc, current) =>
+			current && acc.includes(current) ? acc : `${acc}, ${current}`,
+		);
+};
+
 export {
 	getAgentsArrayWithoutDuplicates,
 	getAllAttestationsIdsFromParsedPoints,
@@ -469,4 +508,5 @@ export {
 	zoomOnSelectedMarkerCluster,
 	uploadMapImage,
 	getMapAttribution,
+	getOptionalCellValue,
 };

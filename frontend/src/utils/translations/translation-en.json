@@ -114,6 +114,10 @@
 		"withAgentivities": "with agentivities",
 		"withSourceMaterials": "with source materials",
 		"withAgentActivities": "with agent activities",
+		"noActivityDefined": "No activity defined",
+		"noSourceMaterialDefined": "No source material defined",
+		"noAgentivityDefined": "No agentivity defined",
+		"noStatusDefined": "No status defined",
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
