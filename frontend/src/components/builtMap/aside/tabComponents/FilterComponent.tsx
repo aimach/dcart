@@ -31,6 +31,10 @@ interface FilterComponentProps {
 	agentStatusOptions: OptionType[];
 	agentivityOptions: OptionType[];
 	sourceMaterialOptions: OptionType[];
+	timeBoundsRef: React.MutableRefObject<{
+		min: number;
+		max: number;
+	} | null>;
 }
 
 /**
@@ -53,6 +57,7 @@ const FilterComponent = ({
 	agentStatusOptions,
 	agentivityOptions,
 	sourceMaterialOptions,
+	timeBoundsRef,
 }: FilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
@@ -182,7 +187,10 @@ const FilterComponent = ({
 							return (
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.divinityNb}</h4>
-									<DivinityNbComponent key={filter.id} />
+									<DivinityNbComponent
+										key={filter.id}
+										timeBoundsRef={timeBoundsRef}
+									/>
 								</div>
 							);
 						}

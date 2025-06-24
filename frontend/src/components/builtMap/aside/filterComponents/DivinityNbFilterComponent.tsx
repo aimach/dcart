@@ -1,26 +1,21 @@
 // import des bibliothèques
 import MultiRangeSlider from "multi-range-slider-react";
-import { useMemo } from "react";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
-import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-import { getMinAndMaxElementNumbers } from "../../../../utils/functions/filter";
+
+type DivinityNbComponentProps = {
+	timeBoundsRef: React.MutableRefObject<{ min: number; max: number } | null>;
+};
 
 /**
  * Composant de filtre pour les langues (grec, sémitique)
  */
-const DivinityNbComponent = () => {
+const DivinityNbComponent = ({ timeBoundsRef }: DivinityNbComponentProps) => {
 	// récupération des données des filtres depuis le store
-	const { allPoints } = useMapStore();
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: on ne souhaite pas de mise à jour car les bornes doivent rester les mêmes (sinon recalcule sur les points filtrés)
-	const { min, max } = useMemo(() => {
-		return getMinAndMaxElementNumbers(allPoints);
-	}, []);
 
 	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
 	function handleRangeChange(minValue: string, maxValue: string) {
@@ -34,18 +29,17 @@ const DivinityNbComponent = () => {
 	}
 
 	return (
-		min &&
-		max && (
+		timeBoundsRef.current && (
 			<div>
 				<MultiRangeSlider
 					key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-					min={min}
-					max={max}
+					min={timeBoundsRef.current.min}
+					max={timeBoundsRef.current.max}
 					step={1}
 					stepOnly
 					baseClassName={"multi-range-slider-custom"}
-					minValue={userFilters.minDivinityNb ?? min}
-					maxValue={userFilters.maxDivinityNb ?? max}
+					minValue={userFilters.minDivinityNb ?? timeBoundsRef.current.min}
+					maxValue={userFilters.maxDivinityNb ?? timeBoundsRef.current.max}
 					labels={[]}
 					onChange={(e) => {
 						handleRangeChange(e.minValue.toString(), e.maxValue.toString());
