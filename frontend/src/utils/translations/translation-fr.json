@@ -161,6 +161,7 @@
 			"name": "Nom/Description",
 			"status": "Statut",
 			"createdOn": "Date de création",
+			"createdBy": "Créé par",
 			"updatedOn": "Date de modification",
 			"lastUploadBy": "Dernière modification par",
 			"links": "Liens rapides"
