@@ -30,6 +30,7 @@ import type { MapColorType, PointType } from "../../../../utils/types/mapTypes";
 import style from "./tabComponent.module.scss";
 // import des icônes
 import { ChartColumnBig, ChartPie } from "lucide-react";
+import { data } from "react-router";
 
 // import des éléments de chart.js
 ChartJS.register(
@@ -131,6 +132,10 @@ const ChartComponent = () => {
 	const barOptions = {
 		indexAxis: "x" as const,
 		responsive: true,
+		animation: {
+			animateScale: true, // animation de l'échelle
+			duration: 500, // durée en ms
+		},
 		plugins: {
 			legend: {
 				display: false,
@@ -156,7 +161,9 @@ const ChartComponent = () => {
 	const doughnutOptions = {
 		responsive: true,
 		animation: {
-			duration: 0,
+			animateRotate: true,
+			easing: "easeInOutSine",
+			duration: 500,
 		},
 		plugins: {
 			legend: {
@@ -198,9 +205,13 @@ const ChartComponent = () => {
 				</fieldset>
 				<div>
 					{chartType === "doughnut" ? (
-						<Doughnut data={finalData} options={doughnutOptions} />
+						<Doughnut
+							data={finalData}
+							options={doughnutOptions}
+							key={dataType}
+						/>
 					) : (
-						<Bar data={finalData} options={barOptions} />
+						<Bar data={finalData} options={barOptions} key={dataType} />
 					)}
 				</div>
 				<fieldset className={style.chartRadio}>
