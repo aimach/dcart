@@ -139,13 +139,13 @@ const FilterComponent = ({
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
-		setLocationNames([]);
-		setElementNames([]);
+		setLocationNameValues([]);
+		setElementNameValues([]);
 		setSourceTypeValues([]);
-		setAgentActivityNames([]);
-		setAgentStatusNames([]);
-		setAgentivityNames([]);
-		setSourceMaterialNames([]);
+		setAgentActivityValues([]);
+		setAgentStatusValues([]);
+		setAgentivityValues([]);
+		setSourceMaterialValues([]);
 		resetLanguageValues();
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
