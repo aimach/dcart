@@ -44,7 +44,7 @@ const emptyUserFilters: UserFilterType = {
 	sourceTypeId: undefined,
 	agentActivityId: undefined,
 	agentNameId: undefined,
-	agentGender: undefined,
+	agentGender: { male: false, female: false, nonBinary: false },
 	agentStatusName: undefined,
 	agentivityName: undefined,
 	sourceMaterialName: undefined,

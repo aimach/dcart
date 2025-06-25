@@ -17,21 +17,6 @@ const AgentGenderFilterComponent = () => {
 		useShallow((state) => state),
 	);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: pas nécessaire de surveiller le changement d'état des filtres
-	useEffect(() => {
-		// si aucune case n'est cochée, on coche toutes les cases
-		if (userFilters.agentGender === undefined) {
-			setUserFilters({
-				...userFilters,
-				agentGender: {
-					male: false,
-					female: false,
-					nonBinary: false,
-				},
-			});
-		}
-	}, []);
-
 	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
 	function handleChangeCheckbox(checked: boolean, name: string) {
 		const newLanguageFiltersObject = {
