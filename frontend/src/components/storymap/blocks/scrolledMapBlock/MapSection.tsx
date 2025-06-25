@@ -10,10 +10,7 @@ import {
 // import des custom hooks
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des services
-import {
-	getLittleCircleIcon,
-	getIcon,
-} from "../../../../utils/functions/icons";
+import { getIcon } from "../../../../utils/functions/icons";
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 import { getMapAttribution } from "../../../../utils/functions/map";
 // import des types

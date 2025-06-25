@@ -3,6 +3,7 @@ import { useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 // import des composants
 import CommonForm from "../commonForm/CommonForm";
+import FormTitleComponent from "../common/FormTitleComponent";
 // import du context
 // import des services
 import { subtitleInputs } from "../../../../utils/forms/storymapInputArray";
@@ -19,7 +20,6 @@ import {
 import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 // import des types
 import type { SubmitHandler } from "react-hook-form";
-import FormTitleComponent from "../common/FormTitleComponent";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { allInputsType } from "../../../../utils/types/formTypes";
 

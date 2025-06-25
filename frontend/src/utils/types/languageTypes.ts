@@ -82,6 +82,7 @@ type LanguageObject = {
 		noPublished: string;
 		close: string;
 		typeOf: string;
+		noData: string;
 	};
 	modal: {
 		firstContent: string;
@@ -116,10 +117,7 @@ type LanguageObject = {
 		withAgentivities: string;
 		withSourceMaterials: string;
 		withAgentActivities: string;
-		noActivityDefined: string;
-		noSourceMaterialDefined: string;
-		noAgentivityDefined: string;
-		noStatusDefined: string;
+		gender: string;
 		aside: {
 			filters: string;
 			sources: string;
@@ -137,7 +135,7 @@ type LanguageObject = {
 			sourceMaterial: string;
 			male: string;
 			female: string;
-			nonbinary: string;
+			nonBinary: string;
 			timeLimits: string;
 			seeStat: string;
 			seeSources: string;

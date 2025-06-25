@@ -53,13 +53,13 @@ export type stepInputsType = {
 };
 
 interface StepFormProps {
-	parentBlockId: string;
+	scrollMapContent: BlockContentType;
 }
 
 /**
  * Formulaire pour la création d'un bloc de type "step"
  */
-const StepForm = ({ parentBlockId }: StepFormProps) => {
+const StepForm = ({ scrollMapContent }: StepFormProps) => {
 	// on récupère la langue
 	const { translation, language } = useTranslation();
 
@@ -69,8 +69,8 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	const {
 		storymapInfos,
 		block,
-		updateFormType,
 		updateBlockContent,
+		updateFormType,
 		reload,
 		setReload,
 	} = useBuilderStore(useShallow((state) => state));
@@ -92,6 +92,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				} as PointSetType)
 			: null,
 	);
+
 	const handleFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
 			event,
@@ -115,6 +116,16 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 		return null;
 	}, [block, stepAction]);
 
+	// récupération des fonctions de gestion du formulaire
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset,
+		control,
+		setValue,
+	} = useForm<stepInputsType>({ defaultValues: {} });
+
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: stepInputsType) => {
 		try {
@@ -134,42 +145,53 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						"step",
 						stepAction as string,
 						initialPointSetId as string,
-						parentBlockId,
+						scrollMapContent.id as string,
 					);
 				}
 			} else if (stepAction === "edit" && pointSet) {
+				const pointSetWithName = {
+					...pointSet,
+					name_fr: data.content1_lang1,
+					name_en: data.content1_lang2,
+				};
 				// mise à jour du bloc de la carte
 				await uploadParsedPointsForSimpleMap(
 					data as blockType,
-					pointSet,
+					pointSet.name_en ? pointSet : pointSetWithName,
 					storymapId as string,
 					"step",
 					stepAction as string,
 					initialPointSetId as string,
-					parentBlockId,
+					scrollMapContent.id as string,
 				);
+				updateBlockContent(scrollMapContent);
 			}
-			reset(); // réinitialisation du formulaire
-			updateBlockContent(null);
+			// réinitialisation du formulaire
+			setPointSet(null);
+			setValue("content1_lang1", "");
+			setValue("content1_lang2", "");
 			setSearchParams({ stepAction: "create" });
 			setReload(!reload);
+			const windowElement = document.querySelector(
+				'section[class*="storymapFormContent"]',
+			);
+			if (windowElement) {
+				windowElement.scrollTo({
+					top: 0,
+					behavior: "smooth",
+				});
+			}
 		} catch (error) {
 			console.error("Erreur lors de l'envoi du fichier :", error);
 		}
 	};
 
-	// récupération des fonctions de gestion du formulaire
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		reset,
-		control,
-	} = useForm<stepInputsType>({ defaultValues: {} });
-
 	useEffect(() => {
 		if (stepAction === "edit") {
 			reset(block as BlockContentType);
+		} else if (stepAction === "create") {
+			setValue("content1_lang1", "");
+			setValue("content1_lang2", "");
 		}
 	}, [stepAction, reset, block]);
 
@@ -214,7 +236,8 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	}, [storymapInfos]);
 
 	return (
-		<>
+		<section key={reload.toString()}>
+			{/* Utilisation de reload pour forcer le reset des wysiwyg */}
 			<FormTitleComponent action={stepAction as string} translationKey="step" />
 			<form
 				onSubmit={handleSubmit(handlePointSubmit)}
@@ -404,7 +427,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					/>
 				</div>
 			</form>
-		</>
+		</section>
 	);
 };
 

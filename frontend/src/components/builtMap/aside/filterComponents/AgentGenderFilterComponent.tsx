@@ -1,5 +1,4 @@
 // import des custom hooks
-import { useEffect } from "react";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
@@ -16,21 +15,6 @@ const AgentGenderFilterComponent = () => {
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies: pas nécessaire de surveiller le changement d'état des filtres
-	useEffect(() => {
-		// si aucune case n'est cochée, on coche toutes les cases
-		if (userFilters.agentGender === undefined) {
-			setUserFilters({
-				...userFilters,
-				agentGender: {
-					male: false,
-					female: false,
-					nonBinary: false,
-				},
-			});
-		}
-	}, []);
 
 	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
 	function handleChangeCheckbox(checked: boolean, name: string) {
@@ -83,7 +67,7 @@ const AgentGenderFilterComponent = () => {
 					}
 				/>
 				<label htmlFor="nonBinary">
-					{translation[language].mapPage.aside.nonbinary}
+					{translation[language].mapPage.aside.nonBinary}
 				</label>
 			</div>
 		</div>

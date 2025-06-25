@@ -159,11 +159,12 @@ const AsideMainComponent = () => {
 	// calcul des bornes temporelles pour le filtre de temps (évite de les recalculer à chaque re-render)
 	const timeBoundsRef = useRef(null as { min: number; max: number } | null);
 	useEffect(() => {
+		if (!mapInfos || !allPoints) return;
 		if (allPoints.length > 0 && !timeBoundsRef.current) {
 			const { min, max } = getMinAndMaxElementNumbers(allPoints);
 			timeBoundsRef.current = { min, max };
 		}
-	}, [allPoints]);
+	}, [allPoints, mapInfos]);
 
 	// définition du composant à rendre
 	switch (selectedTabMenu) {

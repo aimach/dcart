@@ -9,9 +9,9 @@ import { dcartDataSource } from "../../dataSource/dataSource";
 import { Storymap } from "../../entities/storymap/Storymap";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 import { generateUniqueSlug } from "../../utils/functions/builtMap";
+import { jwtService } from "../../utils/jwt";
 // import des types
 import type { Request, Response } from "express";
-import { jwtService } from "../../utils/jwt";
 
 interface UserPayload extends jwt.JwtPayload {
 	userStatus: "admin" | "writer";

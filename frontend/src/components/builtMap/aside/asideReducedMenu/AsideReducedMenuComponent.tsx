@@ -12,7 +12,6 @@ import type {
 	MapInfoType,
 	MenuTabType,
 } from "../../../../utils/types/mapTypes";
-import type { Map as LeafletMap } from "leaflet";
 // import du style
 import style from "./asideReducedMenuComponent.module.scss";
 // import des icones

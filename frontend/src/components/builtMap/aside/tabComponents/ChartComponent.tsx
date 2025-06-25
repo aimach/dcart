@@ -30,7 +30,6 @@ import type { MapColorType, PointType } from "../../../../utils/types/mapTypes";
 import style from "./tabComponent.module.scss";
 // import des icônes
 import { ChartColumnBig, ChartPie } from "lucide-react";
-import { data } from "react-router";
 
 // import des éléments de chart.js
 ChartJS.register(

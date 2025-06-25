@@ -21,12 +21,12 @@ import {
 	getSanitizedAgent,
 } from "../../../../utils/functions/map";
 import { getAllAttestationsFromSourceId } from "../../../../utils/api/builtMap/getRequests";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+import { isSelectedFilterInThisMap } from "../../../../utils/functions/filter";
 // import du style
 import style from "./tabComponent.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
-import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-import { isSelectedFilterInThisMap } from "../../../../utils/functions/filter";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;
@@ -133,7 +133,8 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 										{getOptionalCellValue(
 											attestation,
 											`activite_${language}`,
-											translation[language].mapPage.noActivityDefined,
+											translation,
+											language,
 										)}
 									</td>
 								</tr>
@@ -145,7 +146,8 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 										{getOptionalCellValue(
 											attestation,
 											`statut_${language}`,
-											translation[language].mapPage.noStatusDefined,
+											translation,
+											language,
 										)}
 									</td>
 								</tr>
@@ -157,7 +159,7 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 										{getOptionalCellValue(
 											attestation,
 											"agentivity",
-											translation[language].mapPage.noAgentivityDefined,
+											translation,
 											language,
 										)}
 									</td>

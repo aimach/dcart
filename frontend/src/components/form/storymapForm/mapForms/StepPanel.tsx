@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
 import {
 	DndContext,
 	PointerSensor,
@@ -15,7 +16,9 @@ import {
 import { useDroppable } from "@dnd-kit/core";
 // import des composants
 import MemoDraggableBlock from "../../../storymap/panel/DraggableBlock";
-// import du context
+import ButtonComponent from "../../../common/button/ButtonComponent";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { getBlockInfos } from "../../../../utils/api/storymap/getRequests";
 import { updateBlocksPosition } from "../../../../utils/api/storymap/getRequests";
@@ -25,10 +28,9 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./mapForms.module.scss";
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
 
 interface StepPanelProps {
-	scrollMapId: string | null;
+	scrollMapContent: BlockContentType;
 }
 
 /**
@@ -36,10 +38,14 @@ interface StepPanelProps {
  * @param scrollMapId - id de la carte déroulante
  * @returns DraggableBlock
  */
-const StepPanel = ({ scrollMapId }: StepPanelProps) => {
+const StepPanel = ({ scrollMapContent }: StepPanelProps) => {
 	const { translation, language } = useTranslation();
 	// récupération des données des stores
-	const { reload } = useBuilderStore();
+	const { reload, updateBlockContent } = useBuilderStore();
+
+	// récupération des paramètres de l'url
+	const [searchParams, setSearchParams] = useSearchParams();
+	const stepAction = searchParams.get("stepAction");
 
 	// chargement des données de la carte déroulante
 	const [scrollMapBlocks, setScrollMapBlocks] = useState<BlockContentType[]>(
@@ -48,10 +54,10 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		const fetchScrollMapInfos = async () => {
-			const response = await getBlockInfos(scrollMapId as string);
+			const response = await getBlockInfos(scrollMapContent.id as string);
 			setScrollMapBlocks(response.children);
 		};
-		if (scrollMapId) fetchScrollMapInfos();
+		if (scrollMapContent.id) fetchScrollMapInfos();
 	}, [reload]);
 
 	// -- DRAG AND DROP --
@@ -76,6 +82,13 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 	const { setNodeRef } = useDroppable({
 		id: "step-droppable",
 	});
+
+	const handleNewStep = () => {
+		setSearchParams({
+			stepAction: "create",
+		});
+		updateBlockContent(scrollMapContent);
+	};
 
 	return (
 		<section ref={setNodeRef} className={style.stepPanelSection}>
@@ -103,6 +116,16 @@ const StepPanel = ({ scrollMapId }: StepPanelProps) => {
 								index={index}
 							/>
 						))}
+					{stepAction === "edit" && (
+						<ButtonComponent
+							type="button"
+							color="brown"
+							textContent={
+								translation[language].backoffice.storymapFormPage.form.addStep
+							}
+							onClickFunction={handleNewStep}
+						/>
+					)}
 				</SortableContext>
 			</DndContext>
 		</section>

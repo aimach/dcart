@@ -207,7 +207,8 @@ const hasRequiredKeys = (
 			const imageChildren = block.children.filter(
 				(child) => child.type.name === "image",
 			)[0];
-			if (!textChildren.content1_lang2 || !imageChildren.content2_lang2) {
+			if (!textChildren || !imageChildren) return true;
+			if (!textChildren?.content1_lang2 || !imageChildren?.content2_lang2) {
 				return true;
 			}
 		}

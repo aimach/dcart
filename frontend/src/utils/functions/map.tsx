@@ -458,21 +458,34 @@ const getMapAttribution = (tileLayerURL: string): string => {
 const getOptionalCellValue = (
 	attestation: AttestationType,
 	key: string,
-	message: string,
-	language?: Language,
+	translation: TranslationType,
+	language: Language,
 ) => {
+	const noDataMessage = translation[language].common.noData;
 	if (!attestation.agents || attestation.agents.length === 0) {
-		return message;
+		return noDataMessage;
 	}
 
 	if (key === "agentivity") {
 		return attestation.agents
 			.map((agent) => {
-				console.log(agent.agentivites);
 				if (!agent.agentivites) {
-					return message;
+					return noDataMessage;
 				}
-				return agent.agentivites
+
+				if (agent.agentivites[0].nom_fr === null) {
+					return noDataMessage;
+				}
+
+				const arrayWithoutNulls = agent.agentivites.filter(
+					(agentivity) => agentivity.nom_fr !== null,
+				);
+
+				if (arrayWithoutNulls.length === 0) {
+					return noDataMessage;
+				}
+
+				return arrayWithoutNulls
 					.map((agentivity) => agentivity[`nom_${language}`])
 					.reduce((acc, agentivity) =>
 						agentivity && acc.includes(agentivity)
@@ -485,7 +498,19 @@ const getOptionalCellValue = (
 			);
 	}
 
-	return (attestation.agents as AgentType[])
+	if (attestation.agents.length === 1 && attestation.agents[0][key] === null) {
+		return noDataMessage;
+	}
+
+	const arrayWithoutNulls = (attestation.agents as AgentType[]).filter(
+		(agent) => agent[key] !== null,
+	);
+
+	if (arrayWithoutNulls.length === 0) {
+		return noDataMessage;
+	}
+
+	return arrayWithoutNulls
 		.map((agent) => agent[key])
 		.reduce((acc, current) =>
 			current && acc.includes(current) ? acc : `${acc}, ${current}`,

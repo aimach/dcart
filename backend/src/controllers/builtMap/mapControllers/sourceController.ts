@@ -232,6 +232,8 @@ export const sourceController = {
 							const lotIdsArray: number[][] = [];
 
 							// on crée un tableau contenant les paires [id premier niveau, id second niveau]
+							if (lotIds[0].length === 1)
+								lotIdsArray.push([lotIds[0][0], lotIds[0][0]]);
 							lotIds.map((lot: number[]) => {
 								for (let index = 1; index < lot.length; index++) {
 									lotIdsArray.push([lot[0], lot[index]]);
@@ -358,7 +360,7 @@ export const sourceController = {
 																					agentivityNames.includes(agentivity);
 																			} else {
 																				agentivityBoolean =
-																					agentivity === agentivityName;
+																					agentivity.nom_fr === agentivityName;
 																			}
 																		}
 																	}
@@ -366,12 +368,18 @@ export const sourceController = {
 																	agentivityBoolean = false;
 																}
 															}
+															console.log(
+																`activityBoolean: ${activityBoolean}, nameBoolean: ${nameBoolean}, statusBoolean: ${statusBoolean}, agentivityBoolean: ${agentivityBoolean}`,
+															);
 															return (
 																nameBoolean &&
 																activityBoolean &&
 																statusBoolean &&
 																agentivityBoolean
 															);
+															// return [activityBoolean, nameBoolean, statusBoolean, agentivityBoolean].some(
+															// 	Boolean,
+															// );
 														},
 													);
 													if (filteredAgents && filteredAgents.length > 0) {

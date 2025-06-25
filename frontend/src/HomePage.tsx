@@ -7,7 +7,6 @@ import ButtonComponent from "./components/common/button/ButtonComponent";
 import ItemFilterComponent from "./components/common/itemFilter/ItemFilterComponent";
 // import des services
 import { getAllTagsWithMapsAndStorymaps } from "./utils/api/builtMap/getRequests";
-import { shuffleArray } from "./utils/functions/common";
 import { getTranslations } from "./utils/api/translationAPI";
 // import des custom hooks
 import { useTranslation } from "./utils/hooks/useTranslation";

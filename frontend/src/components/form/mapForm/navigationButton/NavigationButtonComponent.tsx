@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useLocation } from "react-router";
+import { useLocation, useNavigate } from "react-router";
 // import des composants
 import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
@@ -41,6 +41,8 @@ const NavigationButtonComponent = ({
 		useShallow((state) => state),
 	);
 
+	const navigate = useNavigate();
+
 	return (
 		<div className={style.navigationButtonContainer}>
 			{step > 1 && (
@@ -80,6 +82,14 @@ const NavigationButtonComponent = ({
 								]
 					}
 					icon={<ChevronRight />}
+				/>
+			)}
+			{step === 3 && (
+				<ButtonComponent
+					type="button"
+					color="brown"
+					textContent={translation[language].common.close}
+					onClickFunction={() => navigate("/backoffice/maps")}
 				/>
 			)}
 		</div>

@@ -1,4 +1,5 @@
 // import de bibliothèques
+import { useMemo } from "react";
 // @ts-ignore
 import { Scrollama, Step } from "react-scrollama";
 import DOMPurify from "dompurify";
@@ -8,7 +9,6 @@ import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/stor
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./scrolledMapBlock.module.scss";
-import { useMemo } from "react";
 
 interface ScrolledSectionProps {
 	onStepEnter: ({ data }: { data: string }) => void;
