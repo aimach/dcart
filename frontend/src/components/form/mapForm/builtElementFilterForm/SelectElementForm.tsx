@@ -120,7 +120,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 									/>
 									<Select
 										options={elementOptions}
-										value={lot.firstLevelIds[0]}
+										value={lot.firstLevelIds[0] || null}
 										onChange={(newValue) => {
 											const current = lots[index];
 											if (!current) return;
