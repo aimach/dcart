@@ -468,7 +468,6 @@ const getOptionalCellValue = (
 	if (key === "agentivity") {
 		return attestation.agents
 			.map((agent) => {
-				console.log(agent.agentivites);
 				if (!agent.agentivites) {
 					return message;
 				}

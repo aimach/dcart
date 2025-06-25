@@ -53,13 +53,13 @@ export type stepInputsType = {
 };
 
 interface StepFormProps {
-	parentBlockId: string;
+	scrollMapContent: BlockContentType;
 }
 
 /**
  * Formulaire pour la création d'un bloc de type "step"
  */
-const StepForm = ({ parentBlockId }: StepFormProps) => {
+const StepForm = ({ scrollMapContent }: StepFormProps) => {
 	// on récupère la langue
 	const { translation, language } = useTranslation();
 
@@ -69,8 +69,8 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	const {
 		storymapInfos,
 		block,
-		updateFormType,
 		updateBlockContent,
+		updateFormType,
 		reload,
 		setReload,
 	} = useBuilderStore(useShallow((state) => state));
@@ -92,6 +92,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 				} as PointSetType)
 			: null,
 	);
+
 	const handleFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
 			event,
@@ -122,6 +123,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 		formState: { errors },
 		reset,
 		control,
+		setValue,
 	} = useForm<stepInputsType>({ defaultValues: {} });
 
 	// fonction appelée lors de la soumission du formulaire
@@ -143,26 +145,33 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 						"step",
 						stepAction as string,
 						initialPointSetId as string,
-						parentBlockId,
+						scrollMapContent.id as string,
 					);
 				}
 			} else if (stepAction === "edit" && pointSet) {
+				const pointSetWithName = {
+					...pointSet,
+					name_fr: data.content1_lang1,
+					name_en: data.content1_lang2,
+				};
 				// mise à jour du bloc de la carte
 				await uploadParsedPointsForSimpleMap(
 					data as blockType,
-					pointSet,
+					pointSet.name_en ? pointSet : pointSetWithName,
 					storymapId as string,
 					"step",
 					stepAction as string,
 					initialPointSetId as string,
-					parentBlockId,
+					scrollMapContent.id as string,
 				);
+				updateBlockContent(scrollMapContent);
 			}
 			// réinitialisation du formulaire
-			reset();
 			setPointSet(null);
-			setReload(!reload);
+			setValue("content1_lang1", "");
+			setValue("content1_lang2", "");
 			setSearchParams({ stepAction: "create" });
+			setReload(!reload);
 			const windowElement = document.querySelector(
 				'section[class*="storymapFormContent"]',
 			);
@@ -180,6 +189,9 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	useEffect(() => {
 		if (stepAction === "edit") {
 			reset(block as BlockContentType);
+		} else if (stepAction === "create") {
+			setValue("content1_lang1", "");
+			setValue("content1_lang2", "");
 		}
 	}, [stepAction, reset, block]);
 

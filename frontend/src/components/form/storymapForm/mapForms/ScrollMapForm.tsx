@@ -29,6 +29,7 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
+import { blockType } from "../../../../utils/types/formTypes";
 
 export type scrollMapInputsType = {
 	content1_lang1: string;
@@ -52,9 +53,8 @@ const ScrollMapForm = () => {
 	const { storymapId } = useParams();
 
 	// génération d'un id pour le bloc de type "scroll_map"
-	const [scrollMapId, setScrollMapId] = useState<string | null>(
-		block?.id ?? null,
-	);
+	const [scrollMapContent, setScrollMapContent] =
+		useState<BlockContentType | null>(block ?? null);
 
 	// fonction appelée lors de la soumission du formulaire (création ou édition d'un bloc de type "scroll_map")
 	const handleScrollMapSubmit = async (data: scrollMapInputsType) => {
@@ -64,7 +64,7 @@ const ScrollMapForm = () => {
 				storymapId,
 				typeName: "scroll_map",
 			});
-			setScrollMapId(result?.id);
+			setScrollMapContent(result);
 			notifyCreateSuccess("Carte déroulante", true);
 		} else if (action === "edit") {
 			await updateBlock(
@@ -76,7 +76,7 @@ const ScrollMapForm = () => {
 				},
 				block?.id.toString() as string,
 			);
-			setScrollMapId((block as BlockContentType).id);
+			setScrollMapContent(block as BlockContentType);
 			notifyEditSuccess("Carte déroulante", true);
 		}
 		// mise à jour des paramètres de l'url pour faire passer l'utilisateur sur le formulaire des étapes de la carte
@@ -111,13 +111,13 @@ const ScrollMapForm = () => {
 
 	return (
 		<section className={style.scrollMapFormContainer}>
-			<StepPanel scrollMapId={scrollMapId} />
+			<StepPanel scrollMapContent={scrollMapContent as BlockContentType} />
 			<section className={style.scrollMapFormSection}>
 				<FormTitleComponent
 					action={action as string}
 					translationKey="scroll_map"
 				/>
-				{!scrollMapId || action === "edit" ? (
+				{!scrollMapContent?.id || action === "edit" ? (
 					<form
 						onSubmit={handleSubmit(handleScrollMapSubmit)}
 						className={style.mapFormContainer}
@@ -214,7 +214,7 @@ const ScrollMapForm = () => {
 					</form>
 				) : (
 					<div className={style.stepFormContainer}>
-						<StepForm parentBlockId={scrollMapId} />
+						<StepForm scrollMapContent={scrollMapContent} />
 					</div>
 				)}
 			</section>

@@ -47,7 +47,6 @@ const ElementCheckboxComponent = ({
 	};
 
 	const toggleSecondLevel = (optionId: number, childId: number) => {
-		console.log(selected);
 		const group = selected[optionId] || { checked: false, children: [] };
 		const children = group.children.includes(childId)
 			? group.children.filter((c: number) => c !== childId)
