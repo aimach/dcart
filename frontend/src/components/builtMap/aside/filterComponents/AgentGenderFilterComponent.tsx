@@ -1,5 +1,4 @@
 // import des custom hooks
-import { useEffect } from "react";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
@@ -68,7 +67,7 @@ const AgentGenderFilterComponent = () => {
 					}
 				/>
 				<label htmlFor="nonBinary">
-					{translation[language].mapPage.aside.nonbinary}
+					{translation[language].mapPage.aside.nonBinary}
 				</label>
 			</div>
 		</div>

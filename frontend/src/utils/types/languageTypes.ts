@@ -117,6 +117,7 @@ type LanguageObject = {
 		withAgentivities: string;
 		withSourceMaterials: string;
 		withAgentActivities: string;
+		gender: string;
 		aside: {
 			filters: string;
 			sources: string;
@@ -134,7 +135,7 @@ type LanguageObject = {
 			sourceMaterial: string;
 			male: string;
 			female: string;
-			nonbinary: string;
+			nonBinary: string;
 			timeLimits: string;
 			seeStat: string;
 			seeSources: string;

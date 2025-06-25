@@ -115,6 +115,7 @@
 		"withAgentivities": "with agentivities",
 		"withSourceMaterials": "with source materials",
 		"withAgentActivities": "with agent activities",
+		"gender": "gender",
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
@@ -133,7 +134,7 @@
 			"timeLimits": "Time limits",
 			"male": "Male",
 			"female": "Female",
-			"nonbinary": "Non-binary",
+			"nonBinary": "Non-binary",
 			"seeStat": "See statistics",
 			"seeSources": "See sources",
 			"searchForLocation": "Search for a location...",

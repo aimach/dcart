@@ -123,7 +123,7 @@ const MapComponent = () => {
 
 		// si des points sont affichés, ajustement des limites de la carte
 		if (bounds.length && map) {
-			map.fitBounds(bounds, { padding: [20, 20] });
+			map.fitBounds(bounds, { padding: [150, 150] });
 		}
 
 		// s'il n'y a pas de dates dans les points, désactivation du filtre temporel

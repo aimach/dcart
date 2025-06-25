@@ -14,6 +14,7 @@ type State = {
 	agentivityNames: string[];
 	sourceMaterialNames: string[];
 	languageValues: Record<string, boolean>;
+	genderValues: Record<string, boolean>;
 };
 
 type Action = {
@@ -28,6 +29,7 @@ type Action = {
 	setAgentivityNames: (agentivityNames: string[]) => void;
 	setSourceMaterialNames: (sourceMaterialName: string[]) => void;
 	setLanguageValues: (languageValues: Record<string, boolean>) => void;
+	setGenderValues: (genderValues: Record<string, boolean>) => void;
 	resetLanguageValues: () => void;
 };
 
@@ -63,6 +65,7 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 		get().setAgentivityNames([]);
 		get().setSourceMaterialNames([]);
 		get().setLanguageValues({ greek: false, semitic: false });
+		get().setGenderValues({ male: false, female: false, nonBinary: false });
 	},
 	isReset: false,
 	setIsReset: (isReset) => set(() => ({ isReset: isReset })),
@@ -86,4 +89,6 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 	setLanguageValues: (languageValues) => set(() => ({ languageValues })),
 	resetLanguageValues: () =>
 		set(() => ({ languageValues: { greek: false, semitic: false } })),
+	genderValues: { male: false, female: false, nonBinary: false },
+	setGenderValues: (genderValues) => set(() => ({ genderValues })),
 }));

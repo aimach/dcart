@@ -405,6 +405,8 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
  * @param {string[]} agentStatusNames - Un objet contenant la liste des statuts sélectionnés
  * @param {string[]} agentivityNames - Un objet contenant la liste des agentivités sélectionnées
  * @param {string[]} sourceMaterialNames - Un objet contenant la liste des supports des sources sélectionnées
+ * @param {string[]} languageValues - Un objet contenant la liste langues sélectionnées
+ * @param {string[]} genderValues - Un objet contenant la liste des genres sélectionnés
  * @param {TranslationType} translationObject - Les objets de traduction
  * @returns {Array} - Un tableau de strings
  */
@@ -418,6 +420,7 @@ const displayFiltersTags = (
 	agentActivityNames: string[],
 	sourceMaterialNames: string[],
 	languageValues: Record<string, boolean>,
+	genderValues: Record<string, boolean>,
 	translationObject: LanguageObject,
 ) => {
 	const stringArray = [];
@@ -487,6 +490,21 @@ const displayFiltersTags = (
 	if (agentActivityNames.length) {
 		stringArray.push(
 			`${translationObject.mapPage.withAgentActivities} : ${agentActivityNames.join(", ")}`,
+		);
+	}
+
+	// affichage du genre des agents
+	const isOneGenderKeyTrue = Object.values(genderValues ?? {}).some(
+		(value) => value,
+	);
+	if (isOneGenderKeyTrue) {
+		stringArray.push(
+			`${translationObject.mapPage.gender} : ${Object.entries(genderValues)
+				.map(([key, value]) =>
+					value ? translationObject.mapPage.aside[key] : null,
+				)
+				.filter(Boolean)
+				.join(", ")}`,
 		);
 	}
 

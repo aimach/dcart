@@ -83,6 +83,7 @@ const FilterComponent = ({
 		setAgentivityNames,
 		setSourceMaterialNames,
 		resetLanguageValues,
+		setGenderValues,
 	} = useMapFiltersStore(useShallow((state) => state));
 
 	// initiation d'états pour récupérer les valeurs des lieux et éléments
@@ -134,6 +135,7 @@ const FilterComponent = ({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,
 		});
+		setGenderValues(userFilters.agentGender as Record<string, boolean>);
 		isMobile && setIsPanelDisplayed(false);
 	};
 
