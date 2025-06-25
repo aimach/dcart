@@ -11,7 +11,7 @@ import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putReques
 import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
-import type { FilterType, LotType } from "../../../../utils/types/filterTypes";
+import type { LotType } from "../../../../utils/types/filterTypes";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 // import du style
 import style from "./builtElementFilterForm.module.scss";

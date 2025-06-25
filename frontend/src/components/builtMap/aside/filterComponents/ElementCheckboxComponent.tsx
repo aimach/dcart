@@ -30,16 +30,15 @@ const ElementCheckboxComponent = ({
 
 	const toggleFirstLevel = (optionId: number) => {
 		const isChecked = selected[optionId]?.checked;
-		const children = options.secondLevelIds;
 
 		const newSelected = { ...selected };
 		newSelected[optionId] = {
 			checked: !isChecked,
-			children: !isChecked ? children.map((c) => c.value) : [],
+			children: [],
 		};
 		setSelected(newSelected);
 		const newLotIds = !isChecked
-			? [...userFilters.lotIds, [optionId, ...children.map((c) => c.value)]]
+			? [...userFilters.lotIds, [optionId]]
 			: userFilters.lotIds.filter((lot: number[]) => lot[0] !== optionId);
 		setUserFilters({
 			...userFilters,
@@ -48,6 +47,7 @@ const ElementCheckboxComponent = ({
 	};
 
 	const toggleSecondLevel = (optionId: number, childId: number) => {
+		console.log(selected);
 		const group = selected[optionId] || { checked: false, children: [] };
 		const children = group.children.includes(childId)
 			? group.children.filter((c: number) => c !== childId)
@@ -56,7 +56,7 @@ const ElementCheckboxComponent = ({
 		const newSelectedValue = {
 			...selected,
 			[optionId]: {
-				checked: children.length > 0,
+				checked: true,
 				children,
 			},
 		};
