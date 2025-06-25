@@ -133,7 +133,8 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 										{getOptionalCellValue(
 											attestation,
 											`activite_${language}`,
-											translation[language].mapPage.noActivityDefined,
+											translation,
+											language,
 										)}
 									</td>
 								</tr>
@@ -145,7 +146,8 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 										{getOptionalCellValue(
 											attestation,
 											`statut_${language}`,
-											translation[language].mapPage.noStatusDefined,
+											translation,
+											language,
 										)}
 									</td>
 								</tr>
@@ -157,7 +159,7 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 										{getOptionalCellValue(
 											attestation,
 											"agentivity",
-											translation[language].mapPage.noAgentivityDefined,
+											translation,
 											language,
 										)}
 									</td>

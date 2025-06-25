@@ -79,7 +79,8 @@
 		"published": "published",
 		"noPublished": "not published",
 		"close": "Close",
-		"typeOf": "type of"
+		"typeOf": "type of",
+		"noData": "No data"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
@@ -114,10 +115,6 @@
 		"withAgentivities": "with agentivities",
 		"withSourceMaterials": "with source materials",
 		"withAgentActivities": "with agent activities",
-		"noActivityDefined": "No activity defined",
-		"noSourceMaterialDefined": "No source material defined",
-		"noAgentivityDefined": "No agentivity defined",
-		"noStatusDefined": "No status defined",
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",

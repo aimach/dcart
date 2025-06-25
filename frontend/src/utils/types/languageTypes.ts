@@ -82,6 +82,7 @@ type LanguageObject = {
 		noPublished: string;
 		close: string;
 		typeOf: string;
+		noData: string;
 	};
 	modal: {
 		firstContent: string;
@@ -116,10 +117,6 @@ type LanguageObject = {
 		withAgentivities: string;
 		withSourceMaterials: string;
 		withAgentActivities: string;
-		noActivityDefined: string;
-		noSourceMaterialDefined: string;
-		noAgentivityDefined: string;
-		noStatusDefined: string;
 		aside: {
 			filters: string;
 			sources: string;

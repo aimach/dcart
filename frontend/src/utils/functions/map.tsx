@@ -458,21 +458,22 @@ const getMapAttribution = (tileLayerURL: string): string => {
 const getOptionalCellValue = (
 	attestation: AttestationType,
 	key: string,
-	message: string,
-	language?: Language,
+	translation: TranslationType,
+	language: Language,
 ) => {
+	const noDataMessage = translation[language].common.noData;
 	if (!attestation.agents || attestation.agents.length === 0) {
-		return message;
+		return noDataMessage;
 	}
 
 	if (key === "agentivity") {
 		return attestation.agents
 			.map((agent) => {
 				if (!agent.agentivites) {
-					return message;
+					return noDataMessage;
 				}
 				return agent.agentivites
-					.map((agentivity) => agentivity[`nom_${language}`])
+					.map((agentivity) => agentivity[`nom_${language}`] ?? noDataMessage)
 					.reduce((acc, agentivity) =>
 						agentivity && acc.includes(agentivity)
 							? acc
@@ -485,7 +486,7 @@ const getOptionalCellValue = (
 	}
 
 	return (attestation.agents as AgentType[])
-		.map((agent) => agent[key])
+		.map((agent) => agent[key] ?? noDataMessage)
 		.reduce((acc, current) =>
 			current && acc.includes(current) ? acc : `${acc}, ${current}`,
 		);
