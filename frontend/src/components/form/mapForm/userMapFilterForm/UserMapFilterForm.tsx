@@ -116,12 +116,6 @@ const UserMapFilterForm = () => {
 					} else {
 						setStep(5);
 					}
-				} else {
-					// si aucun filtre n'est sélectionné, on redirige vers la page de la carte
-					resetMapInfos();
-					resetAllPoints();
-					resetMapFilters();
-					navigate("/backoffice/maps");
 				}
 			}
 		} else if (pathname.includes("create")) {
@@ -140,12 +134,7 @@ const UserMapFilterForm = () => {
 							setStep(5);
 						}
 					} else {
-						// réinitialisation des données du store
-						resetMapInfos();
-						resetMapFilters();
-						resetAllPoints();
 						notifyCreateSuccess("Jeu de filtres", false);
-						navigate("/backoffice/maps");
 					}
 				}
 			}
