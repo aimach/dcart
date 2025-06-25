@@ -66,6 +66,7 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 		get().setSourceMaterialNames([]);
 		get().setLanguageValues({ greek: false, semitic: false });
 		get().setGenderValues({ male: false, female: false, nonBinary: false });
+
 	},
 	isReset: false,
 	setIsReset: (isReset) => set(() => ({ isReset: isReset })),
