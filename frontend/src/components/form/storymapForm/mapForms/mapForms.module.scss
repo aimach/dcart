@@ -121,7 +121,7 @@
     .stepPanelSection {
         width: 20vw;
         min-width: 250px;
-        height: 100%;
+        min-height: 100%;
         background-color: v.$background-color-soft;
         padding-top: v.$space-l;
         text-align: center;

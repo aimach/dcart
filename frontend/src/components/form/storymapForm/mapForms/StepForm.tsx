@@ -115,6 +115,15 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 		return null;
 	}, [block, stepAction]);
 
+	// récupération des fonctions de gestion du formulaire
+	const {
+		register,
+		handleSubmit,
+		formState: { errors },
+		reset,
+		control,
+	} = useForm<stepInputsType>({ defaultValues: {} });
+
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: stepInputsType) => {
 		try {
@@ -153,19 +162,11 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 			updateBlockContent(null);
 			setSearchParams({ stepAction: "create" });
 			setReload(!reload);
+			window.scrollTo(0, 0); // on scroll en haut de la page
 		} catch (error) {
 			console.error("Erreur lors de l'envoi du fichier :", error);
 		}
 	};
-
-	// récupération des fonctions de gestion du formulaire
-	const {
-		register,
-		handleSubmit,
-		formState: { errors },
-		reset,
-		control,
-	} = useForm<stepInputsType>({ defaultValues: {} });
 
 	useEffect(() => {
 		if (stepAction === "edit") {
@@ -214,7 +215,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 	}, [storymapInfos]);
 
 	return (
-		<>
+		<section key={reload.toString()}>
 			<FormTitleComponent action={stepAction as string} translationKey="step" />
 			<form
 				onSubmit={handleSubmit(handlePointSubmit)}
@@ -404,7 +405,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					/>
 				</div>
 			</form>
-		</>
+		</section>
 	);
 };
 

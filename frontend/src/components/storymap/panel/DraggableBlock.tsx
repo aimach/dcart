@@ -111,7 +111,7 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 	};
 
 	const previewText = getPreviewText(block, selectedLanguage);
-	// const displayWarning = hasRequiredKeys(block, storymapInfos as StorymapType);
+	const displayWarning = hasRequiredKeys(block, storymapInfos as StorymapType);
 
 	return (
 		<>
@@ -122,7 +122,7 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 						<p>{titleText}</p>
 						<br />
 						{previewText}
-						{/*displayWarning && (
+						{displayWarning && (
 							<p
 								style={{
 									color: "#9d2121",
@@ -135,7 +135,7 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 								<TriangleAlert size={20} />{" "}
 								{translation[language].alert.missingTranslation}
 							</p>
-						)*/}
+						)}
 					</div>
 				</div>
 				<div style={draggableBlockActionContainerStyle}>
