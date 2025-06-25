@@ -158,11 +158,20 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 					parentBlockId,
 				);
 			}
-			reset(); // réinitialisation du formulaire
-			updateBlockContent(null);
-			setSearchParams({ stepAction: "create" });
+			// réinitialisation du formulaire
+			reset();
+			setPointSet(null);
 			setReload(!reload);
-			window.scrollTo(0, 0); // on scroll en haut de la page
+			setSearchParams({ stepAction: "create" });
+			const windowElement = document.querySelector(
+				'section[class*="storymapFormContent"]',
+			);
+			if (windowElement) {
+				windowElement.scrollTo({
+					top: 0,
+					behavior: "smooth",
+				});
+			}
 		} catch (error) {
 			console.error("Erreur lors de l'envoi du fichier :", error);
 		}
@@ -216,6 +225,7 @@ const StepForm = ({ parentBlockId }: StepFormProps) => {
 
 	return (
 		<section key={reload.toString()}>
+			{/* Utilisation de reload pour forcer le reset des wysiwyg */}
 			<FormTitleComponent action={stepAction as string} translationKey="step" />
 			<form
 				onSubmit={handleSubmit(handlePointSubmit)}
