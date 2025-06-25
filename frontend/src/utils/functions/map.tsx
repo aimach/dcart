@@ -481,6 +481,10 @@ const getOptionalCellValue = (
 					(agentivity) => agentivity.nom_fr !== null,
 				);
 
+				if (arrayWithoutNulls.length === 0) {
+					return noDataMessage;
+				}
+
 				return arrayWithoutNulls
 					.map((agentivity) => agentivity[`nom_${language}`])
 					.reduce((acc, agentivity) =>
@@ -501,6 +505,10 @@ const getOptionalCellValue = (
 	const arrayWithoutNulls = (attestation.agents as AgentType[]).filter(
 		(agent) => agent[key] !== null,
 	);
+
+	if (arrayWithoutNulls.length === 0) {
+		return noDataMessage;
+	}
 
 	return arrayWithoutNulls
 		.map((agent) => agent[key])

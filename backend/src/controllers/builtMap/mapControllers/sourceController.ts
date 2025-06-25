@@ -360,7 +360,7 @@ export const sourceController = {
 																					agentivityNames.includes(agentivity);
 																			} else {
 																				agentivityBoolean =
-																					agentivity === agentivityName;
+																					agentivity.nom_fr === agentivityName;
 																			}
 																		}
 																	}
@@ -368,12 +368,18 @@ export const sourceController = {
 																	agentivityBoolean = false;
 																}
 															}
+															console.log(
+																`activityBoolean: ${activityBoolean}, nameBoolean: ${nameBoolean}, statusBoolean: ${statusBoolean}, agentivityBoolean: ${agentivityBoolean}`,
+															);
 															return (
 																nameBoolean &&
 																activityBoolean &&
 																statusBoolean &&
 																agentivityBoolean
 															);
+															// return [activityBoolean, nameBoolean, statusBoolean, agentivityBoolean].some(
+															// 	Boolean,
+															// );
 														},
 													);
 													if (filteredAgents && filteredAgents.length > 0) {
