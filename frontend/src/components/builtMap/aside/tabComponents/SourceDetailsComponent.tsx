@@ -21,12 +21,12 @@ import {
 	getSanitizedAgent,
 } from "../../../../utils/functions/map";
 import { getAllAttestationsFromSourceId } from "../../../../utils/api/builtMap/getRequests";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+import { isSelectedFilterInThisMap } from "../../../../utils/functions/filter";
 // import du style
 import style from "./tabComponent.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
-import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-import { isSelectedFilterInThisMap } from "../../../../utils/functions/filter";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;

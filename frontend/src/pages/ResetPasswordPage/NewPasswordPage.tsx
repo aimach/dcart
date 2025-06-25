@@ -9,6 +9,7 @@ import { useTranslation } from "../../utils/hooks/useTranslation";
 import { resetPassword } from "../../utils/api/authAPI";
 // import du style
 import style from "./ResetPasswordPage.module.scss";
+// import des icônes
 import { EyeClosed, EyeIcon } from "lucide-react";
 
 const NewPasswordPage = () => {

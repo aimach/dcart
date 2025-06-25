@@ -4,6 +4,7 @@ import { useParams } from "react-router";
 // import des composants
 import TitleAndTextComponent from "../../components/common/titleAndText/TitleAndTextComponent";
 import ItemContainer from "../../components/common/itemContainer/ItemContainer";
+import ItemFilterComponent from "../../components/common/itemFilter/ItemFilterComponent";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import des services
@@ -12,7 +13,6 @@ import { getTagWithMapsAndStorymaps } from "../../utils/api/builtMap/getRequests
 import type { TagWithItemsType } from "../../utils/types/commonTypes";
 // import du style
 import style from "./tagPage.module.scss";
-import ItemFilterComponent from "../../components/common/itemFilter/ItemFilterComponent";
 
 type CheckboxType = { map: boolean; storymap: boolean };
 

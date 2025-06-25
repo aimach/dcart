@@ -1,15 +1,15 @@
 // import des composants
 import SwiperContainer from "../../../common/swiper/SwiperContainer";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useEffect, useState } from "react";
-import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import { allStorymapsFromTag } from "../../../../utils/api/storymap/getRequests";
 // import des types
 import type { StorymapType } from "../../../../utils/types/storymapTypes";
 import type { TagType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./storymapConclusion.module.scss";
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
 
 interface StorymapConclusionProps {
 	storymapInfos: StorymapType;

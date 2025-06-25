@@ -22,6 +22,7 @@ import ButtonComponent from "../../../common/button/ButtonComponent";
 import TutorialModalContent from "../../../common/modal/tutorial/TutorialModalContent";
 import MobileTutorialModalContent from "../../../common/modal/tutorial/MobileTutorialModalContent";
 import OrientationControl from "../controls/OrientationControlComponent";
+import MapClickHandler from "../controls/MapClickHandler";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
@@ -43,7 +44,6 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
-import MapClickHandler from "../controls/MapClickHandler";
 
 /**
  * Composant de la carte

@@ -1,11 +1,6 @@
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
-// import des composants
-import ButtonComponent from "../../button/ButtonComponent";
 // import des services
-import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
-import { useShallow } from "zustand/shallow";
 import { mobileTutorialContent } from "../../../../utils/menu/modalArray";
 // import du style
 import style from "./tutorialModalContent.module.scss";

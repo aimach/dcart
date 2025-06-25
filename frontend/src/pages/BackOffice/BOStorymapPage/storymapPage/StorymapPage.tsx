@@ -17,6 +17,7 @@ import SimpleMapBlock from "../../../../components/storymap/blocks/simpleMapBloc
 import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
 import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 import ItemLinkBlock from "../../../../components/storymap/blocks/itemLinkBlock/ItemLinkBlock";
+import StorymapConclusion from "../../../../components/storymap/blocks/storymapConclusion/StorymapConclusion";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -33,7 +34,6 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
-import StorymapConclusion from "../../../../components/storymap/blocks/storymapConclusion/StorymapConclusion";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,

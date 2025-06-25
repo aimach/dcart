@@ -39,8 +39,6 @@ const UserMapFilterForm = () => {
 	const {
 		mapInfos,
 		setMapInfos,
-		resetMapInfos,
-		resetAllPoints,
 		mapFilters,
 		setMapFilters,
 		resetMapFilters,

@@ -2,10 +2,11 @@
 import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import des services
+import { getTranslations } from "../../../../utils/api/translationAPI";
 // import du style
 import style from "./tabComponent.module.scss";
-import { useEffect, useMemo, useState } from "react";
-import { getTranslations } from "../../../../utils/api/translationAPI";
+import { useEffect, useState } from "react";
 
 type InfoIntroductionContentProps = {
 	setIsIntroDisplayed: React.Dispatch<React.SetStateAction<boolean>>;

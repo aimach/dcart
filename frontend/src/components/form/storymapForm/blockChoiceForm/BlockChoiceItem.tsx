@@ -7,9 +7,9 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { createBlock } from "../../../../utils/api/storymap/postRequests";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { getTypeIcon } from "../../../../utils/functions/block";
+import { notifyCreateSuccess } from "../../../../utils/functions/toast";
 // import des types
 import type { TypeType } from "../../../../utils/types/storymapTypes";
-import { notifyCreateSuccess } from "../../../../utils/functions/toast";
 
 type BlockChoiceItemProps = {
 	blockType: TypeType;

@@ -29,7 +29,6 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
-import { blockType } from "../../../../utils/types/formTypes";
 
 export type scrollMapInputsType = {
 	content1_lang1: string;

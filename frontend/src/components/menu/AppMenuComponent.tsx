@@ -20,7 +20,6 @@ import { ChevronRightCircle, X } from "lucide-react";
 import labexLogo from "../../assets/logo_SMS.png";
 import HNLogo from "../../assets/huma_num_logo.png";
 import mapLogo from "../../assets/map_logo.png";
-import { set } from "react-hook-form";
 
 interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;

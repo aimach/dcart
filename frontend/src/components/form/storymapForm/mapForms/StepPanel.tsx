@@ -1,5 +1,6 @@
 // import des bibliothèques
 import { useEffect, useState } from "react";
+import { useSearchParams } from "react-router";
 import {
 	DndContext,
 	PointerSensor,
@@ -15,7 +16,9 @@ import {
 import { useDroppable } from "@dnd-kit/core";
 // import des composants
 import MemoDraggableBlock from "../../../storymap/panel/DraggableBlock";
-// import du context
+import ButtonComponent from "../../../common/button/ButtonComponent";
+// import des custom hooks
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { getBlockInfos } from "../../../../utils/api/storymap/getRequests";
 import { updateBlocksPosition } from "../../../../utils/api/storymap/getRequests";
@@ -25,9 +28,6 @@ import type { BlockContentType } from "../../../../utils/types/storymapTypes";
 import type { DragEndEvent } from "@dnd-kit/core";
 // import du style
 import style from "./mapForms.module.scss";
-import { useTranslation } from "../../../../utils/hooks/useTranslation";
-import ButtonComponent from "../../../common/button/ButtonComponent";
-import { useSearchParams } from "react-router";
 
 interface StepPanelProps {
 	scrollMapContent: BlockContentType;
@@ -120,7 +120,9 @@ const StepPanel = ({ scrollMapContent }: StepPanelProps) => {
 						<ButtonComponent
 							type="button"
 							color="brown"
-							textContent="newStep"
+							textContent={
+								translation[language].backoffice.storymapFormPage.form.addStep
+							}
 							onClickFunction={handleNewStep}
 						/>
 					)}
