@@ -472,8 +472,17 @@ const getOptionalCellValue = (
 				if (!agent.agentivites) {
 					return noDataMessage;
 				}
-				return agent.agentivites
-					.map((agentivity) => agentivity[`nom_${language}`] ?? noDataMessage)
+
+				if (agent.agentivites[0].nom_fr === null) {
+					return noDataMessage;
+				}
+
+				const arrayWithoutNulls = agent.agentivites.filter(
+					(agentivity) => agentivity.nom_fr !== null,
+				);
+
+				return arrayWithoutNulls
+					.map((agentivity) => agentivity[`nom_${language}`])
 					.reduce((acc, agentivity) =>
 						agentivity && acc.includes(agentivity)
 							? acc
@@ -485,8 +494,16 @@ const getOptionalCellValue = (
 			);
 	}
 
-	return (attestation.agents as AgentType[])
-		.map((agent) => agent[key] ?? noDataMessage)
+	if (attestation.agents.length === 1 && attestation.agents[0][key] === null) {
+		return noDataMessage;
+	}
+
+	const arrayWithoutNulls = (attestation.agents as AgentType[]).filter(
+		(agent) => agent[key] !== null,
+	);
+
+	return arrayWithoutNulls
+		.map((agent) => agent[key])
 		.reduce((acc, current) =>
 			current && acc.includes(current) ? acc : `${acc}, ${current}`,
 		);
