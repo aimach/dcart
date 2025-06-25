@@ -284,8 +284,8 @@
 				"description": "Deux options possibles : soit affiche un select/options avec la liste des éléments de l'ensemble des éléments des attestations affichées, soit affiche deux niveaux de checkbox : un premier niveau avec les théonymes et un second avec les épithètes. Ces deux niveaux sont à construire sur-mesure."
 			},
 			"divinityNbFilter": {
-				"label": "Filtre du nombre de divinités",
-				"description": "Affiche un curseur avec un minimum et un maximum, définis par le nombre de divinités dans l'ensemble des attestations affichées"
+				"label": "Filtre du nombre d'éléments",
+				"description": "Affiche un curseur avec un minimum et un maximum, définis par le nombre de d'éléments dans l'ensemble des attestations affichées"
 			},
 			"sourceTypeFilter": {
 				"label": "Filtre du type de source",
