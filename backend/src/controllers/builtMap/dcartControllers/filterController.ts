@@ -79,7 +79,7 @@ export const filterController = {
 				}),
 			);
 
-			res.status(201).json({ message: "Filtres ajoutés à la carte" });
+			res.status(201).send({ mapId });
 		} catch (error) {
 			handleError(res, error as Error);
 		}

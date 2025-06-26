@@ -125,6 +125,10 @@ const UserMapFilterForm = () => {
 					mapFilters,
 				);
 				if (response?.status === 201) {
+					const newMapInfos = await getOneMapInfosById(
+						response.data?.mapId as string,
+					);
+					setMapInfos(newMapInfos);
 					if (mapFilters.element || mapFilters.location) {
 						if (mapFilters.element) {
 							setStep(4);
