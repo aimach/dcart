@@ -49,11 +49,12 @@ const ResultComponent = () => {
 
 	const filteredResultsWithSelectedPoint = useMemo(() => {
 		// filtre les points qui ne sont pas dans les calques sélectionnés
+		console.log(allLayers);
 		const allResultsFiltered = mapInfos?.isLayered
 			? allResults.filter((point: PointType) =>
 					mapInfos
 						? allLayers.some((string) =>
-								string.includes(`svg> ${point.layerName}`),
+								string.includes(`svg> ${point.layerNamefr}`),
 							)
 						: point,
 				)
