@@ -111,7 +111,7 @@
 		"onlySemitic": "uniquement en sémitique",
 		"onlyGreek": "uniquement en grec",
 		"withElements": "avec les éléments",
-		"withStatus": "avec les status",
+		"withStatus": "avec les statuts",
 		"withAgentivities": "avec les agentivités",
 		"withSourceMaterials": "avec les supports",
 		"withAgentActivities": "avec les activités",
@@ -273,7 +273,7 @@
 			"filterIntroduction": "Il est possible d'ajouter jusqu'2 filtres par carte, en plus du filtre temporel toujours affiché.",
 			"locationFilter": {
 				"label": "Filtre du lieu",
-				"description": "Affiche un select/options avec la liste des sous-régions de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des lieux (grandes régions, sous-régions ou sites, au choix) de l'ensemble des attestations affichées"
 			},
 			"languageFilter": {
 				"label": "Filtre de la langue (grec ou sémitique)",
@@ -281,11 +281,11 @@
 			},
 			"epithetFilter": {
 				"label": "Filtre avec les éléments",
-				"description": "Deux options possibles : soit affiche un select/options avec la liste des éléments de l'ensemble des éléments des attestations affichées, soit affiche deux niveaux de checkbox : un premier niveau avec les théonymes et un second avec les épithètes. Ces deux niveaux sont à construire sur-mesure."
+				"description": "Deux options possibles : soit affiche un select/options avec la liste des éléments de l'ensemble des éléments des attestations affichées, soit affiche deux niveaux de checkbox : un premier niveau avec un seul élément et un second niveau avec un ou plusieurs éléments. Ces deux niveaux sont à construire sur-mesure."
 			},
 			"divinityNbFilter": {
 				"label": "Filtre du nombre d'éléments",
-				"description": "Affiche un curseur avec un minimum et un maximum, définis par le nombre de d'éléments dans l'ensemble des attestations affichées"
+				"description": "Affiche un curseur avec un minimum et un maximum, définis par le nombre d'éléments dans l'ensemble des attestations affichées"
 			},
 			"sourceTypeFilter": {
 				"label": "Filtre du type de source",
@@ -305,7 +305,7 @@
 			},
 			"agentStatusFilter": {
 				"label": "Filtre du statut des agents",
-				"description": "Affiche un select/options avec la liste des status des agents de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des statuts des agents de l'ensemble des attestations affichées"
 			},
 			"agentivityFilter": {
 				"label": "Filtre de l'agentivité",

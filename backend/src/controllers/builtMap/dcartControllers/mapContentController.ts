@@ -218,6 +218,8 @@ export const mapContentController = {
 			const { userId } = req.user as jwt.JwtPayload;
 			const { tags } = req.body;
 
+			const mapToSave = { ...req.body };
+
 			const mapToUpdate = await dcartDataSource
 				.getRepository(MapContent)
 				.findOne({
@@ -266,24 +268,29 @@ export const mapContentController = {
 			mapToUpdate.tags = tagsToSave;
 
 			// biome-ignore lint/performance/noDelete:
-			delete req.body.filterMapContent;
+			delete mapToSave.filterMapContent;
 
-			if (mapToUpdate.title_fr !== req.body.title_fr) {
+			if (mapToUpdate.title_fr !== mapToSave.title_fr) {
 				const newSlug = await generateUniqueSlug(
-					req.body.title_fr,
+					mapToSave.title_fr,
 					dcartDataSource.getRepository(MapContent),
 				);
-				req.body.slug = newSlug;
+				mapToSave.slug = newSlug;
 			}
 
 			const updatedMap = await dcartDataSource
 				.getRepository(MapContent)
-				.merge(mapToUpdate, req.body);
+				.merge(mapToUpdate, mapToSave);
 			const newMap = await dcartDataSource
 				.getRepository(MapContent)
 				.save(updatedMap);
 
-			res.status(200).send(newMap);
+			const responseMap = {
+				...newMap,
+				filterMapContent: req.body.filterMapContent,
+			};
+
+			res.status(200).send(responseMap);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

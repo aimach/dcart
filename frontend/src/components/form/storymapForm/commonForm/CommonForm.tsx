@@ -194,6 +194,7 @@ const CommonForm = ({
 							<div className={style.inputContainer}>
 								<input
 									type="color"
+									defaultValue="#AD9A85"
 									{...register(input.name as keyof storymapInputsType, {
 										required: input.required.value,
 									})}
