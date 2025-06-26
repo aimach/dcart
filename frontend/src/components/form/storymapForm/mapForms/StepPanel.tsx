@@ -57,7 +57,7 @@ const StepPanel = ({ scrollMapContent }: StepPanelProps) => {
 			const response = await getBlockInfos(scrollMapContent.id as string);
 			setScrollMapBlocks(response.children);
 		};
-		if (scrollMapContent.id) fetchScrollMapInfos();
+		if (scrollMapContent?.id) fetchScrollMapInfos();
 	}, [reload]);
 
 	// -- DRAG AND DROP --
