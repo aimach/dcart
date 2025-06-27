@@ -49,13 +49,20 @@ const createTimeOptions = (timeMarkers: TimeMarkersType) => {
 
 /**
  * Fonction qui formate les données pour le select de react-select (sortie {value, label})
- * @param {MapFilterType} mapFilters - Les filtres de la carte en construction
- * @returns {OptionType[]} - Un tableau d'options formatées
+ * @param {GreatRegionType[]} dataArray - Le tableau des données à formater
+ * @param {string} language - La langue sélectionnée par l'utilisateur
  */
 const formatDataForReactSelect = (
-	dataArray: GreatRegionType[],
+	dataArray: GreatRegionType[] | DivinityType[],
 	language: string,
+	isElements = false,
 ) => {
+	if (isElements) {
+		return dataArray.map((data) => ({
+			value: data.id,
+			label: `${data[`nom_${language}` as keyof GreatRegionType]} (${(data as DivinityType).etat_absolu})`,
+		}));
+	}
 	return dataArray.map((data) => ({
 		value: data.id,
 		label: data[`nom_${language}` as keyof GreatRegionType] as string,

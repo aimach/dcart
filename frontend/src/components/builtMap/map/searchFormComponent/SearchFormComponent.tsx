@@ -73,6 +73,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 			const formatedDivinities = formatDataForReactSelect(
 				allDivinities,
 				language,
+				true,
 			);
 			setDivinities(formatedDivinities);
 
