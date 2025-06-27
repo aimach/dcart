@@ -5,6 +5,14 @@
   overflow: scroll;
   height: calc(100dvh - v.$main-header-height - v.$aside-header-height - v.$space-xs);
   background-color: v.$color-neutral-100;
+
+  p:first-child {
+    padding: v.$space-s;
+    margin: 0;
+    font-size: v.$font-size-m;
+    text-align: center;
+  }
+
 }
 
 .resultDetails {
@@ -144,6 +152,7 @@
 
 
 .filterContainer {
+
   margin: v.$space-xl v.$space-s;
 
   >h4 {

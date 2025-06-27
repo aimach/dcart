@@ -137,6 +137,7 @@
 			"nonBinary": "Non-binary",
 			"seeStat": "See statistics",
 			"seeSources": "See sources",
+			"filterIntroduction": "A testimony is displayed if it matches at least one option from each filter. Once the filters are applied, the filters update according to the visible testimonies.",
 			"searchForLocation": "Search for a location...",
 			"searchForElement": "Search for an element...",
 			"searchForSourceType": "Search for a source type...",

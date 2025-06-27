@@ -139,6 +139,7 @@ type LanguageObject = {
 			timeLimits: string;
 			seeStat: string;
 			seeSources: string;
+			filterIntroduction: string;
 			searchForLocation: string;
 			searchForElement: string;
 			searchForSourceType: string;

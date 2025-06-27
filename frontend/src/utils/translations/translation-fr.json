@@ -137,6 +137,7 @@
 			"nonBinary": "Non-binaire",
 			"seeStat": "Voir les statistiques",
 			"seeSources": "Voir les sources",
+			"filterIntroduction": "Une attestation est affichée si elle correspond à au moins une option de chaque filtre. Une fois les filtres appliqués, les filtres se mettent à jour selon les attestations visibles.",
 			"searchForLocation": "Rechercher un lieu...",
 			"searchForElement": "Rechercher un element...",
 			"searchForSourceType": "Rechercher un type de source...",
