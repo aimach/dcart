@@ -76,7 +76,8 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 		setTimeValues({ ante: e.maxValue, post: e.minValue });
 		setMapReady(false);
 
-		const points = await getAllPointsByMapId(mapInfos?.id as string, {
+		const mapId = (mapInfos?.id as string) ?? "exploration";
+		const points = await getAllPointsByMapId(mapId, {
 			...userFilters,
 			ante: e.maxValue,
 			post: e.minValue,
