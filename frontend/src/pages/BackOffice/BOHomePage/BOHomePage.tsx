@@ -45,7 +45,7 @@ const BOHomePage = () => {
 							<Link to="/backoffice/translation">
 								<li>
 									<Languages />
-									{translation[language].navigation.translation}
+									{translation[language].navigation.texts}
 								</li>
 							</Link>
 							<Link to="/backoffice/users">

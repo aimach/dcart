@@ -116,7 +116,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 								{isAdmin && (
 									<>
 										<Link to="/backoffice/translation">
-											<li>{translation[language].navigation.translation}</li>
+											<li>{translation[language].navigation.texts}</li>
 										</Link>
 										<Link to="/backoffice/users">
 											<li>{translation[language].navigation.users}</li>

@@ -13,7 +13,7 @@ type LanguageObject = {
 		maps: string;
 		storymaps: string;
 		backoffice: string;
-		translation: string;
+		texts: string;
 		back: string;
 		explore: string;
 		discover: string;
