@@ -153,6 +153,7 @@
 			"agents": "Agents",
 			"noAgent": "No agent",
 			"noDesignation": "unspecified",
+			"noSourceMaterialDefined": "No source material defined",
 			"introContent": "This panel allows you to explore in detail the data associated with the point you selected on the map. You will find specific statistics, such as a numerical overview of the divinities or epithets present in the sources, or consult data related to agents, such as their names, activities, and designations. You can also view the sources associated with the selected point, which will be displayed in a table format. This table includes information such as the title of the source, its type, and its date.",
 			"dontShowAgain": "don't show this message again"
 		}

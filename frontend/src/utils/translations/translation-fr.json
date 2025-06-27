@@ -153,6 +153,7 @@
 			"agents": "Agents",
 			"noAgent": "Pas d'agent",
 			"noDesignation": "non précisé",
+			"noSourceMaterialDefined": "Aucun support de source défini",
 			"introContent": "Ce panneau vous permet d ’explorer en détail les données associée au point que vous avez sélectionné sur la carte. Vous y trouverez des statistiques spécifiques, comme un aperçu chiffré des divinités ou épithètes présents dans les sources ou consulter les données relatives aux agents : genre, activité, etc. Vous pouvez également y trouver la liste complète des sources et attestations associées liées à ce point avec de nombreux détails : date, version originale, traduction, agents...",
 			"dontShowAgain": "ne plus afficher ce message"
 		}
