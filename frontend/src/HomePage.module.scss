@@ -78,11 +78,28 @@
 
     .tagContainer {
         width: 100%;
-        height: 100%;
-        @include m.flexbox(flex, column, wrap, center, center);
+        min-height: 100vh;
+        @include m.flexbox(flex, column, wrap, flex-start, center);
         gap: v.$space-xxl;
 
+        .tagContainerHeader {
+            width: 100%;
+            @include m.flexbox(flex, row, nowrap, space-between, center);
+            padding: v.$space-l v.$space-xxl;
 
+            >input {
+                width: 50%;
+                padding: v.$space-xs;
+                border: v.$border-width-m solid v.$color-grullo-light;
+                border-radius: v.$border-radius-rounded;
+                font-size: v.$font-size-m;
+                font-family: "Vollkorn";
+
+                &:focus {
+                    outline: v.$border-width-m solid v.$color-umber;
+                }
+            }
+        }
 
         .tagItemContainer {
             &Title {

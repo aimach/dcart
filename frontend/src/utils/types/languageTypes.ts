@@ -147,6 +147,7 @@ type LanguageObject = {
 			searchForSourceMaterial: string;
 			searchForAgentivity: string;
 			searchForAgentName: string;
+			searchForTag: string;
 			noSelectedMarker: string;
 			traduction: string;
 			originalVersion: string;

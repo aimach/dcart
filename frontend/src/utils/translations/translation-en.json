@@ -145,6 +145,7 @@
 			"searchForSourceMaterial": "Search for a source material...",
 			"searchForAgentivity": "Search for an agentivity...",
 			"searchForAgentName": "Search for an agent name...",
+			"searchForTag": "Search for a tag...",
 			"noSelectedMarker": "Select a marker to see details",
 			"traduction": "Traduction",
 			"originalVersion": "Original version",

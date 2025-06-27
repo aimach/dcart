@@ -12,7 +12,7 @@ export const tagController = {
 	getTags: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { tagSlug } = req.params;
-			const { map, storymap } = req.query;
+			const { map, storymap, searchText, tags } = req.query;
 
 			let results = null;
 			if (tagSlug === "all") {
@@ -40,8 +40,16 @@ export const tagController = {
 			];
 
 			if (map === "true" || map === undefined) {
+				let condition = "map.isActive = true";
+				if (searchText) {
+					condition +=
+						" AND (LOWER(map.title_fr) LIKE LOWER(:searchText) OR LOWER(map.title_en) LIKE LOWER(:searchText) OR LOWER(map.description_fr) LIKE LOWER(:searchText) OR LOWER(map.description_en) LIKE LOWER(:searchText))";
+				}
+
 				tagQuery = tagQuery
-					.leftJoinAndSelect("tag.maps", "map", "map.isActive = true")
+					.leftJoinAndSelect("tag.maps", "map", condition, {
+						searchText: `%${searchText}%`,
+					})
 					.leftJoinAndSelect("map.tags", "mapTag")
 					.orderBy("GREATEST(map.createdAt, map.updatedAt)", "DESC");
 				selectArray.push(
@@ -57,12 +65,15 @@ export const tagController = {
 			}
 
 			if (storymap === "true" || storymap === undefined) {
+				let condition = "storymap.isActive = true";
+				if (searchText) {
+					condition +=
+						" AND (LOWER(storymap.title_lang1) LIKE LOWER(:searchText) OR LOWER(storymap.title_lang2) LIKE LOWER(:searchText) OR LOWER(storymap.description_lang1) LIKE LOWER(:searchText) OR LOWER(storymap.description_lang2) LIKE LOWER(:searchText))";
+				}
 				tagQuery = tagQuery
-					.leftJoinAndSelect(
-						"tag.storymaps",
-						"storymap",
-						"storymap.isActive = true",
-					)
+					.leftJoinAndSelect("tag.storymaps", "storymap", condition, {
+						searchText: `%${searchText}%`,
+					})
 					.leftJoinAndSelect("storymap.tags", "storymapTag")
 					.orderBy("GREATEST(storymap.createdAt, storymap.updatedAt)", "DESC");
 				selectArray.push(
@@ -81,6 +92,14 @@ export const tagController = {
 			tagQuery.select(selectArray);
 
 			if (tagSlug === "items") {
+				if (tags) {
+					const tagsArray = Array.isArray(tags)
+						? tags
+						: (tags as string).split(",").map((tag) => tag.trim());
+
+					tagQuery.andWhere("tag.slug IN (:...tags)", { tags: tagsArray });
+				}
+
 				results = await tagQuery.getMany();
 
 				res.status(200).json(results);

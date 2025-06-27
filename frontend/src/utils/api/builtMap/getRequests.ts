@@ -2,6 +2,8 @@
 import { apiClient } from "../apiClient";
 // import des types
 import type { UserFilterType } from "../../types/filterTypes";
+import { OptionType } from "../../types/commonTypes";
+import { MultiValue } from "react-select";
 
 /**
  * Récupère toutes les attestations d'une source à partir de son id
@@ -325,12 +327,23 @@ const getAllColors = async () => {
 	}
 };
 
-const getAllTagsWithMapsAndStorymaps = async (itemFilter: {
-	map: boolean;
-	storymap: boolean;
-}) => {
+const getAllTagsWithMapsAndStorymaps = async (
+	itemFilter: {
+		map: boolean;
+		storymap: boolean;
+	},
+	searchText: string,
+	TagArray: MultiValue<OptionType>,
+) => {
 	try {
-		const filter = `?map=${itemFilter.map}&storymap=${itemFilter.storymap}`;
+		let filter = `?map=${itemFilter.map}&storymap=${itemFilter.storymap}`;
+		if (searchText) {
+			filter += `&searchText=${searchText}`;
+		}
+		if (TagArray.length > 0) {
+			const tags = TagArray.map((tag) => tag.value).join(",");
+			filter += `&tags=${tags}`;
+		}
 		const response = await apiClient.get(`/dcart/tags/items${filter}`);
 		return response.data;
 	} catch (error) {

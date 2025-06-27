@@ -1,22 +1,30 @@
 // import des bibliothèques
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
+import { useForm } from "react-hook-form";
+import Select from "react-select";
 // import des composants
 import SwiperContainer from "./components/common/swiper/SwiperContainer";
 import ButtonComponent from "./components/common/button/ButtonComponent";
 import ItemFilterComponent from "./components/common/itemFilter/ItemFilterComponent";
 // import des services
-import { getAllTagsWithMapsAndStorymaps } from "./utils/api/builtMap/getRequests";
+import {
+	getAllTags,
+	getAllTagsWithMapsAndStorymaps,
+} from "./utils/api/builtMap/getRequests";
 import { getTranslations } from "./utils/api/translationAPI";
 // import des custom hooks
 import { useTranslation } from "./utils/hooks/useTranslation";
 // import des types
-import type { TagWithItemsType } from "./utils/types/commonTypes";
+import type { OptionType, TagWithItemsType } from "./utils/types/commonTypes";
+import type { MultiValue } from "react-select";
 // import du style
 import "./App.scss";
 import style from "./HomePage.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
+import { TagType } from "./utils/types/mapTypes";
+import { all } from "axios";
 
 type CheckboxType = { map: boolean; storymap: boolean };
 
@@ -42,26 +50,54 @@ function HomePage() {
 	const [allTagsWithItems, setAllTagsWithItems] = useState<TagWithItemsType[]>(
 		[],
 	);
+	const [allTagsOptions, setAllTagsOptions] = useState<OptionType[]>([]);
+	const [selectedTags, setSelectedTags] = useState<MultiValue<OptionType>>([]);
+	const [searchText, setSearchText] = useState<string>("");
+
+	const fetchAllTagsWithMapsAndStorymaps = async (
+		itemTypes: CheckboxType,
+		searchText = "",
+		tagArray = [] as MultiValue<OptionType>,
+	) => {
+		const fetchedTags: TagWithItemsType[] =
+			await getAllTagsWithMapsAndStorymaps(itemTypes, searchText, tagArray);
+
+		const sortedTags = fetchedTags.sort((a, b) => {
+			const mapsNbA = a.maps ? a.maps.length : 0;
+			const mapsNbB = b.maps ? b.maps.length : 0;
+			const storymapsNbA = a.storymaps ? a.storymaps.length : 0;
+			const storymapsNbB = b.storymaps ? b.storymaps.length : 0;
+			return mapsNbB + storymapsNbB - (mapsNbA + storymapsNbA);
+		});
+		setAllTagsWithItems(sortedTags);
+	};
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: inifinite loop
+	useEffect(() => {
+		fetchAllTagsWithMapsAndStorymaps(itemTypes, searchText, selectedTags);
+	}, [itemTypes]);
 
 	useEffect(() => {
-		const fetchAllTagsWithMapsAndStorymaps = async (
-			itemTypes: CheckboxType,
-		) => {
-			const fetchedTags: TagWithItemsType[] =
-				await getAllTagsWithMapsAndStorymaps(itemTypes);
-
-			const sortedTags = fetchedTags.sort((a, b) => {
-				const mapsNbA = a.maps ? a.maps.length : 0;
-				const mapsNbB = b.maps ? b.maps.length : 0;
-				const storymapsNbA = a.storymaps ? a.storymaps.length : 0;
-				const storymapsNbB = b.storymaps ? b.storymaps.length : 0;
-				return mapsNbB + storymapsNbB - (mapsNbA + storymapsNbA);
-			});
-			setAllTagsWithItems(sortedTags);
+		const fetchAllTags = async () => {
+			const allTags: TagWithItemsType[] = await getAllTagsWithMapsAndStorymaps(
+				itemTypes,
+				"",
+				[],
+			);
+			if (allTags.length > 0) {
+				const options = allTags
+					.filter(
+						(tag) => tag.maps?.length !== 0 || tag.storymaps?.length !== 0,
+					)
+					.map((tag) => ({
+						value: tag.slug,
+						label: tag[`name_${language}`],
+					}));
+				setAllTagsOptions(options);
+			}
 		};
-
-		fetchAllTagsWithMapsAndStorymaps(itemTypes);
-	}, [itemTypes]);
+		fetchAllTags();
+	}, [language, itemTypes]);
 
 	const [translationTitle, setTranslationTitle] = useState<string>("");
 	const [translationDescription, setTranslationDescription] =
@@ -94,6 +130,24 @@ function HomePage() {
 		}));
 	};
 
+	const handleFilterInputs = (
+		searchText: string,
+		tagArray: MultiValue<OptionType>,
+	) => {
+		setSearchText(searchText);
+		setSelectedTags(tagArray);
+		fetchAllTagsWithMapsAndStorymaps(itemTypes, searchText, tagArray);
+	};
+
+	const isEmptyResult = (allTagsWithItems: TagWithItemsType[]) => {
+		if (allTagsWithItems.length === 0) return true;
+		return allTagsWithItems.every((tagWithItems: TagWithItemsType) => {
+			const maps = tagWithItems.maps || [];
+			const storymaps = tagWithItems.storymaps || [];
+			return maps.length === 0 && storymaps.length === 0;
+		});
+	};
+
 	return (
 		<section className={style.mainPage}>
 			<section className={style.heroContainer}>
@@ -115,32 +169,53 @@ function HomePage() {
 				</div>
 			</section>
 			<section className={style.tagContainer} ref={tagContainerRef}>
-				<ItemFilterComponent
-					itemTypes={itemTypes}
-					handleCheckboxChange={handleCheckboxChange}
-				/>
+				<div className={style.tagContainerHeader}>
+					<Select
+						options={allTagsOptions}
+						delimiter="|"
+						isMulti
+						onChange={(newValue) => handleFilterInputs(searchText, newValue)}
+						placeholder={translation[language].mapPage.aside.searchForTag}
+					/>
+
+					<input
+						type="text"
+						value={searchText}
+						onChange={(e) => handleFilterInputs(e.target.value, selectedTags)}
+						placeholder={`${translation[language].button.search}...`}
+					/>
+
+					<ItemFilterComponent
+						itemTypes={itemTypes}
+						handleCheckboxChange={handleCheckboxChange}
+					/>
+				</div>
 				<div>
-					{allTagsWithItems?.map((tagWithItems) => {
-						const itemsArray =
-							tagWithItems.maps && tagWithItems.storymaps
-								? tagWithItems.maps.concat(tagWithItems.storymaps).slice(0, 3)
-								: tagWithItems.maps || tagWithItems.storymaps || [];
-						return (
-							itemsArray.length > 0 && (
-								<div key={tagWithItems.id} className={style.tagItemContainer}>
-									<div className={style.tagItemContainerTitle}>
-										<h3>{tagWithItems[`name_${language}`]}</h3>
-										<Link to={`/tag/${tagWithItems.slug}`}>
-											<div className={style.textButtonContainer}>
-												{translation[language].button.seeAll} <ChevronRight />
-											</div>
-										</Link>
+					{isEmptyResult(allTagsWithItems) ? (
+						<p>{translation[language].mapPage.noResult}</p>
+					) : (
+						allTagsWithItems?.map((tagWithItems) => {
+							const itemsArray =
+								tagWithItems.maps && tagWithItems.storymaps
+									? tagWithItems.maps.concat(tagWithItems.storymaps).slice(0, 3)
+									: tagWithItems.maps || tagWithItems.storymaps || [];
+							return (
+								itemsArray.length > 0 && (
+									<div key={tagWithItems.id} className={style.tagItemContainer}>
+										<div className={style.tagItemContainerTitle}>
+											<h3>{tagWithItems[`name_${language}`]}</h3>
+											<Link to={`/tag/${tagWithItems.slug}`}>
+												<div className={style.textButtonContainer}>
+													{translation[language].button.seeAll} <ChevronRight />
+												</div>
+											</Link>
+										</div>
+										<SwiperContainer items={itemsArray} />
 									</div>
-									<SwiperContainer items={itemsArray} />
-								</div>
-							)
-						);
-					})}
+								)
+							);
+						})
+					)}
 				</div>
 			</section>
 		</section>
