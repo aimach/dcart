@@ -13,7 +13,7 @@ type LanguageObject = {
 		maps: string;
 		storymaps: string;
 		backoffice: string;
-		translation: string;
+		texts: string;
 		back: string;
 		explore: string;
 		discover: string;
@@ -139,6 +139,7 @@ type LanguageObject = {
 			timeLimits: string;
 			seeStat: string;
 			seeSources: string;
+			filterIntroduction: string;
 			searchForLocation: string;
 			searchForElement: string;
 			searchForSourceType: string;
@@ -147,12 +148,14 @@ type LanguageObject = {
 			searchForSourceMaterial: string;
 			searchForAgentivity: string;
 			searchForAgentName: string;
+			searchForTag: string;
 			noSelectedMarker: string;
 			traduction: string;
 			originalVersion: string;
 			agents: string;
 			noAgent: string;
 			noDesignation: string;
+			noSourceMaterialDefined: string;
 			introContent: string;
 			dontShowAgain: string;
 		};

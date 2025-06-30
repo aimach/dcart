@@ -26,7 +26,7 @@ import { isSelectedFilterInThisMap } from "../../../../utils/functions/filter";
 // import du style
 import style from "./tabComponent.module.scss";
 // import des icônes
-import { ChevronRight } from "lucide-react";
+import { ChevronRight, SquareArrowOutUpRight } from "lucide-react";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;
@@ -105,7 +105,21 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 						<tbody>
 							<tr>
 								<th>Attestation</th>
-								<td>#{attestation.attestation_id}</td>
+								<td>
+									<a
+										href={`https://base-map-polytheisms.huma-num.fr/attestation/${attestation.attestation_id}`}
+										target="_blank"
+										rel="noreferrer"
+										style={{
+											display: "flex",
+											alignItems: "center",
+											gap: "0.5rem",
+										}}
+									>
+										#{attestation.attestation_id}
+										<SquareArrowOutUpRight size={15} />
+									</a>
+								</td>
 							</tr>
 							<tr>
 								<th>{translation[language].mapPage.aside.originalVersion}</th>
@@ -170,7 +184,8 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 									<th>{translation[language].mapPage.aside.sourceMaterial}</th>
 									<td>
 										{source.types[`material_${language}`] ??
-											translation[language].mapPage.noSourceMaterialDefined}
+											translation[language].mapPage.aside
+												.noSourceMaterialDefined}
 									</td>
 								</tr>
 							)}

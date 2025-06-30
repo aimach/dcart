@@ -10,7 +10,7 @@ export const locationController = {
 		try {
 			if (req.params.greatRegionId === "all") {
 				const results = await mapDataSource.query(
-					"SELECT id, nom_fr, nom_en FROM grande_region",
+					"SELECT id, nom_fr, nom_en FROM grande_region ORDER BY nom_fr ASC",
 				);
 				res.status(200).json(results);
 				return;

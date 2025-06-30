@@ -54,6 +54,7 @@ type DivinityType = {
 	id: number;
 	nom_fr: string;
 	nom_en: string;
+	etat_absolu: string;
 };
 
 type ElementType = {

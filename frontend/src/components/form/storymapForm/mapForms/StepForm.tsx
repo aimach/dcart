@@ -310,7 +310,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 				})}
 				<div className={style.helpContainer}>
 					<a
-						href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-storymaps-carte-simple-1bd4457ff83180d3ab96f4b50bc0800b?pvs=4"
+						href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9"
 						target="_blank"
 						rel="noreferrer"
 					>
