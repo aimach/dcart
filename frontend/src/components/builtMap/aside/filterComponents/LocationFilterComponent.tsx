@@ -12,6 +12,7 @@ import {
 } from "../../../../utils/functions/filter";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 interface LocationFilterComponentProps {
 	locationOptions: OptionType[];
@@ -46,6 +47,7 @@ const LocationFilterComponent = ({
 	return (
 		<div>
 			<Select
+				styles={singleSelectInLineStyle}
 				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 				options={locationOptions}
 				defaultValue={getDefaultValues}

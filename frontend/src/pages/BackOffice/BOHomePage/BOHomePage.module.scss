@@ -27,6 +27,7 @@
             @include m.shadow();
             cursor: pointer;
             transition: transform 0.2s ease-in-out;
+            font-size: v.$font-size-l;
 
             &:hover {
                 transform: scale(1.05);

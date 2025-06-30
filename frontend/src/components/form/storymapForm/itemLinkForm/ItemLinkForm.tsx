@@ -33,6 +33,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import style from "../commonForm/commonForm.module.scss";
 // import des icônes
 import { ChevronLeft, ChevronRight } from "lucide-react";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 export type ItemLinkFormInputs = {
 	content1_lang1: string;
@@ -85,7 +86,7 @@ const ItemLinkForm = () => {
 	const [itemOptions, setItemOptions] = useState<OptionType[]>([]);
 	useEffect(() => {
 		const fetchMapInfos = async () => {
-			const activeMaps = await getAllMapsInfos(true, "");
+			const activeMaps = await getAllMapsInfos(true, "", false);
 			const formatedMap = activeMaps.map((map: MapType) => ({
 				label: map[`title_${language}`],
 				value: map.id,
@@ -96,7 +97,7 @@ const ItemLinkForm = () => {
 			}
 		};
 		const fetchStorymapInfos = async () => {
-			const activeStorymaps = await getAllStorymapsInfos(true, "");
+			const activeStorymaps = await getAllStorymapsInfos(true, "", false);
 			const formatedStorymap = activeStorymaps.map(
 				(storymap: StorymapType) => ({
 					label: storymap.title_lang1,
@@ -199,6 +200,7 @@ const ItemLinkForm = () => {
 						/>
 						<div className={style.inputContainer}>
 							<Select
+								styles={singleSelectInLineStyle}
 								options={itemOptions}
 								placeholder="Sélectionner un élément"
 								onChange={(newValue) =>

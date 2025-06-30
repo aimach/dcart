@@ -24,7 +24,7 @@
     width: 100%;
 
     >label {
-        font-size: v.$font-size-m;
+        font-size: v.$font-size-l;
         font-weight: v.$font-weight-bold;
     }
 
@@ -34,7 +34,7 @@
         padding: v.$space-s;
         border: v.$border-width-m solid v.$color-grullo-light;
         border-radius: v.$border-radius-rounded;
-        font-size: v.$font-size-m;
+        font-size: v.$font-size-l;
         font-family: "Vollkorn";
 
         &:focus {

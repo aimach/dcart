@@ -39,6 +39,7 @@ import type { TagType } from "../../../../utils/types/mapTypes";
 import style from "../commonForm/commonForm.module.scss";
 // import des icônes
 import { TriangleAlert } from "lucide-react";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -160,6 +161,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 						/>
 						<div className={style.inputContainer}>
 							<Select
+								styles={singleSelectInLineStyle}
 								options={tagOptions}
 								delimiter="|"
 								isMulti
@@ -193,6 +195,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 						/>
 						<div className={style.inputContainer}>
 							<Select
+								styles={singleSelectInLineStyle}
 								options={tagOptions}
 								defaultValue={storymapInfos ? defaultTagValues : []}
 								delimiter="|"

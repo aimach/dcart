@@ -32,6 +32,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import style from "./introForm.module.scss";
 // import des icônes
 import { TriangleAlert } from "lucide-react";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 type IntroFormProps = {
 	inputs: InputType[];
@@ -271,6 +272,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 				/>
 				<div className={style.inputContainer}>
 					<Select
+						styles={singleSelectInLineStyle}
 						options={tagOptions}
 						defaultValue={mapInfos ? defaultTagValues : []}
 						delimiter="|"

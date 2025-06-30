@@ -8,5 +8,8 @@
     .filterInputContainer {
         @include m.flexbox(flex, row, wrap, center, center);
 
+        >label {
+            font-size: v.$font-size-l;
+        }
     }
 }

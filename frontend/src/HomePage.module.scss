@@ -74,6 +74,11 @@
     .heroButtonContainer {
         @include m.flexbox(flex, row, nowrap, flex-start, center);
         gap: v.$space-l;
+
+        >button,
+        a {
+            font-size: v.$font-size-l;
+        }
     }
 
     .tagContainer {
@@ -92,7 +97,7 @@
                 padding: v.$space-xs;
                 border: v.$border-width-m solid v.$color-grullo-light;
                 border-radius: v.$border-radius-rounded;
-                font-size: v.$font-size-m;
+                font-size: v.$font-size-l;
                 font-family: "Vollkorn";
 
                 &:focus {
@@ -107,9 +112,10 @@
                 margin-bottom: v.$space-s;
                 border-bottom: v.$border-width-m solid v.$color-black-chocolate;
                 @include m.flexbox(flex, row, wrap, space-between, center);
+                font-size: v.$font-size-l;
 
                 >h3 {
-                    font-size: v.$font-size-xxl;
+                    font-size: v.$font-size-xxxl;
                 }
 
                 .textButtonContainer {

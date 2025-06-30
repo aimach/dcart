@@ -60,6 +60,7 @@
 
     >thead {
         border-bottom: v.$border-width-m solid v.$color-grullo-light;
+        font-size: v.$font-size-l;
 
         >tr>th {
             padding: v.$space-m 0;
