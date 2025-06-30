@@ -39,7 +39,7 @@
 
         .itemTableActions {
             @include m.flexbox(flex, column, nowrap, center, center);
-            gap: v.$space-s/2;
+            gap: calc(v.$space-s/2);
 
             svg {
                 cursor: pointer;
