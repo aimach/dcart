@@ -5,6 +5,7 @@ import { useLocation } from "react-router";
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -23,6 +24,7 @@ import type {
 import style from "../introForm/introForm.module.scss";
 // import des icônes
 import { CircleCheck } from "lucide-react";
+import { notifyError } from "../../../../utils/functions/toast";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
@@ -32,6 +34,7 @@ interface PointSetUploadFormProps {
 	type: "map" | "block";
 	action: "create" | "edit";
 	cancelFunction: () => void;
+	isPointSetFormValid: boolean | null;
 }
 
 const PointSetUploadForm = ({
@@ -42,6 +45,7 @@ const PointSetUploadForm = ({
 	type,
 	action,
 	cancelFunction,
+	isPointSetFormValid,
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
@@ -68,6 +72,11 @@ const PointSetUploadForm = ({
 					[type === "map" ? "mapId" : "blockId"]: parentId as string,
 				} as PointSetType);
 				setSelectedFile((event.target as HTMLInputElement).files?.[0] ?? null);
+			},
+			onError: () => {
+				notifyError(
+					"Erreur lors du chargement du fichier. Vérifier le format.",
+				);
 			},
 		});
 	};
@@ -105,6 +114,9 @@ const PointSetUploadForm = ({
 								} as PointSetType)
 							}
 						/>
+						{(!pointSet?.name_fr || pointSet?.name_fr === "") && (
+							<ErrorComponent message="requis" />
+						)}
 					</div>
 				</div>
 				{(!isStorymap || storymapInfos?.lang2) && (
@@ -138,6 +150,9 @@ const PointSetUploadForm = ({
 									} as PointSetType)
 								}
 							/>
+							{(!pointSet?.name_en || pointSet?.name_en === "") && (
+								<ErrorComponent message="requis" />
+							)}
 						</div>
 					</div>
 				)}
@@ -175,6 +190,9 @@ const PointSetUploadForm = ({
 								selectedFile &&
 								`Nouveau fichier chargé : ${selectedFile?.name}`}
 						</p>
+						{(!pointSet?.attestationIds || pointSet?.attestationIds === "") && (
+							<ErrorComponent message="requis" />
+						)}
 					</div>
 				</div>
 				<div className={style.commonFormInputContainer}>
@@ -188,6 +206,7 @@ const PointSetUploadForm = ({
 							translation[language].backoffice.mapFormPage.pointSetForm
 								.pointColor.description
 						}
+						isRequired={false}
 					/>
 					<div className={style.inputContainer}>
 						<SelectOptionsComponent
@@ -227,6 +246,7 @@ const PointSetUploadForm = ({
 							translation[language].backoffice.mapFormPage.pointSetForm
 								.pointIcon.description
 						}
+						isRequired={false}
 					/>
 					<div className={style.inputContainer}>
 						<SelectOptionsComponent
@@ -268,6 +288,7 @@ const PointSetUploadForm = ({
 						onClickFunction={() => {
 							cancelFunction();
 							setSelectedFile(null);
+							setPointSet(null);
 						}}
 					/>
 				)}

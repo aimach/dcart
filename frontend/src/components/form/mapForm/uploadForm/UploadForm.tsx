@@ -21,6 +21,7 @@ import {
 	notifyCreateSuccess,
 	notifyDeleteSuccess,
 	notifyEditSuccess,
+	notifyError,
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
 // import des types
@@ -59,9 +60,23 @@ const UploadForm = () => {
 	// fonction pour gérer la soumission du formulaire (passage à l'étape suivante)
 	const [pointSet, setPointSet] = useState<PointSetType | null>(null);
 	const [action, setAction] = useState<"create" | "edit">("create");
+	const isPointSetFormValid =
+		pointSet &&
+		typeof pointSet.name_fr === "string" &&
+		pointSet.name_fr.trim() !== "" &&
+		typeof pointSet.name_en === "string" &&
+		pointSet.name_en.trim() !== "" &&
+		typeof pointSet.attestationIds === "string" &&
+		pointSet.attestationIds.trim() !== "";
+
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
-
+		if (!isPointSetFormValid) {
+			notifyError(
+				"Veuillez remplir tous les champs obligatoires du formulaire.",
+			);
+			return;
+		}
 		if (action === "create") {
 			const newPointSet = await createPointSet(pointSet as PointSetType);
 			if (newPointSet?.status === 201) {
@@ -71,6 +86,7 @@ const UploadForm = () => {
 				);
 				setMapInfos(mapWithPointSet);
 				notifyCreateSuccess("Jeu de points", false);
+				setPointSet(null);
 			}
 		}
 		if (action === "edit") {
@@ -81,6 +97,7 @@ const UploadForm = () => {
 				);
 				setMapInfos(mapWithPointSet);
 				notifyEditSuccess("Jeu de points", false);
+				setPointSet(null);
 			}
 		}
 	};
@@ -178,6 +195,7 @@ const UploadForm = () => {
 						setIsAlreadyAPointSet(true);
 						setAction("create");
 					}}
+					isPointSetFormValid={isPointSetFormValid}
 				/>
 			)}
 			{mapInfos?.attestations && (

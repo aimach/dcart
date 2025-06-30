@@ -159,6 +159,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 								htmlFor={input.name}
 								label={input[`label_${language}`]}
 								description={input[`description_${language}`] ?? ""}
+								isRequired={input.required.value}
 							/>
 							<div className={style.inputContainer}>
 								<select
@@ -195,6 +196,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 								htmlFor={input.name}
 								label={input[`label_${language}`]}
 								description={input[`description_${language}`] ?? ""}
+								isRequired={input.required.value}
 							/>
 							<div className={style.inputContainer}>
 								<input
@@ -223,6 +225,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 								htmlFor={input.name}
 								label={input[`label_${language}`]}
 								description={input[`description_${language}`] ?? ""}
+								isRequired={input.required.value}
 							/>
 							<div className={style.inputContainer}>
 								<Controller
