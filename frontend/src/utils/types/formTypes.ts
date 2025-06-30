@@ -66,7 +66,9 @@ type storymapInputsType = {
 	image_url: string;
 	background_color: string;
 	author: string;
-	publication_date: string;
+	author_status: string | null;
+	author_email: string | null;
+	publishedAt: string;
 	category_id: string;
 	lang1: string;
 	lang2: string;

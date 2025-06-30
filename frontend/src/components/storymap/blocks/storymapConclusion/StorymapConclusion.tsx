@@ -10,6 +10,7 @@ import type { StorymapType } from "../../../../utils/types/storymapTypes";
 import type { TagType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./storymapConclusion.module.scss";
+import SeparatorBlock from "../separatorBlock/SeparatorBlock";
 
 interface StorymapConclusionProps {
 	storymapInfos: StorymapType;
@@ -41,14 +42,32 @@ const StorymapConclusion = ({ storymapInfos }: StorymapConclusionProps) => {
 	}, [storymapInfos.tags, storymapInfos.id]);
 
 	return (
-		otherStorymaps.length > 0 && (
+		<>
+			<SeparatorBlock />
 			<section className={style.conclusionContainer}>
-				<h4>{translation[language].seeAlso.toUpperCase()}</h4>
-				<div className={style.storymapContainer}>
-					<SwiperContainer items={otherStorymaps} />
+				<div>
+					<p>{storymapInfos.author ?? storymapInfos.author}</p>
+					<p>{storymapInfos.author_status ?? storymapInfos.author_status}</p>
+					<p>
+						{storymapInfos.author_email ? (
+							<a href={`mailto:${storymapInfos.author_email}`}>
+								{storymapInfos.author_email}
+							</a>
+						) : (
+							""
+						)}
+					</p>
 				</div>
+				{otherStorymaps.length > 0 && (
+					<div>
+						<h4>{translation[language].seeAlso.toUpperCase()}</h4>
+						<div className={style.storymapContainer}>
+							<SwiperContainer items={otherStorymaps} />
+						</div>
+					</div>
+				)}
 			</section>
-		)
+		</>
 	);
 };
 

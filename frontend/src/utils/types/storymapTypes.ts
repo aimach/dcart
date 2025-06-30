@@ -10,6 +10,8 @@ type StorymapType = {
 	image_url?: string;
 	background_color?: string;
 	author?: string;
+	author_status?: string;
+	author_email?: string;
 	isActive: boolean;
 	publishedAt: string;
 	lang1: { name: string; id: string };
@@ -40,9 +42,11 @@ type StorymapBodyType = {
 	image_url: string;
 	background_color: string;
 	author: string;
+	author_status: string | null;
+	author_email: string | null;
 	lang1: string;
 	lang2: string | null;
-	publication_date: string;
+	publishedAt: string;
 	tags: string;
 };
 

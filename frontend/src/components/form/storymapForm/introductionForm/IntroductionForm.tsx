@@ -118,9 +118,11 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 					? tinycolor(data.background_color).toHexString()
 					: "",
 				author: data.author,
+				author_status: data.author_status ?? "",
+				author_email: data.author_email ?? "",
 				lang1: data.lang1,
 				lang2: data.lang2 === "0" ? null : data.lang2,
-				publication_date: data.publication_date,
+				publishedAt: data.publishedAt,
 				tags: selectedTags
 					? selectedTags
 					: (storymapInfos?.tags as TagType[])

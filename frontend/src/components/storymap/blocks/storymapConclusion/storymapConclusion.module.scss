@@ -2,18 +2,41 @@
 @use '../../../../styles/variable' as v;
 
 .conclusionContainer {
-    @include m.flexbox(flex, column, nowrap, center, center);
     width: 100%;
-    background-color: v.$background-color-soft;
-    padding-top: v.$space-s;
 
+    >:first-child {
+        width: 50%;
+        text-align: center;
+        padding: v.$space-l 0;
+        margin: 0 auto;
+        @include m.flexbox(flex, column, nowrap, center, center);
+        gap: v.$space-m;
 
+        >p:first-child {
+            font-size: v.$font-size-xl;
+            font-weight: v.$font-weight-bold;
+            color: v.$color-umber;
+        }
 
-    .storymapContainer {
-        @include m.flexbox(flex, row, nowrap, center, center);
+        a {
+            color: v.$color-umber;
+            text-decoration: none;
 
+            &:hover {
+                opacity: v.$opacity-hover;
+            }
+        }
+    }
 
+    >:last-child {
+        @include m.flexbox(flex, column, nowrap, center, center);
+        width: 100%;
+        background-color: v.$background-color-soft;
+        padding-top: v.$space-s;
 
+        .storymapContainer {
+            @include m.flexbox(flex, row, nowrap, center, center);
+        }
     }
 }
 

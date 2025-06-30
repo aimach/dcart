@@ -23,11 +23,18 @@
             margin: v.$font-space-xxxxl;
         }
 
-        p:first-of-type {
+        >p:first-of-type {
             font-size: v.$font-size-xxl;
             margin: v.$font-space-xxxxl;
             font-style: italic;
         }
+
+        .authorAndDateContainer {
+            @include m.flexbox(flex, column, nowrap, center, center);
+            gap: v.$space-s;
+        }
+
+
     }
 }
 
