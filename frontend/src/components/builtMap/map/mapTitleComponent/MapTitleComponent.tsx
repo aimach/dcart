@@ -6,32 +6,44 @@ import { displayFiltersTags } from "../../../../utils/functions/filter";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+// import du type
+import type { LatLngTuple } from "leaflet";
 // import du style
 import style from "./mapTitleComponent.module.scss";
 // import des icônes
-import { CircleHelp, Info, PanelLeft } from "lucide-react";
+import { CircleHelp, Info, PanelLeft, RotateCcw } from "lucide-react";
 
 type MapTitleComponentProps = {
 	setIsModalOpen: (isOpen: boolean) => void;
+	mapBounds: LatLngTuple[];
+	fetchAllPoints: (type: "filter" | "reset") => Promise<void>;
 };
 
 /**
  * Composant du titre de la carte affiché sur la carte, avec rappel des filtres appliqués
+ * @param {Object} props Les props du composant
+ * @param {Function} props.setIsModalOpen Fonction pour ouvrir le modal d'information
+ * @param {LatLngTuple[]} props.mapBounds Les limites de la carte
+ * @param {Function} props.fetchAllPoints Fonction pour récupérer tous les points
  */
-const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
+const MapTitleComponent = ({
+	setIsModalOpen,
+	mapBounds,
+	fetchAllPoints,
+}: MapTitleComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
 	const { isMobile } = useWindowSize();
 
 	// récupération des données du store
-	const { mapInfos, tutorialStep, openTutorial, resetTutorialStep } =
+	const { map, mapInfos, tutorialStep, openTutorial, resetTutorialStep } =
 		useMapStore();
-
 	const { setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const {
 		userFilters,
+		resetUserFilters,
 		locationNames,
 		elementNames,
 		languageValues,
@@ -41,6 +53,8 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 		agentActivityNames,
 		sourceMaterialNames,
 		genderValues,
+		isReset,
+		setIsReset,
 	} = useMapFiltersStore();
 
 	const filtersDetails = displayFiltersTags(
@@ -57,6 +71,14 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 		translation[language],
 	);
 
+	const handleResetButton = async () => {
+		map?.fitBounds(mapBounds);
+
+		fetchAllPoints("reset");
+		resetUserFilters();
+		setIsReset(!isReset);
+	};
+
 	return (
 		<div
 			className={
@@ -71,6 +93,7 @@ const MapTitleComponent = ({ setIsModalOpen }: MapTitleComponentProps) => {
 				)}
 
 				<Info onClick={() => setIsModalOpen(true)} />
+				<RotateCcw onClick={handleResetButton} />
 				{isMobile && (
 					<>
 						<PanelLeft onClick={() => setIsPanelDisplayed(true)} />
