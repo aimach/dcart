@@ -280,9 +280,6 @@ const ComparisonMapForm = () => {
 		}
 	}, [storymapInfos]);
 
-	console.log(selectedFiles);
-	console.log(pointSets);
-
 	return (
 		isLoaded && (
 			<>
@@ -390,12 +387,15 @@ const ComparisonMapForm = () => {
 						<div className={style.mapFormInputContainer}>
 							<LabelComponent
 								htmlFor={formSide}
-								label={`${translation[language].backoffice.storymapFormPage.form.csv} ${
+								label={`${translation[language].backoffice.mapFormPage.pointSetForm.attestationIds.label} ${
 									translation[language].backoffice.storymapFormPage.form[
 										formSide === "left" ? "forLeftPane" : "forRightPane"
 									]
 								}`}
-								description=""
+								description={
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.attestationIds.description
+								}
 								isRequired={false}
 							/>
 							<div className={style.inputContainer}>
@@ -425,12 +425,15 @@ const ComparisonMapForm = () => {
 						<div className={style.mapFormInputContainer}>
 							<LabelComponent
 								htmlFor={formSide}
-								label={`${translation[language].backoffice.storymapFormPage.form.csv} ${
+								label={`${translation[language].backoffice.mapFormPage.pointSetForm.customPointsFile.label} ${
 									translation[language].backoffice.storymapFormPage.form[
 										formSide === "left" ? "forLeftPane" : "forRightPane"
 									]
 								}`}
-								description=""
+								description={
+									translation[language].backoffice.mapFormPage.pointSetForm
+										.customPointsFile.label
+								}
 								isRequired={false}
 							/>
 							<div className={style.inputContainer}>

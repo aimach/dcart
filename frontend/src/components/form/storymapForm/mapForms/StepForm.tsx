@@ -19,7 +19,12 @@ import { uploadParsedPointsForSimpleMap } from "../../../../utils/api/storymap/p
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
+import {
+	addLangageBetweenBrackets,
+	removeLang2Inputs,
+} from "../../../../utils/functions/storymap";
 import { parseCSVFile } from "../../../../utils/functions/csv";
+import { notifyError } from "../../../../utils/functions/toast";
 // import des types
 import type {
 	allInputsType,
@@ -27,6 +32,7 @@ import type {
 } from "../../../../utils/types/formTypes";
 import type { ChangeEvent } from "react";
 import type {
+	CustomPointType,
 	MapColorType,
 	MapIconType,
 	PointSetType,
@@ -36,15 +42,11 @@ import type {
 	BlockContentType,
 	StorymapType,
 } from "../../../../utils/types/storymapTypes";
-import {
-	addLangageBetweenBrackets,
-	removeLang2Inputs,
-} from "../../../../utils/functions/storymap";
+import type { ParseResult } from "papaparse";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
-import { notifyError } from "../../../../utils/functions/toast";
+import { ChevronLeft, CircleCheck, CircleHelp, CircleX } from "lucide-react";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -82,6 +84,9 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 	// récupération des paramètres de l'url
 	const [searchParams, setSearchParams] = useSearchParams();
 
+	const fileStatusTranslationObject =
+		translation[language].backoffice.storymapFormPage.form.fileStatus;
+
 	// récupération de l'action à effectuer (création ou édition de la step)
 	const stepAction = searchParams.get("stepAction");
 
@@ -94,23 +99,57 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 			: null,
 	);
 
-	const handleFileUpload = (event: ChangeEvent) => {
+	const handleBDDPointFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
 			event,
-			onComplete: (result) => {
+			onComplete: (result: ParseResult<{ id: string } | CustomPointType>) => {
 				if (result.data.length === 0) {
 					notifyError("Le fichier est vide ou mal formaté");
 					return;
 				}
 				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
-					result.data,
+					result.data as { id: string }[],
 				);
 				setPointSet({
 					...pointSet,
 					attestationIds: allAttestationsIds as string,
 				} as PointSetType);
-				setSelectedFile((event.target as HTMLInputElement).files?.[0] ?? null);
+				setSelectedDBFile(
+					(event.target as HTMLInputElement).files?.[0] ?? null,
+				);
 			},
+			onError: () => {
+				notifyError(
+					"Erreur lors du chargement du fichier. Vérifier le format.",
+				);
+			},
+		});
+	};
+
+	const handleCustomPointFileUpload = (event: ChangeEvent) => {
+		parseCSVFile({
+			event,
+			onComplete: (result: ParseResult<{ id: string } | CustomPointType>) => {
+				setPointSet({
+					...pointSet,
+					customPointsArray: result.data as CustomPointType[],
+				} as PointSetType);
+				setSelectedCustomFile(
+					(event.target as HTMLInputElement).files?.[0] ?? null,
+				);
+			},
+			onError: () => {
+				notifyError(
+					"Erreur lors du chargement du fichier. Vérifier le format.",
+				);
+			},
+			headerMapping: {
+				latitude: "latitude",
+				longitude: "longitude",
+				location: "location",
+				sourceNb: "source_nb",
+			},
+			skipLines: 0,
 		});
 	};
 
@@ -124,13 +163,21 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 		setValue,
 	} = useForm<stepInputsType>({ defaultValues: {} });
 
+	const atLeastOneFileLoaded =
+		(!pointSet?.attestationIds &&
+			pointSet?.customPointsArray &&
+			pointSet?.customPointsArray?.length > 0) ||
+		(pointSet?.attestationIds && !pointSet?.customPointsArray) ||
+		(pointSet?.attestationIds &&
+			pointSet?.customPointsArray &&
+			pointSet?.customPointsArray.length > 0);
+
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: stepInputsType) => {
 		try {
-			// il faut vérifier que la description est bien remplie (lang2 si la storymap est en 2 langues)
-			if (!pointSet || pointSet.attestationIds === "") {
+			if (!atLeastOneFileLoaded) {
 				notifyError(
-					"Veuillez sélectionner un fichier CSV avant de soumettre le formulaire.",
+					"Veuillez charger un fichier CSV avant de soumettre le formulaire.",
 				);
 				return;
 			}
@@ -234,7 +281,10 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 		}
 	}, [stepAction, block]);
 
-	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+	const [selectedDBFile, setSelectedDBFile] = useState<File | null>(null);
+	const [selectedCustomFile, setSelectedCustomFile] = useState<File | null>(
+		null,
+	);
 
 	const quillRef = useRef<Quill | null>(null);
 
@@ -336,23 +386,66 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 				</div>
 				<div className={style.mapFormInputContainer}>
 					<LabelComponent
-						htmlFor="points"
-						label={translation[language].backoffice.storymapFormPage.form.csv}
-						description=""
+						htmlFor="dbPoints"
+						label={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.attestationIds.label
+						}
+						description={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.attestationIds.description
+						}
+						isRequired={false}
 					/>
 					<div className={style.inputContainer}>
 						<input
-							id="point"
+							id="dbPoints"
 							type="file"
 							accept=".csv"
-							onChange={handleFileUpload}
+							onChange={handleBDDPointFileUpload}
+						/>
+						{stepAction === "edit" && (
+							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+								{pointSet?.attestationIds ? (
+									<CircleCheck color="green" />
+								) : stepAction === "edit" ? (
+									<CircleX color="grey" />
+								) : null}
+								{selectedDBFile
+									? `${fileStatusTranslationObject.loadedFile} : ${selectedDBFile?.name}`
+									: pointSet?.attestationIds
+										? fileStatusTranslationObject.fileAlreadyLoaded
+										: fileStatusTranslationObject.noFile}
+							</p>
+						)}
+					</div>
+				</div>
+				<div className={style.mapFormInputContainer}>
+					<LabelComponent
+						htmlFor="customPoints"
+						label={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.customPointsFile.label
+						}
+						description={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.customPointsFile.description
+						}
+						isRequired={false}
+					/>
+					<div className={style.inputContainer}>
+						<input
+							id="customPoints"
+							type="file"
+							accept=".csv"
+							onChange={handleCustomPointFileUpload}
 						/>
 						{stepAction === "edit" && (
 							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
 								<CircleCheck color="green" />
-								{selectedFile === null
+								{selectedDBFile === null
 									? "Un fichier est déjà chargé"
-									: `Nouveau fichier chargé : ${selectedFile.name}`}
+									: `Nouveau fichier chargé : ${selectedDBFile.name}`}
 							</p>
 						)}
 					</div>
