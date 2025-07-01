@@ -79,7 +79,6 @@ const UploadForm = () => {
 		}
 		if (action === "create") {
 			const newPointSet = await createPointSet(pointSet as PointSetType);
-			console.log(newPointSet);
 			if (newPointSet?.status === 201) {
 				setIsAlreadyAPointSet(true);
 				const mapWithPointSet = await getOneMapInfosById(

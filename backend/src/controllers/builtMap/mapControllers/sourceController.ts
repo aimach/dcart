@@ -25,7 +25,7 @@ import {
 } from "../../../utils/functions/builtMap";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
-import type { PointType } from "../../../utils/types/mapTypes";
+import type { CustomPointType, PointType } from "../../../utils/types/mapTypes";
 import type { Request, Response } from "express";
 
 export const sourceController = {
@@ -500,6 +500,7 @@ export const sourceController = {
 				.leftJoinAndSelect("block.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
 				.leftJoinAndSelect("attestations.color", "color")
+				.leftJoinAndSelect("attestations.points", "points")
 				.where("block.id = :id", { id: blockId });
 
 			if (side) {
@@ -548,7 +549,26 @@ export const sourceController = {
 				}),
 			);
 
-			res.status(200).json(results.flat());
+			const customPointsArray = attestationsArray.map(
+				(attestation: Attestation) => {
+					return attestation.points?.map((point) => {
+						return {
+							latitude: point.latitude,
+							longitude: point.longitude,
+							nom_ville: point.location,
+							layerNamefr: attestation.name_fr,
+							layerNameen: attestation.name_en,
+							color: attestation.color?.code_hex,
+							shape: attestation.icon?.name_en,
+							sources: [],
+						};
+					});
+				},
+			);
+
+			console.log("customPointsArray", customPointsArray);
+
+			res.status(200).json(results.flat().concat(customPointsArray.flat()));
 		} catch (error) {
 			handleError(res, error as Error);
 		}

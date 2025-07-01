@@ -89,7 +89,6 @@ const PointSetUploadForm = ({
 		parseCSVFile({
 			event,
 			onComplete: (result: ParseResult<{ id: string } | CustomPointType>) => {
-				console.log(result.data);
 				setPointSet({
 					...pointSet,
 					customPointsArray: result.data as CustomPointType[],

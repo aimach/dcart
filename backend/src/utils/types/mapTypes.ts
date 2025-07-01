@@ -26,6 +26,7 @@ type AttestationType = {
 	attestation_id: number;
 	translitteration: string;
 	extrait_avec_restitution: string;
+	points?: CustomPointType[] | null;
 };
 
 type CustomPointType = {
