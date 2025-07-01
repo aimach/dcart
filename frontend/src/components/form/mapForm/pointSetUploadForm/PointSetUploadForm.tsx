@@ -14,17 +14,19 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 import { parseCSVFile } from "../../../../utils/functions/csv";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
+import { notifyError } from "../../../../utils/functions/toast";
 // import des types
 import type { FormEvent, ChangeEvent } from "react";
 import type {
+	CustomPointType,
 	MapIconType,
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
+import type { ParseResult } from "papaparse";
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des icônes
 import { CircleCheck } from "lucide-react";
-import { notifyError } from "../../../../utils/functions/toast";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
@@ -34,7 +36,6 @@ interface PointSetUploadFormProps {
 	type: "map" | "block";
 	action: "create" | "edit";
 	cancelFunction: () => void;
-	isPointSetFormValid: boolean | null;
 }
 
 const PointSetUploadForm = ({
@@ -45,7 +46,6 @@ const PointSetUploadForm = ({
 	type,
 	action,
 	cancelFunction,
-	isPointSetFormValid,
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
@@ -59,16 +59,16 @@ const PointSetUploadForm = ({
 
 	const { storymapInfos } = useBuilderStore();
 
-	const handleFileUpload = (event: ChangeEvent) => {
+	const handleBDDPointFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
 			event,
-			onComplete: (result) => {
+			onComplete: (result: ParseResult<{ id: string } | CustomPointType>) => {
 				if (result.data.length === 0) {
 					notifyError("Le fichier est vide ou mal formaté");
 					return;
 				}
 				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
-					result.data,
+					result.data as { id: string }[],
 				);
 				setPointSet({
 					...pointSet,
@@ -82,6 +82,30 @@ const PointSetUploadForm = ({
 					"Erreur lors du chargement du fichier. Vérifier le format.",
 				);
 			},
+		});
+	};
+
+	const handleCustomPointFileUpload = (event: ChangeEvent) => {
+		parseCSVFile({
+			event,
+			onComplete: (result: ParseResult<{ id: string } | CustomPointType>) => {
+				console.log(result.data);
+				setPointSet({
+					...pointSet,
+					customPointsArray: result.data as CustomPointType[],
+				} as PointSetType);
+			},
+			onError: () => {
+				notifyError(
+					"Erreur lors du chargement du fichier. Vérifier le format.",
+				);
+			},
+			headerMapping: {
+				latitude: "latitude",
+				longitude: "longitude",
+				location: "location",
+			},
+			skipLines: 0,
 		});
 	};
 
@@ -162,6 +186,41 @@ const PointSetUploadForm = ({
 				)}
 				<div className={style.commonFormInputContainer}>
 					<LabelComponent
+						htmlFor="name_en"
+						label={
+							isStorymap
+								? `${
+										translation[language].backoffice.mapFormPage.pointSetTable
+											.nameLang2
+									} (${storymapInfos?.lang2?.name.toUpperCase()})`
+								: translation[language].backoffice.mapFormPage.pointSetForm
+										.pointSetName.label_en
+						}
+						description={
+							translation[language].backoffice.mapFormPage.pointSetForm
+								.pointSetName.description_en
+						}
+					/>
+					<div className={style.inputContainer}>
+						<input
+							id="name_en"
+							name="name_en"
+							type="text"
+							defaultValue={pointSet?.name_en ?? ""}
+							onChange={(event) =>
+								setPointSet({
+									...pointSet,
+									name_en: event.target.value,
+								} as PointSetType)
+							}
+						/>
+						{(!pointSet?.name_en || pointSet?.name_en === "") && (
+							<ErrorComponent message="requis" />
+						)}
+					</div>
+				</div>
+				<div className={style.commonFormInputContainer}>
+					<LabelComponent
 						htmlFor="attestationIds"
 						label={
 							translation[language].backoffice.mapFormPage.pointSetForm
@@ -179,7 +238,7 @@ const PointSetUploadForm = ({
 							name="attestationIds"
 							type="file"
 							accept=".csv"
-							onChange={handleFileUpload}
+							onChange={handleBDDPointFileUpload}
 						/>
 						<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
 							{((action === "create" && pointSet?.attestationIds) ||
@@ -197,6 +256,37 @@ const PointSetUploadForm = ({
 						{(!pointSet?.attestationIds || pointSet?.attestationIds === "") && (
 							<ErrorComponent message="requis" />
 						)}
+					</div>
+				</div>
+				<div className={style.commonFormInputContainer}>
+					<LabelComponent
+						htmlFor="customPointsFile"
+						label="Charger un fichier de points personnalisés"
+						description=""
+						isRequired={false}
+					/>
+
+					<div className={style.inputContainer}>
+						<input
+							id="customPointsFile"
+							name="customPointsFile"
+							type="file"
+							accept=".csv"
+							onChange={handleCustomPointFileUpload}
+						/>
+						{/* <p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+							{((action === "create" && pointSet?.attestationIds) ||
+								action === "edit") && <CircleCheck color="green" />}
+							{action === "create" &&
+								pointSet?.attestationIds &&
+								`Fichier chargé : ${selectedFile?.name}`}
+							{action === "edit" &&
+								!selectedFile &&
+								"Un fichier est déjà chargé"}
+							{action === "edit" &&
+								selectedFile &&
+								`Nouveau fichier chargé : ${selectedFile?.name}`}
+						</p> */}
 					</div>
 				</div>
 				<div className={style.commonFormInputContainer}>

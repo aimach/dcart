@@ -202,11 +202,19 @@ type MapColorType = {
 	code_hex: string;
 };
 
+type CustomPointType = {
+	latitude: number;
+	longitude: number;
+	location?: string;
+	attestation?: AttestationType;
+};
+
 type PointSetType = {
 	id?: string;
 	name_fr: string;
 	name_en: string;
 	attestationIds: string;
+	customPointsArray?: CustomPointType[];
 	color?: MapColorType | string;
 	icon?: MapIconType | string;
 	mapId?: string;
@@ -254,6 +262,7 @@ export type {
 	MapColorType,
 	FilterMapContentType,
 	DivinityListType,
+	CustomPointType,
 };
 
 export { isMapType };

@@ -28,6 +28,13 @@ type AttestationType = {
 	extrait_avec_restitution: string;
 };
 
+type CustomPointType = {
+	latitude: number;
+	longitude: number;
+	location: string;
+	attestation?: AttestationType | null;
+};
+
 type TagType = {
 	id: string;
 	name_fr: string;
@@ -151,4 +158,5 @@ export type {
 	TagType,
 	ParsedPointType,
 	MapFilterType,
+	CustomPointType,
 };

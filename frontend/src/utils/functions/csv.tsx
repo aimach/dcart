@@ -5,10 +5,14 @@ import { notifyError, notifyUploadSuccess } from "./toast";
 // import des types
 import type { ParseResult } from "papaparse";
 import type { ChangeEvent } from "react";
+import type { CustomPointType } from "../types/mapTypes";
 
 type ParseCsvOptions = {
 	event: ChangeEvent;
-	onComplete: (result: ParseResult<{ id: string }>, panelSide?: string) => void;
+	onComplete: (
+		result: ParseResult<{ id: string } | CustomPointType>,
+		panelSide?: string,
+	) => void;
 	headerMapping?: Record<string, string>;
 	skipLines?: number;
 	onError?: () => void;
@@ -32,7 +36,7 @@ export const parseCSVFile = ({
 		skipEmptyLines: true,
 		dynamicTyping: true,
 		skipFirstNLines: skipLines,
-		complete: (result: ParseResult<{ id: string }>) => {
+		complete: (result: ParseResult<{ id: string } | CustomPointType>) => {
 			if (result.data.length === 0) {
 				notifyError("Le fichier est vide ou mal formaté");
 				return;

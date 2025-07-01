@@ -5,12 +5,14 @@ import {
 	Column,
 	BaseEntity,
 	ManyToOne,
+	OneToMany,
 } from "typeorm";
 // import des entités
 import { Icon } from "./Icon";
 import { Color } from "./Color";
 import { MapContent } from "../builtMap/MapContent";
 import { Block } from "../storymap/Block";
+import { Point } from "../storymap/Point";
 
 @Entity()
 export class Attestation extends BaseEntity {
@@ -53,4 +55,11 @@ export class Attestation extends BaseEntity {
 		{ cascade: true, onDelete: "CASCADE", nullable: true },
 	)
 	block?: Block | null;
+
+	@OneToMany(
+		() => Point,
+		(point) => point.attestation,
+		{ nullable: true },
+	)
+	points?: Point[] | null;
 }

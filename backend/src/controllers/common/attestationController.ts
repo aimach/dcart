@@ -4,11 +4,13 @@ import { MapContent } from "../../entities/builtMap/MapContent";
 import { Icon } from "../../entities/common/Icon";
 import { Color } from "../../entities/common/Color";
 import { Block } from "../../entities/storymap/Block";
+import { Point } from "../../entities";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
+import type { CustomPointType } from "../../utils/types/mapTypes";
 
 export const attestationController = {
 	// récupère toutes les attestations d'une carte
@@ -38,7 +40,7 @@ export const attestationController = {
 	// créer une liste d'attestation
 	createAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
-			const { color, icon, mapId, blockId } = req.body;
+			const { color, icon, mapId, blockId, customPointsArray } = req.body;
 
 			const parentRepository = mapId
 				? dcartDataSource.getRepository(MapContent)
@@ -97,6 +99,21 @@ export const attestationController = {
 					[mapId ? "map" : "block"]: parentToAddAttestations,
 					color: colorToAdd,
 				});
+
+			if (customPointsArray && customPointsArray.length > 0) {
+				const pointRepository = dcartDataSource.getRepository(Point);
+
+				Promise.all(
+					customPointsArray.map(async (pointData: CustomPointType) => {
+						const newPoint = pointRepository.create({
+							...pointData,
+							attestation: newAttestation,
+						});
+						return pointRepository.save(newPoint);
+					}),
+				);
+			}
+
 			res.status(201).json(newAttestation);
 		} catch (error) {
 			handleError(res, error as Error);
@@ -107,7 +124,7 @@ export const attestationController = {
 	modifyAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { id } = req.params;
-			const { color, icon, mapId, blockId } = req.body;
+			const { color, icon, mapId, blockId, customPointsArray } = req.body;
 
 			const parentRepository = mapId
 				? dcartDataSource.getRepository(MapContent)
@@ -172,9 +189,26 @@ export const attestationController = {
 			attestationListToUpdate.name_en = req.body.name_en;
 			attestationListToUpdate.attestationIds = req.body.attestationIds;
 
-			await dcartDataSource
+			const updatedAttestation = await dcartDataSource
 				.getRepository(Attestation)
 				.save(attestationListToUpdate);
+
+			if (customPointsArray && customPointsArray.length > 0) {
+				const pointRepository = dcartDataSource.getRepository(Point);
+
+				// Supprimer les points existants liés à cette attestation
+				await pointRepository.delete({ attestation: updatedAttestation });
+
+				Promise.all(
+					customPointsArray.map(async (pointData: CustomPointType) => {
+						const newPoint = pointRepository.create({
+							...pointData,
+							attestation: updatedAttestation,
+						});
+						return pointRepository.save(newPoint);
+					}),
+				);
+			}
 
 			res.status(200).json("Le jeu d'attestations a bien été modifié");
 		} catch (error) {

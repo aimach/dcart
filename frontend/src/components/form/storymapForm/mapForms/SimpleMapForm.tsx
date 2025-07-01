@@ -167,6 +167,7 @@ const SimpleMapForm = () => {
 			} as PointSetType;
 		if (pointSetFormAction === "create") {
 			const newPointSet = await createPointSet(pointSetData as PointSetType);
+			console.log(newPointSet);
 			if (newPointSet?.status === 201) {
 				setIsAlreadyAPointSet(true);
 				const newBlockInfos = await getBlockInfos(block?.id as string);
