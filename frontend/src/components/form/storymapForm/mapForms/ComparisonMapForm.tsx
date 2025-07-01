@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect, useMemo, useState } from "react";
+import { useContext, useEffect, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
@@ -22,17 +22,19 @@ import { parseCSVFile } from "../../../../utils/functions/csv";
 import type { blockType } from "../../../../utils/types/formTypes";
 import type { ChangeEvent } from "react";
 import type {
+	CustomPointType,
 	MapColorType,
 	MapIconType,
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
+import type { StorymapType } from "../../../../utils/types/storymapTypes";
+import type { ParseResult } from "papaparse";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
+import { ChevronLeft, CircleCheck, CircleHelp, CircleX } from "lucide-react";
 import { notifyError } from "../../../../utils/functions/toast";
 import { addLangageBetweenBrackets } from "../../../../utils/functions/storymap";
-import type { StorymapType } from "../../../../utils/types/storymapTypes";
 
 export type comparisonMapInputsType = {
 	content1_lang1: string;
@@ -51,6 +53,9 @@ export type comparisonMapInputsType = {
 const ComparisonMapForm = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
+
+	const fileStatusTranslationObject =
+		translation[language].backoffice.storymapFormPage.form.fileStatus;
 
 	const { icons, colors } = useContext(IconOptionsContext);
 
@@ -72,6 +77,7 @@ const ComparisonMapForm = () => {
 			name_fr: "",
 			name_en: "",
 			attestationIds: "",
+			customPointsArray: [],
 		},
 		right: {
 			color: "0",
@@ -79,19 +85,23 @@ const ComparisonMapForm = () => {
 			name_fr: "",
 			name_en: "",
 			attestationIds: "",
+			customPointsArray: [],
 		},
 	});
 
-	const handleFileUpload = (event: ChangeEvent) => {
+	const handleBDDPointFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
 			event,
-			onComplete: (result, panelSide = "") => {
+			onComplete: (
+				result: ParseResult<{ id: string } | CustomPointType>,
+				panelSide = "",
+			) => {
 				if (result.data.length === 0) {
 					notifyError("Le fichier est vide ou mal formaté");
 					return;
 				}
 				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
-					result.data,
+					result.data as { id: string }[],
 				);
 				setPointsSets((prev) => ({
 					...prev,
@@ -103,9 +113,50 @@ const ComparisonMapForm = () => {
 				}));
 				setSelectedFiles((prev) => ({
 					...prev,
-					[panelSide]: (event.target as HTMLInputElement).files?.[0] as File,
+					[panelSide]: {
+						db: (event.target as HTMLInputElement).files?.[0] as File,
+						custom: prev[panelSide].custom,
+					},
 				}));
 			},
+		});
+	};
+
+	const handleCustomPointFileUpload = (event: ChangeEvent) => {
+		parseCSVFile({
+			event,
+			onComplete: (
+				result: ParseResult<{ id: string } | CustomPointType>,
+				panelSide = "",
+			) => {
+				setPointsSets((prev) => ({
+					...prev,
+					[panelSide]: {
+						...prev[panelSide],
+						name: panelSide,
+						customPointsArray: result.data as CustomPointType[],
+					},
+				}));
+				setSelectedFiles((prev) => ({
+					...prev,
+					[panelSide]: {
+						db: prev[panelSide].db,
+						custom: (event.target as HTMLInputElement).files?.[0] as File,
+					},
+				}));
+			},
+			onError: () => {
+				notifyError(
+					"Erreur lors du chargement du fichier. Vérifier le format.",
+				);
+			},
+			headerMapping: {
+				latitude: "latitude",
+				longitude: "longitude",
+				location: "location",
+				sourceNb: "source_nb",
+			},
+			skipLines: 0,
 		});
 	};
 
@@ -127,6 +178,7 @@ const ComparisonMapForm = () => {
 				icon: (leftPointsSet?.icon as MapIconType)?.id,
 				attestationIds: leftPointsSet?.attestationIds as string,
 				name_fr: "left",
+				customPointsArray: leftPointsSet?.customPointsArray || [],
 			},
 			right: {
 				...pointSets.right,
@@ -134,6 +186,7 @@ const ComparisonMapForm = () => {
 				icon: (rightPointsSet?.icon as MapIconType)?.id,
 				attestationIds: rightPointsSet?.attestationIds as string,
 				name_fr: "right",
+				customPointsArray: rightPointsSet?.customPointsArray || [],
 			},
 		});
 
@@ -147,13 +200,36 @@ const ComparisonMapForm = () => {
 		}
 	}, [action, block]);
 
+	const isAttestationButNoCustomPoints = (key: string) =>
+		pointSets?.[key]?.attestationIds &&
+		(!pointSets?.[key]?.customPointsArray ||
+			pointSets?.[key]?.customPointsArray.length === 0);
+
+	const isCustomPointsButNoAttestation = (key: string) =>
+		!pointSets?.[key]?.attestationIds &&
+		(pointSets?.[key]?.customPointsArray?.length ?? 0) > 0;
+
+	const isAttestationAndCustomPoints = (key: string) =>
+		pointSets?.[key]?.attestationIds &&
+		pointSets?.[key]?.customPointsArray &&
+		pointSets?.[key]?.customPointsArray.length > 0;
+
+	const atLeastOneFileLoadedInLeftPanel =
+		isAttestationAndCustomPoints("left") ||
+		isCustomPointsButNoAttestation("left") ||
+		isAttestationButNoCustomPoints("left");
+	const atLeastOneFileLoadedInRightPanel =
+		isAttestationAndCustomPoints("right") ||
+		isCustomPointsButNoAttestation("right") ||
+		isAttestationButNoCustomPoints("right");
+
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: comparisonMapInputsType) => {
 		if (
 			!data.content1_lang1 ||
 			!data.content2_lang1 ||
-			!pointSets.left.attestationIds ||
-			!pointSets.right.attestationIds
+			!atLeastOneFileLoadedInLeftPanel ||
+			!atLeastOneFileLoadedInRightPanel
 		) {
 			notifyError(
 				"Veuillez remplir tous les champs obligatoires du formulaire.",
@@ -183,9 +259,11 @@ const ComparisonMapForm = () => {
 		defaultValues: block as comparisonMapInputsType,
 	});
 
-	const [selectedFiles, setSelectedFiles] = useState<Record<string, File>>({
-		left: new File([], ""),
-		right: new File([], ""),
+	const [selectedFiles, setSelectedFiles] = useState<
+		Record<string, { db: File | null; custom: File | null }>
+	>({
+		left: { db: null, custom: null },
+		right: { db: null, custom: null },
 	});
 
 	const [inputs, setInputs] = useState(comparisonMapInputs);
@@ -201,6 +279,9 @@ const ComparisonMapForm = () => {
 			setInputs(newInputsWithLangInLabel);
 		}
 	}, [storymapInfos]);
+
+	console.log(selectedFiles);
+	console.log(pointSets);
 
 	return (
 		isLoaded && (
@@ -315,6 +396,7 @@ const ComparisonMapForm = () => {
 									]
 								}`}
 								description=""
+								isRequired={false}
 							/>
 							<div className={style.inputContainer}>
 								<input
@@ -322,23 +404,56 @@ const ComparisonMapForm = () => {
 									key={formSide}
 									type="file"
 									accept=".csv"
-									onChange={handleFileUpload}
+									onChange={handleBDDPointFileUpload}
 								/>
 								<p
 									style={{ display: "flex", alignItems: "center", gap: "5px" }}
 								>
-									{((action === "create" &&
-										selectedFiles[formSide].name !== "") ||
-										action === "edit") && <CircleCheck color="green" />}
-									{action === "create" &&
-										selectedFiles[formSide].name !== "" &&
-										`Fichier chargé : ${selectedFiles[formSide].name}`}
-									{action === "edit" &&
-										selectedFiles[formSide].name === "" &&
-										"Un fichier est déjà chargé"}
-									{action === "edit" &&
-										selectedFiles[formSide].name !== "" &&
-										`Nouveau fichier chargé : ${selectedFiles[formSide].name}`}
+									{pointSets[formSide]?.attestationIds ? (
+										<CircleCheck color="green" />
+									) : action === "edit" ? (
+										<CircleX color="grey" />
+									) : null}
+									{selectedFiles[formSide].db
+										? `${fileStatusTranslationObject.loadedFile} : ${selectedFiles[formSide]?.db.name}`
+										: pointSets[formSide]?.attestationIds
+											? fileStatusTranslationObject.fileAlreadyLoaded
+											: fileStatusTranslationObject.noFile}
+								</p>
+							</div>
+						</div>
+						<div className={style.mapFormInputContainer}>
+							<LabelComponent
+								htmlFor={formSide}
+								label={`${translation[language].backoffice.storymapFormPage.form.csv} ${
+									translation[language].backoffice.storymapFormPage.form[
+										formSide === "left" ? "forLeftPane" : "forRightPane"
+									]
+								}`}
+								description=""
+								isRequired={false}
+							/>
+							<div className={style.inputContainer}>
+								<input
+									id={formSide}
+									key={formSide}
+									type="file"
+									accept=".csv"
+									onChange={handleCustomPointFileUpload}
+								/>
+								<p
+									style={{ display: "flex", alignItems: "center", gap: "5px" }}
+								>
+									{(pointSets[formSide]?.customPointsArray?.length ?? 0) > 0 ? (
+										<CircleCheck color="green" />
+									) : action === "edit" ? (
+										<CircleX color="grey" />
+									) : null}
+									{selectedFiles[formSide].custom
+										? `${fileStatusTranslationObject.loadedFile} : ${selectedFiles[formSide]?.custom.name}`
+										: (pointSets[formSide]?.customPointsArray?.length ?? 0) > 0
+											? fileStatusTranslationObject.fileAlreadyLoaded
+											: fileStatusTranslationObject.noFile}
 								</p>
 							</div>
 						</div>
