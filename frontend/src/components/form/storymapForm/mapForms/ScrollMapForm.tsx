@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useState, useEffect } from "react";
+import { useState, useEffect, useMemo } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
@@ -22,9 +22,15 @@ import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
 } from "../../../../utils/functions/toast";
-import { removeLang2Inputs } from "../../../../utils/functions/storymap";
+import {
+	addLangageBetweenBrackets,
+	removeLang2Inputs,
+} from "../../../../utils/functions/storymap";
 // import des types
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
@@ -104,7 +110,11 @@ const ScrollMapForm = () => {
 	useEffect(() => {
 		if (!storymapInfos?.lang2) {
 			const newInputs = removeLang2Inputs(scrollMapInputs);
-			setInputs(newInputs);
+			const newInputsWithLangInLabel = addLangageBetweenBrackets(
+				newInputs,
+				storymapInfos as StorymapType,
+			);
+			setInputs(newInputsWithLangInLabel);
 		}
 	}, [storymapInfos]);
 
@@ -128,8 +138,9 @@ const ScrollMapForm = () => {
 										<div className={style.labelContainer}>
 											<label htmlFor={input.name}>
 												{input[`label_${language}`]}{" "}
-												{input.required.value &&
-													"<span style={{color: '#9d2121'}}>*</span>"}
+												{input.required.value && (
+													<span style={{ color: "#9d2121" }}>*</span>
+												)}
 											</label>
 										</div>
 										<div className={style.inputContainer}>
@@ -138,12 +149,12 @@ const ScrollMapForm = () => {
 													required: input.required.value,
 												})}
 											/>
+											{errors[input.name as keyof scrollMapInputsType] && (
+												<ErrorComponent
+													message={input.required.message?.[language] as string}
+												/>
+											)}
 										</div>
-										{errors[input.name as keyof scrollMapInputsType] && (
-											<ErrorComponent
-												message={input.required.message?.[language] as string}
-											/>
-										)}
 									</div>
 								);
 							}
@@ -153,8 +164,9 @@ const ScrollMapForm = () => {
 										<div className={style.labelContainer}>
 											<label htmlFor={input.name}>
 												{input[`label_${language}`]}{" "}
-												{input.required.value &&
-													"<span style={{color: '#9d2121'}}>*</span>"}
+												{input.required.value && (
+													<span style={{ color: "#9d2121" }}>*</span>
+												)}
 											</label>
 										</div>
 										<div className={style.inputContainer}>
@@ -169,13 +181,12 @@ const ScrollMapForm = () => {
 													</option>
 												))}
 											</select>
+											{errors[input.name as keyof scrollMapInputsType] && (
+												<ErrorComponent
+													message={input.required.message?.[language] as string}
+												/>
+											)}
 										</div>
-
-										{errors[input.name as keyof scrollMapInputsType] && (
-											<ErrorComponent
-												message={input.required.message?.[language] as string}
-											/>
-										)}
 									</div>
 								);
 							}

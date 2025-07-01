@@ -19,6 +19,7 @@ import {
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
+	notifyError,
 } from "../../../../utils/functions/toast";
 import {
 	getAllMapsInfos,
@@ -57,6 +58,10 @@ const ItemLinkForm = () => {
 
 	// fonction appelée lors de la soumission du formulaire
 	const onSubmit: SubmitHandler<ItemLinkFormInputs> = async (data) => {
+		if (!data.content1_lang1 || !data.content1_lang2) {
+			notifyError("Aucun contenu sélectionné");
+			return;
+		}
 		if (action === "create") {
 			await createBlock({
 				...data,

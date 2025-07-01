@@ -16,6 +16,7 @@ import {
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
+	notifyError,
 } from "../../../../utils/functions/toast";
 import { removeLang2Inputs } from "../../../../utils/functions/storymap";
 // import des types
@@ -49,10 +50,15 @@ const TextForm = ({ parentId, setStep, defaultValues }: TextFormProps) => {
 	// fonction appelée lors de la soumission du formulaire
 	const onSubmit: SubmitHandler<textInputsType> = async (data) => {
 		if (!data.content1_lang1 || data.content1_lang1 === "<p><br></p>") {
+			notifyError("Le contenu du bloc texte est vide.");
 			return;
 		}
-		if (!data.content1_lang2 || data.content1_lang2 === "<p><br></p>") {
-			data.content1_lang2 = "";
+		if (
+			(storymapInfos?.lang2 && !data.content1_lang2) ||
+			data.content1_lang2 === "<p><br></p>"
+		) {
+			notifyError("Le contenu du bloc texte est vide.");
+			return;
 		}
 		if (action === "create") {
 			await createBlock({

@@ -46,7 +46,6 @@ const QuoteForm = () => {
 			await createBlock({
 				...data,
 				storymapId: storymapId,
-
 				typeName: "quote",
 			});
 			notifyCreateSuccess("Bloc citation", false);
@@ -56,7 +55,6 @@ const QuoteForm = () => {
 					...block,
 					...data,
 					storymapId: storymapId,
-
 					typeName: "quote",
 				},
 				block?.id.toString() as string,

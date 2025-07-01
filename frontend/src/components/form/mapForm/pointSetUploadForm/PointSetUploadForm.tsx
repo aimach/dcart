@@ -34,7 +34,6 @@ interface PointSetUploadFormProps {
 	type: "map" | "block";
 	action: "create" | "edit";
 	cancelFunction: () => void;
-	isPointSetFormValid: boolean | null;
 }
 
 const PointSetUploadForm = ({
@@ -45,7 +44,6 @@ const PointSetUploadForm = ({
 	type,
 	action,
 	cancelFunction,
-	isPointSetFormValid,
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
@@ -63,6 +61,10 @@ const PointSetUploadForm = ({
 		parseCSVFile({
 			event,
 			onComplete: (result) => {
+				if (result.data.length === 0) {
+					notifyError("Le fichier est vide ou mal formaté");
+					return;
+				}
 				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
 					result.data,
 				);

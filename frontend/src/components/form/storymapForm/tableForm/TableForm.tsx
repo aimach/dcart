@@ -19,6 +19,8 @@ import { updateBlock } from "../../../../utils/api/storymap/postRequests";
 import {
 	notifyCreateSuccess,
 	notifyEditSuccess,
+	notifyError,
+	notifyUploadSuccess,
 } from "../../../../utils/functions/toast";
 import {
 	addLangageBetweenBrackets,
@@ -26,7 +28,11 @@ import {
 } from "../../../../utils/functions/storymap";
 // import des types
 import type { ChangeEvent } from "react";
-import type { StorymapType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
+import type { ParseResult } from "papaparse";
 // import du style
 import style from "../mapForms/mapForms.module.scss";
 // import des icônes
@@ -35,6 +41,7 @@ import {
 	ChevronRight,
 	CircleCheck,
 	CircleHelp,
+	CircleX,
 } from "lucide-react";
 
 export type tableInputsType = {
@@ -69,7 +76,16 @@ const TableForm = () => {
 			const reader = new FileReader();
 			reader.onload = (e) => {
 				const text = e.target?.result as string;
-				const parsed = parse(text, { skipEmptyLines: true });
+				const parsed = parse(text, {
+					skipEmptyLines: true,
+					complete: (result: ParseResult<string[]>) => {
+						if (result.data.length === 0) {
+							notifyError("Le fichier est vide ou mal formaté");
+							return;
+						}
+						notifyUploadSuccess("Tableau");
+					},
+				});
 				if (parsed.data) {
 					if (langNb === 1) {
 						setCsvContentLang1(parsed.data as string[][]);
@@ -95,7 +111,38 @@ const TableForm = () => {
 	});
 
 	// fonction appelée lors de la soumission du formulaire
+	const [selectedFiles, setSelectedFiles] = useState<
+		Record<string, File | null>
+	>({
+		lang1: null,
+		lang2: null,
+	});
+
+	const isLang2TableIsNotUploadedYet =
+		block?.content2_lang2 === "[]" && csvContentLang2.length === 0;
+	const pointAreUploaded = (array: string[][]) => array.length > 0;
+	const fileAlreadyUploaded = (block: BlockContentType | null, key: string) => {
+		if (block === null) return false;
+		return block === null || (block?.[key] as unknown as string) !== "[]";
+	};
+	const isValidLang1 =
+		pointAreUploaded(csvContentLang1) ||
+		fileAlreadyUploaded(block, "content2_lang1"); // soit le csv est chargé, soit le fichier est déjà chargé
+	const needLang2Csv = storymapInfos?.lang2;
+	const isValidLang2 =
+		!needLang2Csv ||
+		pointAreUploaded(csvContentLang2) ||
+		fileAlreadyUploaded(block, "content2_lang2"); // soit pas de langue 2, soit le csv est chargé, soit le fichier est déjà chargé (le champ n'est pas vide);
+
 	const handlePointSubmit = async (data: tableInputsType) => {
+		if (!isValidLang1) {
+			notifyError("Le contenu du bloc tableau langue 1 est vide.");
+			return;
+		}
+		if (!isValidLang2) {
+			notifyError("Le contenu du bloc tableau langue 2 est vide.");
+			return;
+		}
 		if (action === "create") {
 			await createBlock({
 				...data,
@@ -128,11 +175,6 @@ const TableForm = () => {
 		updateFormType("blockChoice");
 		setSearchParams(undefined);
 	};
-
-	const [selectedFiles, setSelectedFiles] = useState<Record<string, File>>({
-		lang1: new File([], ""),
-		lang2: new File([], ""),
-	});
 
 	// utile si l'utilisateur passe d'un form "create" à "edit" via le panel des blocs
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -180,8 +222,9 @@ const TableForm = () => {
 						<div className={style.labelContainer}>
 							<label htmlFor={input.name}>
 								{input[`label_${language}`]}{" "}
-								{input.required.value &&
-									"<span style={{color: '#9d2121'}}>*</span>"}
+								{input.required.value && (
+									<span style={{ color: "#9d2121" }}>*</span>
+								)}
 							</label>
 						</div>
 						<div className={style.inputContainer}>
@@ -190,14 +233,13 @@ const TableForm = () => {
 									required: input.required.value,
 								})}
 							/>
+							{input.required.value &&
+								errors[input.name as keyof tableInputsType] && (
+									<ErrorComponent
+										message={input.required.message?.[language] as string}
+									/>
+								)}
 						</div>
-
-						{input.required.value &&
-							errors[input.name as keyof tableInputsType] && (
-								<ErrorComponent
-									message={input.required.message?.[language] as string}
-								/>
-							)}
 					</div>
 				))}
 				<div className={style.mapFormInputContainer}>
@@ -219,9 +261,9 @@ const TableForm = () => {
 						{action === "edit" && (
 							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
 								<CircleCheck color="green" />
-								{selectedFiles.lang1.name === ""
+								{selectedFiles.lang1 === null
 									? "Un fichier est déjà chargé"
-									: `Nouveau fichier chargé : ${selectedFiles.lang1.name}`}
+									: `Nouveau fichier chargé : ${selectedFiles.lang1?.name}`}
 							</p>
 						)}
 					</div>
@@ -247,10 +289,16 @@ const TableForm = () => {
 								<p
 									style={{ display: "flex", alignItems: "center", gap: "5px" }}
 								>
-									<CircleCheck color="green" />
-									{selectedFiles.lang2.name === ""
-										? "Un fichier est déjà chargé"
-										: `Nouveau fichier chargé : ${selectedFiles.lang2.name}`}
+									{isLang2TableIsNotUploadedYet ? (
+										<CircleX color="grey" />
+									) : (
+										<CircleCheck color="green" />
+									)}
+									{isLang2TableIsNotUploadedYet
+										? "Fichier à charger"
+										: selectedFiles.lang2 === null
+											? "Un fichier est déjà chargé"
+											: `Nouveau fichier chargé : ${selectedFiles.lang2.name}`}
 								</p>
 							)}
 						</div>

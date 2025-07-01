@@ -24,10 +24,14 @@ import {
 	notifyCreateSuccess,
 	notifyDeleteSuccess,
 	notifyEditSuccess,
+	notifyError,
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
 import { updatePointSet } from "../../../../utils/api/builtMap/putRequests";
-import { removeLang2Inputs } from "../../../../utils/functions/storymap";
+import {
+	addLangageBetweenBrackets,
+	removeLang2Inputs,
+} from "../../../../utils/functions/storymap";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -35,7 +39,10 @@ import type {
 	MapIconType,
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
-import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+import type {
+	BlockContentType,
+	StorymapType,
+} from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
@@ -117,15 +124,41 @@ const SimpleMapForm = () => {
 			);
 
 			if (updatedBlockInfos?.id) {
+				notifyEditSuccess("Carte simple", true);
 				setStep(2);
 			}
 		}
 	};
 
+	const isPointSetFormValidWith1Lang =
+		pointSet &&
+		typeof pointSet.name_fr === "string" &&
+		pointSet.name_fr.trim() !== "" &&
+		typeof pointSet.attestationIds === "string" &&
+		pointSet.attestationIds.trim() !== "";
+
+	const isPointSetFormValidWith2Langs =
+		pointSet &&
+		typeof pointSet.name_fr === "string" &&
+		pointSet.name_fr.trim() !== "" &&
+		typeof pointSet.name_en === "string" &&
+		pointSet.name_en.trim() !== "" &&
+		typeof pointSet.attestationIds === "string" &&
+		pointSet.attestationIds.trim() !== "";
+
 	const handleSubmitPointSet: FormEventHandler<HTMLFormElement> = async (
 		event,
 	) => {
 		event.preventDefault();
+		if (
+			(storymapInfos?.lang2 && !isPointSetFormValidWith2Langs) ||
+			!isPointSetFormValidWith1Lang
+		) {
+			notifyError(
+				"Veuillez remplir tous les champs obligatoires du formulaire.",
+			);
+			return;
+		}
 		let pointSetData = pointSet as PointSetType;
 		if (!pointSet?.name_en)
 			pointSetData = {
@@ -190,7 +223,11 @@ const SimpleMapForm = () => {
 	useEffect(() => {
 		if (!storymapInfos?.lang2) {
 			const newInputs = removeLang2Inputs(simpleMapInputs);
-			setInputs(newInputs);
+			const newInputsWithLangInLabel = addLangageBetweenBrackets(
+				newInputs,
+				storymapInfos as StorymapType,
+			);
+			setInputs(newInputsWithLangInLabel);
 		}
 	}, [storymapInfos]);
 
@@ -212,8 +249,9 @@ const SimpleMapForm = () => {
 									<div className={style.labelContainer}>
 										<label htmlFor={input.name}>
 											{input[`label_${language}`]}{" "}
-											{input.required.value &&
-												"<span style={{color: '#9d2121'}}>*</span>"}
+											{input.required.value && (
+												<span style={{ color: "#9d2121" }}>*</span>
+											)}
 										</label>
 									</div>
 									<div className={style.inputContainer}>
@@ -222,14 +260,13 @@ const SimpleMapForm = () => {
 												required: input.required.value,
 											})}
 										/>
+										{input.required.value &&
+											errors[input.name as keyof simpleMapInputsType] && (
+												<ErrorComponent
+													message={input.required.message?.[language] as string}
+												/>
+											)}
 									</div>
-
-									{input.required.value &&
-										errors[input.name as keyof simpleMapInputsType] && (
-											<ErrorComponent
-												message={input.required.message?.[language] as string}
-											/>
-										)}
 								</div>
 							);
 						}
@@ -239,8 +276,9 @@ const SimpleMapForm = () => {
 									<div className={style.labelContainer}>
 										<label htmlFor={input.name}>
 											{input[`label_${language}`]}{" "}
-											{input.required.value &&
-												"<span style={{color: '#9d2121'}}>*</span>"}
+											{input.required.value && (
+												<span style={{ color: "#9d2121" }}>*</span>
+											)}
 										</label>
 									</div>
 									<div className={style.inputContainer}>
