@@ -343,6 +343,11 @@ type LanguageObject = {
 					description: string;
 					placeholder: string;
 				};
+				fileStatus: {
+					loadedFile: string;
+					noFile: string;
+					fileAlreadyLoaded: string;
+				};
 			};
 		};
 		userManagement: {

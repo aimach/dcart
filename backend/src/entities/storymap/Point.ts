@@ -32,7 +32,7 @@ export class Point extends BaseEntity {
 
 	@ManyToOne(
 		() => Attestation,
-		(attestation) => attestation.points,
+		(attestation) => attestation.customPointsArray,
 		{ nullable: true, onDelete: "CASCADE" },
 	)
 	attestation?: Attestation | null;

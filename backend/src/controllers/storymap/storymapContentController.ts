@@ -44,6 +44,10 @@ export const storymapContentControllers = {
 					.leftJoinAndSelect("block.attestations", "attestations")
 					.leftJoinAndSelect("attestations.icon", "icon")
 					.leftJoinAndSelect("attestations.color", "color")
+					.leftJoinAndSelect(
+						"attestations.customPointsArray",
+						"customPointsArray",
+					)
 					.leftJoinAndSelect("block.type", "type")
 					.leftJoinAndSelect("block.children", "child")
 					.leftJoinAndSelect("child.type", "child_type")
@@ -57,6 +61,7 @@ export const storymapContentControllers = {
 						"attestations",
 						"icon",
 						"color",
+						"customPointsArray",
 						"type",
 						"child",
 						"child_type",
@@ -133,6 +138,10 @@ export const storymapContentControllers = {
 				.leftJoinAndSelect("block.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
 				.leftJoinAndSelect("attestations.color", "color")
+				.leftJoinAndSelect(
+					"attestations.customPointsArray",
+					"customPointsArray",
+				)
 				.leftJoinAndSelect("block.type", "type")
 				.leftJoinAndSelect("block.children", "child")
 				.leftJoinAndSelect("child.type", "child_type")
@@ -148,6 +157,7 @@ export const storymapContentControllers = {
 					"attestations",
 					"icon",
 					"color",
+					"customPointsArray",
 					"type",
 					"child",
 					"child_type",

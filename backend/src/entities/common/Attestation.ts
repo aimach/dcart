@@ -61,5 +61,5 @@ export class Attestation extends BaseEntity {
 		(point) => point.attestation,
 		{ nullable: true },
 	)
-	points?: Point[] | null;
+	customPointsArray?: Point[] | null;
 }

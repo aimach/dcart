@@ -386,6 +386,11 @@
 					"label": "Storymap tags",
 					"description": "These tags will be used to filter the storymaps in the list of storymaps. You can choose one or more tags.",
 					"placeholder": "Choose one or more tags"
+				},
+				"fileStatus": {
+					"loadedFile": "File loaded",
+					"noFile": "No file loaded",
+					"fileAlreadyLoaded": "A file is already loaded"
 				}
 			}
 		},

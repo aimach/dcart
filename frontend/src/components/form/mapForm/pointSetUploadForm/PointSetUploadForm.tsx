@@ -26,7 +26,7 @@ import type { ParseResult } from "papaparse";
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des icônes
-import { CircleCheck } from "lucide-react";
+import { CircleCheck, CircleX } from "lucide-react";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
@@ -52,12 +52,18 @@ const PointSetUploadForm = ({
 
 	const { icons, colors } = useContext(IconOptionsContext);
 
-	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+	const [DBSelectedFile, setDBSelectedFile] = useState<File | null>(null);
+	const [CustomSelectedFile, setCustomDBSelectedFile] = useState<File | null>(
+		null,
+	);
 
 	const location = useLocation();
 	const isStorymap = location.pathname.includes("storymaps");
 
 	const { storymapInfos } = useBuilderStore();
+
+	const fileStatusTranslationObject =
+		translation[language].backoffice.storymapFormPage.form.fileStatus;
 
 	const handleBDDPointFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
@@ -75,7 +81,9 @@ const PointSetUploadForm = ({
 					attestationIds: allAttestationsIds,
 					[type === "map" ? "mapId" : "blockId"]: parentId as string,
 				} as PointSetType);
-				setSelectedFile((event.target as HTMLInputElement).files?.[0] ?? null);
+				setDBSelectedFile(
+					(event.target as HTMLInputElement).files?.[0] ?? null,
+				);
 			},
 			onError: () => {
 				notifyError(
@@ -94,6 +102,9 @@ const PointSetUploadForm = ({
 					customPointsArray: result.data as CustomPointType[],
 					blockId: parentId as string,
 				} as PointSetType);
+				setCustomDBSelectedFile(
+					(event.target as HTMLInputElement).files?.[0] ?? null,
+				);
 			},
 			onError: () => {
 				notifyError(
@@ -208,17 +219,16 @@ const PointSetUploadForm = ({
 							onChange={handleBDDPointFileUpload}
 						/>
 						<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-							{((action === "create" && pointSet?.attestationIds) ||
-								action === "edit") && <CircleCheck color="green" />}
-							{action === "create" &&
-								pointSet?.attestationIds &&
-								`Fichier chargé : ${selectedFile?.name}`}
-							{action === "edit" &&
-								!selectedFile &&
-								"Un fichier est déjà chargé"}
-							{action === "edit" &&
-								selectedFile &&
-								`Nouveau fichier chargé : ${selectedFile?.name}`}
+							{pointSet?.attestationIds ? (
+								<CircleCheck color="green" />
+							) : action === "edit" ? (
+								<CircleX color="grey" />
+							) : null}
+							{DBSelectedFile
+								? `${fileStatusTranslationObject.loadedFile} : ${DBSelectedFile?.name}`
+								: pointSet?.attestationIds
+									? fileStatusTranslationObject.fileAlreadyLoaded
+									: fileStatusTranslationObject.noFile}
 						</p>
 					</div>
 				</div>
@@ -245,19 +255,18 @@ const PointSetUploadForm = ({
 								accept=".csv"
 								onChange={handleCustomPointFileUpload}
 							/>
-							{/* <p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-							{((action === "create" && pointSet?.attestationIds) ||
-								action === "edit") && <CircleCheck color="green" />}
-							{action === "create" &&
-								pointSet?.attestationIds &&
-								`Fichier chargé : ${selectedFile?.name}`}
-							{action === "edit" &&
-								!selectedFile &&
-								"Un fichier est déjà chargé"}
-							{action === "edit" &&
-								selectedFile &&
-								`Nouveau fichier chargé : ${selectedFile?.name}`}
-						</p> */}
+							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+								{pointSet?.customPointsArray ? (
+									<CircleCheck color="green" />
+								) : action === "edit" ? (
+									<CircleX color="grey" />
+								) : null}
+								{CustomSelectedFile
+									? `${fileStatusTranslationObject.loadedFile} : ${CustomSelectedFile?.name}`
+									: pointSet?.customPointsArray
+										? fileStatusTranslationObject.fileAlreadyLoaded
+										: fileStatusTranslationObject.noFile}
+							</p>
 						</div>
 					</div>
 				)}
@@ -352,7 +361,8 @@ const PointSetUploadForm = ({
 						textContent={translation[language].button.cancel}
 						onClickFunction={() => {
 							cancelFunction();
-							setSelectedFile(null);
+							setDBSelectedFile(null);
+							setCustomDBSelectedFile(null);
 							setPointSet(null);
 						}}
 					/>

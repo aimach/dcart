@@ -25,7 +25,7 @@ import {
 } from "../../../utils/functions/builtMap";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
-import type { CustomPointType, PointType } from "../../../utils/types/mapTypes";
+import type { PointType } from "../../../utils/types/mapTypes";
 import type { Request, Response } from "express";
 
 export const sourceController = {
@@ -500,7 +500,10 @@ export const sourceController = {
 				.leftJoinAndSelect("block.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
 				.leftJoinAndSelect("attestations.color", "color")
-				.leftJoinAndSelect("attestations.points", "points")
+				.leftJoinAndSelect(
+					"attestations.customPointsArray",
+					"customPointsArray",
+				)
 				.where("block.id = :id", { id: blockId });
 
 			if (side) {
@@ -554,7 +557,7 @@ export const sourceController = {
 
 			const customPointsArray = attestationsArray.map(
 				(attestation: Attestation) => {
-					return attestation.points?.map((point) => {
+					return attestation.customPointsArray?.map((point) => {
 						const sourcesArray = [];
 						for (let index = 1; index <= (point.source_nb || 1); index++) {
 							sourcesArray.push(index);
