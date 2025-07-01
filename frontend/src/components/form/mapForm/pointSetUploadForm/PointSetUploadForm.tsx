@@ -92,6 +92,7 @@ const PointSetUploadForm = ({
 				setPointSet({
 					...pointSet,
 					customPointsArray: result.data as CustomPointType[],
+					blockId: parentId as string,
 				} as PointSetType);
 			},
 			onError: () => {

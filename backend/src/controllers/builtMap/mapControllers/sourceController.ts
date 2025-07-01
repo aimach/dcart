@@ -518,6 +518,9 @@ export const sourceController = {
 
 			results = await Promise.all(
 				attestationsArray.map(async (attestation: Attestation) => {
+					if (!attestation.attestationIds) {
+						return [];
+					}
 					const sqlQuery = getSourcesQueryWithDetails(
 						attestation.attestationIds,
 						"",

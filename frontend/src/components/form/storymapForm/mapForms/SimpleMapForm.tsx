@@ -144,7 +144,10 @@ const SimpleMapForm = () => {
 
 	const atLeastOneFileLoaded =
 		(!pointSet?.attestationIds && pointSet?.customPointsArray?.length > 0) ||
-		(pointSet?.attestationIds && !pointSet?.customPointsArray);
+		(pointSet?.attestationIds && !pointSet?.customPointsArray) ||
+		(pointSet?.attestationIds &&
+			pointSet?.customPointsArray &&
+			pointSet?.customPointsArray.length > 0);
 
 	const handleSubmitPointSet: FormEventHandler<HTMLFormElement> = async (
 		event,

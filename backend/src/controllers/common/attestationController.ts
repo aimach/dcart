@@ -95,6 +95,7 @@ export const attestationController = {
 				.getRepository(Attestation)
 				.save({
 					...req.body,
+					attestationIds: req.body.attestationIds || "",
 					icon: iconToAdd,
 					[mapId ? "map" : "block"]: parentToAddAttestations,
 					color: colorToAdd,
