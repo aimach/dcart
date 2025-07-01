@@ -103,6 +103,7 @@ const PointSetUploadForm = ({
 				latitude: "latitude",
 				longitude: "longitude",
 				location: "location",
+				sourceNb: "source_nb",
 			},
 			skipLines: 0,
 		});

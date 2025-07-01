@@ -27,6 +27,9 @@ export class Point extends BaseEntity {
 	@Column({ type: "text", nullable: true })
 	location!: string | null;
 
+	@Column({ type: "integer", nullable: true })
+	source_nb!: number | null;
+
 	@ManyToOne(
 		() => Attestation,
 		(attestation) => attestation.points,

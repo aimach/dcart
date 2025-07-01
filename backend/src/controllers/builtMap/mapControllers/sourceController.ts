@@ -552,6 +552,10 @@ export const sourceController = {
 			const customPointsArray = attestationsArray.map(
 				(attestation: Attestation) => {
 					return attestation.points?.map((point) => {
+						const sourcesArray = [];
+						for (let index = 1; index <= (point.source_nb || 1); index++) {
+							sourcesArray.push(index);
+						}
 						return {
 							latitude: point.latitude,
 							longitude: point.longitude,
@@ -560,13 +564,11 @@ export const sourceController = {
 							layerNameen: attestation.name_en,
 							color: attestation.color?.code_hex,
 							shape: attestation.icon?.name_en,
-							sources: [],
+							sources: sourcesArray,
 						};
 					});
 				},
 			);
-
-			console.log("customPointsArray", customPointsArray);
 
 			res.status(200).json(results.flat().concat(customPointsArray.flat()));
 		} catch (error) {

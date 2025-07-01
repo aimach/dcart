@@ -54,7 +54,6 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 
 	const fetchAllPoints = useCallback(async () => {
 		const allAttestationsPoints = await getAllPointsByBlockId(blockContent.id);
-		console.log(allAttestationsPoints);
 		setPoints(allAttestationsPoints);
 	}, [blockContent.id]);
 
