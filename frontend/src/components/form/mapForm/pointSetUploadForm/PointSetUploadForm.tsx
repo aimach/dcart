@@ -34,6 +34,7 @@ interface PointSetUploadFormProps {
 	type: "map" | "block";
 	action: "create" | "edit";
 	cancelFunction: () => void;
+	isPointSetFormValid: boolean | null;
 }
 
 const PointSetUploadForm = ({
@@ -44,6 +45,7 @@ const PointSetUploadForm = ({
 	type,
 	action,
 	cancelFunction,
+	isPointSetFormValid,
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();

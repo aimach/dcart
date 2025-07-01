@@ -40,6 +40,7 @@ import style from "../commonForm/commonForm.module.scss";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 // import des icônes
 import { TriangleAlert } from "lucide-react";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
