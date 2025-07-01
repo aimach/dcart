@@ -221,6 +221,10 @@ type LanguageObject = {
 					label: string;
 					description: string;
 				};
+				customPointsFile: {
+					label: string;
+					description: string;
+				};
 				pointColor: {
 					label: string;
 					description: string;

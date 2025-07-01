@@ -147,7 +147,7 @@ const PointSetUploadForm = ({
 						)}
 					</div>
 				</div>
-				{(!isStorymap || storymapInfos?.lang2) && (
+				{storymapInfos?.lang2 && (
 					<div className={style.commonFormInputContainer}>
 						<LabelComponent
 							htmlFor="name_en"
@@ -186,41 +186,6 @@ const PointSetUploadForm = ({
 				)}
 				<div className={style.commonFormInputContainer}>
 					<LabelComponent
-						htmlFor="name_en"
-						label={
-							isStorymap
-								? `${
-										translation[language].backoffice.mapFormPage.pointSetTable
-											.nameLang2
-									} (${storymapInfos?.lang2?.name.toUpperCase()})`
-								: translation[language].backoffice.mapFormPage.pointSetForm
-										.pointSetName.label_en
-						}
-						description={
-							translation[language].backoffice.mapFormPage.pointSetForm
-								.pointSetName.description_en
-						}
-					/>
-					<div className={style.inputContainer}>
-						<input
-							id="name_en"
-							name="name_en"
-							type="text"
-							defaultValue={pointSet?.name_en ?? ""}
-							onChange={(event) =>
-								setPointSet({
-									...pointSet,
-									name_en: event.target.value,
-								} as PointSetType)
-							}
-						/>
-						{(!pointSet?.name_en || pointSet?.name_en === "") && (
-							<ErrorComponent message="requis" />
-						)}
-					</div>
-				</div>
-				<div className={style.commonFormInputContainer}>
-					<LabelComponent
 						htmlFor="attestationIds"
 						label={
 							translation[language].backoffice.mapFormPage.pointSetForm
@@ -230,6 +195,7 @@ const PointSetUploadForm = ({
 							translation[language].backoffice.mapFormPage.pointSetForm
 								.attestationIds.description
 						}
+						isRequired={false}
 					/>
 
 					<div className={style.inputContainer}>
@@ -253,28 +219,32 @@ const PointSetUploadForm = ({
 								selectedFile &&
 								`Nouveau fichier chargé : ${selectedFile?.name}`}
 						</p>
-						{(!pointSet?.attestationIds || pointSet?.attestationIds === "") && (
-							<ErrorComponent message="requis" />
-						)}
 					</div>
 				</div>
-				<div className={style.commonFormInputContainer}>
-					<LabelComponent
-						htmlFor="customPointsFile"
-						label="Charger un fichier de points personnalisés"
-						description=""
-						isRequired={false}
-					/>
-
-					<div className={style.inputContainer}>
-						<input
-							id="customPointsFile"
-							name="customPointsFile"
-							type="file"
-							accept=".csv"
-							onChange={handleCustomPointFileUpload}
+				{isStorymap && (
+					<div className={style.commonFormInputContainer}>
+						<LabelComponent
+							htmlFor="customPointsFile"
+							label={
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.customPointsFile.label
+							}
+							description={
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.customPointsFile.description
+							}
+							isRequired={false}
 						/>
-						{/* <p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+
+						<div className={style.inputContainer}>
+							<input
+								id="customPointsFile"
+								name="customPointsFile"
+								type="file"
+								accept=".csv"
+								onChange={handleCustomPointFileUpload}
+							/>
+							{/* <p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
 							{((action === "create" && pointSet?.attestationIds) ||
 								action === "edit") && <CircleCheck color="green" />}
 							{action === "create" &&
@@ -287,8 +257,9 @@ const PointSetUploadForm = ({
 								selectedFile &&
 								`Nouveau fichier chargé : ${selectedFile?.name}`}
 						</p> */}
+						</div>
 					</div>
-				</div>
+				)}
 				<div className={style.commonFormInputContainer}>
 					<LabelComponent
 						htmlFor="colorId"
@@ -373,7 +344,6 @@ const PointSetUploadForm = ({
 						translation[language].button[action === "create" ? "add" : "edit"]
 					}
 				/>
-
 				{action === "edit" && (
 					<ButtonComponent
 						type="button"

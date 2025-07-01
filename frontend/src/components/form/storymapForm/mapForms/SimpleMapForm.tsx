@@ -133,23 +133,29 @@ const SimpleMapForm = () => {
 	const isPointSetFormValidWith1Lang =
 		pointSet &&
 		typeof pointSet.name_fr === "string" &&
-		pointSet.name_fr.trim() !== "" &&
-		typeof pointSet.attestationIds === "string" &&
-		pointSet.attestationIds.trim() !== "";
+		pointSet.name_fr.trim() !== "";
 
 	const isPointSetFormValidWith2Langs =
 		pointSet &&
 		typeof pointSet.name_fr === "string" &&
 		pointSet.name_fr.trim() !== "" &&
 		typeof pointSet.name_en === "string" &&
-		pointSet.name_en.trim() !== "" &&
-		typeof pointSet.attestationIds === "string" &&
-		pointSet.attestationIds.trim() !== "";
+		pointSet.name_en.trim() !== "";
+
+	const atLeastOneFileLoaded =
+		(!pointSet?.attestationIds && pointSet?.customPointsArray?.length > 0) ||
+		(pointSet?.attestationIds && !pointSet?.customPointsArray);
 
 	const handleSubmitPointSet: FormEventHandler<HTMLFormElement> = async (
 		event,
 	) => {
 		event.preventDefault();
+		if (!atLeastOneFileLoaded) {
+			notifyError(
+				"Veuillez charger au moins un fichier de points avant de soumettre le formulaire.",
+			);
+			return;
+		}
 		if (
 			(storymapInfos?.lang2 && !isPointSetFormValidWith2Langs) ||
 			!isPointSetFormValidWith1Lang
