@@ -63,6 +63,10 @@ const PointSetUploadForm = ({
 		parseCSVFile({
 			event,
 			onComplete: (result) => {
+				if (result.data.length === 0) {
+					notifyError("Le fichier est vide ou mal formaté");
+					return;
+				}
 				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
 					result.data,
 				);

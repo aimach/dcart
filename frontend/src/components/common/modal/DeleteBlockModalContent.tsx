@@ -19,12 +19,14 @@ const DeleteBlockModalContent = () => {
 
 	// récupération des données des stores
 	const { closeDeleteModal } = useModalStore();
-	const { block, updateBlockContent, reload, setReload } = useBuilderStore();
+	const { block, updateBlockContent, reload, setReload, updateFormType } =
+		useBuilderStore();
 
 	// fonction pour supprimer un block (suppression de la BDD, fermeture du modal et rechargement des composants)
 	const handleBlockDelete = async (blockId: string) => {
 		await deleteBlock(blockId);
 		updateBlockContent(null);
+		if (block?.type.name !== "step") updateFormType("blockChoice");
 		closeDeleteModal();
 		setReload(!reload);
 	};

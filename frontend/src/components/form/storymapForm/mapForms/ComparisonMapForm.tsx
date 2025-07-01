@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect, useState } from "react";
+import { useContext, useEffect, useMemo, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { useForm } from "react-hook-form";
 // import des composants
@@ -30,6 +30,9 @@ import type {
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
+import { notifyError } from "../../../../utils/functions/toast";
+import { addLangageBetweenBrackets } from "../../../../utils/functions/storymap";
+import type { StorymapType } from "../../../../utils/types/storymapTypes";
 
 export type comparisonMapInputsType = {
 	content1_lang1: string;
@@ -83,6 +86,10 @@ const ComparisonMapForm = () => {
 		parseCSVFile({
 			event,
 			onComplete: (result, panelSide = "") => {
+				if (result.data.length === 0) {
+					notifyError("Le fichier est vide ou mal formaté");
+					return;
+				}
 				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
 					result.data,
 				);
@@ -142,6 +149,17 @@ const ComparisonMapForm = () => {
 
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: comparisonMapInputsType) => {
+		if (
+			!data.content1_lang1 ||
+			!data.content2_lang1 ||
+			!pointSets.left.attestationIds ||
+			!pointSets.right.attestationIds
+		) {
+			notifyError(
+				"Veuillez remplir tous les champs obligatoires du formulaire.",
+			);
+			return;
+		}
 		await uploadParsedPointsForComparisonMap(
 			{ ...data, id: block?.id } as blockType,
 			pointSets as Record<string, PointSetType>,
@@ -176,7 +194,11 @@ const ComparisonMapForm = () => {
 			const newInputs = comparisonMapInputs.filter(
 				(input) => input.name !== "content1_lang2",
 			);
-			setInputs(newInputs);
+			const newInputsWithLangInLabel = addLangageBetweenBrackets(
+				newInputs,
+				storymapInfos as StorymapType,
+			);
+			setInputs(newInputsWithLangInLabel);
 		}
 	}, [storymapInfos]);
 
@@ -198,8 +220,9 @@ const ComparisonMapForm = () => {
 									<div className={style.labelContainer}>
 										<label htmlFor={input.name}>
 											{input[`label_${language}`]}{" "}
-											{input.required.value &&
-												"<span style={{color: '#9d2121'}}>*</span>"}
+											{input.required.value && (
+												<span style={{ color: "#9d2121" }}>*</span>
+											)}
 										</label>
 									</div>
 									<div className={style.inputContainer}>
@@ -211,13 +234,12 @@ const ComparisonMapForm = () => {
 												},
 											)}
 										/>
+										{errors[input.name as keyof comparisonMapInputsType] && (
+											<ErrorComponent
+												message={input.required.message?.[language] as string}
+											/>
+										)}
 									</div>
-
-									{errors[input.name as keyof comparisonMapInputsType] && (
-										<ErrorComponent
-											message={input.required.message?.[language] as string}
-										/>
-									)}
 								</div>
 							);
 						}
@@ -227,8 +249,9 @@ const ComparisonMapForm = () => {
 									<div className={style.labelContainer}>
 										<label htmlFor={input.name}>
 											{input[`label_${language}`]}{" "}
-											{input.required.value &&
-												"<span style={{color: '#9d2121'}}>*</span>"}
+											{input.required.value && (
+												<span style={{ color: "#9d2121" }}>*</span>
+											)}
 										</label>
 									</div>
 									<div className={style.inputContainer}>
@@ -246,12 +269,12 @@ const ComparisonMapForm = () => {
 												</option>
 											))}
 										</select>
+										{errors[input.name as keyof comparisonMapInputsType] && (
+											<ErrorComponent
+												message={input.required.message?.[language] as string}
+											/>
+										)}
 									</div>
-									{errors[input.name as keyof comparisonMapInputsType] && (
-										<ErrorComponent
-											message={input.required.message?.[language] as string}
-										/>
-									)}
 								</div>
 							);
 						}
@@ -330,6 +353,7 @@ const ComparisonMapForm = () => {
 									translation[language].backoffice.mapFormPage.pointSetForm
 										.pointColor.description
 								}
+								isRequired={false}
 							/>
 							<div className={style.inputContainer}>
 								<SelectOptionsComponent
@@ -364,6 +388,7 @@ const ComparisonMapForm = () => {
 									translation[language].backoffice.mapFormPage.pointSetForm
 										.pointIcon.description
 								}
+								isRequired={false}
 							/>
 							<div className={style.inputContainer}>
 								<SelectOptionsComponent
@@ -408,10 +433,6 @@ const ComparisonMapForm = () => {
 									? translation[language].backoffice.storymapFormPage.form
 											.create
 									: translation[language].backoffice.storymapFormPage.form.edit
-							}
-							isDisabled={
-								(action === "create" && !pointSets.left?.attestationIds) ||
-								!pointSets.right?.attestationIds
 							}
 						/>
 					</div>

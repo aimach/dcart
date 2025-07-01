@@ -37,6 +37,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { TagType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "../commonForm/commonForm.module.scss";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 // import des icônes
 import { TriangleAlert } from "lucide-react";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";

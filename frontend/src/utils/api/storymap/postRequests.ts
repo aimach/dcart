@@ -26,7 +26,13 @@ const createStorymap = async (body: StorymapBodyType) => {
 		notifyCreateSuccess("Storymap", true);
 		return response.data;
 	} catch (error) {
-		notifyError("Erreur lors de la création de la storymap");
+		if ((error as Error).message === "Request failed with status code 422") {
+			notifyError(
+				"Une étiquette au moins est nécessaire pour créer une storymap.",
+			);
+		} else {
+			notifyError("Erreur lors de la création de la storymap");
+		}
 	}
 };
 
@@ -102,7 +108,6 @@ const uploadParsedPointsForSimpleMap = async (
 	storymapId: string,
 	typeName: string,
 	action: string,
-	initialPointSetId?: string,
 	parentId?: string,
 ) => {
 	try {
@@ -145,6 +150,7 @@ const uploadParsedPointsForSimpleMap = async (
 					name: updatedBlock.content1_lang1,
 					blockId,
 				};
+				const initialPointSetId = updatedBlock.attestations[0]?.id;
 
 				await apiClient(`/dcart/attestations/${initialPointSetId}`, {
 					method: "DELETE",

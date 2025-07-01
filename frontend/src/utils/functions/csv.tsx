@@ -33,6 +33,10 @@ export const parseCSVFile = ({
 		dynamicTyping: true,
 		skipFirstNLines: skipLines,
 		complete: (result: ParseResult<{ id: string }>) => {
+			if (result.data.length === 0) {
+				notifyError("Le fichier est vide ou mal formaté");
+				return;
+			}
 			onComplete(result, panelSide as string);
 			notifyUploadSuccess("Points");
 		},

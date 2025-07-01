@@ -44,6 +44,7 @@ import {
 import style from "./mapForms.module.scss";
 // import des icônes
 import { ChevronLeft, CircleCheck, CircleHelp } from "lucide-react";
+import { notifyError } from "../../../../utils/functions/toast";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -97,6 +98,10 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 		parseCSVFile({
 			event,
 			onComplete: (result) => {
+				if (result.data.length === 0) {
+					notifyError("Le fichier est vide ou mal formaté");
+					return;
+				}
 				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
 					result.data,
 				);
@@ -108,13 +113,6 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 			},
 		});
 	};
-
-	const initialPointSetId = useMemo(() => {
-		if (stepAction === "edit" && block?.attestations?.[0]?.attestationIds) {
-			return block.attestations[0].id;
-		}
-		return null;
-	}, [block, stepAction]);
 
 	// récupération des fonctions de gestion du formulaire
 	const {
@@ -129,6 +127,23 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 	// fonction appelée lors de la soumission du formulaire
 	const handlePointSubmit = async (data: stepInputsType) => {
 		try {
+			// il faut vérifier que la description est bien remplie (lang2 si la storymap est en 2 langues)
+			if (!pointSet || pointSet.attestationIds === "") {
+				notifyError(
+					"Veuillez sélectionner un fichier CSV avant de soumettre le formulaire.",
+				);
+				return;
+			}
+			if (
+				!data.content2_lang1?.includes("<p>") ||
+				(storymapInfos?.lang2 && !data.content2_lang2?.includes("<p>"))
+			) {
+				notifyError(
+					"Veuillez remplir tous les champs obligatoires du formulaire.",
+				);
+				return;
+			}
+
 			if (stepAction === "create") {
 				let pointSetWithName = pointSet;
 				if (pointSet) {
@@ -144,9 +159,10 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 						storymapId as string,
 						"step",
 						stepAction as string,
-						initialPointSetId as string,
 						scrollMapContent.id as string,
 					);
+					reset();
+					updateBlockContent(scrollMapContent);
 				}
 			} else if (stepAction === "edit" && pointSet) {
 				const pointSetWithName = {
@@ -161,10 +177,10 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 					storymapId as string,
 					"step",
 					stepAction as string,
-					initialPointSetId as string,
 					scrollMapContent.id as string,
 				);
 				updateBlockContent(scrollMapContent);
+				reset();
 			}
 			// réinitialisation du formulaire
 			setPointSet(null);
@@ -353,6 +369,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 							translation[language].backoffice.mapFormPage.pointSetForm
 								.pointColor.description
 						}
+						isRequired={false}
 					/>
 					<div className={style.inputContainer}>
 						<SelectOptionsComponent
@@ -384,6 +401,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 							translation[language].backoffice.mapFormPage.pointSetForm
 								.pointIcon.description
 						}
+						isRequired={false}
 					/>
 					<div className={style.inputContainer}>
 						<SelectOptionsComponent
