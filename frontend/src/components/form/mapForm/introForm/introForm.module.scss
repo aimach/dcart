@@ -9,7 +9,7 @@
     padding: v.$space-xxl;
 
     >h4 {
-        font-size: v.$font-size-l;
+        font-size: v.$font-size-xl;
         font-weight: v.$font-weight-bold;
     }
 
@@ -36,14 +36,14 @@
         width: 50%;
 
         >label {
-            font-size: v.$font-size-m;
+            font-size: v.$font-size-l;
             font-weight: v.$font-weight-bold;
         }
 
         >p {
             width: 80%;
             padding-top: v.$space-xs;
-            font-size: v.$font-size-s;
+            font-size: v.$font-size-m;
             font-weight: v.$font-weight-light;
             color: v.$color-grullo;
         }
@@ -118,7 +118,7 @@
     width: 50%;
 
     >label {
-        font-size: v.$font-size-m;
+        font-size: v.$font-size-l;
         font-weight: v.$font-weight-bold;
     }
 
@@ -132,6 +132,7 @@
 
     >thead {
         border-bottom: v.$border-width-m solid v.$color-grullo-light;
+        font-size: v.$font-size-l;
 
         >tr>th {
             padding-bottom: v.$space-m;

@@ -134,7 +134,12 @@ const CommonForm = ({
 					return (
 						<div key={input.name} className={style.commonFormInputContainer}>
 							<div className={style.labelContainer}>
-								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<label htmlFor={input.name}>
+									{input[`label_${language}`]}{" "}
+									{input.required.value && (
+										<span style={{ color: "#9d2121" }}>*</span>
+									)}
+								</label>
 								<p>{input[`description_${language}`] ?? ""}</p>
 							</div>
 							<div className={style.inputContainer}>
@@ -163,7 +168,12 @@ const CommonForm = ({
 					return (
 						<div key={input.name} className={style.commonFormInputContainer}>
 							<div className={style.labelContainer}>
-								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<label htmlFor={input.name}>
+									{input[`label_${language}`]}{" "}
+									{input.required.value && (
+										<span style={{ color: "#9d2121" }}>*</span>
+									)}
+								</label>
 								<p>{input[`description_${language}`] ?? ""}</p>
 							</div>
 							<div className={style.inputContainer}>
@@ -180,7 +190,7 @@ const CommonForm = ({
 											message={input.required.message?.[language] as string}
 										/>
 									)}
-							</div>{" "}
+							</div>
 						</div>
 					);
 				}
@@ -188,7 +198,12 @@ const CommonForm = ({
 					return (
 						<div key={input.name} className={style.commonFormInputContainer}>
 							<div className={style.labelContainer}>
-								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<label htmlFor={input.name}>
+									{input[`label_${language}`]}{" "}
+									{input.required.value && (
+										<span style={{ color: "#9d2121" }}>*</span>
+									)}
+								</label>
 								<p>{input[`description_${language}`] ?? ""}</p>
 							</div>
 							<div className={style.inputContainer}>
@@ -214,7 +229,12 @@ const CommonForm = ({
 					return (
 						<div key={input.name} className={style.commonFormInputContainer}>
 							<div className={style.labelContainer}>
-								<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+								<label htmlFor={input.name}>
+									{input[`label_${language}`]}{" "}
+									{input.required.value && (
+										<span style={{ color: "#9d2121" }}>*</span>
+									)}
+								</label>
 								<p>{input[`description_${language}`] ?? ""}</p>
 							</div>
 							<div className={style.inputContainer}>

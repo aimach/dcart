@@ -30,10 +30,15 @@ const StorymapIntroduction = ({
 			<div className={style.contentContainer}>
 				<h2>{introductionContent[`title_${selectedLanguage}`]}</h2>
 				<p>{introductionContent[`description_${selectedLanguage}`]}</p>
-				{introductionContent.author && <p>{introductionContent.author}</p>}
-				{introductionContent.publishedAt && (
-					<p>{introductionContent.publishedAt}</p>
-				)}
+				<div className={style.authorAndDateContainer}>
+					{introductionContent.author && <p>{introductionContent.author}</p>}
+					{introductionContent.author_status && (
+						<p>{introductionContent.author_status}</p>
+					)}
+					{introductionContent.publishedAt && (
+						<p>{introductionContent.publishedAt}</p>
+					)}
+				</div>
 			</div>
 		</section>
 	);

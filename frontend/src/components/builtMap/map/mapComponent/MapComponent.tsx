@@ -271,7 +271,11 @@ const MapComponent = () => {
 								</Link>
 							</div>
 						)}
-						<MapTitleComponent setIsModalOpen={setIsModalOpen} />
+						<MapTitleComponent
+							setIsModalOpen={setIsModalOpen}
+							mapBounds={bounds}
+							fetchAllPoints={fetchAllPoints}
+						/>
 						{mapReady && (
 							<>
 								<TileLayer
@@ -291,7 +295,6 @@ const MapComponent = () => {
 								<ScaleControl position="bottomright" />
 								<OrientationControl />
 								<MapClickHandler deselectFunction={resetSelectedMarker} />
-								{/* <ResetControl mapBounds={bounds} /> */}
 							</>
 						)}
 					</MapContainer>

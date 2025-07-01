@@ -137,7 +137,32 @@ const storymapInputs: InputType[] = [
 			value: false,
 		},
 	},
-
+	{
+		label_fr: "Détails de l'auteur",
+		label_en: "Author details",
+		description_fr:
+			"Détails sur l'auteur de la storymap, comme son statut, son institution, etc. Cette information est affichée dans le bloc d'introduction et de conclusion de la storymap",
+		description_en:
+			"Details about the author of the storymap, such as their status, institution, etc. This information is displayed in the introduction and conclusion blocks of the storymap",
+		name: "author_status",
+		type: "text",
+		required: {
+			value: false,
+		},
+	},
+	{
+		label_fr: "Email de l'auteur",
+		label_en: "Author email",
+		description_fr:
+			"Email de l'auteur de la storymap. Cette information est affichée dans le bloc de conclusion de la storymap",
+		description_en:
+			"Email of the author of the storymap. This information is displayed in the conclusion block of the storymap",
+		name: "author_email",
+		type: "text",
+		required: {
+			value: false,
+		},
+	},
 	{
 		label_fr: "Date de publication",
 		label_en: "Publication date",

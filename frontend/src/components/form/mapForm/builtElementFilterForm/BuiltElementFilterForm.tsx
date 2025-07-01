@@ -96,6 +96,7 @@ const BuiltElementFilterForm = () => {
 						translation[language].backoffice.mapFormPage.filterForm.element
 							.basic.description
 					}
+					isRequired={false}
 				/>
 				<div className={style.inputContainer}>
 					<input
@@ -118,6 +119,7 @@ const BuiltElementFilterForm = () => {
 						translation[language].backoffice.mapFormPage.filterForm.element
 							.manual.description
 					}
+					isRequired={false}
 				/>
 				<div className={style.inputContainer}>
 					<input

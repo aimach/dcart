@@ -3,11 +3,14 @@
 
 .selectElementFormContainer {
     width: 100%;
+    @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+    gap: v.$space-xxl;
 
     .allSelectContainer {
         border-bottom: v.$border-width-m solid v.$color-grullo-light;
         @include m.flexbox(flex, row, nowrap, space-between, center);
         gap: v.$space-xxl;
+        width: 100%;
 
         >div:first-child {
             width: 100%;
@@ -16,7 +19,6 @@
 }
 
 .selectContainer {
-
     >div {
         width: 100%;
         margin: 1rem;

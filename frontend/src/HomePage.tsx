@@ -1,17 +1,13 @@
 // import des bibliothèques
 import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
-import { useForm } from "react-hook-form";
 import Select from "react-select";
 // import des composants
 import SwiperContainer from "./components/common/swiper/SwiperContainer";
 import ButtonComponent from "./components/common/button/ButtonComponent";
 import ItemFilterComponent from "./components/common/itemFilter/ItemFilterComponent";
 // import des services
-import {
-	getAllTags,
-	getAllTagsWithMapsAndStorymaps,
-} from "./utils/api/builtMap/getRequests";
+import { getAllTagsWithMapsAndStorymaps } from "./utils/api/builtMap/getRequests";
 import { getTranslations } from "./utils/api/translationAPI";
 // import des custom hooks
 import { useTranslation } from "./utils/hooks/useTranslation";
@@ -23,8 +19,7 @@ import "./App.scss";
 import style from "./HomePage.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
-import { TagType } from "./utils/types/mapTypes";
-import { all } from "axios";
+import { singleSelectInLineStyle } from "./styles/inLineStyle";
 
 type CheckboxType = { map: boolean; storymap: boolean };
 
@@ -171,6 +166,7 @@ function HomePage() {
 			<section className={style.tagContainer} ref={tagContainerRef}>
 				<div className={style.tagContainerHeader}>
 					<Select
+						styles={singleSelectInLineStyle}
 						options={allTagsOptions}
 						delimiter="|"
 						isMulti
@@ -180,6 +176,7 @@ function HomePage() {
 
 					<input
 						type="text"
+						id="searchInput"
 						value={searchText}
 						onChange={(e) => handleFilterInputs(e.target.value, selectedTags)}
 						placeholder={`${translation[language].button.search}...`}

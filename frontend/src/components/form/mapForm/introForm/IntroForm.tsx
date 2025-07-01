@@ -32,6 +32,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import style from "./introForm.module.scss";
 // import des icônes
 import { TriangleAlert } from "lucide-react";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 type IntroFormProps = {
 	inputs: InputType[];
@@ -158,6 +159,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 								htmlFor={input.name}
 								label={input[`label_${language}`]}
 								description={input[`description_${language}`] ?? ""}
+								isRequired={input.required.value}
 							/>
 							<div className={style.inputContainer}>
 								<select
@@ -194,6 +196,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 								htmlFor={input.name}
 								label={input[`label_${language}`]}
 								description={input[`description_${language}`] ?? ""}
+								isRequired={input.required.value}
 							/>
 							<div className={style.inputContainer}>
 								<input
@@ -222,6 +225,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 								htmlFor={input.name}
 								label={input[`label_${language}`]}
 								description={input[`description_${language}`] ?? ""}
+								isRequired={input.required.value}
 							/>
 							<div className={style.inputContainer}>
 								<Controller
@@ -271,6 +275,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 				/>
 				<div className={style.inputContainer}>
 					<Select
+						styles={singleSelectInLineStyle}
 						options={tagOptions}
 						defaultValue={mapInfos ? defaultTagValues : []}
 						delimiter="|"

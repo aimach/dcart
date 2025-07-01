@@ -9,8 +9,8 @@
   p:first-child {
     padding: v.$space-s;
     margin: 0;
-    font-size: v.$font-size-m;
     text-align: center;
+    font-size: v.$font-size-l;
   }
 
 }
@@ -21,6 +21,7 @@
   cursor: pointer;
   @include m.flexbox(flex, row, nowrap, flex-start, center);
   gap: v.$space-s;
+  font-size: v.$font-size-l;
 
   >svg {
     color: v.$color-dark-lava;

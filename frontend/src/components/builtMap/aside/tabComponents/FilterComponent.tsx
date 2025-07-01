@@ -159,7 +159,9 @@ const FilterComponent = ({
 	return (
 		<div className={style.resultContainer}>
 			<div>
-				<p>{translation[language].mapPage.aside.filterIntroduction}</p>
+				{mapInfos && (
+					<p>{translation[language].mapPage.aside.filterIntroduction}</p>
+				)}
 				{mapFilters.length > 0 &&
 					mapFilters.map((filter) => {
 						if (filter.filter.type === "location") {

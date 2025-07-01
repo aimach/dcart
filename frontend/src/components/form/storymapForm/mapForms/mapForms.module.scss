@@ -7,7 +7,7 @@
     margin: v.$space-xxl;
 
     >h4 {
-        font-size: v.$font-size-l;
+        font-size: v.$font-size-xl;
         font-weight: v.$font-weight-bold;
     }
 
@@ -25,21 +25,21 @@
 
 .headerContainer {
     @include m.flexbox(flex, row, nowrap, space-between, center);
-    margin: 0 v.$space-l;
+    margin: 0 v.$space-xl;
 }
 
 .labelContainer {
     width: 50%;
 
     >label {
-        font-size: v.$font-size-m;
+        font-size: v.$font-size-l;
         font-weight: v.$font-weight-bold;
     }
 
     >p {
         width: 80%;
         padding-top: v.$space-xs;
-        font-size: v.$font-size-s;
+        font-size: v.$font-size-m;
         font-weight: v.$font-weight-light;
         color: v.$color-grullo;
     }

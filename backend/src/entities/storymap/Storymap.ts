@@ -46,6 +46,12 @@ export class Storymap extends BaseEntity {
 	author!: string | null;
 
 	@Column({ type: "varchar", length: 255, nullable: true })
+	author_status!: string | null;
+
+	@Column({ type: "varchar", length: 255, nullable: true })
+	author_email!: string | null;
+
+	@Column({ type: "varchar", length: 255, nullable: true })
 	publishedAt!: string | null;
 
 	@Column({ type: "date", nullable: true })

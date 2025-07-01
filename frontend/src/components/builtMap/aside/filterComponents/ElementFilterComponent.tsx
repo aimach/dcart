@@ -14,6 +14,7 @@ import {
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 interface ElementFilterComponentProps {
 	elementOptions: OptionType[];
@@ -60,6 +61,7 @@ const ElementFilterComponent = ({
 				return (
 					<div>
 						<Select
+							styles={singleSelectInLineStyle}
 							key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 							options={elementOptions}
 							defaultValue={getDefaultValues}
@@ -98,6 +100,7 @@ const ElementFilterComponent = ({
 				return (
 					<div>
 						<Select
+							styles={singleSelectInLineStyle}
 							key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 							options={elementOptions}
 							defaultValue={getDefaultValues}

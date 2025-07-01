@@ -15,6 +15,7 @@ import type { LotType } from "../../../../utils/types/filterTypes";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 // import du style
 import style from "./builtElementFilterForm.module.scss";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 type SelectElementFormProps = {
 	elementOptions: OptionType[];
@@ -119,6 +120,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 										description=""
 									/>
 									<Select
+										styles={singleSelectInLineStyle}
 										options={elementOptions}
 										value={lot.firstLevelIds[0] || null}
 										onChange={(newValue) => {
@@ -148,6 +150,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 										description=""
 									/>
 									<Select
+										styles={singleSelectInLineStyle}
 										options={elementOptions}
 										value={lot.secondLevelIds}
 										isMulti

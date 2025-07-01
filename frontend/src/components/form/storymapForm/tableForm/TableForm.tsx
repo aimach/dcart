@@ -178,7 +178,11 @@ const TableForm = () => {
 				{inputs.map((input) => (
 					<div key={input.name} className={style.mapFormInputContainer}>
 						<div className={style.labelContainer}>
-							<label htmlFor={input.name}>{input[`label_${language}`]}</label>
+							<label htmlFor={input.name}>
+								{input[`label_${language}`]}{" "}
+								{input.required.value &&
+									"<span style={{color: '#9d2121'}}>*</span>"}
+							</label>
 						</div>
 						<div className={style.inputContainer}>
 							<input

@@ -39,6 +39,7 @@ import type { TagType } from "../../../../utils/types/mapTypes";
 import style from "../commonForm/commonForm.module.scss";
 // import des icônes
 import { TriangleAlert } from "lucide-react";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 type IntroductionFormProps = {
 	setStep: (step: number) => void;
@@ -117,9 +118,11 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 					? tinycolor(data.background_color).toHexString()
 					: "",
 				author: data.author,
+				author_status: data.author_status ?? "",
+				author_email: data.author_email ?? "",
 				lang1: data.lang1,
 				lang2: data.lang2 === "0" ? null : data.lang2,
-				publication_date: data.publication_date,
+				publishedAt: data.publishedAt,
 				tags: selectedTags
 					? selectedTags
 					: (storymapInfos?.tags as TagType[])
@@ -160,6 +163,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 						/>
 						<div className={style.inputContainer}>
 							<Select
+								styles={singleSelectInLineStyle}
 								options={tagOptions}
 								delimiter="|"
 								isMulti
@@ -193,6 +197,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
 						/>
 						<div className={style.inputContainer}>
 							<Select
+								styles={singleSelectInLineStyle}
 								options={tagOptions}
 								defaultValue={storymapInfos ? defaultTagValues : []}
 								delimiter="|"

@@ -2,6 +2,7 @@
 import { apiClient } from "../apiClient";
 // import des types
 import type { MapInfoType, PointSetType, TagType } from "../../types/mapTypes";
+import { notifyError } from "../../functions/toast";
 
 /**
  * Envoie une requête POST avec la liste des filtres à ajouter à une carte
@@ -37,6 +38,14 @@ const createNewMap = async (body: MapInfoType) => {
 		});
 		return newMap;
 	} catch (error) {
+		if (
+			error.response.data.message ===
+			"Cannot read properties of undefined (reading 'split')"
+		) {
+			notifyError(
+				"Une étiquette au moins est nécessaire pour créer une carte.",
+			);
+		}
 		console.error("Erreur lors de la création de la carte :", error);
 	}
 };

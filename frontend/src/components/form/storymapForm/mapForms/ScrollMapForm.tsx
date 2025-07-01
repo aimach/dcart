@@ -127,7 +127,9 @@ const ScrollMapForm = () => {
 									<div key={input.name} className={style.mapFormInputContainer}>
 										<div className={style.labelContainer}>
 											<label htmlFor={input.name}>
-												{input[`label_${language}`]}
+												{input[`label_${language}`]}{" "}
+												{input.required.value &&
+													"<span style={{color: '#9d2121'}}>*</span>"}
 											</label>
 										</div>
 										<div className={style.inputContainer}>
@@ -150,7 +152,9 @@ const ScrollMapForm = () => {
 									<div key={input.name} className={style.mapFormInputContainer}>
 										<div className={style.labelContainer}>
 											<label htmlFor={input.name}>
-												{input[`label_${language}`]}
+												{input[`label_${language}`]}{" "}
+												{input.required.value &&
+													"<span style={{color: '#9d2121'}}>*</span>"}
 											</label>
 										</div>
 										<div className={style.inputContainer}>
