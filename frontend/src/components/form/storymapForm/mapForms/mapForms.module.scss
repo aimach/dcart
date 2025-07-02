@@ -24,7 +24,7 @@
 }
 
 .headerContainer {
-    @include m.flexbox(flex, row, nowrap, space-between, center);
+    @include m.flexbox(flex, row, nowrap, flex-end, center);
     margin: 0 v.$space-xl;
 }
 
@@ -132,6 +132,10 @@
         text-align: center;
         border-right: v.$border-width-m solid v.$color-neutral-80;
         border-left: v.$border-width-m solid v.$color-neutral-80;
+
+        >button {
+            margin: v.$space-s auto;
+        }
     }
 
     .scrollMapFormSection {
@@ -194,6 +198,10 @@
             text-align: left;
         }
 
+    }
+
+    &+button {
+        margin-left: v.$space-xl;
     }
 }
 

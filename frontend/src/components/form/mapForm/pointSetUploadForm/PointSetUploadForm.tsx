@@ -339,26 +339,28 @@ const PointSetUploadForm = ({
 						/>
 					</div>
 				</div>
-				<ButtonComponent
-					type="submit"
-					color="brown"
-					textContent={
-						translation[language].button[action === "create" ? "add" : "edit"]
-					}
-				/>
-				{action === "edit" && (
+				<div className={style.buttonContainer}>
 					<ButtonComponent
-						type="button"
-						color="red"
-						textContent={translation[language].button.cancel}
-						onClickFunction={() => {
-							cancelFunction();
-							setDBSelectedFile(null);
-							setCustomDBSelectedFile(null);
-							setPointSet(null);
-						}}
+						type="submit"
+						color="brown"
+						textContent={
+							translation[language].button[action === "create" ? "add" : "edit"]
+						}
 					/>
-				)}
+					{
+						<ButtonComponent
+							type="button"
+							color="red"
+							textContent={translation[language].button.cancel}
+							onClickFunction={() => {
+								cancelFunction();
+								setDBSelectedFile(null);
+								setCustomDBSelectedFile(null);
+								setPointSet(null);
+							}}
+						/>
+					}
+				</div>
 			</form>
 		)
 	);

@@ -334,7 +334,8 @@ type LanguageObject = {
 				imageToRight: string;
 				scrollMapStepList: string;
 				goToSteps: string;
-				addStep: string;
+				addTheStep: string;
+				addAStep: string;
 				modifyStep: string;
 				modifyTextNow: string;
 				modifyImageNow: string;

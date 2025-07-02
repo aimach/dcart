@@ -173,13 +173,15 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 		setValue,
 	} = useForm<stepInputsType>({ defaultValues: {} });
 
+	console.log(pointSet);
+
 	const atLeastOneFileLoaded =
 		(!pointSet?.attestationIds &&
 			pointSet?.customPointsArray &&
 			pointSet?.customPointsArray?.length > 0) ||
 		(pointSet?.attestationIds &&
-			pointSet?.customPointsArray &&
-			pointSet?.customPointsArray?.length === 0) ||
+			(!pointSet?.customPointsArray ||
+				pointSet.customPointsArray.length === 0)) ||
 		(pointSet?.attestationIds &&
 			pointSet?.customPointsArray &&
 			pointSet?.customPointsArray.length > 0);
@@ -580,7 +582,8 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 						color="brown"
 						textContent={
 							stepAction === "create"
-								? translation[language].backoffice.storymapFormPage.form.addStep
+								? translation[language].backoffice.storymapFormPage.form
+										.addTheStep
 								: translation[language].backoffice.storymapFormPage.form
 										.modifyStep
 						}

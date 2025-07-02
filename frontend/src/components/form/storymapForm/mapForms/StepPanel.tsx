@@ -121,7 +121,7 @@ const StepPanel = ({ scrollMapContent }: StepPanelProps) => {
 							type="button"
 							color="brown"
 							textContent={
-								translation[language].backoffice.storymapFormPage.form.addStep
+								translation[language].backoffice.storymapFormPage.form.addAStep
 							}
 							onClickFunction={handleNewStep}
 						/>

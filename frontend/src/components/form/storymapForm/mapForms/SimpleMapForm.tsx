@@ -358,18 +358,21 @@ const SimpleMapForm = () => {
 			{step === 2 && (
 				<>
 					{isAlreadyAPointSet && (
-						<div className={style.headerContainer}>
-							<ButtonComponent
-								type="button"
-								color="brown"
-								textContent={translation[language].button.add}
-								onClickFunction={() =>
-									setIsAlreadyAPointSet(!isAlreadyAPointSet)
-								}
-								icon={<CirclePlus />}
-								isSelected={true}
-							/>
-
+						<>
+							<div className={style.headerContainer}>
+								<ButtonComponent
+									type="button"
+									color="brown"
+									textContent={
+										translation[language].backoffice.mapFormPage.addMapPoints
+									}
+									onClickFunction={() =>
+										setIsAlreadyAPointSet(!isAlreadyAPointSet)
+									}
+									icon={<CirclePlus />}
+									isSelected={true}
+								/>
+							</div>
 							<div className={style.helpContainer}>
 								<a
 									href="https://sharedocs.huma-num.fr/wl/?id=dJrDrFA2uDDRqqo5PGnmnkNzaNpFWSEW&fmode=open"
@@ -383,7 +386,7 @@ const SimpleMapForm = () => {
 									}
 								</a>
 							</div>
-						</div>
+						</>
 					)}
 					{!isAlreadyAPointSet && (
 						<>
