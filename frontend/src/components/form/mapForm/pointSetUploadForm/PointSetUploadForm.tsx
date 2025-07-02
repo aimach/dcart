@@ -5,7 +5,6 @@ import { useLocation } from "react-router";
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
-import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks

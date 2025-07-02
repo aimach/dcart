@@ -251,6 +251,7 @@ const UploadForm = () => {
 														"mapPoints",
 													)
 												}
+												cursor={"pointer"}
 											/>
 										</td>
 										<td>

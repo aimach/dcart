@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect, useMemo, useRef, useState } from "react";
+import { useContext, useEffect, useRef, useState } from "react";
 import { useParams, useSearchParams } from "react-router";
 import { Controller, useForm } from "react-hook-form";
 // import des composants
@@ -177,7 +177,9 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 		(!pointSet?.attestationIds &&
 			pointSet?.customPointsArray &&
 			pointSet?.customPointsArray?.length > 0) ||
-		(pointSet?.attestationIds && !pointSet?.customPointsArray) ||
+		(pointSet?.attestationIds &&
+			pointSet?.customPointsArray &&
+			pointSet?.customPointsArray?.length === 0) ||
 		(pointSet?.attestationIds &&
 			pointSet?.customPointsArray &&
 			pointSet?.customPointsArray.length > 0);
@@ -317,8 +319,6 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 		setInputs(newInputsWithLangInLabel);
 	}, [storymapInfos]);
 
-	console.log(pointSet);
-
 	return (
 		<section key={reload.toString()}>
 			{/* Utilisation de reload pour forcer le reset des wysiwyg */}
@@ -441,8 +441,8 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 									onClick={() =>
 										handleCSVDownload(
 											pointSet as PointSetType,
-											`${pointSet?.name_fr}-custom.csv`,
-											"customPoints",
+											`${pointSet?.name_fr}-bdd.csv`,
+											"mapPoints",
 										)
 									}
 								/>
