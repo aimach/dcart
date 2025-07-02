@@ -6,6 +6,7 @@ import {
 	BaseEntity,
 	ManyToOne,
 } from "typeorm";
+// import des entités
 import { Attestation } from "../common/Attestation";
 
 export enum pane {

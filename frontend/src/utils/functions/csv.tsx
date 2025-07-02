@@ -78,7 +78,9 @@ const handleCSVDownload = async (
 			(pointSet.customPointsArray as CustomPointType[])[0] || {},
 		).filter((header) => !["id"].includes(header));
 		rows = (pointSet.customPointsArray as CustomPointType[]).map((point) => {
-			return headers.map((header) => point[header]).join(";");
+			return headers
+				.map((header) => point[header as keyof CustomPointType])
+				.join(";");
 		});
 		csvContent = [headers.join(";"), ...rows].join("\n");
 	}

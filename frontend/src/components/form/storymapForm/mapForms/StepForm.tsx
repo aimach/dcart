@@ -263,6 +263,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 		}
 	};
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (stepAction === "edit") {
 			reset(block as BlockContentType);

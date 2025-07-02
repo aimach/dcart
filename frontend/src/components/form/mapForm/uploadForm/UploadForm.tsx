@@ -24,6 +24,7 @@ import {
 	notifyError,
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
+import { handleCSVDownload } from "../../../../utils/functions/csv";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -36,7 +37,6 @@ import type {
 import style from "../introForm/introForm.module.scss";
 // import des images
 import { CircleHelp, FileDown, Pen, PlusCircle, X } from "lucide-react";
-import { handleCSVDownload } from "../../../../utils/functions/csv";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte

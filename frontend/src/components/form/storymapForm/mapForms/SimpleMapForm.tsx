@@ -32,6 +32,7 @@ import {
 	addLangageBetweenBrackets,
 	removeLang2Inputs,
 } from "../../../../utils/functions/storymap";
+import { handleCSVDownload } from "../../../../utils/functions/csv";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -54,7 +55,6 @@ import {
 	Pen,
 	X,
 } from "lucide-react";
-import { handleCSVDownload } from "../../../../utils/functions/csv";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;

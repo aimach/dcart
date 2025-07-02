@@ -29,7 +29,7 @@ import { CircleCheck, CircleX } from "lucide-react";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
-	setPointSet: (pointSet: PointSetType) => void;
+	setPointSet: (pointSet: PointSetType | null) => void;
 	handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 	parentId: string;
 	type: "map" | "block";
