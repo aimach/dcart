@@ -43,7 +43,13 @@ const loginUser = async (body: User) => {
 		}
 		return false;
 	} catch (error) {
-		console.error("Erreur lors de la connexion de l'utilisateur :", error);
+		if (error.status === 429) {
+			notifyError(
+				"Trop de tentatives de connexion. Veuillez réessayer plus tard.",
+			);
+		} else {
+			console.error("Erreur lors de la connexion de l'utilisateur :", error);
+		}
 	}
 };
 
