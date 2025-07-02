@@ -244,7 +244,7 @@ const MapComponent = () => {
 						maxZoom={11}
 						ref={setMap}
 					>
-						{location.pathname.includes("maps/preview/") && (
+						{location.hash.includes("maps/preview/") && (
 							<div
 								style={{
 									position: "absolute",
