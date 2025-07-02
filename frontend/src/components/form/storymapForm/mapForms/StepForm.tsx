@@ -23,7 +23,10 @@ import {
 	addLangageBetweenBrackets,
 	removeLang2Inputs,
 } from "../../../../utils/functions/storymap";
-import { parseCSVFile } from "../../../../utils/functions/csv";
+import {
+	handleCSVDownload,
+	parseCSVFile,
+} from "../../../../utils/functions/csv";
 import { notifyError } from "../../../../utils/functions/toast";
 // import des types
 import type {
@@ -46,7 +49,13 @@ import type { ParseResult } from "papaparse";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleCheck, CircleHelp, CircleX } from "lucide-react";
+import {
+	ChevronLeft,
+	CircleCheck,
+	CircleHelp,
+	CircleX,
+	FileDown,
+} from "lucide-react";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -235,6 +244,8 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 			setValue("content1_lang1", "");
 			setValue("content1_lang2", "");
 			setSearchParams({ stepAction: "create" });
+			setSelectedDBFile(null);
+			setSelectedCustomFile(null);
 			setReload(!reload);
 			const windowElement = document.querySelector(
 				'section[class*="storymapFormContent"]',
@@ -305,6 +316,8 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 		);
 		setInputs(newInputsWithLangInLabel);
 	}, [storymapInfos]);
+
+	console.log(pointSet);
 
 	return (
 		<section key={reload.toString()}>
@@ -409,7 +422,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 							accept=".csv"
 							onChange={handleBDDPointFileUpload}
 						/>
-						{stepAction === "edit" && (
+						<div className={style.fileStatusAndDownloadContainer}>
 							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
 								{pointSet?.attestationIds ? (
 									<CircleCheck color="green" />
@@ -422,7 +435,19 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 										? fileStatusTranslationObject.fileAlreadyLoaded
 										: fileStatusTranslationObject.noFile}
 							</p>
-						)}
+
+							{pointSet?.attestationIds && (
+								<FileDown
+									onClick={() =>
+										handleCSVDownload(
+											pointSet as PointSetType,
+											`${pointSet?.name_fr}-custom.csv`,
+											"customPoints",
+										)
+									}
+								/>
+							)}
+						</div>
 					</div>
 				</div>
 				<div className={style.mapFormInputContainer}>
@@ -445,20 +470,32 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 							accept=".csv"
 							onChange={handleCustomPointFileUpload}
 						/>
-						{stepAction === "edit" && (
+						<div className={style.fileStatusAndDownloadContainer}>
 							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-								{pointSet?.customPointsArray ? (
+								{(pointSet?.customPointsArray?.length ?? 0) > 0 ? (
 									<CircleCheck color="green" />
 								) : stepAction === "edit" ? (
 									<CircleX color="grey" />
 								) : null}
 								{selectedCustomFile
 									? `${fileStatusTranslationObject.loadedFile} : ${selectedCustomFile?.name}`
-									: pointSet?.customPointsArray
+									: (pointSet?.customPointsArray?.length ?? 0) > 0
 										? fileStatusTranslationObject.fileAlreadyLoaded
 										: fileStatusTranslationObject.noFile}
 							</p>
-						)}
+
+							{(pointSet?.customPointsArray?.length ?? 0) > 0 && (
+								<FileDown
+									onClick={() =>
+										handleCSVDownload(
+											pointSet as PointSetType,
+											`${pointSet?.name_fr}-custom.csv`,
+											"customPoints",
+										)
+									}
+								/>
+							)}
+						</div>
 					</div>
 				</div>
 

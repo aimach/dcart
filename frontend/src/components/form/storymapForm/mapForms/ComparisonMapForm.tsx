@@ -17,7 +17,12 @@ import { uploadParsedPointsForComparisonMap } from "../../../../utils/api/storym
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import { useShallow } from "zustand/shallow";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
-import { parseCSVFile } from "../../../../utils/functions/csv";
+import {
+	handleCSVDownload,
+	parseCSVFile,
+} from "../../../../utils/functions/csv";
+import { notifyError } from "../../../../utils/functions/toast";
+import { addLangageBetweenBrackets } from "../../../../utils/functions/storymap";
 // import des types
 import type { blockType } from "../../../../utils/types/formTypes";
 import type { ChangeEvent } from "react";
@@ -32,9 +37,13 @@ import type { ParseResult } from "papaparse";
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleCheck, CircleHelp, CircleX } from "lucide-react";
-import { notifyError } from "../../../../utils/functions/toast";
-import { addLangageBetweenBrackets } from "../../../../utils/functions/storymap";
+import {
+	ChevronLeft,
+	CircleCheck,
+	CircleHelp,
+	CircleX,
+	FileDown,
+} from "lucide-react";
 
 export type comparisonMapInputsType = {
 	content1_lang1: string;
@@ -406,20 +415,37 @@ const ComparisonMapForm = () => {
 									accept=".csv"
 									onChange={handleBDDPointFileUpload}
 								/>
-								<p
-									style={{ display: "flex", alignItems: "center", gap: "5px" }}
-								>
-									{pointSets[formSide]?.attestationIds ? (
-										<CircleCheck color="green" />
-									) : action === "edit" ? (
-										<CircleX color="grey" />
-									) : null}
-									{selectedFiles[formSide].db
-										? `${fileStatusTranslationObject.loadedFile} : ${selectedFiles[formSide]?.db.name}`
-										: pointSets[formSide]?.attestationIds
-											? fileStatusTranslationObject.fileAlreadyLoaded
-											: fileStatusTranslationObject.noFile}
-								</p>
+								<div className={style.fileStatusAndDownloadContainer}>
+									<p
+										style={{
+											display: "flex",
+											alignItems: "center",
+											gap: "5px",
+										}}
+									>
+										{pointSets[formSide]?.attestationIds ? (
+											<CircleCheck color="green" />
+										) : action === "edit" ? (
+											<CircleX color="grey" />
+										) : null}
+										{selectedFiles[formSide].db
+											? `${fileStatusTranslationObject.loadedFile} : ${selectedFiles[formSide]?.db.name}`
+											: pointSets[formSide]?.attestationIds
+												? fileStatusTranslationObject.fileAlreadyLoaded
+												: fileStatusTranslationObject.noFile}
+									</p>
+									{pointSets[formSide]?.attestationIds && (
+										<FileDown
+											onClick={() =>
+												handleCSVDownload(
+													pointSets[formSide],
+													`${block?.content1_lang1}-${formSide}-bdd.csv`,
+													"mapPoints",
+												)
+											}
+										/>
+									)}
+								</div>
 							</div>
 						</div>
 						<div className={style.mapFormInputContainer}>
@@ -444,20 +470,40 @@ const ComparisonMapForm = () => {
 									accept=".csv"
 									onChange={handleCustomPointFileUpload}
 								/>
-								<p
-									style={{ display: "flex", alignItems: "center", gap: "5px" }}
-								>
-									{(pointSets[formSide]?.customPointsArray?.length ?? 0) > 0 ? (
-										<CircleCheck color="green" />
-									) : action === "edit" ? (
-										<CircleX color="grey" />
-									) : null}
-									{selectedFiles[formSide].custom
-										? `${fileStatusTranslationObject.loadedFile} : ${selectedFiles[formSide]?.custom.name}`
-										: (pointSets[formSide]?.customPointsArray?.length ?? 0) > 0
-											? fileStatusTranslationObject.fileAlreadyLoaded
-											: fileStatusTranslationObject.noFile}
-								</p>
+								<div className={style.fileStatusAndDownloadContainer}>
+									<p
+										style={{
+											display: "flex",
+											alignItems: "center",
+											gap: "5px",
+										}}
+									>
+										{(pointSets[formSide]?.customPointsArray?.length ?? 0) >
+										0 ? (
+											<CircleCheck color="green" />
+										) : action === "edit" ? (
+											<CircleX color="grey" />
+										) : null}
+										{selectedFiles[formSide].custom
+											? `${fileStatusTranslationObject.loadedFile} : ${selectedFiles[formSide]?.custom.name}`
+											: (pointSets[formSide]?.customPointsArray?.length ?? 0) >
+													0
+												? fileStatusTranslationObject.fileAlreadyLoaded
+												: fileStatusTranslationObject.noFile}
+									</p>
+									{(pointSets[formSide]?.customPointsArray?.length ?? 0) >
+										0 && (
+										<FileDown
+											onClick={() =>
+												handleCSVDownload(
+													pointSets[formSide],
+													`${block?.content1_lang1}-${formSide}-custom.csv`,
+													"customPoints",
+												)
+											}
+										/>
+									)}
+								</div>
 							</div>
 						</div>
 						<div className={style.mapFormInputContainer}>

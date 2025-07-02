@@ -437,6 +437,11 @@ const SimpleMapForm = () => {
 											(pointSet.icon as MapIconType)?.name_en,
 											(pointSet.color as MapColorType)?.code_hex,
 										);
+										const isCustomPointSet =
+											pointSet.customPointsArray &&
+											pointSet.customPointsArray.length > 0;
+										const isBDDPointSet =
+											pointSet.attestationIds && pointSet.attestationIds !== "";
 										return (
 											<tr key={pointSet.id} className={style.pointSetTableRow}>
 												<td>{pointSet.name_fr}</td>
@@ -450,26 +455,36 @@ const SimpleMapForm = () => {
 													/>
 												</td>
 												<td>
-													<FileDown
-														onClick={() =>
-															handleCSVDownload(
-																pointSet,
-																`${pointSet.name_fr}-bdd.csv`,
-																"mapPoints",
-															)
-														}
-													/>
+													{isBDDPointSet ? (
+														<FileDown
+															onClick={() =>
+																handleCSVDownload(
+																	pointSet,
+																	`${pointSet.name_fr}-bdd.csv`,
+																	"mapPoints",
+																)
+															}
+															cursor={"pointer"}
+														/>
+													) : (
+														<FileDown color="#a1afc4" />
+													)}
 												</td>
 												<td>
-													<FileDown
-														onClick={() =>
-															handleCSVDownload(
-																pointSet,
-																`${pointSet.name_fr}-custom.csv`,
-																"customPoints",
-															)
-														}
-													/>
+													{isCustomPointSet ? (
+														<FileDown
+															onClick={() =>
+																handleCSVDownload(
+																	pointSet,
+																	`${pointSet.name_fr}-custom.csv`,
+																	"customPoints",
+																)
+															}
+															cursor={"pointer"}
+														/>
+													) : (
+														<FileDown color="#a1afc4" />
+													)}
 												</td>
 												<td>
 													<Pen

@@ -93,6 +93,11 @@
                 outline: v.$border-width-m solid v.$color-umber;
             }
         }
+
+        .fileStatusAndDownloadContainer {
+            width: 100%;
+            @include m.flexbox(flex, row, nowrap, space-between, center);
+        }
     }
 }
 
