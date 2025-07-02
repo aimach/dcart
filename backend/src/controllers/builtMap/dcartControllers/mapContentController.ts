@@ -46,6 +46,10 @@ export const mapContentController = {
 					.leftJoinAndSelect("map.attestations", "attestations")
 					.leftJoinAndSelect("attestations.icon", "icon")
 					.leftJoinAndSelect("attestations.color", "color")
+					.leftJoinAndSelect(
+						"attestations.customPointsArray",
+						"customPointsArray",
+					)
 					.leftJoinAndSelect("filterMapContent.filter", "filter")
 					.select([
 						"map",
@@ -53,8 +57,9 @@ export const mapContentController = {
 						"filter.type",
 						"tags",
 						"attestations",
-						"attestations.icon",
-						"attestations.color",
+						"icon",
+						"color",
+						"customPointsArray",
 						"creator.username",
 						"modifier.username",
 					]);
@@ -126,6 +131,10 @@ export const mapContentController = {
 				.leftJoinAndSelect("map.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
 				.leftJoinAndSelect("attestations.color", "color")
+				.leftJoinAndSelect(
+					"attestations.customPointsArray",
+					"customPointsArray",
+				)
 				.leftJoinAndSelect("filterMapContent.filter", "filter")
 				.select([
 					"map",
@@ -135,6 +144,7 @@ export const mapContentController = {
 					"attestations",
 					"icon",
 					"color",
+					"customPointsArray",
 				])
 				.where(whereQuery, whereParams)
 				.getOne();

@@ -95,6 +95,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 		stepAction === "edit" && block?.attestations?.[0]?.attestationIds
 			? ({
 					attestationIds: block.attestations[0].attestationIds,
+					customPointsArray: block.attestations[0].customPointsArray,
 				} as PointSetType)
 			: null,
 	);
@@ -264,6 +265,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 			setPointSet({
 				...pointSet,
 				attestationIds: "",
+				customPointsArray: [],
 				name: "",
 				color: "",
 				icon: "",
@@ -277,6 +279,9 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 				color: (defaultPointSet?.color as MapColorType)?.id,
 				icon: (defaultPointSet?.icon as MapIconType)?.id,
 				name_fr: defaultPointSet?.[`name_${language}`],
+				customPointsArray: defaultPointSet?.customPointsArray
+					? (defaultPointSet.customPointsArray as CustomPointType[])
+					: [],
 			} as PointSetType);
 		}
 	}, [stepAction, block]);
@@ -442,10 +447,16 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 						/>
 						{stepAction === "edit" && (
 							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-								<CircleCheck color="green" />
-								{selectedDBFile === null
-									? "Un fichier est déjà chargé"
-									: `Nouveau fichier chargé : ${selectedDBFile.name}`}
+								{pointSet?.customPointsArray ? (
+									<CircleCheck color="green" />
+								) : stepAction === "edit" ? (
+									<CircleX color="grey" />
+								) : null}
+								{selectedCustomFile
+									? `${fileStatusTranslationObject.loadedFile} : ${selectedCustomFile?.name}`
+									: pointSet?.customPointsArray
+										? fileStatusTranslationObject.fileAlreadyLoaded
+										: fileStatusTranslationObject.noFile}
 							</p>
 						)}
 					</div>

@@ -34,9 +34,17 @@ export const blockController = {
 				.leftJoinAndSelect("block.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
 				.leftJoinAndSelect("attestations.color", "color")
+				.leftJoinAndSelect(
+					"attestations.customPointsArray",
+					"customPointsArray",
+				)
 				.leftJoinAndSelect("blocks.attestations", "childrenAttestations")
 				.leftJoinAndSelect("childrenAttestations.icon", "childrenIcon")
 				.leftJoinAndSelect("childrenAttestations.color", "childrenColor")
+				.leftJoinAndSelect(
+					"childrenAttestations.customPointsArray",
+					"childrenCustomPointsArray",
+				)
 				.orderBy("blocks.position", "ASC")
 				.where("block.id = :blockId", { blockId })
 				.getOne();

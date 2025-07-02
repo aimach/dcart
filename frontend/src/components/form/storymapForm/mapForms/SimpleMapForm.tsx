@@ -46,7 +46,15 @@ import type {
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleHelp, CirclePlus, Pen, X } from "lucide-react";
+import {
+	ChevronLeft,
+	CircleHelp,
+	CirclePlus,
+	FileDown,
+	Pen,
+	X,
+} from "lucide-react";
+import { handleCSVDownload } from "../../../../utils/functions/csv";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -418,6 +426,8 @@ const SimpleMapForm = () => {
 													.pointSetTable.icon
 											}
 										</th>
+										<th>BDD MAP CSV</th>
+										<th>Point personnalisés CSV</th>
 										<th scope="col" />
 									</tr>
 								</thead>
@@ -437,6 +447,28 @@ const SimpleMapForm = () => {
 														dangerouslySetInnerHTML={{
 															__html: icon,
 														}}
+													/>
+												</td>
+												<td>
+													<FileDown
+														onClick={() =>
+															handleCSVDownload(
+																pointSet,
+																`${pointSet.name_fr}-bdd.csv`,
+																"mapPoints",
+															)
+														}
+													/>
+												</td>
+												<td>
+													<FileDown
+														onClick={() =>
+															handleCSVDownload(
+																pointSet,
+																`${pointSet.name_fr}-custom.csv`,
+																"customPoints",
+															)
+														}
 													/>
 												</td>
 												<td>

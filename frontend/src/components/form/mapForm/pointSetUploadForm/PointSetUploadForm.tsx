@@ -154,12 +154,9 @@ const PointSetUploadForm = ({
 								} as PointSetType)
 							}
 						/>
-						{(!pointSet?.name_fr || pointSet?.name_fr === "") && (
-							<ErrorComponent message="requis" />
-						)}
 					</div>
 				</div>
-				{storymapInfos?.lang2 && (
+				{(!isStorymap || storymapInfos?.lang2) && (
 					<div className={style.commonFormInputContainer}>
 						<LabelComponent
 							htmlFor="name_en"
@@ -190,9 +187,6 @@ const PointSetUploadForm = ({
 									} as PointSetType)
 								}
 							/>
-							{(!pointSet?.name_en || pointSet?.name_en === "") && (
-								<ErrorComponent message="requis" />
-							)}
 						</div>
 					</div>
 				)}
@@ -207,9 +201,8 @@ const PointSetUploadForm = ({
 							translation[language].backoffice.mapFormPage.pointSetForm
 								.attestationIds.description
 						}
-						isRequired={false}
+						isRequired={!isStorymap}
 					/>
-
 					<div className={style.inputContainer}>
 						<input
 							id="attestationIds"
@@ -256,14 +249,14 @@ const PointSetUploadForm = ({
 								onChange={handleCustomPointFileUpload}
 							/>
 							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-								{pointSet?.customPointsArray ? (
+								{pointSet?.customPointsArray?.length > 0 ? (
 									<CircleCheck color="green" />
 								) : action === "edit" ? (
 									<CircleX color="grey" />
 								) : null}
 								{CustomSelectedFile
 									? `${fileStatusTranslationObject.loadedFile} : ${CustomSelectedFile?.name}`
-									: pointSet?.customPointsArray
+									: pointSet?.customPointsArray?.length > 0
 										? fileStatusTranslationObject.fileAlreadyLoaded
 										: fileStatusTranslationObject.noFile}
 							</p>
