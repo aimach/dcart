@@ -220,8 +220,12 @@
 					"description_en": "If you choose to display point sets on different layers, the user will see the point set name in the layer list."
 				},
 				"attestationIds": {
-					"label": "Load points",
-					"description": "Load the map's points"
+					"label": "Load points from the MAP database",
+					"description": "Load a CSV file containing the IDs of attestations from the MAP database."
+				},
+				"customPointsFile": {
+					"label": "Load custom points",
+					"description": "Load a CSV file containing a list of custom points."
 				},
 				"pointColor": {
 					"label": "Point color",
@@ -374,7 +378,7 @@
 				"imageToRight": "Image on the right",
 				"scrollMapStepList": "List of steps for the scroll map",
 				"goToSteps": "Go to steps",
-				"addStep": "Add this step",
+				"addStep": "Add step",
 				"modifyStep": "Modify this step",
 				"modifyTextNow": "Edit the text directly",
 				"modifyImageNow": "Edit the image directly",
@@ -382,6 +386,11 @@
 					"label": "Storymap tags",
 					"description": "These tags will be used to filter the storymaps in the list of storymaps. You can choose one or more tags.",
 					"placeholder": "Choose one or more tags"
+				},
+				"fileStatus": {
+					"loadedFile": "File loaded",
+					"noFile": "No file loaded",
+					"fileAlreadyLoaded": "A file is already loaded"
 				}
 			}
 		},

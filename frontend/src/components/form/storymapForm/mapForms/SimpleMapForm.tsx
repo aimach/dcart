@@ -32,6 +32,7 @@ import {
 	addLangageBetweenBrackets,
 	removeLang2Inputs,
 } from "../../../../utils/functions/storymap";
+import { handleCSVDownload } from "../../../../utils/functions/csv";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -46,7 +47,14 @@ import type {
 // import du style
 import style from "./mapForms.module.scss";
 // import des icônes
-import { ChevronLeft, CircleHelp, CirclePlus, Pen, X } from "lucide-react";
+import {
+	ChevronLeft,
+	CircleHelp,
+	CirclePlus,
+	FileDown,
+	Pen,
+	X,
+} from "lucide-react";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -133,23 +141,34 @@ const SimpleMapForm = () => {
 	const isPointSetFormValidWith1Lang =
 		pointSet &&
 		typeof pointSet.name_fr === "string" &&
-		pointSet.name_fr.trim() !== "" &&
-		typeof pointSet.attestationIds === "string" &&
-		pointSet.attestationIds.trim() !== "";
+		pointSet.name_fr.trim() !== "";
 
 	const isPointSetFormValidWith2Langs =
 		pointSet &&
 		typeof pointSet.name_fr === "string" &&
 		pointSet.name_fr.trim() !== "" &&
 		typeof pointSet.name_en === "string" &&
-		pointSet.name_en.trim() !== "" &&
-		typeof pointSet.attestationIds === "string" &&
-		pointSet.attestationIds.trim() !== "";
+		pointSet.name_en.trim() !== "";
+
+	const atLeastOneFileLoaded =
+		(!pointSet?.attestationIds &&
+			pointSet?.customPointsArray &&
+			pointSet?.customPointsArray?.length > 0) ||
+		(pointSet?.attestationIds && !pointSet?.customPointsArray) ||
+		(pointSet?.attestationIds &&
+			pointSet?.customPointsArray &&
+			pointSet?.customPointsArray.length > 0);
 
 	const handleSubmitPointSet: FormEventHandler<HTMLFormElement> = async (
 		event,
 	) => {
 		event.preventDefault();
+		if (!atLeastOneFileLoaded) {
+			notifyError(
+				"Veuillez charger au moins un fichier de points avant de soumettre le formulaire.",
+			);
+			return;
+		}
 		if (
 			(storymapInfos?.lang2 && !isPointSetFormValidWith2Langs) ||
 			!isPointSetFormValidWith1Lang
@@ -407,6 +426,8 @@ const SimpleMapForm = () => {
 													.pointSetTable.icon
 											}
 										</th>
+										<th>BDD MAP CSV</th>
+										<th>Point personnalisés CSV</th>
 										<th scope="col" />
 									</tr>
 								</thead>
@@ -416,6 +437,11 @@ const SimpleMapForm = () => {
 											(pointSet.icon as MapIconType)?.name_en,
 											(pointSet.color as MapColorType)?.code_hex,
 										);
+										const isCustomPointSet =
+											pointSet.customPointsArray &&
+											pointSet.customPointsArray.length > 0;
+										const isBDDPointSet =
+											pointSet.attestationIds && pointSet.attestationIds !== "";
 										return (
 											<tr key={pointSet.id} className={style.pointSetTableRow}>
 												<td>{pointSet.name_fr}</td>
@@ -427,6 +453,38 @@ const SimpleMapForm = () => {
 															__html: icon,
 														}}
 													/>
+												</td>
+												<td>
+													{isBDDPointSet ? (
+														<FileDown
+															onClick={() =>
+																handleCSVDownload(
+																	pointSet,
+																	`${pointSet.name_fr}-bdd.csv`,
+																	"mapPoints",
+																)
+															}
+															cursor={"pointer"}
+														/>
+													) : (
+														<FileDown color="#a1afc4" />
+													)}
+												</td>
+												<td>
+													{isCustomPointSet ? (
+														<FileDown
+															onClick={() =>
+																handleCSVDownload(
+																	pointSet,
+																	`${pointSet.name_fr}-custom.csv`,
+																	"customPoints",
+																)
+															}
+															cursor={"pointer"}
+														/>
+													) : (
+														<FileDown color="#a1afc4" />
+													)}
 												</td>
 												<td>
 													<Pen

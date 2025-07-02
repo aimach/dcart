@@ -93,6 +93,11 @@
                 outline: v.$border-width-m solid v.$color-umber;
             }
         }
+
+        .fileStatusAndDownloadContainer {
+            width: 100%;
+            @include m.flexbox(flex, row, nowrap, space-between, center);
+        }
     }
 }
 
@@ -145,13 +150,18 @@
 }
 
 .helpContainer {
-    width: 100%;
+
     @include m.flexbox(flex, row, nowrap, center, flex-start);
+    margin: 0 auto;
 
     >a {
         @include m.flexbox(flex, row, nowrap, space-center, center);
         gap: v.$space-xs;
     }
+
+    background-color: v.$background-color-soft;
+    padding: v.$space-l;
+    border-radius: v.$border-radius-rounded;
 }
 
 .formButtonNavigation {

@@ -500,6 +500,10 @@ export const sourceController = {
 				.leftJoinAndSelect("block.attestations", "attestations")
 				.leftJoinAndSelect("attestations.icon", "icon")
 				.leftJoinAndSelect("attestations.color", "color")
+				.leftJoinAndSelect(
+					"attestations.customPointsArray",
+					"customPointsArray",
+				)
 				.where("block.id = :id", { id: blockId });
 
 			if (side) {
@@ -517,6 +521,9 @@ export const sourceController = {
 
 			results = await Promise.all(
 				attestationsArray.map(async (attestation: Attestation) => {
+					if (!attestation.attestationIds) {
+						return [];
+					}
 					const sqlQuery = getSourcesQueryWithDetails(
 						attestation.attestationIds,
 						"",
@@ -548,7 +555,28 @@ export const sourceController = {
 				}),
 			);
 
-			res.status(200).json(results.flat());
+			const customPointsArray = attestationsArray.map(
+				(attestation: Attestation) => {
+					return attestation.customPointsArray?.map((point) => {
+						const sourcesArray = [];
+						for (let index = 1; index <= (point.source_nb || 1); index++) {
+							sourcesArray.push(index);
+						}
+						return {
+							latitude: point.latitude,
+							longitude: point.longitude,
+							nom_ville: point.location,
+							layerNamefr: attestation.name_fr,
+							layerNameen: attestation.name_en,
+							color: attestation.color?.code_hex,
+							shape: attestation.icon?.name_en,
+							sources: sourcesArray,
+						};
+					});
+				},
+			);
+
+			res.status(200).json(results.flat().concat(customPointsArray.flat()));
 		} catch (error) {
 			handleError(res, error as Error);
 		}

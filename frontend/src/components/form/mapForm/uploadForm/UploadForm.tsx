@@ -24,6 +24,7 @@ import {
 	notifyError,
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
+import { handleCSVDownload } from "../../../../utils/functions/csv";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -35,7 +36,7 @@ import type {
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des images
-import { CircleHelp, Pen, PlusCircle, X } from "lucide-react";
+import { CircleHelp, FileDown, Pen, PlusCircle, X } from "lucide-react";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -61,13 +62,12 @@ const UploadForm = () => {
 	const [pointSet, setPointSet] = useState<PointSetType | null>(null);
 	const [action, setAction] = useState<"create" | "edit">("create");
 	const isPointSetFormValid =
-		pointSet &&
-		typeof pointSet.name_fr === "string" &&
-		pointSet.name_fr.trim() !== "" &&
-		typeof pointSet.name_en === "string" &&
-		pointSet.name_en.trim() !== "" &&
-		typeof pointSet.attestationIds === "string" &&
-		pointSet.attestationIds.trim() !== "";
+		pointSet?.name_fr &&
+		pointSet.name_fr !== "" &&
+		pointSet.name_en &&
+		pointSet.name_en !== "" &&
+		pointSet.attestationIds &&
+		pointSet.attestationIds !== "";
 
 	const handleSubmit: FormEventHandler<HTMLFormElement> = async (event) => {
 		event.preventDefault();
@@ -195,7 +195,6 @@ const UploadForm = () => {
 						setIsAlreadyAPointSet(true);
 						setAction("create");
 					}}
-					isPointSetFormValid={isPointSetFormValid}
 				/>
 			)}
 			{mapInfos?.attestations && (
@@ -221,6 +220,7 @@ const UploadForm = () => {
 											.icon
 									}
 								</th>
+								<th>Charger le CSV</th>
 								<th scope="col" />
 							</tr>
 						</thead>
@@ -240,6 +240,18 @@ const UploadForm = () => {
 												dangerouslySetInnerHTML={{
 													__html: icon,
 												}}
+											/>
+										</td>
+										<td>
+											<FileDown
+												onClick={() =>
+													handleCSVDownload(
+														pointSet,
+														`${pointSet.name_fr}.csv`,
+														"mapPoints",
+													)
+												}
+												cursor={"pointer"}
 											/>
 										</td>
 										<td>

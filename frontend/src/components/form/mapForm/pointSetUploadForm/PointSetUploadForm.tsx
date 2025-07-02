@@ -5,7 +5,6 @@ import { useLocation } from "react-router";
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
-import ErrorComponent from "../../errorComponent/ErrorComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -14,27 +13,28 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 import { parseCSVFile } from "../../../../utils/functions/csv";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
+import { notifyError } from "../../../../utils/functions/toast";
 // import des types
 import type { FormEvent, ChangeEvent } from "react";
 import type {
+	CustomPointType,
 	MapIconType,
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
+import type { ParseResult } from "papaparse";
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des icônes
-import { CircleCheck } from "lucide-react";
-import { notifyError } from "../../../../utils/functions/toast";
+import { CircleCheck, CircleX } from "lucide-react";
 
 interface PointSetUploadFormProps {
 	pointSet: PointSetType | null;
-	setPointSet: (pointSet: PointSetType) => void;
+	setPointSet: (pointSet: PointSetType | null) => void;
 	handleSubmit: (event: FormEvent<HTMLFormElement>) => void;
 	parentId: string;
 	type: "map" | "block";
 	action: "create" | "edit";
 	cancelFunction: () => void;
-	isPointSetFormValid: boolean | null;
 }
 
 const PointSetUploadForm = ({
@@ -45,43 +45,78 @@ const PointSetUploadForm = ({
 	type,
 	action,
 	cancelFunction,
-	isPointSetFormValid,
 }: PointSetUploadFormProps) => {
 	// récupération des données de la traduction
 	const { translation, language } = useTranslation();
 
 	const { icons, colors } = useContext(IconOptionsContext);
 
-	const [selectedFile, setSelectedFile] = useState<File | null>(null);
+	const [DBSelectedFile, setDBSelectedFile] = useState<File | null>(null);
+	const [CustomSelectedFile, setCustomDBSelectedFile] = useState<File | null>(
+		null,
+	);
 
 	const location = useLocation();
 	const isStorymap = location.pathname.includes("storymaps");
 
 	const { storymapInfos } = useBuilderStore();
 
-	const handleFileUpload = (event: ChangeEvent) => {
+	const fileStatusTranslationObject =
+		translation[language].backoffice.storymapFormPage.form.fileStatus;
+
+	const handleBDDPointFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
 			event,
-			onComplete: (result) => {
+			onComplete: (result: ParseResult<{ id: string } | CustomPointType>) => {
 				if (result.data.length === 0) {
 					notifyError("Le fichier est vide ou mal formaté");
 					return;
 				}
 				const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
-					result.data,
+					result.data as { id: string }[],
 				);
 				setPointSet({
 					...pointSet,
 					attestationIds: allAttestationsIds,
 					[type === "map" ? "mapId" : "blockId"]: parentId as string,
 				} as PointSetType);
-				setSelectedFile((event.target as HTMLInputElement).files?.[0] ?? null);
+				setDBSelectedFile(
+					(event.target as HTMLInputElement).files?.[0] ?? null,
+				);
 			},
 			onError: () => {
 				notifyError(
 					"Erreur lors du chargement du fichier. Vérifier le format.",
 				);
 			},
+		});
+	};
+
+	const handleCustomPointFileUpload = (event: ChangeEvent) => {
+		parseCSVFile({
+			event,
+			onComplete: (result: ParseResult<{ id: string } | CustomPointType>) => {
+				setPointSet({
+					...pointSet,
+					customPointsArray: result.data as CustomPointType[],
+					blockId: parentId as string,
+				} as PointSetType);
+				setCustomDBSelectedFile(
+					(event.target as HTMLInputElement).files?.[0] ?? null,
+				);
+			},
+			onError: () => {
+				notifyError(
+					"Erreur lors du chargement du fichier. Vérifier le format.",
+				);
+			},
+			headerMapping: {
+				latitude: "latitude",
+				longitude: "longitude",
+				location: "location",
+				sourceNb: "source_nb",
+			},
+			skipLines: 0,
 		});
 	};
 
@@ -118,9 +153,6 @@ const PointSetUploadForm = ({
 								} as PointSetType)
 							}
 						/>
-						{(!pointSet?.name_fr || pointSet?.name_fr === "") && (
-							<ErrorComponent message="requis" />
-						)}
 					</div>
 				</div>
 				{(!isStorymap || storymapInfos?.lang2) && (
@@ -154,9 +186,6 @@ const PointSetUploadForm = ({
 									} as PointSetType)
 								}
 							/>
-							{(!pointSet?.name_en || pointSet?.name_en === "") && (
-								<ErrorComponent message="requis" />
-							)}
 						</div>
 					</div>
 				)}
@@ -171,34 +200,68 @@ const PointSetUploadForm = ({
 							translation[language].backoffice.mapFormPage.pointSetForm
 								.attestationIds.description
 						}
+						isRequired={!isStorymap}
 					/>
-
 					<div className={style.inputContainer}>
 						<input
 							id="attestationIds"
 							name="attestationIds"
 							type="file"
 							accept=".csv"
-							onChange={handleFileUpload}
+							onChange={handleBDDPointFileUpload}
 						/>
 						<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-							{((action === "create" && pointSet?.attestationIds) ||
-								action === "edit") && <CircleCheck color="green" />}
-							{action === "create" &&
-								pointSet?.attestationIds &&
-								`Fichier chargé : ${selectedFile?.name}`}
-							{action === "edit" &&
-								!selectedFile &&
-								"Un fichier est déjà chargé"}
-							{action === "edit" &&
-								selectedFile &&
-								`Nouveau fichier chargé : ${selectedFile?.name}`}
+							{pointSet?.attestationIds ? (
+								<CircleCheck color="green" />
+							) : action === "edit" ? (
+								<CircleX color="grey" />
+							) : null}
+							{DBSelectedFile
+								? `${fileStatusTranslationObject.loadedFile} : ${DBSelectedFile?.name}`
+								: pointSet?.attestationIds
+									? fileStatusTranslationObject.fileAlreadyLoaded
+									: fileStatusTranslationObject.noFile}
 						</p>
-						{(!pointSet?.attestationIds || pointSet?.attestationIds === "") && (
-							<ErrorComponent message="requis" />
-						)}
 					</div>
 				</div>
+				{isStorymap && (
+					<div className={style.commonFormInputContainer}>
+						<LabelComponent
+							htmlFor="customPointsFile"
+							label={
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.customPointsFile.label
+							}
+							description={
+								translation[language].backoffice.mapFormPage.pointSetForm
+									.customPointsFile.description
+							}
+							isRequired={false}
+						/>
+
+						<div className={style.inputContainer}>
+							<input
+								id="customPointsFile"
+								name="customPointsFile"
+								type="file"
+								accept=".csv"
+								onChange={handleCustomPointFileUpload}
+							/>
+							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
+								{pointSet?.customPointsArray?.length > 0 ? (
+									<CircleCheck color="green" />
+								) : action === "edit" ? (
+									<CircleX color="grey" />
+								) : null}
+								{CustomSelectedFile
+									? `${fileStatusTranslationObject.loadedFile} : ${CustomSelectedFile?.name}`
+									: pointSet?.customPointsArray?.length > 0
+										? fileStatusTranslationObject.fileAlreadyLoaded
+										: fileStatusTranslationObject.noFile}
+							</p>
+						</div>
+					</div>
+				)}
 				<div className={style.commonFormInputContainer}>
 					<LabelComponent
 						htmlFor="colorId"
@@ -283,7 +346,6 @@ const PointSetUploadForm = ({
 						translation[language].button[action === "create" ? "add" : "edit"]
 					}
 				/>
-
 				{action === "edit" && (
 					<ButtonComponent
 						type="button"
@@ -291,7 +353,8 @@ const PointSetUploadForm = ({
 						textContent={translation[language].button.cancel}
 						onClickFunction={() => {
 							cancelFunction();
-							setSelectedFile(null);
+							setDBSelectedFile(null);
+							setCustomDBSelectedFile(null);
 							setPointSet(null);
 						}}
 					/>

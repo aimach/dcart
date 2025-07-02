@@ -221,6 +221,10 @@ type LanguageObject = {
 					label: string;
 					description: string;
 				};
+				customPointsFile: {
+					label: string;
+					description: string;
+				};
 				pointColor: {
 					label: string;
 					description: string;
@@ -338,6 +342,11 @@ type LanguageObject = {
 					label: string;
 					description: string;
 					placeholder: string;
+				};
+				fileStatus: {
+					loadedFile: string;
+					noFile: string;
+					fileAlreadyLoaded: string;
 				};
 			};
 		};
