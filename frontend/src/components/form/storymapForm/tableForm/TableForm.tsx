@@ -204,7 +204,7 @@ const TableForm = () => {
 			<FormTitleComponent action={action as string} translationKey="table" />
 			<div className={style.helpContainer}>
 				<a
-					href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-tableau-1d74457ff83180b7936ec004ff956c83"
+					href="https://sharedocs.huma-num.fr/wl/?id=z18NTMXobtyLBHgpTRA0B5l41T0plfQZ&fmode=open"
 					target="_blank"
 					rel="noreferrer"
 				>
