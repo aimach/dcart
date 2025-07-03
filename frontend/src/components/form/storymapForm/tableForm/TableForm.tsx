@@ -123,7 +123,7 @@ const TableForm = () => {
 	const pointAreUploaded = (array: string[][]) => array.length > 0;
 	const fileAlreadyUploaded = (block: BlockContentType | null, key: string) => {
 		if (block === null) return false;
-		return block === null || (block?.[key] as unknown as string) !== "[]";
+		return block === null || block?.[key] !== "[]";
 	};
 	const isValidLang1 =
 		pointAreUploaded(csvContentLang1) ||

@@ -173,8 +173,6 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 		setValue,
 	} = useForm<stepInputsType>({ defaultValues: {} });
 
-	console.log(pointSet);
-
 	const atLeastOneFileLoaded =
 		(!pointSet?.attestationIds &&
 			pointSet?.customPointsArray &&

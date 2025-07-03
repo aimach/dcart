@@ -1,11 +1,11 @@
 // import des bibliothèques
 import type jwt from "jsonwebtoken";
+import rateLimit from "express-rate-limit";
 // import des services
 import { dcartDataSource } from "../dataSource/dataSource";
 import { jwtService } from "../utils/jwt";
 // import des types
 import type { Request, Response, NextFunction } from "express";
-import rateLimit from "express-rate-limit";
 
 // extension de l'interface Request pour inclure la propriété user
 declare global {

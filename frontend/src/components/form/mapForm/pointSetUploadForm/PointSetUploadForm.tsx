@@ -248,14 +248,16 @@ const PointSetUploadForm = ({
 								onChange={handleCustomPointFileUpload}
 							/>
 							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-								{pointSet?.customPointsArray?.length > 0 ? (
+								{pointSet?.customPointsArray &&
+								pointSet?.customPointsArray?.length > 0 ? (
 									<CircleCheck color="green" />
 								) : action === "edit" ? (
 									<CircleX color="grey" />
 								) : null}
 								{CustomSelectedFile
 									? `${fileStatusTranslationObject.loadedFile} : ${CustomSelectedFile?.name}`
-									: pointSet?.customPointsArray?.length > 0
+									: pointSet?.customPointsArray &&
+											pointSet?.customPointsArray?.length > 0
 										? fileStatusTranslationObject.fileAlreadyLoaded
 										: fileStatusTranslationObject.noFile}
 							</p>
