@@ -358,21 +358,24 @@ const SimpleMapForm = () => {
 			{step === 2 && (
 				<>
 					{isAlreadyAPointSet && (
-						<div className={style.headerContainer}>
-							<ButtonComponent
-								type="button"
-								color="brown"
-								textContent={translation[language].button.add}
-								onClickFunction={() =>
-									setIsAlreadyAPointSet(!isAlreadyAPointSet)
-								}
-								icon={<CirclePlus />}
-								isSelected={true}
-							/>
-
+						<>
+							<div className={style.headerContainer}>
+								<ButtonComponent
+									type="button"
+									color="brown"
+									textContent={
+										translation[language].backoffice.mapFormPage.addMapPoints
+									}
+									onClickFunction={() =>
+										setIsAlreadyAPointSet(!isAlreadyAPointSet)
+									}
+									icon={<CirclePlus />}
+									isSelected={true}
+								/>
+							</div>
 							<div className={style.helpContainer}>
 								<a
-									href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9?pvs=4"
+									href="https://sharedocs.huma-num.fr/wl/?id=dJrDrFA2uDDRqqo5PGnmnkNzaNpFWSEW&fmode=open"
 									target="_blank"
 									rel="noreferrer"
 								>
@@ -383,23 +386,37 @@ const SimpleMapForm = () => {
 									}
 								</a>
 							</div>
-						</div>
+						</>
 					)}
-
 					{!isAlreadyAPointSet && (
-						<PointSetUploadForm
-							pointSet={pointSet}
-							setPointSet={setPointSet}
-							handleSubmit={handleSubmitPointSet}
-							parentId={block?.id as string}
-							type="block"
-							action={pointSetFormAction}
-							cancelFunction={() => {
-								setPointSet(null);
-								setIsAlreadyAPointSet(true);
-								setPointSetFormAction("create");
-							}}
-						/>
+						<>
+							<div className={style.helpContainer}>
+								<a
+									href="https://sharedocs.huma-num.fr/wl/?id=dJrDrFA2uDDRqqo5PGnmnkNzaNpFWSEW&fmode=open"
+									target="_blank"
+									rel="noreferrer"
+								>
+									<CircleHelp color="grey" />
+									{
+										translation[language].backoffice.mapFormPage
+											.uploadPointsHelp
+									}
+								</a>
+							</div>
+							<PointSetUploadForm
+								pointSet={pointSet}
+								setPointSet={setPointSet}
+								handleSubmit={handleSubmitPointSet}
+								parentId={block?.id as string}
+								type="block"
+								action={pointSetFormAction}
+								cancelFunction={() => {
+									setPointSet(null);
+									setIsAlreadyAPointSet(true);
+									setPointSetFormAction("create");
+								}}
+							/>
+						</>
 					)}
 					{block?.attestations && (
 						<>

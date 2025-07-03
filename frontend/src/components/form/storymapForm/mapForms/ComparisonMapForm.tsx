@@ -384,7 +384,7 @@ const ComparisonMapForm = () => {
 					</div>
 					<div className={style.helpContainer}>
 						<a
-							href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9"
+							href="https://sharedocs.huma-num.fr/wl/?id=dJrDrFA2uDDRqqo5PGnmnkNzaNpFWSEW&fmode=open"
 							target="_blank"
 							rel="noreferrer"
 						>

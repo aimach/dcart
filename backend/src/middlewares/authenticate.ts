@@ -1,5 +1,6 @@
 // import des bibliothèques
 import type jwt from "jsonwebtoken";
+import rateLimit from "express-rate-limit";
 // import des services
 import { dcartDataSource } from "../dataSource/dataSource";
 import { jwtService } from "../utils/jwt";
@@ -76,3 +77,11 @@ export const authenticateAdmin = (
 		res.status(401).json({ message: "Token invalide ou expiré" });
 	}
 };
+
+export const loginLimiter = rateLimit({
+	windowMs: 15 * 60 * 1000, // 15 minutes
+	max: 5, // limite chaque IP à 5 requêtes par fenêtre
+	message: "Trop de tentatives de connexion. Veuillez réessayer plus tard.",
+	standardHeaders: true, // Retourne les informations de limite dans les en-têtes `RateLimit-*`
+	legacyHeaders: false, // Désactive les en-têtes `X-RateLimit-*`
+});

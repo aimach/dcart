@@ -178,8 +178,8 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 			pointSet?.customPointsArray &&
 			pointSet?.customPointsArray?.length > 0) ||
 		(pointSet?.attestationIds &&
-			pointSet?.customPointsArray &&
-			pointSet?.customPointsArray?.length === 0) ||
+			(!pointSet?.customPointsArray ||
+				pointSet.customPointsArray.length === 0)) ||
 		(pointSet?.attestationIds &&
 			pointSet?.customPointsArray &&
 			pointSet?.customPointsArray.length > 0);
@@ -395,7 +395,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 				})}
 				<div className={style.helpContainer}>
 					<a
-						href="https://regular-twilight-01d.notion.site/Pr-parer-le-CSV-importer-1bd4457ff831806f9291d5a75cfbcbb9"
+						href="https://sharedocs.huma-num.fr/wl/?id=dJrDrFA2uDDRqqo5PGnmnkNzaNpFWSEW&fmode=open"
 						target="_blank"
 						rel="noreferrer"
 					>
@@ -580,7 +580,8 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 						color="brown"
 						textContent={
 							stepAction === "create"
-								? translation[language].backoffice.storymapFormPage.form.addStep
+								? translation[language].backoffice.storymapFormPage.form
+										.addTheStep
 								: translation[language].backoffice.storymapFormPage.form
 										.modifyStep
 						}

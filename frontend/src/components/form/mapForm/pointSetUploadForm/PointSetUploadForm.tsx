@@ -248,14 +248,16 @@ const PointSetUploadForm = ({
 								onChange={handleCustomPointFileUpload}
 							/>
 							<p style={{ display: "flex", alignItems: "center", gap: "5px" }}>
-								{pointSet?.customPointsArray?.length > 0 ? (
+								{pointSet?.customPointsArray &&
+								pointSet?.customPointsArray?.length > 0 ? (
 									<CircleCheck color="green" />
 								) : action === "edit" ? (
 									<CircleX color="grey" />
 								) : null}
 								{CustomSelectedFile
 									? `${fileStatusTranslationObject.loadedFile} : ${CustomSelectedFile?.name}`
-									: pointSet?.customPointsArray?.length > 0
+									: pointSet?.customPointsArray &&
+											pointSet?.customPointsArray?.length > 0
 										? fileStatusTranslationObject.fileAlreadyLoaded
 										: fileStatusTranslationObject.noFile}
 							</p>
@@ -339,26 +341,28 @@ const PointSetUploadForm = ({
 						/>
 					</div>
 				</div>
-				<ButtonComponent
-					type="submit"
-					color="brown"
-					textContent={
-						translation[language].button[action === "create" ? "add" : "edit"]
-					}
-				/>
-				{action === "edit" && (
+				<div className={style.buttonContainer}>
 					<ButtonComponent
-						type="button"
-						color="red"
-						textContent={translation[language].button.cancel}
-						onClickFunction={() => {
-							cancelFunction();
-							setDBSelectedFile(null);
-							setCustomDBSelectedFile(null);
-							setPointSet(null);
-						}}
+						type="submit"
+						color="brown"
+						textContent={
+							translation[language].button[action === "create" ? "add" : "edit"]
+						}
 					/>
-				)}
+					{
+						<ButtonComponent
+							type="button"
+							color="red"
+							textContent={translation[language].button.cancel}
+							onClickFunction={() => {
+								cancelFunction();
+								setDBSelectedFile(null);
+								setCustomDBSelectedFile(null);
+								setPointSet(null);
+							}}
+						/>
+					}
+				</div>
 			</form>
 		)
 	);

@@ -7,6 +7,7 @@ import { validateLoginBody, validatePassword } from "../utils/validator/auth";
 import {
 	authenticateAdmin,
 	authenticateUser,
+	loginLimiter,
 } from "../middlewares/authenticate";
 
 export const authRoutes = express.Router();
@@ -15,7 +16,12 @@ export const authRoutes = express.Router();
 authRoutes.post("/register", dcartControllers.register);
 
 // connexion
-authRoutes.post("/login", validateLoginBody, dcartControllers.login);
+authRoutes.post(
+	"/login",
+	loginLimiter,
+	validateLoginBody,
+	dcartControllers.login,
+);
 
 // déconnexion de l'utilisateur
 authRoutes.get("/logout", dcartControllers.logout);
