@@ -11,6 +11,15 @@ type NavList = {
 
 type OptionType = { value: number | string; label: string };
 
+type TagWithItemsAndPagination = {
+	items: TagWithItemsType[];
+	pagination: {
+		page: number;
+		limit: number;
+		hasMore: boolean;
+	};
+};
+
 type TagWithItemsType = {
 	id: string;
 	name_fr: string;
@@ -41,4 +50,9 @@ type TagWithItemsType = {
 	}[];
 };
 
-export type { NavList, OptionType, TagWithItemsType };
+export type {
+	NavList,
+	OptionType,
+	TagWithItemsType,
+	TagWithItemsAndPagination,
+};

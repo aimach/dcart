@@ -12,7 +12,11 @@ import { getTranslations } from "./utils/api/translationAPI";
 // import des custom hooks
 import { useTranslation } from "./utils/hooks/useTranslation";
 // import des types
-import type { OptionType, TagWithItemsType } from "./utils/types/commonTypes";
+import type {
+	OptionType,
+	TagWithItemsAndPagination,
+	TagWithItemsType,
+} from "./utils/types/commonTypes";
 import type { MultiValue } from "react-select";
 // import du style
 import "./App.scss";
@@ -49,15 +53,30 @@ function HomePage() {
 	const [selectedTags, setSelectedTags] = useState<MultiValue<OptionType>>([]);
 	const [searchText, setSearchText] = useState<string>("");
 
+	const [paginationObject, setPaginationObject] = useState<{
+		page: number;
+		limit: number;
+		hasMore: boolean;
+	}>({
+		page: 1,
+		limit: 2,
+		hasMore: true,
+	});
+
 	const fetchAllTagsWithMapsAndStorymaps = async (
 		itemTypes: CheckboxType,
 		searchText = "",
 		tagArray = [] as MultiValue<OptionType>,
 	) => {
-		const fetchedTags: TagWithItemsType[] =
-			await getAllTagsWithMapsAndStorymaps(itemTypes, searchText, tagArray);
+		const { items, pagination }: TagWithItemsAndPagination =
+			await getAllTagsWithMapsAndStorymaps(
+				itemTypes,
+				searchText,
+				tagArray,
+				paginationObject,
+			);
 
-		const sortedTags = fetchedTags.sort((a, b) => {
+		const sortedTags = items.sort((a, b) => {
 			const mapsNbA = a.maps ? a.maps.length : 0;
 			const mapsNbB = b.maps ? b.maps.length : 0;
 			const storymapsNbA = a.storymaps ? a.storymaps.length : 0;
@@ -65,6 +84,8 @@ function HomePage() {
 			return mapsNbB + storymapsNbB - (mapsNbA + storymapsNbA);
 		});
 		setAllTagsWithItems(sortedTags);
+
+		setPaginationObject(pagination);
 	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: inifinite loop
@@ -74,13 +95,15 @@ function HomePage() {
 
 	useEffect(() => {
 		const fetchAllTags = async () => {
-			const allTags: TagWithItemsType[] = await getAllTagsWithMapsAndStorymaps(
-				itemTypes,
-				"",
-				[],
-			);
-			if (allTags.length > 0) {
-				const options = allTags
+			const { items, pagination }: TagWithItemsAndPagination =
+				await getAllTagsWithMapsAndStorymaps(
+					itemTypes,
+					"",
+					[],
+					paginationObject,
+				);
+			if (items.length > 0) {
+				const options = items
 					.filter(
 						(tag) => tag.maps?.length !== 0 || tag.storymaps?.length !== 0,
 					)
@@ -89,6 +112,8 @@ function HomePage() {
 						label: tag[`name_${language}`],
 					}));
 				setAllTagsOptions(options);
+
+				setPaginationObject(pagination);
 			}
 		};
 		fetchAllTags();

@@ -334,6 +334,11 @@ const getAllTagsWithMapsAndStorymaps = async (
 	},
 	searchText: string,
 	TagArray: MultiValue<OptionType>,
+	pagination: {
+		page: number;
+		limit: number;
+		hasMore: boolean;
+	},
 ) => {
 	try {
 		let filter = `?map=${itemFilter.map}&storymap=${itemFilter.storymap}`;
@@ -343,6 +348,9 @@ const getAllTagsWithMapsAndStorymaps = async (
 		if (TagArray.length > 0) {
 			const tags = TagArray.map((tag) => tag.value).join(",");
 			filter += `&tags=${tags}`;
+		}
+		if (pagination.page && pagination.limit) {
+			filter += `&page=${pagination.page}&limit=${pagination.limit}`;
 		}
 		const response = await apiClient.get(`/dcart/tags/items${filter}`);
 		return response.data;
