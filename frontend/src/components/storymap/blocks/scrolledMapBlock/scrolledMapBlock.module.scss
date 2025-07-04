@@ -71,10 +71,10 @@
     margin: 0 v.$space-xl;
     margin-bottom: v.$space-xxxl;
     padding: v.$space-m;
-    background-color: v.$color-grullo-light;
+    background-color: $background-color-soft;
     border-radius: v.$border-radius-base;
-
     color: v.$color-black-chocolate;
+    @include m.shadow();
 
     >h4 {
         margin-bottom: v.$space-s;
