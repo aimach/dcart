@@ -10,6 +10,13 @@ import LoaderComponent from "../../common/loader/LoaderComponent";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import {
+	getArrow,
+	handleGetMyItemsInManagementTable,
+	handleResetInManagementTable,
+	handleSearchInManagementTable,
+	handleSort,
+} from "./managementContainerUtils";
+import {
 	getAllMapsInfos,
 	getAllStorymapsInfos,
 } from "../../../utils/api/builtMap/getRequests";
@@ -26,6 +33,11 @@ type ManagementContainerProps = {
 	type: string;
 };
 
+export type SortConfigType = {
+	key: string | null;
+	direction: "asc" | "desc";
+};
+
 const ManagementContainer = ({ type }: ManagementContainerProps) => {
 	const navigate = useNavigate();
 
@@ -35,12 +47,18 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 	const { reload } = useModalStore();
 	const { resetMapInfos } = useMapFormStore();
 
-	// état pour stocker les informations des cartes
+	const { register, handleSubmit, resetField, watch } = useForm<{
+		searchText: string;
+	}>();
+
 	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
 	const [allStorymapsInfos, setAllStorymapsInfos] = useState<MapType[]>([]);
+	const [isMyItems, setIsMyItems] = useState<boolean>(false);
 	const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-	// chargement des informations des cartes au montage du composant
+	const [sortConfig, setSortConfig] = useState<SortConfigType>({
+		key: null,
+		direction: "asc",
+	});
 
 	// fonction pour charger les informations des cartes
 	const fetchAllMapsInfos = useCallback(
@@ -51,6 +69,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 		},
 		[],
 	);
+	// fonction pour charger les informations des storymaps
 	const fetchAllStorymapsInfos = useCallback(
 		async (searchText: string, myItems: boolean) => {
 			const storymaps = await getAllStorymapsInfos(false, searchText, myItems);
@@ -69,39 +88,17 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 		}
 	}, [type, reload, fetchAllMapsInfos, fetchAllStorymapsInfos]);
 
-	const { register, handleSubmit, resetField, watch } = useForm<{
-		searchText: string;
-	}>();
-
-	const handleSearch = (data: { searchText: string }) => {
+	const handleSortFunction = (type: string, key: string) => {
 		if (type === "map") {
-			fetchAllMapsInfos(data.searchText, isMyItems);
-		}
-		if (type === "storymap") {
-			fetchAllStorymapsInfos(data.searchText, isMyItems);
-		}
-	};
-
-	const handleReset = () => {
-		if (type === "map") {
-			fetchAllMapsInfos("", isMyItems);
-		}
-		if (type === "storymap") {
-			fetchAllStorymapsInfos("", isMyItems);
-		}
-		resetField("searchText");
-	};
-
-	const [isMyItems, setIsMyItems] = useState<boolean>(false);
-	const handleGetMyItems = () => {
-		const newIsMyItems = !isMyItems;
-		setIsMyItems(newIsMyItems);
-		const searchText = watch("searchText") || "";
-		if (type === "map") {
-			fetchAllMapsInfos(searchText, newIsMyItems);
-		}
-		if (type === "storymap") {
-			fetchAllStorymapsInfos(searchText, newIsMyItems);
+			handleSort(key, allMapsInfos, setAllMapsInfos, sortConfig, setSortConfig);
+		} else if (type === "storymap") {
+			handleSort(
+				key,
+				allStorymapsInfos,
+				setAllStorymapsInfos,
+				sortConfig,
+				setSortConfig,
+			);
 		}
 	};
 
@@ -130,9 +127,28 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 									? translation[language].button.allCreations
 									: translation[language].button.myCreations
 							}
-							onClickFunction={handleGetMyItems}
+							onClickFunction={() =>
+								handleGetMyItemsInManagementTable(
+									type,
+									isMyItems,
+									setIsMyItems,
+									watch,
+									fetchAllMapsInfos,
+									fetchAllStorymapsInfos,
+								)
+							}
 						/>
-						<form onSubmit={handleSubmit(handleSearch)}>
+						<form
+							onSubmit={handleSubmit((data) =>
+								handleSearchInManagementTable(
+									data,
+									type,
+									isMyItems,
+									fetchAllMapsInfos,
+									fetchAllStorymapsInfos,
+								),
+							)}
+						>
 							<input
 								type="text"
 								{...register("searchText")}
@@ -149,7 +165,15 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 								type="button"
 								color="brown"
 								textContent=""
-								onClickFunction={handleReset}
+								onClickFunction={() =>
+									handleResetInManagementTable(
+										type,
+										isMyItems,
+										fetchAllMapsInfos,
+										fetchAllStorymapsInfos,
+										resetField,
+									)
+								}
 								icon={<ListRestart />}
 							/>
 						)}
@@ -167,26 +191,95 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 									<th scope="col">
 										{translation[language].backoffice.managementTable.image}
 									</th>
-									<th scope="col">
-										{translation[language].backoffice.managementTable.name}
-									</th>
-									<th scope="col">
-										{translation[language].backoffice.managementTable.status}
-									</th>
-									<th scope="col">
-										{translation[language].backoffice.managementTable.createdOn}
-									</th>
-									<th scope="col">
-										{translation[language].backoffice.managementTable.createdBy}
-									</th>
-									<th scope="col">
-										{translation[language].backoffice.managementTable.updatedOn}
-									</th>
-									<th scope="col">
-										{
-											translation[language].backoffice.managementTable
-												.lastUploadBy
+									<th
+										scope="col"
+										onClick={() =>
+											handleSortFunction(
+												type,
+												type === "map" ? "title_fr" : "title_lang1",
+											)
 										}
+										onKeyUp={() =>
+											handleSortFunction(
+												type,
+												type === "map" ? "title_fr" : "title_lang1",
+											)
+										}
+									>
+										<div className={style.labelWithIcon}>
+											{translation[language].backoffice.managementTable.name}
+											{getArrow(
+												type === "map" ? "title_fr" : "title_lang1",
+												sortConfig,
+											)}
+										</div>
+									</th>
+
+									<th
+										scope="col"
+										onClick={() => handleSortFunction(type, "isActive")}
+										onKeyUp={() => handleSortFunction(type, "isActive")}
+									>
+										<div className={style.labelWithIcon}>
+											{translation[language].backoffice.managementTable.status}
+											{getArrow("isActive", sortConfig)}
+										</div>
+									</th>
+									<th
+										scope="col"
+										onClick={() => handleSortFunction(type, "createdAt")}
+										onKeyUp={() => handleSortFunction(type, "createdAt")}
+									>
+										<div className={style.labelWithIcon}>
+											{
+												translation[language].backoffice.managementTable
+													.createdOn
+											}
+											{getArrow("createdAt", sortConfig)}
+										</div>
+									</th>
+									<th
+										scope="col"
+										onClick={() => handleSortFunction(type, "creator.username")}
+										onKeyUp={() => handleSortFunction(type, "creator.username")}
+									>
+										<div className={style.labelWithIcon}>
+											{
+												translation[language].backoffice.managementTable
+													.createdBy
+											}
+											{getArrow("creator.username", sortConfig)}
+										</div>
+									</th>
+									<th
+										scope="col"
+										onClick={() => handleSortFunction(type, "updatedAt")}
+										onKeyUp={() => handleSortFunction(type, "updatedAt")}
+									>
+										<div className={style.labelWithIcon}>
+											{
+												translation[language].backoffice.managementTable
+													.updatedOn
+											}
+											{getArrow("updatedAt", sortConfig)}
+										</div>
+									</th>
+									<th
+										scope="col"
+										onClick={() =>
+											handleSortFunction(type, "modifier.username")
+										}
+										onKeyUp={() =>
+											handleSortFunction(type, "modifier.username")
+										}
+									>
+										<div className={style.labelWithIcon}>
+											{
+												translation[language].backoffice.managementTable
+													.lastUploadBy
+											}
+											{getArrow("modifier.username", sortConfig)}
+										</div>
 									</th>
 									<th scope="col">
 										{translation[language].backoffice.managementTable.links}

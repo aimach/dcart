@@ -63,10 +63,16 @@
         font-size: v.$font-size-l;
 
         >tr>th {
+            height: 50px;
             padding: v.$space-m 0;
+
+            cursor: pointer;
+
+            .labelWithIcon {
+                display: inline-flex;
+                align-items: center;
+                gap: v.$space-xxs;
+            }
         }
-
     }
-
-
 }
