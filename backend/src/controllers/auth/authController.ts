@@ -241,7 +241,6 @@ export const authController = {
 				: `http://${process.env.APP_HOST}:${process.env.FRONTEND_PORT}`;
 
 		const resetLink = `${hostURL}/#/reset-password?token=${resetToken}&email=${encodeURIComponent(email)}`;
-
 		await sendPasswordResetEmail(email, resetLink);
 
 		res.json({ message: "Lien de réinitialisation envoyé" });
