@@ -99,6 +99,7 @@ export const attestationController = {
 					icon: iconToAdd,
 					[mapId ? "map" : "block"]: parentToAddAttestations,
 					color: colorToAdd,
+					lastActivity: new Date(),
 				});
 
 			if (customPointsArray && customPointsArray.length > 0) {
@@ -189,6 +190,7 @@ export const attestationController = {
 			attestationListToUpdate.name_fr = req.body.name_fr;
 			attestationListToUpdate.name_en = req.body.name_en;
 			attestationListToUpdate.attestationIds = req.body.attestationIds;
+			attestationListToUpdate.lastActivity = new Date();
 
 			const updatedAttestation = await dcartDataSource
 				.getRepository(Attestation)
