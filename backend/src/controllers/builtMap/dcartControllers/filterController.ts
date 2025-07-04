@@ -7,6 +7,7 @@ import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
+import { User } from "../../../entities";
 
 export const filterController = {
 	// récupère tous les filtres
@@ -79,6 +80,17 @@ export const filterController = {
 				}),
 			);
 
+			if (mapId) {
+				const user = await dcartDataSource
+					.getRepository(User)
+					.findOneBy({ id: req.user?.userId || "" });
+				// mise à jour de la date de modification de la carte
+				await dcartDataSource.getRepository(MapContent).update(mapId, {
+					updatedAt: new Date(),
+					modifier: user || null,
+				});
+			}
+
 			res.status(201).send({ mapId });
 		} catch (error) {
 			handleError(res, error as Error);
@@ -142,6 +154,17 @@ export const filterController = {
 			await dcartDataSource
 				.getRepository(FilterMapContent)
 				.save(newFilterMapContent);
+
+			if (mapId) {
+				const user = await dcartDataSource
+					.getRepository(User)
+					.findOneBy({ id: req.user?.userId || "" });
+				// mise à jour de la date de modification de la carte
+				await dcartDataSource.getRepository(MapContent).update(mapId, {
+					updatedAt: new Date(),
+					modifier: user || null,
+				});
+			}
 
 			res.status(201).json({ message: "Option ajoutée à la carte" });
 		} catch (error) {
@@ -223,6 +246,17 @@ export const filterController = {
 					});
 				}),
 			);
+
+			if (mapId) {
+				const user = await dcartDataSource
+					.getRepository(User)
+					.findOneBy({ id: req.user?.userId || "" });
+				// mise à jour de la date de modification de la carte
+				await dcartDataSource.getRepository(MapContent).update(mapId, {
+					updatedAt: new Date(),
+					modifier: user || null,
+				});
+			}
 
 			res.status(200).json({ message: "Nouveaux filtres ajoutés à la carte" });
 		} catch (error) {

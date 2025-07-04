@@ -4,6 +4,7 @@ import { MapContent } from "../../entities/builtMap/MapContent";
 import { Icon } from "../../entities/common/Icon";
 import { Color } from "../../entities/common/Color";
 import { Block } from "../../entities/storymap/Block";
+import { User } from "../../entities/auth/User";
 import { Point } from "../../entities";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
@@ -116,6 +117,18 @@ export const attestationController = {
 				);
 			}
 
+			if (mapId) {
+				const user = await dcartDataSource
+					.getRepository(User)
+					.findOneBy({ id: req.user?.userId || "" });
+
+				// mise à jour de la date de modification de la carte
+				await dcartDataSource.getRepository(MapContent).update(mapId, {
+					updatedAt: new Date(),
+					modifier: user || null,
+				});
+			}
+
 			res.status(201).json(newAttestation);
 		} catch (error) {
 			handleError(res, error as Error);
@@ -211,6 +224,18 @@ export const attestationController = {
 						return pointRepository.save(newPoint);
 					}),
 				);
+			}
+
+			if (mapId) {
+				const user = await dcartDataSource
+					.getRepository(User)
+					.findOneBy({ id: req.user?.userId || "" });
+
+				// mise à jour de la date de modification de la carte
+				await dcartDataSource.getRepository(MapContent).update(mapId, {
+					updatedAt: new Date(),
+					modifier: user || null,
+				});
 			}
 
 			res.status(200).json("Le jeu d'attestations a bien été modifié");

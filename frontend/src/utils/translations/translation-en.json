@@ -209,7 +209,11 @@
 				"nameLang2": "Name of the set in language 2",
 				"color": "Color",
 				"icon": "Icon",
-				"delete": "Delete"
+				"delete": "Delete",
+				"lastActivity": "Last activity",
+				"downloadCSV": "Download CSV",
+				"downloadBDDCSV": "Download BDD CSV",
+				"downloadCustomCSV": "Download custom CSV"
 			},
 			"pointSetForm": {
 				"addNewPointSet": "Add new point set",

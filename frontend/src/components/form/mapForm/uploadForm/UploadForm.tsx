@@ -220,7 +220,18 @@ const UploadForm = () => {
 											.icon
 									}
 								</th>
-								<th>Charger le CSV</th>
+								<th>
+									{
+										translation[language].backoffice.mapFormPage.pointSetTable
+											.downloadCSV
+									}
+								</th>
+								<th>
+									{
+										translation[language].backoffice.mapFormPage.pointSetTable
+											.lastActivity
+									}
+								</th>
 								<th scope="col" />
 							</tr>
 						</thead>
@@ -253,6 +264,18 @@ const UploadForm = () => {
 												}
 												cursor={"pointer"}
 											/>
+										</td>
+										<td>
+											{pointSet.lastActivity
+												? new Date(pointSet.lastActivity).toLocaleDateString(
+														language,
+														{
+															year: "numeric",
+															month: "long",
+															day: "numeric",
+														},
+													)
+												: null}
 										</td>
 										<td>
 											<Pen

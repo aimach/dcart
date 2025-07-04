@@ -208,6 +208,10 @@ type LanguageObject = {
 				color: string;
 				icon: string;
 				delete: string;
+				lastActivity: string;
+				downloadCSV: string;
+				downloadBDDCSV: string;
+				downloadCustomCSV: string;
 			};
 			pointSetForm: {
 				addNewPointSet: string;
