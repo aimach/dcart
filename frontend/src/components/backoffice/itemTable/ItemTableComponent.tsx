@@ -105,6 +105,7 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 		}
 		setReload(!reload);
 	};
+
 	return (
 		<tr key={itemInfos.id} className={style.itemTableRow}>
 			<td

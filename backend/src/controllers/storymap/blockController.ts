@@ -2,6 +2,7 @@
 import { Block } from "../../entities/storymap/Block";
 import { Storymap } from "../../entities/storymap/Storymap";
 import { Type } from "../../entities/storymap/Type";
+import { User } from "../../entities/auth/User";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
@@ -118,6 +119,16 @@ export const blockController = {
 
 			await dcartDataSource.getRepository(Block).save(newBlock);
 
+			// mise à jour de la date de modification de la storymap
+
+			const user = await dcartDataSource.getRepository(User).findOneBy({
+				id: req.user?.userId || "",
+			});
+			await dcartDataSource.getRepository(Storymap).update(storymapId, {
+				updatedAt: new Date(),
+				modifier: user || null,
+			});
+
 			res.status(201).send(newBlock);
 		} catch (error) {
 			handleError(res, error as Error);
@@ -152,6 +163,9 @@ export const blockController = {
 
 			const blockToUpdate = await dcartDataSource.getRepository(Block).findOne({
 				where: { id: blockId },
+				relations: {
+					storymap: true,
+				},
 			});
 
 			if (!blockToUpdate) {
@@ -191,6 +205,17 @@ export const blockController = {
 					},
 				},
 			});
+
+			const user = await dcartDataSource.getRepository(User).findOneBy({
+				id: req.user?.userId || "",
+			});
+			// mise à jour de la date de modification de la storymap
+			await dcartDataSource
+				.getRepository(Storymap)
+				.update(updatedBlock.storymap.id, {
+					updatedAt: new Date(),
+					modifier: user || null,
+				});
 
 			res.status(200).send(savedBlock);
 		} catch (error) {

@@ -4,6 +4,7 @@ import { MapContent } from "../../entities/builtMap/MapContent";
 import { Icon } from "../../entities/common/Icon";
 import { Color } from "../../entities/common/Color";
 import { Block } from "../../entities/storymap/Block";
+import { User } from "../../entities/auth/User";
 import { Point } from "../../entities";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
@@ -99,6 +100,7 @@ export const attestationController = {
 					icon: iconToAdd,
 					[mapId ? "map" : "block"]: parentToAddAttestations,
 					color: colorToAdd,
+					lastActivity: new Date(),
 				});
 
 			if (customPointsArray && customPointsArray.length > 0) {
@@ -113,6 +115,18 @@ export const attestationController = {
 						return pointRepository.save(newPoint);
 					}),
 				);
+			}
+
+			if (mapId) {
+				const user = await dcartDataSource
+					.getRepository(User)
+					.findOneBy({ id: req.user?.userId || "" });
+
+				// mise à jour de la date de modification de la carte
+				await dcartDataSource.getRepository(MapContent).update(mapId, {
+					updatedAt: new Date(),
+					modifier: user || null,
+				});
 			}
 
 			res.status(201).json(newAttestation);
@@ -189,6 +203,7 @@ export const attestationController = {
 			attestationListToUpdate.name_fr = req.body.name_fr;
 			attestationListToUpdate.name_en = req.body.name_en;
 			attestationListToUpdate.attestationIds = req.body.attestationIds;
+			attestationListToUpdate.lastActivity = new Date();
 
 			const updatedAttestation = await dcartDataSource
 				.getRepository(Attestation)
@@ -209,6 +224,18 @@ export const attestationController = {
 						return pointRepository.save(newPoint);
 					}),
 				);
+			}
+
+			if (mapId) {
+				const user = await dcartDataSource
+					.getRepository(User)
+					.findOneBy({ id: req.user?.userId || "" });
+
+				// mise à jour de la date de modification de la carte
+				await dcartDataSource.getRepository(MapContent).update(mapId, {
+					updatedAt: new Date(),
+					modifier: user || null,
+				});
 			}
 
 			res.status(200).json("Le jeu d'attestations a bien été modifié");

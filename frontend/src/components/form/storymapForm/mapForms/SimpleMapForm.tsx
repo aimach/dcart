@@ -443,8 +443,24 @@ const SimpleMapForm = () => {
 													.pointSetTable.icon
 											}
 										</th>
-										<th>BDD MAP CSV</th>
-										<th>Point personnalisés CSV</th>
+										<th>
+											{
+												translation[language].backoffice.mapFormPage
+													.pointSetTable.downloadBDDCSV
+											}
+										</th>
+										<th>
+											{
+												translation[language].backoffice.mapFormPage
+													.pointSetTable.downloadCustomCSV
+											}
+										</th>
+										<th>
+											{
+												translation[language].backoffice.mapFormPage
+													.pointSetTable.lastActivity
+											}
+										</th>
 										<th scope="col" />
 									</tr>
 								</thead>
@@ -502,6 +518,17 @@ const SimpleMapForm = () => {
 													) : (
 														<FileDown color="#a1afc4" />
 													)}
+												</td>
+												<td>
+													{pointSet.lastActivity
+														? new Date(
+																pointSet.lastActivity,
+															).toLocaleDateString(language, {
+																year: "numeric",
+																month: "long",
+																day: "numeric",
+															})
+														: null}
 												</td>
 												<td>
 													<Pen

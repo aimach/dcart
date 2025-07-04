@@ -219,6 +219,7 @@ type PointSetType = {
 	icon?: MapIconType | string;
 	mapId?: string;
 	blockId?: string;
+	lastActivity?: Date;
 };
 
 type FilterMapContentType = {

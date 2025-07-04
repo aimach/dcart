@@ -209,7 +209,11 @@
 				"nameLang2": "Nom du jeu en langue 2",
 				"color": "Couleur",
 				"icon": "Icône",
-				"delete": "Supprimer"
+				"delete": "Supprimer",
+				"lastActivity": "Dernière modification",
+				"downloadCSV": "Charger le CSV",
+				"downloadBDDCSV": "Charger les points de la BDD",
+				"downloadCustomCSV": "Charger les points personnalisés"
 			},
 			"pointSetForm": {
 				"addNewPointSet": "Ajouter un nouveau jeu de points",

@@ -6,6 +6,7 @@ import {
 	BaseEntity,
 	ManyToOne,
 	OneToMany,
+	UpdateDateColumn,
 } from "typeorm";
 // import des entités
 import { Icon } from "./Icon";
@@ -27,6 +28,9 @@ export class Attestation extends BaseEntity {
 
 	@Column({ type: "text", nullable: false })
 	attestationIds!: string;
+
+	@Column({ type: "timestamp", nullable: true })
+	lastActivity!: Date;
 
 	@ManyToOne(
 		() => Icon,
