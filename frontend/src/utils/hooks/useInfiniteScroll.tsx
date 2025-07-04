@@ -6,7 +6,6 @@ export default function useInfiniteScroll(
 	loading: boolean,
 ) {
 	const observerRef = useRef();
-
 	useEffect(() => {
 		if (loading) return;
 		const observer = new IntersectionObserver(
@@ -20,7 +19,7 @@ export default function useInfiniteScroll(
 		return () => {
 			if (observerRef.current) observer.unobserve(observerRef.current);
 		};
-	}, [callback, hasMore, loading]);
+	}, [hasMore, loading]);
 
 	return observerRef;
 }

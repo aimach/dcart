@@ -10,7 +10,6 @@ import type {
 	TagWithItemsType,
 } from "../types/commonTypes";
 import type { MultiValue } from "react-select";
-import { LanguageObject } from "../types/languageTypes";
 
 const scrollToTagContainer = (
 	tagContainerRef: MutableRefObject<HTMLDivElement | null>,
@@ -21,11 +20,16 @@ const scrollToTagContainer = (
 const fetchAllTagsWithMapsAndStorymaps = async (
 	itemTypes: ItemTypeCheckboxType,
 	paginationObject: PaginationObjectType,
+	allTagsWithItems: TagWithItemsType[],
 	setAllTagsWithItems: (tags: TagWithItemsType[]) => void,
 	setPaginationObject: (pagination: PaginationObjectType) => void,
+	setLoading: (loading: boolean) => void,
+	setAllTagsOptions: (options: OptionType[]) => void,
+	language: "fr" | "en",
 	searchText = "",
 	tagArray = [] as MultiValue<OptionType>,
 ) => {
+	setLoading(true);
 	const { items, pagination }: TagWithItemsAndPagination =
 		await getAllTagsWithMapsAndStorymaps(
 			itemTypes,
@@ -41,8 +45,24 @@ const fetchAllTagsWithMapsAndStorymaps = async (
 		const storymapsNbB = b.storymaps ? b.storymaps.length : 0;
 		return mapsNbB + storymapsNbB - (mapsNbA + storymapsNbA);
 	});
-	setAllTagsWithItems(sortedTags);
-	setPaginationObject(pagination);
+
+	const allItemsWithPrev = [...allTagsWithItems, ...sortedTags];
+	setAllTagsWithItems(allItemsWithPrev);
+
+	const options = allItemsWithPrev
+		.filter((tag) => tag.maps?.length !== 0 || tag.storymaps?.length !== 0)
+		.map((tag) => ({
+			value: tag.slug,
+			label: tag[`name_${language}`],
+		}));
+	setAllTagsOptions(options);
+
+	setPaginationObject({
+		page: paginationObject.page + 1,
+		limit: paginationObject.limit,
+		hasMore: pagination.hasMore,
+	});
+	setLoading(false);
 };
 
 const fetchAllTagsForSelectOption = async (
@@ -94,16 +114,24 @@ const handleFilterInputs = (
 	tagArray: MultiValue<OptionType>,
 	itemTypes: ItemTypeCheckboxType,
 	paginationObject: PaginationObjectType,
+	allTagsWithItems: TagWithItemsType[],
 	setAllTagsWithItems: (tags: TagWithItemsType[]) => void,
+	setAllTagsOptions: (options: OptionType[]) => void,
+	language: "fr" | "en",
 	setPaginationObject: (pagination: PaginationObjectType) => void,
+	setLoading: (loading: boolean) => void,
 ) => {
 	setSearchText(searchText);
 	setSelectedTags(tagArray);
 	fetchAllTagsWithMapsAndStorymaps(
 		itemTypes,
 		paginationObject,
+		allTagsWithItems,
 		setAllTagsWithItems,
 		setPaginationObject,
+		setLoading,
+		setAllTagsOptions,
+		language,
 		searchText,
 		tagArray,
 	);

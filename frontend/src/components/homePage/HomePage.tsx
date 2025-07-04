@@ -8,19 +8,9 @@ import ButtonComponent from "../common/button/ButtonComponent";
 import ItemFilterComponent from "../common/itemFilter/ItemFilterComponent";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
-// import des types
-import type {
-	OptionType,
-	PaginationObjectType,
-	TagWithItemsType,
-} from "../../utils/types/commonTypes";
-import type { MultiValue } from "react-select";
-// import du style
-import "../../App.scss";
-import style from "./HomePage.module.scss";
-// import des icônes
-import { ChevronRight } from "lucide-react";
-import { singleSelectInLineStyle } from "../../styles/inLineStyle";
+import useHomePageTranslations from "../../utils/hooks/useHomepageTranslations";
+import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
+// import des services
 import {
 	fetchAllTagsForSelectOption,
 	fetchAllTagsWithMapsAndStorymaps,
@@ -29,7 +19,21 @@ import {
 	isEmptyResult,
 	scrollToTagContainer,
 } from "../../utils/functions/homePage";
-import useHomePageTranslations from "../../utils/hooks/useHomepageTranslations";
+// import des types
+import type {
+	OptionType,
+	PaginationObjectType,
+	TagWithItemsType,
+} from "../../utils/types/commonTypes";
+import type { MultiValue } from "react-select";
+import type { MutableRefObject } from "react";
+// import du style
+import "../../App.scss";
+import style from "./HomePage.module.scss";
+// import des icônes
+import { ChevronRight } from "lucide-react";
+import { singleSelectInLineStyle } from "../../styles/inLineStyle";
+import { all } from "axios";
 
 type CheckboxType = { map: boolean; storymap: boolean };
 
@@ -58,31 +62,38 @@ function HomePage() {
 	const [paginationObject, setPaginationObject] =
 		useState<PaginationObjectType>({
 			page: 1,
-			limit: 10,
+			limit: 2,
 			hasMore: true,
 		});
+	const [loading, setLoading] = useState(false);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: inifinite loop
-	useEffect(() => {
-		fetchAllTagsWithMapsAndStorymaps(
-			itemTypes,
-			paginationObject,
-			setAllTagsWithItems,
-			setPaginationObject,
-			searchText,
-			selectedTags,
-		);
-	}, [itemTypes]);
+	const bottomRef: MutableRefObject<undefined> = useInfiniteScroll(
+		() =>
+			fetchAllTagsWithMapsAndStorymaps(
+				itemTypes,
+				paginationObject,
+				allTagsWithItems,
+				setAllTagsWithItems,
+				setPaginationObject,
+				setLoading,
+				setAllTagsOptions,
+				language,
+				searchText,
+				selectedTags,
+			),
+		paginationObject.hasMore,
+		loading,
+	);
+
+	console.log(allTagsOptions);
 
 	useEffect(() => {
-		fetchAllTagsForSelectOption(
-			itemTypes,
-			paginationObject,
-			language,
-			setAllTagsOptions,
-			setPaginationObject,
-		);
-	}, [language, itemTypes]);
+		setPaginationObject({
+			page: 1,
+			limit: 2,
+			hasMore: true,
+		});
+	}, []);
 
 	return (
 		<section className={style.mainPage}>
@@ -119,8 +130,12 @@ function HomePage() {
 								newValue,
 								itemTypes,
 								paginationObject,
+								allTagsWithItems,
 								setAllTagsWithItems,
+								setAllTagsOptions,
+								language,
 								setPaginationObject,
+								setLoading,
 							)
 						}
 						placeholder={translation[language].mapPage.aside.searchForTag}
@@ -140,6 +155,7 @@ function HomePage() {
 								paginationObject,
 								setAllTagsWithItems,
 								setPaginationObject,
+								setLoading,
 							)
 						}
 						placeholder={`${translation[language].button.search}...`}
@@ -178,6 +194,8 @@ function HomePage() {
 						})
 					)}
 				</div>
+				<div ref={bottomRef} />
+				{loading && <div>Chargement...</div>}
 			</section>
 		</section>
 	);
