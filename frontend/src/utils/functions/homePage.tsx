@@ -5,7 +5,6 @@ import type { MutableRefObject } from "react";
 import type {
 	ItemTypeCheckboxType,
 	OptionType,
-	PaginationObjectType,
 	TagWithItemsAndPagination,
 	TagWithItemsType,
 } from "../types/commonTypes";
@@ -19,21 +18,12 @@ const scrollToTagContainer = (
 
 const fetchAllTagsWithMapsAndStorymaps = async (
 	itemTypes: ItemTypeCheckboxType,
-	paginationObject: PaginationObjectType,
 	setAllTagsWithItems: (tags: TagWithItemsType[]) => void,
-	setPaginationObject: (pagination: PaginationObjectType) => void,
-	setLoading: (loading: boolean) => void,
 	searchText = "",
 	tagArray = [] as MultiValue<OptionType>,
 ) => {
-	setLoading(true);
-	const { items, pagination }: TagWithItemsAndPagination =
-		await getAllTagsWithMapsAndStorymaps(
-			itemTypes,
-			searchText,
-			tagArray,
-			paginationObject,
-		);
+	const { items }: TagWithItemsAndPagination =
+		await getAllTagsWithMapsAndStorymaps(itemTypes, searchText, tagArray);
 
 	const sortedTags = items.sort((a, b) => {
 		const mapsNbA = a.maps ? a.maps.length : 0;
@@ -42,13 +32,7 @@ const fetchAllTagsWithMapsAndStorymaps = async (
 		const storymapsNbB = b.storymaps ? b.storymaps.length : 0;
 		return mapsNbB + storymapsNbB - (mapsNbA + storymapsNbA);
 	});
-	setAllTagsWithItems((prev) => [...prev, ...sortedTags]);
-	setPaginationObject({
-		page: paginationObject.page + 1,
-		limit: paginationObject.limit,
-		hasMore: pagination.hasMore,
-	});
-	setLoading(false);
+	setAllTagsWithItems(sortedTags);
 };
 
 const fetchAllTagsForSelectOption = async (
@@ -57,11 +41,7 @@ const fetchAllTagsForSelectOption = async (
 	setAllTagsOptions: (options: OptionType[]) => void,
 ) => {
 	const { items }: TagWithItemsAndPagination =
-		await getAllTagsWithMapsAndStorymaps(itemTypes, "", [], {
-			page: 1,
-			limit: 1000, // Fetch all tags for select options
-			hasMore: false, // No pagination needed for select options
-		});
+		await getAllTagsWithMapsAndStorymaps(itemTypes, "", []);
 	if (items.length > 0) {
 		const options = items
 			.filter((tag) => tag.maps?.length !== 0 || tag.storymaps?.length !== 0)
@@ -100,19 +80,13 @@ const handleFilterInputs = (
 	setSelectedTags: (tags: MultiValue<OptionType>) => void,
 	tagArray: MultiValue<OptionType>,
 	itemTypes: ItemTypeCheckboxType,
-	paginationObject: PaginationObjectType,
 	setAllTagsWithItems: (tags: TagWithItemsType[]) => void,
-	setPaginationObject: (pagination: PaginationObjectType) => void,
-	setLoading: (loading: boolean) => void,
 ) => {
 	setSearchText(searchText);
 	setSelectedTags(tagArray);
 	fetchAllTagsWithMapsAndStorymaps(
 		itemTypes,
-		paginationObject,
 		setAllTagsWithItems,
-		setPaginationObject,
-		setLoading,
 		searchText,
 		tagArray,
 	);

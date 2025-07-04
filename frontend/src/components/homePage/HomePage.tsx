@@ -9,7 +9,6 @@ import ItemFilterComponent from "../common/itemFilter/ItemFilterComponent";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 import useHomePageTranslations from "../../utils/hooks/useHomepageTranslations";
-import useInfiniteScroll from "../../utils/hooks/useInfiniteScroll";
 // import des services
 import {
 	fetchAllTagsForSelectOption,
@@ -22,11 +21,9 @@ import {
 // import des types
 import type {
 	OptionType,
-	PaginationObjectType,
 	TagWithItemsType,
 } from "../../utils/types/commonTypes";
 import type { MultiValue } from "react-select";
-import type { MutableRefObject } from "react";
 // import du style
 import "../../App.scss";
 import style from "./HomePage.module.scss";
@@ -58,41 +55,19 @@ function HomePage() {
 	const [allTagsOptions, setAllTagsOptions] = useState<OptionType[]>([]);
 	const [selectedTags, setSelectedTags] = useState<MultiValue<OptionType>>([]);
 	const [searchText, setSearchText] = useState<string>("");
-	const [paginationObject, setPaginationObject] =
-		useState<PaginationObjectType>({
-			page: 1,
-			limit: 2,
-			hasMore: true,
-		});
-	const [loading, setLoading] = useState(false);
-
-	const bottomRef: MutableRefObject<undefined> = useInfiniteScroll(
-		() =>
-			fetchAllTagsWithMapsAndStorymaps(
-				itemTypes,
-				paginationObject,
-				setAllTagsWithItems,
-				setPaginationObject,
-				setLoading,
-				searchText,
-				selectedTags,
-			),
-		paginationObject.hasMore,
-		loading,
-	);
 
 	useEffect(() => {
-		setPaginationObject({
-			page: 1,
-			limit: 2,
-			hasMore: true,
-		});
-	}, []);
+		fetchAllTagsWithMapsAndStorymaps(
+			itemTypes,
+			setAllTagsWithItems,
+			searchText,
+			selectedTags,
+		);
+	}, [itemTypes, searchText, selectedTags]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: inifinite loop
 	useEffect(() => {
 		fetchAllTagsForSelectOption(itemTypes, language, setAllTagsOptions);
-	}, [language, itemTypes, loading]);
+	}, [language, itemTypes]);
 
 	return (
 		<section className={style.mainPage}>
@@ -128,10 +103,7 @@ function HomePage() {
 								setSelectedTags,
 								newValue,
 								itemTypes,
-								paginationObject,
 								setAllTagsWithItems,
-								setPaginationObject,
-								setLoading,
 							)
 						}
 						placeholder={translation[language].mapPage.aside.searchForTag}
@@ -148,10 +120,7 @@ function HomePage() {
 								setSelectedTags,
 								selectedTags,
 								itemTypes,
-								paginationObject,
 								setAllTagsWithItems,
-								setPaginationObject,
-								setLoading,
 							)
 						}
 						placeholder={`${translation[language].button.search}...`}
@@ -190,8 +159,6 @@ function HomePage() {
 						})
 					)}
 				</div>
-				<div ref={bottomRef} />
-				{loading && <div>Chargement...</div>}
 			</section>
 		</section>
 	);
