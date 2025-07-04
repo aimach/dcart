@@ -13,6 +13,8 @@ export const tagController = {
 		try {
 			const { tagSlug } = req.params;
 			const { map, storymap, searchText, tags } = req.query;
+			const page = Number.parseInt(req.query.page as string, 10) || null;
+			const limit = Number.parseInt(req.query.limit as string, 10) || null;
 
 			let results = null;
 			if (tagSlug === "all") {
@@ -50,8 +52,8 @@ export const tagController = {
 					.leftJoinAndSelect("tag.maps", "map", condition, {
 						searchText: `%${searchText}%`,
 					})
-					.leftJoinAndSelect("map.tags", "mapTag")
-					.orderBy("GREATEST(map.createdAt, map.updatedAt)", "DESC");
+					.leftJoinAndSelect("map.tags", "mapTag");
+				// .orderBy("GREATEST(map.createdAt, map.updatedAt)", "DESC");
 				selectArray.push(
 					"map.id",
 					"map.title_fr",
@@ -74,8 +76,8 @@ export const tagController = {
 					.leftJoinAndSelect("tag.storymaps", "storymap", condition, {
 						searchText: `%${searchText}%`,
 					})
-					.leftJoinAndSelect("storymap.tags", "storymapTag")
-					.orderBy("GREATEST(storymap.createdAt, storymap.updatedAt)", "DESC");
+					.leftJoinAndSelect("storymap.tags", "storymapTag");
+				// .orderBy("GREATEST(storymap.createdAt, storymap.updatedAt)", "DESC");
 				selectArray.push(
 					"storymap.id",
 					"storymap.title_lang1",
@@ -100,9 +102,30 @@ export const tagController = {
 					tagQuery.andWhere("tag.slug IN (:...tags)", { tags: tagsArray });
 				}
 
+				if (page && limit) {
+					const offset = (page - 1) * limit;
+					const [items, total] = await Promise.all([
+						tagQuery.clone().skip(offset).take(limit).getMany(),
+						tagQuery.clone().getCount(),
+					]);
+
+					const hasMore = page * limit < total;
+
+					res.status(200).json({
+						items,
+						pagination: {
+							page,
+							limit,
+							total,
+							hasMore,
+						},
+					});
+					return;
+				}
+
 				results = await tagQuery.getMany();
 
-				res.status(200).json(results);
+				res.status(200).json({ items: results });
 				return;
 			}
 

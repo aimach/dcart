@@ -3,6 +3,7 @@ import { createRoot } from "react-dom/client";
 import { HashRouter, Routes, Route } from "react-router";
 import { ToastContainer } from "react-toastify";
 // import des composants
+import App from "./App.tsx";
 import NavigationLayout from "./layouts/NavigationLayout.tsx";
 import ProtectedLayout from "./layouts/ProtectedLayout.tsx";
 import AuthentificationPage from "./pages/BackOffice/AuthentificationPage/AuthentificationPage.tsx";
@@ -12,7 +13,6 @@ import BackofficeMapPage from "./pages/BackOffice/BOMapPage/BackofficeMapPage.ts
 import BackofficeStorymapPage from "./pages/BackOffice/BOStorymapPage/BackofficeStorymapPage.tsx";
 import BackofficeTranslationPage from "./pages/BackOffice/BOTranslationPage/BackofficeTranslationPage.tsx";
 import BOMapFormPage from "./pages/BackOffice/BOMapFormPage.tsx/BOMapFormPage.tsx";
-import HomePage from "./HomePage.tsx";
 import TagPage from "./pages/TagPage/TagPage.tsx";
 import StorymapIntroPage from "./pages/BackOffice/BOStorymapPage/storymapIntroPage/StorymapIntroPage.tsx";
 import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage.tsx";
@@ -46,7 +46,7 @@ if (rootElement) {
 							<TagOptionsProvider>
 								<Routes>
 									<Route element={<NavigationLayout />}>
-										<Route index element={<HomePage />} />
+										<Route index element={<App />} />
 										<Route path="tag/:tagSlug">
 											<Route index element={<TagPage />} />
 										</Route>

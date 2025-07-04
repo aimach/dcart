@@ -1,18 +1,24 @@
 // import des custom hooks
 import { useTranslation } from "../../../utils/hooks/useTranslation";
+// import des types
+import type { ItemTypeCheckboxType } from "../../../utils/types/commonTypes";
 // import du style
 import style from "./itemFilterComponent.module.scss";
 
 type ItemFilterComponentProps = {
-	itemTypes: { map: boolean; storymap: boolean };
+	itemTypes: ItemTypeCheckboxType;
+	setItemTypes: (itemTypeprevs: ItemTypeCheckboxType) => void;
 	handleCheckboxChange: (
 		e: React.ChangeEvent<HTMLInputElement>,
 		type: "map" | "storymap",
+		itemTypes: ItemTypeCheckboxType,
+		setItemTypes: (itemTypeprevs: ItemTypeCheckboxType) => void,
 	) => void;
 };
 
 const ItemFilterComponent = ({
 	itemTypes,
+	setItemTypes,
 	handleCheckboxChange,
 }: ItemFilterComponentProps) => {
 	const { translation, language } = useTranslation();
@@ -24,7 +30,9 @@ const ItemFilterComponent = ({
 					name="map"
 					id="map"
 					checked={itemTypes.map}
-					onChange={(e) => handleCheckboxChange(e, "map")}
+					onChange={(e) =>
+						handleCheckboxChange(e, "map", itemTypes, setItemTypes)
+					}
 				/>
 				<label htmlFor="map">{translation[language].common.map}s</label>
 			</div>
@@ -34,7 +42,9 @@ const ItemFilterComponent = ({
 					name="storymap"
 					id="storymap"
 					checked={itemTypes.storymap}
-					onChange={(e) => handleCheckboxChange(e, "storymap")}
+					onChange={(e) =>
+						handleCheckboxChange(e, "storymap", itemTypes, setItemTypes)
+					}
 				/>
 				<label htmlFor="storymap">
 					{translation[language].common.storymap}s
