@@ -20,12 +20,9 @@ const scrollToTagContainer = (
 const fetchAllTagsWithMapsAndStorymaps = async (
 	itemTypes: ItemTypeCheckboxType,
 	paginationObject: PaginationObjectType,
-	allTagsWithItems: TagWithItemsType[],
 	setAllTagsWithItems: (tags: TagWithItemsType[]) => void,
 	setPaginationObject: (pagination: PaginationObjectType) => void,
 	setLoading: (loading: boolean) => void,
-	setAllTagsOptions: (options: OptionType[]) => void,
-	language: "fr" | "en",
 	searchText = "",
 	tagArray = [] as MultiValue<OptionType>,
 ) => {
@@ -45,18 +42,7 @@ const fetchAllTagsWithMapsAndStorymaps = async (
 		const storymapsNbB = b.storymaps ? b.storymaps.length : 0;
 		return mapsNbB + storymapsNbB - (mapsNbA + storymapsNbA);
 	});
-
-	const allItemsWithPrev = [...allTagsWithItems, ...sortedTags];
-	setAllTagsWithItems(allItemsWithPrev);
-
-	const options = allItemsWithPrev
-		.filter((tag) => tag.maps?.length !== 0 || tag.storymaps?.length !== 0)
-		.map((tag) => ({
-			value: tag.slug,
-			label: tag[`name_${language}`],
-		}));
-	setAllTagsOptions(options);
-
+	setAllTagsWithItems((prev) => [...prev, ...sortedTags]);
 	setPaginationObject({
 		page: paginationObject.page + 1,
 		limit: paginationObject.limit,
@@ -67,13 +53,15 @@ const fetchAllTagsWithMapsAndStorymaps = async (
 
 const fetchAllTagsForSelectOption = async (
 	itemTypes: ItemTypeCheckboxType,
-	paginationObject: PaginationObjectType,
 	language: "fr" | "en",
 	setAllTagsOptions: (options: OptionType[]) => void,
-	setPaginationObject: (pagination: PaginationObjectType) => void,
 ) => {
-	const { items, pagination }: TagWithItemsAndPagination =
-		await getAllTagsWithMapsAndStorymaps(itemTypes, "", [], paginationObject);
+	const { items }: TagWithItemsAndPagination =
+		await getAllTagsWithMapsAndStorymaps(itemTypes, "", [], {
+			page: 1,
+			limit: 1000, // Fetch all tags for select options
+			hasMore: false, // No pagination needed for select options
+		});
 	if (items.length > 0) {
 		const options = items
 			.filter((tag) => tag.maps?.length !== 0 || tag.storymaps?.length !== 0)
@@ -82,7 +70,6 @@ const fetchAllTagsForSelectOption = async (
 				label: tag[`name_${language}`],
 			}));
 		setAllTagsOptions(options);
-		setPaginationObject(pagination);
 	}
 };
 
@@ -114,10 +101,7 @@ const handleFilterInputs = (
 	tagArray: MultiValue<OptionType>,
 	itemTypes: ItemTypeCheckboxType,
 	paginationObject: PaginationObjectType,
-	allTagsWithItems: TagWithItemsType[],
 	setAllTagsWithItems: (tags: TagWithItemsType[]) => void,
-	setAllTagsOptions: (options: OptionType[]) => void,
-	language: "fr" | "en",
 	setPaginationObject: (pagination: PaginationObjectType) => void,
 	setLoading: (loading: boolean) => void,
 ) => {
@@ -126,12 +110,9 @@ const handleFilterInputs = (
 	fetchAllTagsWithMapsAndStorymaps(
 		itemTypes,
 		paginationObject,
-		allTagsWithItems,
 		setAllTagsWithItems,
 		setPaginationObject,
 		setLoading,
-		setAllTagsOptions,
-		language,
 		searchText,
 		tagArray,
 	);

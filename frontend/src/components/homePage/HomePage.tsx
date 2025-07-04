@@ -33,7 +33,6 @@ import style from "./HomePage.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
 import { singleSelectInLineStyle } from "../../styles/inLineStyle";
-import { all } from "axios";
 
 type CheckboxType = { map: boolean; storymap: boolean };
 
@@ -72,20 +71,15 @@ function HomePage() {
 			fetchAllTagsWithMapsAndStorymaps(
 				itemTypes,
 				paginationObject,
-				allTagsWithItems,
 				setAllTagsWithItems,
 				setPaginationObject,
 				setLoading,
-				setAllTagsOptions,
-				language,
 				searchText,
 				selectedTags,
 			),
 		paginationObject.hasMore,
 		loading,
 	);
-
-	console.log(allTagsOptions);
 
 	useEffect(() => {
 		setPaginationObject({
@@ -94,6 +88,11 @@ function HomePage() {
 			hasMore: true,
 		});
 	}, []);
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies: inifinite loop
+	useEffect(() => {
+		fetchAllTagsForSelectOption(itemTypes, language, setAllTagsOptions);
+	}, [language, itemTypes, loading]);
 
 	return (
 		<section className={style.mainPage}>
@@ -130,10 +129,7 @@ function HomePage() {
 								newValue,
 								itemTypes,
 								paginationObject,
-								allTagsWithItems,
 								setAllTagsWithItems,
-								setAllTagsOptions,
-								language,
 								setPaginationObject,
 								setLoading,
 							)
