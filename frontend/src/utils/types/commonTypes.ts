@@ -50,9 +50,19 @@ type TagWithItemsType = {
 	}[];
 };
 
+type ItemTypeCheckboxType = { map: boolean; storymap: boolean };
+
+type PaginationObjectType = {
+	page: number;
+	limit: number;
+	hasMore: boolean;
+};
+
 export type {
 	NavList,
 	OptionType,
 	TagWithItemsType,
 	TagWithItemsAndPagination,
+	ItemTypeCheckboxType,
+	PaginationObjectType,
 };
