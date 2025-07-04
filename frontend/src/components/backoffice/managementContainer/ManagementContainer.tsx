@@ -10,6 +10,11 @@ import LoaderComponent from "../../common/loader/LoaderComponent";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import {
+	handleGetMyItemsInManagementTable,
+	handleResetInManagementTable,
+	handleSearchInManagementTable,
+} from "./managementContainerUtils";
+import {
 	getAllMapsInfos,
 	getAllStorymapsInfos,
 } from "../../../utils/api/builtMap/getRequests";
@@ -35,12 +40,14 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 	const { reload } = useModalStore();
 	const { resetMapInfos } = useMapFormStore();
 
-	// état pour stocker les informations des cartes
+	const { register, handleSubmit, resetField, watch } = useForm<{
+		searchText: string;
+	}>();
+
 	const [allMapsInfos, setAllMapsInfos] = useState<MapType[]>([]);
 	const [allStorymapsInfos, setAllStorymapsInfos] = useState<MapType[]>([]);
+	const [isMyItems, setIsMyItems] = useState<boolean>(false);
 	const [isLoaded, setIsLoaded] = useState<boolean>(false);
-
-	// chargement des informations des cartes au montage du composant
 
 	// fonction pour charger les informations des cartes
 	const fetchAllMapsInfos = useCallback(
@@ -51,6 +58,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 		},
 		[],
 	);
+	// fonction pour charger les informations des storymaps
 	const fetchAllStorymapsInfos = useCallback(
 		async (searchText: string, myItems: boolean) => {
 			const storymaps = await getAllStorymapsInfos(false, searchText, myItems);
@@ -68,42 +76,6 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 			fetchAllStorymapsInfos("", isMyItems);
 		}
 	}, [type, reload, fetchAllMapsInfos, fetchAllStorymapsInfos]);
-
-	const { register, handleSubmit, resetField, watch } = useForm<{
-		searchText: string;
-	}>();
-
-	const handleSearch = (data: { searchText: string }) => {
-		if (type === "map") {
-			fetchAllMapsInfos(data.searchText, isMyItems);
-		}
-		if (type === "storymap") {
-			fetchAllStorymapsInfos(data.searchText, isMyItems);
-		}
-	};
-
-	const handleReset = () => {
-		if (type === "map") {
-			fetchAllMapsInfos("", isMyItems);
-		}
-		if (type === "storymap") {
-			fetchAllStorymapsInfos("", isMyItems);
-		}
-		resetField("searchText");
-	};
-
-	const [isMyItems, setIsMyItems] = useState<boolean>(false);
-	const handleGetMyItems = () => {
-		const newIsMyItems = !isMyItems;
-		setIsMyItems(newIsMyItems);
-		const searchText = watch("searchText") || "";
-		if (type === "map") {
-			fetchAllMapsInfos(searchText, newIsMyItems);
-		}
-		if (type === "storymap") {
-			fetchAllStorymapsInfos(searchText, newIsMyItems);
-		}
-	};
 
 	return (
 		<>
@@ -130,9 +102,28 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 									? translation[language].button.allCreations
 									: translation[language].button.myCreations
 							}
-							onClickFunction={handleGetMyItems}
+							onClickFunction={() =>
+								handleGetMyItemsInManagementTable(
+									type,
+									isMyItems,
+									setIsMyItems,
+									watch,
+									fetchAllMapsInfos,
+									fetchAllStorymapsInfos,
+								)
+							}
 						/>
-						<form onSubmit={handleSubmit(handleSearch)}>
+						<form
+							onSubmit={handleSubmit((data) =>
+								handleSearchInManagementTable(
+									data,
+									type,
+									isMyItems,
+									fetchAllMapsInfos,
+									fetchAllStorymapsInfos,
+								),
+							)}
+						>
 							<input
 								type="text"
 								{...register("searchText")}
@@ -149,7 +140,15 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 								type="button"
 								color="brown"
 								textContent=""
-								onClickFunction={handleReset}
+								onClickFunction={() =>
+									handleResetInManagementTable(
+										type,
+										isMyItems,
+										fetchAllMapsInfos,
+										fetchAllStorymapsInfos,
+										resetField,
+									)
+								}
 								icon={<ListRestart />}
 							/>
 						)}
