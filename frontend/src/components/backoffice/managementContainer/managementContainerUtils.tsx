@@ -75,16 +75,24 @@ const handleSort = (
 	}
 
 	const sorted = [...itemsArray].sort((a, b) => {
-		if (key.includes(".")) {
-			const keys = key.split(".");
-			const aValue = keys.reduce((obj, k) => (obj ? obj[k] : null), a);
-			const bValue = keys.reduce((obj, k) => (obj ? obj[k] : null), b);
-			if (aValue < bValue) return direction === "asc" ? -1 : 1;
-			if (aValue > bValue) return direction === "asc" ? 1 : -1;
-			return 0;
-		}
-		if (a[key] < b[key]) return direction === "asc" ? -1 : 1;
-		if (a[key] > b[key]) return direction === "asc" ? 1 : -1;
+		const getValue = (obj, keyPath: string) => {
+			if (keyPath.includes(".")) {
+				return keyPath.split(".").reduce((acc, k) => acc?.[k], obj);
+			}
+			return obj?.[keyPath];
+		};
+
+		const aValue = getValue(a, key);
+		const bValue = getValue(b, key);
+		const aIsNull = aValue === null || aValue === undefined;
+		const bIsNull = bValue === null || bValue === undefined;
+
+		if (aIsNull && bIsNull) return 0;
+		if (aIsNull) return 1; // a va en bas
+		if (bIsNull) return -1; // b va en bas
+
+		if (aValue < bValue) return direction === "asc" ? -1 : 1;
+		if (aValue > bValue) return direction === "asc" ? 1 : -1;
 		return 0;
 	});
 
