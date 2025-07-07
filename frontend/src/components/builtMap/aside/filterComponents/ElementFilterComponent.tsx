@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useMemo, useState } from "react";
+import { useMemo } from "react";
 import Select from "react-select";
 // import des composants
 import ElementCheckboxComponent from "./ElementCheckboxComponent";
