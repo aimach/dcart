@@ -847,6 +847,17 @@ const isSelectedFilterInThisMap = (
 	);
 };
 
+/**
+ * Fonction pour vérifier si un élément est dans une liste d'options
+ * @param list - le tableau d'options
+ * @param target - l'objet cible à vérifier
+ * @returns boolean
+ */
+const isInList = (list: OptionType[], target: OptionType) =>
+	list.some((item) =>
+		Object.keys(target).every((key) => item[key] === target[key]),
+	);
+
 export {
 	alreadyTwoFiltersChecked,
 	createTimeOptions,
@@ -871,4 +882,5 @@ export {
 	getAllAgentStatusFromPoints,
 	getAllAgentivityFromPoints,
 	getAllSourceMaterialFromPoints,
+	isInList,
 };

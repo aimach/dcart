@@ -73,7 +73,7 @@ const ResultComponent = () => {
 			},
 		);
 
-		// trie les résultats par sous-région puis par nom de ville
+		// trie les résultats par sous-région puis par nom de site
 		const allResultsInAlphaOrder = allResultsFilteredWithCSS.sort((a, b) => {
 			const subRegionA = a[`sous_region_${language}`] || "";
 			const subRegionB = b[`sous_region_${language}`] || "";

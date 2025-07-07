@@ -2,6 +2,7 @@
 import { create } from "zustand";
 // import des types
 import type { UserFilterType } from "../../types/filterTypes";
+import type { SelectedObjectType } from "../../../components/builtMap/aside/filterComponents/ElementCheckboxComponent";
 
 type State = {
 	userFilters: UserFilterType;
@@ -15,6 +16,7 @@ type State = {
 	sourceMaterialNames: string[];
 	languageValues: Record<string, boolean>;
 	genderValues: Record<string, boolean>;
+	elementCheckboxSelected: SelectedObjectType;
 };
 
 type Action = {
@@ -30,6 +32,7 @@ type Action = {
 	setSourceMaterialNames: (sourceMaterialName: string[]) => void;
 	setLanguageValues: (languageValues: Record<string, boolean>) => void;
 	setGenderValues: (genderValues: Record<string, boolean>) => void;
+	setElementCheckboxSelected: (selected: SelectedObjectType) => void;
 	resetLanguageValues: () => void;
 };
 
@@ -66,7 +69,6 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 		get().setSourceMaterialNames([]);
 		get().setLanguageValues({ greek: false, semitic: false });
 		get().setGenderValues({ male: false, female: false, nonBinary: false });
-
 	},
 	isReset: false,
 	setIsReset: (isReset) => set(() => ({ isReset: isReset })),
@@ -92,4 +94,7 @@ export const useMapFiltersStore = create<State & Action>((set, get) => ({
 		set(() => ({ languageValues: { greek: false, semitic: false } })),
 	genderValues: { male: false, female: false, nonBinary: false },
 	setGenderValues: (genderValues) => set(() => ({ genderValues })),
+	elementCheckboxSelected: {},
+	setElementCheckboxSelected: (selected) =>
+		set(() => ({ elementCheckboxSelected: selected })),
 }));
