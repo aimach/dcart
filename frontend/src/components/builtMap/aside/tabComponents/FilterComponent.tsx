@@ -184,6 +184,7 @@ const FilterComponent = ({
 										key={filter.id}
 										elementOptions={elementOptions}
 										setElementNameValues={setElementNameValues}
+										elementNameValues={elementNameValues}
 									/>
 								</div>
 							);

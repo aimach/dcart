@@ -271,8 +271,8 @@
 						"description": "Le filtre 'Lieu' affichera toutes les sous régions de la carte."
 					},
 					"cityName": {
-						"label": "Nom de ville",
-						"description": "Le filtre 'Lieu' affichera tous les noms de ville de la carte."
+						"label": "Nom de site",
+						"description": "Le filtre 'Lieu' affichera tous les noms de sites de la carte."
 					}
 				}
 			},

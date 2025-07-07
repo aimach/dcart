@@ -9,13 +9,14 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { updateMapFilterOptions } from "../../../../utils/api/builtMap/putRequests";
 import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
+import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { LotType } from "../../../../utils/types/filterTypes";
-import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
+import type { FilterMapContentType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./builtElementFilterForm.module.scss";
-import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 type SelectElementFormProps = {
 	elementOptions: OptionType[];
@@ -63,7 +64,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 		const newMap = await getOneMapInfosById(mapInfos?.id as string);
 		setMapInfos(newMap);
 		const newFilters = newMap.filterMapContent?.find(
-			(filter) => filter.filter.type === "element",
+			(filter: FilterMapContentType) => filter.filter.type === "element",
 		).options.checkbox;
 		setCheckboxArray(newFilters);
 		setLots([...newFilters, { firstLevelIds: [], secondLevelIds: [] }]);

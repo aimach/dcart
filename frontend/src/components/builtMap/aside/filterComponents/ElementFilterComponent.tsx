@@ -9,6 +9,7 @@ import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFilters
 import { useShallow } from "zustand/shallow";
 import {
 	getSelectDefaultValues,
+	isInList,
 	onMultiSelectChange,
 } from "../../../../utils/functions/filter";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
@@ -18,7 +19,8 @@ import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 interface ElementFilterComponentProps {
 	elementOptions: OptionType[];
-	setElementNameValues: (values: string[]) => void;
+	setElementNameValues: (names: string[]) => void;
+	elementNameValues?: string[];
 }
 
 /**
@@ -30,15 +32,15 @@ interface ElementFilterComponentProps {
 const ElementFilterComponent = ({
 	elementOptions,
 	setElementNameValues,
+	elementNameValues,
 }: ElementFilterComponentProps) => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
 	// récupération des données des filtres depuis le store
 	const { mapInfos } = useMapStore();
-	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
-		useShallow((state) => state),
-	);
+	const { userFilters, setUserFilters, isReset, elementNames } =
+		useMapFiltersStore(useShallow((state) => state));
 
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {
@@ -53,7 +55,22 @@ const ElementFilterComponent = ({
 			(filter) => filter.filter.type === "element",
 		)?.options ?? null;
 
-	const [selected, setSelected] = useState({});
+	// biome-ignore lint/correctness/useExhaustiveDependencies: volontairement stricte pour éviter les re-renders inutiles
+	const optionsWithoutNotSelectedIds = useMemo(() => {
+		if (!filterOptions?.checkbox) return [];
+		return filterOptions.checkbox
+			.map((option) => {
+				if (!isInList(elementOptions, option.firstLevelIds[0])) return null;
+				const secondLevelIdsWithFilteredElements = option.secondLevelIds.filter(
+					(secondOption) => isInList(elementOptions, secondOption),
+				);
+				return {
+					firstLevelIds: option.firstLevelIds,
+					secondLevelIds: secondLevelIdsWithFilteredElements,
+				};
+			})
+			.filter((option) => option !== null && option !== undefined);
+	}, [elementNames, elementOptions]);
 
 	if (filterOptions) {
 		switch (filterOptions.solution) {
@@ -83,18 +100,22 @@ const ElementFilterComponent = ({
 				);
 			case "manual":
 				return (
-					<div>
-						{filterOptions?.checkbox?.map((options) => {
-							return (
-								<ElementCheckboxComponent
-									options={options}
-									key={options.firstLevelIds[0].value}
-									selected={selected}
-									setSelected={setSelected}
-								/>
-							);
-						})}
-					</div>
+					optionsWithoutNotSelectedIds.length > 0 && (
+						<div>
+							{optionsWithoutNotSelectedIds.map((options) => {
+								return (
+									options && (
+										<ElementCheckboxComponent
+											options={options}
+											key={options?.firstLevelIds[0].value}
+											elementNameValues={elementNameValues as string[]}
+											setElementNameValues={setElementNameValues}
+										/>
+									)
+								);
+							})}
+						</div>
+					)
 				);
 			default:
 				return (

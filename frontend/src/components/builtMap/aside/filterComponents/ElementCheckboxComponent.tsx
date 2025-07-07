@@ -5,7 +5,7 @@ import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFilters
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 
-type SelectedObjectType = {
+export type SelectedObjectType = {
 	[key: number]: {
 		checked: boolean;
 		children: number[];
@@ -17,49 +17,73 @@ type ElementCheckboxComponentProps = {
 		firstLevelIds: OptionType[];
 		secondLevelIds: OptionType[];
 	};
-	selected: SelectedObjectType;
-	setSelected: (selected: SelectedObjectType) => void;
+	elementNameValues: string[];
+	setElementNameValues: (names: string[]) => void;
 };
 
 const ElementCheckboxComponent = ({
 	options,
-	selected,
-	setSelected,
+	elementNameValues,
+	setElementNameValues,
 }: ElementCheckboxComponentProps) => {
-	const { userFilters, setUserFilters } = useMapFiltersStore();
+	const {
+		userFilters,
+		setUserFilters,
+		elementCheckboxSelected,
+		setElementCheckboxSelected,
+	} = useMapFiltersStore();
 
-	const toggleFirstLevel = (optionId: number) => {
-		const isChecked = selected[optionId]?.checked;
+	const toggleFirstLevel = (option: OptionType) => {
+		const isChecked = elementCheckboxSelected[option.value as number]?.checked;
 
-		const newSelected = { ...selected };
-		newSelected[optionId] = {
+		const newSelected = { ...elementCheckboxSelected };
+		newSelected[option.value as number] = {
 			checked: !isChecked,
 			children: [],
 		};
-		setSelected(newSelected);
+		setElementCheckboxSelected(newSelected);
 		const newLotIds = !isChecked
-			? [...userFilters.lotIds, [optionId]]
-			: userFilters.lotIds.filter((lot: number[]) => lot[0] !== optionId);
+			? [...userFilters.lotIds, [option.value as number]]
+			: userFilters.lotIds.filter(
+					(lot: number[]) => lot[0] !== (option.value as number),
+				);
 		setUserFilters({
 			...userFilters,
 			lotIds: newLotIds,
 		});
+
+		// On met à jour les noms des éléments sélectionnés
+		const labelWithoutBrackets = option.label.replace(/\s*\(.*?\)/g, "").trim();
+		if (!isChecked) {
+			setElementNameValues([
+				...elementNameValues,
+				labelWithoutBrackets as string,
+			]);
+		} else {
+			const filteredElementNameValues = elementNameValues.filter(
+				(name) => !name.startsWith(`${labelWithoutBrackets} `),
+			);
+			setElementNameValues(filteredElementNameValues);
+		}
 	};
 
-	const toggleSecondLevel = (optionId: number, childId: number) => {
-		const group = selected[optionId] || { checked: false, children: [] };
-		const children = group.children.includes(childId)
-			? group.children.filter((c: number) => c !== childId)
-			: [...group.children, childId];
+	const toggleSecondLevel = (option: OptionType, child: OptionType) => {
+		const group = elementCheckboxSelected[option.value as number] || {
+			checked: false,
+			children: [],
+		};
+		const children = group.children.includes(child.value as number)
+			? group.children.filter((c: number) => c !== (child.value as number))
+			: [...group.children, child.value as number];
 
 		const newSelectedValue = {
-			...selected,
-			[optionId]: {
+			...elementCheckboxSelected,
+			[option.value as number]: {
 				checked: true,
 				children,
 			},
 		};
-		setSelected(newSelectedValue);
+		setElementCheckboxSelected(newSelectedValue);
 
 		const newLotIds = Object.keys(newSelectedValue).reduce(
 			(acc: string[][], key: string) => {
@@ -82,13 +106,39 @@ const ElementCheckboxComponent = ({
 			...userFilters,
 			lotIds: newLotIds,
 		});
+
+		// On met à jour les noms des éléments sélectionnés
+		const labelWithoutBrackets = child.label.replace(/\s*\(.*?\)/g, "").trim();
+		const firstLevelWithoutBrackets = option.label
+			.replace(/\s*\(.*?\)/g, "")
+			.trim();
+		if (newSelectedValue[option.value as number].checked) {
+			if (
+				!elementNameValues.includes(
+					`${firstLevelWithoutBrackets} ${labelWithoutBrackets}`,
+				)
+			) {
+				setElementNameValues([
+					...elementNameValues,
+					`${firstLevelWithoutBrackets} ${labelWithoutBrackets}`,
+				]);
+			}
+		} else {
+			const filteredElementNameValues = elementNameValues.filter(
+				(name) =>
+					!name.startsWith(
+						`${firstLevelWithoutBrackets} ${labelWithoutBrackets}`,
+					),
+			);
+			setElementNameValues(filteredElementNameValues);
+		}
 	};
 
 	// si userFilters.lotIds est vide, on vide les checkbox
-	// biome-ignore lint/correctness/useExhaustiveDependencies: <explanation>
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
 		if (userFilters.lotIds.length === 0) {
-			setSelected({});
+			setElementCheckboxSelected({});
 		}
 	}, [userFilters.lotIds]);
 
@@ -97,12 +147,13 @@ const ElementCheckboxComponent = ({
 			<label>
 				<input
 					type="checkbox"
-					checked={selected[options.firstLevelIds[0].value]?.checked || false}
-					onChange={() =>
-						toggleFirstLevel(
-							Number.parseInt(options.firstLevelIds[0].value as string, 10),
-						)
+					checked={
+						elementCheckboxSelected[options?.firstLevelIds[0].value as number]
+							?.checked || false
 					}
+					onChange={() => {
+						toggleFirstLevel(options.firstLevelIds[0]);
+					}}
 				/>
 				<strong>{options.firstLevelIds[0].label}</strong>
 			</label>
@@ -112,16 +163,13 @@ const ElementCheckboxComponent = ({
 						<input
 							type="checkbox"
 							checked={
-								selected[options.firstLevelIds[0].value]?.children.includes(
-									option.value,
-								) || false
+								elementCheckboxSelected[
+									options?.firstLevelIds[0].value as number
+								]?.children.includes(option.value as number) || false
 							}
-							onChange={() =>
-								toggleSecondLevel(
-									Number.parseInt(options.firstLevelIds[0].value as string, 10),
-									Number.parseInt(option.value as string, 10),
-								)
-							}
+							onChange={() => {
+								toggleSecondLevel(options.firstLevelIds[0], option);
+							}}
 						/>
 						{option.label}
 					</label>
