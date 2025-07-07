@@ -5,7 +5,7 @@ import { Icon } from "../../entities/common/Icon";
 import { Color } from "../../entities/common/Color";
 import { Block } from "../../entities/storymap/Block";
 import { User } from "../../entities/auth/User";
-import { Point } from "../../entities";
+import { Point, Storymap } from "../../entities";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
@@ -251,11 +251,55 @@ export const attestationController = {
 
 			const attestationListToDelete = await dcartDataSource
 				.getRepository(Attestation)
-				.findOneBy({ id });
+				.findOne({
+					where: { id },
+					relations: {
+						map: true,
+						block: true,
+					},
+				});
 
 			if (!attestationListToDelete) {
 				res.status(404).json("Le jeu d'attestations n'existe pas");
 				return;
+			}
+
+			if (attestationListToDelete.map) {
+				const user = await dcartDataSource
+					.getRepository(User)
+					.findOneBy({ id: req.user?.userId || "" });
+
+				// mise à jour de la date de modification de la carte
+				await dcartDataSource
+					.getRepository(MapContent)
+					.update(attestationListToDelete.map.id, {
+						updatedAt: new Date(),
+						modifier: user || null,
+					});
+			}
+
+			if (attestationListToDelete.block) {
+				const user = await dcartDataSource
+					.getRepository(User)
+					.findOneBy({ id: req.user?.userId || "" });
+
+				// mise à jour de la date de modification du bloc et de la storymap
+				const blockRepository = dcartDataSource.getRepository(Block);
+				const blockToUpdate = await blockRepository.findOne({
+					where: { id: attestationListToDelete.block.id },
+					relations: { storymap: true },
+				});
+
+				await blockRepository.update(attestationListToDelete.block.id, {
+					updatedAt: new Date(),
+				});
+
+				await dcartDataSource
+					.getRepository(Storymap)
+					.update(blockToUpdate?.storymap.id as string, {
+						updatedAt: new Date(),
+						modifier: user || null,
+					});
 			}
 
 			await dcartDataSource
