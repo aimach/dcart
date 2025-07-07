@@ -230,6 +230,9 @@ export const blockController = {
 
 			const blockToDelete = await dcartDataSource.getRepository(Block).findOne({
 				where: { id: blockId },
+				relations: {
+					storymap: true,
+				},
 			});
 
 			if (!blockToDelete) {
@@ -238,6 +241,17 @@ export const blockController = {
 			}
 
 			await dcartDataSource.getRepository(Block).delete(blockId);
+
+			const user = await dcartDataSource.getRepository(User).findOneBy({
+				id: req.user?.userId || "",
+			});
+			// mise à jour de la date de modification de la storymap
+			await dcartDataSource
+				.getRepository(Storymap)
+				.update(blockToDelete.storymap.id, {
+					updatedAt: new Date(),
+					modifier: user || null,
+				});
 
 			res.status(200).send("Block supprimé.");
 		} catch (error) {
