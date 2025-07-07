@@ -4,6 +4,8 @@ import { useEffect } from "react";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
+// import des styles
+import style from "./filtersComponent.module.scss";
 
 export type SelectedObjectType = {
 	[key: number]: {
@@ -143,8 +145,8 @@ const ElementCheckboxComponent = ({
 	}, [userFilters.lotIds]);
 
 	return (
-		<div style={{ marginBottom: "1rem" }}>
-			<label>
+		<div className={style.elementCheckboxContainer}>
+			<label className={style.checkboxLabel}>
 				<input
 					type="checkbox"
 					checked={
@@ -157,9 +159,13 @@ const ElementCheckboxComponent = ({
 				/>
 				<strong>{options.firstLevelIds[0].label}</strong>
 			</label>
-			<div style={{ paddingLeft: "1.5rem" }}>
+			<div className={style.checkboxGroup}>
 				{options.secondLevelIds.map((option) => (
-					<label key={option.value} style={{ display: "block" }}>
+					<label
+						key={option.value}
+						style={{ display: "block" }}
+						className={style.checkboxLabel}
+					>
 						<input
 							type="checkbox"
 							checked={

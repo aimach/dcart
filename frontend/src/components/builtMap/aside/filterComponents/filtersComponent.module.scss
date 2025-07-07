@@ -11,3 +11,15 @@
         margin: v.$space-m 0;
     }
 }
+
+.elementCheckboxContainer {
+    .checkboxLabel {
+        display: flex;
+        align-items: center;
+        gap: v.$space-xs;
+    }
+
+    .checkboxGroup {
+        padding-left: v.$space-l;
+    }
+}

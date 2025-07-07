@@ -49,9 +49,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 	}, [mapInfos]);
 
 	const handleMultiSelectChange = async (index: number) => {
-		const lotsWithoutEmpty = lots.filter(
-			(lot) => lot.firstLevelIds.length > 0 && lot.secondLevelIds.length > 0,
-		);
+		const lotsWithoutEmpty = lots.filter((lot) => lot.firstLevelIds.length > 0);
 		const body = {
 			solution: "manual",
 			checkbox: [...lotsWithoutEmpty],
