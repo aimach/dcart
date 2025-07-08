@@ -23,49 +23,14 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
 import { resetAllFilterRemindersValues } from "../../../../utils/functions/filter";
-
-interface FilterComponentProps {
-	locationOptions: OptionType[];
-	elementOptions: OptionType[];
-	sourceTypeOptions: OptionType[];
-	agentActivityOptions: OptionType[];
-	agentStatusOptions: OptionType[];
-	agentivityOptions: OptionType[];
-	sourceMaterialOptions: OptionType[];
-	agentGenderOptions: string[];
-	elementNbOptions: { min: number; max: number };
-	timeBoundsRef: React.MutableRefObject<{
-		min: number;
-		max: number;
-	} | null>;
-}
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 /**
  * Affiche les filtres de la carte
- * @param {Object} props
- * @param {OptionType[]} props.locationOptions - Liste des options pour le filtre de la localisation
- * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
- * @param {OptionType[]} props.sourceTypeOptions - Liste des types de source pour le filtre des épithètes
- * @param {OptionType[]} props.agentActivityOptions - Liste des activités des agents pour le filtre des activités
- * @param {OptionType[]} props.agentStatusOptions - Liste des statuts des agents pour le filtre des activités
- * @param {OptionType[]} props.agentivityOptions - Liste des statuts des agents pour le filtre des activités
- * @param {OptionType[]} props.sourceMaterialOptions - Liste des supports des sources pour le filtre des activités
- * @param {string[]} props.agentGenderOptions - Liste des genre des agents pour le filtre des activités
- * @param {{min: number, max: number}} props.elementNbOptions - Min et max des nombres d'éléments pour le filtre du
+
  * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
  */
-const FilterComponent = ({
-	locationOptions,
-	elementOptions,
-	sourceTypeOptions,
-	agentActivityOptions,
-	agentStatusOptions,
-	agentivityOptions,
-	sourceMaterialOptions,
-	agentGenderOptions,
-	elementNbOptions,
-	timeBoundsRef,
-}: FilterComponentProps) => {
+const FilterComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
@@ -75,6 +40,7 @@ const FilterComponent = ({
 	const { mapInfos, setAllPoints, setAllResults, setMapReady } = useMapStore(
 		useShallow((state) => state),
 	);
+
 	const { mapFilters, setIsPanelDisplayed } = useMapAsideMenuStore();
 	const {
 		userFilters,
@@ -92,6 +58,13 @@ const FilterComponent = ({
 		resetLanguageValues,
 		setGenderValues,
 	} = useMapFiltersStore(useShallow((state) => state));
+	const {
+		initialSourceTypeOptions,
+		initialAgentActivityOptions,
+		initialAgentStatusOptions,
+		initialAgentivityOptions,
+		initialSourceMaterialOptions,
+	} = useMapFilterOptionsStore();
 
 	// initiation d'états pour récupérer les valeurs des lieux et éléments
 	const [locationNameValues, setLocationNameValues] = useState<string[]>([]);
@@ -193,7 +166,6 @@ const FilterComponent = ({
 									<h4>{translation[language].mapPage.aside.location}</h4>
 									<LocationFilterComponent
 										key={filter.id}
-										locationOptions={locationOptions}
 										setLocationNameValues={setLocationNameValues}
 									/>
 								</div>
@@ -205,7 +177,6 @@ const FilterComponent = ({
 									<h4>{translation[language].mapPage.aside.element}</h4>
 									<ElementFilterComponent
 										key={filter.id}
-										elementOptions={elementOptions}
 										setElementNameValues={setElementNameValues}
 										elementNameValues={elementNameValues}
 									/>
@@ -216,11 +187,7 @@ const FilterComponent = ({
 							return (
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.divinityNb}</h4>
-									<DivinityNbComponent
-										key={filter.id}
-										timeBoundsRef={timeBoundsRef}
-										elementNbOptions={elementNbOptions}
-									/>
+									<DivinityNbComponent key={filter.id} />
 								</div>
 							);
 						}
@@ -238,7 +205,7 @@ const FilterComponent = ({
 									<h4>{translation[language].mapPage.aside.sourceType}</h4>
 									<MultiSelectFilterComponent
 										key={filter.id}
-										optionsArray={sourceTypeOptions}
+										optionsArray={initialSourceTypeOptions}
 										setValues={setSourceTypeValues}
 										userFilterId="sourceTypeId"
 										placeholder={
@@ -254,7 +221,7 @@ const FilterComponent = ({
 									<h4>{translation[language].mapPage.aside.agentActivity}</h4>
 									<MultiSelectFilterComponent
 										key={filter.id}
-										optionsArray={agentActivityOptions}
+										optionsArray={initialAgentActivityOptions}
 										setValues={setAgentActivityValues}
 										userFilterId="agentActivityId"
 										placeholder={
@@ -268,9 +235,7 @@ const FilterComponent = ({
 							return (
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.agentGender}</h4>
-									<AgentGenderFilterComponent
-										agentGenderOptions={agentGenderOptions}
-									/>
+									<AgentGenderFilterComponent />
 								</div>
 							);
 						}
@@ -280,7 +245,7 @@ const FilterComponent = ({
 									<h4>{translation[language].mapPage.aside.agentStatus}</h4>
 									<MultiSelectFilterComponent
 										key={filter.id}
-										optionsArray={agentStatusOptions}
+										optionsArray={initialAgentStatusOptions}
 										setValues={setAgentStatusValues}
 										userFilterId="agentStatusName"
 										placeholder={
@@ -296,7 +261,7 @@ const FilterComponent = ({
 									<h4>{translation[language].mapPage.aside.agentivity}</h4>
 									<MultiSelectFilterComponent
 										key={filter.id}
-										optionsArray={agentivityOptions}
+										optionsArray={initialAgentivityOptions}
 										setValues={setAgentivityValues}
 										userFilterId="agentivityName"
 										placeholder={
@@ -312,7 +277,7 @@ const FilterComponent = ({
 									<h4>{translation[language].mapPage.aside.sourceMaterial}</h4>
 									<MultiSelectFilterComponent
 										key={filter.id}
-										optionsArray={sourceMaterialOptions}
+										optionsArray={initialSourceMaterialOptions}
 										setValues={setSourceMaterialValues}
 										userFilterId="sourceMaterialName"
 										placeholder={

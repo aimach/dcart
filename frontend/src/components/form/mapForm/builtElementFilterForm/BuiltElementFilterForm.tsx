@@ -13,7 +13,7 @@ import {
 	getOneMapInfosById,
 } from "../../../../utils/api/builtMap/getRequests";
 import {
-	fetchElementOptions,
+	getElementOptions,
 	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
 // import des types
@@ -45,9 +45,10 @@ const BuiltElementFilterForm = () => {
 					[...uniqueAttestationIds].toString(),
 				);
 
-				const allElementsOptions = await fetchElementOptions(
+				const allElementsOptions = await getElementOptions(
 					allPoints,
 					language,
+					false,
 					false,
 				);
 				setElementOptions(allElementsOptions);

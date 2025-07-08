@@ -13,9 +13,9 @@ import {
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 interface LocationFilterComponentProps {
-	locationOptions: OptionType[];
 	setLocationNameValues: (values: string[]) => void;
 }
 
@@ -26,7 +26,6 @@ interface LocationFilterComponentProps {
  * @returns Select (react-select)
  */
 const LocationFilterComponent = ({
-	locationOptions,
 	setLocationNameValues,
 }: LocationFilterComponentProps) => {
 	// récupération des données de traduction
@@ -36,20 +35,22 @@ const LocationFilterComponent = ({
 		useShallow((state) => state),
 	);
 
+	const { initialLocationOptions } = useMapFilterOptionsStore();
+
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {
 		return getSelectDefaultValues(
 			userFilters.locationId as string,
-			locationOptions,
+			initialLocationOptions,
 		);
-	}, [userFilters.locationId, locationOptions]);
+	}, [userFilters.locationId, initialLocationOptions]);
 
 	return (
 		<div>
 			<Select
 				styles={singleSelectInLineStyle}
 				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-				options={locationOptions}
+				options={initialLocationOptions}
 				defaultValue={getDefaultValues}
 				delimiter="|"
 				isMulti

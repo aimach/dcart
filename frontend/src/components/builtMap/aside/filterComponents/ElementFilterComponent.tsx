@@ -16,9 +16,9 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 interface ElementFilterComponentProps {
-	elementOptions: OptionType[];
 	setElementNameValues: (names: string[]) => void;
 	elementNameValues?: string[];
 }
@@ -30,7 +30,6 @@ interface ElementFilterComponentProps {
  * @returns Select (react-select)
  */
 const ElementFilterComponent = ({
-	elementOptions,
 	setElementNameValues,
 	elementNameValues,
 }: ElementFilterComponentProps) => {
@@ -42,13 +41,15 @@ const ElementFilterComponent = ({
 	const { userFilters, setUserFilters, isReset, elementNames } =
 		useMapFiltersStore(useShallow((state) => state));
 
+	const { initialElementOptions } = useMapFilterOptionsStore();
+
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {
 		return getSelectDefaultValues(
 			userFilters.elementId as string,
-			elementOptions,
+			initialElementOptions,
 		);
-	}, [userFilters.elementId, elementOptions]);
+	}, [userFilters.elementId, initialElementOptions]);
 
 	const filterOptions =
 		mapInfos?.filterMapContent?.find(
@@ -60,9 +61,10 @@ const ElementFilterComponent = ({
 		if (!filterOptions?.checkbox) return [];
 		return filterOptions.checkbox
 			.map((option) => {
-				if (!isInList(elementOptions, option.firstLevelIds[0])) return null;
+				if (!isInList(initialElementOptions, option.firstLevelIds[0]))
+					return null;
 				const secondLevelIdsWithFilteredElements = option.secondLevelIds.filter(
-					(secondOption) => isInList(elementOptions, secondOption),
+					(secondOption) => isInList(initialElementOptions, secondOption),
 				);
 				return {
 					firstLevelIds: option.firstLevelIds,
@@ -70,7 +72,7 @@ const ElementFilterComponent = ({
 				};
 			})
 			.filter((option) => option !== null && option !== undefined);
-	}, [elementNames, elementOptions]);
+	}, [elementNames, initialElementOptions]);
 
 	if (filterOptions) {
 		switch (filterOptions.solution) {
@@ -80,7 +82,7 @@ const ElementFilterComponent = ({
 						<Select
 							styles={singleSelectInLineStyle}
 							key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-							options={elementOptions}
+							options={initialElementOptions}
 							defaultValue={getDefaultValues}
 							delimiter="|"
 							isMulti
@@ -123,7 +125,7 @@ const ElementFilterComponent = ({
 						<Select
 							styles={singleSelectInLineStyle}
 							key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-							options={elementOptions}
+							options={initialElementOptions}
 							defaultValue={getDefaultValues}
 							delimiter="|"
 							isMulti

@@ -1,20 +1,15 @@
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
 // import des types
 
-type TypeAgentGenderFilterComponentProps = {
-	agentGenderOptions: string[];
-};
-
 /**
  * Composant de filtre pour le genre des agents (masculin, féminin, non binaire)
  */
-const AgentGenderFilterComponent = ({
-	agentGenderOptions,
-}: TypeAgentGenderFilterComponentProps) => {
+const AgentGenderFilterComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
@@ -22,6 +17,7 @@ const AgentGenderFilterComponent = ({
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
+	const { initialAgentGenderOptions } = useMapFilterOptionsStore();
 
 	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
 	function handleChangeCheckbox(checked: boolean, name: string) {
@@ -34,7 +30,7 @@ const AgentGenderFilterComponent = ({
 
 	return (
 		<div>
-			{agentGenderOptions.includes("male") && (
+			{initialAgentGenderOptions.includes("male") && (
 				<div>
 					<input
 						key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
@@ -51,7 +47,7 @@ const AgentGenderFilterComponent = ({
 					</label>
 				</div>
 			)}
-			{agentGenderOptions.includes("female") && (
+			{initialAgentGenderOptions.includes("female") && (
 				<div>
 					<input
 						key={isReset.toString()}
@@ -68,7 +64,7 @@ const AgentGenderFilterComponent = ({
 					</label>
 				</div>
 			)}
-			{agentGenderOptions.includes("nonbinary") && (
+			{initialAgentGenderOptions.includes("nonbinary") && (
 				<div>
 					<input
 						key={isReset.toString()}

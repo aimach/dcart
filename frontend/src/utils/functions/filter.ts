@@ -1,5 +1,6 @@
 // import des services
 import { getAllDivinities } from "../api/builtMap/getRequests";
+import { useMapFilterOptionsStore } from "../stores/builtMap/mapFilterOptionsStore";
 // import des types
 import type {
 	Language,
@@ -18,7 +19,6 @@ import type {
 import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
-import { all } from "axios";
 
 /**
  * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
@@ -546,7 +546,7 @@ const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
 			}
 		}
 	}
-	return { min, max };
+	useMapFilterOptionsStore.getState().setInitialElementNbOptions({ min, max });
 };
 
 /**
@@ -555,7 +555,7 @@ const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
  * @param {Language} language - La langue sélectionnée par l'utilisateur
  * @param {boolean} isWithoutTheonym - Un booléen
  */
-const fetchElementOptions = async (
+const getElementOptions = async (
 	allPoints: PointType[],
 	language: Language,
 	isWithoutTheonym: boolean,
@@ -581,10 +581,13 @@ const fetchElementOptions = async (
 		.map((option) => ({
 			value: option.element_id,
 			label: `${option[`element_nom_${language}`]} (${option.etat_absolu})`,
+			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
 
-	return formatedElementOptions;
+	useMapFilterOptionsStore
+		.getState()
+		.setInitialElementOptions(formatedElementOptions);
 };
 
 /**
@@ -626,12 +629,16 @@ const getAllSourceTypeFromPoints = (
 	});
 
 	// formattage des options pour le select
-	return allSourceTypes
+	const sortedAllSourceTypes = allSourceTypes
 		.map((option) => ({
 			value: option.type_fr,
 			label: option.label,
+			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+	useMapFilterOptionsStore
+		.getState()
+		.setInitialSourceTypeOptions(sortedAllSourceTypes);
 };
 
 /**
@@ -670,12 +677,16 @@ const getAllAgentActivityFromPoints = (
 	}
 
 	// formattage des options pour le select
-	return allAgentActivity
+	const sortedAllAgentActivity = allAgentActivity
 		.map((option) => ({
 			value: option.id,
 			label: option[`nom_${language}`],
+			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+	useMapFilterOptionsStore
+		.getState()
+		.setInitialAgentActivityOptions(sortedAllAgentActivity);
 };
 
 /**
@@ -713,6 +724,7 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
 		.map((name) => ({
 			value: name.id,
 			label: name[`nom_${language}`],
+			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
 };
@@ -747,12 +759,16 @@ const getAllAgentStatusFromPoints = (points: PointType[], language: string) => {
 		}
 	}
 	// formattage des options pour le select
-	return allAgentStatus
+	const sortedAllAgentStatus = allAgentStatus
 		.map((status) => ({
 			value: status.nom_fr,
 			label: status[`nom_${language}`],
+			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+	useMapFilterOptionsStore
+		.getState()
+		.setInitialAgentStatusOptions(sortedAllAgentStatus);
 };
 
 /**
@@ -791,6 +807,7 @@ const getAllAgentivityFromPoints = (points: PointType[], language: string) => {
 		.map((agentivity) => ({
 			value: agentivity.nom_fr,
 			label: agentivity[`nom_${language}`],
+			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
 };
@@ -824,12 +841,17 @@ const getAllSourceMaterialFromPoints = (
 		}
 	}
 	// formattage des options pour le select
-	return allSourceMaterial
+	const sortedAllSourceMaterialOptions = allSourceMaterial
 		.map((material) => ({
 			value: material.nom_fr,
 			label: material.label,
+			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+
+	useMapFilterOptionsStore
+		.getState()
+		.setInitialSourceMaterialOptions(sortedAllSourceMaterialOptions);
 };
 
 /**
@@ -864,7 +886,12 @@ const getAllAgentGenderFromPoints = (points: PointType[]) => {
 		}
 	}
 	// formattage des options pour le select
-	return allAgentGender.map((status) => status.nom_en.toLowerCase());
+	const allAgentGenderOptions = allAgentGender.map((status) =>
+		status.nom_en.toLowerCase(),
+	);
+	useMapFilterOptionsStore
+		.getState()
+		.setInitialAgentGenderOptions(allAgentGenderOptions);
 };
 
 /**
@@ -957,7 +984,7 @@ export {
 	noUserFilterChecked,
 	displayFiltersTags,
 	getMinAndMaxElementNumbers,
-	fetchElementOptions,
+	getElementOptions,
 	getAllSourceTypeFromPoints,
 	getAllAgentActivityFromPoints,
 	getAllAgentNameFromPoints,

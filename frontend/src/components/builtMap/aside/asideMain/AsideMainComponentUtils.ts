@@ -10,6 +10,7 @@ import {
 	getMinAndMaxElementNb,
 	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 // import des types
 import type { MapInfoType, PointType } from "../../../../utils/types/mapTypes";
 import type { Language } from "../../../../utils/types/languageTypes";
@@ -48,10 +49,11 @@ const getLocationOptions = (
 			getAllLocationsFromPoints(allPoints, label);
 
 		// formattage des options pour le select
-		return allLocationsFromPoints
+		const sortedAllLocationsOptions = allLocationsFromPoints
 			.map((option) => ({
 				value: option[value],
 				label: option[label],
+				isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 			}))
 			.sort((option1, option2) =>
 				option1.label < option2.label
@@ -60,6 +62,9 @@ const getLocationOptions = (
 						? 1
 						: 0,
 			);
+		useMapFilterOptionsStore
+			.getState()
+			.setInitialLocationOptions(sortedAllLocationsOptions);
 	}
 	return [];
 };
@@ -121,7 +126,7 @@ const getSourceMaterialOptions = (
 	return [];
 };
 
-const getGenderOptions = (
+const getAgentGenderOptions = (
 	mapInfos: MapInfoType | null,
 	allPoints: PointType[],
 ) => {
@@ -156,6 +161,6 @@ export {
 	getAgentStatusOptions,
 	getAgentivityOptions,
 	getSourceMaterialOptions,
-	getGenderOptions,
+	getAgentGenderOptions,
 	getElementNbOptions,
 };
