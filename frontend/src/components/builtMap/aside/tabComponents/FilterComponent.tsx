@@ -237,7 +237,11 @@ const FilterComponent = () => {
 									<MultiSelectFilterComponent
 										styles={singleSelectInLineStyle}
 										key={filter.id}
-										optionsArray={initialAgentActivityOptions}
+										optionsArray={
+											hasFilteredPoints
+												? filteredAgentActivityOptions
+												: initialAgentActivityOptions
+										}
 										setValues={setAgentActivityValues}
 										userFilterId="agentActivityId"
 										placeholder={

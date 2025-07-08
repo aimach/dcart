@@ -695,6 +695,7 @@ const getAllAgentActivityFromPoints = (
 	points: PointType[],
 	language: Language,
 ) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allAgentActivity: Record<string, string>[] = [];
 	const activityIds = new Set<string>();
 
@@ -725,12 +726,32 @@ const getAllAgentActivityFromPoints = (
 		.map((option) => ({
 			value: option.id,
 			label: option[`nom_${language}`],
-			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
-	useMapFilterOptionsStore
-		.getState()
-		.setInitialAgentActivityOptions(sortedAllAgentActivity);
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialAgentActivityOptions =
+			filterOptionsStore.initialAgentActivityOptions;
+
+		const agentActivityOptionsWithDisabled = initialAgentActivityOptions.map(
+			(option) => {
+				const isDisabled = !sortedAllAgentActivity.some(
+					(initialOption) =>
+						initialOption.value === option.value &&
+						initialOption.label === option.label,
+				);
+				return {
+					...option,
+					isDisabled,
+				};
+			},
+		);
+		filterOptionsStore.setFilteredAgentActivityOptions(
+			agentActivityOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialAgentActivityOptions(sortedAllAgentActivity);
+	}
 };
 
 /**
