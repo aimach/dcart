@@ -995,6 +995,7 @@ const getAllSourceMaterialFromPoints = (
  * @returns {Record<string, string>[]} - Le tableau des options des genres
  */
 const getAllAgentGenderFromPoints = (points: PointType[]) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allAgentGender: Record<string, string>[] = [];
 	const gender = new Set<string>();
 
@@ -1023,9 +1024,23 @@ const getAllAgentGenderFromPoints = (points: PointType[]) => {
 	const allAgentGenderOptions = allAgentGender.map((status) =>
 		status.nom_en.toLowerCase(),
 	);
-	useMapFilterOptionsStore
-		.getState()
-		.setInitialAgentGenderOptions(allAgentGenderOptions);
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialAgentGenderOptions =
+			filterOptionsStore.initialAgentGenderOptions;
+
+		const agentGenderOptionsWithDisabled = initialAgentGenderOptions.filter(
+			(initialOption) =>
+				allAgentGenderOptions.some(
+					(filteredOption) => filteredOption === initialOption,
+				),
+		);
+		filterOptionsStore.setInitialAgentGenderOptions(
+			agentGenderOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialAgentGenderOptions(allAgentGenderOptions);
+	}
 };
 
 /**

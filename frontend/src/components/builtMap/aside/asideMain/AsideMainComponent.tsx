@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useEffect } from "react";
 // import des composants
 import ResultComponent from "../tabComponents/ResultComponent";
 import FilterComponent from "../tabComponents/FilterComponent";
@@ -17,12 +17,10 @@ import {
 	getAgentGenderOptions,
 	getAgentivityOptions,
 	getAgentStatusOptions,
-	getElementNbOptions,
 	getLocationOptions,
 	getSourceMaterialOptions,
 	getSourceTypeOptions,
 } from "./AsideMainComponentUtils";
-import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 // import du style
 import style from "./asideMainComponent.module.scss";
 
