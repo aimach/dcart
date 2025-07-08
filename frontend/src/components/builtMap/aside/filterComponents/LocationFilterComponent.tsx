@@ -11,7 +11,6 @@ import {
 	getSelectDefaultValues,
 } from "../../../../utils/functions/filter";
 // import des types
-import type { OptionType } from "../../../../utils/types/commonTypes";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
@@ -35,7 +34,9 @@ const LocationFilterComponent = ({
 		useShallow((state) => state),
 	);
 
-	const { initialLocationOptions } = useMapFilterOptionsStore();
+	const { hasFilteredPoints, initialLocationOptions, filteredLocationOptions } =
+		useMapFilterOptionsStore();
+	console.log({ hasFilteredPoints, filteredLocationOptions });
 
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {
@@ -50,10 +51,13 @@ const LocationFilterComponent = ({
 			<Select
 				styles={singleSelectInLineStyle}
 				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-				options={initialLocationOptions}
+				options={
+					hasFilteredPoints ? filteredLocationOptions : initialLocationOptions
+				}
 				defaultValue={getDefaultValues}
 				delimiter="|"
 				isMulti
+				isOptionDisabled={(option) => option.isDisabled === true}
 				onChange={(newValue) =>
 					onMultiSelectChange(
 						newValue,

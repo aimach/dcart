@@ -33,6 +33,7 @@ const getLocationOptions = (
 	allPoints: PointType[],
 	language: Language,
 ) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const locationFilter = isSelectedFilterInThisMap(mapInfos, "location");
 	if (locationFilter) {
 		// récupération de toutes les localités depuis la liste des points
@@ -53,7 +54,6 @@ const getLocationOptions = (
 			.map((option) => ({
 				value: option[value],
 				label: option[label],
-				isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 			}))
 			.sort((option1, option2) =>
 				option1.label < option2.label
@@ -62,9 +62,30 @@ const getLocationOptions = (
 						? 1
 						: 0,
 			);
-		useMapFilterOptionsStore
-			.getState()
-			.setInitialLocationOptions(sortedAllLocationsOptions);
+
+		if (filterOptionsStore.hasFilteredPoints) {
+			// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+			const initialLocationOptions = filterOptionsStore.initialLocationOptions;
+
+			const locationOptionsWithDisabled = initialLocationOptions.map(
+				(option) => {
+					const isDisabled = !sortedAllLocationsOptions.some(
+						(initialOption) =>
+							initialOption.value === option.value &&
+							initialOption.label === option.label,
+					);
+					return {
+						...option,
+						isDisabled,
+					};
+				},
+			);
+			filterOptionsStore.setFilteredLocationOptions(
+				locationOptionsWithDisabled,
+			);
+		} else {
+			filterOptionsStore.setInitialLocationOptions(sortedAllLocationsOptions);
+		}
 	}
 	return [];
 };

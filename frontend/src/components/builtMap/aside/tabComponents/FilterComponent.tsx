@@ -24,6 +24,7 @@ import type { OptionType } from "../../../../utils/types/commonTypes";
 import style from "./tabComponent.module.scss";
 import { resetAllFilterRemindersValues } from "../../../../utils/functions/filter";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 /**
  * Affiche les filtres de la carte
@@ -59,11 +60,18 @@ const FilterComponent = () => {
 		setGenderValues,
 	} = useMapFiltersStore(useShallow((state) => state));
 	const {
+		hasFilteredPoints,
+		setHasFilteredPoints,
 		initialSourceTypeOptions,
 		initialAgentActivityOptions,
 		initialAgentStatusOptions,
 		initialAgentivityOptions,
 		initialSourceMaterialOptions,
+		filteredSourceTypeOptions,
+		filteredAgentActivityOptions,
+		filteredAgentStatusOptions,
+		filteredAgentivityOptions,
+		filteredSourceMaterialOptions,
 	} = useMapFilterOptionsStore();
 
 	// initiation d'états pour récupérer les valeurs des lieux et éléments
@@ -98,6 +106,7 @@ const FilterComponent = () => {
 	// fonction pour gérer le clic sur le bouton de filtre
 	const handleFilterButton = () => {
 		fetchAllPoints("filter");
+		setHasFilteredPoints(true);
 		setLocationNames(locationNameValues);
 		setElementNames(elementNameValues);
 		const sourceTypeWithoutCategory = sourceTypeValues.map(
@@ -122,6 +131,7 @@ const FilterComponent = () => {
 	// fonction pour gérer le reset des filtres
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	const resetFilters = useCallback(() => {
+		setHasFilteredPoints(false);
 		resetUserFilters();
 		setIsReset(!isReset);
 		// on recharge les points de la carte
@@ -151,6 +161,8 @@ const FilterComponent = () => {
 			resetLanguageValues,
 		);
 	}, [isReset]);
+
+	console.log(hasFilteredPoints);
 
 	return (
 		<div className={style.resultContainer}>
@@ -204,8 +216,13 @@ const FilterComponent = () => {
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.sourceType}</h4>
 									<MultiSelectFilterComponent
+										styles={singleSelectInLineStyle}
 										key={filter.id}
-										optionsArray={initialSourceTypeOptions}
+										optionsArray={
+											hasFilteredPoints
+												? filteredSourceTypeOptions
+												: initialSourceTypeOptions
+										}
 										setValues={setSourceTypeValues}
 										userFilterId="sourceTypeId"
 										placeholder={
@@ -220,6 +237,7 @@ const FilterComponent = () => {
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.agentActivity}</h4>
 									<MultiSelectFilterComponent
+										styles={singleSelectInLineStyle}
 										key={filter.id}
 										optionsArray={initialAgentActivityOptions}
 										setValues={setAgentActivityValues}
@@ -244,6 +262,7 @@ const FilterComponent = () => {
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.agentStatus}</h4>
 									<MultiSelectFilterComponent
+										styles={singleSelectInLineStyle}
 										key={filter.id}
 										optionsArray={initialAgentStatusOptions}
 										setValues={setAgentStatusValues}
@@ -260,6 +279,7 @@ const FilterComponent = () => {
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.agentivity}</h4>
 									<MultiSelectFilterComponent
+										styles={singleSelectInLineStyle}
 										key={filter.id}
 										optionsArray={initialAgentivityOptions}
 										setValues={setAgentivityValues}
@@ -276,6 +296,7 @@ const FilterComponent = () => {
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.sourceMaterial}</h4>
 									<MultiSelectFilterComponent
+										styles={singleSelectInLineStyle}
 										key={filter.id}
 										optionsArray={initialSourceMaterialOptions}
 										setValues={setSourceMaterialValues}

@@ -40,11 +40,11 @@ const singleSelectInLineStyle = {
 	}),
 	option: (
 		base: CSSObjectWithLabel,
-		{ isFocused }: { isFocused: boolean },
+		{ isFocused, isDisabled }: { isFocused: boolean; isDisabled: boolean },
 	) => ({
 		...base,
-		backgroundColor: isFocused ? "#DED6CE" : "white",
-		color: "#251F18",
+		backgroundColor: isFocused ? "#DED6CE" : isDisabled ? undefined : "white",
+		color: isDisabled ? "#ccc" : "#251F18",
 		":active": {
 			backgroundColor: "#AD9A85",
 		},

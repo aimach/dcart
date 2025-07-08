@@ -599,8 +599,10 @@ const getAllSourceTypeFromPoints = (
 	points: PointType[],
 	language: Language,
 ) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allSourceTypes: Record<string, string>[] = [];
 	const sourceTypes = new Set<string>();
+
 	points.map((point) => {
 		point.sources.map((source) => {
 			const typeSourceArray = source.types[`type_source_${language}`];
@@ -633,12 +635,33 @@ const getAllSourceTypeFromPoints = (
 		.map((option) => ({
 			value: option.type_fr,
 			label: option.label,
-			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
+			isDisabled: filterOptionsStore.hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
-	useMapFilterOptionsStore
-		.getState()
-		.setInitialSourceTypeOptions(sortedAllSourceTypes);
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialSourceTypeOptions =
+			filterOptionsStore.initialSourceTypeOptions;
+
+		const sourceTypeOptionsWithDisabled = initialSourceTypeOptions.map(
+			(option) => {
+				const isDisabled = !sortedAllSourceTypes.some(
+					(initialOption) =>
+						initialOption.value === option.value &&
+						initialOption.label === option.label,
+				);
+				return {
+					...option,
+					isDisabled,
+				};
+			},
+		);
+		filterOptionsStore.setFilteredSourceTypeOptions(
+			sourceTypeOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialSourceTypeOptions(sortedAllSourceTypes);
+	}
 };
 
 /**
