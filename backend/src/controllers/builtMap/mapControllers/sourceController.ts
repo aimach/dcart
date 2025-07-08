@@ -406,7 +406,11 @@ export const sourceController = {
 						}
 
 						// on filtre si agentGender est présent pour enlever les agents null
-						if (agentGender) {
+						const isAgentGenderFilter =
+							agentGender &&
+							(agentGender.male || agentGender.female || agentGender.nonBinary);
+						if (isAgentGenderFilter) {
+							// au moins un genre est sélectionné
 							filteredResults = filteredResults
 								.map((point: PointType) => {
 									const filteredSources = point.sources
