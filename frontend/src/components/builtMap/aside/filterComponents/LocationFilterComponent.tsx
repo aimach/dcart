@@ -36,7 +36,6 @@ const LocationFilterComponent = ({
 
 	const { hasFilteredPoints, initialLocationOptions, filteredLocationOptions } =
 		useMapFilterOptionsStore();
-	console.log({ hasFilteredPoints, filteredLocationOptions });
 
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {

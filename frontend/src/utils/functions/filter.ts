@@ -559,6 +559,7 @@ const getElementOptions = async (
 	allPoints: PointType[],
 	language: Language,
 	isWithoutTheonym: boolean,
+	isForBackoffice: boolean = false,
 ) => {
 	// récupération des divinités de la BDD MAP
 	const allDivinities = await getAllDivinities();
@@ -585,6 +586,9 @@ const getElementOptions = async (
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
 
+	if (isForBackoffice) {
+		return formatedElementOptions;
+	}
 	useMapFilterOptionsStore
 		.getState()
 		.setInitialElementOptions(formatedElementOptions);

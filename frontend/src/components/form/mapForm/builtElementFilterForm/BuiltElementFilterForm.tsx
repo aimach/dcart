@@ -20,6 +20,8 @@ import {
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
+import { set } from "react-hook-form";
+import { Op } from "quill";
 
 const BuiltElementFilterForm = () => {
 	const { translation, language } = useTranslation();
@@ -49,9 +51,9 @@ const BuiltElementFilterForm = () => {
 					allPoints,
 					language,
 					false,
-					false,
+					true, // isForBackoffice
 				);
-				setElementOptions(allElementsOptions);
+				setElementOptions(allElementsOptions as OptionType[]);
 			};
 			getElementsOptionsByAttestationIds();
 		}

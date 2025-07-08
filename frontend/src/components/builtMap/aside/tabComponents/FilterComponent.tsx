@@ -162,8 +162,6 @@ const FilterComponent = () => {
 		);
 	}, [isReset]);
 
-	console.log(hasFilteredPoints);
-
 	return (
 		<div className={style.resultContainer}>
 			<div>
