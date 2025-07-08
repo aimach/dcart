@@ -16,6 +16,7 @@ import {
 	getAgentActivityOptions,
 	getAgentivityOptions,
 	getAgentStatusOptions,
+	getElementNbOptions,
 	getGenderOptions,
 	getLocationOptions,
 	getSourceMaterialOptions,
@@ -110,7 +111,7 @@ const AsideMainComponent = () => {
 		}
 	}, [mapInfos, allPoints]);
 
-	// calcul des bornes temporelles pour le filtre de temps (évite de les recalculer à chaque re-render)
+	// calcul des bornes min et max pour le filtre de temps (évite de les recalculer à chaque re-render)
 	const timeBoundsRef = useRef(null as { min: number; max: number } | null);
 	useEffect(() => {
 		if (!mapInfos || !allPoints) return;
@@ -119,6 +120,16 @@ const AsideMainComponent = () => {
 			timeBoundsRef.current = { min, max };
 		}
 	}, [allPoints, mapInfos]);
+
+	// calcul des bornes min et max pour le filtre nombre d'éléments (évite de les recalculer à chaque re-render)
+	const elementNbOptions = useMemo(() => {
+		if (!mapInfos || !allPoints) return null;
+		if (allPoints.length > 0) {
+			const { min, max } = getMinAndMaxElementNumbers(allPoints);
+			return { min, max };
+		}
+		return { min: 0, max: 0 };
+	}, [mapInfos, allPoints]);
 
 	// définition du composant à rendre
 	switch (selectedTabMenu) {
@@ -135,6 +146,7 @@ const AsideMainComponent = () => {
 					agentivityOptions={agentivityOptions}
 					sourceMaterialOptions={sourceMaterialOptions}
 					agentGenderOptions={agentGenderOptions}
+					elementNbOptions={elementNbOptions}
 					timeBoundsRef={timeBoundsRef}
 				/>
 			);

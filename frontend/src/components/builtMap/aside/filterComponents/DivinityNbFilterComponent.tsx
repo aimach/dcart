@@ -6,12 +6,16 @@ import { useShallow } from "zustand/shallow";
 
 type DivinityNbComponentProps = {
 	timeBoundsRef: React.MutableRefObject<{ min: number; max: number } | null>;
+	elementNbOptions: { min: number; max: number };
 };
 
 /**
  * Composant de filtre pour les langues (grec, sémitique)
  */
-const DivinityNbComponent = ({ timeBoundsRef }: DivinityNbComponentProps) => {
+const DivinityNbComponent = ({
+	timeBoundsRef,
+	elementNbOptions,
+}: DivinityNbComponentProps) => {
 	// récupération des données des filtres depuis le store
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),

@@ -7,6 +7,7 @@ import {
 	getAllLocationsFromPoints,
 	getAllSourceMaterialFromPoints,
 	getAllSourceTypeFromPoints,
+	getMinAndMaxElementNb,
 	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
 // import des types
@@ -134,6 +135,20 @@ const getGenderOptions = (
 	return [];
 };
 
+const getElementNbOptions = (
+	mapInfos: MapInfoType | null,
+	allPoints: PointType[],
+) => {
+	const sourceMaterialFilter = isSelectedFilterInThisMap(
+		mapInfos,
+		"divinityNb",
+	);
+	if (sourceMaterialFilter) {
+		return getMinAndMaxElementNb(allPoints);
+	}
+	return [];
+};
+
 export {
 	getSourceTypeOptions,
 	getLocationOptions,
@@ -142,4 +157,5 @@ export {
 	getAgentivityOptions,
 	getSourceMaterialOptions,
 	getGenderOptions,
+	getElementNbOptions,
 };

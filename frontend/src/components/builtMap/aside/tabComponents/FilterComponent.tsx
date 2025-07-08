@@ -33,6 +33,7 @@ interface FilterComponentProps {
 	agentivityOptions: OptionType[];
 	sourceMaterialOptions: OptionType[];
 	agentGenderOptions: string[];
+	elementNbOptions: { min: number; max: number };
 	timeBoundsRef: React.MutableRefObject<{
 		min: number;
 		max: number;
@@ -49,7 +50,8 @@ interface FilterComponentProps {
  * @param {OptionType[]} props.agentStatusOptions - Liste des statuts des agents pour le filtre des activités
  * @param {OptionType[]} props.agentivityOptions - Liste des statuts des agents pour le filtre des activités
  * @param {OptionType[]} props.sourceMaterialOptions - Liste des supports des sources pour le filtre des activités
- * @param {OptionType[]} props.agentGenderOptions - Liste des genre des agents pour le filtre des activités
+ * @param {string[]} props.agentGenderOptions - Liste des genre des agents pour le filtre des activités
+ * @param {{min: number, max: number}} props.elementNbOptions - Min et max des nombres d'éléments pour le filtre du
  * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
  */
 const FilterComponent = ({
@@ -61,6 +63,7 @@ const FilterComponent = ({
 	agentivityOptions,
 	sourceMaterialOptions,
 	agentGenderOptions,
+	elementNbOptions,
 	timeBoundsRef,
 }: FilterComponentProps) => {
 	// récupération des données de traduction
@@ -216,6 +219,7 @@ const FilterComponent = ({
 									<DivinityNbComponent
 										key={filter.id}
 										timeBoundsRef={timeBoundsRef}
+										elementNbOptions={elementNbOptions}
 									/>
 								</div>
 							);

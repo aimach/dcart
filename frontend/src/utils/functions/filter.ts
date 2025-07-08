@@ -868,6 +868,34 @@ const getAllAgentGenderFromPoints = (points: PointType[]) => {
 };
 
 /**
+ * Fonction qui renvoie le min et le max d'éléments d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des genres
+ */
+const getMinAndMaxElementNb = (points: PointType[]) => {
+	let min = 0;
+	let max = 0;
+
+	for (const point of points) {
+		for (const sources of point.sources) {
+			for (const attestations of sources.attestations) {
+				if (attestations.elements && attestations.elements.length > 0) {
+					const elementsArrayLength = attestations.elements.length;
+					if (elementsArrayLength < min) {
+						min = elementsArrayLength;
+					}
+					if (elementsArrayLength > max) {
+						max = elementsArrayLength;
+					}
+				}
+			}
+		}
+	}
+	return { min, max };
+};
+
+/**
  * Fonction qui renvoie un booléen pour savoir si le filtre est sélectionné dans la carte
  * @param mapInfos - les infos de la carte
  * @param filterName - le nom du filtre
@@ -940,4 +968,5 @@ export {
 	isInList,
 	resetAllFilterRemindersValues,
 	getAllAgentGenderFromPoints,
+	getMinAndMaxElementNb,
 };
