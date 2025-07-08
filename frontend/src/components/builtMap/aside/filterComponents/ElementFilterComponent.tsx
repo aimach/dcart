@@ -56,16 +56,18 @@ const ElementFilterComponent = ({
 		mapInfos?.filterMapContent?.find(
 			(filter) => filter.filter.type === "element",
 		)?.options ?? null;
-
 	// biome-ignore lint/correctness/useExhaustiveDependencies: volontairement stricte pour éviter les re-renders inutiles
 	const optionsWithoutNotSelectedIds = useMemo(() => {
 		if (!filterOptions?.checkbox) return [];
 		return filterOptions.checkbox
 			.map((option) => {
-				if (!isInList(initialElementOptions, option.firstLevelIds[0]))
-					return null;
-				const secondLevelIdsWithFilteredElements = option.secondLevelIds.filter(
-					(secondOption) => isInList(initialElementOptions, secondOption),
+				if (!isInList(filteredElementOptions, option.firstLevelIds[0]))
+					return { ...option, isDisabled: true };
+				const secondLevelIdsWithFilteredElements = option.secondLevelIds.map(
+					(secondOption) =>
+						isInList(filteredElementOptions, secondOption)
+							? secondOption
+							: { ...secondOption, isDisabled: true },
 				);
 				return {
 					firstLevelIds: option.firstLevelIds,
@@ -73,7 +75,7 @@ const ElementFilterComponent = ({
 				};
 			})
 			.filter((option) => option !== null && option !== undefined);
-	}, [elementNames, initialElementOptions]);
+	}, [elementNames, filteredElementOptions]);
 
 	if (filterOptions) {
 		switch (filterOptions.solution) {

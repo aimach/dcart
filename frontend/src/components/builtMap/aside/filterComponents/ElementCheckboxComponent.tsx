@@ -156,6 +156,11 @@ const ElementCheckboxComponent = ({
 					onChange={() => {
 						toggleFirstLevel(options.firstLevelIds[0]);
 					}}
+					disabled={
+						!options.firstLevelIds[0].isDisabled
+						// &&
+						// !options.secondLevelIds.some((option) => option.isDisabled)
+					}
 				/>
 				<strong>{options.firstLevelIds[0].label}</strong>
 			</label>

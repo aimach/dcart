@@ -524,6 +524,8 @@ const displayFiltersTags = (
  * @returns {min: number, max: number} - Un objet contenant le minimum et le maximum
  */
 const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
+
 	let min = 20;
 	let max = 0;
 	for (const point of allPoints) {
@@ -546,7 +548,10 @@ const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
 			}
 		}
 	}
-	useMapFilterOptionsStore.getState().setInitialElementNbOptions({ min, max });
+	if (!filterOptionsStore.hasFilteredPoints) {
+		// pas besoin de stocker la valeur si des points sont filtrés
+		filterOptionsStore.setInitialElementNbOptions({ min, max });
+	}
 };
 
 /**
@@ -1094,7 +1099,9 @@ const isSelectedFilterInThisMap = (
  */
 const isInList = (list: OptionType[], target: OptionType) =>
 	list.some((item) =>
-		Object.keys(target).every((key) => item[key] === target[key]),
+		Object.keys(target).every(
+			(key) => !item.isDisabled && item[key] === target[key],
+		),
 	);
 
 const resetAllFilterRemindersValues = (
