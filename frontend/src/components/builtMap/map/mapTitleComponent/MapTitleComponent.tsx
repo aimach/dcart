@@ -76,6 +76,7 @@ const MapTitleComponent = ({
 
 		fetchAllPoints("reset");
 		resetUserFilters();
+		// isReset déclenche le useEffect dans FilterComponent pour réinitialiser les valeurs des rappels des filtres
 		setIsReset(!isReset);
 	};
 
