@@ -32,6 +32,7 @@ interface FilterComponentProps {
 	agentStatusOptions: OptionType[];
 	agentivityOptions: OptionType[];
 	sourceMaterialOptions: OptionType[];
+	agentGenderOptions: string[];
 	timeBoundsRef: React.MutableRefObject<{
 		min: number;
 		max: number;
@@ -48,6 +49,7 @@ interface FilterComponentProps {
  * @param {OptionType[]} props.agentStatusOptions - Liste des statuts des agents pour le filtre des activités
  * @param {OptionType[]} props.agentivityOptions - Liste des statuts des agents pour le filtre des activités
  * @param {OptionType[]} props.sourceMaterialOptions - Liste des supports des sources pour le filtre des activités
+ * @param {OptionType[]} props.agentGenderOptions - Liste des genre des agents pour le filtre des activités
  * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
  */
 const FilterComponent = ({
@@ -58,6 +60,7 @@ const FilterComponent = ({
 	agentStatusOptions,
 	agentivityOptions,
 	sourceMaterialOptions,
+	agentGenderOptions,
 	timeBoundsRef,
 }: FilterComponentProps) => {
 	// récupération des données de traduction
@@ -261,7 +264,9 @@ const FilterComponent = ({
 							return (
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.agentGender}</h4>
-									<AgentGenderFilterComponent />
+									<AgentGenderFilterComponent
+										agentGenderOptions={agentGenderOptions}
+									/>
 								</div>
 							);
 						}

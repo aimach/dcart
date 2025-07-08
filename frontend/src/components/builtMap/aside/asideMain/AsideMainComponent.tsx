@@ -10,15 +10,17 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import {
 	fetchElementOptions,
-	getAllAgentActivityFromPoints,
-	getAllAgentivityFromPoints,
-	getAllAgentStatusFromPoints,
-	getAllLocationsFromPoints,
-	getAllSourceMaterialFromPoints,
-	getAllSourceTypeFromPoints,
 	getMinAndMaxElementNumbers,
-	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
+import {
+	getAgentActivityOptions,
+	getAgentivityOptions,
+	getAgentStatusOptions,
+	getGenderOptions,
+	getLocationOptions,
+	getSourceMaterialOptions,
+	getSourceTypeOptions,
+} from "./AsideMainComponentUtils";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
@@ -40,51 +42,18 @@ const AsideMainComponent = () => {
 
 	// --- RECUPERATION DES OPTIONS DES TYPES DE SOURCE POUR LES FILTRES
 	let sourceTypeOptions: OptionType[] = [];
-
-	sourceTypeOptions = useMemo(() => {
-		const sourceTypeFilter = isSelectedFilterInThisMap(mapInfos, "sourceType");
-		if (sourceTypeFilter) {
-			// récupération de toutes les sources depuis la liste des points
-			return getAllSourceTypeFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
+	sourceTypeOptions = useMemo(
+		() => getSourceTypeOptions(mapInfos, allPoints, language),
+		[mapInfos, allPoints, language],
+	);
 
 	// --- RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
 	let locationOptions: OptionType[] = [];
 	// si le filtre de localisation est activé, utilisation du hook useMemo
-	locationOptions = useMemo(() => {
-		const locationFilter = isSelectedFilterInThisMap(mapInfos, "location");
-		if (locationFilter) {
-			// récupération de toutes les localités depuis la liste des points
-			let value = "grande_region_id";
-			let label = `grande_region_${language}`;
-			if (locationFilter.options?.solution === "subRegion") {
-				value = "sous_region_id";
-				label = `sous_region_${language}`;
-			} else if (locationFilter.options?.solution === "location") {
-				value = "nom_ville";
-				label = "nom_ville";
-			}
-			const allLocationsFromPoints: Record<string, string>[] =
-				getAllLocationsFromPoints(allPoints, label);
-
-			// formattage des options pour le select
-			return allLocationsFromPoints
-				.map((option) => ({
-					value: option[value],
-					label: option[label],
-				}))
-				.sort((option1, option2) =>
-					option1.label < option2.label
-						? -1
-						: option1.label > option2.label
-							? 1
-							: 0,
-				);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
+	locationOptions = useMemo(
+		() => getLocationOptions(mapInfos, allPoints, language),
+		[mapInfos, allPoints, language],
+	);
 
 	// --- RECUPERATION DES OPTIONS D'ELEMENTS POUR LES FILTRES
 	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
@@ -98,49 +67,34 @@ const AsideMainComponent = () => {
 	};
 
 	// --- RECUPERATION DES OPTIONS ACTIVITES D'AGENTS POUR LES FILTRES
-	const agentActivityOptions = useMemo(() => {
-		const agentActivityFilter = isSelectedFilterInThisMap(
-			mapInfos,
-			"agentActivity",
-		);
-		if (agentActivityFilter) {
-			return getAllAgentActivityFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
+	const agentActivityOptions = useMemo(
+		() => getAgentActivityOptions(mapInfos, allPoints, language),
+		[mapInfos, allPoints, language],
+	);
 
 	// --- RECUPERATION DES OPTIONS STATUTS D'AGENTS POUR LES FILTRES
-	const agentStatusOptions = useMemo(() => {
-		const agentActivityFilter = isSelectedFilterInThisMap(
-			mapInfos,
-			"agentStatus",
-		);
-		if (agentActivityFilter) {
-			return getAllAgentStatusFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
+	const agentStatusOptions = useMemo(
+		() => getAgentStatusOptions(mapInfos, allPoints, language),
+		[mapInfos, allPoints, language],
+	);
 
 	// --- RECUPERATION DES OPTIONS AGENTIVITÉ POUR LES FILTRES
-	const agentivityOptions = useMemo(() => {
-		const agentivityFilter = isSelectedFilterInThisMap(mapInfos, "agentivity");
-		if (agentivityFilter) {
-			return getAllAgentivityFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
+	const agentivityOptions = useMemo(
+		() => getAgentivityOptions(mapInfos, allPoints, language),
+		[mapInfos, allPoints, language],
+	);
 
 	// --- RECUPERATION DES OPTIONS SUPPORTS DE SOURCE POUR LES FILTRES
-	const sourceMaterialOptions = useMemo(() => {
-		const sourceMaterialFilter = isSelectedFilterInThisMap(
-			mapInfos,
-			"sourceMaterial",
-		);
-		if (sourceMaterialFilter) {
-			return getAllSourceMaterialFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
+	const sourceMaterialOptions = useMemo(
+		() => getSourceMaterialOptions(mapInfos, allPoints, language),
+		[mapInfos, allPoints, language],
+	);
+
+	// --- RECUPERATION DES OPTIONS GENRE DE L'AGENT POUR LES FILTRES
+	const agentGenderOptions = useMemo(
+		() => getGenderOptions(mapInfos, allPoints),
+		[mapInfos, allPoints],
+	);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
@@ -180,6 +134,7 @@ const AsideMainComponent = () => {
 					agentStatusOptions={agentStatusOptions}
 					agentivityOptions={agentivityOptions}
 					sourceMaterialOptions={sourceMaterialOptions}
+					agentGenderOptions={agentGenderOptions}
 					timeBoundsRef={timeBoundsRef}
 				/>
 			);

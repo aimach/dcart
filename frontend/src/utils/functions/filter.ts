@@ -18,6 +18,7 @@ import type {
 import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
+import { all } from "axios";
 
 /**
  * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
@@ -832,6 +833,41 @@ const getAllSourceMaterialFromPoints = (
 };
 
 /**
+ * Fonction qui renvoie toutes les genres des agents d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des genres
+ */
+const getAllAgentGenderFromPoints = (points: PointType[]) => {
+	const allAgentGender: Record<string, string>[] = [];
+	const gender = new Set<string>();
+
+	for (const point of points) {
+		for (const sources of point.sources) {
+			for (const attestations of sources.attestations) {
+				if (attestations.agents && attestations.agents.length > 0) {
+					for (const agent of attestations.agents) {
+						if (!agent.genres) continue;
+						for (const genreObject of agent.genres) {
+							const genreFr = genreObject.nom_fr;
+							const genreEn = genreObject.nom_en;
+							if (gender.has(genreFr)) continue;
+							gender.add(genreFr);
+							allAgentGender.push({
+								nom_fr: genreFr,
+								nom_en: genreEn,
+							});
+						}
+					}
+				}
+			}
+		}
+	}
+	// formattage des options pour le select
+	return allAgentGender.map((status) => status.nom_en.toLowerCase());
+};
+
+/**
  * Fonction qui renvoie un booléen pour savoir si le filtre est sélectionné dans la carte
  * @param mapInfos - les infos de la carte
  * @param filterName - le nom du filtre
@@ -903,4 +939,5 @@ export {
 	getAllSourceMaterialFromPoints,
 	isInList,
 	resetAllFilterRemindersValues,
+	getAllAgentGenderFromPoints,
 };
