@@ -559,8 +559,10 @@ const getElementOptions = async (
 	allPoints: PointType[],
 	language: Language,
 	isWithoutTheonym: boolean,
-	isForBackoffice: boolean = false,
+	isForBackoffice = false,
 ) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
+
 	// récupération des divinités de la BDD MAP
 	const allDivinities = await getAllDivinities();
 
@@ -582,16 +584,31 @@ const getElementOptions = async (
 		.map((option) => ({
 			value: option.element_id,
 			label: `${option[`element_nom_${language}`]} (${option.etat_absolu})`,
-			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
 
 	if (isForBackoffice) {
 		return formatedElementOptions;
 	}
-	useMapFilterOptionsStore
-		.getState()
-		.setInitialElementOptions(formatedElementOptions);
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialElementOptions = filterOptionsStore.initialElementOptions;
+
+		const elementOptionsWithDisabled = initialElementOptions.map((option) => {
+			const isDisabled = !formatedElementOptions.some(
+				(initialOption) =>
+					initialOption.value === option.value &&
+					initialOption.label === option.label,
+			);
+			return {
+				...option,
+				isDisabled,
+			};
+		});
+		filterOptionsStore.setFilteredElementOptions(elementOptionsWithDisabled);
+	} else {
+		filterOptionsStore.setInitialElementOptions(formatedElementOptions);
+	}
 };
 
 /**

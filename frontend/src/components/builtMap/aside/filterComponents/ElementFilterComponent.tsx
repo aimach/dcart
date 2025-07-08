@@ -41,7 +41,8 @@ const ElementFilterComponent = ({
 	const { userFilters, setUserFilters, isReset, elementNames } =
 		useMapFiltersStore(useShallow((state) => state));
 
-	const { initialElementOptions } = useMapFilterOptionsStore();
+	const { hasFilteredPoints, initialElementOptions, filteredElementOptions } =
+		useMapFilterOptionsStore();
 
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {
@@ -82,7 +83,11 @@ const ElementFilterComponent = ({
 						<Select
 							styles={singleSelectInLineStyle}
 							key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-							options={initialElementOptions}
+							options={
+								hasFilteredPoints
+									? filteredElementOptions
+									: initialElementOptions
+							}
 							defaultValue={getDefaultValues}
 							delimiter="|"
 							isMulti
