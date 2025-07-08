@@ -266,7 +266,11 @@ const FilterComponent = () => {
 									<MultiSelectFilterComponent
 										styles={singleSelectInLineStyle}
 										key={filter.id}
-										optionsArray={initialAgentStatusOptions}
+										optionsArray={
+											hasFilteredPoints
+												? filteredAgentStatusOptions
+												: initialAgentStatusOptions
+										}
 										setValues={setAgentStatusValues}
 										userFilterId="agentStatusName"
 										placeholder={
@@ -283,7 +287,11 @@ const FilterComponent = () => {
 									<MultiSelectFilterComponent
 										styles={singleSelectInLineStyle}
 										key={filter.id}
-										optionsArray={initialAgentivityOptions}
+										optionsArray={
+											hasFilteredPoints
+												? filteredAgentivityOptions
+												: initialAgentivityOptions
+										}
 										setValues={setAgentivityValues}
 										userFilterId="agentivityName"
 										placeholder={
@@ -300,7 +308,11 @@ const FilterComponent = () => {
 									<MultiSelectFilterComponent
 										styles={singleSelectInLineStyle}
 										key={filter.id}
-										optionsArray={initialSourceMaterialOptions}
+										optionsArray={
+											hasFilteredPoints
+												? filteredSourceMaterialOptions
+												: initialSourceMaterialOptions
+										}
 										setValues={setSourceMaterialValues}
 										userFilterId="sourceMaterialName"
 										placeholder={

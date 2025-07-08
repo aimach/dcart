@@ -665,14 +665,14 @@ const getAllSourceTypeFromPoints = (
 			filterOptionsStore.initialSourceTypeOptions;
 
 		const sourceTypeOptionsWithDisabled = initialSourceTypeOptions.map(
-			(option) => {
+			(initialOption) => {
 				const isDisabled = !sortedAllSourceTypes.some(
-					(initialOption) =>
-						initialOption.value === option.value &&
-						initialOption.label === option.label,
+					(filteredOption) =>
+						filteredOption.value === initialOption.value &&
+						filteredOption.label === initialOption.label,
 				);
 				return {
-					...option,
+					...initialOption,
 					isDisabled,
 				};
 			},
@@ -801,6 +801,7 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
  * @returns {Record<string, string>[]} - Le tableau des options des statuts
  */
 const getAllAgentStatusFromPoints = (points: PointType[], language: string) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allAgentStatus: Record<string, string>[] = [];
 	const status = new Set<string>();
 
@@ -831,9 +832,30 @@ const getAllAgentStatusFromPoints = (points: PointType[], language: string) => {
 			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
-	useMapFilterOptionsStore
-		.getState()
-		.setInitialAgentStatusOptions(sortedAllAgentStatus);
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialAgentStatusOptions =
+			filterOptionsStore.initialAgentStatusOptions;
+
+		const AgentStatusOptionsWithDisabled = initialAgentStatusOptions.map(
+			(initialOption) => {
+				const isDisabled = !sortedAllAgentStatus.some(
+					(filteredOption) =>
+						filteredOption.value === initialOption.value &&
+						filteredOption.label === initialOption.label,
+				);
+				return {
+					...initialOption,
+					isDisabled,
+				};
+			},
+		);
+		filterOptionsStore.setFilteredAgentStatusOptions(
+			AgentStatusOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialAgentStatusOptions(sortedAllAgentStatus);
+	}
 };
 
 /**
@@ -843,6 +865,7 @@ const getAllAgentStatusFromPoints = (points: PointType[], language: string) => {
  * @returns {Record<string, string>[]} - Le tableau des options des agentivités
  */
 const getAllAgentivityFromPoints = (points: PointType[], language: string) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allAgentivity: Record<string, string>[] = [];
 	const agentivities = new Set<string>();
 
@@ -868,13 +891,37 @@ const getAllAgentivityFromPoints = (points: PointType[], language: string) => {
 		}
 	}
 	// formattage des options pour le select
-	return allAgentivity
+	const sortedAllAgentivityOptions = allAgentivity
 		.map((agentivity) => ({
 			value: agentivity.nom_fr,
 			label: agentivity[`nom_${language}`],
 			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialAgentivityOptions =
+			filterOptionsStore.initialAgentivityOptions;
+
+		const AgentivityOptionsWithDisabled = initialAgentivityOptions.map(
+			(initialOption) => {
+				const isDisabled = !sortedAllAgentivityOptions.some(
+					(filteredOption) =>
+						filteredOption.value === initialOption.value &&
+						filteredOption.label === initialOption.label,
+				);
+				return {
+					...initialOption,
+					isDisabled,
+				};
+			},
+		);
+		filterOptionsStore.setFilteredAgentivityOptions(
+			AgentivityOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialAgentivityOptions(sortedAllAgentivityOptions);
+	}
 };
 
 /**
@@ -887,6 +934,7 @@ const getAllSourceMaterialFromPoints = (
 	points: PointType[],
 	language: string,
 ) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allSourceMaterial: Record<string, string>[] = [];
 	const sourceMaterials = new Set<string>();
 
@@ -910,13 +958,34 @@ const getAllSourceMaterialFromPoints = (
 		.map((material) => ({
 			value: material.nom_fr,
 			label: material.label,
-			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialSourceMaterialOptions =
+			filterOptionsStore.initialSourceMaterialOptions;
 
-	useMapFilterOptionsStore
-		.getState()
-		.setInitialSourceMaterialOptions(sortedAllSourceMaterialOptions);
+		const sourceMaterialOptionsWithDisabled = initialSourceMaterialOptions.map(
+			(initialOption) => {
+				const isDisabled = !sortedAllSourceMaterialOptions.some(
+					(filteredOption) =>
+						filteredOption.value === initialOption.value &&
+						filteredOption.label === initialOption.label,
+				);
+				return {
+					...initialOption,
+					isDisabled,
+				};
+			},
+		);
+		filterOptionsStore.setFilteredSourceMaterialOptions(
+			sourceMaterialOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialSourceMaterialOptions(
+			sortedAllSourceMaterialOptions,
+		);
+	}
 };
 
 /**
