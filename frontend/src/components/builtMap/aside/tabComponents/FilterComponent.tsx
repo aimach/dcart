@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useCallback, useState } from "react";
+import { useCallback, useEffect, useState } from "react";
 // import des composants
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
@@ -22,6 +22,7 @@ import { useShallow } from "zustand/shallow";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "./tabComponent.module.scss";
+import { resetAllFilterRemindersValues } from "../../../../utils/functions/filter";
 
 interface FilterComponentProps {
 	locationOptions: OptionType[];
@@ -146,15 +147,31 @@ const FilterComponent = ({
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
-		setLocationNameValues([]);
-		setElementNameValues([]);
-		setSourceTypeValues([]);
-		setAgentActivityValues([]);
-		setAgentStatusValues([]);
-		setAgentivityValues([]);
-		setSourceMaterialValues([]);
-		resetLanguageValues();
+		resetAllFilterRemindersValues(
+			setLocationNameValues,
+			setElementNameValues,
+			setSourceTypeValues,
+			setAgentActivityValues,
+			setAgentStatusValues,
+			setAgentivityValues,
+			setSourceMaterialValues,
+			resetLanguageValues,
+		);
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
+
+	// déclencher le reset des valeurs des rappels des filtres lorsque isReset change (permet d'utiliser le bouton de reset ailleurs)
+	useEffect(() => {
+		resetAllFilterRemindersValues(
+			setLocationNameValues,
+			setElementNameValues,
+			setSourceTypeValues,
+			setAgentActivityValues,
+			setAgentStatusValues,
+			setAgentivityValues,
+			setSourceMaterialValues,
+			resetLanguageValues,
+		);
+	}, [isReset]);
 
 	return (
 		<div className={style.resultContainer}>

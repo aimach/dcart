@@ -456,7 +456,6 @@ const displayFiltersTags = (
 		stringArray.push(
 			`${translationObject.common.in} ${locationNames.join(", ")}`,
 		);
-
 	// affichage des éléments
 	if (elementNames.length)
 		stringArray.push(
@@ -858,6 +857,26 @@ const isInList = (list: OptionType[], target: OptionType) =>
 		Object.keys(target).every((key) => item[key] === target[key]),
 	);
 
+const resetAllFilterRemindersValues = (
+	setLocationNameValues: (names: string[]) => void,
+	setElementNameValues: (names: string[]) => void,
+	setSourceTypeValues: (names: string[]) => void,
+	setAgentActivityValues: (names: string[]) => void,
+	setAgentStatusValues: (names: string[]) => void,
+	setAgentivityValues: (names: string[]) => void,
+	setSourceMaterialValues: (sourceMaterialName: string[]) => void,
+	resetLanguageValues: () => void,
+) => {
+	setLocationNameValues([]);
+	setElementNameValues([]);
+	setSourceTypeValues([]);
+	setAgentActivityValues([]);
+	setAgentStatusValues([]);
+	setAgentivityValues([]);
+	setSourceMaterialValues([]);
+	resetLanguageValues();
+};
+
 export {
 	alreadyTwoFiltersChecked,
 	createTimeOptions,
@@ -883,4 +902,5 @@ export {
 	getAllAgentivityFromPoints,
 	getAllSourceMaterialFromPoints,
 	isInList,
+	resetAllFilterRemindersValues,
 };
