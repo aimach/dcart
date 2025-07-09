@@ -1097,12 +1097,30 @@ const isSelectedFilterInThisMap = (
  * @param target - l'objet cible à vérifier
  * @returns boolean
  */
-const isInList = (list: OptionType[], target: OptionType) =>
-	list.some((item) =>
-		Object.keys(target).every(
-			(key) => !item.isDisabled && item[key] === target[key],
-		),
+const isInList = (
+	list: OptionType[],
+	firstLevelTarget: OptionType,
+	secondLevelTarget?: OptionType,
+) => {
+	// s'il n'y a pas de second niveau, on vérifie juste le premier niveau
+	if (!secondLevelTarget) {
+		return list.some((item) =>
+			Object.keys(firstLevelTarget).every(
+				(key) => !item.isDisabled && item[key] === firstLevelTarget[key],
+			),
+		);
+	}
+	// s'il y a un second niveau, on vérifie les deux niveaux
+	return list.some(
+		(item) =>
+			Object.keys(firstLevelTarget).every(
+				(key) => !item.isDisabled && item[key] === firstLevelTarget[key],
+			) &&
+			Object.keys(secondLevelTarget).every(
+				(key) => !item.isDisabled && item[key] === secondLevelTarget[key],
+			),
 	);
+};
 
 const resetAllFilterRemindersValues = (
 	setLocationNameValues: (names: string[]) => void,

@@ -12,6 +12,7 @@ import type { LatLngTuple } from "leaflet";
 import style from "./mapTitleComponent.module.scss";
 // import des icônes
 import { CircleHelp, Info, PanelLeft, RotateCcw } from "lucide-react";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 type MapTitleComponentProps = {
 	setIsModalOpen: (isOpen: boolean) => void;
@@ -40,7 +41,7 @@ const MapTitleComponent = ({
 	const { map, mapInfos, tutorialStep, openTutorial, resetTutorialStep } =
 		useMapStore();
 	const { setIsPanelDisplayed } = useMapAsideMenuStore();
-
+	const { setHasFilteredPoints } = useMapFilterOptionsStore();
 	const {
 		userFilters,
 		resetUserFilters,
@@ -78,6 +79,7 @@ const MapTitleComponent = ({
 		resetUserFilters();
 		// isReset déclenche le useEffect dans FilterComponent pour réinitialiser les valeurs des rappels des filtres
 		setIsReset(!isReset);
+		setHasFilteredPoints(false);
 	};
 
 	return (

@@ -17,7 +17,7 @@ export const sendPasswordResetEmail = async (to: string, resetLink: string) => {
 	});
 
 	const mailOptions = {
-		from: '"Application DCART" <dcart-map@huma-num.fr>', // ← à tester selon autorisation
+		from: '"Application DCART" <dcart-map@huma-num.fr>',
 		to: to,
 		subject: "Réinitialisation de votre mot de passe",
 		html: `

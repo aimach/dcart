@@ -14,7 +14,6 @@ import {
 } from "../../../../utils/functions/filter";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
-import type { OptionType } from "../../../../utils/types/commonTypes";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
@@ -61,52 +60,57 @@ const ElementFilterComponent = ({
 		if (hasFilteredPoints) {
 			return filterOptions.checkbox
 				.map((option) => {
-					if (!isInList(filteredElementOptions, option.firstLevelIds[0]))
+					// si le premier niveau n'est pas dans la liste des éléments filtrés, on désactive tout le groupe
+					if (!isInList(filteredElementOptions, option.firstLevelIds[0])) {
 						return {
-							firstLevelIds: {
+							firstLevelIds: [
+								{
+									isDisabled: true,
+									...option.firstLevelIds[0],
+								},
+							],
+							secondLevelIds: option.secondLevelIds.map((secondOption) => ({
+								...secondOption,
 								isDisabled: true,
-								options: option.firstLevelIds,
-							},
-							secondLevelIds: {
-								isDisabled: true,
-								options: option.secondLevelIds,
-							},
+							})),
 						};
+					}
+					// si le premier niveau est dans la liste des éléments filtrés, on filtre les éléments du second niveau
+					// et on désactive ceux qui ne sont pas dans la liste des éléments filtrés
 					const secondLevelIdsWithFilteredElements = option.secondLevelIds.map(
 						(secondOption) =>
-							isInList(filteredElementOptions, secondOption)
+							isInList(
+								filteredElementOptions,
+								option.firstLevelIds[0],
+								secondOption,
+							)
 								? secondOption
-								: {
-										firstLevelIds: {
-											isDisabled: false,
-											options: option.firstLevelIds,
-										},
-										secondLevelIds: {
-											isDisabled: true,
-											options: option.secondLevelIds,
-										},
-									},
+								: { ...secondOption, isDisabled: true },
 					);
 					return {
-						firstLevelIds: { isDisabled: false, options: option.firstLevelIds },
-						secondLevelIds: {
-							isDisabled: false,
-							options: secondLevelIdsWithFilteredElements,
-						},
+						firstLevelIds: option.firstLevelIds,
+						secondLevelIds: secondLevelIdsWithFilteredElements,
 					};
 				})
 				.filter((option) => option !== null && option !== undefined);
 		}
 		return filterOptions?.checkbox.map((option) => {
 			return {
-				firstLevelIds: { isDisabled: false, options: option.firstLevelIds },
-				secondLevelIds: {
-					isDisabled: false,
-					options: option.secondLevelIds,
-				},
+				firstLevelIds: option.firstLevelIds.map((firstOption) => {
+					return {
+						...firstOption,
+						isDisabled: false,
+					};
+				}),
+				secondLevelIds: option.secondLevelIds.map((secondOption) => {
+					return {
+						...secondOption,
+						isDisabled: false,
+					};
+				}),
 			};
 		});
-	}, [elementNames, filteredElementOptions]);
+	}, [elementNames, filteredElementOptions, hasFilteredPoints]);
 
 	if (filterOptions) {
 		switch (filterOptions.solution) {

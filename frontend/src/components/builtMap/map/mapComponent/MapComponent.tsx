@@ -44,6 +44,7 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 /**
  * Composant de la carte
@@ -82,6 +83,7 @@ const MapComponent = () => {
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore(
 		useShallow((state) => state),
 	);
+	const { setHasFilteredPoints } = useMapFilterOptionsStore();
 
 	// définition de l'état d'affichage de la modale
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
@@ -159,6 +161,7 @@ const MapComponent = () => {
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
+		setHasFilteredPoints(false);
 	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
