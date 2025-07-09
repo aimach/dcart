@@ -200,6 +200,16 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 									</td>
 								</tr>
 							)}
+							{isSelectedFilterInThisMap(mapInfos, "language") && (
+								<tr>
+									<th>{translation[language].mapPage.aside.language}</th>
+									<td>
+										{source.types[`language_${language}`].reduce((acc, type) =>
+											type && acc.includes(type) ? acc : `${acc}, ${type}`,
+										)}
+									</td>
+								</tr>
+							)}
 						</tbody>
 					</table>
 				</div>
