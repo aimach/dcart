@@ -5,10 +5,16 @@ import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFilters
 import { useShallow } from "zustand/shallow";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
+interface DivinityNbComponentProps {
+	setElementNbValues: (values: { min: number; max: number } | null) => void;
+}
+
 /**
  * Composant de filtre pour les langues (grec, sémitique)
  */
-const DivinityNbComponent = () => {
+const DivinityNbComponent = ({
+	setElementNbValues,
+}: DivinityNbComponentProps) => {
 	// récupération des données des filtres depuis le store
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
@@ -26,6 +32,10 @@ const DivinityNbComponent = () => {
 		};
 
 		setUserFilters(newLanguageFiltersObject);
+		setElementNbValues({
+			min: Number.parseInt(minValue, 10),
+			max: Number.parseInt(maxValue, 10),
+		});
 	}
 
 	return (

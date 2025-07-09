@@ -417,31 +417,31 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
 /**
  * Fonction qui vérifie si aucun filtre n'est sélectionné par l'utilisateur
  * @param {UserFilterType} userFilters - Les filtres de la carte en construction
- * @param {string[]} locationNames - Les noms des localités sélectionnées
- * @param {string[]} elementNames - Les noms des éléments sélectionnés
+ * @param {string[]} locationFilterReminders - Les noms des localités sélectionnées
+ * @param {string[]} elementFilterReminders - Les noms des éléments sélectionnés
  * @param {Record<string, boolean>} languageValues - Un objet contenant les booléens des langues sélectionnées
- * @param {string[]} agentStatusNames - Un objet contenant la liste des statuts sélectionnés
- * @param {string[]} agentivityNames - Un objet contenant la liste des agentivités sélectionnées
- * @param {string[]} sourceMaterialNames - Un objet contenant la liste des supports des sources sélectionnées
- * @param {string[]} languageValues - Un objet contenant la liste langues sélectionnées
- * @param {string[]} genderValues - Un objet contenant la liste des genres sélectionnés
+ * @param {string[]} agentStatusFilterReminders - Un objet contenant la liste des statuts sélectionnés
+ * @param {string[]} agentivityFilterReminders - Un objet contenant la liste des agentivités sélectionnées
+ * @param {string[]} sourceMaterialFilterReminders - Un objet contenant la liste des supports des sources sélectionnées
+ * @param {string[]} languageFilterReminders - Un objet contenant la liste langues sélectionnées
+ * @param {string[]} genderFilterReminders - Un objet contenant la liste des genres sélectionnés
  * @param {TranslationType} translationObject - Les objets de traduction
  * @returns {Array} - Un tableau de strings
  */
 const displayFiltersTags = (
 	userFilters: UserFilterType,
-	locationNames: string[],
-	elementNames: string[],
-	sourceTypeNames: string[],
-	agentStatusNames: string[],
-	agentivityNames: string[],
-	agentActivityNames: string[],
-	sourceMaterialNames: string[],
-	languageValues: Record<string, boolean>,
-	genderValues: Record<string, boolean>,
+	locationFilterReminders: string[],
+	elementFilterReminders: string[],
+	elementNbFilterReminders: { min: number; max: number } | null,
+	sourceTypeFilterReminders: string[],
+	agentStatusFilterReminders: string[],
+	agentivityFilterReminders: string[],
+	agentActivityFilterReminders: string[],
+	sourceMaterialFilterReminders: string[],
+	languageFilterReminders: Record<string, boolean>,
+	genderFilterReminders: Record<string, boolean>,
 	translationObject: LanguageObject,
 ) => {
-	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const stringArray = [];
 
 	// affichage des dates
@@ -455,69 +455,71 @@ const displayFiltersTags = (
 	}
 
 	// affichage des langues
-	if (languageValues.greek && languageValues.semitic) {
+	if (languageFilterReminders.greek && languageFilterReminders.semitic) {
 		stringArray.push(translationObject.mapPage.noGreekOrSemitic);
-	} else if (languageValues.greek) {
+	} else if (languageFilterReminders.greek) {
 		stringArray.push(translationObject.mapPage.noGreek);
-	} else if (languageValues.semitic) {
+	} else if (languageFilterReminders.semitic) {
 		stringArray.push(translationObject.mapPage.noSemitic);
 	}
 
 	// affichage des lieux
-	if (locationNames.length)
+	if (locationFilterReminders.length)
 		stringArray.push(
-			`${translationObject.common.in} ${locationNames.join(", ")}`,
+			`${translationObject.common.in} ${locationFilterReminders.join(", ")}`,
 		);
 	// affichage des éléments
-	if (elementNames.length)
+	if (elementFilterReminders.length)
 		stringArray.push(
-			`${translationObject.mapPage.withElements} : ${elementNames.join(", ")}`,
+			`${translationObject.mapPage.withElements} : ${elementFilterReminders.join(", ")}`,
 		);
 
 	// affichage des types de source
-	if (sourceTypeNames.length) {
+	if (sourceTypeFilterReminders.length) {
 		stringArray.push(
-			`${translationObject.common.typeOf} : ${sourceTypeNames.join(", ")}`,
+			`${translationObject.common.typeOf} : ${sourceTypeFilterReminders.join(", ")}`,
 		);
 	}
 
 	// affichage des statuts
-	if (agentStatusNames.length) {
+	if (agentStatusFilterReminders.length) {
 		stringArray.push(
-			`${translationObject.mapPage.withStatus} : ${agentStatusNames.join(", ")}`,
+			`${translationObject.mapPage.withStatus} : ${agentStatusFilterReminders.join(", ")}`,
 		);
 	}
 
 	// affichage des agentivités
-	if (agentivityNames.length) {
+	if (agentivityFilterReminders.length) {
 		stringArray.push(
-			`${translationObject.mapPage.withAgentivities} : ${agentivityNames.join(", ")}`,
+			`${translationObject.mapPage.withAgentivities} : ${agentivityFilterReminders.join(", ")}`,
 		);
 	}
 
 	// affichage des supports de source
-	if (sourceMaterialNames.length) {
+	if (sourceMaterialFilterReminders.length) {
 		stringArray.push(
-			`${translationObject.mapPage.withSourceMaterials} : ${sourceMaterialNames.join(
+			`${translationObject.mapPage.withSourceMaterials} : ${sourceMaterialFilterReminders.join(
 				", ",
 			)}`,
 		);
 	}
 
 	// affichage des activités des agents
-	if (agentActivityNames.length) {
+	if (agentActivityFilterReminders.length) {
 		stringArray.push(
-			`${translationObject.mapPage.withAgentActivities} : ${agentActivityNames.join(", ")}`,
+			`${translationObject.mapPage.withAgentActivities} : ${agentActivityFilterReminders.join(", ")}`,
 		);
 	}
 
 	// affichage du genre des agents
-	const isOneGenderKeyTrue = Object.values(genderValues ?? {}).some(
+	const isOneGenderKeyTrue = Object.values(genderFilterReminders ?? {}).some(
 		(value) => value,
 	);
 	if (isOneGenderKeyTrue) {
 		stringArray.push(
-			`${translationObject.mapPage.gender} : ${Object.entries(genderValues)
+			`${translationObject.mapPage.gender} : ${Object.entries(
+				genderFilterReminders,
+			)
 				.map(([key, value]) =>
 					value
 						? `${translationObject.common.no} ${translationObject.mapPage.aside[key]}`
@@ -528,11 +530,13 @@ const displayFiltersTags = (
 		);
 	}
 
-	if (userFilters.minDivinityNb || userFilters.maxDivinityNb) {
+	console.log(elementNbFilterReminders);
+	if (elementNbFilterReminders) {
 		stringArray.push(
-			`${translationObject.mapPage.withElementsNb} : ${userFilters.minDivinityNb} ${translationObject.common.to} ${userFilters.maxDivinityNb}`,
+			`${translationObject.mapPage.withElementsNb} : ${elementNbFilterReminders.min} ${translationObject.common.to} ${elementNbFilterReminders.max}`,
 		);
 	}
+
 	return stringArray;
 };
 
@@ -791,7 +795,7 @@ const getAllAgentActivityFromPoints = (
  * @returns {Record<string, string>[]} - Le tableau des options des noms
  */
 const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
-	const allAgentNames: Record<string, string>[] = [];
+	const allAgentFilterReminders: Record<string, string>[] = [];
 	const names = new Set<string>();
 
 	for (const point of points) {
@@ -804,7 +808,7 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
 						const nameEn = agent.designation.split("<br/>")[1];
 						if (names.has(nameFr)) continue;
 						names.add(nameFr);
-						allAgentNames.push({
+						allAgentFilterReminders.push({
 							id: agent.designation,
 							nom_fr: nameFr,
 							nom_en: nameEn,
@@ -815,7 +819,7 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
 		}
 	}
 	// formattage des options pour le select
-	return allAgentNames
+	return allAgentFilterReminders
 		.map((name) => ({
 			value: name.id,
 			label: name[`nom_${language}`],
@@ -1155,6 +1159,7 @@ const resetAllFilterRemindersValues = (
 	setAgentStatusValues: (names: string[]) => void,
 	setAgentivityValues: (names: string[]) => void,
 	setSourceMaterialValues: (sourceMaterialName: string[]) => void,
+	setElementNbValues: (values: { min: number; max: number } | null) => void,
 	resetLanguageValues: () => void,
 ) => {
 	setLocationNameValues([]);
@@ -1164,6 +1169,7 @@ const resetAllFilterRemindersValues = (
 	setAgentStatusValues([]);
 	setAgentivityValues([]);
 	setSourceMaterialValues([]);
+	setElementNbValues(null);
 	resetLanguageValues();
 };
 

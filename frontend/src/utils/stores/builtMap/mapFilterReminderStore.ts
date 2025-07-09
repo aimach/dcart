@@ -4,6 +4,10 @@ import { create } from "zustand";
 type State = {
 	locationFilterReminders: string[];
 	elementFilterReminders: string[];
+	elementNbFilterReminders: {
+		min: number;
+		max: number;
+	} | null;
 	sourceTypeFilterReminders: string[];
 	agentActivityFilterReminders: string[];
 	agentStatusFilterReminders: string[];
@@ -17,6 +21,12 @@ type Action = {
 	resetFilterReminders: () => void;
 	setLocationFilterReminders: (locationFilterReminders: string[]) => void;
 	setElementFilterReminders: (elementFilterReminders: string[]) => void;
+	setElementNbFilterReminders: (
+		elementNbFilterReminders: {
+			min: number;
+			max: number;
+		} | null,
+	) => void;
 	setSourceTypeFilterReminders: (locationFilterReminders: string[]) => void;
 	setAgentActivityFilterReminders: (
 		agentActivityFilterReminders: string[],
@@ -37,6 +47,7 @@ export const useMapFilterReminderStore = create<State & Action>((set, get) => ({
 	resetFilterReminders: () => {
 		get().setLocationFilterReminders([]);
 		get().setElementFilterReminders([]);
+		get().setElementNbFilterReminders(null);
 		get().setAgentActivityFilterReminders([]);
 		get().setAgentStatusFilterReminders([]);
 		get().setAgentivityFilterReminders([]);
@@ -48,6 +59,7 @@ export const useMapFilterReminderStore = create<State & Action>((set, get) => ({
 			female: false,
 			nonBinary: false,
 		});
+		get().resetLanguageFilterReminders();
 	},
 	locationFilterReminders: [],
 	setLocationFilterReminders: (locationFilterReminders) =>
@@ -55,6 +67,9 @@ export const useMapFilterReminderStore = create<State & Action>((set, get) => ({
 	elementFilterReminders: [],
 	setElementFilterReminders: (elementFilterReminders) =>
 		set(() => ({ elementFilterReminders })),
+	elementNbFilterReminders: null,
+	setElementNbFilterReminders: (elementNbFilterReminders) =>
+		set(() => ({ elementNbFilterReminders })),
 	sourceTypeFilterReminders: [],
 	setSourceTypeFilterReminders: (sourceTypeFilterReminders) =>
 		set(() => ({ sourceTypeFilterReminders })),

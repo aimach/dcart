@@ -54,6 +54,7 @@ const MapTitleComponent = ({
 	const {
 		locationFilterReminders,
 		elementFilterReminders,
+		elementNbFilterReminders,
 		languageFilterReminders,
 		sourceTypeFilterReminders,
 		agentStatusFilterReminders,
@@ -67,6 +68,7 @@ const MapTitleComponent = ({
 		userFilters,
 		locationFilterReminders,
 		elementFilterReminders,
+		elementNbFilterReminders,
 		sourceTypeFilterReminders,
 		agentStatusFilterReminders,
 		agentivityFilterReminders,
@@ -78,7 +80,9 @@ const MapTitleComponent = ({
 	);
 
 	const handleResetButton = async () => {
-		map?.fitBounds(mapBounds);
+		if (mapBounds.length > 0) {
+			map?.fitBounds(mapBounds);
+		}
 
 		fetchAllPoints("reset");
 		resetUserFilters();

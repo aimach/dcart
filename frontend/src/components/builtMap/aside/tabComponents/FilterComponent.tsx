@@ -47,6 +47,7 @@ const FilterComponent = () => {
 	const {
 		setLocationFilterReminders,
 		setElementFilterReminders,
+		setElementNbFilterReminders,
 		setLanguageFilterReminders,
 		setSourceTypeFilterReminders,
 		setAgentActivityFilterReminders,
@@ -55,6 +56,7 @@ const FilterComponent = () => {
 		setSourceMaterialFilterReminders,
 		resetLanguageFilterReminders,
 		setGenderFilterReminders,
+		resetFilterReminders,
 	} = useMapFilterReminderStore();
 	const {
 		hasFilteredPoints,
@@ -82,6 +84,10 @@ const FilterComponent = () => {
 	const [sourceMaterialValues, setSourceMaterialValues] = useState<string[]>(
 		[],
 	);
+	const [elementNbValues, setElementNbValues] = useState<{
+		min: number;
+		max: number;
+	} | null>(null);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -110,6 +116,7 @@ const FilterComponent = () => {
 		const sourceTypeWithoutCategory = sourceTypeValues.map(
 			(sourceTypeValue) => sourceTypeValue.split(">")[1],
 		);
+		setElementNbFilterReminders(elementNbValues);
 		setSourceTypeFilterReminders(sourceTypeWithoutCategory);
 		setAgentActivityFilterReminders(agentActivityValues);
 		setAgentStatusFilterReminders(agentStatusValues);
@@ -133,6 +140,7 @@ const FilterComponent = () => {
 	const resetFilters = useCallback(() => {
 		resetFilteredOptions();
 		resetUserFilters();
+		resetFilterReminders();
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
@@ -144,22 +152,14 @@ const FilterComponent = () => {
 			setAgentStatusValues,
 			setAgentivityValues,
 			setSourceMaterialValues,
+			setElementNbValues,
 			resetLanguageFilterReminders,
 		);
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
 	// déclencher le reset des valeurs des rappels des filtres lorsque isReset change (permet d'utiliser le bouton de reset ailleurs)
 	useEffect(() => {
-		resetAllFilterRemindersValues(
-			setLocationNameValues,
-			setElementNameValues,
-			setSourceTypeValues,
-			setAgentActivityValues,
-			setAgentStatusValues,
-			setAgentivityValues,
-			setSourceMaterialValues,
-			resetLanguageFilterReminders,
-		);
+		resetFilters();
 	}, [isReset]);
 
 	return (
@@ -197,7 +197,10 @@ const FilterComponent = () => {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
 									<h4>{translation[language].mapPage.aside.divinityNb}</h4>
-									<DivinityNbComponent key={filter.id} />
+									<DivinityNbComponent
+										key={filter.id}
+										setElementNbValues={setElementNbValues}
+									/>
 								</div>
 							);
 						}
