@@ -41,7 +41,7 @@ const MapTitleComponent = ({
 	const { map, mapInfos, tutorialStep, openTutorial, resetTutorialStep } =
 		useMapStore();
 	const { setIsPanelDisplayed } = useMapAsideMenuStore();
-	const { setHasFilteredPoints } = useMapFilterOptionsStore();
+	const { resetInitialOptions } = useMapFilterOptionsStore();
 	const {
 		userFilters,
 		resetUserFilters,
@@ -77,9 +77,9 @@ const MapTitleComponent = ({
 
 		fetchAllPoints("reset");
 		resetUserFilters();
+		resetInitialOptions();
 		// isReset déclenche le useEffect dans FilterComponent pour réinitialiser les valeurs des rappels des filtres
 		setIsReset(!isReset);
-		setHasFilteredPoints(false);
 	};
 
 	return (

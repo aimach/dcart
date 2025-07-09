@@ -14,7 +14,8 @@ const DivinityNbComponent = () => {
 		useShallow((state) => state),
 	);
 
-	const { initialElementNbOptions } = useMapFilterOptionsStore();
+	const { initialElementNbOptions, filteredElementNbOptions } =
+		useMapFilterOptionsStore();
 
 	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
 	function handleRangeChange(minValue: string, maxValue: string) {
@@ -36,8 +37,16 @@ const DivinityNbComponent = () => {
 				step={1}
 				stepOnly
 				baseClassName={"multi-range-slider-custom"}
-				minValue={userFilters.minDivinityNb ?? initialElementNbOptions?.min}
-				maxValue={userFilters.maxDivinityNb ?? initialElementNbOptions?.max}
+				minValue={
+					userFilters.minDivinityNb ??
+					filteredElementNbOptions?.min ??
+					initialElementNbOptions?.min
+				}
+				maxValue={
+					userFilters.maxDivinityNb ??
+					filteredElementNbOptions?.max ??
+					initialElementNbOptions?.max
+				}
 				labels={[]}
 				onChange={(e) => {
 					handleRangeChange(e.minValue.toString(), e.maxValue.toString());

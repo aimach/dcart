@@ -49,6 +49,8 @@ type Action = {
 	setFilteredAgentGenderOptions: (options: string[]) => void;
 	setFilteredSourceMaterialOptions: (options: OptionType[]) => void;
 	setFilteredSourceTypeOptions: (options: OptionType[]) => void;
+	resetFilteredOptions: () => void;
+	resetInitialOptions: () => void;
 };
 
 export const useMapFilterOptionsStore = create<State & Action>((set) => ({
@@ -112,4 +114,40 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 		set({ filteredSourceMaterialOptions: options }),
 	setFilteredSourceTypeOptions: (options) =>
 		set({ filteredSourceTypeOptions: options }),
+
+	resetFilteredOptions: () =>
+		set((state) => ({
+			filteredLocationOptions: state.initialLocationOptions,
+			filteredElementOptions: state.initialElementOptions,
+			filteredElementNbOptions: state.initialElementNbOptions,
+			filteredAgentActivityOptions: state.initialAgentActivityOptions,
+			filteredAgentStatusOptions: state.initialAgentStatusOptions,
+			filteredAgentivityOptions: state.initialAgentivityOptions,
+			filteredAgentGenderOptions: state.initialAgentGenderOptions,
+			filteredSourceMaterialOptions: state.initialSourceMaterialOptions,
+			filteredSourceTypeOptions: state.initialSourceTypeOptions,
+			hasFilteredPoints: false,
+		})),
+	resetInitialOptions: () =>
+		set(() => ({
+			initialLocationOptions: [],
+			initialElementOptions: [],
+			initialElementNbOptions: null,
+			initialAgentActivityOptions: [],
+			initialAgentStatusOptions: [],
+			initialAgentivityOptions: [],
+			initialAgentGenderOptions: [],
+			initialSourceMaterialOptions: [],
+			initialSourceTypeOptions: [],
+			filteredLocationOptions: [],
+			filteredElementOptions: [],
+			filteredElementNbOptions: null,
+			filteredAgentActivityOptions: [],
+			filteredAgentStatusOptions: [],
+			filteredAgentivityOptions: [],
+			filteredAgentGenderOptions: [],
+			filteredSourceMaterialOptions: [],
+			filteredSourceTypeOptions: [],
+			hasFilteredPoints: false,
+		})),
 }));

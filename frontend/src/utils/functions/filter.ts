@@ -291,24 +291,34 @@ const getPointsTimeMarkers = (allPoints: PointType[]) => {
  * @returns {OptionType[]} - Les options du select filtrées et formatées
  */
 const getSelectDefaultValues = (
-	userFiltersListId: string,
+	userFiltersListIdOrName: string,
 	listOptions: OptionType[],
 ) => {
-	if (!userFiltersListId) return [];
+	if (!userFiltersListIdOrName) return [];
+	let defaultValues: (string | number)[] = [];
 
-	// convertir les valeurs en nombre
-	const defaultValues = userFiltersListId
+	const firstElement = userFiltersListIdOrName.split("|")[0];
+	// si ce sont des noms de localités ou d'éléments, on ne peut pas les convertir en nombre
+	if (Number.isNaN(Number.parseInt(firstElement, 10))) {
+		defaultValues = userFiltersListIdOrName.split("|");
+		return (listOptions ?? []).filter((option) =>
+			defaultValues.includes(option.value),
+		);
+	}
+
+	// si ce sont des ids, on les convertit en nombre
+	defaultValues = userFiltersListIdOrName
 		.split("|")
-		.map((id) => (typeof id === "string" ? Number.parseInt(id, 10) : id));
-	// trouver les options correspondantes
-	const filteredOptions = (listOptions ?? []).filter((option) =>
+		.map((idOrName) =>
+			typeof idOrName === "string" ? Number.parseInt(idOrName, 10) : idOrName,
+		);
+	return (listOptions ?? []).filter((option) =>
 		defaultValues.includes(
 			typeof option.value === "string"
 				? Number.parseInt(option.value, 10)
 				: option.value,
 		),
 	);
-	return filteredOptions;
 };
 
 const handleMultiSelectChange = (
@@ -548,8 +558,9 @@ const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
 			}
 		}
 	}
-	if (!filterOptionsStore.hasFilteredPoints) {
-		// pas besoin de stocker la valeur si des points sont filtrés
+	if (filterOptionsStore.hasFilteredPoints) {
+		filterOptionsStore.setFilteredElementNbOptions({ min, max });
+	} else {
 		filterOptionsStore.setInitialElementNbOptions({ min, max });
 	}
 };

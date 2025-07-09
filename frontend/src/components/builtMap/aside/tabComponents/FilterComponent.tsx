@@ -72,6 +72,7 @@ const FilterComponent = () => {
 		filteredAgentStatusOptions,
 		filteredAgentivityOptions,
 		filteredSourceMaterialOptions,
+		resetFilteredOptions,
 	} = useMapFilterOptionsStore();
 
 	// initiation d'états pour récupérer les valeurs des lieux et éléments
@@ -131,7 +132,7 @@ const FilterComponent = () => {
 	// fonction pour gérer le reset des filtres
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	const resetFilters = useCallback(() => {
-		setHasFilteredPoints(false);
+		resetFilteredOptions();
 		resetUserFilters();
 		setIsReset(!isReset);
 		// on recharge les points de la carte
