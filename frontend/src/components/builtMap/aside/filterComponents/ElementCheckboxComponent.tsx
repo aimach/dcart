@@ -16,8 +16,8 @@ export type SelectedObjectType = {
 
 type ElementCheckboxComponentProps = {
 	options: {
-		firstLevelIds: OptionType[];
-		secondLevelIds: OptionType[];
+		firstLevelIds: { isDisabled: boolean; options: OptionType[] };
+		secondLevelIds: { isDisabled: boolean; options: OptionType[] };
 	};
 	elementNameValues: string[];
 	setElementNameValues: (names: string[]) => void;
@@ -136,6 +136,8 @@ const ElementCheckboxComponent = ({
 		}
 	};
 
+	console.log({ options });
+
 	// si userFilters.lotIds est vide, on vide les checkbox
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
@@ -150,22 +152,22 @@ const ElementCheckboxComponent = ({
 				<input
 					type="checkbox"
 					checked={
-						elementCheckboxSelected[options?.firstLevelIds[0].value as number]
-							?.checked || false
+						elementCheckboxSelected[
+							options?.firstLevelIds.options[0].value as number
+						]?.checked || false
 					}
 					onChange={() => {
-						toggleFirstLevel(options.firstLevelIds[0]);
+						toggleFirstLevel(options.firstLevelIds.options[0]);
 					}}
 					disabled={
-						!options.firstLevelIds[0].isDisabled
-						// &&
-						// !options.secondLevelIds.some((option) => option.isDisabled)
+						options.firstLevelIds.isDisabled &&
+						!options.secondLevelIds.options.some((option) => option.isDisabled)
 					}
 				/>
-				<strong>{options.firstLevelIds[0].label}</strong>
+				<strong>{options.firstLevelIds.options[0].label}</strong>
 			</label>
 			<div className={style.checkboxGroup}>
-				{options.secondLevelIds.map((option) => (
+				{options.secondLevelIds.options.map((option) => (
 					<label
 						key={option.value}
 						style={{ display: "block" }}
@@ -175,12 +177,16 @@ const ElementCheckboxComponent = ({
 							type="checkbox"
 							checked={
 								elementCheckboxSelected[
-									options?.firstLevelIds[0].value as number
+									options?.firstLevelIds.options[0].value as number
 								]?.children.includes(option.value as number) || false
 							}
 							onChange={() => {
-								toggleSecondLevel(options.firstLevelIds[0], option);
+								toggleSecondLevel(options.firstLevelIds.options[0], option);
 							}}
+							disabled={
+								options.firstLevelIds.isDisabled ||
+								options.secondLevelIds.isDisabled
+							}
 						/>
 						{option.label}
 					</label>

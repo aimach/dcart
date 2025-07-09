@@ -25,8 +25,6 @@ interface ElementFilterComponentProps {
 
 /**
  * Affiche le filtre des éléments
- * @param {Object} props
- * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
  * @returns Select (react-select)
  */
 const ElementFilterComponent = ({
@@ -56,25 +54,58 @@ const ElementFilterComponent = ({
 		mapInfos?.filterMapContent?.find(
 			(filter) => filter.filter.type === "element",
 		)?.options ?? null;
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies: volontairement stricte pour éviter les re-renders inutiles
 	const optionsWithoutNotSelectedIds = useMemo(() => {
 		if (!filterOptions?.checkbox) return [];
-		return filterOptions.checkbox
-			.map((option) => {
-				if (!isInList(filteredElementOptions, option.firstLevelIds[0]))
-					return { ...option, isDisabled: true };
-				const secondLevelIdsWithFilteredElements = option.secondLevelIds.map(
-					(secondOption) =>
-						isInList(filteredElementOptions, secondOption)
-							? secondOption
-							: { ...secondOption, isDisabled: true },
-				);
-				return {
-					firstLevelIds: option.firstLevelIds,
-					secondLevelIds: secondLevelIdsWithFilteredElements,
-				};
-			})
-			.filter((option) => option !== null && option !== undefined);
+		if (hasFilteredPoints) {
+			return filterOptions.checkbox
+				.map((option) => {
+					if (!isInList(filteredElementOptions, option.firstLevelIds[0]))
+						return {
+							firstLevelIds: {
+								isDisabled: true,
+								options: option.firstLevelIds,
+							},
+							secondLevelIds: {
+								isDisabled: true,
+								options: option.secondLevelIds,
+							},
+						};
+					const secondLevelIdsWithFilteredElements = option.secondLevelIds.map(
+						(secondOption) =>
+							isInList(filteredElementOptions, secondOption)
+								? secondOption
+								: {
+										firstLevelIds: {
+											isDisabled: false,
+											options: option.firstLevelIds,
+										},
+										secondLevelIds: {
+											isDisabled: true,
+											options: option.secondLevelIds,
+										},
+									},
+					);
+					return {
+						firstLevelIds: { isDisabled: false, options: option.firstLevelIds },
+						secondLevelIds: {
+							isDisabled: false,
+							options: secondLevelIdsWithFilteredElements,
+						},
+					};
+				})
+				.filter((option) => option !== null && option !== undefined);
+		}
+		return filterOptions?.checkbox.map((option) => {
+			return {
+				firstLevelIds: { isDisabled: false, options: option.firstLevelIds },
+				secondLevelIds: {
+					isDisabled: false,
+					options: option.secondLevelIds,
+				},
+			};
+		});
 	}, [elementNames, filteredElementOptions]);
 
 	if (filterOptions) {
@@ -116,7 +147,7 @@ const ElementFilterComponent = ({
 									options && (
 										<ElementCheckboxComponent
 											options={options}
-											key={options?.firstLevelIds[0].value}
+											key={options?.firstLevelIds.options?.[0].value}
 											elementNameValues={elementNameValues as string[]}
 											setElementNameValues={setElementNameValues}
 										/>
