@@ -80,7 +80,8 @@
 		"noPublished": "non publiée",
 		"close": "Fermer",
 		"typeOf": "de type",
-		"noData": "Aucune donnée"
+		"noData": "Aucune donnée",
+		"no": "pas de"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",

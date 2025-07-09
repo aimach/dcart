@@ -45,7 +45,11 @@ const AgentGenderFilterComponent = () => {
 					}
 					checked={!userFilters.agentGender?.male}
 					onChange={(event) => handleChangeCheckbox(event.target.name)}
-					disabled={!initialAgentGenderOptions.includes("male")}
+					disabled={
+						!initialAgentGenderOptions.includes("male") ||
+						(filteredAgentGenderOptions.length > 1 &&
+							!filteredAgentGenderOptions.includes("male"))
+					}
 				/>
 				<label htmlFor="male">{translation[language].mapPage.aside.male}</label>
 			</div>
@@ -62,7 +66,11 @@ const AgentGenderFilterComponent = () => {
 					}
 					checked={!userFilters.agentGender?.female}
 					onChange={(event) => handleChangeCheckbox(event.target.name)}
-					disabled={!initialAgentGenderOptions.includes("female")}
+					disabled={
+						!initialAgentGenderOptions.includes("female") ||
+						(filteredAgentGenderOptions.length > 1 &&
+							!filteredAgentGenderOptions.includes("female"))
+					}
 				/>
 				<label htmlFor="female">
 					{translation[language].mapPage.aside.female}
@@ -81,7 +89,11 @@ const AgentGenderFilterComponent = () => {
 					}
 					checked={!userFilters.agentGender?.nonBinary}
 					onChange={(event) => handleChangeCheckbox(event.target.name)}
-					disabled={!initialAgentGenderOptions.includes("nonbinary")}
+					disabled={
+						!initialAgentGenderOptions.includes("nonbinary") ||
+						(filteredAgentGenderOptions.length > 1 &&
+							!filteredAgentGenderOptions.includes("nonbinary"))
+					}
 				/>
 				<label htmlFor="nonBinary">
 					{translation[language].mapPage.aside.nonBinary}

@@ -518,7 +518,9 @@ const displayFiltersTags = (
 		stringArray.push(
 			`${translationObject.mapPage.gender} : ${Object.entries(genderValues)
 				.map(([key, value]) =>
-					value ? translationObject.mapPage.aside[key] : null,
+					value
+						? `${translationObject.common.no} ${translationObject.mapPage.aside[key]}`
+						: null,
 				)
 				.filter(Boolean)
 				.join(", ")}`,
@@ -1057,7 +1059,7 @@ const getAllAgentGenderFromPoints = (points: PointType[]) => {
 					(filteredOption) => filteredOption === initialOption,
 				),
 		);
-		filterOptionsStore.setInitialAgentGenderOptions(
+		filterOptionsStore.setFilteredAgentGenderOptions(
 			agentGenderOptionsWithDisabled,
 		);
 	} else {

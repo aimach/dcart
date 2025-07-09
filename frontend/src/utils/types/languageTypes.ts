@@ -83,6 +83,7 @@ type LanguageObject = {
 		close: string;
 		typeOf: string;
 		noData: string;
+		no: string;
 	};
 	modal: {
 		firstContent: string;
