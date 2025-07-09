@@ -18,13 +18,12 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
 import { useShallow } from "zustand/shallow";
-// import des types
-import type { OptionType } from "../../../../utils/types/commonTypes";
-// import du style
-import style from "./tabComponent.module.scss";
 import { resetAllFilterRemindersValues } from "../../../../utils/functions/filter";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
+// import du style
+import style from "./tabComponent.module.scss";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 /**
  * Affiche les filtres de la carte
@@ -43,22 +42,20 @@ const FilterComponent = () => {
 	);
 
 	const { mapFilters, setIsPanelDisplayed } = useMapAsideMenuStore();
+	const { userFilters, resetUserFilters, isReset, setIsReset } =
+		useMapFiltersStore(useShallow((state) => state));
 	const {
-		userFilters,
-		resetUserFilters,
-		isReset,
-		setIsReset,
-		setLocationNames,
-		setElementNames,
-		setLanguageValues,
-		setSourceTypeNames,
-		setAgentActivityNames,
-		setAgentStatusNames,
-		setAgentivityNames,
-		setSourceMaterialNames,
-		resetLanguageValues,
-		setGenderValues,
-	} = useMapFiltersStore(useShallow((state) => state));
+		setLocationFilterReminders,
+		setElementFilterReminders,
+		setLanguageFilterReminders,
+		setSourceTypeFilterReminders,
+		setAgentActivityFilterReminders,
+		setAgentStatusFilterReminders,
+		setAgentivityFilterReminders,
+		setSourceMaterialFilterReminders,
+		resetLanguageFilterReminders,
+		setGenderFilterReminders,
+	} = useMapFilterReminderStore();
 	const {
 		hasFilteredPoints,
 		setHasFilteredPoints,
@@ -108,24 +105,26 @@ const FilterComponent = () => {
 	const handleFilterButton = () => {
 		fetchAllPoints("filter");
 		setHasFilteredPoints(true);
-		setLocationNames(locationNameValues);
-		setElementNames(elementNameValues);
+		setLocationFilterReminders(locationNameValues);
+		setElementFilterReminders(elementNameValues);
 		const sourceTypeWithoutCategory = sourceTypeValues.map(
 			(sourceTypeValue) => sourceTypeValue.split(">")[1],
 		);
-		setSourceTypeNames(sourceTypeWithoutCategory);
-		setAgentActivityNames(agentActivityValues);
-		setAgentStatusNames(agentStatusValues);
-		setAgentivityNames(agentivityValues);
+		setSourceTypeFilterReminders(sourceTypeWithoutCategory);
+		setAgentActivityFilterReminders(agentActivityValues);
+		setAgentStatusFilterReminders(agentStatusValues);
+		setAgentivityFilterReminders(agentivityValues);
 		const sourceMaterialValuesWithoutCategory = sourceMaterialValues.map(
 			(sourceMaterialValue) => sourceMaterialValue.split(">")[1],
 		);
-		setSourceMaterialNames(sourceMaterialValuesWithoutCategory);
-		setLanguageValues({
+		setSourceMaterialFilterReminders(sourceMaterialValuesWithoutCategory);
+		setLanguageFilterReminders({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,
 		});
-		setGenderValues(userFilters.agentGender as Record<string, boolean>);
+		setGenderFilterReminders(
+			userFilters.agentGender as Record<string, boolean>,
+		);
 		isMobile && setIsPanelDisplayed(false);
 	};
 
@@ -145,7 +144,7 @@ const FilterComponent = () => {
 			setAgentStatusValues,
 			setAgentivityValues,
 			setSourceMaterialValues,
-			resetLanguageValues,
+			resetLanguageFilterReminders,
 		);
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
@@ -159,7 +158,7 @@ const FilterComponent = () => {
 			setAgentStatusValues,
 			setAgentivityValues,
 			setSourceMaterialValues,
-			resetLanguageValues,
+			resetLanguageFilterReminders,
 		);
 	}, [isReset]);
 

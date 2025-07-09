@@ -13,6 +13,7 @@ import style from "./mapTitleComponent.module.scss";
 // import des icônes
 import { CircleHelp, Info, PanelLeft, RotateCcw } from "lucide-react";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 type MapTitleComponentProps = {
 	setIsModalOpen: (isOpen: boolean) => void;
@@ -45,30 +46,34 @@ const MapTitleComponent = ({
 	const {
 		userFilters,
 		resetUserFilters,
-		locationNames,
-		elementNames,
-		languageValues,
-		sourceTypeNames,
-		agentStatusNames,
-		agentivityNames,
-		agentActivityNames,
-		sourceMaterialNames,
-		genderValues,
+
 		isReset,
 		setIsReset,
 	} = useMapFiltersStore();
 
+	const {
+		locationFilterReminders,
+		elementFilterReminders,
+		languageFilterReminders,
+		sourceTypeFilterReminders,
+		agentStatusFilterReminders,
+		agentivityFilterReminders,
+		agentActivityFilterReminders,
+		sourceMaterialFilterReminders,
+		genderFilterReminders,
+	} = useMapFilterReminderStore();
+
 	const filtersDetails = displayFiltersTags(
 		userFilters,
-		locationNames,
-		elementNames,
-		sourceTypeNames,
-		agentStatusNames,
-		agentivityNames,
-		agentActivityNames,
-		sourceMaterialNames,
-		languageValues,
-		genderValues,
+		locationFilterReminders,
+		elementFilterReminders,
+		sourceTypeFilterReminders,
+		agentStatusFilterReminders,
+		agentivityFilterReminders,
+		agentActivityFilterReminders,
+		sourceMaterialFilterReminders,
+		languageFilterReminders,
+		genderFilterReminders,
 		translation[language],
 	);
 

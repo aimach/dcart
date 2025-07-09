@@ -16,6 +16,7 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 interface ElementFilterComponentProps {
 	setElementNameValues: (names: string[]) => void;
@@ -35,8 +36,10 @@ const ElementFilterComponent = ({
 
 	// récupération des données des filtres depuis le store
 	const { mapInfos } = useMapStore();
-	const { userFilters, setUserFilters, isReset, elementNames } =
-		useMapFiltersStore(useShallow((state) => state));
+	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
+		useShallow((state) => state),
+	);
+	const { elementFilterReminders } = useMapFilterReminderStore();
 
 	const { hasFilteredPoints, initialElementOptions, filteredElementOptions } =
 		useMapFilterOptionsStore();
@@ -110,7 +113,7 @@ const ElementFilterComponent = ({
 				}),
 			};
 		});
-	}, [elementNames, filteredElementOptions, hasFilteredPoints]);
+	}, [elementFilterReminders, filteredElementOptions, hasFilteredPoints]);
 
 	if (filterOptions) {
 		switch (filterOptions.solution) {

@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useMemo } from "react";
-import Select, { GroupBase, StylesConfig } from "react-select";
+import Select from "react-select";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
@@ -11,6 +11,7 @@ import {
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { UserFilterType } from "../../../../utils/types/filterTypes";
+import type { GroupBase, StylesConfig } from "react-select";
 
 interface MultiSelectFilterComponentProps {
 	styles: StylesConfig<OptionType, true, GroupBase<OptionType>> | undefined;
