@@ -530,7 +530,6 @@ const displayFiltersTags = (
 		);
 	}
 
-	console.log(elementNbFilterReminders);
 	if (elementNbFilterReminders) {
 		stringArray.push(
 			`${translationObject.mapPage.withElementsNb} : ${elementNbFilterReminders.min} ${translationObject.common.to} ${elementNbFilterReminders.max}`,

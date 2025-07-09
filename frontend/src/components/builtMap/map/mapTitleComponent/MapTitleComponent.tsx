@@ -42,14 +42,10 @@ const MapTitleComponent = ({
 	const { map, mapInfos, tutorialStep, openTutorial, resetTutorialStep } =
 		useMapStore();
 	const { setIsPanelDisplayed } = useMapAsideMenuStore();
-	const { resetInitialOptions } = useMapFilterOptionsStore();
-	const {
-		userFilters,
-		resetUserFilters,
-
-		isReset,
-		setIsReset,
-	} = useMapFiltersStore();
+	const { resetInitialOptions, resetFilteredOptions } =
+		useMapFilterOptionsStore();
+	const { userFilters, resetUserFilters, isReset, setIsReset } =
+		useMapFiltersStore();
 
 	const {
 		locationFilterReminders,
@@ -62,6 +58,7 @@ const MapTitleComponent = ({
 		agentActivityFilterReminders,
 		sourceMaterialFilterReminders,
 		genderFilterReminders,
+		resetFilterReminders,
 	} = useMapFilterReminderStore();
 
 	const filtersDetails = displayFiltersTags(
@@ -83,12 +80,12 @@ const MapTitleComponent = ({
 		if (mapBounds.length > 0) {
 			map?.fitBounds(mapBounds);
 		}
-
-		fetchAllPoints("reset");
-		resetUserFilters();
+		resetFilteredOptions();
 		resetInitialOptions();
-		// isReset déclenche le useEffect dans FilterComponent pour réinitialiser les valeurs des rappels des filtres
+		resetUserFilters();
+		resetFilterReminders();
 		setIsReset(!isReset);
+		fetchAllPoints("reset");
 	};
 
 	return (

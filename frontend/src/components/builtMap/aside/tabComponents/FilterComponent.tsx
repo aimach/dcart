@@ -72,6 +72,7 @@ const FilterComponent = () => {
 		filteredAgentivityOptions,
 		filteredSourceMaterialOptions,
 		resetFilteredOptions,
+		resetInitialOptions,
 	} = useMapFilterOptionsStore();
 
 	// initiation d'états pour récupérer les valeurs des lieux et éléments
@@ -139,6 +140,7 @@ const FilterComponent = () => {
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	const resetFilters = useCallback(() => {
 		resetFilteredOptions();
+		resetInitialOptions();
 		resetUserFilters();
 		resetFilterReminders();
 		setIsReset(!isReset);
@@ -156,11 +158,6 @@ const FilterComponent = () => {
 			resetLanguageFilterReminders,
 		);
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
-
-	// déclencher le reset des valeurs des rappels des filtres lorsque isReset change (permet d'utiliser le bouton de reset ailleurs)
-	useEffect(() => {
-		resetFilters();
-	}, [isReset]);
 
 	return (
 		<div className={style.resultContainer}>
