@@ -441,6 +441,7 @@ const displayFiltersTags = (
 	genderValues: Record<string, boolean>,
 	translationObject: LanguageObject,
 ) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const stringArray = [];
 
 	// affichage des dates
@@ -527,6 +528,11 @@ const displayFiltersTags = (
 		);
 	}
 
+	if (userFilters.minDivinityNb || userFilters.maxDivinityNb) {
+		stringArray.push(
+			`${translationObject.mapPage.withElementsNb} : ${userFilters.minDivinityNb} ${translationObject.common.to} ${userFilters.maxDivinityNb}`,
+		);
+	}
 	return stringArray;
 };
 

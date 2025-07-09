@@ -63,6 +63,7 @@ type LanguageObject = {
 		between: string;
 		and: string;
 		or: string;
+		to: string;
 		unknownDate: string;
 		greek: string;
 		semitic: string;
@@ -114,6 +115,7 @@ type LanguageObject = {
 		noGreek: string;
 		noSemitic: string;
 		withElements: string;
+		withElementsNb: string;
 		withStatus: string;
 		withAgentivities: string;
 		withSourceMaterials: string;
