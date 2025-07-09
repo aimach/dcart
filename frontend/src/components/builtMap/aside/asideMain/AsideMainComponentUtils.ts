@@ -219,7 +219,6 @@ const getLanguageOptions = (
 		"Nabataean",
 		"Minaean",
 	];
-	console.log(sourceLanguages);
 	if (filterOptionsStore.hasFilteredPoints) {
 		filterOptionsStore.setFilteredSourceLanguageOptions({
 			greek: !sourceLanguages.has("Greek"),

@@ -539,7 +539,7 @@ const getMinAndMaxElementNumbers = (
 ) => {
 	const filterOptionsStore = useMapFilterOptionsStore.getState();
 
-	const elementNbFilter = isSelectedFilterInThisMap(mapInfos, "elementNb");
+	const elementNbFilter = isSelectedFilterInThisMap(mapInfos, "divinityNb");
 	if (elementNbFilter) {
 		let min = 20;
 		let max = 0;

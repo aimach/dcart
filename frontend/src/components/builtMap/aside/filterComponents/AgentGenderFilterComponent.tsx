@@ -16,13 +16,17 @@ const AgentGenderFilterComponent = () => {
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
-	const { initialAgentGenderOptions } = useMapFilterOptionsStore();
+	const { initialAgentGenderOptions, filteredAgentGenderOptions } =
+		useMapFilterOptionsStore();
 
 	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
-	function handleChangeCheckbox(checked: boolean, name: string) {
+	function handleChangeCheckbox(name: string) {
 		const newLanguageFiltersObject = {
 			...userFilters,
-			agentGender: { ...userFilters.agentGender, [name]: checked as boolean },
+			agentGender: {
+				...userFilters.agentGender,
+				[name]: !userFilters.agentGender[name] as boolean,
+			},
 		};
 		setUserFilters(newLanguageFiltersObject);
 	}
@@ -35,10 +39,12 @@ const AgentGenderFilterComponent = () => {
 					type="checkbox"
 					id="male"
 					name="male"
-					checked={userFilters.agentGender?.male ?? true}
-					onChange={(event) =>
-						handleChangeCheckbox(event.target.checked, event.target.name)
+					defaultChecked={
+						initialAgentGenderOptions.includes("male") ||
+						filteredAgentGenderOptions.includes("male")
 					}
+					checked={!userFilters.agentGender?.male}
+					onChange={(event) => handleChangeCheckbox(event.target.name)}
 					disabled={!initialAgentGenderOptions.includes("male")}
 				/>
 				<label htmlFor="male">{translation[language].mapPage.aside.male}</label>
@@ -50,10 +56,12 @@ const AgentGenderFilterComponent = () => {
 					type="checkbox"
 					id="female"
 					name="female"
-					checked={userFilters.agentGender?.female ?? true}
-					onChange={(event) =>
-						handleChangeCheckbox(event.target.checked, event.target.name)
+					defaultChecked={
+						initialAgentGenderOptions.includes("female") ||
+						filteredAgentGenderOptions.includes("female")
 					}
+					checked={!userFilters.agentGender?.female}
+					onChange={(event) => handleChangeCheckbox(event.target.name)}
 					disabled={!initialAgentGenderOptions.includes("female")}
 				/>
 				<label htmlFor="female">
@@ -67,10 +75,12 @@ const AgentGenderFilterComponent = () => {
 					type="checkbox"
 					id="nonBinary"
 					name="nonBinary"
-					checked={userFilters.agentGender?.nonBinary ?? true}
-					onChange={(event) =>
-						handleChangeCheckbox(event.target.checked, event.target.name)
+					defaultChecked={
+						initialAgentGenderOptions.includes("nonbinary") ||
+						filteredAgentGenderOptions.includes("nonbinary")
 					}
+					checked={!userFilters.agentGender?.nonBinary}
+					onChange={(event) => handleChangeCheckbox(event.target.name)}
 					disabled={!initialAgentGenderOptions.includes("nonbinary")}
 				/>
 				<label htmlFor="nonBinary">

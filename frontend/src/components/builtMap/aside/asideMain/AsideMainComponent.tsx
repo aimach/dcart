@@ -43,7 +43,6 @@ const AsideMainComponent = () => {
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		console.log("je suis déclenché");
 		resetInitialOptions();
 	}, [mapInfos?.id]);
 
