@@ -17,12 +17,14 @@ import {
 	getAgentGenderOptions,
 	getAgentivityOptions,
 	getAgentStatusOptions,
+	getLanguageOptions,
 	getLocationOptions,
 	getSourceMaterialOptions,
 	getSourceTypeOptions,
 } from "./AsideMainComponentUtils";
 // import du style
 import style from "./asideMainComponent.module.scss";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 /**
  * Affiche le corps du panel latéral en fonction de l'onglet sélectionné
@@ -37,8 +39,14 @@ const AsideMainComponent = () => {
 		(state) => state.selectedTabMenu,
 	);
 	const { mapInfos, allPoints, selectedMarker } = useMapStore((state) => state);
+	const { resetInitialOptions } = useMapFilterOptionsStore();
 
-	// Initial
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		console.log("je suis déclenché");
+		resetInitialOptions();
+	}, [mapInfos?.id]);
+
 	useEffect(() => {
 		getSourceTypeOptions(mapInfos, allPoints, language);
 		getLocationOptions(mapInfos, allPoints, language);
@@ -48,22 +56,9 @@ const AsideMainComponent = () => {
 		getAgentivityOptions(mapInfos, allPoints, language);
 		getSourceMaterialOptions(mapInfos, allPoints, language);
 		getAgentGenderOptions(mapInfos, allPoints);
-		getMinAndMaxElementNumbers(allPoints);
+		getMinAndMaxElementNumbers(mapInfos, allPoints);
+		getLanguageOptions(mapInfos, allPoints);
 	}, [mapInfos, allPoints, language]);
-
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	// useEffect(() => {
-	// 	if (mapInfos && allPoints) {
-	// 		// si le filtre des éléments est activé, on récupère les options
-	// 		if (
-	// 			mapInfos.filterMapContent?.some(
-	// 				(filter) => filter.filter.type === "element",
-	// 			)
-	// 		) {
-	// 			formatElementOptions();
-	// 		}
-	// 	}
-	// }, [mapInfos, allPoints]);
 
 	// définition du composant à rendre
 	switch (selectedTabMenu) {

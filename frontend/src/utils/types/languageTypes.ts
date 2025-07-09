@@ -110,8 +110,8 @@ type LanguageObject = {
 		noResult: string;
 		enlargeYourSearch: string;
 		noGreekOrSemitic: string;
-		onlySemitic: string;
-		onlyGreek: string;
+		noGreek: string;
+		noSemitic: string;
 		withElements: string;
 		withStatus: string;
 		withAgentivities: string;

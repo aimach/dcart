@@ -175,6 +175,64 @@ const getElementNbOptions = (
 	return [];
 };
 
+const getLanguageOptions = (
+	mapInfos: MapInfoType | null,
+	allPoints: PointType[],
+) => {
+	// si c'est la carte Exploration, on ne fait rien
+	if (!mapInfos) {
+		return { greek: false, semitic: false };
+	}
+
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
+	// on parcourt les points pour récupérer les langues
+	const languageFilter = isSelectedFilterInThisMap(mapInfos, "language");
+	const sourceLanguages = new Set<string>();
+	if (languageFilter) {
+		for (const point of allPoints) {
+			for (const source of point.sources) {
+				if (source.types.language_fr.length > 0) {
+					for (const language of source.types.language_en) {
+						if (sourceLanguages.has(language)) {
+							continue; // langue déjà ajoutée
+						}
+						sourceLanguages.add(language);
+					}
+				}
+			}
+		}
+	}
+	const semiticLanguages = [
+		"Hebrew",
+		"Moabite",
+		"Ammonite",
+		"Edomite",
+		"Phoenician",
+		"Punic",
+		"Mandaean",
+		"Babylonian",
+		"Assyrian",
+		"Ancient Aramaic",
+		"Imperial Aramaic",
+		"Middle Aramaic",
+		"Late Aramaic",
+		"Nabataean",
+		"Minaean",
+	];
+	console.log(sourceLanguages);
+	if (filterOptionsStore.hasFilteredPoints) {
+		filterOptionsStore.setFilteredSourceLanguageOptions({
+			greek: !sourceLanguages.has("Greek"),
+			semitic: !semiticLanguages.some((lang) => sourceLanguages.has(lang)),
+		});
+	} else {
+		filterOptionsStore.setInitialSourceLanguageOptions({
+			greek: !sourceLanguages.has("Greek"),
+			semitic: !semiticLanguages.some((lang) => sourceLanguages.has(lang)),
+		});
+	}
+};
+
 export {
 	getSourceTypeOptions,
 	getLocationOptions,
@@ -184,4 +242,5 @@ export {
 	getSourceMaterialOptions,
 	getAgentGenderOptions,
 	getElementNbOptions,
+	getLanguageOptions,
 };

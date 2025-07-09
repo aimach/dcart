@@ -3,6 +3,7 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 /**
  * Composant de filtre pour les langues (grec, sémitique)
@@ -15,6 +16,9 @@ const LanguageFilterComponent = () => {
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
+
+	const { initialSourceLanguageOptions, filteredSourceLanguageOptions } =
+		useMapFilterOptionsStore();
 
 	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
 	function handleChangeCheckbox(checked: boolean, name: string) {
@@ -33,9 +37,13 @@ const LanguageFilterComponent = () => {
 					type="checkbox"
 					id="greek"
 					name="greek"
-					checked={!userFilters.greek}
+					checked={!initialSourceLanguageOptions.greek && !userFilters.greek}
 					onChange={(event) =>
 						handleChangeCheckbox(event.target.checked, event.target.name)
+					}
+					disabled={
+						initialSourceLanguageOptions.greek ||
+						filteredSourceLanguageOptions.greek
 					}
 				/>
 				<label htmlFor="greek">{translation[language].common.greek}</label>
@@ -49,6 +57,10 @@ const LanguageFilterComponent = () => {
 					checked={!userFilters.semitic}
 					onChange={(event) =>
 						handleChangeCheckbox(event.target.checked, event.target.name)
+					}
+					disabled={
+						initialSourceLanguageOptions.semitic ||
+						filteredSourceLanguageOptions.semitic
 					}
 				/>
 				<label htmlFor="semitic">{translation[language].common.semitic}</label>

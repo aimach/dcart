@@ -179,6 +179,8 @@ type SourceType = {
 		category_source_fr: string[];
 		material_fr: string;
 		material_en: string;
+		language_fr: string[];
+		language_en: string[];
 	};
 	attestations: AttestationType[];
 };

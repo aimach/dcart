@@ -15,6 +15,7 @@ type State = {
 	initialAgentGenderOptions: string[];
 	initialSourceMaterialOptions: OptionType[];
 	initialSourceTypeOptions: OptionType[];
+	initialSourceLanguageOptions: { greek: boolean; semitic: boolean };
 	// filtered state
 	filteredLocationOptions: OptionType[];
 	filteredElementOptions: OptionType[];
@@ -25,6 +26,7 @@ type State = {
 	filteredAgentGenderOptions: string[];
 	filteredSourceMaterialOptions: OptionType[];
 	filteredSourceTypeOptions: OptionType[];
+	filteredSourceLanguageOptions: { greek: boolean; semitic: boolean };
 };
 
 type Action = {
@@ -39,6 +41,10 @@ type Action = {
 	setInitialAgentGenderOptions: (options: string[]) => void;
 	setInitialSourceMaterialOptions: (options: OptionType[]) => void;
 	setInitialSourceTypeOptions: (options: OptionType[]) => void;
+	setInitialSourceLanguageOptions: (options: {
+		greek: boolean;
+		semitic: boolean;
+	}) => void;
 	// filtered state setters
 	setFilteredLocationOptions: (options: OptionType[]) => void;
 	setFilteredElementOptions: (options: OptionType[]) => void;
@@ -49,6 +55,11 @@ type Action = {
 	setFilteredAgentGenderOptions: (options: string[]) => void;
 	setFilteredSourceMaterialOptions: (options: OptionType[]) => void;
 	setFilteredSourceTypeOptions: (options: OptionType[]) => void;
+	setFilteredSourceLanguageOptions: (options: {
+		greek: boolean;
+		semitic: boolean;
+	}) => void;
+	// resetters
 	resetFilteredOptions: () => void;
 	resetInitialOptions: () => void;
 };
@@ -67,6 +78,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 	initialAgentGenderOptions: [],
 	initialSourceMaterialOptions: [],
 	initialSourceTypeOptions: [],
+	initialSourceLanguageOptions: { greek: false, semitic: false },
 	filteredLocationOptions: [],
 	filteredElementOptions: [],
 	filteredElementNbOptions: null,
@@ -76,6 +88,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 	filteredAgentGenderOptions: [],
 	filteredSourceMaterialOptions: [],
 	filteredSourceTypeOptions: [],
+	filteredSourceLanguageOptions: { greek: false, semitic: false },
 
 	setInitialLocationOptions: (options) =>
 		set({ initialLocationOptions: options }),
@@ -95,6 +108,8 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 		set({ initialSourceMaterialOptions: options }),
 	setInitialSourceTypeOptions: (options) =>
 		set({ initialSourceTypeOptions: options }),
+	setInitialSourceLanguageOptions: (options) =>
+		set({ initialSourceLanguageOptions: options }),
 
 	setFilteredLocationOptions: (options) =>
 		set({ filteredLocationOptions: options }),
@@ -114,6 +129,8 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 		set({ filteredSourceMaterialOptions: options }),
 	setFilteredSourceTypeOptions: (options) =>
 		set({ filteredSourceTypeOptions: options }),
+	setFilteredSourceLanguageOptions: (options) =>
+		set({ filteredSourceLanguageOptions: options }),
 
 	resetFilteredOptions: () =>
 		set((state) => ({
@@ -126,6 +143,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 			filteredAgentGenderOptions: state.initialAgentGenderOptions,
 			filteredSourceMaterialOptions: state.initialSourceMaterialOptions,
 			filteredSourceTypeOptions: state.initialSourceTypeOptions,
+			filteredSourceLanguageOptions: state.initialSourceLanguageOptions,
 			hasFilteredPoints: false,
 		})),
 	resetInitialOptions: () =>
@@ -139,6 +157,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 			initialAgentGenderOptions: [],
 			initialSourceMaterialOptions: [],
 			initialSourceTypeOptions: [],
+			initialSourceLanguageOptions: { greek: false, semitic: false },
 			filteredLocationOptions: [],
 			filteredElementOptions: [],
 			filteredElementNbOptions: null,
@@ -148,6 +167,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 			filteredAgentGenderOptions: [],
 			filteredSourceMaterialOptions: [],
 			filteredSourceTypeOptions: [],
+			filteredSourceLanguageOptions: { greek: false, semitic: false },
 			hasFilteredPoints: false,
 		})),
 }));
