@@ -29,9 +29,7 @@ const BOMapFormPage = () => {
 	const { pathname } = useLocation();
 
 	// récupération des données des stores
-	const { mapInfos, mapFilters, step, setStep } = useMapFormStore(
-		(state) => state,
-	);
+	const { mapInfos, step, setStep } = useMapFormStore((state) => state);
 
 	const [isMapCreated, setIsMapCreated] = useState(false);
 
