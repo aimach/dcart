@@ -22,7 +22,7 @@ import { createNewUser } from "../../../utils/api/authAPI";
 // import des styles
 import style from "./userManagementPage.module.scss";
 // import des icônes
-import { CirclePlus, Trash } from "lucide-react";
+import { CirclePlus, Pen, Trash } from "lucide-react";
 
 const UserManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -47,6 +47,9 @@ const UserManagementPage = () => {
 		setReload,
 	} = useModalStore();
 
+	const [userFormType, setUserFormType] = useState<"add" | "update">("add");
+	const [currentUserInfos, setCurrentUserInfos] = useState<User | null>(null);
+
 	useEffect(() => {
 		if (!isAdmin) {
 			navigate("/backoffice");
@@ -57,8 +60,13 @@ const UserManagementPage = () => {
 	useEffect(() => {
 		if (isAdmin) {
 			const fetchAllUsers = async () => {
-				const allUsers = await getAllUsers();
+				const allUsers: User[] = await getAllUsers();
 				setUsers(allUsers);
+				if (allUsers.length > 0) {
+					setCurrentUserInfos(
+						allUsers.find((user) => user.id === userId) || null,
+					);
+				}
 			};
 			fetchAllUsers();
 		}
@@ -111,8 +119,10 @@ const UserManagementPage = () => {
 			</div>
 			{addUserForm && (
 				<AddUserForm
-					onSubmit={handleAddUserSubmit}
+					onSubmit={userFormType === "add" ? handleAddUserSubmit : () => {}}
 					setAddUserForm={setAddUserForm}
+					type={userFormType}
+					currentUserInfos={currentUserInfos}
 				/>
 			)}
 			<div className={style.userManagementTableContainer}>
@@ -141,7 +151,7 @@ const UserManagementPage = () => {
 								</td>
 								<td>
 									<div>
-										{userId !== user.id && (
+										{userId !== user.id ? (
 											<>
 												<button
 													type="button"
@@ -156,6 +166,16 @@ const UserManagementPage = () => {
 												<Trash
 													color="#9d2121"
 													onClick={() => handleDeleteClick(user.id as string)}
+												/>
+											</>
+										) : (
+											<>
+												<Pen
+													onClick={() => {
+														setUserFormType("update");
+														setAddUserForm(true);
+														setCurrentUserInfos(user);
+													}}
 												/>
 											</>
 										)}

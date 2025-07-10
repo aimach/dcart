@@ -8,6 +8,8 @@ import ButtonComponent from "../../common/button/ButtonComponent";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import userInputArray from "../../../utils/forms/userInputArray";
+// import des types
+import type { User } from "../../../utils/types/userTypes";
 // import du style
 import style from "../storymapForm/commonForm/commonForm.module.scss";
 import parentStyle from "../../../pages/BackOffice/BOUserManagementPage/userManagementPage.module.scss";
@@ -23,16 +25,26 @@ export type userInputType = {
 type AddUserFormProps = {
 	onSubmit: (data: userInputType) => void;
 	setAddUserForm: (value: boolean) => void;
+	type: "add" | "update";
+	currentUserInfos: User | null;
 };
 
-const AddUserForm = ({ onSubmit, setAddUserForm }: AddUserFormProps) => {
+const AddUserForm = ({
+	onSubmit,
+	setAddUserForm,
+	type,
+	currentUserInfos,
+}: AddUserFormProps) => {
 	const { translation, language } = useTranslation();
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<userInputType>();
+	} = useForm<userInputType>({ defaultValues: currentUserInfos || {} });
+
+	console.log(userInputArray);
+	console.log(currentUserInfos);
 
 	return (
 		<div className={parentStyle.addUserFormContainer}>
