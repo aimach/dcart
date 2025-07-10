@@ -8,6 +8,7 @@ type LanguageObject = {
 	noAuthInMobile: string;
 	invalidAuth: string;
 	seeAlso: string;
+	allRightsReserved: string;
 	navigation: {
 		home: string;
 		maps: string;
@@ -21,6 +22,7 @@ type LanguageObject = {
 		tags: string;
 		divinities: string;
 		website: string;
+		legalNotice: string;
 	};
 	alert: {
 		maxReached: string;
