@@ -1,6 +1,10 @@
 // import des services
 import { apiClient } from "./apiClient";
-import { notifyCreateSuccess, notifyError } from "../functions/toast";
+import {
+	notifyCreateSuccess,
+	notifyEditSuccess,
+	notifyError,
+} from "../functions/toast";
 import { toast } from "react-toastify";
 // import des types
 import type { User } from "../types/userTypes";
@@ -160,6 +164,28 @@ const createNewUser = async (body: userInputType) => {
 	}
 };
 
+/**
+ * Fonction de création d'un utilisateur
+ * @param body - les données de l'utilisateur
+ */
+const updateUser = async (body: userInputType, currentUserInfos: User) => {
+	try {
+		const response = await apiClient.put(
+			`/auth/users/${currentUserInfos?.id}/profile`,
+			body,
+		);
+		if (response.status === 201) {
+			notifyEditSuccess("Profil", false);
+		}
+	} catch (error) {
+		if (error.response.data.message) {
+			notifyError(error.response.data.message);
+		} else {
+			notifyError("Erreur lors de la modification du profil");
+		}
+	}
+};
+
 export {
 	loginUser,
 	logoutUser,
@@ -168,4 +194,5 @@ export {
 	sendResetPasswordRequest,
 	resetPassword,
 	createNewUser,
+	updateUser,
 };

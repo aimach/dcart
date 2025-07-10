@@ -18,7 +18,7 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import des types
 import type { User } from "../../../utils/types/userTypes";
 import type { userInputType } from "../../../components/form/userForm/AddUserForm";
-import { createNewUser } from "../../../utils/api/authAPI";
+import { createNewUser, updateUser } from "../../../utils/api/authAPI";
 // import des styles
 import style from "./userManagementPage.module.scss";
 // import des icônes
@@ -47,7 +47,7 @@ const UserManagementPage = () => {
 		setReload,
 	} = useModalStore();
 
-	const [userFormType, setUserFormType] = useState<"add" | "update">("add");
+	const [userFormType, setUserFormType] = useState<"create" | "edit">("create");
 	const [currentUserInfos, setCurrentUserInfos] = useState<User | null>(null);
 
 	useEffect(() => {
@@ -87,6 +87,16 @@ const UserManagementPage = () => {
 	const handleAddUserSubmit = async (data: userInputType) => {
 		await createNewUser(data);
 		setAddUserForm(false);
+		setCurrentUserInfos(null);
+		setUserFormType("create");
+		setReload(!reload);
+	};
+
+	const handleUpdateUserSubmit = async (data: userInputType) => {
+		await updateUser(data, currentUserInfos as User);
+		setAddUserForm(false);
+		setCurrentUserInfos(null);
+		setUserFormType("create");
 		setReload(!reload);
 	};
 
@@ -119,7 +129,11 @@ const UserManagementPage = () => {
 			</div>
 			{addUserForm && (
 				<AddUserForm
-					onSubmit={userFormType === "add" ? handleAddUserSubmit : () => {}}
+					onSubmit={
+						userFormType === "create"
+							? handleAddUserSubmit
+							: handleUpdateUserSubmit
+					}
 					setAddUserForm={setAddUserForm}
 					type={userFormType}
 					currentUserInfos={currentUserInfos}
@@ -172,9 +186,10 @@ const UserManagementPage = () => {
 											<>
 												<Pen
 													onClick={() => {
-														setUserFormType("update");
+														setUserFormType("edit");
 														setAddUserForm(true);
 														setCurrentUserInfos(user);
+														scrollTo({ top: 0, left: 0, behavior: "smooth" });
 													}}
 												/>
 											</>

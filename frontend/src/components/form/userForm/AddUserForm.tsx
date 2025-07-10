@@ -25,7 +25,7 @@ export type userInputType = {
 type AddUserFormProps = {
 	onSubmit: (data: userInputType) => void;
 	setAddUserForm: (value: boolean) => void;
-	type: "add" | "update";
+	type: "create" | "edit";
 	currentUserInfos: User | null;
 };
 
@@ -41,10 +41,9 @@ const AddUserForm = ({
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<userInputType>({ defaultValues: currentUserInfos || {} });
-
-	console.log(userInputArray);
-	console.log(currentUserInfos);
+	} = useForm<userInputType | (userInputType & userInputType)>({
+		defaultValues: currentUserInfos || {},
+	});
 
 	return (
 		<div className={parentStyle.addUserFormContainer}>
@@ -80,7 +79,9 @@ const AddUserForm = ({
 						type="submit"
 						color="brown"
 						textContent={
-							translation[language].backoffice.storymapFormPage.form.create
+							translation[language].backoffice.storymapFormPage.form[
+								type as "create" | "edit"
+							]
 						}
 					/>
 					<ButtonComponent

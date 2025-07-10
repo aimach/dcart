@@ -204,6 +204,62 @@ export const authController = {
 		}
 	},
 
+	updateUserProfile: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { userId } = req.params;
+			const { username, pseudo, email } = req.body;
+
+			// récupération de l'utilisateur
+			const user = await dcartDataSource.getRepository(User).findOne({
+				where: { id: userId },
+				select: ["id", "username", "pseudo", "email"],
+			});
+
+			if (!user) {
+				res.status(404).json({ message: "Utilisateur non trouvé." });
+				return;
+			}
+
+			// vérification que l'utilisateur est bien celui qui fait la requête
+			console.log(req.user);
+			console.log(user);
+			if (user.id !== req.user?.userId) {
+				res.status(403).json({ message: "Accès interdit" });
+				return;
+			}
+
+			// vérification de l'unicité de l'email
+			const existingUser = await dcartDataSource.getRepository(User).findOneBy({
+				email,
+			});
+			if (existingUser && existingUser.id !== user.id) {
+				res.status(400).json({ message: "Email déjà utilisé." });
+				return;
+			}
+
+			// vérification de l'unicité du pseudo
+			const existingPseudo = await dcartDataSource
+				.getRepository(User)
+				.findOneBy({
+					pseudo,
+				});
+			if (existingPseudo && existingPseudo.id !== user.id) {
+				res.status(400).json({ message: "Pseudo déjà utilisé." });
+				return;
+			}
+
+			// mise à jour des informations de l'utilisateur
+			user.username = username;
+			user.pseudo = pseudo;
+			user.email = email;
+			await dcartDataSource.getRepository(User).save(user);
+
+			res.status(200).json({ message: "Statut utilisateur mis à jour" });
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
 	deleteUser: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { userId } = req.params;
