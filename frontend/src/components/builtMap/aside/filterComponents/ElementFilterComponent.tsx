@@ -17,6 +17,12 @@ import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
+interface ElementFilterComponentProps {
+	setElementNameValues: (names: string[]) => void;
+	elementNameValues?: string[];
+}
+
+
 /**
  * Affiche le filtre des éléments
  * @returns Select (react-select)
