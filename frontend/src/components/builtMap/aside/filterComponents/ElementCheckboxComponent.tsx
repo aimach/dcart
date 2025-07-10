@@ -184,9 +184,7 @@ const ElementCheckboxComponent = ({
 								);
 							}}
 							disabled={
-								options.firstLevelIds[0].isDisabled ||
-								option.isDisabled ||
-								options.secondLevelIds.some((opt) => opt.isDisabled)
+								options.firstLevelIds[0].isDisabled || option.isDisabled
 							}
 						/>
 						{option.label}

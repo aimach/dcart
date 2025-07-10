@@ -79,7 +79,7 @@ const ElementFilterComponent = () => {
 								option.firstLevelIds[0],
 								secondOption,
 							)
-								? secondOption
+								? { ...secondOption, isDisabled: false }
 								: { ...secondOption, isDisabled: true },
 					);
 					return {
