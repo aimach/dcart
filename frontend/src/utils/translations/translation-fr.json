@@ -6,6 +6,7 @@
 	"noAuthInMobile": "Vous devez vous connecter sur un ordinateur pour accéder à cette page.",
 	"invalidAuth": "Identifiants invalides",
 	"seeAlso": "Voir aussi",
+	"allRightsReserved": "Tous droits réservés",
 	"navigation": {
 		"home": "ACCUEIL",
 		"maps": "CARTES",
@@ -18,7 +19,8 @@
 		"users": "UTILISATEURS",
 		"tags": "ÉTIQUETTES",
 		"divinities": "DIVINITÉS",
-		"website": "RETOUR AU SITE"
+		"website": "RETOUR AU SITE",
+		"legalNotice": "MENTIONS LÉGALES"
 	},
 	"alert": {
 		"maxReached": "Nombre maximum de filtres atteint",

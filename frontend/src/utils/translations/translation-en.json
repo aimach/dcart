@@ -6,6 +6,7 @@
 	"noAuthInMobile": "You must log in on a computer to access this page.",
 	"invalidAuth": "Invalid username or password.",
 	"seeAlso": "See also",
+	"allRightsReserved": "All rights reserved",
 	"navigation": {
 		"home": "HOME",
 		"maps": "MAPS",
@@ -18,7 +19,8 @@
 		"users": "USERS",
 		"tags": "TAGS",
 		"divinities": "DIVINITIES",
-		"website": "BACK TO WEBSITE"
+		"website": "BACK TO WEBSITE",
+		"legalNotice": "LEGAL NOTICE"
 	},
 	"alert": {
 		"maxReached": "Maximum number of filters reached",

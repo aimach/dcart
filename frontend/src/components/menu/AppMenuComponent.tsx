@@ -51,11 +51,15 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 	const [tags, setTags] = useState<TagWithItemsType[]>([]);
 	useEffect(() => {
 		const fetchAllTags = async () => {
-			const fetchedTags = await getAllTagsWithMapsAndStorymaps({
-				map: true,
-				storymap: true,
-			});
-			const slicedTags = shuffleArray(fetchedTags).slice(0, 5); // Limiter à 5 tags
+			const { items } = await getAllTagsWithMapsAndStorymaps(
+				{
+					map: true,
+					storymap: true,
+				},
+				"",
+				[],
+			);
+			const slicedTags = shuffleArray(items).slice(0, 5); // Limiter à 5 tags
 			setTags(slicedTags);
 		};
 		fetchAllTags();
@@ -65,6 +69,8 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 		setMenuIsOpen(false);
 		navigate(path);
 	};
+
+	const currentYear = new Date().getFullYear();
 
 	return (
 		<main className={style.menuPageContainer}>
@@ -121,16 +127,13 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 				</section>
 				<section className={style.legalPageSection}>
 					<Link to="/mentions-legales" onClick={() => setMenuIsOpen(false)}>
-						Mentions légales
-					</Link>
-					<Link
-						to="/politique-de-confidentialite"
-						onClick={() => setMenuIsOpen(false)}
-					>
-						Politique de confidentialité
+						{translation[language].navigation.legalNotice}
 					</Link>
 				</section>
-				<p>© 2025 Projet dCART. Tous droits réservés.</p>
+				<p>
+					© {currentYear} Projet dCART.{" "}
+					{translation[language].allRightsReserved}.
+				</p>
 			</section>
 			{isDesktop && (
 				<section className={style.menuPageImageSection}>

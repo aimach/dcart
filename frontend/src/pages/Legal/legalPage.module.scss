@@ -3,7 +3,10 @@
 
 .legalPage {
     width: 50vw;
-    margin: 0 auto;
+    margin: v.$space-xl auto;
+    @include m.flexbox(column, center, center);
+    gap: v.$font-space-xl;
+    text-align: justify;
 
     >h1 {
         font-size: $font-size-xxxxl;
@@ -11,8 +14,42 @@
         margin: $font-space-xl;
     }
 
-    >h2 {
-        font-size: $font-size-xxl;
-        margin: $font-space-xl;
+    .paragraphContainer {
+        width: 100%;
+        @include m.flexbox(flex, column, flex-start, center);
+        gap: v.$font-space-xl;
+
+        >h2 {
+            font-size: $font-size-xxl;
+            margin: $space-xl 0 $font-space-l 0;
+            color: v.$color-umber;
+        }
+
+        h3 {
+            font-size: $font-size-l;
+            font-weight: 600;
+            margin: $font-space-l 0;
+        }
+
+        h4 {
+            font-size: v.$font-size-m;
+            font-weight: 600;
+            margin: $font-space-l 0;
+        }
+
+        a {
+            color: v.$color-umber;
+            text-decoration: none;
+            font-weight: 600;
+
+            &:hover {
+                color: v.$color-grullo;
+                text-decoration: underline;
+            }
+        }
+
     }
+
+
+
 }
