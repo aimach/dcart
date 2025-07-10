@@ -1,5 +1,6 @@
 // import des services
 import { getAllDivinities } from "../api/builtMap/getRequests";
+import { useMapFilterOptionsStore } from "../stores/builtMap/mapFilterOptionsStore";
 // import des types
 import type {
 	Language,
@@ -290,24 +291,34 @@ const getPointsTimeMarkers = (allPoints: PointType[]) => {
  * @returns {OptionType[]} - Les options du select filtrées et formatées
  */
 const getSelectDefaultValues = (
-	userFiltersListId: string,
+	userFiltersListIdOrName: string,
 	listOptions: OptionType[],
 ) => {
-	if (!userFiltersListId) return [];
+	if (!userFiltersListIdOrName) return [];
+	let defaultValues: (string | number)[] = [];
 
-	// convertir les valeurs en nombre
-	const defaultValues = userFiltersListId
+	const firstElement = userFiltersListIdOrName.split("|")[0];
+	// si ce sont des noms de localités ou d'éléments, on ne peut pas les convertir en nombre
+	if (Number.isNaN(Number.parseInt(firstElement, 10))) {
+		defaultValues = userFiltersListIdOrName.split("|");
+		return (listOptions ?? []).filter((option) =>
+			defaultValues.includes(option.value),
+		);
+	}
+
+	// si ce sont des ids, on les convertit en nombre
+	defaultValues = userFiltersListIdOrName
 		.split("|")
-		.map((id) => (typeof id === "string" ? Number.parseInt(id, 10) : id));
-	// trouver les options correspondantes
-	const filteredOptions = (listOptions ?? []).filter((option) =>
+		.map((idOrName) =>
+			typeof idOrName === "string" ? Number.parseInt(idOrName, 10) : idOrName,
+		);
+	return (listOptions ?? []).filter((option) =>
 		defaultValues.includes(
 			typeof option.value === "string"
 				? Number.parseInt(option.value, 10)
 				: option.value,
 		),
 	);
-	return filteredOptions;
 };
 
 const handleMultiSelectChange = (
@@ -406,28 +417,29 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
 /**
  * Fonction qui vérifie si aucun filtre n'est sélectionné par l'utilisateur
  * @param {UserFilterType} userFilters - Les filtres de la carte en construction
- * @param {string[]} locationNames - Les noms des localités sélectionnées
- * @param {string[]} elementNames - Les noms des éléments sélectionnés
+ * @param {string[]} locationFilterReminders - Les noms des localités sélectionnées
+ * @param {string[]} elementFilterReminders - Les noms des éléments sélectionnés
  * @param {Record<string, boolean>} languageValues - Un objet contenant les booléens des langues sélectionnées
- * @param {string[]} agentStatusNames - Un objet contenant la liste des statuts sélectionnés
- * @param {string[]} agentivityNames - Un objet contenant la liste des agentivités sélectionnées
- * @param {string[]} sourceMaterialNames - Un objet contenant la liste des supports des sources sélectionnées
- * @param {string[]} languageValues - Un objet contenant la liste langues sélectionnées
- * @param {string[]} genderValues - Un objet contenant la liste des genres sélectionnés
+ * @param {string[]} agentStatusFilterReminders - Un objet contenant la liste des statuts sélectionnés
+ * @param {string[]} agentivityFilterReminders - Un objet contenant la liste des agentivités sélectionnées
+ * @param {string[]} sourceMaterialFilterReminders - Un objet contenant la liste des supports des sources sélectionnées
+ * @param {string[]} languageFilterReminders - Un objet contenant la liste langues sélectionnées
+ * @param {string[]} genderFilterReminders - Un objet contenant la liste des genres sélectionnés
  * @param {TranslationType} translationObject - Les objets de traduction
  * @returns {Array} - Un tableau de strings
  */
 const displayFiltersTags = (
 	userFilters: UserFilterType,
-	locationNames: string[],
-	elementNames: string[],
-	sourceTypeNames: string[],
-	agentStatusNames: string[],
-	agentivityNames: string[],
-	agentActivityNames: string[],
-	sourceMaterialNames: string[],
-	languageValues: Record<string, boolean>,
-	genderValues: Record<string, boolean>,
+	locationFilterReminders: string[],
+	elementFilterReminders: string[],
+	elementNbFilterReminders: { min: number; max: number } | null,
+	sourceTypeFilterReminders: string[],
+	agentStatusFilterReminders: string[],
+	agentivityFilterReminders: string[],
+	agentActivityFilterReminders: string[],
+	sourceMaterialFilterReminders: string[],
+	languageFilterReminders: Record<string, boolean>,
+	genderFilterReminders: Record<string, boolean>,
 	translationObject: LanguageObject,
 ) => {
 	const stringArray = [];
@@ -443,74 +455,84 @@ const displayFiltersTags = (
 	}
 
 	// affichage des langues
-	if (languageValues.greek && languageValues.semitic) {
+	if (languageFilterReminders.greek && languageFilterReminders.semitic) {
 		stringArray.push(translationObject.mapPage.noGreekOrSemitic);
-	} else if (languageValues.greek) {
-		stringArray.push(translationObject.mapPage.onlySemitic);
-	} else if (languageValues.semitic) {
-		stringArray.push(translationObject.mapPage.onlyGreek);
+	} else if (languageFilterReminders.greek) {
+		stringArray.push(translationObject.mapPage.noGreek);
+	} else if (languageFilterReminders.semitic) {
+		stringArray.push(translationObject.mapPage.noSemitic);
 	}
 
 	// affichage des lieux
-	if (locationNames.length)
+	if (locationFilterReminders.length)
 		stringArray.push(
-			`${translationObject.common.in} ${locationNames.join(", ")}`,
+			`${translationObject.common.in} ${locationFilterReminders.join(", ")}`,
 		);
 	// affichage des éléments
-	if (elementNames.length)
+	if (elementFilterReminders.length)
 		stringArray.push(
-			`${translationObject.mapPage.withElements} : ${elementNames.join(", ")}`,
+			`${translationObject.mapPage.withElements} : ${elementFilterReminders.join(", ")}`,
 		);
 
 	// affichage des types de source
-	if (sourceTypeNames.length) {
+	if (sourceTypeFilterReminders.length) {
 		stringArray.push(
-			`${translationObject.common.typeOf} : ${sourceTypeNames.join(", ")}`,
+			`${translationObject.common.typeOf} : ${sourceTypeFilterReminders.join(", ")}`,
 		);
 	}
 
 	// affichage des statuts
-	if (agentStatusNames.length) {
+	if (agentStatusFilterReminders.length) {
 		stringArray.push(
-			`${translationObject.mapPage.withStatus} : ${agentStatusNames.join(", ")}`,
+			`${translationObject.mapPage.withStatus} : ${agentStatusFilterReminders.join(", ")}`,
 		);
 	}
 
 	// affichage des agentivités
-	if (agentivityNames.length) {
+	if (agentivityFilterReminders.length) {
 		stringArray.push(
-			`${translationObject.mapPage.withAgentivities} : ${agentivityNames.join(", ")}`,
+			`${translationObject.mapPage.withAgentivities} : ${agentivityFilterReminders.join(", ")}`,
 		);
 	}
 
 	// affichage des supports de source
-	if (sourceMaterialNames.length) {
+	if (sourceMaterialFilterReminders.length) {
 		stringArray.push(
-			`${translationObject.mapPage.withSourceMaterials} : ${sourceMaterialNames.join(
+			`${translationObject.mapPage.withSourceMaterials} : ${sourceMaterialFilterReminders.join(
 				", ",
 			)}`,
 		);
 	}
 
 	// affichage des activités des agents
-	if (agentActivityNames.length) {
+	if (agentActivityFilterReminders.length) {
 		stringArray.push(
-			`${translationObject.mapPage.withAgentActivities} : ${agentActivityNames.join(", ")}`,
+			`${translationObject.mapPage.withAgentActivities} : ${agentActivityFilterReminders.join(", ")}`,
 		);
 	}
 
 	// affichage du genre des agents
-	const isOneGenderKeyTrue = Object.values(genderValues ?? {}).some(
+	const isOneGenderKeyTrue = Object.values(genderFilterReminders ?? {}).some(
 		(value) => value,
 	);
 	if (isOneGenderKeyTrue) {
 		stringArray.push(
-			`${translationObject.mapPage.gender} : ${Object.entries(genderValues)
+			`${translationObject.mapPage.gender} : ${Object.entries(
+				genderFilterReminders,
+			)
 				.map(([key, value]) =>
-					value ? translationObject.mapPage.aside[key] : null,
+					value
+						? `${translationObject.common.no} ${translationObject.mapPage.aside[key]}`
+						: null,
 				)
 				.filter(Boolean)
 				.join(", ")}`,
+		);
+	}
+
+	if (elementNbFilterReminders) {
+		stringArray.push(
+			`${translationObject.mapPage.withElementsNb} : ${elementNbFilterReminders.min} ${translationObject.common.to} ${elementNbFilterReminders.max}`,
 		);
 	}
 
@@ -522,30 +544,42 @@ const displayFiltersTags = (
  * @param {PointType[]} allPoints - Les points
  * @returns {min: number, max: number} - Un objet contenant le minimum et le maximum
  */
-const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
-	let min = 20;
-	let max = 0;
-	for (const point of allPoints) {
-		for (const sources of point.sources) {
-			for (const attestations of sources.attestations) {
-				if (attestations.elements.length > 0) {
-					const uniqueElementsById = Object.values(
-						attestations.elements.reduce((acc, element) => {
-							acc[element.element_id] = element.element_id;
-							return acc;
-						}, {}),
-					);
-					if (uniqueElementsById.length < min) {
-						min = uniqueElementsById.length;
-					}
-					if (uniqueElementsById.length > max) {
-						max = uniqueElementsById.length;
+const getMinAndMaxElementNumbers = (
+	mapInfos: MapInfoType | null,
+	allPoints: PointType[],
+) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
+
+	const elementNbFilter = isSelectedFilterInThisMap(mapInfos, "divinityNb");
+	if (elementNbFilter) {
+		let min = 20;
+		let max = 0;
+		for (const point of allPoints) {
+			for (const sources of point.sources) {
+				for (const attestations of sources.attestations) {
+					if (attestations.elements.length > 0) {
+						const uniqueElementsById = Object.values(
+							attestations.elements.reduce((acc, element) => {
+								acc[element.element_id] = element.element_id;
+								return acc;
+							}, {}),
+						);
+						if (uniqueElementsById.length < min) {
+							min = uniqueElementsById.length;
+						}
+						if (uniqueElementsById.length > max) {
+							max = uniqueElementsById.length;
+						}
 					}
 				}
 			}
 		}
+		if (filterOptionsStore.hasFilteredPoints) {
+			filterOptionsStore.setFilteredElementNbOptions({ min, max });
+		} else {
+			filterOptionsStore.setInitialElementNbOptions({ min, max });
+		}
 	}
-	return { min, max };
 };
 
 /**
@@ -554,11 +588,14 @@ const getMinAndMaxElementNumbers = (allPoints: PointType[]) => {
  * @param {Language} language - La langue sélectionnée par l'utilisateur
  * @param {boolean} isWithoutTheonym - Un booléen
  */
-const fetchElementOptions = async (
+const getElementOptions = async (
 	allPoints: PointType[],
 	language: Language,
 	isWithoutTheonym: boolean,
+	isForBackoffice = false,
 ) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
+
 	// récupération des divinités de la BDD MAP
 	const allDivinities = await getAllDivinities();
 
@@ -583,7 +620,28 @@ const fetchElementOptions = async (
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
 
-	return formatedElementOptions;
+	if (isForBackoffice) {
+		return formatedElementOptions;
+	}
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialElementOptions = filterOptionsStore.initialElementOptions;
+
+		const elementOptionsWithDisabled = initialElementOptions.map((option) => {
+			const isDisabled = !formatedElementOptions.some(
+				(initialOption) =>
+					initialOption.value === option.value &&
+					initialOption.label === option.label,
+			);
+			return {
+				...option,
+				isDisabled,
+			};
+		});
+		filterOptionsStore.setFilteredElementOptions(elementOptionsWithDisabled);
+	} else {
+		filterOptionsStore.setInitialElementOptions(formatedElementOptions);
+	}
 };
 
 /**
@@ -595,8 +653,10 @@ const getAllSourceTypeFromPoints = (
 	points: PointType[],
 	language: Language,
 ) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allSourceTypes: Record<string, string>[] = [];
 	const sourceTypes = new Set<string>();
+
 	points.map((point) => {
 		point.sources.map((source) => {
 			const typeSourceArray = source.types[`type_source_${language}`];
@@ -625,12 +685,37 @@ const getAllSourceTypeFromPoints = (
 	});
 
 	// formattage des options pour le select
-	return allSourceTypes
+	const sortedAllSourceTypes = allSourceTypes
 		.map((option) => ({
 			value: option.type_fr,
 			label: option.label,
+			isDisabled: filterOptionsStore.hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialSourceTypeOptions =
+			filterOptionsStore.initialSourceTypeOptions;
+
+		const sourceTypeOptionsWithDisabled = initialSourceTypeOptions.map(
+			(initialOption) => {
+				const isDisabled = !sortedAllSourceTypes.some(
+					(filteredOption) =>
+						filteredOption.value === initialOption.value &&
+						filteredOption.label === initialOption.label,
+				);
+				return {
+					...initialOption,
+					isDisabled,
+				};
+			},
+		);
+		filterOptionsStore.setFilteredSourceTypeOptions(
+			sourceTypeOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialSourceTypeOptions(sortedAllSourceTypes);
+	}
 };
 
 /**
@@ -643,6 +728,7 @@ const getAllAgentActivityFromPoints = (
 	points: PointType[],
 	language: Language,
 ) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allAgentActivity: Record<string, string>[] = [];
 	const activityIds = new Set<string>();
 
@@ -669,12 +755,36 @@ const getAllAgentActivityFromPoints = (
 	}
 
 	// formattage des options pour le select
-	return allAgentActivity
+	const sortedAllAgentActivity = allAgentActivity
 		.map((option) => ({
 			value: option.id,
 			label: option[`nom_${language}`],
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialAgentActivityOptions =
+			filterOptionsStore.initialAgentActivityOptions;
+
+		const agentActivityOptionsWithDisabled = initialAgentActivityOptions.map(
+			(option) => {
+				const isDisabled = !sortedAllAgentActivity.some(
+					(initialOption) =>
+						initialOption.value === option.value &&
+						initialOption.label === option.label,
+				);
+				return {
+					...option,
+					isDisabled,
+				};
+			},
+		);
+		filterOptionsStore.setFilteredAgentActivityOptions(
+			agentActivityOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialAgentActivityOptions(sortedAllAgentActivity);
+	}
 };
 
 /**
@@ -684,7 +794,7 @@ const getAllAgentActivityFromPoints = (
  * @returns {Record<string, string>[]} - Le tableau des options des noms
  */
 const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
-	const allAgentNames: Record<string, string>[] = [];
+	const allAgentFilterReminders: Record<string, string>[] = [];
 	const names = new Set<string>();
 
 	for (const point of points) {
@@ -697,7 +807,7 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
 						const nameEn = agent.designation.split("<br/>")[1];
 						if (names.has(nameFr)) continue;
 						names.add(nameFr);
-						allAgentNames.push({
+						allAgentFilterReminders.push({
 							id: agent.designation,
 							nom_fr: nameFr,
 							nom_en: nameEn,
@@ -708,10 +818,11 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
 		}
 	}
 	// formattage des options pour le select
-	return allAgentNames
+	return allAgentFilterReminders
 		.map((name) => ({
 			value: name.id,
 			label: name[`nom_${language}`],
+			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
 };
@@ -723,6 +834,7 @@ const getAllAgentNameFromPoints = (points: PointType[], language: string) => {
  * @returns {Record<string, string>[]} - Le tableau des options des statuts
  */
 const getAllAgentStatusFromPoints = (points: PointType[], language: string) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allAgentStatus: Record<string, string>[] = [];
 	const status = new Set<string>();
 
@@ -746,12 +858,37 @@ const getAllAgentStatusFromPoints = (points: PointType[], language: string) => {
 		}
 	}
 	// formattage des options pour le select
-	return allAgentStatus
+	const sortedAllAgentStatus = allAgentStatus
 		.map((status) => ({
 			value: status.nom_fr,
 			label: status[`nom_${language}`],
+			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialAgentStatusOptions =
+			filterOptionsStore.initialAgentStatusOptions;
+
+		const AgentStatusOptionsWithDisabled = initialAgentStatusOptions.map(
+			(initialOption) => {
+				const isDisabled = !sortedAllAgentStatus.some(
+					(filteredOption) =>
+						filteredOption.value === initialOption.value &&
+						filteredOption.label === initialOption.label,
+				);
+				return {
+					...initialOption,
+					isDisabled,
+				};
+			},
+		);
+		filterOptionsStore.setFilteredAgentStatusOptions(
+			AgentStatusOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialAgentStatusOptions(sortedAllAgentStatus);
+	}
 };
 
 /**
@@ -761,6 +898,7 @@ const getAllAgentStatusFromPoints = (points: PointType[], language: string) => {
  * @returns {Record<string, string>[]} - Le tableau des options des agentivités
  */
 const getAllAgentivityFromPoints = (points: PointType[], language: string) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allAgentivity: Record<string, string>[] = [];
 	const agentivities = new Set<string>();
 
@@ -786,12 +924,37 @@ const getAllAgentivityFromPoints = (points: PointType[], language: string) => {
 		}
 	}
 	// formattage des options pour le select
-	return allAgentivity
+	const sortedAllAgentivityOptions = allAgentivity
 		.map((agentivity) => ({
 			value: agentivity.nom_fr,
 			label: agentivity[`nom_${language}`],
+			isDisabled: useMapFilterOptionsStore.getState().hasFilteredPoints,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialAgentivityOptions =
+			filterOptionsStore.initialAgentivityOptions;
+
+		const AgentivityOptionsWithDisabled = initialAgentivityOptions.map(
+			(initialOption) => {
+				const isDisabled = !sortedAllAgentivityOptions.some(
+					(filteredOption) =>
+						filteredOption.value === initialOption.value &&
+						filteredOption.label === initialOption.label,
+				);
+				return {
+					...initialOption,
+					isDisabled,
+				};
+			},
+		);
+		filterOptionsStore.setFilteredAgentivityOptions(
+			AgentivityOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialAgentivityOptions(sortedAllAgentivityOptions);
+	}
 };
 
 /**
@@ -804,6 +967,7 @@ const getAllSourceMaterialFromPoints = (
 	points: PointType[],
 	language: string,
 ) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const allSourceMaterial: Record<string, string>[] = [];
 	const sourceMaterials = new Set<string>();
 
@@ -823,12 +987,121 @@ const getAllSourceMaterialFromPoints = (
 		}
 	}
 	// formattage des options pour le select
-	return allSourceMaterial
+	const sortedAllSourceMaterialOptions = allSourceMaterial
 		.map((material) => ({
 			value: material.nom_fr,
 			label: material.label,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialSourceMaterialOptions =
+			filterOptionsStore.initialSourceMaterialOptions;
+
+		const sourceMaterialOptionsWithDisabled = initialSourceMaterialOptions.map(
+			(initialOption) => {
+				const isDisabled = !sortedAllSourceMaterialOptions.some(
+					(filteredOption) =>
+						filteredOption.value === initialOption.value &&
+						filteredOption.label === initialOption.label,
+				);
+				return {
+					...initialOption,
+					isDisabled,
+				};
+			},
+		);
+		filterOptionsStore.setFilteredSourceMaterialOptions(
+			sourceMaterialOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialSourceMaterialOptions(
+			sortedAllSourceMaterialOptions,
+		);
+	}
+};
+
+/**
+ * Fonction qui renvoie toutes les genres des agents d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des genres
+ */
+const getAllAgentGenderFromPoints = (points: PointType[]) => {
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
+	const allAgentGender: Record<string, string>[] = [];
+	const gender = new Set<string>();
+
+	for (const point of points) {
+		for (const sources of point.sources) {
+			for (const attestations of sources.attestations) {
+				if (attestations.agents && attestations.agents.length > 0) {
+					for (const agent of attestations.agents) {
+						if (!agent.genres) continue;
+						for (const genreObject of agent.genres) {
+							const genreFr = genreObject.nom_fr;
+							const genreEn = genreObject.nom_en;
+							if (gender.has(genreFr)) continue;
+							gender.add(genreFr);
+							allAgentGender.push({
+								nom_fr: genreFr,
+								nom_en: genreEn,
+							});
+						}
+					}
+				}
+			}
+		}
+	}
+	// formattage des options pour le select
+	const allAgentGenderOptions = allAgentGender.map((status) =>
+		status.nom_en.toLowerCase(),
+	);
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
+		const initialAgentGenderOptions =
+			filterOptionsStore.initialAgentGenderOptions;
+
+		const agentGenderOptionsWithDisabled = initialAgentGenderOptions.filter(
+			(initialOption) =>
+				allAgentGenderOptions.some(
+					(filteredOption) => filteredOption === initialOption,
+				),
+		);
+		filterOptionsStore.setFilteredAgentGenderOptions(
+			agentGenderOptionsWithDisabled,
+		);
+	} else {
+		filterOptionsStore.setInitialAgentGenderOptions(allAgentGenderOptions);
+	}
+};
+
+/**
+ * Fonction qui renvoie le min et le max d'éléments d'une liste de points donnée
+ * @param {PointType[]} points - Les points
+ * @param {Language} language - La langue sélectionnée par l'utilisateur
+ * @returns {Record<string, string>[]} - Le tableau des options des genres
+ */
+const getMinAndMaxElementNb = (points: PointType[]) => {
+	let min = 0;
+	let max = 0;
+
+	for (const point of points) {
+		for (const sources of point.sources) {
+			for (const attestations of sources.attestations) {
+				if (attestations.elements && attestations.elements.length > 0) {
+					const elementsArrayLength = attestations.elements.length;
+					if (elementsArrayLength < min) {
+						min = elementsArrayLength;
+					}
+					if (elementsArrayLength > max) {
+						max = elementsArrayLength;
+					}
+				}
+			}
+		}
+	}
+	return { min, max };
 };
 
 /**
@@ -852,10 +1125,30 @@ const isSelectedFilterInThisMap = (
  * @param target - l'objet cible à vérifier
  * @returns boolean
  */
-const isInList = (list: OptionType[], target: OptionType) =>
-	list.some((item) =>
-		Object.keys(target).every((key) => item[key] === target[key]),
+const isInList = (
+	list: OptionType[],
+	firstLevelTarget: OptionType,
+	secondLevelTarget?: OptionType,
+) => {
+	// s'il n'y a pas de second niveau, on vérifie juste le premier niveau
+	if (!secondLevelTarget) {
+		return list.some((item) =>
+			Object.keys(firstLevelTarget).every(
+				(key) => !item.isDisabled && item[key] === firstLevelTarget[key],
+			),
+		);
+	}
+	// s'il y a un second niveau, on vérifie les deux niveaux
+	return list.some(
+		(item) =>
+			Object.keys(firstLevelTarget).every(
+				(key) => !item.isDisabled && item[key] === firstLevelTarget[key],
+			) &&
+			Object.keys(secondLevelTarget).every(
+				(key) => !item.isDisabled && item[key] === secondLevelTarget[key],
+			),
 	);
+};
 
 const resetAllFilterRemindersValues = (
 	setLocationNameValues: (names: string[]) => void,
@@ -865,6 +1158,7 @@ const resetAllFilterRemindersValues = (
 	setAgentStatusValues: (names: string[]) => void,
 	setAgentivityValues: (names: string[]) => void,
 	setSourceMaterialValues: (sourceMaterialName: string[]) => void,
+	setElementNbValues: (values: { min: number; max: number } | null) => void,
 	resetLanguageValues: () => void,
 ) => {
 	setLocationNameValues([]);
@@ -874,6 +1168,7 @@ const resetAllFilterRemindersValues = (
 	setAgentStatusValues([]);
 	setAgentivityValues([]);
 	setSourceMaterialValues([]);
+	setElementNbValues(null);
 	resetLanguageValues();
 };
 
@@ -893,7 +1188,7 @@ export {
 	noUserFilterChecked,
 	displayFiltersTags,
 	getMinAndMaxElementNumbers,
-	fetchElementOptions,
+	getElementOptions,
 	getAllSourceTypeFromPoints,
 	getAllAgentActivityFromPoints,
 	getAllAgentNameFromPoints,
@@ -903,4 +1198,6 @@ export {
 	getAllSourceMaterialFromPoints,
 	isInList,
 	resetAllFilterRemindersValues,
+	getAllAgentGenderFromPoints,
+	getMinAndMaxElementNb,
 };

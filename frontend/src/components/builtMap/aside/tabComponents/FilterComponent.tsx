@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 // import des composants
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
@@ -18,48 +18,19 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
 import { useShallow } from "zustand/shallow";
-// import des types
-import type { OptionType } from "../../../../utils/types/commonTypes";
+import { resetAllFilterRemindersValues } from "../../../../utils/functions/filter";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 // import du style
 import style from "./tabComponent.module.scss";
-import { resetAllFilterRemindersValues } from "../../../../utils/functions/filter";
-
-interface FilterComponentProps {
-	locationOptions: OptionType[];
-	elementOptions: OptionType[];
-	sourceTypeOptions: OptionType[];
-	agentActivityOptions: OptionType[];
-	agentStatusOptions: OptionType[];
-	agentivityOptions: OptionType[];
-	sourceMaterialOptions: OptionType[];
-	timeBoundsRef: React.MutableRefObject<{
-		min: number;
-		max: number;
-	} | null>;
-}
 
 /**
  * Affiche les filtres de la carte
- * @param {Object} props
- * @param {OptionType[]} props.locationOptions - Liste des options pour le filtre de la localisation
- * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
- * @param {OptionType[]} props.sourceTypeOptions - Liste des types de source pour le filtre des épithètes
- * @param {OptionType[]} props.agentActivityOptions - Liste des activités des agents pour le filtre des activités
- * @param {OptionType[]} props.agentStatusOptions - Liste des statuts des agents pour le filtre des activités
- * @param {OptionType[]} props.agentivityOptions - Liste des statuts des agents pour le filtre des activités
- * @param {OptionType[]} props.sourceMaterialOptions - Liste des supports des sources pour le filtre des activités
+
  * @returns LocationFilterComponent | ElementFilterComponent | LanguageFilterComponent
  */
-const FilterComponent = ({
-	locationOptions,
-	elementOptions,
-	sourceTypeOptions,
-	agentActivityOptions,
-	agentStatusOptions,
-	agentivityOptions,
-	sourceMaterialOptions,
-	timeBoundsRef,
-}: FilterComponentProps) => {
+const FilterComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
@@ -69,23 +40,40 @@ const FilterComponent = ({
 	const { mapInfos, setAllPoints, setAllResults, setMapReady } = useMapStore(
 		useShallow((state) => state),
 	);
+
 	const { mapFilters, setIsPanelDisplayed } = useMapAsideMenuStore();
+	const { userFilters, resetUserFilters, isReset, setIsReset } =
+		useMapFiltersStore(useShallow((state) => state));
 	const {
-		userFilters,
-		resetUserFilters,
-		isReset,
-		setIsReset,
-		setLocationNames,
-		setElementNames,
-		setLanguageValues,
-		setSourceTypeNames,
-		setAgentActivityNames,
-		setAgentStatusNames,
-		setAgentivityNames,
-		setSourceMaterialNames,
-		resetLanguageValues,
-		setGenderValues,
-	} = useMapFiltersStore(useShallow((state) => state));
+		setLocationFilterReminders,
+		setElementFilterReminders,
+		setElementNbFilterReminders,
+		setLanguageFilterReminders,
+		setSourceTypeFilterReminders,
+		setAgentActivityFilterReminders,
+		setAgentStatusFilterReminders,
+		setAgentivityFilterReminders,
+		setSourceMaterialFilterReminders,
+		resetLanguageFilterReminders,
+		setGenderFilterReminders,
+		resetFilterReminders,
+	} = useMapFilterReminderStore();
+	const {
+		hasFilteredPoints,
+		setHasFilteredPoints,
+		initialSourceTypeOptions,
+		initialAgentActivityOptions,
+		initialAgentStatusOptions,
+		initialAgentivityOptions,
+		initialSourceMaterialOptions,
+		filteredSourceTypeOptions,
+		filteredAgentActivityOptions,
+		filteredAgentStatusOptions,
+		filteredAgentivityOptions,
+		filteredSourceMaterialOptions,
+		resetFilteredOptions,
+		resetInitialOptions,
+	} = useMapFilterOptionsStore();
 
 	// initiation d'états pour récupérer les valeurs des lieux et éléments
 	const [locationNameValues, setLocationNameValues] = useState<string[]>([]);
@@ -97,6 +85,10 @@ const FilterComponent = ({
 	const [sourceMaterialValues, setSourceMaterialValues] = useState<string[]>(
 		[],
 	);
+	const [elementNbValues, setElementNbValues] = useState<{
+		min: number;
+		max: number;
+	} | null>(null);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -119,31 +111,38 @@ const FilterComponent = ({
 	// fonction pour gérer le clic sur le bouton de filtre
 	const handleFilterButton = () => {
 		fetchAllPoints("filter");
-		setLocationNames(locationNameValues);
-		setElementNames(elementNameValues);
+		setHasFilteredPoints(true);
+		setLocationFilterReminders(locationNameValues);
+		setElementFilterReminders(elementNameValues);
 		const sourceTypeWithoutCategory = sourceTypeValues.map(
 			(sourceTypeValue) => sourceTypeValue.split(">")[1],
 		);
-		setSourceTypeNames(sourceTypeWithoutCategory);
-		setAgentActivityNames(agentActivityValues);
-		setAgentStatusNames(agentStatusValues);
-		setAgentivityNames(agentivityValues);
+		setElementNbFilterReminders(elementNbValues);
+		setSourceTypeFilterReminders(sourceTypeWithoutCategory);
+		setAgentActivityFilterReminders(agentActivityValues);
+		setAgentStatusFilterReminders(agentStatusValues);
+		setAgentivityFilterReminders(agentivityValues);
 		const sourceMaterialValuesWithoutCategory = sourceMaterialValues.map(
 			(sourceMaterialValue) => sourceMaterialValue.split(">")[1],
 		);
-		setSourceMaterialNames(sourceMaterialValuesWithoutCategory);
-		setLanguageValues({
+		setSourceMaterialFilterReminders(sourceMaterialValuesWithoutCategory);
+		setLanguageFilterReminders({
 			greek: userFilters.greek,
 			semitic: userFilters.semitic,
 		});
-		setGenderValues(userFilters.agentGender as Record<string, boolean>);
+		setGenderFilterReminders(
+			userFilters.agentGender as Record<string, boolean>,
+		);
 		isMobile && setIsPanelDisplayed(false);
 	};
 
 	// fonction pour gérer le reset des filtres
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	const resetFilters = useCallback(() => {
+		resetFilteredOptions();
+		resetInitialOptions();
 		resetUserFilters();
+		resetFilterReminders();
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
@@ -155,23 +154,12 @@ const FilterComponent = ({
 			setAgentStatusValues,
 			setAgentivityValues,
 			setSourceMaterialValues,
-			resetLanguageValues,
+			setElementNbValues,
+			resetLanguageFilterReminders,
 		);
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
-	// déclencher le reset des valeurs des rappels des filtres lorsque isReset change (permet d'utiliser le bouton de reset ailleurs)
-	useEffect(() => {
-		resetAllFilterRemindersValues(
-			setLocationNameValues,
-			setElementNameValues,
-			setSourceTypeValues,
-			setAgentActivityValues,
-			setAgentStatusValues,
-			setAgentivityValues,
-			setSourceMaterialValues,
-			resetLanguageValues,
-		);
-	}, [isReset]);
+	const filterTitlePrefix = `${translation[language].common.filter} : `;
 
 	return (
 		<div className={style.resultContainer}>
@@ -184,10 +172,12 @@ const FilterComponent = ({
 						if (filter.filter.type === "location") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.location}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.location}
+									</h4>
 									<LocationFilterComponent
 										key={filter.id}
-										locationOptions={locationOptions}
 										setLocationNameValues={setLocationNameValues}
 									/>
 								</div>
@@ -196,10 +186,12 @@ const FilterComponent = ({
 						if (filter.filter.type === "element") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.element}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.element}
+									</h4>
 									<ElementFilterComponent
 										key={filter.id}
-										elementOptions={elementOptions}
 										setElementNameValues={setElementNameValues}
 										elementNameValues={elementNameValues}
 									/>
@@ -209,10 +201,13 @@ const FilterComponent = ({
 						if (filter.filter.type === "divinityNb") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.divinityNb}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.divinityNb}
+									</h4>
 									<DivinityNbComponent
 										key={filter.id}
-										timeBoundsRef={timeBoundsRef}
+										setElementNbValues={setElementNbValues}
 									/>
 								</div>
 							);
@@ -220,7 +215,10 @@ const FilterComponent = ({
 						if (filter.filter.type === "language") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.language}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.language}
+									</h4>
 									<LanguageFilterComponent key={filter.id} />
 								</div>
 							);
@@ -228,10 +226,18 @@ const FilterComponent = ({
 						if (filter.filter.type === "sourceType") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.sourceType}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.sourceType}
+									</h4>
 									<MultiSelectFilterComponent
+										styles={singleSelectInLineStyle}
 										key={filter.id}
-										optionsArray={sourceTypeOptions}
+										optionsArray={
+											hasFilteredPoints
+												? filteredSourceTypeOptions
+												: initialSourceTypeOptions
+										}
 										setValues={setSourceTypeValues}
 										userFilterId="sourceTypeId"
 										placeholder={
@@ -244,10 +250,18 @@ const FilterComponent = ({
 						if (filter.filter.type === "agentActivity") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.agentActivity}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.agentActivity}
+									</h4>
 									<MultiSelectFilterComponent
+										styles={singleSelectInLineStyle}
 										key={filter.id}
-										optionsArray={agentActivityOptions}
+										optionsArray={
+											hasFilteredPoints
+												? filteredAgentActivityOptions
+												: initialAgentActivityOptions
+										}
 										setValues={setAgentActivityValues}
 										userFilterId="agentActivityId"
 										placeholder={
@@ -260,7 +274,10 @@ const FilterComponent = ({
 						if (filter.filter.type === "agentGender") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.agentGender}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.agentGender}
+									</h4>
 									<AgentGenderFilterComponent />
 								</div>
 							);
@@ -268,10 +285,18 @@ const FilterComponent = ({
 						if (filter.filter.type === "agentStatus") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.agentStatus}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.agentStatus}
+									</h4>
 									<MultiSelectFilterComponent
+										styles={singleSelectInLineStyle}
 										key={filter.id}
-										optionsArray={agentStatusOptions}
+										optionsArray={
+											hasFilteredPoints
+												? filteredAgentStatusOptions
+												: initialAgentStatusOptions
+										}
 										setValues={setAgentStatusValues}
 										userFilterId="agentStatusName"
 										placeholder={
@@ -284,10 +309,18 @@ const FilterComponent = ({
 						if (filter.filter.type === "agentivity") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.agentivity}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.agentivity}
+									</h4>
 									<MultiSelectFilterComponent
+										styles={singleSelectInLineStyle}
 										key={filter.id}
-										optionsArray={agentivityOptions}
+										optionsArray={
+											hasFilteredPoints
+												? filteredAgentivityOptions
+												: initialAgentivityOptions
+										}
 										setValues={setAgentivityValues}
 										userFilterId="agentivityName"
 										placeholder={
@@ -300,10 +333,18 @@ const FilterComponent = ({
 						if (filter.filter.type === "sourceMaterial") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.sourceMaterial}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.sourceMaterial}
+									</h4>
 									<MultiSelectFilterComponent
+										styles={singleSelectInLineStyle}
 										key={filter.id}
-										optionsArray={sourceMaterialOptions}
+										optionsArray={
+											hasFilteredPoints
+												? filteredSourceMaterialOptions
+												: initialSourceMaterialOptions
+										}
 										setValues={setSourceMaterialValues}
 										userFilterId="sourceMaterialName"
 										placeholder={
@@ -317,7 +358,10 @@ const FilterComponent = ({
 					})}
 				{mapFilters.length === 0 && (
 					<div className={style.filterContainer}>
-						<h4>{translation[language].mapPage.aside.language}</h4>
+						<h4>
+							{filterTitlePrefix}
+							{translation[language].mapPage.aside.language}
+						</h4>
 						<LanguageFilterComponent />
 					</div>
 				)}

@@ -1,5 +1,6 @@
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
@@ -15,12 +16,17 @@ const AgentGenderFilterComponent = () => {
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
+	const { initialAgentGenderOptions, filteredAgentGenderOptions } =
+		useMapFilterOptionsStore();
 
 	// définition de la fonction qui permet de gérer le changement d'état des checkboxs
-	function handleChangeCheckbox(checked: boolean, name: string) {
+	function handleChangeCheckbox(name: string) {
 		const newLanguageFiltersObject = {
 			...userFilters,
-			agentGender: { ...userFilters.agentGender, [name]: checked as boolean },
+			agentGender: {
+				...userFilters.agentGender,
+				[name]: !userFilters.agentGender[name] as boolean,
+			},
 		};
 		setUserFilters(newLanguageFiltersObject);
 	}
@@ -33,37 +39,60 @@ const AgentGenderFilterComponent = () => {
 					type="checkbox"
 					id="male"
 					name="male"
-					checked={userFilters.agentGender?.male ?? true}
-					onChange={(event) =>
-						handleChangeCheckbox(event.target.checked, event.target.name)
+					defaultChecked={
+						initialAgentGenderOptions.includes("male") ||
+						filteredAgentGenderOptions.includes("male")
+					}
+					checked={!userFilters.agentGender?.male}
+					onChange={(event) => handleChangeCheckbox(event.target.name)}
+					disabled={
+						!initialAgentGenderOptions.includes("male") ||
+						(filteredAgentGenderOptions.length > 1 &&
+							!filteredAgentGenderOptions.includes("male"))
 					}
 				/>
 				<label htmlFor="male">{translation[language].mapPage.aside.male}</label>
 			</div>
+
 			<div>
 				<input
 					key={isReset.toString()}
 					type="checkbox"
 					id="female"
 					name="female"
-					checked={userFilters.agentGender?.female ?? true}
-					onChange={(event) =>
-						handleChangeCheckbox(event.target.checked, event.target.name)
+					defaultChecked={
+						initialAgentGenderOptions.includes("female") ||
+						filteredAgentGenderOptions.includes("female")
+					}
+					checked={!userFilters.agentGender?.female}
+					onChange={(event) => handleChangeCheckbox(event.target.name)}
+					disabled={
+						!initialAgentGenderOptions.includes("female") ||
+						(filteredAgentGenderOptions.length > 1 &&
+							!filteredAgentGenderOptions.includes("female"))
 					}
 				/>
 				<label htmlFor="female">
 					{translation[language].mapPage.aside.female}
 				</label>
 			</div>
+
 			<div>
 				<input
 					key={isReset.toString()}
 					type="checkbox"
 					id="nonBinary"
 					name="nonBinary"
-					checked={userFilters.agentGender?.nonBinary ?? true}
-					onChange={(event) =>
-						handleChangeCheckbox(event.target.checked, event.target.name)
+					defaultChecked={
+						initialAgentGenderOptions.includes("nonbinary") ||
+						filteredAgentGenderOptions.includes("nonbinary")
+					}
+					checked={!userFilters.agentGender?.nonBinary}
+					onChange={(event) => handleChangeCheckbox(event.target.name)}
+					disabled={
+						!initialAgentGenderOptions.includes("nonbinary") ||
+						(filteredAgentGenderOptions.length > 1 &&
+							!filteredAgentGenderOptions.includes("nonbinary"))
 					}
 				/>
 				<label htmlFor="nonBinary">

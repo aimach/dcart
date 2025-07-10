@@ -72,6 +72,7 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 	const { mapInfos } = useMapStore();
 
 	// formatage des attestations avant affichage
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	const formattedAttestations = useMemo(() => {
 		return attestations?.map((attestation: AttestationType) => {
 			// préparation de l'extrait avec restitution en vérifiant qu'il ne contient que du code validé
@@ -196,6 +197,16 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 										{source.types[`type_source_${language}`].reduce(
 											(acc, type) =>
 												type && acc.includes(type) ? acc : `${acc}, ${type}`,
+										)}
+									</td>
+								</tr>
+							)}
+							{isSelectedFilterInThisMap(mapInfos, "language") && (
+								<tr>
+									<th>{translation[language].mapPage.aside.language}</th>
+									<td>
+										{source.types[`language_${language}`].reduce((acc, type) =>
+											type && acc.includes(type) ? acc : `${acc}, ${type}`,
 										)}
 									</td>
 								</tr>

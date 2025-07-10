@@ -11,8 +11,10 @@ import {
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { UserFilterType } from "../../../../utils/types/filterTypes";
+import type { GroupBase, StylesConfig } from "react-select";
 
 interface MultiSelectFilterComponentProps {
+	styles: StylesConfig<OptionType, true, GroupBase<OptionType>> | undefined;
 	optionsArray: OptionType[];
 	setValues: (values: string[]) => void;
 	userFilterId: string;
@@ -22,12 +24,15 @@ interface MultiSelectFilterComponentProps {
 /**
  * Composant de filtre multi-sélection
  * @param {Object} props
+
+ * @param {StylesConfig<OptionType, true, GroupBase<OptionType>>} props.styles - Styles pour le composant Select
  * @param {OptionType[]} props.optionsArray - Tableau des options
  * @param {OptionType[]} props.setValues - Setter pour enregistrer les valeurs à afficher dans le rappel des filtres
  * @param {OptionType[]} props.userFilterId - L'identifiant du filtre utilisateur
  * @returns Select (react-select)
  */
 const MultiSelectFilterComponent = ({
+	styles,
 	optionsArray,
 	setValues,
 	userFilterId,
@@ -53,6 +58,7 @@ const MultiSelectFilterComponent = ({
 	return (
 		<div>
 			<Select
+				styles={styles}
 				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
 				options={optionsArray}
 				defaultValue={defaultValues}

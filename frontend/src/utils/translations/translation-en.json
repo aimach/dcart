@@ -61,6 +61,7 @@
 		"between": "between",
 		"and": "and",
 		"or": "OR",
+		"to": "to",
 		"unknownDate": "no date",
 		"greek": "Greek",
 		"semitic": "Semitic",
@@ -80,7 +81,9 @@
 		"noPublished": "not published",
 		"close": "Close",
 		"typeOf": "type of",
-		"noData": "No data"
+		"noData": "No data",
+		"no": "no",
+		"filter": "Filter"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",
@@ -108,9 +111,10 @@
 		"noResult": "No result",
 		"enlargeYourSearch": "Expand your search or reset all filters.",
 		"noGreekOrSemitic": "neither in greek, neither in semitic",
-		"onlySemitic": "only in semitic",
-		"onlyGreek": "only in greek",
+		"noGreek": "no greek",
+		"noSemitic": "no semitic",
 		"withElements": "with elements",
+		"withElementsNb": "elements number",
 		"withStatus": "with status",
 		"withAgentivities": "with agentivities",
 		"withSourceMaterials": "with source materials",

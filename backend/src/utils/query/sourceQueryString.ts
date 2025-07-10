@@ -280,7 +280,9 @@ sources_without_duplicate AS (
       'material_fr', material_fr,
 		  'material_en', material_en,
       'material_category_fr', material_category_fr,
-      'material_category_en', material_category_en
+      'material_category_en', material_category_en,
+      'language_fr', json_agg(DISTINCT language_fr),
+      'language_en', json_agg(DISTINCT language_en)
     ) as type_source,
 	  json_agg(DISTINCT attestations) AS sources
   FROM (
@@ -294,7 +296,9 @@ sources_without_duplicate AS (
       type_support.nom_fr AS material_fr,
       type_support.nom_en AS material_en,
       categorie_support.nom_fr AS material_category_fr,
-	    categorie_support.nom_en AS material_category_en
+	    categorie_support.nom_en AS material_category_en,
+      langue.nom_fr AS language_fr,
+      langue.nom_en AS language_en
     FROM sources_with_attestations
 	  LEFT JOIN source_type_source ON source_type_source.id_source = sources_with_attestations.source_id
   	LEFT JOIN type_source ON type_source.id = source_type_source.id_type_source 
@@ -302,6 +306,8 @@ sources_without_duplicate AS (
     LEFT JOIN source ON source.id = sources_with_attestations.source_id
 	  LEFT JOIN type_support ON type_support.id = source.type_support_id
     LEFT JOIN categorie_support ON categorie_support.id = type_support.categorie_support_id
+    LEFT JOIN source_langue ON source_langue.id_source = sources_with_attestations.source_id
+    LEFT JOIN langue ON langue.id = source_langue.id_langue
     ${querySourceType}
     ${sourceMaterialName}
   ) AS subquery

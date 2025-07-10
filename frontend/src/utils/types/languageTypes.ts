@@ -63,6 +63,7 @@ type LanguageObject = {
 		between: string;
 		and: string;
 		or: string;
+		to: string;
 		unknownDate: string;
 		greek: string;
 		semitic: string;
@@ -83,6 +84,8 @@ type LanguageObject = {
 		close: string;
 		typeOf: string;
 		noData: string;
+		no: string;
+		filter: string;
 	};
 	modal: {
 		firstContent: string;
@@ -110,9 +113,10 @@ type LanguageObject = {
 		noResult: string;
 		enlargeYourSearch: string;
 		noGreekOrSemitic: string;
-		onlySemitic: string;
-		onlyGreek: string;
+		noGreek: string;
+		noSemitic: string;
 		withElements: string;
+		withElementsNb: string;
 		withStatus: string;
 		withAgentivities: string;
 		withSourceMaterials: string;

@@ -27,6 +27,12 @@
     }
 }
 
+.noResultContainer {
+    font-size: v.$font-size-l;
+    @include m.flexbox(flex, column, nowrap, flex-start, center);
+    gap: v.$space-s;
+}
+
 .mapBottomSection {
     @include m.flexbox(flex, row, nowrap, flex-start, center);
     background-color: v.$color-neutral-100;

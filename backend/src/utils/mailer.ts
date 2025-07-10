@@ -17,7 +17,7 @@ export const sendPasswordResetEmail = async (to: string, resetLink: string) => {
 	});
 
 	const mailOptions = {
-		from: '"Application" <no-reply@dcart-map.huma-num.fr>', // ← à tester selon autorisation
+		from: '"Application DCART" <dcart-map@huma-num.fr>',
 		to: to,
 		subject: "Réinitialisation de votre mot de passe",
 		html: `
@@ -29,11 +29,9 @@ export const sendPasswordResetEmail = async (to: string, resetLink: string) => {
 		`,
 	};
 
-	transporter.sendMail(mailOptions, (error, info) => {
+	transporter.sendMail(mailOptions, (error) => {
 		if (error) {
 			console.error("Erreur envoi email :", error);
-		} else {
-			console.log("Email envoyé :", info.response);
 		}
 	});
 };

@@ -13,24 +13,20 @@ import {
 	onMultiSelectChange,
 } from "../../../../utils/functions/filter";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-// import des types
-import type { OptionType } from "../../../../utils/types/commonTypes";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 interface ElementFilterComponentProps {
-	elementOptions: OptionType[];
 	setElementNameValues: (names: string[]) => void;
 	elementNameValues?: string[];
 }
 
 /**
  * Affiche le filtre des éléments
- * @param {Object} props
- * @param {OptionType[]} props.elementOptions - Liste des éléments pour le filtre des épithètes
  * @returns Select (react-select)
  */
 const ElementFilterComponent = ({
-	elementOptions,
 	setElementNameValues,
 	elementNameValues,
 }: ElementFilterComponentProps) => {
@@ -39,16 +35,21 @@ const ElementFilterComponent = ({
 
 	// récupération des données des filtres depuis le store
 	const { mapInfos } = useMapStore();
-	const { userFilters, setUserFilters, isReset, elementNames } =
-		useMapFiltersStore(useShallow((state) => state));
+	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
+		useShallow((state) => state),
+	);
+	const { elementFilterReminders } = useMapFilterReminderStore();
+
+	const { hasFilteredPoints, initialElementOptions, filteredElementOptions } =
+		useMapFilterOptionsStore();
 
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {
 		return getSelectDefaultValues(
 			userFilters.elementId as string,
-			elementOptions,
+			initialElementOptions,
 		);
-	}, [userFilters.elementId, elementOptions]);
+	}, [userFilters.elementId, initialElementOptions]);
 
 	const filterOptions =
 		mapInfos?.filterMapContent?.find(
@@ -58,19 +59,60 @@ const ElementFilterComponent = ({
 	// biome-ignore lint/correctness/useExhaustiveDependencies: volontairement stricte pour éviter les re-renders inutiles
 	const optionsWithoutNotSelectedIds = useMemo(() => {
 		if (!filterOptions?.checkbox) return [];
-		return filterOptions.checkbox
-			.map((option) => {
-				if (!isInList(elementOptions, option.firstLevelIds[0])) return null;
-				const secondLevelIdsWithFilteredElements = option.secondLevelIds.filter(
-					(secondOption) => isInList(elementOptions, secondOption),
-				);
-				return {
-					firstLevelIds: option.firstLevelIds,
-					secondLevelIds: secondLevelIdsWithFilteredElements,
-				};
-			})
-			.filter((option) => option !== null && option !== undefined);
-	}, [elementNames, elementOptions]);
+		if (hasFilteredPoints) {
+			return filterOptions.checkbox
+				.map((option) => {
+					// si le premier niveau n'est pas dans la liste des éléments filtrés, on désactive tout le groupe
+					if (!isInList(filteredElementOptions, option.firstLevelIds[0])) {
+						return {
+							firstLevelIds: [
+								{
+									isDisabled: true,
+									...option.firstLevelIds[0],
+								},
+							],
+							secondLevelIds: option.secondLevelIds.map((secondOption) => ({
+								...secondOption,
+								isDisabled: true,
+							})),
+						};
+					}
+					// si le premier niveau est dans la liste des éléments filtrés, on filtre les éléments du second niveau
+					// et on désactive ceux qui ne sont pas dans la liste des éléments filtrés
+					const secondLevelIdsWithFilteredElements = option.secondLevelIds.map(
+						(secondOption) =>
+							isInList(
+								filteredElementOptions,
+								option.firstLevelIds[0],
+								secondOption,
+							)
+								? secondOption
+								: { ...secondOption, isDisabled: true },
+					);
+					return {
+						firstLevelIds: option.firstLevelIds,
+						secondLevelIds: secondLevelIdsWithFilteredElements,
+					};
+				})
+				.filter((option) => option !== null && option !== undefined);
+		}
+		return filterOptions?.checkbox.map((option) => {
+			return {
+				firstLevelIds: option.firstLevelIds.map((firstOption) => {
+					return {
+						...firstOption,
+						isDisabled: false,
+					};
+				}),
+				secondLevelIds: option.secondLevelIds.map((secondOption) => {
+					return {
+						...secondOption,
+						isDisabled: false,
+					};
+				}),
+			};
+		});
+	}, [elementFilterReminders, filteredElementOptions, hasFilteredPoints]);
 
 	if (filterOptions) {
 		switch (filterOptions.solution) {
@@ -80,7 +122,11 @@ const ElementFilterComponent = ({
 						<Select
 							styles={singleSelectInLineStyle}
 							key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-							options={elementOptions}
+							options={
+								hasFilteredPoints
+									? filteredElementOptions
+									: initialElementOptions
+							}
 							defaultValue={getDefaultValues}
 							delimiter="|"
 							isMulti
@@ -123,7 +169,7 @@ const ElementFilterComponent = ({
 						<Select
 							styles={singleSelectInLineStyle}
 							key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
-							options={elementOptions}
+							options={initialElementOptions}
 							defaultValue={getDefaultValues}
 							delimiter="|"
 							isMulti

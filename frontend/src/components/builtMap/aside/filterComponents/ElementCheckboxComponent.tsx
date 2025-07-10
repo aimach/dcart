@@ -156,6 +156,7 @@ const ElementCheckboxComponent = ({
 					onChange={() => {
 						toggleFirstLevel(options.firstLevelIds[0]);
 					}}
+					disabled={options.firstLevelIds[0].isDisabled}
 				/>
 				<strong>{options.firstLevelIds[0].label}</strong>
 			</label>
@@ -176,6 +177,11 @@ const ElementCheckboxComponent = ({
 							onChange={() => {
 								toggleSecondLevel(options.firstLevelIds[0], option);
 							}}
+							disabled={
+								options.firstLevelIds[0].isDisabled ||
+								option.isDisabled ||
+								options.secondLevelIds.some((opt) => opt.isDisabled)
+							}
 						/>
 						{option.label}
 					</label>

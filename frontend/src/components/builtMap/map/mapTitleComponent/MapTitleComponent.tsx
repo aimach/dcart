@@ -6,6 +6,8 @@ import { displayFiltersTags } from "../../../../utils/functions/filter";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 // import du type
 import type { LatLngTuple } from "leaflet";
 // import du style
@@ -40,44 +42,50 @@ const MapTitleComponent = ({
 	const { map, mapInfos, tutorialStep, openTutorial, resetTutorialStep } =
 		useMapStore();
 	const { setIsPanelDisplayed } = useMapAsideMenuStore();
+	const { resetInitialOptions, resetFilteredOptions } =
+		useMapFilterOptionsStore();
+	const { userFilters, resetUserFilters, isReset, setIsReset } =
+		useMapFiltersStore();
 
 	const {
-		userFilters,
-		resetUserFilters,
-		locationNames,
-		elementNames,
-		languageValues,
-		sourceTypeNames,
-		agentStatusNames,
-		agentivityNames,
-		agentActivityNames,
-		sourceMaterialNames,
-		genderValues,
-		isReset,
-		setIsReset,
-	} = useMapFiltersStore();
+		locationFilterReminders,
+		elementFilterReminders,
+		elementNbFilterReminders,
+		languageFilterReminders,
+		sourceTypeFilterReminders,
+		agentStatusFilterReminders,
+		agentivityFilterReminders,
+		agentActivityFilterReminders,
+		sourceMaterialFilterReminders,
+		genderFilterReminders,
+		resetFilterReminders,
+	} = useMapFilterReminderStore();
 
 	const filtersDetails = displayFiltersTags(
 		userFilters,
-		locationNames,
-		elementNames,
-		sourceTypeNames,
-		agentStatusNames,
-		agentivityNames,
-		agentActivityNames,
-		sourceMaterialNames,
-		languageValues,
-		genderValues,
+		locationFilterReminders,
+		elementFilterReminders,
+		elementNbFilterReminders,
+		sourceTypeFilterReminders,
+		agentStatusFilterReminders,
+		agentivityFilterReminders,
+		agentActivityFilterReminders,
+		sourceMaterialFilterReminders,
+		languageFilterReminders,
+		genderFilterReminders,
 		translation[language],
 	);
 
 	const handleResetButton = async () => {
-		map?.fitBounds(mapBounds);
-
-		fetchAllPoints("reset");
+		if (mapBounds.length > 0) {
+			map?.fitBounds(mapBounds);
+		}
+		resetFilteredOptions();
+		resetInitialOptions();
 		resetUserFilters();
-		// isReset déclenche le useEffect dans FilterComponent pour réinitialiser les valeurs des rappels des filtres
+		resetFilterReminders();
 		setIsReset(!isReset);
+		fetchAllPoints("reset");
 	};
 
 	return (

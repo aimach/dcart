@@ -9,7 +9,11 @@ type NavList = {
 	adminOnly?: boolean;
 }[];
 
-type OptionType = { value: number | string; label: string };
+type OptionType = {
+	value: number | string;
+	label: string;
+	isDisabled?: boolean;
+};
 
 type TagWithItemsAndPagination = {
 	items: TagWithItemsType[];

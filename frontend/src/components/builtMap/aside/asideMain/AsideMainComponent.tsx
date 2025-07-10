@@ -1,4 +1,4 @@
-import { useState, useEffect, useMemo, useRef } from "react";
+import { useEffect } from "react";
 // import des composants
 import ResultComponent from "../tabComponents/ResultComponent";
 import FilterComponent from "../tabComponents/FilterComponent";
@@ -9,18 +9,20 @@ import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import {
-	fetchElementOptions,
-	getAllAgentActivityFromPoints,
-	getAllAgentivityFromPoints,
-	getAllAgentStatusFromPoints,
-	getAllLocationsFromPoints,
-	getAllSourceMaterialFromPoints,
-	getAllSourceTypeFromPoints,
+	getElementOptions,
 	getMinAndMaxElementNumbers,
-	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
-// import des types
-import type { OptionType } from "../../../../utils/types/commonTypes";
+import {
+	getAgentActivityOptions,
+	getAgentGenderOptions,
+	getAgentivityOptions,
+	getAgentStatusOptions,
+	getLanguageOptions,
+	getLocationOptions,
+	getSourceMaterialOptions,
+	getSourceTypeOptions,
+} from "./AsideMainComponentUtils";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 // import du style
 import style from "./asideMainComponent.module.scss";
 
@@ -37,152 +39,32 @@ const AsideMainComponent = () => {
 		(state) => state.selectedTabMenu,
 	);
 	const { mapInfos, allPoints, selectedMarker } = useMapStore((state) => state);
-
-	// --- RECUPERATION DES OPTIONS DES TYPES DE SOURCE POUR LES FILTRES
-	let sourceTypeOptions: OptionType[] = [];
-
-	sourceTypeOptions = useMemo(() => {
-		const sourceTypeFilter = isSelectedFilterInThisMap(mapInfos, "sourceType");
-		if (sourceTypeFilter) {
-			// récupération de toutes les sources depuis la liste des points
-			return getAllSourceTypeFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
-
-	// --- RECUPERATION DES OPTIONS DE LOCALISATION POUR LES FILTRES
-	let locationOptions: OptionType[] = [];
-	// si le filtre de localisation est activé, utilisation du hook useMemo
-	locationOptions = useMemo(() => {
-		const locationFilter = isSelectedFilterInThisMap(mapInfos, "location");
-		if (locationFilter) {
-			// récupération de toutes les localités depuis la liste des points
-			let value = "grande_region_id";
-			let label = `grande_region_${language}`;
-			if (locationFilter.options?.solution === "subRegion") {
-				value = "sous_region_id";
-				label = `sous_region_${language}`;
-			} else if (locationFilter.options?.solution === "location") {
-				value = "nom_ville";
-				label = "nom_ville";
-			}
-			const allLocationsFromPoints: Record<string, string>[] =
-				getAllLocationsFromPoints(allPoints, label);
-
-			// formattage des options pour le select
-			return allLocationsFromPoints
-				.map((option) => ({
-					value: option[value],
-					label: option[label],
-				}))
-				.sort((option1, option2) =>
-					option1.label < option2.label
-						? -1
-						: option1.label > option2.label
-							? 1
-							: 0,
-				);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
-
-	// --- RECUPERATION DES OPTIONS D'ELEMENTS POUR LES FILTRES
-	const [elementOptions, setElementOptions] = useState<OptionType[]>([]);
-	const formatElementOptions = async () => {
-		const newElementOptions = await fetchElementOptions(
-			allPoints,
-			language,
-			false,
-		);
-		setElementOptions(newElementOptions);
-	};
-
-	// --- RECUPERATION DES OPTIONS ACTIVITES D'AGENTS POUR LES FILTRES
-	const agentActivityOptions = useMemo(() => {
-		const agentActivityFilter = isSelectedFilterInThisMap(
-			mapInfos,
-			"agentActivity",
-		);
-		if (agentActivityFilter) {
-			return getAllAgentActivityFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
-
-	// --- RECUPERATION DES OPTIONS STATUTS D'AGENTS POUR LES FILTRES
-	const agentStatusOptions = useMemo(() => {
-		const agentActivityFilter = isSelectedFilterInThisMap(
-			mapInfos,
-			"agentStatus",
-		);
-		if (agentActivityFilter) {
-			return getAllAgentStatusFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
-
-	// --- RECUPERATION DES OPTIONS AGENTIVITÉ POUR LES FILTRES
-	const agentivityOptions = useMemo(() => {
-		const agentivityFilter = isSelectedFilterInThisMap(mapInfos, "agentivity");
-		if (agentivityFilter) {
-			return getAllAgentivityFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
-
-	// --- RECUPERATION DES OPTIONS SUPPORTS DE SOURCE POUR LES FILTRES
-	const sourceMaterialOptions = useMemo(() => {
-		const sourceMaterialFilter = isSelectedFilterInThisMap(
-			mapInfos,
-			"sourceMaterial",
-		);
-		if (sourceMaterialFilter) {
-			return getAllSourceMaterialFromPoints(allPoints, language);
-		}
-		return [];
-	}, [allPoints, language, mapInfos]);
+	const { resetInitialOptions } = useMapFilterOptionsStore();
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
-		if (mapInfos && allPoints) {
-			// si le filtre des éléments est activé, on récupère les options
-			if (
-				mapInfos.filterMapContent?.some(
-					(filter) => filter.filter.type === "element",
-				)
-			) {
-				formatElementOptions();
-			}
-		}
-	}, [mapInfos, allPoints]);
+		resetInitialOptions();
+	}, [mapInfos?.id]);
 
-	// calcul des bornes temporelles pour le filtre de temps (évite de les recalculer à chaque re-render)
-	const timeBoundsRef = useRef(null as { min: number; max: number } | null);
 	useEffect(() => {
-		if (!mapInfos || !allPoints) return;
-		if (allPoints.length > 0 && !timeBoundsRef.current) {
-			const { min, max } = getMinAndMaxElementNumbers(allPoints);
-			timeBoundsRef.current = { min, max };
-		}
-	}, [allPoints, mapInfos]);
+		getSourceTypeOptions(mapInfos, allPoints, language);
+		getLocationOptions(mapInfos, allPoints, language);
+		getElementOptions(allPoints, language, false);
+		getAgentActivityOptions(mapInfos, allPoints, language);
+		getAgentStatusOptions(mapInfos, allPoints, language);
+		getAgentivityOptions(mapInfos, allPoints, language);
+		getSourceMaterialOptions(mapInfos, allPoints, language);
+		getAgentGenderOptions(mapInfos, allPoints);
+		getMinAndMaxElementNumbers(mapInfos, allPoints);
+		getLanguageOptions(mapInfos, allPoints);
+	}, [mapInfos, allPoints, language]);
 
 	// définition du composant à rendre
 	switch (selectedTabMenu) {
 		case "results":
 			return <ResultComponent />;
 		case "filters":
-			return (
-				<FilterComponent
-					locationOptions={locationOptions}
-					elementOptions={elementOptions}
-					sourceTypeOptions={sourceTypeOptions}
-					agentActivityOptions={agentActivityOptions}
-					agentStatusOptions={agentStatusOptions}
-					agentivityOptions={agentivityOptions}
-					sourceMaterialOptions={sourceMaterialOptions}
-					timeBoundsRef={timeBoundsRef}
-				/>
-			);
+			return <FilterComponent />;
 		case "infos":
 			return selectedMarker ? (
 				<div className={style.infoContainer}>

@@ -90,7 +90,7 @@ const getQueryStringForAgentGender = (
 		queryArray.push("'Non binaire'");
 	}
 	return queryArray.length > 0
-		? ` AND genre.nom_fr IN (${queryArray.join(", ")}) `
+		? ` AND genre.nom_fr NOT IN (${queryArray.join(", ")}) `
 		: "";
 };
 

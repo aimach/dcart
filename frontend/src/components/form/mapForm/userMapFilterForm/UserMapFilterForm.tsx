@@ -114,6 +114,8 @@ const UserMapFilterForm = () => {
 					} else {
 						setStep(5);
 					}
+				} else {
+					setStep(3);
 				}
 			}
 		} else if (pathname.includes("create")) {
