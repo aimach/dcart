@@ -6,6 +6,7 @@
     height: 100vh;
     @include m.flexbox(flex, column, wrap, center, center);
     gap: v.$space-l;
+    text-align: center;
 
     .errorCode {
         font-size: v.$font-size-xxxxxl * 2;
