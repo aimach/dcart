@@ -1,4 +1,5 @@
 // import des custom hooks
+import { useEffect } from "react";
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -59,6 +60,7 @@ const MapTitleComponent = ({
 		sourceMaterialFilterReminders,
 		genderFilterReminders,
 		resetFilterReminders,
+		resetTemporaryReminderValues,
 	} = useMapFilterReminderStore();
 
 	const filtersDetails = displayFiltersTags(
@@ -84,9 +86,16 @@ const MapTitleComponent = ({
 		resetInitialOptions();
 		resetUserFilters();
 		resetFilterReminders();
+		resetTemporaryReminderValues();
 		setIsReset(!isReset);
 		fetchAllPoints("reset");
 	};
+
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
+	useEffect(() => {
+		// au montage, on supprime les valeurs de rappel des filtres résiduelles de la carte précédente
+		resetFilterReminders();
+	}, []);
 
 	return (
 		<div

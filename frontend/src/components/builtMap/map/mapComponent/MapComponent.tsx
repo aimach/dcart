@@ -39,6 +39,7 @@ import {
 } from "../../../../utils/api/builtMap/getRequests";
 import { getMapAttribution } from "../../../../utils/functions/map";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 // import des types
 import type { LatLngTuple } from "leaflet";
 // import du style
@@ -85,6 +86,8 @@ const MapComponent = () => {
 	);
 	const { resetInitialOptions, resetFilteredOptions } =
 		useMapFilterOptionsStore();
+	const { resetFilterReminders, resetTemporaryReminderValues } =
+		useMapFilterReminderStore();
 
 	// définition de l'état d'affichage de la modale
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
@@ -101,7 +104,8 @@ const MapComponent = () => {
 		resetInitialOptions();
 		resetFilteredOptions();
 		resetUserFilters();
-	}, []);
+		resetTemporaryReminderValues();
+	}, [mapSlug, mapId]);
 
 	// réinitialisation des filtres utilisateur si la modale est ouverte (s'exécute quand l'utilisateur change de carte)
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
@@ -164,6 +168,8 @@ const MapComponent = () => {
 		resetUserFilters();
 		setIsReset(!isReset);
 		resetInitialOptions();
+		resetFilterReminders();
+		resetTemporaryReminderValues();
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
 	};

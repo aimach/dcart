@@ -147,6 +147,7 @@ const SelectElementForm = ({ elementOptions }: SelectElementFormProps) => {
 												.element.secondLevel
 										}
 										description=""
+										isRequired={false}
 									/>
 									<Select
 										styles={singleSelectInLineStyle}

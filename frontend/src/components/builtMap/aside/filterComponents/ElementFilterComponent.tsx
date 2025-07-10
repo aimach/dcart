@@ -4,7 +4,8 @@ import Select from "react-select";
 // import des composants
 import ElementCheckboxComponent from "./ElementCheckboxComponent";
 // import des custom hooks
-import { useTranslation } from "../../../../utils/hooks/useTranslation"; // import des services
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
+// import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
 import {
@@ -17,19 +18,11 @@ import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
-interface ElementFilterComponentProps {
-	setElementNameValues: (names: string[]) => void;
-	elementNameValues?: string[];
-}
-
 /**
  * Affiche le filtre des éléments
  * @returns Select (react-select)
  */
-const ElementFilterComponent = ({
-	setElementNameValues,
-	elementNameValues,
-}: ElementFilterComponentProps) => {
+const ElementFilterComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
@@ -38,7 +31,8 @@ const ElementFilterComponent = ({
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
-	const { elementFilterReminders } = useMapFilterReminderStore();
+	const { elementFilterReminders, elementNameValues, setElementNameValues } =
+		useMapFilterReminderStore();
 
 	const { hasFilteredPoints, initialElementOptions, filteredElementOptions } =
 		useMapFilterOptionsStore();
@@ -86,7 +80,7 @@ const ElementFilterComponent = ({
 								option.firstLevelIds[0],
 								secondOption,
 							)
-								? secondOption
+								? { ...secondOption, isDisabled: false }
 								: { ...secondOption, isDisabled: true },
 					);
 					return {

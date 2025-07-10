@@ -57,19 +57,22 @@ const ElementCheckboxComponent = ({
 		// On met à jour les noms des éléments sélectionnés
 		const labelWithoutBrackets = option.label.replace(/\s*\(.*?\)/g, "").trim();
 		if (!isChecked) {
-			setElementNameValues([
-				...elementNameValues,
-				labelWithoutBrackets as string,
-			]);
+			const newElementNameValues = elementNameValues;
+			newElementNameValues.push(labelWithoutBrackets as string);
+			setElementNameValues(newElementNameValues);
 		} else {
 			const filteredElementNameValues = elementNameValues.filter(
-				(name) => !name.startsWith(`${labelWithoutBrackets} `),
+				(name) => name !== labelWithoutBrackets,
 			);
 			setElementNameValues(filteredElementNameValues);
 		}
 	};
 
-	const toggleSecondLevel = (option: OptionType, child: OptionType) => {
+	const toggleSecondLevel = (
+		option: OptionType,
+		child: OptionType,
+		isChecked: boolean,
+	) => {
 		const group = elementCheckboxSelected[option.value as number] || {
 			checked: false,
 			children: [],
@@ -114,7 +117,8 @@ const ElementCheckboxComponent = ({
 		const firstLevelWithoutBrackets = option.label
 			.replace(/\s*\(.*?\)/g, "")
 			.trim();
-		if (newSelectedValue[option.value as number].checked) {
+
+		if (isChecked) {
 			if (
 				!elementNameValues.includes(
 					`${firstLevelWithoutBrackets} ${labelWithoutBrackets}`,
@@ -128,9 +132,7 @@ const ElementCheckboxComponent = ({
 		} else {
 			const filteredElementNameValues = elementNameValues.filter(
 				(name) =>
-					!name.startsWith(
-						`${firstLevelWithoutBrackets} ${labelWithoutBrackets}`,
-					),
+					name !== `${firstLevelWithoutBrackets} ${labelWithoutBrackets}`,
 			);
 			setElementNameValues(filteredElementNameValues);
 		}
@@ -174,13 +176,15 @@ const ElementCheckboxComponent = ({
 									options?.firstLevelIds[0].value as number
 								]?.children.includes(option.value as number) || false
 							}
-							onChange={() => {
-								toggleSecondLevel(options.firstLevelIds[0], option);
+							onChange={(e) => {
+								toggleSecondLevel(
+									options.firstLevelIds[0],
+									option,
+									e.target.checked,
+								);
 							}}
 							disabled={
-								options.firstLevelIds[0].isDisabled ||
-								option.isDisabled ||
-								options.secondLevelIds.some((opt) => opt.isDisabled)
+								options.firstLevelIds[0].isDisabled || option.isDisabled
 							}
 						/>
 						{option.label}
