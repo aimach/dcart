@@ -160,7 +160,7 @@ const createNewUser = async (body: userInputType) => {
 			notifyCreateSuccess("Utilisateur", false);
 		}
 	} catch (error) {
-		notifyError("Erreur lors de la réinitialisation du mot de passe");
+		notifyError("Erreur lors de la création de l'utilisateur");
 	}
 };
 
@@ -174,7 +174,7 @@ const updateUser = async (body: userInputType, currentUserInfos: User) => {
 			`/auth/users/${currentUserInfos?.id}/profile`,
 			body,
 		);
-		if (response.status === 201) {
+		if (response.status === 200) {
 			notifyEditSuccess("Profil", false);
 		}
 	} catch (error) {

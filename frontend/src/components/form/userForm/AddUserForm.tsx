@@ -42,7 +42,7 @@ const AddUserForm = ({
 		handleSubmit,
 		formState: { errors },
 	} = useForm<userInputType | (userInputType & userInputType)>({
-		defaultValues: currentUserInfos || {},
+		defaultValues: type === "create" ? {} : (currentUserInfos ?? ({} as User)),
 	});
 
 	return (
