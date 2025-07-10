@@ -9,6 +9,7 @@ type LanguageObject = {
 	invalidAuth: string;
 	seeAlso: string;
 	allRightsReserved: string;
+	noPageFound: string;
 	navigation: {
 		home: string;
 		maps: string;

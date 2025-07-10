@@ -12,6 +12,8 @@ export const translationRoutes = express.Router();
 // récupération d'un élément de traduction
 translationRoutes.get("/", translationController.getTranslation);
 
+translationRoutes.get("/no-content", translationController.getNoContentText);
+
 // modification d'une clé de traduction
 translationRoutes.put(
 	"/:translationObjectId",

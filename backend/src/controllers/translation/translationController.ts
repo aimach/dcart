@@ -1,6 +1,7 @@
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { Translation } from "../../entities/builtMap/Translation";
+import { NoContentText } from "../../entities/common/NoContentText";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
@@ -27,6 +28,21 @@ export const translationController = {
 				});
 
 			res.status(200).send(translations);
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	getNoContentText: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const randomNotFoundText = await dcartDataSource
+				.getRepository(NoContentText)
+				.createQueryBuilder("noContentText")
+				.orderBy("RANDOM()")
+				.limit(1)
+				.getOne();
+
+			res.status(200).send(randomNotFoundText);
 		} catch (error) {
 			handleError(res, error as Error);
 		}

@@ -1,0 +1,27 @@
+@use '../../styles/mixin' as m;
+@use '../../styles/variable' as v;
+
+.notFoundPage {
+    width: 100vw;
+    height: calc(100vh - v.$main-header-height);
+    @include m.flexbox(flex, column, wrap, center, center);
+    gap: v.$space-l;
+    text-align: center;
+    line-height: v.$space-xl;
+
+    .errorCode {
+        font-size: v.$font-size-xxxxxl * 2;
+        font-weight: 700;
+    }
+
+    .errorMessage {
+        font-size: v.$font-size-xxl;
+        font-weight: 500;
+        text-align: center;
+    }
+
+    .customTextContainer {
+        font-size: v.$font-size-xl;
+        width: 50vw;
+    }
+}

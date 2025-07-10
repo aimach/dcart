@@ -15,7 +15,7 @@ const getTranslations = async (translationKey?: string) => {
 		const response = await apiClient.get(query);
 		return response.data;
 	} catch (error) {
-		console.error("Erreur lors du chargement de lat raduction:", error);
+		console.error("Erreur lors du chargement de la traduction:", error);
 	}
 };
 
@@ -49,4 +49,13 @@ const updateTranslationFromKey = async (
 	}
 };
 
-export { getTranslations, updateTranslationFromKey };
+const getNoContentText = async () => {
+	try {
+		const response = await apiClient.get("/translation/no-content");
+		return response.data;
+	} catch (error) {
+		console.error("Erreur lors du chargement du texte de la page 404 :", error);
+	}
+};
+
+export { getTranslations, updateTranslationFromKey, getNoContentText };

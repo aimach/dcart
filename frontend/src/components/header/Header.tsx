@@ -14,9 +14,8 @@ import { getTranslationNavigationList } from "../../utils/menu/menuListArrays";
 import { useContext, type Dispatch, type SetStateAction } from "react";
 // import du style
 import style from "./header.module.scss";
-// import des images
+// import des images et des icônes
 import MAPLogo from "../../assets/map_logo.png";
-// import des icônes
 import { Home, MenuIcon } from "lucide-react";
 
 interface HeaderComponentProps {
