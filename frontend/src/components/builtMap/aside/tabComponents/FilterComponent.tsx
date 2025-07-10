@@ -159,6 +159,8 @@ const FilterComponent = () => {
 		);
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
+	const filterTitlePrefix = `${translation[language].common.filter} : `;
+
 	return (
 		<div className={style.resultContainer}>
 			<div>
@@ -170,7 +172,10 @@ const FilterComponent = () => {
 						if (filter.filter.type === "location") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.location}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.location}
+									</h4>
 									<LocationFilterComponent
 										key={filter.id}
 										setLocationNameValues={setLocationNameValues}
@@ -181,7 +186,10 @@ const FilterComponent = () => {
 						if (filter.filter.type === "element") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.element}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.element}
+									</h4>
 									<ElementFilterComponent
 										key={filter.id}
 										setElementNameValues={setElementNameValues}
@@ -193,7 +201,10 @@ const FilterComponent = () => {
 						if (filter.filter.type === "divinityNb") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.divinityNb}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.divinityNb}
+									</h4>
 									<DivinityNbComponent
 										key={filter.id}
 										setElementNbValues={setElementNbValues}
@@ -204,7 +215,10 @@ const FilterComponent = () => {
 						if (filter.filter.type === "language") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.language}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.language}
+									</h4>
 									<LanguageFilterComponent key={filter.id} />
 								</div>
 							);
@@ -212,7 +226,10 @@ const FilterComponent = () => {
 						if (filter.filter.type === "sourceType") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.sourceType}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.sourceType}
+									</h4>
 									<MultiSelectFilterComponent
 										styles={singleSelectInLineStyle}
 										key={filter.id}
@@ -233,7 +250,10 @@ const FilterComponent = () => {
 						if (filter.filter.type === "agentActivity") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.agentActivity}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.agentActivity}
+									</h4>
 									<MultiSelectFilterComponent
 										styles={singleSelectInLineStyle}
 										key={filter.id}
@@ -254,7 +274,10 @@ const FilterComponent = () => {
 						if (filter.filter.type === "agentGender") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.agentGender}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.agentGender}
+									</h4>
 									<AgentGenderFilterComponent />
 								</div>
 							);
@@ -262,7 +285,10 @@ const FilterComponent = () => {
 						if (filter.filter.type === "agentStatus") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.agentStatus}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.agentStatus}
+									</h4>
 									<MultiSelectFilterComponent
 										styles={singleSelectInLineStyle}
 										key={filter.id}
@@ -283,7 +309,10 @@ const FilterComponent = () => {
 						if (filter.filter.type === "agentivity") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.agentivity}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.agentivity}
+									</h4>
 									<MultiSelectFilterComponent
 										styles={singleSelectInLineStyle}
 										key={filter.id}
@@ -304,7 +333,10 @@ const FilterComponent = () => {
 						if (filter.filter.type === "sourceMaterial") {
 							return (
 								<div className={style.filterContainer} key={filter.id}>
-									<h4>{translation[language].mapPage.aside.sourceMaterial}</h4>
+									<h4>
+										{filterTitlePrefix}
+										{translation[language].mapPage.aside.sourceMaterial}
+									</h4>
 									<MultiSelectFilterComponent
 										styles={singleSelectInLineStyle}
 										key={filter.id}
@@ -326,7 +358,10 @@ const FilterComponent = () => {
 					})}
 				{mapFilters.length === 0 && (
 					<div className={style.filterContainer}>
-						<h4>{translation[language].mapPage.aside.language}</h4>
+						<h4>
+							{filterTitlePrefix}
+							{translation[language].mapPage.aside.language}
+						</h4>
 						<LanguageFilterComponent />
 					</div>
 				)}

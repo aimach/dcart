@@ -38,13 +38,13 @@ import {
 	getOneMapInfosBySlug,
 } from "../../../../utils/api/builtMap/getRequests";
 import { getMapAttribution } from "../../../../utils/functions/map";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 // import des types
 import type { LatLngTuple } from "leaflet";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
-import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 /**
  * Composant de la carte
@@ -83,7 +83,8 @@ const MapComponent = () => {
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore(
 		useShallow((state) => state),
 	);
-	const { resetInitialOptions } = useMapFilterOptionsStore();
+	const { resetInitialOptions, resetFilteredOptions } =
+		useMapFilterOptionsStore();
 
 	// définition de l'état d'affichage de la modale
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
@@ -97,6 +98,9 @@ const MapComponent = () => {
 		setSelectedTabMenu("results");
 		setIsModalOpen(true);
 		resetSelectedMarker();
+		resetInitialOptions();
+		resetFilteredOptions();
+		resetUserFilters();
 	}, []);
 
 	// réinitialisation des filtres utilisateur si la modale est ouverte (s'exécute quand l'utilisateur change de carte)
@@ -209,20 +213,22 @@ const MapComponent = () => {
 					)}
 					{mapReady && isModalOpen && allMemoizedPoints.length === 0 && (
 						<ModalComponent onClose={() => setIsModalOpen(false)}>
-							{translation[language].mapPage.noResult}
-							<br />
-							{translation[language].mapPage.enlargeYourSearch}
+							<div className={style.noResultContainer}>
+								{translation[language].mapPage.noResult}
+								<br />
+								{translation[language].mapPage.enlargeYourSearch}
 
-							<br />
-							<ButtonComponent
-								type="button"
-								color="brown"
-								textContent={translation[language].button.resetFilter}
-								onClickFunction={() => {
-									setIsModalOpen(false);
-									resetFiltersAndFetchPoints();
-								}}
-							/>
+								<br />
+								<ButtonComponent
+									type="button"
+									color="brown"
+									textContent={translation[language].button.resetFilter}
+									onClickFunction={() => {
+										setIsModalOpen(false);
+										resetFiltersAndFetchPoints();
+									}}
+								/>
+							</div>
 						</ModalComponent>
 					)}
 					{isTutorialOpen && (

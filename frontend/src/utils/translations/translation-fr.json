@@ -82,7 +82,8 @@
 		"close": "Fermer",
 		"typeOf": "de type",
 		"noData": "Aucune donnée",
-		"no": "pas de"
+		"no": "pas de",
+		"filter": "Filtre"
 	},
 	"modal": {
 		"firstContent": "J'aimerais voir les sources de",

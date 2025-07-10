@@ -82,7 +82,8 @@
 		"close": "Close",
 		"typeOf": "type of",
 		"noData": "No data",
-		"no": "no"
+		"no": "no",
+		"filter": "Filter"
 	},
 	"modal": {
 		"firstContent": "I would like to see sources from",

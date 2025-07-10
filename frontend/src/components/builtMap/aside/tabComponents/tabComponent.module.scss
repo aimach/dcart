@@ -154,7 +154,8 @@
 
 .filterContainer {
 
-  margin: v.$space-xl v.$space-s;
+  padding: v.$space-xl v.$space-s;
+  border-top: v.$border-width-m solid v.$color-neutral-80;
 
   >h4 {
     font-size: v.$font-size-l;
