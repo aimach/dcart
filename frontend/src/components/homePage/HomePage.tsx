@@ -3,9 +3,9 @@ import { useEffect, useRef, useState } from "react";
 import { Link } from "react-router";
 import Select from "react-select";
 // import des composants
-import SwiperContainer from "../common/swiper/SwiperContainer";
 import ButtonComponent from "../common/button/ButtonComponent";
 import ItemFilterComponent from "../common/itemFilter/ItemFilterComponent";
+import ItemContainer from "../common/itemContainer/ItemContainer";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 import useHomePageTranslations from "../../utils/hooks/useHomepageTranslations";
@@ -18,6 +18,7 @@ import {
 	isEmptyResult,
 	scrollToTagContainer,
 } from "../../utils/functions/homePage";
+import { shuffleArray } from "../../utils/functions/common";
 // import des types
 import type {
 	OptionType,
@@ -27,9 +28,9 @@ import type { MultiValue } from "react-select";
 // import du style
 import "../../App.scss";
 import style from "./HomePage.module.scss";
+import { singleSelectInLineStyle } from "../../styles/inLineStyle";
 // import des icônes
 import { ChevronRight } from "lucide-react";
-import { singleSelectInLineStyle } from "../../styles/inLineStyle";
 
 type CheckboxType = { map: boolean; storymap: boolean };
 
@@ -132,15 +133,18 @@ function HomePage() {
 						handleCheckboxChange={handleCheckboxChange}
 					/>
 				</div>
-				<div>
+				<div className={style.tagItemList}>
 					{isEmptyResult(allTagsWithItems) ? (
 						<p>{translation[language].mapPage.noResult}</p>
 					) : (
 						allTagsWithItems?.map((tagWithItems) => {
 							const itemsArray =
 								tagWithItems.maps && tagWithItems.storymaps
-									? tagWithItems.maps.concat(tagWithItems.storymaps).slice(0, 3)
+									? tagWithItems.maps.concat(tagWithItems.storymaps)
 									: tagWithItems.maps || tagWithItems.storymaps || [];
+							const shuffledAndSlicedItemsArray = shuffleArray(
+								itemsArray,
+							).slice(0, 3);
 							return (
 								itemsArray.length > 0 && (
 									<div key={tagWithItems.id} className={style.tagItemContainer}>
@@ -152,7 +156,11 @@ function HomePage() {
 												</div>
 											</Link>
 										</div>
-										<SwiperContainer items={itemsArray} />
+										<div className={style.tagItemContainerItemList}>
+											{shuffledAndSlicedItemsArray.map((item) => (
+												<ItemContainer key={item.id} item={item} />
+											))}
+										</div>
 									</div>
 								)
 							);

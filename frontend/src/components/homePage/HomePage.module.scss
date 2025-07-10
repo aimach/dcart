@@ -81,6 +81,12 @@
         }
     }
 
+    .tagItemList {
+        width: 80vw;
+        @include m.flexbox(flex, column, wrap, flex-start, center);
+        gap: v.$space-xxl;
+    }
+
     .tagContainer {
         width: 100%;
         min-height: 100vh;
@@ -107,7 +113,10 @@
         }
 
         .tagItemContainer {
+            min-width: 100%;
+
             &Title {
+                min-width: 100%;
                 padding-bottom: v.$space-s;
                 margin-bottom: v.$space-s;
                 border-bottom: v.$border-width-m solid v.$color-black-chocolate;
@@ -126,6 +135,13 @@
                 .textButtonContainer:hover {
                     transform: scale(1.05);
                 }
+            }
+
+            &ItemList {
+                min-width: 100%;
+                @include m.flexbox(flex, row, wrap, flex-start, center);
+                gap: v.$space-l;
+                padding: v.$space-l v.$space-xxl;
             }
 
         }
