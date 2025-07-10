@@ -60,6 +60,8 @@ if (rootElement) {
 											path="mentions-legales"
 											element={<LegalNoticePage />}
 										/>
+										{/* Route catch-all pour les pages non trouvées */}
+										<Route path="*" element={<NotFoundPage />} />
 									</Route>
 									<Route path="backoffice" element={<ProtectedLayout />}>
 										<Route index element={<BOHomePage />} />
@@ -90,6 +92,8 @@ if (rootElement) {
 											path="divinities"
 											element={<DivinityManagementPage />}
 										/>
+										{/* Route catch-all pour les pages non trouvées */}
+										<Route path="*" element={<NotFoundPage />} />
 									</Route>
 									<Route
 										path="authentification"
