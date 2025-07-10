@@ -45,6 +45,7 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 /**
  * Composant de la carte
@@ -85,6 +86,8 @@ const MapComponent = () => {
 	);
 	const { resetInitialOptions, resetFilteredOptions } =
 		useMapFilterOptionsStore();
+	const { resetFilterReminders, resetTemporaryReminderValues } =
+		useMapFilterReminderStore();
 
 	// définition de l'état d'affichage de la modale
 	const [isModalOpen, setIsModalOpen] = useState<boolean>(true);
@@ -101,6 +104,7 @@ const MapComponent = () => {
 		resetInitialOptions();
 		resetFilteredOptions();
 		resetUserFilters();
+		resetTemporaryReminderValues();
 	}, []);
 
 	// réinitialisation des filtres utilisateur si la modale est ouverte (s'exécute quand l'utilisateur change de carte)
@@ -164,6 +168,8 @@ const MapComponent = () => {
 		resetUserFilters();
 		setIsReset(!isReset);
 		resetInitialOptions();
+		resetFilterReminders();
+		resetTemporaryReminderValues();
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
 	};

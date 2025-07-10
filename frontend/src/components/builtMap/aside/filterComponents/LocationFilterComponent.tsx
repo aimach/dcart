@@ -13,10 +13,7 @@ import {
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 // import du style
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
-
-interface LocationFilterComponentProps {
-	setLocationNameValues: (values: string[]) => void;
-}
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 /**
  * Composant de filtre de localisation
@@ -24,9 +21,7 @@ interface LocationFilterComponentProps {
  * @param {OptionType[]} props.locationOptions - Liste des options pour le filtre de la localisation
  * @returns Select (react-select)
  */
-const LocationFilterComponent = ({
-	setLocationNameValues,
-}: LocationFilterComponentProps) => {
+const LocationFilterComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 	// récupération des données depuis le store
@@ -36,6 +31,8 @@ const LocationFilterComponent = ({
 
 	const { hasFilteredPoints, initialLocationOptions, filteredLocationOptions } =
 		useMapFilterOptionsStore();
+
+	const { setLocationNameValues } = useMapFilterReminderStore();
 
 	// on récupère les valeurs par défaut si l'utilisateur a déjà sélectionné des filtres
 	const getDefaultValues = useMemo(() => {

@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useCallback, useState } from "react";
+import { useCallback } from "react";
 // import des composants
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
@@ -18,7 +18,6 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { getAllPointsByMapId } from "../../../../utils/api/builtMap/getRequests";
 import { useShallow } from "zustand/shallow";
-import { resetAllFilterRemindersValues } from "../../../../utils/functions/filter";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
@@ -45,6 +44,22 @@ const FilterComponent = () => {
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(useShallow((state) => state));
 	const {
+		resetTemporaryReminderValues,
+		locationNameValues,
+		elementNameValues,
+		elementNbValues,
+		sourceTypeValues,
+		agentActivityValues,
+		agentStatusValues,
+		agentivityValues,
+		sourceMaterialValues,
+		setSourceTypeValues,
+		setAgentActivityValues,
+		setAgentStatusValues,
+		setAgentivityValues,
+		setSourceMaterialValues,
+		setElementNbValues,
+		resetFilterReminders,
 		setLocationFilterReminders,
 		setElementFilterReminders,
 		setElementNbFilterReminders,
@@ -54,9 +69,7 @@ const FilterComponent = () => {
 		setAgentStatusFilterReminders,
 		setAgentivityFilterReminders,
 		setSourceMaterialFilterReminders,
-		resetLanguageFilterReminders,
 		setGenderFilterReminders,
-		resetFilterReminders,
 	} = useMapFilterReminderStore();
 	const {
 		hasFilteredPoints,
@@ -74,21 +87,6 @@ const FilterComponent = () => {
 		resetFilteredOptions,
 		resetInitialOptions,
 	} = useMapFilterOptionsStore();
-
-	// initiation d'états pour récupérer les valeurs des lieux et éléments
-	const [locationNameValues, setLocationNameValues] = useState<string[]>([]);
-	const [elementNameValues, setElementNameValues] = useState<string[]>([]);
-	const [sourceTypeValues, setSourceTypeValues] = useState<string[]>([]);
-	const [agentActivityValues, setAgentActivityValues] = useState<string[]>([]);
-	const [agentStatusValues, setAgentStatusValues] = useState<string[]>([]);
-	const [agentivityValues, setAgentivityValues] = useState<string[]>([]);
-	const [sourceMaterialValues, setSourceMaterialValues] = useState<string[]>(
-		[],
-	);
-	const [elementNbValues, setElementNbValues] = useState<{
-		min: number;
-		max: number;
-	} | null>(null);
 
 	// fonction de chargements des points de la carte (avec filtres ou non)
 	const fetchAllPoints = useCallback(
@@ -143,20 +141,10 @@ const FilterComponent = () => {
 		resetInitialOptions();
 		resetUserFilters();
 		resetFilterReminders();
+		resetTemporaryReminderValues();
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
-		resetAllFilterRemindersValues(
-			setLocationNameValues,
-			setElementNameValues,
-			setSourceTypeValues,
-			setAgentActivityValues,
-			setAgentStatusValues,
-			setAgentivityValues,
-			setSourceMaterialValues,
-			setElementNbValues,
-			resetLanguageFilterReminders,
-		);
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
 	const filterTitlePrefix = `${translation[language].common.filter} : `;
@@ -176,10 +164,7 @@ const FilterComponent = () => {
 										{filterTitlePrefix}
 										{translation[language].mapPage.aside.location}
 									</h4>
-									<LocationFilterComponent
-										key={filter.id}
-										setLocationNameValues={setLocationNameValues}
-									/>
+									<LocationFilterComponent key={filter.id} />
 								</div>
 							);
 						}
@@ -190,11 +175,7 @@ const FilterComponent = () => {
 										{filterTitlePrefix}
 										{translation[language].mapPage.aside.element}
 									</h4>
-									<ElementFilterComponent
-										key={filter.id}
-										setElementNameValues={setElementNameValues}
-										elementNameValues={elementNameValues}
-									/>
+									<ElementFilterComponent key={filter.id} />
 								</div>
 							);
 						}

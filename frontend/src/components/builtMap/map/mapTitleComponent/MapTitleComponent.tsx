@@ -59,6 +59,7 @@ const MapTitleComponent = ({
 		sourceMaterialFilterReminders,
 		genderFilterReminders,
 		resetFilterReminders,
+		resetTemporaryReminderValues,
 	} = useMapFilterReminderStore();
 
 	const filtersDetails = displayFiltersTags(
@@ -84,6 +85,7 @@ const MapTitleComponent = ({
 		resetInitialOptions();
 		resetUserFilters();
 		resetFilterReminders();
+		resetTemporaryReminderValues();
 		setIsReset(!isReset);
 		fetchAllPoints("reset");
 	};

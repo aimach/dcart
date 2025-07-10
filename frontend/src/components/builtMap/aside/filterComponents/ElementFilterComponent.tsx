@@ -17,19 +17,11 @@ import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
-interface ElementFilterComponentProps {
-	setElementNameValues: (names: string[]) => void;
-	elementNameValues?: string[];
-}
-
 /**
  * Affiche le filtre des éléments
  * @returns Select (react-select)
  */
-const ElementFilterComponent = ({
-	setElementNameValues,
-	elementNameValues,
-}: ElementFilterComponentProps) => {
+const ElementFilterComponent = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
@@ -38,7 +30,8 @@ const ElementFilterComponent = ({
 	const { userFilters, setUserFilters, isReset } = useMapFiltersStore(
 		useShallow((state) => state),
 	);
-	const { elementFilterReminders } = useMapFilterReminderStore();
+	const { elementFilterReminders, elementNameValues, setElementNameValues } =
+		useMapFilterReminderStore();
 
 	const { hasFilteredPoints, initialElementOptions, filteredElementOptions } =
 		useMapFilterOptionsStore();
