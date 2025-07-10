@@ -31,6 +31,7 @@ import { TagOptionsProvider } from "./context/TagContext.tsx";
 import { SessionProvider } from "./context/SessionContext.tsx";
 // import du style
 import "./index.css";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -99,6 +100,9 @@ if (rootElement) {
 										element={<ResetPasswordPage />}
 									/>
 									<Route path="reset-password" element={<NewPasswordPage />} />
+
+									{/* Route catch-all pour les pages non trouvées */}
+									<Route path="*" element={<NotFoundPage />} />
 								</Routes>
 								<ToastContainer />
 							</TagOptionsProvider>
