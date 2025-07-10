@@ -11,9 +11,9 @@ import {
 	getSelectDefaultValues,
 } from "../../../../utils/functions/filter";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 // import du style
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
-import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 /**
  * Composant de filtre de localisation
