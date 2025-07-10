@@ -19,7 +19,6 @@ import StorymapPage from "./pages/BackOffice/BOStorymapPage/storymapPage/Storyma
 import UserManagementPage from "./pages/BackOffice/BOUserManagementPage/BOUserManagementPage.tsx";
 import TagManagementPage from "./pages/BackOffice/BOTagManagementPage/BOTagManagementPage.tsx";
 import DivinityManagementPage from "./pages/BackOffice/BODivinityManagementPage/BODivinityManagementPage.tsx";
-import PrivacyPolicyPage from "./pages/Legal/PrivacyPolicyPage.tsx";
 import LegalNoticePage from "./pages/Legal/LegalNoticePage.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
 import NewPasswordPage from "./pages/ResetPasswordPage/NewPasswordPage.tsx";
@@ -55,10 +54,6 @@ if (rootElement) {
 										<Route
 											path="storymap/:storymapSlug"
 											element={<StorymapPage />}
-										/>
-										<Route
-											path="politique-de-confidentialite"
-											element={<PrivacyPolicyPage />}
 										/>
 										<Route
 											path="mentions-legales"
