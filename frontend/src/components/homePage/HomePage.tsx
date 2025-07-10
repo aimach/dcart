@@ -18,6 +18,7 @@ import {
 	isEmptyResult,
 	scrollToTagContainer,
 } from "../../utils/functions/homePage";
+import { shuffleArray } from "../../utils/functions/common";
 // import des types
 import type {
 	OptionType,
@@ -30,7 +31,6 @@ import style from "./HomePage.module.scss";
 import { singleSelectInLineStyle } from "../../styles/inLineStyle";
 // import des icônes
 import { ChevronRight } from "lucide-react";
-import { shuffleArray } from "../../utils/functions/common";
 
 type CheckboxType = { map: boolean; storymap: boolean };
 
