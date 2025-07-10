@@ -13,7 +13,6 @@ import {
 	onMultiSelectChange,
 } from "../../../../utils/functions/filter";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-// import des types
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
@@ -154,7 +153,7 @@ const ElementFilterComponent = ({
 									options && (
 										<ElementCheckboxComponent
 											options={options}
-											key={options?.firstLevelIds.options?.[0].value}
+											key={options?.firstLevelIds[0].value}
 											elementNameValues={elementNameValues as string[]}
 											setElementNameValues={setElementNameValues}
 										/>

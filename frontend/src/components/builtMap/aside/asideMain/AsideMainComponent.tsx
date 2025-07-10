@@ -22,9 +22,9 @@ import {
 	getSourceMaterialOptions,
 	getSourceTypeOptions,
 } from "./AsideMainComponentUtils";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 // import du style
 import style from "./asideMainComponent.module.scss";
-import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 /**
  * Affiche le corps du panel latéral en fonction de l'onglet sélectionné

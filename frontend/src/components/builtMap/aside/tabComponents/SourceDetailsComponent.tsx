@@ -72,6 +72,7 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 	const { mapInfos } = useMapStore();
 
 	// formatage des attestations avant affichage
+	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	const formattedAttestations = useMemo(() => {
 		return attestations?.map((attestation: AttestationType) => {
 			// préparation de l'extrait avec restitution en vérifiant qu'il ne contient que du code validé

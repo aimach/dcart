@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useCallback, useEffect, useState } from "react";
+import { useCallback, useState } from "react";
 // import des composants
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
 import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
@@ -21,9 +21,9 @@ import { useShallow } from "zustand/shallow";
 import { resetAllFilterRemindersValues } from "../../../../utils/functions/filter";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 // import du style
 import style from "./tabComponent.module.scss";
-import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 /**
  * Affiche les filtres de la carte

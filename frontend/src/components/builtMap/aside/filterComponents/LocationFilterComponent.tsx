@@ -10,9 +10,9 @@ import {
 	onMultiSelectChange,
 	getSelectDefaultValues,
 } from "../../../../utils/functions/filter";
-// import des types
-import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+// import du style
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 interface LocationFilterComponentProps {
 	setLocationNameValues: (values: string[]) => void;

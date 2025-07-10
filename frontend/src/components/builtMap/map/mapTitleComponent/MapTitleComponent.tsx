@@ -6,14 +6,14 @@ import { displayFiltersTags } from "../../../../utils/functions/filter";
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 // import du type
 import type { LatLngTuple } from "leaflet";
 // import du style
 import style from "./mapTitleComponent.module.scss";
 // import des icônes
 import { CircleHelp, Info, PanelLeft, RotateCcw } from "lucide-react";
-import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
-import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 type MapTitleComponentProps = {
 	setIsModalOpen: (isOpen: boolean) => void;

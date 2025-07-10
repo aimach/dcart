@@ -1,10 +1,11 @@
 // import des bibliothèques
 import MultiRangeSlider from "multi-range-slider-react";
+// import des composants
+import LoaderComponent from "../../../common/loader/LoaderComponent";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 import { useShallow } from "zustand/shallow";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
-import LoaderComponent from "../../../common/loader/LoaderComponent";
 
 interface DivinityNbComponentProps {
 	setElementNbValues: (values: { min: number; max: number } | null) => void;
