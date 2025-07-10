@@ -12,6 +12,10 @@
 
   &Logo {
     cursor: pointer;
+
+    >h1 {
+      font-size: v.$font-size-l;
+    }
   }
 
   &NavMenu {
