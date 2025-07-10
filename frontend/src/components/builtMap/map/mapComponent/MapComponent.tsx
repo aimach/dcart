@@ -105,7 +105,7 @@ const MapComponent = () => {
 		resetFilteredOptions();
 		resetUserFilters();
 		resetTemporaryReminderValues();
-	}, []);
+	}, [mapSlug, mapId]);
 
 	// réinitialisation des filtres utilisateur si la modale est ouverte (s'exécute quand l'utilisateur change de carte)
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
