@@ -50,11 +50,11 @@ const ItemContainer = ({ item }: ItemContainerProps) => {
 				}}
 			>
 				<div className={style.itemText}>
-					<h4>
+					<h3>
 						{isMap
 							? item[`title_${language}`]
 							: (item as TagWithItemsType["storymaps"][number]).title_lang1}
-					</h4>
+					</h3>
 					<TagListComponent item={item} withLink={false} />
 				</div>
 			</div>
