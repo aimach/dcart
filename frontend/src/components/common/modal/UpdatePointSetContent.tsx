@@ -22,10 +22,9 @@ const UpdatePointSetContent = ({
 	// récupération des données de traduction
 	const { language, translation } = useTranslation();
 
-	console.log(idToUpdate);
-
 	const handlePointSetCleaning = async (idToUpdate: string) => {
 		await cleanPointSet(idToUpdate);
+		setIsModalOpen(false);
 	};
 
 	return (

@@ -173,6 +173,7 @@ type LanguageObject = {
 		createA: string;
 		stillConnected: string;
 		disconnectInOneMinute: string;
+		noPointInPointSet: string;
 		managementTable: {
 			image: string;
 			name: string;
