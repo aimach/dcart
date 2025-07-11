@@ -62,6 +62,7 @@ if (rootElement) {
 										/>
 										{/* Route catch-all pour les pages non trouvées */}
 										<Route path="*" element={<NotFoundPage />} />
+										<Route path="404" element={<NotFoundPage />} />
 									</Route>
 									<Route path="backoffice" element={<ProtectedLayout />}>
 										<Route index element={<BOHomePage />} />
@@ -94,6 +95,7 @@ if (rootElement) {
 										/>
 										{/* Route catch-all pour les pages non trouvées */}
 										<Route path="*" element={<NotFoundPage />} />
+										<Route path="404" element={<NotFoundPage />} />
 									</Route>
 									<Route
 										path="authentification"

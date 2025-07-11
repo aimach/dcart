@@ -19,6 +19,7 @@ const getStorymapInfosAndBlocksBySlug = async (storymapSlug: string) => {
 			"Erreur lors du chargement des données de la storymap (infos et blocks) :",
 			error,
 		);
+		window.location.href = "/#/404";
 	}
 };
 

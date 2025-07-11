@@ -1,6 +1,6 @@
 // import des bibiliothèques
 import { useEffect, useState } from "react";
-import { Link, useLocation, useParams } from "react-router";
+import { Link, useLocation, useNavigate, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import StorymapIntroduction from "../../../../components/storymap/blocks/storymapIntroduction/StorymapIntroduction";
@@ -91,7 +91,7 @@ const StorymapPage = () => {
 	// récupération de l'id de la storymap
 	const { storymapSlug, storymapId } = useParams();
 
-	// récupération de l'ur
+	// récupération de l'url
 	const location = useLocation();
 
 	// récupération des données des stores
@@ -103,21 +103,17 @@ const StorymapPage = () => {
 	// au montage du composant, récupération des informations de la storymap
 	useEffect(() => {
 		const fetchStorymapInfos = async () => {
-			try {
-				if (storymapSlug) {
-					const response = await getStorymapInfosAndBlocksBySlug(
-						storymapSlug as string,
-					);
-					setStorymapInfos(response);
-				}
-				if (storymapId) {
-					const response = await getStorymapInfosAndBlocksById(
-						storymapId as string,
-					);
-					setStorymapInfos(response);
-				}
-			} catch (error) {
-				console.error(error);
+			if (storymapSlug) {
+				const response = await getStorymapInfosAndBlocksBySlug(
+					storymapSlug as string,
+				);
+				setStorymapInfos(response);
+			}
+			if (storymapId) {
+				const response = await getStorymapInfosAndBlocksById(
+					storymapId as string,
+				);
+				setStorymapInfos(response);
 			}
 		};
 		fetchStorymapInfos();
