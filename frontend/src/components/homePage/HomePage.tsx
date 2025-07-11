@@ -96,7 +96,6 @@ function HomePage() {
 				<section className={style.tagContainer} ref={tagContainerRef}>
 					<div className={style.tagContainerHeader}>
 						{/* label invisible pour l'accessibilité */}
-
 						<label
 							htmlFor="react-select-2-input"
 							className={style.invisibleLabel}

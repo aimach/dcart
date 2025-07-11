@@ -35,6 +35,7 @@ const AsideContainer = () => {
 						type="button"
 						className={style.toggleButton}
 						onClick={() => setIsPanelDisplayed(false)}
+						aria-label="Fermer le panel latéral"
 					>
 						<ChevronLeft />
 					</button>

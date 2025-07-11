@@ -49,6 +49,7 @@ const TileLayerChoiceComponent = () => {
 						className={`${style.tileLayerChoice} ${isSelected ? style.selected : ""}`}
 						onClick={() => setTileLayerURL(tileLayer.url)}
 						onKeyUp={() => setTileLayerURL(tileLayer.url)}
+						aria-label={`Choisir le fond de carte ${tileLayer.name}`}
 					>
 						<img
 							src={tileLayer.urlMini}

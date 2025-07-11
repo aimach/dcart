@@ -100,6 +100,7 @@ const AuthFormComponent = () => {
 							type="button"
 							onClick={() => setShowPassword((prev) => !prev)}
 							style={{ marginLeft: 8 }}
+							aria-label="Changer la visibilité du mot de passe"
 						>
 							{showPassword ? <EyeClosed /> : <EyeIcon />}
 						</button>

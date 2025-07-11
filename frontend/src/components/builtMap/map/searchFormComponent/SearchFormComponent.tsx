@@ -139,6 +139,51 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 				<>
 					<form method="post" onSubmit={handleSubmit} id="myForm">
 						<div className={style.searchFormTextContainer}>
+							{/* labels invisibles pour l'accessibilité */}
+							<div>
+								<label
+									htmlFor="react-select-1-input"
+									className={style.invisibleLabel}
+								>
+									{translation[language].modal.chooseRegion}
+								</label>
+								<label
+									htmlFor="react-select-2-input"
+									className={style.invisibleLabel}
+								>
+									{translation[language].modal.chooseRegion}
+								</label>
+								<label
+									htmlFor="react-select-3-input"
+									className={style.invisibleLabel}
+								>
+									{translation[language].modal.chooseDivinity}
+								</label>
+								<label
+									htmlFor="react-select-4-input"
+									className={style.invisibleLabel}
+								>
+									{translation[language].modal.chooseDivinity}
+								</label>
+								<label
+									htmlFor="react-select-5-input"
+									className={style.invisibleLabel}
+								>
+									{translation[language].modal.postDate}
+								</label>
+								<label
+									htmlFor="react-select-6-input"
+									className={style.invisibleLabel}
+								>
+									{translation[language].modal.postDate}
+								</label>
+								<label
+									htmlFor="react-select-7-input"
+									className={style.invisibleLabel}
+								>
+									{translation[language].modal.postDate}
+								</label>
+							</div>
 							{translation[language].modal.firstContent}{" "}
 							<MultiSelectComponent
 								options={greatRegions}
