@@ -244,6 +244,41 @@ export const attestationController = {
 		}
 	},
 
+	cleanAttestationList: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { id } = req.params;
+
+			const attestationListToUpdate = await dcartDataSource
+				.getRepository(Attestation)
+				.findOneBy({ id });
+			if (!attestationListToUpdate) {
+				res.status(404).json("Le jeu d'attestations n'existe pas");
+				return;
+			}
+
+			// vider le champ attestationIds
+			attestationListToUpdate.attestationIds = "";
+
+			// supprimer tous les points associés
+			await dcartDataSource
+				.getRepository(Point)
+				.delete({ attestation: attestationListToUpdate });
+
+			// mise à jour de la date de dernière activité
+			attestationListToUpdate.lastActivity = new Date();
+
+			await dcartDataSource
+				.getRepository(Attestation)
+				.save(attestationListToUpdate);
+
+			res
+				.status(200)
+				.json("Le jeu d'attestations a bien été vidé de ses points");
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
 	// supprimer un jeu d'attestations
 	deleteAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
