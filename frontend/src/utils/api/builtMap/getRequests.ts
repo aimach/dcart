@@ -2,8 +2,8 @@
 import { apiClient } from "../apiClient";
 // import des types
 import type { UserFilterType } from "../../types/filterTypes";
-import { OptionType } from "../../types/commonTypes";
-import { MultiValue } from "react-select";
+import type { OptionType } from "../../types/commonTypes";
+import type { MultiValue } from "react-select";
 
 /**
  * Récupère toutes les attestations d'une source à partir de son id
@@ -272,6 +272,7 @@ const getOneMapInfosBySlug = async (mapSlug: string) => {
 			"Erreur lors du chargement des informations de la carte :",
 			error,
 		);
+		window.location.href = "/#/404";
 	}
 };
 
@@ -361,6 +362,7 @@ const getTagWithMapsAndStorymaps = async (
 		return response.data;
 	} catch (error) {
 		console.error("Erreur lors du chargement des cartes et storyamps :", error);
+		window.location.href = "/#/404";
 	}
 };
 
