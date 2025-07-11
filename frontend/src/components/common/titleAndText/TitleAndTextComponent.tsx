@@ -24,7 +24,7 @@ const TitleAndTextComponent = ({ title, text }: TitleAndTextComponentProps) => {
 					height="auto"
 					loading="lazy"
 				/>
-				<h3>{title}</h3>
+				<h1>{title}</h1>
 				<img
 					src={delta}
 					alt="decoration"
