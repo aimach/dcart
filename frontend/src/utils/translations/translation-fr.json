@@ -100,7 +100,10 @@
 		"deleteBlockText": "Êtes-vous sûr de vouloir supprimer ce bloc ?",
 		"deteleStorymapText": "Êtes-vous sûr de vouloir supprimer cette storymap ?",
 		"deteleMapText": "Êtes-vous sûr de vouloir supprimer cette carte ?",
-		"deleteUserText": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible !",
+		"deleteUserText": {
+			"another": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible !",
+			"yourself": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible !"
+		},
 		"modifyUserStatusText": "Êtes-vous sûr de vouloir modifier le statut de cet utilisateur ?",
 		"deleteTagText": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Si une carte ou une storymap est associée à cette seule étiquette, elle ne sera plus visible par les utilisateurs.",
 		"associatedStorymap": "Voir la storymap associée",

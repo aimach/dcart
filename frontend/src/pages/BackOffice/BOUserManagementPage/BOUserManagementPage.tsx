@@ -179,10 +179,6 @@ const UserManagementPage = () => {
 														: translation[language].backoffice.userManagement
 																.toAdmin}
 												</button>
-												<Trash
-													color="#9d2121"
-													onClick={() => handleDeleteClick(user.id as string)}
-												/>
 											</>
 										) : (
 											<>
@@ -196,6 +192,12 @@ const UserManagementPage = () => {
 												/>
 											</>
 										)}
+										<Trash
+											color="#9d2121"
+											onClick={() =>
+												handleDeleteClick(user.id as string, userId === user.id)
+											}
+										/>
 									</div>
 								</td>
 							</tr>
