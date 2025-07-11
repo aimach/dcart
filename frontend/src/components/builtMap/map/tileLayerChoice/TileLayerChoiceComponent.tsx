@@ -54,6 +54,7 @@ const TileLayerChoiceComponent = () => {
 							src={tileLayer.urlMini}
 							alt={tileLayer.name}
 							title={tileLayer.name}
+							loading="lazy"
 						/>
 					</button>
 				);

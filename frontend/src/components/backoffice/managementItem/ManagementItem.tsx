@@ -117,6 +117,7 @@ const ManagementItem = ({ itemInfos, type }: ManagementItemProps) => {
 					<img
 						src={(itemInfos as StorymapType).image_url}
 						alt={(itemInfos as StorymapType)[`title_${selectedLanguage}`]}
+						loading="lazy"
 					/>
 				) : (
 					<ImageOff />

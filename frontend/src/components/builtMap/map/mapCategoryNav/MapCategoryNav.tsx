@@ -106,7 +106,7 @@ const MapCategoryNav = ({ type }: MapCategoryNavProps) => {
 							{selectedCategory[`${type}s`].map((item) => {
 								return (
 									<li key={item.id} className={style.mapListItem}>
-										<img src={delta} alt="delta" width={30} />
+										<img src={delta} alt="delta" width={30} loading="lazy" />
 										{type === "map" ? (
 											<Link to={`/map/${item.id}`}>
 												{item[`title_${language}`]}

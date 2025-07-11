@@ -29,7 +29,7 @@ const ImageWithButton = ({
 	return (
 		<a href={link}>
 			<button type="button" aria-label={ariaLabel} className={buttonClassName}>
-				<img src={imgSrc} alt={imgAlt} width={imgWidth} />
+				<img src={imgSrc} alt={imgAlt} width={imgWidth} loading="lazy" />
 			</button>
 		</a>
 	);

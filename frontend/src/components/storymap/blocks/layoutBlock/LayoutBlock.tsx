@@ -42,6 +42,7 @@ const LayoutBlock = ({ blockContent }: LayoutBlockProps) => {
 			<img
 				src={textAndImageBlockInOrder[0][`content1_${selectedLanguage}`]}
 				alt={textAndImageBlockInOrder[0][`content2_${selectedLanguage}`]}
+				loading="lazy"
 			/>
 			<div
 				// biome-ignore lint/security/noDangerouslySetInnerHtml: le texte est nettoyé avec DOMPurify
@@ -77,6 +78,7 @@ const LayoutBlock = ({ blockContent }: LayoutBlockProps) => {
 							<img
 								src={child[`content1_${selectedLanguage}`]}
 								alt={child[`content2_${selectedLanguage}`]}
+								loading="lazy"
 							/>
 							<figcaption>{child[`content2_${selectedLanguage}`]}</figcaption>
 						</figure>

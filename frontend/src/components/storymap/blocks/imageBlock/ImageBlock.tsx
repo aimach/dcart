@@ -18,6 +18,7 @@ const ImageBlock = ({ blockContent }: ImageBlockProps) => {
 			<img
 				src={blockContent[`content1_${selectedLanguage}`]}
 				alt={blockContent[`content2_${selectedLanguage}`]}
+				loading="lazy"
 			/>
 			<p>{blockContent[`content2_${selectedLanguage}`]}</p>
 		</section>

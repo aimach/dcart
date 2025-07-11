@@ -52,9 +52,9 @@ const MapIntroductionContent = ({
 			{mapInfos && (
 				<div className={style.modalIntroContent}>
 					<div className={style.modalTitleSection}>
-						<img src={delta} alt="decoration" width={30} />
+						<img src={delta} alt="decoration" width={30} loading="lazy" />
 						<h3>{(mapInfos as MapInfoType)[`title_${language}`]}</h3>
-						<img src={delta} alt="decoration" width={30} />
+						<img src={delta} alt="decoration" width={30} loading="lazy" />
 					</div>
 					<div className={style.modalImageAndTextSection}>
 						{mapInfos.image_url && (
@@ -62,6 +62,7 @@ const MapIntroductionContent = ({
 								src={mapInfos.image_url}
 								alt="map"
 								className={style.modalImage}
+								loading="lazy"
 							/>
 						)}
 						<div className={style.textSection}>
