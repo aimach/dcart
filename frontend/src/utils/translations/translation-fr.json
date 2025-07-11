@@ -52,6 +52,7 @@
 		"cancel": "Annuler",
 		"publish": "Publier",
 		"unpublish": "Dépublier",
+		"clean": "Supprimer les points du jeu de points",
 		"editDisabled": "Modifier désactivé",
 		"search": "Rechercher",
 		"copyRequest": "Copier la requête SQL",

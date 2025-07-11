@@ -54,6 +54,7 @@ type LanguageObject = {
 		cancel: string;
 		publish: string;
 		unpublish: string;
+		clean: string;
 		editDisabled: string;
 		search: string;
 		copyRequest: string;

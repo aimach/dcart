@@ -52,6 +52,7 @@
 		"cancel": "Cancel",
 		"publish": "Publish",
 		"unpublish": "Unpublish",
+		"clean": "Remove points from point set",
 		"editDisabled": "Edit disabled",
 		"search": "Search",
 		"copyRequest": "Copy SQL request",

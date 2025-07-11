@@ -6,6 +6,8 @@ import NavigationButtonComponent from "../navigationButton/NavigationButtonCompo
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import PointSetUploadForm from "../pointSetUploadForm/PointSetUploadForm";
 import ModalComponent from "../../../common/modal/ModalComponent";
+import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
+import TooltipComponent from "../../../common/tooltip/TooltipComponent";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -15,7 +17,6 @@ import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
 import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
 import {
-	cleanPointSet,
 	updateMap,
 	updatePointSet,
 } from "../../../../utils/api/builtMap/putRequests";
@@ -39,7 +40,6 @@ import type {
 import style from "../introForm/introForm.module.scss";
 // import des images et icônes
 import { CircleHelp, FileDown, Pen, PlusCircle, X } from "lucide-react";
-import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -329,24 +329,36 @@ const UploadForm = () => {
 												: null}
 										</td>
 										<td>
-											{displayBrushCleaningButton(pointSet.id as string)}
-											<Pen
-												onClick={() =>
-													handleUpdatePointSet(pointSet.id as string)
-												}
-												onKeyDown={() =>
-													handleUpdatePointSet(pointSet.id as string)
-												}
-											/>
-											<X
-												onClick={() =>
-													handleDeletePointSet(pointSet.id as string)
-												}
-												onKeyDown={() =>
-													handleDeletePointSet(pointSet.id as string)
-												}
-												color="#9d2121"
-											/>
+											<TooltipComponent
+												text={translation[language].button.clean}
+											>
+												{displayBrushCleaningButton(pointSet.id as string)}
+											</TooltipComponent>
+											<TooltipComponent
+												text={translation[language].button.edit}
+											>
+												<Pen
+													onClick={() =>
+														handleUpdatePointSet(pointSet.id as string)
+													}
+													onKeyDown={() =>
+														handleUpdatePointSet(pointSet.id as string)
+													}
+												/>
+											</TooltipComponent>
+											<TooltipComponent
+												text={translation[language].button.delete}
+											>
+												<X
+													onClick={() =>
+														handleDeletePointSet(pointSet.id as string)
+													}
+													onKeyDown={() =>
+														handleDeletePointSet(pointSet.id as string)
+													}
+													color="#9d2121"
+												/>
+											</TooltipComponent>
 										</td>
 									</tr>
 								);

@@ -160,7 +160,7 @@
     >td:last-of-type {
         text-align: right;
 
-        >svg {
+        svg {
             cursor: pointer;
             margin-right: v.$space-s;
             background-color: v.$background-color-soft;
@@ -172,7 +172,7 @@
 
         }
 
-        >svg:hover {
+        svg:hover {
             scale: 1.1;
         }
     }
