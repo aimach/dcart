@@ -118,6 +118,8 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
 							src={(itemInfos as StorymapType).image_url}
 							alt={(itemInfos as StorymapType)[`title_${selectedLanguage}`]}
 							width={100}
+							height="auto"
+							loading="lazy"
 						/>
 					) : (
 						<ImageOff />

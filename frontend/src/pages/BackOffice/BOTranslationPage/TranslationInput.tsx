@@ -79,6 +79,8 @@ const TranslationInput = ({ translationObject }: TranslationInputProps) => {
 							src={getImageSrc(translationObject.key)}
 							alt="indication du texte sur le site"
 							width={200}
+							height="auto"
+							loading="lazy"
 						/>
 						<div>
 							<div className={style.translationInputContainer}>

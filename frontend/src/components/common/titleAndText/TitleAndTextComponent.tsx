@@ -17,9 +17,21 @@ const TitleAndTextComponent = ({ title, text }: TitleAndTextComponentProps) => {
 	return (
 		<section className={style.titleAndTextContainer}>
 			<div className={style.titleSection}>
-				<img src={delta} alt="decoration" width={50} />
+				<img
+					src={delta}
+					alt="decoration"
+					width={50}
+					height="auto"
+					loading="lazy"
+				/>
 				<h3>{title}</h3>
-				<img src={delta} alt="decoration" width={50} />
+				<img
+					src={delta}
+					alt="decoration"
+					width={50}
+					height="auto"
+					loading="lazy"
+				/>
 			</div>
 			<p>{text}</p>
 		</section>

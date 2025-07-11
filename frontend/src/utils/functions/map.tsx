@@ -451,8 +451,8 @@ const slugify = (str: string) =>
  */
 const getMapAttribution = (tileLayerURL: string): string => {
 	return tileLayerURL.includes("openstreetmap")
-		? '<a href="https://www.openstreetmap.org/copyright" target="_blank">OpenStreetMap</a> contributors'
-		: '<a href="https://cawm.lib.uiowa.edu/index.html" target="_blank">Consortium of Ancient World Mappers</a> contributors';
+		? '<a href="https://www.openstreetmap.org/copyright" target="_blank" rel="noreferrer">OpenStreetMap</a> contributors'
+		: '<a href="https://cawm.lib.uiowa.edu/index.html" target="_blank" rel="noreferrer">Consortium of Ancient World Mappers</a> contributors';
 };
 
 const getOptionalCellValue = (

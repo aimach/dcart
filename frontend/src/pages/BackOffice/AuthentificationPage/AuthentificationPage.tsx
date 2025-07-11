@@ -4,6 +4,7 @@ import AuthFormComponent from "../../../components/authForm/AuthFormComponent";
 // import des custom hooks
 import { useWindowSize } from "../../../utils/hooks/useWindowSize";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
+import { AuthentificationPageHelmetContent } from "../../../components/helmet/HelmetContent";
 
 /**
  * Page d'authentification
@@ -24,13 +25,18 @@ const AuthentificationPage = () => {
 
 	const { language, translation } = useTranslation();
 
-	return isDesktop ? (
-		<AuthFormComponent />
-	) : (
-		<section style={noAuthStyle}>
-			<TriangleAlert width="30px" color="#9d2121" />
-			<p>{translation[language].noAuthInMobile}</p>
-		</section>
+	return (
+		<>
+			<AuthentificationPageHelmetContent />
+			{isDesktop ? (
+				<AuthFormComponent />
+			) : (
+				<section style={noAuthStyle}>
+					<TriangleAlert width="30px" color="#9d2121" />
+					<p>{translation[language].noAuthInMobile}</p>
+				</section>
+			)}
+		</>
 	);
 };
 
