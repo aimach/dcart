@@ -4,6 +4,7 @@ interface User {
 	pseudo: string;
 	status: string;
 	password?: string;
+	email: string;
 }
 
 export type { User };

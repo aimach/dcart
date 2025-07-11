@@ -18,11 +18,11 @@ import { useModalStore } from "../../../utils/stores/storymap/modalStore";
 // import des types
 import type { User } from "../../../utils/types/userTypes";
 import type { userInputType } from "../../../components/form/userForm/AddUserForm";
-import { createNewUser } from "../../../utils/api/authAPI";
+import { createNewUser, updateUser } from "../../../utils/api/authAPI";
 // import des styles
 import style from "./userManagementPage.module.scss";
 // import des icônes
-import { CirclePlus, Trash } from "lucide-react";
+import { CirclePlus, Pen, Trash } from "lucide-react";
 
 const UserManagementPage = () => {
 	const { isAdmin } = useContext(AuthContext);
@@ -47,6 +47,9 @@ const UserManagementPage = () => {
 		setReload,
 	} = useModalStore();
 
+	const [userFormType, setUserFormType] = useState<"create" | "edit">("create");
+	const [currentUserInfos, setCurrentUserInfos] = useState<User | null>(null);
+
 	useEffect(() => {
 		if (!isAdmin) {
 			navigate("/backoffice");
@@ -57,8 +60,13 @@ const UserManagementPage = () => {
 	useEffect(() => {
 		if (isAdmin) {
 			const fetchAllUsers = async () => {
-				const allUsers = await getAllUsers();
+				const allUsers: User[] = await getAllUsers();
 				setUsers(allUsers);
+				if (allUsers.length > 0) {
+					setCurrentUserInfos(
+						allUsers.find((user) => user.id === userId) || null,
+					);
+				}
 			};
 			fetchAllUsers();
 		}
@@ -79,6 +87,16 @@ const UserManagementPage = () => {
 	const handleAddUserSubmit = async (data: userInputType) => {
 		await createNewUser(data);
 		setAddUserForm(false);
+		setCurrentUserInfos(null);
+		setUserFormType("create");
+		setReload(!reload);
+	};
+
+	const handleUpdateUserSubmit = async (data: userInputType) => {
+		await updateUser(data, currentUserInfos as User);
+		setAddUserForm(false);
+		setCurrentUserInfos(null);
+		setUserFormType("create");
 		setReload(!reload);
 	};
 
@@ -105,14 +123,22 @@ const UserManagementPage = () => {
 					}
 					onClickFunction={() => {
 						setAddUserForm(!addUserForm);
+						setUserFormType("create");
 					}}
 					icon={addUserForm ? null : <CirclePlus />}
 				/>
 			</div>
 			{addUserForm && (
 				<AddUserForm
-					onSubmit={handleAddUserSubmit}
+					key={userFormType}
+					onSubmit={
+						userFormType === "create"
+							? handleAddUserSubmit
+							: handleUpdateUserSubmit
+					}
 					setAddUserForm={setAddUserForm}
+					type={userFormType}
+					currentUserInfos={currentUserInfos}
 				/>
 			)}
 			<div className={style.userManagementTableContainer}>
@@ -141,7 +167,7 @@ const UserManagementPage = () => {
 								</td>
 								<td>
 									<div>
-										{userId !== user.id && (
+										{userId !== user.id ? (
 											<>
 												<button
 													type="button"
@@ -153,12 +179,25 @@ const UserManagementPage = () => {
 														: translation[language].backoffice.userManagement
 																.toAdmin}
 												</button>
-												<Trash
-													color="#9d2121"
-													onClick={() => handleDeleteClick(user.id as string)}
+											</>
+										) : (
+											<>
+												<Pen
+													onClick={() => {
+														setCurrentUserInfos(user);
+														setUserFormType("edit");
+														setAddUserForm(true);
+														scrollTo({ top: 0, left: 0, behavior: "smooth" });
+													}}
 												/>
 											</>
 										)}
+										<Trash
+											color="#9d2121"
+											onClick={() =>
+												handleDeleteClick(user.id as string, userId === user.id)
+											}
+										/>
 									</div>
 								</td>
 							</tr>

@@ -8,6 +8,8 @@ import ButtonComponent from "../../common/button/ButtonComponent";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import userInputArray from "../../../utils/forms/userInputArray";
+// import des types
+import type { User } from "../../../utils/types/userTypes";
 // import du style
 import style from "../storymapForm/commonForm/commonForm.module.scss";
 import parentStyle from "../../../pages/BackOffice/BOUserManagementPage/userManagementPage.module.scss";
@@ -23,16 +25,25 @@ export type userInputType = {
 type AddUserFormProps = {
 	onSubmit: (data: userInputType) => void;
 	setAddUserForm: (value: boolean) => void;
+	type: "create" | "edit";
+	currentUserInfos: User | null;
 };
 
-const AddUserForm = ({ onSubmit, setAddUserForm }: AddUserFormProps) => {
+const AddUserForm = ({
+	onSubmit,
+	setAddUserForm,
+	type,
+	currentUserInfos,
+}: AddUserFormProps) => {
 	const { translation, language } = useTranslation();
 
 	const {
 		register,
 		handleSubmit,
 		formState: { errors },
-	} = useForm<userInputType>();
+	} = useForm<userInputType | (userInputType & userInputType)>({
+		defaultValues: type === "create" ? {} : (currentUserInfos ?? ({} as User)),
+	});
 
 	return (
 		<div className={parentStyle.addUserFormContainer}>
@@ -68,7 +79,9 @@ const AddUserForm = ({ onSubmit, setAddUserForm }: AddUserFormProps) => {
 						type="submit"
 						color="brown"
 						textContent={
-							translation[language].backoffice.storymapFormPage.form.create
+							translation[language].backoffice.storymapFormPage.form[
+								type as "create" | "edit"
+							]
 						}
 					/>
 					<ButtonComponent
@@ -80,15 +93,17 @@ const AddUserForm = ({ onSubmit, setAddUserForm }: AddUserFormProps) => {
 						}}
 					/>
 				</div>
-				<div className={style.alertContainer}>
-					<CircleAlert color="#9d2121" />
-					<p>
-						{
-							translation[language].backoffice.userManagement
-								.passwordManagementMessage
-						}
-					</p>
-				</div>
+				{type === "create" && (
+					<div className={style.alertContainer}>
+						<CircleAlert color="#9d2121" />
+						<p>
+							{
+								translation[language].backoffice.userManagement
+									.passwordManagementMessage
+							}
+						</p>
+					</div>
+				)}
 			</form>
 		</div>
 	);

@@ -44,7 +44,7 @@ export const authenticateUser = async (
 			.getRepository("User")
 			.findOne({
 				where: { id: decoded.userId },
-				select: { id: true, status: true },
+				select: { id: true, status: true, email: true },
 			});
 
 		if (!authenticatedUser) {
@@ -55,6 +55,7 @@ export const authenticateUser = async (
 		req.user = {
 			userId: authenticatedUser.id,
 			userStatus: authenticatedUser.status,
+			userEmail: authenticatedUser.email,
 		};
 		next();
 	} catch (error) {

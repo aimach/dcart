@@ -45,6 +45,13 @@ authRoutes.put(
 	dcartControllers.updateUserStatus,
 );
 
+// modification du profile de l'utilisateur
+authRoutes.put(
+	"/users/:userId/profile",
+	authenticateUser,
+	dcartControllers.updateUserProfile,
+);
+
 // suppression d'un utilisateur
 authRoutes.delete(
 	"/users/:userId",
