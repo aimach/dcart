@@ -112,7 +112,6 @@ function HomePage() {
 							}
 							placeholder={translation[language].mapPage.aside.searchForTag}
 						/>
-
 						<input
 							type="text"
 							id="searchInput"
