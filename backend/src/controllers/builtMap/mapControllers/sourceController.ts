@@ -210,6 +210,9 @@ export const sourceController = {
 				const { attestations } = mapInfos as MapContent;
 				results = await Promise.all(
 					attestations.map(async (attestation: Attestation) => {
+						if (!attestation.attestationIds) {
+							return [];
+						}
 						const sqlQuery = getSourcesQueryWithDetails(
 							attestation.attestationIds,
 							queryLocalisation,

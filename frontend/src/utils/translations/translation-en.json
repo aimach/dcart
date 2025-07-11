@@ -105,6 +105,7 @@
 			"yourself": "Are you sure you want to delete your account? This action is irreversible."
 		},
 		"modifyUserStatusText": "Are you sure you want to change the status of this user?",
+		"cleanPointSetText": "Are you sure you want to delete all points in this point set?",
 		"deleteTagText": "Are you sure you want to delete this tag? If this tag only is used in a map or a storymap, it will be removed from the home page or tag page.",
 		"associatedStorymap": "See associated storymap",
 		"associatedMap": "See associated map"

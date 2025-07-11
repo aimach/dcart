@@ -24,7 +24,7 @@ attestationRoutes.put(
 attestationRoutes.put(
 	"/clean/:id",
 	authenticateUser,
-	dcartControllers.modifyAttestationList,
+	dcartControllers.cleanAttestationList,
 );
 
 // supprimer un jeu d'attestations

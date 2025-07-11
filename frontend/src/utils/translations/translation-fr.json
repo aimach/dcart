@@ -105,6 +105,7 @@
 			"yourself": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible !"
 		},
 		"modifyUserStatusText": "Êtes-vous sûr de vouloir modifier le statut de cet utilisateur ?",
+		"cleanPointSetText": "Êtes-vous sûr de vouloir supprimer tous les points de ce jeu de points ?",
 		"deleteTagText": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Si une carte ou une storymap est associée à cette seule étiquette, elle ne sera plus visible par les utilisateurs.",
 		"associatedStorymap": "Voir la storymap associée",
 		"associatedMap": "Voir la carte associée"

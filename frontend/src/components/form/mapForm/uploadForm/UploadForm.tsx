@@ -4,12 +4,13 @@ import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import PointSetUploadForm from "../pointSetUploadForm/PointSetUploadForm";
+import ModalComponent from "../../../common/modal/ModalComponent";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
-import PointSetUploadForm from "../pointSetUploadForm/PointSetUploadForm";
 import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
 import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
@@ -38,6 +39,7 @@ import type {
 import style from "../introForm/introForm.module.scss";
 // import des images et icônes
 import { CircleHelp, FileDown, Pen, PlusCircle, X } from "lucide-react";
+import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -49,6 +51,12 @@ const UploadForm = () => {
 	// récupération des données des stores
 	const { mapInfos, setMapInfos, step } = useMapFormStore(
 		useShallow((state) => state),
+	);
+
+	// définition de l'état d'affichage de la modale
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [pointSetIdToClean, setPointSetIdToClean] = useState<string | null>(
+		null,
 	);
 
 	// récupération des données de l'URL
@@ -159,11 +167,7 @@ const UploadForm = () => {
 		} as MapInfoType);
 	};
 
-	const handlePointSetCleaning = async (pointSet: PointSetType) => {
-		await cleanPointSet(pointSet.id as string);
-	};
-
-	const brushCleaningButton = (
+	const displayBrushCleaningButton = (idToClean: string) => (
 		<svg
 			xmlns="http://www.w3.org/2000/svg"
 			width="24"
@@ -171,14 +175,20 @@ const UploadForm = () => {
 			viewBox="0 0 24 24"
 			fill="none"
 			stroke="currentColor"
-			stroke-width="2"
-			stroke-linecap="round"
-			stroke-linejoin="round"
-			class="lucide lucide-brush-cleaning-icon lucide-brush-cleaning"
+			strokeWidth="2"
+			strokeLinecap="round"
+			strokeLinejoin="round"
+			className="lucide lucide-brush-cleaning-icon lucide-brush-cleaning"
 			role="img"
 			aria-label="Brush Cleaning Icon"
-			onClick={() => handlePointSetCleaning(pointSet as PointSetType)}
-			onKeyDown={() => handlePointSetCleaning(pointSet as PointSetType)}
+			onClick={() => {
+				setPointSetIdToClean(idToClean as string);
+				setIsModalOpen(true);
+			}}
+			onKeyDown={() => {
+				setPointSetIdToClean(idToClean as string);
+				setIsModalOpen(true);
+			}}
 		>
 			<path d="m16 22-1-4" />
 			<path d="M19 13.99a1 1 0 0 0 1-1V12a2 2 0 0 0-2-2h-3a1 1 0 0 1-1-1V4a2 2 0 0 0-4 0v5a1 1 0 0 1-1 1H6a2 2 0 0 0-2 2v.99a1 1 0 0 0 1 1" />
@@ -189,6 +199,18 @@ const UploadForm = () => {
 
 	return (
 		<section className={style.uploadFormContainer}>
+			{isModalOpen && (
+				<ModalComponent
+					onClose={() => {
+						setIsModalOpen(false);
+					}}
+				>
+					<UpdatePointSetContent
+						idToUpdate={pointSetIdToClean as string}
+						setIsModalOpen={setIsModalOpen}
+					/>
+				</ModalComponent>
+			)}
 			<div className={style.titleAndHelpContainer}>
 				<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
 				{isAlreadyAPointSet && (
@@ -307,7 +329,7 @@ const UploadForm = () => {
 												: null}
 										</td>
 										<td>
-											{brushCleaningButton}
+											{displayBrushCleaningButton(pointSet.id as string)}
 											<Pen
 												onClick={() =>
 													handleUpdatePointSet(pointSet.id as string)

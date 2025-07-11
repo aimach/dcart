@@ -104,6 +104,7 @@ type LanguageObject = {
 		deteleMapText: string;
 		deleteUserText: { another: string };
 		modifyUserStatusText: string;
+		cleanPointSetText: string;
 		deleteTagText: string;
 		associatedStorymap: string;
 		associatedMap: string;
