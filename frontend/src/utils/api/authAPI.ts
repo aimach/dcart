@@ -160,7 +160,11 @@ const createNewUser = async (body: userInputType) => {
 			notifyCreateSuccess("Utilisateur", false);
 		}
 	} catch (error) {
-		notifyError("Erreur lors de la création de l'utilisateur");
+		if (error.response.data.message) {
+			notifyError(error.response.data.message);
+		} else {
+			notifyError("Erreur lors de la création de l'utilisateur");
+		}
 	}
 };
 

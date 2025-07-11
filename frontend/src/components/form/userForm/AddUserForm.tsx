@@ -93,15 +93,17 @@ const AddUserForm = ({
 						}}
 					/>
 				</div>
-				<div className={style.alertContainer}>
-					<CircleAlert color="#9d2121" />
-					<p>
-						{
-							translation[language].backoffice.userManagement
-								.passwordManagementMessage
-						}
-					</p>
-				</div>
+				{type === "create" && (
+					<div className={style.alertContainer}>
+						<CircleAlert color="#9d2121" />
+						<p>
+							{
+								translation[language].backoffice.userManagement
+									.passwordManagementMessage
+							}
+						</p>
+					</div>
+				)}
 			</form>
 		</div>
 	);

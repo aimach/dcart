@@ -28,6 +28,30 @@ export const authController = {
 				return;
 			}
 
+			// vérification de l'unicité de l'email
+			const existingUser = await dcartDataSource.getRepository(User).findOneBy({
+				email,
+			});
+			if (existingUser) {
+				res.status(400).json({
+					message: "Impossible de créer l'utilisateur. Email déjà utilisé.",
+				});
+				return;
+			}
+
+			// vérification de l'unicité du pseudo
+			const existingPseudo = await dcartDataSource
+				.getRepository(User)
+				.findOneBy({
+					pseudo,
+				});
+			if (existingPseudo) {
+				res.status(400).json({
+					message: "Impossible de créer l'utilisateur. Pseudo déjà utilisé.",
+				});
+				return;
+			}
+
 			const user = User.create({ username, pseudo, email });
 			await user.save();
 
@@ -221,8 +245,6 @@ export const authController = {
 			}
 
 			// vérification que l'utilisateur est bien celui qui fait la requête
-			console.log(req.user);
-			console.log(user);
 			if (user.id !== req.user?.userId) {
 				res.status(403).json({ message: "Accès interdit" });
 				return;
@@ -233,7 +255,11 @@ export const authController = {
 				email,
 			});
 			if (existingUser && existingUser.id !== user.id) {
-				res.status(400).json({ message: "Email déjà utilisé." });
+				res
+					.status(400)
+					.json({
+						message: "Impossible de modifier le profil. Email déjà utilisé.",
+					});
 				return;
 			}
 
@@ -244,7 +270,11 @@ export const authController = {
 					pseudo,
 				});
 			if (existingPseudo && existingPseudo.id !== user.id) {
-				res.status(400).json({ message: "Pseudo déjà utilisé." });
+				res
+					.status(400)
+					.json({
+						message: "Impossible de modifier le profil. Pseudo déjà utilisé.",
+					});
 				return;
 			}
 

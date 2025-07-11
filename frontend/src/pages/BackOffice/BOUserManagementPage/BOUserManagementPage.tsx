@@ -123,12 +123,14 @@ const UserManagementPage = () => {
 					}
 					onClickFunction={() => {
 						setAddUserForm(!addUserForm);
+						setUserFormType("create");
 					}}
 					icon={addUserForm ? null : <CirclePlus />}
 				/>
 			</div>
 			{addUserForm && (
 				<AddUserForm
+					key={userFormType}
 					onSubmit={
 						userFormType === "create"
 							? handleAddUserSubmit
@@ -186,9 +188,9 @@ const UserManagementPage = () => {
 											<>
 												<Pen
 													onClick={() => {
+														setCurrentUserInfos(user);
 														setUserFormType("edit");
 														setAddUserForm(true);
-														setCurrentUserInfos(user);
 														scrollTo({ top: 0, left: 0, behavior: "smooth" });
 													}}
 												/>
