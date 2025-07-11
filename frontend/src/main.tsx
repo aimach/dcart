@@ -2,6 +2,7 @@
 import { createRoot } from "react-dom/client";
 import { HashRouter, Routes, Route } from "react-router";
 import { ToastContainer } from "react-toastify";
+import { HelmetProvider } from "react-helmet-async";
 // import des composants
 import App from "./App.tsx";
 import NavigationLayout from "./layouts/NavigationLayout.tsx";
@@ -22,6 +23,7 @@ import DivinityManagementPage from "./pages/BackOffice/BODivinityManagementPage/
 import LegalNoticePage from "./pages/Legal/LegalNoticePage.tsx";
 import ResetPasswordPage from "./pages/ResetPasswordPage/ResetPasswordPage.tsx";
 import NewPasswordPage from "./pages/ResetPasswordPage/NewPasswordPage.tsx";
+import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.tsx";
 import ScrollToTop from "./components/common/scroll/ScrollToTop.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
@@ -31,7 +33,6 @@ import { TagOptionsProvider } from "./context/TagContext.tsx";
 import { SessionProvider } from "./context/SessionContext.tsx";
 // import du style
 import "./index.css";
-import NotFoundPage from "./pages/NotFoundPage/NotFoundPage.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -44,72 +45,77 @@ if (rootElement) {
 					<SessionProvider>
 						<IconOptionsProvider>
 							<TagOptionsProvider>
-								<Routes>
-									<Route element={<NavigationLayout />}>
-										<Route index element={<App />} />
-										<Route path="tag/:tagSlug">
-											<Route index element={<TagPage />} />
-										</Route>
-										<Route path="map/:mapSlug" element={<MapPage />} />
+								<HelmetProvider>
+									<Routes>
+										<Route element={<NavigationLayout />}>
+											<Route index element={<App />} />
+											<Route path="tag/:tagSlug">
+												<Route index element={<TagPage />} />
+											</Route>
+											<Route path="map/:mapSlug" element={<MapPage />} />
 
-										<Route
-											path="storymap/:storymapSlug"
-											element={<StorymapPage />}
-										/>
-										<Route
-											path="mentions-legales"
-											element={<LegalNoticePage />}
-										/>
-										{/* Route catch-all pour les pages non trouvées */}
-										<Route path="*" element={<NotFoundPage />} />
-										<Route path="404" element={<NotFoundPage />} />
-									</Route>
-									<Route path="backoffice" element={<ProtectedLayout />}>
-										<Route index element={<BOHomePage />} />
-										<Route path="maps">
-											<Route index element={<BackofficeMapPage />} />
-											<Route path="create" element={<BOMapFormPage />} />
-											<Route path="edit/:mapId" element={<BOMapFormPage />} />
-											<Route path="preview/:mapId" element={<MapPage />} />
-										</Route>
-										<Route path="storymaps">
-											<Route index element={<BackofficeStorymapPage />} />
 											<Route
-												path=":storymapId"
-												element={<StorymapIntroPage />}
-											/>
-											<Route
-												path="preview/:storymapId"
+												path="storymap/:storymapSlug"
 												element={<StorymapPage />}
 											/>
+											<Route
+												path="mentions-legales"
+												element={<LegalNoticePage />}
+											/>
+											{/* Route catch-all pour les pages non trouvées */}
+											<Route path="*" element={<NotFoundPage />} />
+											<Route path="404" element={<NotFoundPage />} />
+										</Route>
+										<Route path="backoffice" element={<ProtectedLayout />}>
+											<Route index element={<BOHomePage />} />
+											<Route path="maps">
+												<Route index element={<BackofficeMapPage />} />
+												<Route path="create" element={<BOMapFormPage />} />
+												<Route path="edit/:mapId" element={<BOMapFormPage />} />
+												<Route path="preview/:mapId" element={<MapPage />} />
+											</Route>
+											<Route path="storymaps">
+												<Route index element={<BackofficeStorymapPage />} />
+												<Route
+													path=":storymapId"
+													element={<StorymapIntroPage />}
+												/>
+												<Route
+													path="preview/:storymapId"
+													element={<StorymapPage />}
+												/>
+											</Route>
+											<Route
+												path="translation"
+												element={<BackofficeTranslationPage />}
+											/>
+											<Route path="users" element={<UserManagementPage />} />
+											<Route path="tags" element={<TagManagementPage />} />
+											<Route
+												path="divinities"
+												element={<DivinityManagementPage />}
+											/>
+											{/* Route catch-all pour les pages non trouvées */}
+											<Route path="*" element={<NotFoundPage />} />
+											<Route path="404" element={<NotFoundPage />} />
 										</Route>
 										<Route
-											path="translation"
-											element={<BackofficeTranslationPage />}
+											path="authentification"
+											element={<AuthentificationPage />}
 										/>
-										<Route path="users" element={<UserManagementPage />} />
-										<Route path="tags" element={<TagManagementPage />} />
 										<Route
-											path="divinities"
-											element={<DivinityManagementPage />}
+											path="forgot-password"
+											element={<ResetPasswordPage />}
 										/>
+										<Route
+											path="reset-password"
+											element={<NewPasswordPage />}
+										/>
+
 										{/* Route catch-all pour les pages non trouvées */}
 										<Route path="*" element={<NotFoundPage />} />
-										<Route path="404" element={<NotFoundPage />} />
-									</Route>
-									<Route
-										path="authentification"
-										element={<AuthentificationPage />}
-									/>
-									<Route
-										path="forgot-password"
-										element={<ResetPasswordPage />}
-									/>
-									<Route path="reset-password" element={<NewPasswordPage />} />
-
-									{/* Route catch-all pour les pages non trouvées */}
-									<Route path="*" element={<NotFoundPage />} />
-								</Routes>
+									</Routes>
+								</HelmetProvider>
 								<ToastContainer />
 							</TagOptionsProvider>
 						</IconOptionsProvider>

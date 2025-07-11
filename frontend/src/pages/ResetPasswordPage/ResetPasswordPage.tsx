@@ -9,6 +9,7 @@ import { useTranslation } from "../../utils/hooks/useTranslation";
 import { sendResetPasswordRequest } from "../../utils/api/authAPI";
 // import du style
 import style from "./ResetPasswordPage.module.scss";
+import { ForgotPasswordPageHelmetContent } from "../../components/helmet/HelmetContent";
 
 const ResetPasswordPage = () => {
 	const { language, translation } = useTranslation();
@@ -25,22 +26,25 @@ const ResetPasswordPage = () => {
 	};
 
 	return (
-		<div className={style.resetPasswordPage}>
-			<h3>{translation[language].backoffice.authPage.forgotPassword}</h3>
-			<input
-				type="email"
-				value={email}
-				onChange={(e) => setEmail(e.target.value)}
-				placeholder={translation[language].backoffice.authPage.enterEmail}
-			/>
+		<>
+			<ForgotPasswordPageHelmetContent />
+			<div className={style.resetPasswordPage}>
+				<h3>{translation[language].backoffice.authPage.forgotPassword}</h3>
+				<input
+					type="email"
+					value={email}
+					onChange={(e) => setEmail(e.target.value)}
+					placeholder={translation[language].backoffice.authPage.enterEmail}
+				/>
 
-			<ButtonComponent
-				onClickFunction={handleSendReset}
-				type="button"
-				color="brown"
-				textContent={translation[language].backoffice.authPage.sendResetLink}
-			/>
-		</div>
+				<ButtonComponent
+					onClickFunction={handleSendReset}
+					type="button"
+					color="brown"
+					textContent={translation[language].backoffice.authPage.sendResetLink}
+				/>
+			</div>
+		</>
 	);
 };
 

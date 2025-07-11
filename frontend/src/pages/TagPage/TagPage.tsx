@@ -13,6 +13,7 @@ import { getTagWithMapsAndStorymaps } from "../../utils/api/builtMap/getRequests
 import type { TagWithItemsType } from "../../utils/types/commonTypes";
 // import du style
 import style from "./tagPage.module.scss";
+import { TagPageHelmetContent } from "../../components/helmet/HelmetContent";
 
 type CheckboxType = { map: boolean; storymap: boolean };
 
@@ -29,7 +30,7 @@ const TagPage = () => {
 	const [tagWithItems, setTagWithItems] = useState<TagWithItemsType | null>(
 		null,
 	);
-	const [tagItems, setTagItems] = useState<TagWithItemsType | null>(null);
+	const [tagItems, setTagItems] = useState<TagWithItemsType[] | null>(null);
 	const [itemTypes, setItemTypes] = useState<CheckboxType>({
 		map: true,
 		storymap: true,
@@ -82,12 +83,27 @@ const TagPage = () => {
 				</div>
 				<ItemFilterComponent
 					itemTypes={itemTypes}
+					setItemTypes={setItemTypes}
 					handleCheckboxChange={handleCheckboxChange}
 				/>
 				<section className={style.tagPageItemsContainer}>
-					{tagItems?.length > 0 &&
+					{tagItems &&
+						tagItems?.length > 0 &&
 						tagItems.map((item) => {
-							return <ItemContainer item={item} key={item.id} />;
+							return (
+								<div key={item.id}>
+									<TagPageHelmetContent
+										tagName={`${tagWithItems[`name_${language}`]}`}
+									/>
+									<ItemContainer
+										item={
+											item as unknown as
+												| TagWithItemsType["maps"][number]
+												| TagWithItemsType["storymaps"][number]
+										}
+									/>
+								</div>
+							);
 						})}
 				</section>
 			</section>

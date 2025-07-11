@@ -46,6 +46,7 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
+import { MapPageHelmetContent } from "../../../helmet/HelmetContent";
 
 /**
  * Composant de la carte
@@ -205,6 +206,9 @@ const MapComponent = () => {
 
 	return (
 		<>
+			<MapPageHelmetContent
+				mapName={mapInfos?.[`title_${language}`] ?? "Carte d'exploration"}
+			/>
 			{!mapReady && <LoaderComponent size={50} />}
 			<div className={mapContainerClassName} id="built-map">
 				<section className="leaflet-container">

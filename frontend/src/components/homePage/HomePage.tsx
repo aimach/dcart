@@ -6,6 +6,7 @@ import Select from "react-select";
 import ButtonComponent from "../common/button/ButtonComponent";
 import ItemFilterComponent from "../common/itemFilter/ItemFilterComponent";
 import ItemContainer from "../common/itemContainer/ItemContainer";
+import { HomePageHelmetContent } from "../helmet/HelmetContent";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 import useHomePageTranslations from "../../utils/hooks/useHomepageTranslations";
@@ -71,104 +72,111 @@ function HomePage() {
 	}, [language, itemTypes]);
 
 	return (
-		<section className={style.mainPage}>
-			<section className={style.heroContainer}>
-				<h1>{translationTitle}</h1>
-				<p>{translationDescription}</p>
-				<div className={style.heroButtonContainer}>
-					<ButtonComponent
-						type="route"
-						color="brown"
-						textContent="Explorer"
-						link="/map/exploration"
-					/>
-					<ButtonComponent
-						type="button"
-						color="brown"
-						textContent="Découvrir"
-						onClickFunction={() => scrollToTagContainer(tagContainerRef)}
-					/>
-				</div>
-			</section>
-			<section className={style.tagContainer} ref={tagContainerRef}>
-				<div className={style.tagContainerHeader}>
-					<Select
-						styles={singleSelectInLineStyle}
-						options={allTagsOptions}
-						delimiter="|"
-						isMulti
-						onChange={(newValue) =>
-							handleFilterInputs(
-								searchText,
-								setSearchText,
-								setSelectedTags,
-								newValue,
-								itemTypes,
-								setAllTagsWithItems,
-							)
-						}
-						placeholder={translation[language].mapPage.aside.searchForTag}
-					/>
-
-					<input
-						type="text"
-						id="searchInput"
-						value={searchText}
-						onChange={(e) =>
-							handleFilterInputs(
-								e.target.value,
-								setSearchText,
-								setSelectedTags,
-								selectedTags,
-								itemTypes,
-								setAllTagsWithItems,
-							)
-						}
-						placeholder={`${translation[language].button.search}...`}
-					/>
-
-					<ItemFilterComponent
-						itemTypes={itemTypes}
-						setItemTypes={setItemTypes}
-						handleCheckboxChange={handleCheckboxChange}
-					/>
-				</div>
-				<div className={style.tagItemList}>
-					{isEmptyResult(allTagsWithItems) ? (
-						<p>{translation[language].mapPage.noResult}</p>
-					) : (
-						allTagsWithItems?.map((tagWithItems) => {
-							const itemsArray =
-								tagWithItems.maps && tagWithItems.storymaps
-									? tagWithItems.maps.concat(tagWithItems.storymaps)
-									: tagWithItems.maps || tagWithItems.storymaps || [];
-							const shuffledAndSlicedItemsArray = shuffleArray(
-								itemsArray,
-							).slice(0, 3);
-							return (
-								itemsArray.length > 0 && (
-									<div key={tagWithItems.id} className={style.tagItemContainer}>
-										<div className={style.tagItemContainerTitle}>
-											<h3>{tagWithItems[`name_${language}`]}</h3>
-											<Link to={`/tag/${tagWithItems.slug}`}>
-												<div className={style.textButtonContainer}>
-													{translation[language].button.seeAll} <ChevronRight />
-												</div>
-											</Link>
-										</div>
-										<div className={style.tagItemContainerItemList}>
-											{shuffledAndSlicedItemsArray.map((item) => (
-												<ItemContainer key={item.id} item={item} />
-											))}
-										</div>
-									</div>
+		<>
+			<HomePageHelmetContent />
+			<section className={style.mainPage}>
+				<section className={style.heroContainer}>
+					<h1>{translationTitle}</h1>
+					<p>{translationDescription}</p>
+					<div className={style.heroButtonContainer}>
+						<ButtonComponent
+							type="route"
+							color="brown"
+							textContent="Explorer"
+							link="/map/exploration"
+						/>
+						<ButtonComponent
+							type="button"
+							color="brown"
+							textContent="Découvrir"
+							onClickFunction={() => scrollToTagContainer(tagContainerRef)}
+						/>
+					</div>
+				</section>
+				<section className={style.tagContainer} ref={tagContainerRef}>
+					<div className={style.tagContainerHeader}>
+						<Select
+							styles={singleSelectInLineStyle}
+							options={allTagsOptions}
+							delimiter="|"
+							isMulti
+							onChange={(newValue) =>
+								handleFilterInputs(
+									searchText,
+									setSearchText,
+									setSelectedTags,
+									newValue,
+									itemTypes,
+									setAllTagsWithItems,
 								)
-							);
-						})
-					)}
-				</div>
+							}
+							placeholder={translation[language].mapPage.aside.searchForTag}
+						/>
+
+						<input
+							type="text"
+							id="searchInput"
+							value={searchText}
+							onChange={(e) =>
+								handleFilterInputs(
+									e.target.value,
+									setSearchText,
+									setSelectedTags,
+									selectedTags,
+									itemTypes,
+									setAllTagsWithItems,
+								)
+							}
+							placeholder={`${translation[language].button.search}...`}
+						/>
+
+						<ItemFilterComponent
+							itemTypes={itemTypes}
+							setItemTypes={setItemTypes}
+							handleCheckboxChange={handleCheckboxChange}
+						/>
+					</div>
+					<div className={style.tagItemList}>
+						{isEmptyResult(allTagsWithItems) ? (
+							<p>{translation[language].mapPage.noResult}</p>
+						) : (
+							allTagsWithItems?.map((tagWithItems) => {
+								const itemsArray =
+									tagWithItems.maps && tagWithItems.storymaps
+										? tagWithItems.maps.concat(tagWithItems.storymaps)
+										: tagWithItems.maps || tagWithItems.storymaps || [];
+								const shuffledAndSlicedItemsArray = shuffleArray(
+									itemsArray,
+								).slice(0, 3);
+								return (
+									itemsArray.length > 0 && (
+										<div
+											key={tagWithItems.id}
+											className={style.tagItemContainer}
+										>
+											<div className={style.tagItemContainerTitle}>
+												<h3>{tagWithItems[`name_${language}`]}</h3>
+												<Link to={`/tag/${tagWithItems.slug}`}>
+													<div className={style.textButtonContainer}>
+														{translation[language].button.seeAll}{" "}
+														<ChevronRight />
+													</div>
+												</Link>
+											</div>
+											<div className={style.tagItemContainerItemList}>
+												{shuffledAndSlicedItemsArray.map((item) => (
+													<ItemContainer key={item.id} item={item} />
+												))}
+											</div>
+										</div>
+									)
+								);
+							})
+						)}
+					</div>
+				</section>
 			</section>
-		</section>
+		</>
 	);
 }
 

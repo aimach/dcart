@@ -11,6 +11,7 @@ import { resetPassword } from "../../utils/api/authAPI";
 import style from "./ResetPasswordPage.module.scss";
 // import des icônes
 import { EyeClosed, EyeIcon } from "lucide-react";
+import { ResetPasswordPageHelmetContent } from "../../components/helmet/HelmetContent";
 
 const NewPasswordPage = () => {
 	const { language, translation } = useTranslation();
@@ -38,37 +39,42 @@ const NewPasswordPage = () => {
 	};
 
 	return (
-		<div className={style.resetPasswordPage}>
-			<h3>{translation[language].backoffice.authPage.newPassword}</h3>
-			<div style={{ display: "flex", alignItems: "center" }}>
-				<input
-					type={showPassword ? "text" : "password"}
-					value={newPassword}
-					onChange={(e) => setNewPassword(e.target.value)}
-				/>
-				<button
+		<>
+			<ResetPasswordPageHelmetContent />
+			<div className={style.resetPasswordPage}>
+				<h3>{translation[language].backoffice.authPage.newPassword}</h3>
+				<div style={{ display: "flex", alignItems: "center" }}>
+					<input
+						type={showPassword ? "text" : "password"}
+						value={newPassword}
+						onChange={(e) => setNewPassword(e.target.value)}
+					/>
+					<button
+						type="button"
+						onClick={() => setShowPassword((prev) => !prev)}
+						style={{ marginLeft: 8 }}
+					>
+						{showPassword ? <EyeClosed /> : <EyeIcon />}
+					</button>
+				</div>
+				{error ? (
+					<p className={style.error}>{error}</p>
+				) : (
+					<p>
+						Le mot de passe doit contenir au moins 10 caractères, une majuscule,
+						une minuscule et un chiffre.
+					</p>
+				)}
+				<ButtonComponent
+					onClickFunction={handleSendReset}
 					type="button"
-					onClick={() => setShowPassword((prev) => !prev)}
-					style={{ marginLeft: 8 }}
-				>
-					{showPassword ? <EyeClosed /> : <EyeIcon />}
-				</button>
+					color="brown"
+					textContent={
+						translation[language].backoffice.authPage.saveNewPassword
+					}
+				/>
 			</div>
-			{error ? (
-				<p className={style.error}>{error}</p>
-			) : (
-				<p>
-					Le mot de passe doit contenir au moins 10 caractères, une majuscule,
-					une minuscule et un chiffre.
-				</p>
-			)}
-			<ButtonComponent
-				onClickFunction={handleSendReset}
-				type="button"
-				color="brown"
-				textContent={translation[language].backoffice.authPage.saveNewPassword}
-			/>
-		</div>
+		</>
 	);
 };
 
