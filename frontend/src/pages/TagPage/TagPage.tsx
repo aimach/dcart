@@ -19,7 +19,7 @@ type CheckboxType = { map: boolean; storymap: boolean };
 
 /**
  * Page de navigation qui présente toutes les catégories et les cartes associées
- * @returns TitleAndTextComponent | MapCategoryNav
+ * @returns TitleAndTextComponent
  */
 const TagPage = () => {
 	// Récupération des données externes (context, store, params, etc.)
