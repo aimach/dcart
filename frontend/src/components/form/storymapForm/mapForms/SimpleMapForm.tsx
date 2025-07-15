@@ -273,6 +273,7 @@ const SimpleMapForm = () => {
 						setIsModalOpen={setIsModalOpen}
 						reload={reload}
 						setReload={setReload}
+						mapType="storymap"
 						pointType={pointType}
 					/>
 				</ModalComponent>
@@ -513,78 +514,80 @@ const SimpleMapForm = () => {
 													/>
 												</td>
 												<td>
-													{isBDDPointSet ? (
-														<>
-															<TooltipComponent
-																text={
-																	translation[language].backoffice.mapFormPage
-																		.pointSetTable.downloadCSV
+													<TooltipComponent
+														text={
+															translation[language].backoffice.mapFormPage
+																.pointSetTable.downloadCSV
+														}
+													>
+														{isBDDPointSet ? (
+															<FileDown
+																onClick={() =>
+																	handleCSVDownload(
+																		pointSet,
+																		`${pointSet.name_fr}-bdd.csv`,
+																		"mapPoints",
+																	)
 																}
-															>
-																<FileDown
-																	onClick={() =>
-																		handleCSVDownload(
-																			pointSet,
-																			`${pointSet.name_fr}-bdd.csv`,
-																			"mapPoints",
-																		)
-																	}
-																	cursor={"pointer"}
-																/>
-															</TooltipComponent>
-															<TooltipComponent
-																text={translation[language].button.clean}
-															>
-																{displayBrushCleaningButton(
-																	pointSet.id as string,
-																	pointSet.attestationIds === "",
-																	setPointSetIdToClean,
-																	setIsModalOpen,
-																	setPointType,
-																	"bdd",
-																)}
-															</TooltipComponent>
-														</>
-													) : (
-														<FileDown color="#a1afc4" />
-													)}
+																cursor={"pointer"}
+															/>
+														) : (
+															<FileDown
+																color="#a1afc4"
+																cursor={"not-allowed"}
+															/>
+														)}
+													</TooltipComponent>
+													<TooltipComponent
+														text={translation[language].button.clean}
+													>
+														{displayBrushCleaningButton(
+															pointSet.id as string,
+															!isBDDPointSet,
+															setPointSetIdToClean,
+															setIsModalOpen,
+															setPointType,
+															"bdd",
+														)}
+													</TooltipComponent>
 												</td>
 												<td>
-													{isCustomPointSet ? (
-														<>
-															<TooltipComponent
-																text={
-																	translation[language].backoffice.mapFormPage
-																		.pointSetTable.downloadCSV
+													<TooltipComponent
+														text={
+															translation[language].backoffice.mapFormPage
+																.pointSetTable.downloadCSV
+														}
+													>
+														{isCustomPointSet ? (
+															<FileDown
+																onClick={() =>
+																	handleCSVDownload(
+																		pointSet,
+																		`${pointSet.name_fr}-custom.csv`,
+																		"customPoints",
+																	)
 																}
-															>
-																<FileDown
-																	onClick={() =>
-																		handleCSVDownload(
-																			pointSet,
-																			`${pointSet.name_fr}-custom.csv`,
-																			"customPoints",
-																		)
-																	}
-																	cursor={"pointer"}
-																/>
-															</TooltipComponent>
-															<TooltipComponent
-																text={translation[language].button.clean}
-															>
-																{displayBrushCleaningButton(
-																	pointSet.id as string,
-																	pointSet.attestationIds === "",
-																	setPointSetIdToClean,
-																	setIsModalOpen,
-																	setPointType,
-																	"custom",
-																)}
-															</TooltipComponent>
-														</>
-													) : (
-														<FileDown color="#a1afc4" />
-													)}
+																cursor={"pointer"}
+															/>
+														) : (
+															<FileDown
+																color="#a1afc4"
+																cursor={"not-allowed"}
+															/>
+														)}
+													</TooltipComponent>
+													<TooltipComponent
+														text={translation[language].button.clean}
+													>
+														{displayBrushCleaningButton(
+															pointSet.id as string,
+															!isCustomPointSet,
+															setPointSetIdToClean,
+															setIsModalOpen,
+															setPointType,
+															"custom",
+														)}
+													</TooltipComponent>
 												</td>
 												<td>
 													{pointSet.lastActivity

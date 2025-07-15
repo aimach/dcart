@@ -247,29 +247,55 @@ export const attestationController = {
 	cleanAttestationList: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { id } = req.params;
+			const { mapType, pointType } = req.query;
 
 			const attestationListToUpdate = await dcartDataSource
 				.getRepository(Attestation)
-				.findOneBy({ id });
+				.findOne({ where: { id }, relations: ["map", "block"] });
 			if (!attestationListToUpdate) {
 				res.status(404).json("Le jeu d'attestations n'existe pas");
 				return;
 			}
 
 			// vider le champ attestationIds
-			attestationListToUpdate.attestationIds = "";
+			if (pointType === "bdd") {
+				attestationListToUpdate.attestationIds = "";
+				await dcartDataSource
+					.getRepository(Attestation)
+					.save(attestationListToUpdate);
+
+				// mise à jour de la date de dernière activité de la carte préconstruite
+				if (mapType === "map") {
+					await dcartDataSource
+						.getRepository(MapContent)
+						.update(attestationListToUpdate.map?.id as string, {
+							updatedAt: new Date(),
+						});
+				}
+			}
 
 			// supprimer tous les points associés
-			await dcartDataSource
-				.getRepository(Point)
-				.delete({ attestation: attestationListToUpdate });
+			if (pointType === "custom") {
+				await dcartDataSource
+					.getRepository(Point)
+					.delete({ attestation: attestationListToUpdate });
+			}
 
-			// mise à jour de la date de dernière activité
-			attestationListToUpdate.lastActivity = new Date();
+			if (mapType === "storymap") {
+				const blockToUpdate = await dcartDataSource
+					.getRepository(Block)
+					.findOne({
+						where: { id: attestationListToUpdate.block?.id },
+						relations: { storymap: true },
+					});
 
-			await dcartDataSource
-				.getRepository(Attestation)
-				.save(attestationListToUpdate);
+				// mise à jour de la date de dernière activité
+				await dcartDataSource
+					.getRepository(Storymap)
+					.update(blockToUpdate?.storymap.id as string, {
+						updatedAt: new Date(),
+					});
+			}
 
 			res
 				.status(200)

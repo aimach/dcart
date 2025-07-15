@@ -190,7 +190,8 @@ const UploadForm = () => {
 						setIsModalOpen={setIsModalOpen}
 						reload={reload}
 						setReload={setReload}
-						pointSetType="bdd"
+						mapType="map"
+						pointType="bdd"
 					/>
 				</ModalComponent>
 			)}
