@@ -12,6 +12,7 @@ import { handleError } from "../../utils/errorHandler/errorHandler";
 // import des types
 import type { Request, Response } from "express";
 import type { CustomPointType } from "../../utils/types/mapTypes";
+import { arrayMove } from "../../utils/functions/builtMap";
 
 export const attestationController = {
 	// récupère toutes les attestations d'une carte
@@ -153,6 +154,46 @@ export const attestationController = {
 		try {
 			const { id } = req.params;
 			const { color, icon, mapId, blockId, customPointsArray } = req.body;
+			const { position } = req.query;
+
+			if (position) {
+				const pointSetId = id;
+
+				const map = await dcartDataSource
+					.getRepository(MapContent)
+					.findOneBy({ id: mapId as string });
+
+				if (!map) {
+					res.status(404).json("La carte n'existe pas");
+					return;
+				}
+
+				const allPointSets = await dcartDataSource
+					.getRepository(Attestation)
+					.find({
+						where: { map: { id: mapId } },
+						order: { position: "ASC" },
+					});
+
+				const oldIndex = allPointSets.findIndex(
+					(pointSet) => pointSet.id.toString() === pointSetId.toString(),
+				);
+				if (oldIndex === -1) {
+					res.status(404).json("Le jeu d'attestations n'existe pas");
+					return;
+				}
+				const newIndex = Number.parseInt(position as string, 10) - 1;
+
+				const newOrder = arrayMove(allPointSets, oldIndex, newIndex);
+
+				for (let i = 0; i < newOrder.length; i++) {
+					newOrder[i].position = i + 1;
+				}
+
+				await dcartDataSource.getRepository(Attestation).save(newOrder);
+				res.status(200).json("Ordre des attestations mis à jour");
+				return;
+			}
 
 			const parentRepository = mapId
 				? dcartDataSource.getRepository(MapContent)

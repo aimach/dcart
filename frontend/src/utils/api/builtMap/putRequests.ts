@@ -120,6 +120,30 @@ const updatePointSet = async (body: PointSetType) => {
 };
 
 /**
+ * Envoie une requête PUT pour modifier la position d'un jeu de points
+ * @param body - Les informations du jeu de points à modifier
+ * @returns {Promise} - La réponse de la requête
+ */
+const updatePointSetPosition = async (
+	pointSetId: string,
+	newPosition: string,
+	mapId: string,
+) => {
+	try {
+		const response = await apiClient(
+			`dcart/attestations/${pointSetId}?position=${newPosition}`,
+			{
+				method: "PUT",
+				data: { mapId },
+			},
+		);
+		return response;
+	} catch (error) {
+		notifyError("Erreur lors de la modification du jeu d'attestations");
+	}
+};
+
+/**
  * Envoie une requête PUT pour modifier un jeu de points
  * @param body - Les informations du jeu de points à modifier
  * @returns {Promise} - La réponse de la requête
@@ -188,6 +212,7 @@ export {
 	updateMapActiveStatus,
 	updateMapFilterOptions,
 	updatePointSet,
+	updatePointSetPosition,
 	updateTag,
 	updateDivinityList,
 	cleanPointSet,

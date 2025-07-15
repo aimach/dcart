@@ -19,6 +19,7 @@ import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
 import {
 	updateMap,
 	updatePointSet,
+	updatePointSetPosition,
 } from "../../../../utils/api/builtMap/putRequests";
 import {
 	notifyCreateSuccess,
@@ -48,6 +49,7 @@ import {
 	PlusCircle,
 	X,
 } from "lucide-react";
+import { map } from "leaflet";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -132,6 +134,17 @@ const UploadForm = () => {
 		}
 	}, [mapInfos]);
 
+	const [positionOptions, setPositionOptions] = useState<number[]>([]);
+	useEffect(() => {
+		if (mapInfos?.attestations) {
+			const positions = mapInfos.attestations.map(
+				(pointSet) => pointSet.position,
+			);
+			const sortedPositions = positions.sort((a, b) => a - b);
+			setPositionOptions(sortedPositions);
+		}
+	}, [mapInfos?.attestations]);
+
 	const handleDeletePointSet = async (pointSetId: string) => {
 		await deletePointSet(pointSetId as string);
 		const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
@@ -175,6 +188,22 @@ const UploadForm = () => {
 			isLayered: newMapInfos?.data.isLayered,
 			isNbDisplayed: newMapInfos?.data.isNbDisplayed,
 		} as MapInfoType);
+	};
+
+	const handlePointSetPosition = async (
+		pointSetId: string,
+		newPosition: string,
+	) => {
+		const response = await updatePointSetPosition(
+			pointSetId,
+			newPosition,
+			mapInfos?.id as string,
+		);
+		if (response?.status === 200) {
+			const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
+			setMapInfos(newMapInfos);
+			notifyEditSuccess("Position du jeu de points", true);
+		}
 	};
 
 	return (
@@ -282,7 +311,26 @@ const UploadForm = () => {
 									return (
 										<>
 											<tr key={pointSet.id} className={style.pointSetTableRow}>
-												<td>{pointSet.position}</td>
+												<td style={{ position: "relative", zIndex: 1000 }}>
+													{/* Sélecteur de position */}
+													<select
+														name="position"
+														id="position"
+														onChange={(event) => {
+															handlePointSetPosition(
+																pointSet.id as string,
+																event.target.value,
+															);
+														}}
+														value={pointSet.position}
+													>
+														{positionOptions.map((position) => (
+															<option key={position} value={position}>
+																{position}
+															</option>
+														))}
+													</select>
+												</td>
 												<td>{pointSet.name_fr}</td>
 												<td>{pointSet.name_en}</td>
 												<td>
