@@ -48,7 +48,7 @@ const UpdatePointSetContent = ({
 
 	const handlePointSetCleaning = async (idToUpdate: string) => {
 		await cleanPointSet(idToUpdate, pointType, mapType);
-		notifyDeleteSuccess("Points", false);
+		notifyDeleteSuccess("Contenu du jeu de points", false);
 		setIsModalOpen(false);
 		if (mapType === "map") {
 			const fetchMapInfos = async () => {
