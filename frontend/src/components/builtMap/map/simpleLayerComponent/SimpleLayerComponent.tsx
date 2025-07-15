@@ -87,14 +87,17 @@ const SimpleLayerComponent = ({
 	// récupérer les formes et les couleurs des attestations
 	const allColorsAndShapes = useMemo(() => {
 		if (mapInfos) {
-			return mapInfos?.attestations.map((attestation) => {
-				return {
-					name_fr: attestation.name_fr,
-					name_en: attestation.name_en,
-					color: (attestation.color as MapColorType).code_hex,
-					shape: (attestation.icon as MapIconType).name_en,
-				};
-			});
+			return mapInfos?.attestations
+				.map((attestation) => {
+					return {
+						name_fr: attestation.name_fr,
+						name_en: attestation.name_en,
+						color: (attestation.color as MapColorType).code_hex,
+						shape: (attestation.icon as MapIconType).name_en,
+						position: attestation.position,
+					};
+				})
+				.sort((a, b) => a.position - b.position);
 		}
 		return [];
 	}, [mapInfos]);

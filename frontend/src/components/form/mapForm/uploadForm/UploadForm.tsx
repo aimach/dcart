@@ -19,6 +19,7 @@ import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
 import {
 	updateMap,
 	updatePointSet,
+	updatePointSetPosition,
 } from "../../../../utils/api/builtMap/putRequests";
 import {
 	notifyCreateSuccess,
@@ -48,6 +49,7 @@ import {
 	PlusCircle,
 	X,
 } from "lucide-react";
+import { map } from "leaflet";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -132,6 +134,17 @@ const UploadForm = () => {
 		}
 	}, [mapInfos]);
 
+	const [positionOptions, setPositionOptions] = useState<number[]>([]);
+	useEffect(() => {
+		if (mapInfos?.attestations) {
+			const positions = mapInfos.attestations.map(
+				(pointSet) => pointSet.position,
+			);
+			const sortedPositions = positions.sort((a, b) => a - b);
+			setPositionOptions(sortedPositions);
+		}
+	}, [mapInfos?.attestations]);
+
 	const handleDeletePointSet = async (pointSetId: string) => {
 		await deletePointSet(pointSetId as string);
 		const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
@@ -175,6 +188,23 @@ const UploadForm = () => {
 			isLayered: newMapInfos?.data.isLayered,
 			isNbDisplayed: newMapInfos?.data.isNbDisplayed,
 		} as MapInfoType);
+	};
+
+	const handlePointSetPosition = async (
+		pointSetId: string,
+		newPosition: string,
+	) => {
+		const response = await updatePointSetPosition(
+			pointSetId,
+			newPosition,
+			mapInfos?.id as string,
+			"map",
+		);
+		if (response?.status === 200) {
+			const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
+			setMapInfos(newMapInfos);
+			notifyEditSuccess("Position du jeu de points", true);
+		}
 	};
 
 	return (
@@ -237,6 +267,7 @@ const UploadForm = () => {
 					<table className={style.pointSetTable}>
 						<thead>
 							<tr>
+								<th scope="col">Position</th>
 								<th scope="col">
 									{
 										translation[language].backoffice.mapFormPage.pointSetTable
@@ -271,106 +302,129 @@ const UploadForm = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{mapInfos.attestations.map((pointSet) => {
-								const icon = getShapeForLayerName(
-									(pointSet.icon as MapIconType)?.name_en,
-									(pointSet.color as MapColorType)?.code_hex,
-								);
-								return (
-									<>
-										<tr key={pointSet.id} className={style.pointSetTableRow}>
-											<td>{pointSet.name_fr}</td>
-											<td>{pointSet.name_en}</td>
-											<td>
-												<p
-													// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
-													dangerouslySetInnerHTML={{
-														__html: icon,
-													}}
-												/>
-											</td>
-											<td>
-												{pointSet?.attestationIds ? (
-													<FileDown
-														onClick={() =>
-															handleCSVDownload(
-																pointSet,
-																`${pointSet.name_fr}.csv`,
-																"mapPoints",
-															)
-														}
-														cursor={
-															pointSet?.attestationIds
-																? "pointer"
-																: "not-allowed"
-														}
-														color={pointSet?.attestationIds ? "black" : "grey"}
+							{mapInfos.attestations
+								.sort((a, b) => a.position - b.position)
+								.map((pointSet) => {
+									const icon = getShapeForLayerName(
+										(pointSet.icon as MapIconType)?.name_en,
+										(pointSet.color as MapColorType)?.code_hex,
+									);
+									return (
+										<>
+											<tr key={pointSet.id} className={style.pointSetTableRow}>
+												<td>
+													{/* Sélecteur de position */}
+													<select
+														name="position"
+														id="position"
+														onChange={(event) => {
+															handlePointSetPosition(
+																pointSet.id as string,
+																event.target.value,
+															);
+														}}
+														value={pointSet.position}
+													>
+														{positionOptions.map((position) => (
+															<option key={position} value={position}>
+																{position}
+															</option>
+														))}
+													</select>
+												</td>
+												<td>{pointSet.name_fr}</td>
+												<td>{pointSet.name_en}</td>
+												<td>
+													<p
+														// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
+														dangerouslySetInnerHTML={{
+															__html: icon,
+														}}
 													/>
-												) : (
-													<p style={{ textAlign: "center" }}>
-														<CircleAlert color="#9d2121" />{" "}
-														<p style={{ color: "#9d2121" }}>
-															{
-																translation[language].backoffice
-																	.noPointInPointSet
+												</td>
+												<td>
+													{pointSet?.attestationIds ? (
+														<FileDown
+															onClick={() =>
+																handleCSVDownload(
+																	pointSet,
+																	`${pointSet.name_fr}.csv`,
+																	"mapPoints",
+																)
 															}
+															cursor={
+																pointSet?.attestationIds
+																	? "pointer"
+																	: "not-allowed"
+															}
+															color={
+																pointSet?.attestationIds ? "black" : "grey"
+															}
+														/>
+													) : (
+														<p style={{ textAlign: "center" }}>
+															<CircleAlert color="#9d2121" />{" "}
+															<p style={{ color: "#9d2121" }}>
+																{
+																	translation[language].backoffice
+																		.noPointInPointSet
+																}
+															</p>
 														</p>
-													</p>
-												)}
-											</td>
-											<td>
-												{pointSet.lastActivity
-													? new Date(pointSet.lastActivity).toLocaleDateString(
-															language,
-															{
+													)}
+												</td>
+												<td>
+													{pointSet.lastActivity
+														? new Date(
+																pointSet.lastActivity,
+															).toLocaleDateString(language, {
 																year: "numeric",
 																month: "long",
 																day: "numeric",
-															},
-														)
-													: null}
-											</td>
-											<td>
-												<TooltipComponent
-													text={translation[language].button.clean}
-												>
-													{displayBrushCleaningButton(
-														pointSet.id as string,
-														pointSet.attestationIds === "",
-														setPointSetIdToClean,
-														setIsModalOpen,
-													)}
-												</TooltipComponent>
-												<TooltipComponent
-													text={translation[language].button.edit}
-												>
-													<Pen
-														onClick={() =>
-															handleUpdatePointSet(pointSet.id as string)
-														}
-														onKeyDown={() =>
-															handleUpdatePointSet(pointSet.id as string)
-														}
-													/>
-												</TooltipComponent>
-												<TooltipComponent
-													text={translation[language].button.delete}
-												>
-													<X
-														onClick={() =>
-															handleDeletePointSet(pointSet.id as string)
-														}
-														onKeyDown={() =>
-															handleDeletePointSet(pointSet.id as string)
-														}
-														color="#9d2121"
-													/>
-												</TooltipComponent>
-											</td>
-										</tr>
-									</>
-								);
-							})}
+															})
+														: null}
+												</td>
+												<td>
+													<TooltipComponent
+														text={translation[language].button.clean}
+													>
+														{displayBrushCleaningButton(
+															pointSet.id as string,
+															pointSet.attestationIds === "",
+															setPointSetIdToClean,
+															setIsModalOpen,
+														)}
+													</TooltipComponent>
+													<TooltipComponent
+														text={translation[language].button.edit}
+													>
+														<Pen
+															onClick={() =>
+																handleUpdatePointSet(pointSet.id as string)
+															}
+															onKeyDown={() =>
+																handleUpdatePointSet(pointSet.id as string)
+															}
+														/>
+													</TooltipComponent>
+													<TooltipComponent
+														text={translation[language].button.delete}
+													>
+														<X
+															onClick={() =>
+																handleDeletePointSet(pointSet.id as string)
+															}
+															onKeyDown={() =>
+																handleDeletePointSet(pointSet.id as string)
+															}
+															color="#9d2121"
+														/>
+													</TooltipComponent>
+												</td>
+											</tr>
+										</>
+									);
+								})}
 						</tbody>
 					</table>
 					<div>
