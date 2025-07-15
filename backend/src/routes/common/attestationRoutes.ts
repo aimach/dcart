@@ -20,6 +20,13 @@ attestationRoutes.put(
 	dcartControllers.modifyAttestationList,
 );
 
+// supprimer le contenu des points d'un jeu d'attestations
+attestationRoutes.put(
+	"/clean/:id",
+	authenticateUser,
+	dcartControllers.cleanAttestationList,
+);
+
 // supprimer un jeu d'attestations
 attestationRoutes.delete(
 	"/:id",

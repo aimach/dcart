@@ -52,6 +52,7 @@
 		"cancel": "Cancel",
 		"publish": "Publish",
 		"unpublish": "Unpublish",
+		"clean": "Remove points from point set",
 		"editDisabled": "Edit disabled",
 		"search": "Search",
 		"copyRequest": "Copy SQL request",
@@ -105,6 +106,10 @@
 			"yourself": "Are you sure you want to delete your account? This action is irreversible."
 		},
 		"modifyUserStatusText": "Are you sure you want to change the status of this user?",
+		"cleanPointSetText": {
+			"bdd": "Are you sure you want to delete all DB points in this point set?",
+			"custom": "Are you sure you want to delete all custom points in this point set?"
+		},
 		"deleteTagText": "Are you sure you want to delete this tag? If this tag only is used in a map or a storymap, it will be removed from the home page or tag page.",
 		"associatedStorymap": "See associated storymap",
 		"associatedMap": "See associated map"
@@ -172,6 +177,7 @@
 		"createA": "Create a",
 		"stillConnected": "Are you still connected ?",
 		"disconnectInOneMinute": "Deconnexion in 1 minute...",
+		"noPointInPointSet": "No point loaded in this point set",
 		"managementTable": {
 			"image": "Image",
 			"name": "Name/Description",
@@ -222,8 +228,8 @@
 				"delete": "Delete",
 				"lastActivity": "Last activity",
 				"downloadCSV": "Download CSV",
-				"downloadBDDCSV": "Download BDD CSV",
-				"downloadCustomCSV": "Download custom CSV"
+				"downloadBDDCSV": "BDD points set",
+				"downloadCustomCSV": "Custom points set"
 			},
 			"pointSetForm": {
 				"addNewPointSet": "Add new point set",

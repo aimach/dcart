@@ -120,6 +120,32 @@ const updatePointSet = async (body: PointSetType) => {
 };
 
 /**
+ * Envoie une requête PUT pour modifier un jeu de points
+ * @param body - Les informations du jeu de points à modifier
+ * @returns {Promise} - La réponse de la requête
+ */
+const cleanPointSet = async (
+	pointSetId: string,
+	pointSetType: "bdd" | "custom",
+	mapType: "map" | "storymap",
+) => {
+	try {
+		const response = await apiClient(
+			`dcart/attestations/clean/${pointSetId}?pointType=${pointSetType}&mapType=${mapType}`,
+			{
+				method: "PUT",
+			},
+		);
+		return response;
+	} catch (error) {
+		console.error(
+			"Erreur lors de la suppression des points du jeu d'attestations :",
+			error,
+		);
+	}
+};
+
+/**
  * Envoie une requête PUT pour modifier une étiquette
  * @param body - Les informations de l'étiquette à modifier
  * @returns {Promise} - La réponse de la requête
@@ -164,4 +190,5 @@ export {
 	updatePointSet,
 	updateTag,
 	updateDivinityList,
+	cleanPointSet,
 };

@@ -7,6 +7,9 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import PointSetUploadForm from "../../mapForm/pointSetUploadForm/PointSetUploadForm";
+import TooltipComponent from "../../../common/tooltip/TooltipComponent";
+import ModalComponent from "../../../common/modal/ModalComponent";
+import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -33,6 +36,7 @@ import {
 	removeLang2Inputs,
 } from "../../../../utils/functions/storymap";
 import { handleCSVDownload } from "../../../../utils/functions/csv";
+import { displayBrushCleaningButton } from "../../../../utils/functions/common";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -87,6 +91,12 @@ const SimpleMapForm = () => {
 	// gestion de l'upload du fichier csv
 	const [pointSet, setPointSet] = useState<PointSetType | null>(null);
 	const [isAlreadyAPointSet, setIsAlreadyAPointSet] = useState(false);
+
+	const [pointSetIdToClean, setPointSetIdToClean] = useState<string | null>(
+		null,
+	);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [pointType, setPointType] = useState<"bdd" | "custom">("bdd");
 
 	useEffect(() => {
 		if (block?.attestations) {
@@ -155,6 +165,9 @@ const SimpleMapForm = () => {
 			pointSet?.customPointsArray &&
 			pointSet?.customPointsArray?.length > 0) ||
 		(pointSet?.attestationIds && !pointSet?.customPointsArray) ||
+		(pointSet?.attestationIds &&
+			pointSet?.customPointsArray &&
+			pointSet?.customPointsArray.length === 0) ||
 		(pointSet?.attestationIds &&
 			pointSet?.customPointsArray &&
 			pointSet?.customPointsArray.length > 0);
@@ -252,6 +265,22 @@ const SimpleMapForm = () => {
 
 	return (
 		<>
+			{isModalOpen && (
+				<ModalComponent
+					onClose={() => {
+						setIsModalOpen(false);
+					}}
+				>
+					<UpdatePointSetContent
+						idToUpdate={pointSetIdToClean as string}
+						setIsModalOpen={setIsModalOpen}
+						reload={reload}
+						setReload={setReload}
+						mapType="storymap"
+						pointType={pointType}
+					/>
+				</ModalComponent>
+			)}
 			<FormTitleComponent
 				action={action as string}
 				translationKey="simple_map"
@@ -488,36 +517,80 @@ const SimpleMapForm = () => {
 													/>
 												</td>
 												<td>
-													{isBDDPointSet ? (
-														<FileDown
-															onClick={() =>
-																handleCSVDownload(
-																	pointSet,
-																	`${pointSet.name_fr}-bdd.csv`,
-																	"mapPoints",
-																)
-															}
-															cursor={"pointer"}
-														/>
-													) : (
-														<FileDown color="#a1afc4" />
-													)}
+													<TooltipComponent
+														text={
+															translation[language].backoffice.mapFormPage
+																.pointSetTable.downloadCSV
+														}
+													>
+														{isBDDPointSet ? (
+															<FileDown
+																onClick={() =>
+																	handleCSVDownload(
+																		pointSet,
+																		`${pointSet.name_fr}-bdd.csv`,
+																		"mapPoints",
+																	)
+																}
+																cursor={"pointer"}
+															/>
+														) : (
+															<FileDown
+																color="#a1afc4"
+																cursor={"not-allowed"}
+															/>
+														)}
+													</TooltipComponent>
+													<TooltipComponent
+														text={translation[language].button.clean}
+													>
+														{displayBrushCleaningButton(
+															pointSet.id as string,
+															!isBDDPointSet,
+															setPointSetIdToClean,
+															setIsModalOpen,
+															setPointType,
+															"bdd",
+														)}
+													</TooltipComponent>
 												</td>
 												<td>
-													{isCustomPointSet ? (
-														<FileDown
-															onClick={() =>
-																handleCSVDownload(
-																	pointSet,
-																	`${pointSet.name_fr}-custom.csv`,
-																	"customPoints",
-																)
-															}
-															cursor={"pointer"}
-														/>
-													) : (
-														<FileDown color="#a1afc4" />
-													)}
+													<TooltipComponent
+														text={
+															translation[language].backoffice.mapFormPage
+																.pointSetTable.downloadCSV
+														}
+													>
+														{isCustomPointSet ? (
+															<FileDown
+																onClick={() =>
+																	handleCSVDownload(
+																		pointSet,
+																		`${pointSet.name_fr}-custom.csv`,
+																		"customPoints",
+																	)
+																}
+																cursor={"pointer"}
+															/>
+														) : (
+															<FileDown
+																color="#a1afc4"
+																cursor={"not-allowed"}
+															/>
+														)}
+													</TooltipComponent>
+													<TooltipComponent
+														text={translation[language].button.clean}
+													>
+														{displayBrushCleaningButton(
+															pointSet.id as string,
+															!isCustomPointSet,
+															setPointSetIdToClean,
+															setIsModalOpen,
+															setPointType,
+															"custom",
+														)}
+													</TooltipComponent>
 												</td>
 												<td>
 													{pointSet.lastActivity

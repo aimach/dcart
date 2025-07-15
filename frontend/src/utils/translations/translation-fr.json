@@ -52,6 +52,7 @@
 		"cancel": "Annuler",
 		"publish": "Publier",
 		"unpublish": "Dépublier",
+		"clean": "Supprimer les points du jeu de points",
 		"editDisabled": "Modifier désactivé",
 		"search": "Rechercher",
 		"copyRequest": "Copier la requête SQL",
@@ -105,6 +106,10 @@
 			"yourself": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible !"
 		},
 		"modifyUserStatusText": "Êtes-vous sûr de vouloir modifier le statut de cet utilisateur ?",
+		"cleanPointSetText": {
+			"bdd": "Êtes-vous sûr de vouloir supprimer tous les points de la BDD de ce jeu de points ?",
+			"custom": "Êtes-vous sûr de vouloir supprimer tous les points personnalisés de ce jeu de points ?"
+		},
 		"deleteTagText": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Si une carte ou une storymap est associée à cette seule étiquette, elle ne sera plus visible par les utilisateurs.",
 		"associatedStorymap": "Voir la storymap associée",
 		"associatedMap": "Voir la carte associée"
@@ -172,6 +177,7 @@
 		"createA": "Créer une",
 		"stillConnected": "Êtes-vous toujours connecté ?",
 		"disconnectInOneMinute": "Déconnexion dans 1 minute...",
+		"noPointInPointSet": "Aucun point chargé dans ce jeu",
 		"managementTable": {
 			"image": "Image",
 			"name": "Nom/Description",
@@ -222,8 +228,8 @@
 				"delete": "Supprimer",
 				"lastActivity": "Dernière modification",
 				"downloadCSV": "Charger le CSV",
-				"downloadBDDCSV": "Charger les points de la BDD",
-				"downloadCustomCSV": "Charger les points personnalisés"
+				"downloadBDDCSV": "Points de la BDD",
+				"downloadCustomCSV": "Points personnalisés"
 			},
 			"pointSetForm": {
 				"addNewPointSet": "Ajouter un nouveau jeu de points",
