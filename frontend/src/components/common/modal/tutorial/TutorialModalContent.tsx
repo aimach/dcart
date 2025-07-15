@@ -67,9 +67,21 @@ const TutorialModalContent = () => {
 							className={style.contentContainer}
 						>
 							<div className={style.modalTitleSection}>
-								<img src={delta} alt="decoration" width={30} />
+								<img
+									src={delta}
+									alt="decoration"
+									width={30}
+									height="auto"
+									loading="lazy"
+								/>
 								<h4>{content[`title_${language}`]}</h4>
-								<img src={delta} alt="decoration" width={30} />
+								<img
+									src={delta}
+									alt="decoration"
+									width={30}
+									height="auto"
+									loading="lazy"
+								/>
 							</div>
 							<p>{content[`content_${language}`]}</p>
 						</div>

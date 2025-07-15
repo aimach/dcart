@@ -1,6 +1,6 @@
 // import des bibiliothèques
 import { useEffect, useState } from "react";
-import { Link, useLocation, useNavigate, useParams } from "react-router";
+import { Link, useLocation, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
 // import des composants
 import StorymapIntroduction from "../../../../components/storymap/blocks/storymapIntroduction/StorymapIntroduction";
@@ -34,6 +34,7 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
+import { StorymapPageHelmetContent } from "../../../../components/helmet/HelmetContent";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -122,6 +123,9 @@ const StorymapPage = () => {
 	return (
 		storymapInfos && (
 			<>
+				<StorymapPageHelmetContent
+					storymapName={storymapInfos.title_lang1 as string}
+				/>
 				<div className={style.storymapHeaderContainer}>
 					{location.pathname.includes("storymaps/preview/") && (
 						<div>

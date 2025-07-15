@@ -21,7 +21,7 @@ const OrientationControl = () => {
 		// Contenu HTML du bouton
 		control.onAdd = () => {
 			const button = L.DomUtil.create("button", "custom-control-button");
-			button.innerHTML = `<img src=${northIcon} alt="Orientation" width="70"/>`; // Chemin vers l'image d'orientation
+			button.innerHTML = `<img src=${northIcon} alt="Orientation" width="70" height="auto"/>`; // Chemin vers l'image d'orientation
 			button.style.cursor = "pointer";
 
 			return button;
