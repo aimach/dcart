@@ -130,12 +130,13 @@ const cleanPointSet = async (
 	mapType: "map" | "storymap",
 ) => {
 	try {
-		await apiClient(
+		const response = await apiClient(
 			`dcart/attestations/clean/${pointSetId}?pointType=${pointSetType}&mapType=${mapType}`,
 			{
 				method: "PUT",
 			},
 		);
+		return response;
 	} catch (error) {
 		console.error(
 			"Erreur lors de la suppression des points du jeu d'attestations :",

@@ -47,8 +47,10 @@ const UpdatePointSetContent = ({
 	const { block, updateBlockContent } = useBuilderStore();
 
 	const handlePointSetCleaning = async (idToUpdate: string) => {
-		await cleanPointSet(idToUpdate, pointType, mapType);
-		notifyDeleteSuccess("Contenu du jeu de points", false);
+		const response = await cleanPointSet(idToUpdate, pointType, mapType);
+		if (response?.status === 200) {
+			notifyDeleteSuccess("Contenu du jeu de points", false);
+		}
 		setIsModalOpen(false);
 		if (mapType === "map") {
 			const fetchMapInfos = async () => {
