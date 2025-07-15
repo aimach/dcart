@@ -162,6 +162,7 @@ type PointType = {
 	shapeCode?: string;
 	layerNamefr?: string;
 	layerNameen?: string;
+	position: number;
 };
 
 type SourceType = {

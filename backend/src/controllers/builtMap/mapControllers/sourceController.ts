@@ -478,6 +478,7 @@ export const sourceController = {
 								shape: attestation.icon?.name_en,
 								layerNamefr: attestation.name_fr,
 								layerNameen: attestation.name_en,
+								position: attestation.position,
 							};
 						});
 						return sortedResults;
