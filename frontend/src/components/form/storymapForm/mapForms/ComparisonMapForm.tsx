@@ -8,6 +8,9 @@ import FormTitleComponent from "../common/FormTitleComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent";
+import ModalComponent from "../../../common/modal/ModalComponent";
+import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
+import TooltipComponent from "../../../common/tooltip/TooltipComponent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -23,6 +26,7 @@ import {
 } from "../../../../utils/functions/csv";
 import { notifyError } from "../../../../utils/functions/toast";
 import { addLangageBetweenBrackets } from "../../../../utils/functions/storymap";
+import { displayBrushCleaningButton } from "../../../../utils/functions/common";
 // import des types
 import type { blockType } from "../../../../utils/types/formTypes";
 import type { ChangeEvent } from "react";
@@ -97,6 +101,12 @@ const ComparisonMapForm = () => {
 			customPointsArray: [],
 		},
 	});
+
+	const [pointSetIdToClean, setPointSetIdToClean] = useState<string | null>(
+		null,
+	);
+	const [pointType, setPointType] = useState<"bdd" | "custom">("bdd");
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const handleBDDPointFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
@@ -183,6 +193,7 @@ const ComparisonMapForm = () => {
 		setPointsSets({
 			left: {
 				...pointSets.left,
+				id: leftPointsSet?.id || "",
 				color: (leftPointsSet?.color as MapColorType)?.id,
 				icon: (leftPointsSet?.icon as MapIconType)?.id,
 				attestationIds: leftPointsSet?.attestationIds as string,
@@ -191,6 +202,7 @@ const ComparisonMapForm = () => {
 			},
 			right: {
 				...pointSets.right,
+				id: rightPointsSet?.id || "",
 				color: (rightPointsSet?.color as MapColorType)?.id,
 				icon: (rightPointsSet?.icon as MapIconType)?.id,
 				attestationIds: rightPointsSet?.attestationIds as string,
@@ -292,6 +304,22 @@ const ComparisonMapForm = () => {
 	return (
 		isLoaded && (
 			<>
+				{isModalOpen && (
+					<ModalComponent
+						onClose={() => {
+							setIsModalOpen(false);
+						}}
+					>
+						<UpdatePointSetContent
+							idToUpdate={pointSetIdToClean as string}
+							setIsModalOpen={setIsModalOpen}
+							reload={reload}
+							setReload={setReload}
+							mapType="storymap"
+							pointType={pointType}
+						/>
+					</ModalComponent>
+				)}
 				<FormTitleComponent
 					action={action as string}
 					translationKey="comparison_map"
@@ -435,15 +463,37 @@ const ComparisonMapForm = () => {
 												: fileStatusTranslationObject.noFile}
 									</p>
 									{pointSets[formSide]?.attestationIds && (
-										<FileDown
-											onClick={() =>
-												handleCSVDownload(
-													pointSets[formSide],
-													`${block?.content1_lang1}-${formSide}-bdd.csv`,
-													"mapPoints",
-												)
-											}
-										/>
+										<div className={style.downloadAndCleanContainer}>
+											<TooltipComponent
+												text={
+													translation[language].backoffice.mapFormPage
+														.pointSetTable.downloadCSV
+												}
+											>
+												<FileDown
+													cursor={"pointer"}
+													onClick={() =>
+														handleCSVDownload(
+															pointSets[formSide],
+															`${block?.content1_lang1}-${formSide}-bdd.csv`,
+															"mapPoints",
+														)
+													}
+												/>
+											</TooltipComponent>
+											<TooltipComponent
+												text={translation[language].button.clean}
+											>
+												{displayBrushCleaningButton(
+													pointSets[formSide].id as string,
+													false,
+													setPointSetIdToClean,
+													setIsModalOpen,
+													setPointType,
+													"bdd",
+												)}
+											</TooltipComponent>
+										</div>
 									)}
 								</div>
 							</div>
@@ -493,15 +543,37 @@ const ComparisonMapForm = () => {
 									</p>
 									{(pointSets[formSide]?.customPointsArray?.length ?? 0) >
 										0 && (
-										<FileDown
-											onClick={() =>
-												handleCSVDownload(
-													pointSets[formSide],
-													`${block?.content1_lang1}-${formSide}-custom.csv`,
-													"customPoints",
-												)
-											}
-										/>
+										<div className={style.downloadAndCleanContainer}>
+											<TooltipComponent
+												text={
+													translation[language].backoffice.mapFormPage
+														.pointSetTable.downloadCSV
+												}
+											>
+												<FileDown
+													cursor={"pointer"}
+													onClick={() =>
+														handleCSVDownload(
+															pointSets[formSide],
+															`${block?.content1_lang1}-${formSide}-custom.csv`,
+															"customPoints",
+														)
+													}
+												/>
+											</TooltipComponent>
+											<TooltipComponent
+												text={translation[language].button.clean}
+											>
+												{displayBrushCleaningButton(
+													pointSets[formSide].id as string,
+													false,
+													setPointSetIdToClean,
+													setIsModalOpen,
+													setPointType,
+													"custom",
+												)}
+											</TooltipComponent>
+										</div>
 									)}
 								</div>
 							</div>
