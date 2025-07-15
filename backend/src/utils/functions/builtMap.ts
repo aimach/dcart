@@ -4,7 +4,7 @@ import type { AttestationType, SourceType } from "../types/mapTypes";
 import type { MapContent } from "../../entities/builtMap/MapContent";
 import type { Storymap } from "../../entities/storymap/Storymap";
 import type { Tag } from "../../entities/common/Tag";
-import { Attestation } from "../../entities";
+import type { Attestation } from "../../entities";
 
 /**
  * Fonction pour trier les sources par date (post quem puis ante quem)

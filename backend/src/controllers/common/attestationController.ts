@@ -9,10 +9,10 @@ import { Point, Storymap } from "../../entities";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
+import { arrayMove } from "../../utils/functions/builtMap";
 // import des types
 import type { Request, Response } from "express";
 import type { CustomPointType } from "../../utils/types/mapTypes";
-import { arrayMove } from "../../utils/functions/builtMap";
 
 export const attestationController = {
 	// récupère toutes les attestations d'une carte
