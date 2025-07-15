@@ -193,7 +193,7 @@ const ComparisonMapForm = () => {
 		setPointsSets({
 			left: {
 				...pointSets.left,
-				id: leftPointsSet?.id || "",
+				id: leftPointsSet?.id,
 				color: (leftPointsSet?.color as MapColorType)?.id,
 				icon: (leftPointsSet?.icon as MapIconType)?.id,
 				attestationIds: leftPointsSet?.attestationIds as string,
@@ -202,7 +202,7 @@ const ComparisonMapForm = () => {
 			},
 			right: {
 				...pointSets.right,
-				id: rightPointsSet?.id || "",
+				id: rightPointsSet?.id,
 				color: (rightPointsSet?.color as MapColorType)?.id,
 				icon: (rightPointsSet?.icon as MapIconType)?.id,
 				attestationIds: rightPointsSet?.attestationIds as string,

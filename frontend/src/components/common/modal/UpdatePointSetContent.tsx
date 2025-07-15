@@ -16,6 +16,7 @@ import {
 } from "../../../utils/api/storymap/getRequests";
 import { notifyDeleteSuccess } from "../../../utils/functions/toast";
 import { getBlockComponentFromType } from "../../../pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage";
+import { point } from "leaflet";
 
 interface UpdatePointSetContentProps {
 	idToUpdate: string;
@@ -71,7 +72,11 @@ const UpdatePointSetContent = ({
 
 	return (
 		<div className={style.modalCustomContentContainer}>
-			{translation[language].modal.cleanPointSetText}
+			{
+				translation[language].modal.cleanPointSetText[
+					pointType as "bdd" | "custom"
+				]
+			}
 			<div className={style.buttonContainer}>
 				<ButtonComponent
 					type="button"
