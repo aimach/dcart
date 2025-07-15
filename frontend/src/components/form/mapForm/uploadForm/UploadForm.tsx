@@ -237,6 +237,7 @@ const UploadForm = () => {
 					<table className={style.pointSetTable}>
 						<thead>
 							<tr>
+								<th scope="col">Position</th>
 								<th scope="col">
 									{
 										translation[language].backoffice.mapFormPage.pointSetTable
@@ -271,106 +272,110 @@ const UploadForm = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{mapInfos.attestations.map((pointSet) => {
-								const icon = getShapeForLayerName(
-									(pointSet.icon as MapIconType)?.name_en,
-									(pointSet.color as MapColorType)?.code_hex,
-								);
-								return (
-									<>
-										<tr key={pointSet.id} className={style.pointSetTableRow}>
-											<td>{pointSet.name_fr}</td>
-											<td>{pointSet.name_en}</td>
-											<td>
-												<p
-													// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
-													dangerouslySetInnerHTML={{
-														__html: icon,
-													}}
-												/>
-											</td>
-											<td>
-												{pointSet?.attestationIds ? (
-													<FileDown
-														onClick={() =>
-															handleCSVDownload(
-																pointSet,
-																`${pointSet.name_fr}.csv`,
-																"mapPoints",
-															)
-														}
-														cursor={
-															pointSet?.attestationIds
-																? "pointer"
-																: "not-allowed"
-														}
-														color={pointSet?.attestationIds ? "black" : "grey"}
+							{mapInfos.attestations
+								.sort((a, b) => a.position - b.position)
+								.map((pointSet) => {
+									const icon = getShapeForLayerName(
+										(pointSet.icon as MapIconType)?.name_en,
+										(pointSet.color as MapColorType)?.code_hex,
+									);
+									return (
+										<>
+											<tr key={pointSet.id} className={style.pointSetTableRow}>
+												<td>{pointSet.position}</td>
+												<td>{pointSet.name_fr}</td>
+												<td>{pointSet.name_en}</td>
+												<td>
+													<p
+														// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
+														dangerouslySetInnerHTML={{
+															__html: icon,
+														}}
 													/>
-												) : (
-													<p style={{ textAlign: "center" }}>
-														<CircleAlert color="#9d2121" />{" "}
-														<p style={{ color: "#9d2121" }}>
-															{
-																translation[language].backoffice
-																	.noPointInPointSet
+												</td>
+												<td>
+													{pointSet?.attestationIds ? (
+														<FileDown
+															onClick={() =>
+																handleCSVDownload(
+																	pointSet,
+																	`${pointSet.name_fr}.csv`,
+																	"mapPoints",
+																)
 															}
+															cursor={
+																pointSet?.attestationIds
+																	? "pointer"
+																	: "not-allowed"
+															}
+															color={
+																pointSet?.attestationIds ? "black" : "grey"
+															}
+														/>
+													) : (
+														<p style={{ textAlign: "center" }}>
+															<CircleAlert color="#9d2121" />{" "}
+															<p style={{ color: "#9d2121" }}>
+																{
+																	translation[language].backoffice
+																		.noPointInPointSet
+																}
+															</p>
 														</p>
-													</p>
-												)}
-											</td>
-											<td>
-												{pointSet.lastActivity
-													? new Date(pointSet.lastActivity).toLocaleDateString(
-															language,
-															{
+													)}
+												</td>
+												<td>
+													{pointSet.lastActivity
+														? new Date(
+																pointSet.lastActivity,
+															).toLocaleDateString(language, {
 																year: "numeric",
 																month: "long",
 																day: "numeric",
-															},
-														)
-													: null}
-											</td>
-											<td>
-												<TooltipComponent
-													text={translation[language].button.clean}
-												>
-													{displayBrushCleaningButton(
-														pointSet.id as string,
-														pointSet.attestationIds === "",
-														setPointSetIdToClean,
-														setIsModalOpen,
-													)}
-												</TooltipComponent>
-												<TooltipComponent
-													text={translation[language].button.edit}
-												>
-													<Pen
-														onClick={() =>
-															handleUpdatePointSet(pointSet.id as string)
-														}
-														onKeyDown={() =>
-															handleUpdatePointSet(pointSet.id as string)
-														}
-													/>
-												</TooltipComponent>
-												<TooltipComponent
-													text={translation[language].button.delete}
-												>
-													<X
-														onClick={() =>
-															handleDeletePointSet(pointSet.id as string)
-														}
-														onKeyDown={() =>
-															handleDeletePointSet(pointSet.id as string)
-														}
-														color="#9d2121"
-													/>
-												</TooltipComponent>
-											</td>
-										</tr>
-									</>
-								);
-							})}
+															})
+														: null}
+												</td>
+												<td>
+													<TooltipComponent
+														text={translation[language].button.clean}
+													>
+														{displayBrushCleaningButton(
+															pointSet.id as string,
+															pointSet.attestationIds === "",
+															setPointSetIdToClean,
+															setIsModalOpen,
+														)}
+													</TooltipComponent>
+													<TooltipComponent
+														text={translation[language].button.edit}
+													>
+														<Pen
+															onClick={() =>
+																handleUpdatePointSet(pointSet.id as string)
+															}
+															onKeyDown={() =>
+																handleUpdatePointSet(pointSet.id as string)
+															}
+														/>
+													</TooltipComponent>
+													<TooltipComponent
+														text={translation[language].button.delete}
+													>
+														<X
+															onClick={() =>
+																handleDeletePointSet(pointSet.id as string)
+															}
+															onKeyDown={() =>
+																handleDeletePointSet(pointSet.id as string)
+															}
+															color="#9d2121"
+														/>
+													</TooltipComponent>
+												</td>
+											</tr>
+										</>
+									);
+								})}
 						</tbody>
 					</table>
 					<div>

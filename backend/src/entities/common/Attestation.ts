@@ -31,8 +31,8 @@ export class Attestation extends BaseEntity {
 	@Column({ type: "timestamp", nullable: true })
 	lastActivity!: Date;
 
-	@Column({ type: "int", nullable: true })
-	position!: number | null;
+	@Column({ type: "int" })
+	position!: number;
 
 	@ManyToOne(
 		() => Icon,

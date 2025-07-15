@@ -217,6 +217,7 @@ type PointSetType = {
 	name_en: string;
 	attestationIds: string;
 	customPointsArray?: CustomPointType[];
+	position: number;
 	color?: MapColorType | string;
 	icon?: MapIconType | string;
 	mapId?: string;
