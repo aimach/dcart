@@ -9,6 +9,9 @@ import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent
 import LabelComponent from "../../inputComponent/LabelComponent";
 import EditorComponent from "../wysiwygBlock/EditorComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import TooltipComponent from "../../../common/tooltip/TooltipComponent";
+import ModalComponent from "../../../common/modal/ModalComponent";
+import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -28,6 +31,7 @@ import {
 	parseCSVFile,
 } from "../../../../utils/functions/csv";
 import { notifyError } from "../../../../utils/functions/toast";
+import { displayBrushCleaningButton } from "../../../../utils/functions/common";
 // import des types
 import type {
 	allInputsType,
@@ -56,10 +60,6 @@ import {
 	CircleX,
 	FileDown,
 } from "lucide-react";
-import TooltipComponent from "../../../common/tooltip/TooltipComponent";
-import { displayBrushCleaningButton } from "../../../../utils/functions/common";
-import ModalComponent from "../../../common/modal/ModalComponent";
-import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
 
 export type stepInputsType = {
 	content1_lang1: string;
@@ -464,7 +464,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 							</p>
 
 							{pointSet?.attestationIds && (
-								<>
+								<div className={style.downloadAndCleanContainer}>
 									<TooltipComponent
 										text={
 											translation[language].backoffice.mapFormPage.pointSetTable
@@ -472,6 +472,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 										}
 									>
 										<FileDown
+											cursor={"pointer"}
 											onClick={() =>
 												handleCSVDownload(
 													pointSet as PointSetType,
@@ -491,7 +492,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 											"bdd",
 										)}
 									</TooltipComponent>
-								</>
+								</div>
 							)}
 						</div>
 					</div>
@@ -531,7 +532,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 							</p>
 
 							{(pointSet?.customPointsArray?.length ?? 0) > 0 && (
-								<>
+								<div className={style.downloadAndCleanContainer}>
 									<TooltipComponent
 										text={
 											translation[language].backoffice.mapFormPage.pointSetTable
@@ -539,6 +540,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 										}
 									>
 										<FileDown
+											cursor={"pointer"}
 											onClick={() =>
 												handleCSVDownload(
 													pointSet as PointSetType,
@@ -558,7 +560,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 											"custom",
 										)}
 									</TooltipComponent>
-								</>
+								</div>
 							)}
 						</div>
 					</div>
