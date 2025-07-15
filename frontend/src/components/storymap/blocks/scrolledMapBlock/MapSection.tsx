@@ -92,6 +92,15 @@ const MapSection = ({
 
 	const mapAttribution = getMapAttribution(blockContent.content2_lang1);
 
+	// au montage, ajout d'un label aux boutons de zoom pour l'accessibilité
+	useEffect(() => {
+		const zoomIn = document.querySelector(".leaflet-control-zoom-in");
+		const zoomOut = document.querySelector(".leaflet-control-zoom-out");
+
+		if (zoomIn) zoomIn.setAttribute("aria-label", "Zoomer");
+		if (zoomOut) zoomOut.setAttribute("aria-label", "Dézoomer");
+	}, []);
+
 	return (
 		<div id={mapName} className={style.mapSection}>
 			<MapContainer
