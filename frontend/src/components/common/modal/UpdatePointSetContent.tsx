@@ -15,6 +15,7 @@ interface UpdatePointSetContentProps {
 	setIsModalOpen: (isOpen: boolean) => void;
 	reload: boolean;
 	setReload: (reload: boolean) => void;
+	pointType?: "bdd" | "custom"; // valeur par défaut
 }
 
 /**
@@ -25,6 +26,7 @@ const UpdatePointSetContent = ({
 	setIsModalOpen,
 	reload,
 	setReload,
+	pointType = "bdd", // valeur par défaut
 }: UpdatePointSetContentProps) => {
 	// récupération des données de traduction
 	const { language, translation } = useTranslation();
@@ -34,11 +36,10 @@ const UpdatePointSetContent = ({
 	);
 
 	const handlePointSetCleaning = async (idToUpdate: string) => {
-		await cleanPointSet(idToUpdate);
+		await cleanPointSet(idToUpdate, pointType);
 		setIsModalOpen(false);
 		const fetchMapInfos = async () => {
 			const allMapInfos = await getOneMapInfosById(mapInfos?.id as string);
-			console.log("allMapInfos", allMapInfos);
 			setMapInfos(allMapInfos);
 		};
 		await fetchMapInfos();

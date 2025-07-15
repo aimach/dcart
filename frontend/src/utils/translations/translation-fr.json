@@ -225,8 +225,8 @@
 				"delete": "Supprimer",
 				"lastActivity": "Dernière modification",
 				"downloadCSV": "Charger le CSV",
-				"downloadBDDCSV": "Charger les points de la BDD",
-				"downloadCustomCSV": "Charger les points personnalisés"
+				"downloadBDDCSV": "Points de la BDD",
+				"downloadCustomCSV": "Points personnalisés"
 			},
 			"pointSetForm": {
 				"addNewPointSet": "Ajouter un nouveau jeu de points",

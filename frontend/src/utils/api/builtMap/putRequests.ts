@@ -124,7 +124,10 @@ const updatePointSet = async (body: PointSetType) => {
  * @param body - Les informations du jeu de points à modifier
  * @returns {Promise} - La réponse de la requête
  */
-const cleanPointSet = async (pointSetId: string) => {
+const cleanPointSet = async (
+	pointSetId: string,
+	pointSetType: "bdd" | "custom",
+) => {
 	try {
 		await apiClient(`dcart/attestations/clean/${pointSetId}`, {
 			method: "PUT",

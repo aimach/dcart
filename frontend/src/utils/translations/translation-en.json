@@ -225,8 +225,8 @@
 				"delete": "Delete",
 				"lastActivity": "Last activity",
 				"downloadCSV": "Download CSV",
-				"downloadBDDCSV": "Download BDD CSV",
-				"downloadCustomCSV": "Download custom CSV"
+				"downloadBDDCSV": "BDD points set",
+				"downloadCustomCSV": "Custom points set"
 			},
 			"pointSetForm": {
 				"addNewPointSet": "Add new point set",

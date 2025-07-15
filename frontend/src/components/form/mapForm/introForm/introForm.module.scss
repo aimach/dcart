@@ -84,7 +84,7 @@
 }
 
 .uploadFormContainer {
-    margin: v.$space-xxl v.$space-xxl 0 v.$space-xxl;
+    margin: v.$space-xxl v.$space-xxl;
     min-height: 90%;
     @include m.flexbox(flex, column, nowrap, space-between, center);
 

@@ -55,6 +55,10 @@ import {
 	Pen,
 	X,
 } from "lucide-react";
+import TooltipComponent from "../../../common/tooltip/TooltipComponent";
+import { displayBrushCleaningButton } from "../../../../utils/functions/common";
+import ModalComponent from "../../../common/modal/ModalComponent";
+import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
@@ -87,6 +91,12 @@ const SimpleMapForm = () => {
 	// gestion de l'upload du fichier csv
 	const [pointSet, setPointSet] = useState<PointSetType | null>(null);
 	const [isAlreadyAPointSet, setIsAlreadyAPointSet] = useState(false);
+
+	const [pointSetIdToClean, setPointSetIdToClean] = useState<string | null>(
+		null,
+	);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [pointType, setPointType] = useState<"bdd" | "custom">("bdd");
 
 	useEffect(() => {
 		if (block?.attestations) {
@@ -252,6 +262,21 @@ const SimpleMapForm = () => {
 
 	return (
 		<>
+			{isModalOpen && (
+				<ModalComponent
+					onClose={() => {
+						setIsModalOpen(false);
+					}}
+				>
+					<UpdatePointSetContent
+						idToUpdate={pointSetIdToClean as string}
+						setIsModalOpen={setIsModalOpen}
+						reload={reload}
+						setReload={setReload}
+						pointType={pointType}
+					/>
+				</ModalComponent>
+			)}
 			<FormTitleComponent
 				action={action as string}
 				translationKey="simple_map"
@@ -489,32 +514,74 @@ const SimpleMapForm = () => {
 												</td>
 												<td>
 													{isBDDPointSet ? (
-														<FileDown
-															onClick={() =>
-																handleCSVDownload(
-																	pointSet,
-																	`${pointSet.name_fr}-bdd.csv`,
-																	"mapPoints",
-																)
-															}
-															cursor={"pointer"}
-														/>
+														<>
+															<TooltipComponent
+																text={
+																	translation[language].backoffice.mapFormPage
+																		.pointSetTable.downloadCSV
+																}
+															>
+																<FileDown
+																	onClick={() =>
+																		handleCSVDownload(
+																			pointSet,
+																			`${pointSet.name_fr}-bdd.csv`,
+																			"mapPoints",
+																		)
+																	}
+																	cursor={"pointer"}
+																/>
+															</TooltipComponent>
+															<TooltipComponent
+																text={translation[language].button.clean}
+															>
+																{displayBrushCleaningButton(
+																	pointSet.id as string,
+																	pointSet.attestationIds === "",
+																	setPointSetIdToClean,
+																	setIsModalOpen,
+																	setPointType,
+																	"bdd",
+																)}
+															</TooltipComponent>
+														</>
 													) : (
 														<FileDown color="#a1afc4" />
 													)}
 												</td>
 												<td>
 													{isCustomPointSet ? (
-														<FileDown
-															onClick={() =>
-																handleCSVDownload(
-																	pointSet,
-																	`${pointSet.name_fr}-custom.csv`,
-																	"customPoints",
-																)
-															}
-															cursor={"pointer"}
-														/>
+														<>
+															<TooltipComponent
+																text={
+																	translation[language].backoffice.mapFormPage
+																		.pointSetTable.downloadCSV
+																}
+															>
+																<FileDown
+																	onClick={() =>
+																		handleCSVDownload(
+																			pointSet,
+																			`${pointSet.name_fr}-custom.csv`,
+																			"customPoints",
+																		)
+																	}
+																	cursor={"pointer"}
+																/>
+															</TooltipComponent>
+															<TooltipComponent
+																text={translation[language].button.clean}
+															>
+																{displayBrushCleaningButton(
+																	pointSet.id as string,
+																	pointSet.attestationIds === "",
+																	setPointSetIdToClean,
+																	setIsModalOpen,
+																	setPointType,
+																	"custom",
+																)}
+															</TooltipComponent>
+														</>
 													) : (
 														<FileDown color="#a1afc4" />
 													)}

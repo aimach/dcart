@@ -207,7 +207,7 @@ const MapComponent = () => {
 	return (
 		<>
 			<MapPageHelmetContent
-				mapName={mapInfos?.[`title_${language}`] ?? "Carte d'exploration"}
+				mapName={mapInfos?.[`title_${language}`] ?? " Exploration"}
 			/>
 			{!mapReady && <LoaderComponent size={50} />}
 			<div className={mapContainerClassName} id="built-map">
