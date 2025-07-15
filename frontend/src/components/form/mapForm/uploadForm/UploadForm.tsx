@@ -36,6 +36,7 @@ import type {
 	MapInfoType,
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
+import { displayBrushCleaningButton } from "../../../../utils/functions/common";
 // import du style
 import style from "../introForm/introForm.module.scss";
 // import des images et icônes
@@ -47,7 +48,6 @@ import {
 	PlusCircle,
 	X,
 } from "lucide-react";
-import { displayBrushCleaningButton } from "../../../../utils/functions/common";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte

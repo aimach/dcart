@@ -4,19 +4,14 @@ import ButtonComponent from "../button/ButtonComponent";
 import { useTranslation } from "../../../utils/hooks/useTranslation";
 // import des services
 import { cleanPointSet } from "../../../utils/api/builtMap/putRequests";
-// import du style
-import style from "./modalComponent.module.scss";
 import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
 import { getOneMapInfosById } from "../../../utils/api/builtMap/getRequests";
 import { useBuilderStore } from "../../../utils/stores/storymap/builderStore";
-import {
-	getBlockInfos,
-	getStorymapInfosAndBlocksById,
-} from "../../../utils/api/storymap/getRequests";
+import { getBlockInfos } from "../../../utils/api/storymap/getRequests";
 import { notifyDeleteSuccess } from "../../../utils/functions/toast";
-import { getBlockComponentFromType } from "../../../pages/BackOffice/BOStorymapPage/storymapPage/StorymapPage";
-import { point } from "leaflet";
+// import du style
+import style from "./modalComponent.module.scss";
 
 interface UpdatePointSetContentProps {
 	idToUpdate: string;

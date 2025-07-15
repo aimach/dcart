@@ -7,6 +7,9 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import PointSetUploadForm from "../../mapForm/pointSetUploadForm/PointSetUploadForm";
+import TooltipComponent from "../../../common/tooltip/TooltipComponent";
+import ModalComponent from "../../../common/modal/ModalComponent";
+import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -33,6 +36,7 @@ import {
 	removeLang2Inputs,
 } from "../../../../utils/functions/storymap";
 import { handleCSVDownload } from "../../../../utils/functions/csv";
+import { displayBrushCleaningButton } from "../../../../utils/functions/common";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -55,10 +59,6 @@ import {
 	Pen,
 	X,
 } from "lucide-react";
-import TooltipComponent from "../../../common/tooltip/TooltipComponent";
-import { displayBrushCleaningButton } from "../../../../utils/functions/common";
-import ModalComponent from "../../../common/modal/ModalComponent";
-import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
 
 export type simpleMapInputsType = {
 	content1_lang1: string;
