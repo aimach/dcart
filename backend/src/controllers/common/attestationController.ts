@@ -92,6 +92,16 @@ export const attestationController = {
 				return;
 			}
 
+			const attestationLastPosition = await dcartDataSource
+				.getRepository(Attestation)
+				.createQueryBuilder("attestation")
+				.select("MAX(attestation.position)", "maxPosition")
+				.where("attestation.mapId = :mapId OR attestation.blockId = :blockId", {
+					mapId: mapId || null,
+					blockId: blockId || null,
+				})
+				.getRawOne();
+
 			const newAttestation = await dcartDataSource
 				.getRepository(Attestation)
 				.save({
@@ -101,6 +111,9 @@ export const attestationController = {
 					[mapId ? "map" : "block"]: parentToAddAttestations,
 					color: colorToAdd,
 					lastActivity: new Date(),
+					position: attestationLastPosition.maxPosition
+						? attestationLastPosition.maxPosition + 1
+						: 1,
 				});
 
 			if (customPointsArray && customPointsArray.length > 0) {
