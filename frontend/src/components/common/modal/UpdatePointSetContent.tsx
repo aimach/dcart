@@ -6,10 +6,15 @@ import { useTranslation } from "../../../utils/hooks/useTranslation";
 import { cleanPointSet } from "../../../utils/api/builtMap/putRequests";
 // import du style
 import style from "./modalComponent.module.scss";
+import { useMapFormStore } from "../../../utils/stores/builtMap/mapFormStore";
+import { useShallow } from "zustand/shallow";
+import { getOneMapInfosById } from "../../../utils/api/builtMap/getRequests";
 
 interface UpdatePointSetContentProps {
 	idToUpdate: string;
 	setIsModalOpen: (isOpen: boolean) => void;
+	reload: boolean;
+	setReload: (reload: boolean) => void;
 }
 
 /**
@@ -18,13 +23,26 @@ interface UpdatePointSetContentProps {
 const UpdatePointSetContent = ({
 	idToUpdate,
 	setIsModalOpen,
+	reload,
+	setReload,
 }: UpdatePointSetContentProps) => {
 	// récupération des données de traduction
 	const { language, translation } = useTranslation();
 
+	const { mapInfos, setMapInfos } = useMapFormStore(
+		useShallow((state) => state),
+	);
+
 	const handlePointSetCleaning = async (idToUpdate: string) => {
 		await cleanPointSet(idToUpdate);
 		setIsModalOpen(false);
+		const fetchMapInfos = async () => {
+			const allMapInfos = await getOneMapInfosById(mapInfos?.id as string);
+			console.log("allMapInfos", allMapInfos);
+			setMapInfos(allMapInfos);
+		};
+		await fetchMapInfos();
+		setReload(!reload); // Toggle reload state to trigger re-render if necessary};
 	};
 
 	return (
