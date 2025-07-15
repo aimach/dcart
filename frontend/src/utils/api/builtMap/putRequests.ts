@@ -127,14 +127,18 @@ const updatePointSet = async (body: PointSetType) => {
 const updatePointSetPosition = async (
 	pointSetId: string,
 	newPosition: string,
-	mapId: string,
+	parentId: string,
+	type: "map" | "block",
 ) => {
 	try {
+		const body = {
+			[type === "map" ? "mapId" : "blockId"]: parentId,
+		};
 		const response = await apiClient(
 			`dcart/attestations/${pointSetId}?position=${newPosition}`,
 			{
 				method: "PUT",
-				data: { mapId },
+				data: body,
 			},
 		);
 		return response;

@@ -159,19 +159,18 @@ export const attestationController = {
 			if (position) {
 				const pointSetId = id;
 
-				const map = await dcartDataSource
-					.getRepository(MapContent)
-					.findOneBy({ id: mapId as string });
-
-				if (!map) {
-					res.status(404).json("La carte n'existe pas");
-					return;
+				let whereBody = {};
+				if (mapId && !blockId) {
+					whereBody = { map: { id: mapId } };
+				}
+				if (blockId && !mapId) {
+					whereBody = { block: { id: blockId } };
 				}
 
 				const allPointSets = await dcartDataSource
 					.getRepository(Attestation)
 					.find({
-						where: { map: { id: mapId } },
+						where: whereBody,
 						order: { position: "ASC" },
 					});
 

@@ -198,6 +198,7 @@ const UploadForm = () => {
 			pointSetId,
 			newPosition,
 			mapInfos?.id as string,
+			"map",
 		);
 		if (response?.status === 200) {
 			const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
@@ -311,7 +312,7 @@ const UploadForm = () => {
 									return (
 										<>
 											<tr key={pointSet.id} className={style.pointSetTableRow}>
-												<td style={{ position: "relative", zIndex: 1000 }}>
+												<td>
 													{/* Sélecteur de position */}
 													<select
 														name="position"
