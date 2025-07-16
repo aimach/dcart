@@ -47,6 +47,7 @@ const BuiltElementFilterForm = () => {
 				);
 
 				const allElementsOptions = await getElementOptions(
+					mapInfos,
 					allPoints,
 					language,
 					false,

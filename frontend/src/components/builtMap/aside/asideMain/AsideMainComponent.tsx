@@ -49,7 +49,7 @@ const AsideMainComponent = () => {
 	useEffect(() => {
 		getSourceTypeOptions(mapInfos, allPoints, language);
 		getLocationOptions(mapInfos, allPoints, language);
-		getElementOptions(allPoints, language, false);
+		getElementOptions(mapInfos, allPoints, language, false);
 		getAgentActivityOptions(mapInfos, allPoints, language);
 		getAgentStatusOptions(mapInfos, allPoints, language);
 		getAgentivityOptions(mapInfos, allPoints, language);

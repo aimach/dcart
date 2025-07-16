@@ -183,6 +183,29 @@ const ElementFilterComponent = () => {
 				);
 		}
 	}
+	return (
+		<div>
+			<Select
+				styles={singleSelectInLineStyle}
+				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
+				options={initialElementOptions}
+				defaultValue={getDefaultValues}
+				delimiter="|"
+				isMulti
+				onChange={(newValue) =>
+					onMultiSelectChange(
+						newValue,
+						"elementId",
+						setUserFilters,
+						userFilters,
+						setElementNameValues,
+					)
+				}
+				placeholder={translation[language].mapPage.aside.searchForElement}
+				isClearable={false}
+			/>
+		</div>
+	);
 };
 
 export default ElementFilterComponent;

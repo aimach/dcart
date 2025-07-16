@@ -42,8 +42,6 @@ const LocationFilterComponent = () => {
 		);
 	}, [userFilters.locationId, initialLocationOptions]);
 
-	console.log(initialLocationOptions);
-
 	return (
 		<div>
 			<Select
