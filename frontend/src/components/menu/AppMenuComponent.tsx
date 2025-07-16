@@ -119,7 +119,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 					/>
 					<ImageWithLink
 						type="link"
-						link="https://map-polytheisms.huma-num.fr/"
+						link="https://base-map-polytheisms.huma-num.fr/"
 						imgSrc={mapLogo}
 						imgAlt="erc map logo"
 						imgWidth={isDesktop ? 100 : 70}

@@ -53,7 +53,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 				) : (
 					<ImageWithLink
 						type="link"
-						link={"https://map-polytheisms.huma-num.fr/"}
+						link={"https://base-map-polytheisms.huma-num.fr/"}
 						ariaLabel={"Visiter le site MAP"}
 						buttonClassName={style.headerLogo}
 						imgSrc={MAPLogo}
