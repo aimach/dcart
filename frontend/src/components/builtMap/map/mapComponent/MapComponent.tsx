@@ -160,6 +160,7 @@ const MapComponent = () => {
 			mapId,
 			type === "filter" ? userFilters : null,
 		);
+
 		setAllPoints(points);
 		setAllResults(points);
 		setMapReady(true);
