@@ -86,10 +86,11 @@ const MultipleLayerComponent = ({
 				allLayersWithOnlySVG.some(
 					(layerName) =>
 						layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
-						point[`layerName${language}`],
+						point.layerNamefr,
 				)
-			)
+			) {
 				return point;
+			}
 		});
 	}, [allLayers, allMemoizedPoints, language]);
 

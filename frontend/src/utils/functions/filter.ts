@@ -617,6 +617,8 @@ const getElementOptions = async (
 		.map((option) => ({
 			value: option.element_id,
 			label: `${option[`element_nom_${language}`]} (${option.etat_absolu})`,
+			nom_fr: `${option.element_nom_fr} (${option.etat_absolu})`,
+			nom_en: `${option.element_nom_en} (${option.etat_absolu})`,
 		}))
 		.sort((a, b) => a.label.localeCompare(b.label));
 
