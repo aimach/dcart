@@ -20,6 +20,7 @@ import {
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
+import { CircleAlert } from "lucide-react";
 
 const BuiltElementFilterForm = () => {
 	const { translation, language } = useTranslation();
@@ -86,6 +87,15 @@ const BuiltElementFilterForm = () => {
 			<h4>
 				{translation[language].backoffice.mapFormPage.filterForm.element.title}
 			</h4>
+			{elementOptions.length === 0 && (
+				<div className={style.alertContainer}>
+					<CircleAlert color="#9d2121" />
+					<p>
+						Attention ! Aucun élément n'est accessible. Avez-vous chargé des
+						points dans la carte ?
+					</p>
+				</div>
+			)}
 			<div className={style.commonFormInputContainer}>
 				<LabelComponent
 					htmlFor="basic"
@@ -132,8 +142,15 @@ const BuiltElementFilterForm = () => {
 					/>
 				</div>
 			</div>
-			{selectedOption === "manual" && (
-				<SelectElementForm elementOptions={elementOptions} />
+			{elementOptions.length > 0 ? (
+				selectedOption === "manual" ? (
+					<SelectElementForm elementOptions={elementOptions} />
+				) : null
+			) : (
+				<div className={style.alertContainer}>
+					<CircleAlert color="#9d2121" />
+					<p>Pas d'élément disponible pour construire le filtre.</p>
+				</div>
 			)}
 		</form>
 	);

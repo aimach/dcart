@@ -93,7 +93,7 @@
 		"firstContent": "J'aimerais voir les sources de",
 		"secondContent": "sur",
 		"chooseRegion": "la région",
-		"chooseDivinity": "la divinité",
+		"chooseDivinity": "le nom divin",
 		"postDate": "date début",
 		"anteDate": "date fin",
 		"yes": "oui",
@@ -169,7 +169,7 @@
 			"noAgent": "Pas d'agent",
 			"noDesignation": "non précisé",
 			"noSourceMaterialDefined": "Aucun support de source défini",
-			"introContent": "Ce panneau vous permet d ’explorer en détail les données associée au point que vous avez sélectionné sur la carte. Vous y trouverez des statistiques spécifiques, comme un aperçu chiffré des divinités ou épithètes présents dans les sources ou consulter les données relatives aux agents : genre, activité, etc. Vous pouvez également y trouver la liste complète des sources et attestations associées liées à ce point avec de nombreux détails : date, version originale, traduction, agents...",
+			"introContent": "Ce panneau vous permet d ’explorer en détail les données associée au point que vous avez sélectionné sur la carte. Vous y trouverez des statistiques spécifiques, comme un aperçu chiffré des noms divins ou qualifications présents dans les sources ou consulter les données relatives aux agents : genre, activité, etc. Vous pouvez également y trouver la liste complète des sources et attestations associées liées à ce point avec de nombreux détails : date, version originale, traduction, agents...",
 			"dontShowAgain": "ne plus afficher ce message"
 		}
 	},
@@ -208,9 +208,9 @@
 				},
 				"divinityInChart": {
 					"label": "Graphique des éléments",
-					"description": "Choisissez si vous souhaitez afficher le nombre des divinités ou le nombre des épithètes dans le graphique.",
+					"description": "Choisissez si vous souhaitez afficher le nombre des nom divins ou le nombre des qualilfications dans le graphique.",
 					"checkbox": {
-						"divinity": "Afficher le nombre de divinités",
+						"divinity": "Afficher le nombre de noms divins",
 						"epithet": "Afficher le nombre de qualifications"
 					}
 				}
@@ -273,7 +273,7 @@
 					},
 					"manual": {
 						"label": "Manuelle",
-						"description": "Le filtre 'Elements' se présentera sous la forme de checkboxs à 2 niveaux : un premier niveau avec les théonymes et un second avec les épithètes. Ces deux niveaux sont à construire s sur-mesure ci-dessous"
+						"description": "Le filtre 'Elements' se présentera sous la forme de checkboxs à 2 niveaux : un premier niveau avec un élément et un second avec un ou plusieurs éléments. Ces deux niveaux sont à construire sur-mesure ci-dessous"
 					}
 				},
 				"location": {

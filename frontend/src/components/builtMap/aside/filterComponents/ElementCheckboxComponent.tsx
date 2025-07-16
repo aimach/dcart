@@ -1,11 +1,12 @@
 // import des bibliothèques
-import { useEffect } from "react";
+import { useEffect, useTransition } from "react";
 // import des services
 import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 // import des types
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import des styles
 import style from "./filtersComponent.module.scss";
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 
 export type SelectedObjectType = {
 	[key: number]: {
@@ -28,6 +29,8 @@ const ElementCheckboxComponent = ({
 	elementNameValues,
 	setElementNameValues,
 }: ElementCheckboxComponentProps) => {
+	const { language } = useTranslation();
+
 	const {
 		userFilters,
 		setUserFilters,
@@ -160,7 +163,7 @@ const ElementCheckboxComponent = ({
 					}}
 					disabled={options.firstLevelIds[0].isDisabled}
 				/>
-				<strong>{options.firstLevelIds[0].label}</strong>
+				<strong>{options.firstLevelIds[0][`nom_${language}`]}</strong>
 			</label>
 			<div className={style.checkboxGroup}>
 				{options.secondLevelIds.map((option) => (
@@ -187,7 +190,7 @@ const ElementCheckboxComponent = ({
 								options.firstLevelIds[0].isDisabled || option.isDisabled
 							}
 						/>
-						{option.label}
+						{option[`nom_${language}`]}
 					</label>
 				))}
 			</div>
