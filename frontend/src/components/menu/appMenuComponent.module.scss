@@ -83,8 +83,8 @@
     }
 
     &LogoSection {
-        margin-left: v.$font-space-xxxxl * 2;
-        @include m.flexbox(flex, row, nowrap, center, flex-end);
+        margin: 0 v.$space-l;
+        @include m.flexbox(flex, row, wrap, center, flex-end);
         gap: v.$space-xxl;
 
         >a {
