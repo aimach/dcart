@@ -20,6 +20,7 @@ import {
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
+// import des icônes
 import { CircleAlert } from "lucide-react";
 
 const BuiltElementFilterForm = () => {

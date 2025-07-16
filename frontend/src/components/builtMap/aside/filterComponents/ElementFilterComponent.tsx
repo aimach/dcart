@@ -14,9 +14,10 @@ import {
 	onMultiSelectChange,
 } from "../../../../utils/functions/filter";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
+// import du style
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 /**
  * Affiche le filtre des éléments
