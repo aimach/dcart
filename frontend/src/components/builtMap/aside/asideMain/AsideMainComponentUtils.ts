@@ -35,14 +35,14 @@ const getLocationOptions = (
 ) => {
 	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const locationFilter = isSelectedFilterInThisMap(mapInfos, "location");
-	if (locationFilter) {
+	if (locationFilter || !mapInfos) {
 		// récupération de toutes les localités depuis la liste des points
 		let value = "grande_region_id";
 		let label = `grande_region_${language}`;
-		if (locationFilter.options?.solution === "subRegion") {
+		if (locationFilter?.options?.solution === "subRegion") {
 			value = "sous_region_id";
 			label = `sous_region_${language}`;
-		} else if (locationFilter.options?.solution === "location") {
+		} else if (locationFilter?.options?.solution === "location") {
 			value = "nom_ville";
 			label = "nom_ville";
 		}
