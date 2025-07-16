@@ -37,8 +37,8 @@
 		"selection": "Sélection",
 		"seeSources": "Voir les sources",
 		"seeAll": "Tout voir",
-		"epithet": "Epithète",
-		"divinity": "Divinité",
+		"epithet": "Qualification",
+		"divinity": "Nom divin",
 		"gender": "Genre",
 		"activity": "Activité",
 		"doughnut": "Donut",
@@ -134,7 +134,7 @@
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",
-			"epithet": "Epithète",
+			"epithet": "Qualification",
 			"noFilter": "Pas de filtre défini",
 			"location": "Localisation",
 			"element": "Element",
@@ -211,7 +211,7 @@
 					"description": "Choisissez si vous souhaitez afficher le nombre des divinités ou le nombre des épithètes dans le graphique.",
 					"checkbox": {
 						"divinity": "Afficher le nombre de divinités",
-						"epithet": "Afficher le nombre d'épithètes"
+						"epithet": "Afficher le nombre de qualifications"
 					}
 				}
 			},
