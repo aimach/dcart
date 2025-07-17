@@ -9,6 +9,7 @@ import { Point, Storymap } from "../../entities";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
+import { arrayMove } from "../../utils/functions/builtMap";
 // import des types
 import type { Request, Response } from "express";
 import type { CustomPointType } from "../../utils/types/mapTypes";
@@ -92,6 +93,16 @@ export const attestationController = {
 				return;
 			}
 
+			const attestationLastPosition = await dcartDataSource
+				.getRepository(Attestation)
+				.createQueryBuilder("attestation")
+				.select("MAX(attestation.position)", "maxPosition")
+				.where("attestation.mapId = :mapId OR attestation.blockId = :blockId", {
+					mapId: mapId || null,
+					blockId: blockId || null,
+				})
+				.getRawOne();
+
 			const newAttestation = await dcartDataSource
 				.getRepository(Attestation)
 				.save({
@@ -101,6 +112,9 @@ export const attestationController = {
 					[mapId ? "map" : "block"]: parentToAddAttestations,
 					color: colorToAdd,
 					lastActivity: new Date(),
+					position: attestationLastPosition.maxPosition
+						? attestationLastPosition.maxPosition + 1
+						: 1,
 				});
 
 			if (customPointsArray && customPointsArray.length > 0) {
@@ -140,6 +154,45 @@ export const attestationController = {
 		try {
 			const { id } = req.params;
 			const { color, icon, mapId, blockId, customPointsArray } = req.body;
+			const { position } = req.query;
+
+			if (position) {
+				const pointSetId = id;
+
+				let whereBody = {};
+				if (mapId && !blockId) {
+					whereBody = { map: { id: mapId } };
+				}
+				if (blockId && !mapId) {
+					whereBody = { block: { id: blockId } };
+				}
+
+				const allPointSets = await dcartDataSource
+					.getRepository(Attestation)
+					.find({
+						where: whereBody,
+						order: { position: "ASC" },
+					});
+
+				const oldIndex = allPointSets.findIndex(
+					(pointSet) => pointSet.id.toString() === pointSetId.toString(),
+				);
+				if (oldIndex === -1) {
+					res.status(404).json("Le jeu d'attestations n'existe pas");
+					return;
+				}
+				const newIndex = Number.parseInt(position as string, 10) - 1;
+
+				const newOrder = arrayMove(allPointSets, oldIndex, newIndex);
+
+				for (let i = 0; i < newOrder.length; i++) {
+					newOrder[i].position = i + 1;
+				}
+
+				await dcartDataSource.getRepository(Attestation).save(newOrder);
+				res.status(200).json("Ordre des attestations mis à jour");
+				return;
+			}
 
 			const parentRepository = mapId
 				? dcartDataSource.getRepository(MapContent)
@@ -239,6 +292,67 @@ export const attestationController = {
 			}
 
 			res.status(200).json("Le jeu d'attestations a bien été modifié");
+		} catch (error) {
+			handleError(res, error as Error);
+		}
+	},
+
+	cleanAttestationList: async (req: Request, res: Response): Promise<void> => {
+		try {
+			const { id } = req.params;
+			const { mapType, pointType } = req.query;
+
+			const attestationListToUpdate = await dcartDataSource
+				.getRepository(Attestation)
+				.findOne({ where: { id }, relations: ["map", "block"] });
+			if (!attestationListToUpdate) {
+				res.status(404).json("Le jeu d'attestations n'existe pas");
+				return;
+			}
+
+			// vider le champ attestationIds
+			if (pointType === "bdd") {
+				attestationListToUpdate.attestationIds = "";
+				await dcartDataSource
+					.getRepository(Attestation)
+					.save(attestationListToUpdate);
+
+				// mise à jour de la date de dernière activité de la carte préconstruite
+				if (mapType === "map") {
+					await dcartDataSource
+						.getRepository(MapContent)
+						.update(attestationListToUpdate.map?.id as string, {
+							updatedAt: new Date(),
+						});
+				}
+			}
+
+			// supprimer tous les points associés
+			if (pointType === "custom") {
+				await dcartDataSource
+					.getRepository(Point)
+					.delete({ attestation: attestationListToUpdate });
+			}
+
+			if (mapType === "storymap") {
+				const blockToUpdate = await dcartDataSource
+					.getRepository(Block)
+					.findOne({
+						where: { id: attestationListToUpdate.block?.id },
+						relations: { storymap: true },
+					});
+
+				// mise à jour de la date de dernière activité
+				await dcartDataSource
+					.getRepository(Storymap)
+					.update(blockToUpdate?.storymap.id as string, {
+						updatedAt: new Date(),
+					});
+			}
+
+			res
+				.status(200)
+				.json("Le jeu d'attestations a bien été vidé de ses points");
 		} catch (error) {
 			handleError(res, error as Error);
 		}

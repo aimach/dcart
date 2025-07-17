@@ -5,7 +5,7 @@ import { Block } from "../../../entities/storymap/Block";
 // import des services
 import { dcartDataSource, mapDataSource } from "../../../dataSource/dataSource";
 import {
-	getAttestationsBySourceId,
+	getAttestationsBySourceIdWithFilters,
 	getSourcesQueryWithDetails,
 	getSourcesQueryWithoutDetails,
 } from "../../../utils/query/sourceQueryString";
@@ -210,6 +210,9 @@ export const sourceController = {
 				const { attestations } = mapInfos as MapContent;
 				results = await Promise.all(
 					attestations.map(async (attestation: Attestation) => {
+						if (!attestation.attestationIds) {
+							return [];
+						}
 						const sqlQuery = getSourcesQueryWithDetails(
 							attestation.attestationIds,
 							queryLocalisation,
@@ -475,6 +478,7 @@ export const sourceController = {
 								shape: attestation.icon?.name_en,
 								layerNamefr: attestation.name_fr,
 								layerNameen: attestation.name_en,
+								position: attestation.position,
 							};
 						});
 						return sortedResults;
@@ -626,9 +630,54 @@ export const sourceController = {
 		try {
 			// on récupère params et query
 			const { sourceId } = req.params;
+			const { locationId, elementId, greek, semitic, ante, post } = req.body;
+
+			// on prépare les query des filtres
+			let queryLocalisation = "";
+			const maxValue = null;
+			const minValue = null;
+			let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+			let queryIncludedElements = "";
+
+			if (locationId) {
+				// s'il existe des params, on remplace les valeurs par celles des params
+				queryLocalisation = locationId
+					? getQueryStringForLocalisationFilter(
+							locationId as string,
+							"greatRegion",
+						)
+					: queryLocalisation;
+			}
+
+			if (ante !== undefined || post !== undefined) {
+				const maxValue = ante !== undefined ? ante.toString() : null;
+				const minValue = post !== undefined ? post.toString() : null;
+				queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+			}
+
+			if (elementId) {
+				// ici se fait la récupération des épithètes
+				queryIncludedElements = getQueryStringForIncludedElements(
+					"exploration",
+					elementId as string,
+				);
+			}
+
+			let queryLanguage = "";
+			if (greek) {
+				queryLanguage = getQueryStringForLanguage("greek", queryLanguage);
+			}
+			if (semitic) {
+				queryLanguage = getQueryStringForLanguage("semitic", queryLanguage);
+			}
 
 			// on récupère le texte de la requête SQL
-			const sqlQuery = getAttestationsBySourceId();
+			const sqlQuery = getAttestationsBySourceIdWithFilters(
+				queryLocalisation,
+				queryDatation,
+				queryIncludedElements,
+				queryLanguage,
+			);
 			const sourceWithAttestations = await mapDataSource.query(sqlQuery, [
 				sourceId,
 			]);

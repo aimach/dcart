@@ -20,6 +20,8 @@ import {
 import type { OptionType } from "../../../../utils/types/commonTypes";
 // import du style
 import style from "../introForm/introForm.module.scss";
+// import des icônes
+import { CircleAlert } from "lucide-react";
 
 const BuiltElementFilterForm = () => {
 	const { translation, language } = useTranslation();
@@ -29,14 +31,18 @@ const BuiltElementFilterForm = () => {
 
 	const { mapInfos, setMapInfos } = useMapFormStore();
 
+	const noPointsInMap = mapInfos?.attestations.every(
+		(attestation) => attestation.attestationIds.length === 0,
+	);
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies: forcer le rechargement des options d'éléments
 	useEffect(() => {
 		const elementFilter = isSelectedFilterInThisMap(mapInfos, "element");
 		if (elementFilter?.options?.solution === "manual") {
 			const getElementsOptionsByAttestationIds = async () => {
-				const attestationIdsArray = mapInfos?.attestations.map(
-					(attestation) => attestation.attestationIds,
-				);
+				const attestationIdsArray = mapInfos?.attestations
+					.filter((attestation) => attestation.attestationIds !== "")
+					.map((attestation) => attestation.attestationIds);
 
 				const allAttestationsIds = attestationIdsArray?.join(",").split(",");
 				const uniqueAttestationIds = new Set(allAttestationsIds);
@@ -46,6 +52,7 @@ const BuiltElementFilterForm = () => {
 				);
 
 				const allElementsOptions = await getElementOptions(
+					mapInfos,
 					allPoints,
 					language,
 					false,
@@ -86,6 +93,15 @@ const BuiltElementFilterForm = () => {
 			<h4>
 				{translation[language].backoffice.mapFormPage.filterForm.element.title}
 			</h4>
+			{noPointsInMap && (
+				<div className={style.alertContainer}>
+					<CircleAlert color="#9d2121" />
+					<p>
+						Attention ! Aucun élément n'est accessible. Avez-vous chargé des
+						points dans la carte ?
+					</p>
+				</div>
+			)}
 			<div className={style.commonFormInputContainer}>
 				<LabelComponent
 					htmlFor="basic"
@@ -132,9 +148,16 @@ const BuiltElementFilterForm = () => {
 					/>
 				</div>
 			</div>
-			{selectedOption === "manual" && (
-				<SelectElementForm elementOptions={elementOptions} />
-			)}
+			{selectedOption === "manual" ? (
+				noPointsInMap ? (
+					<div className={style.alertContainer}>
+						<CircleAlert color="#9d2121" />
+						<p>Pas d'élément disponible pour construire le filtre.</p>
+					</div>
+				) : (
+					<SelectElementForm elementOptions={elementOptions} />
+				)
+			) : null}
 		</form>
 	);
 };

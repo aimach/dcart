@@ -19,6 +19,7 @@ import type {
 import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
+import { map } from "leaflet";
 
 /**
  * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
@@ -584,11 +585,13 @@ const getMinAndMaxElementNumbers = (
 
 /**
  * Fonction qui renvoie la liste des options d'éléments pour le select
+ * @param {MapInfoType | null} mapInfos - Les informations de la carte
  * @param {PointType[]} allPoints - Les points
  * @param {Language} language - La langue sélectionnée par l'utilisateur
  * @param {boolean} isWithoutTheonym - Un booléen
  */
 const getElementOptions = async (
+	mapInfos: MapInfoType | null,
 	allPoints: PointType[],
 	language: Language,
 	isWithoutTheonym: boolean,
@@ -599,8 +602,15 @@ const getElementOptions = async (
 	// récupération des divinités de la BDD MAP
 	const allDivinities = await getAllDivinities();
 
-	// extraction des éléments depuis les formules des points
-	const allElements = getAllElementsFromPoints(allPoints);
+	let allElements: ElementType[] = [];
+
+	if (mapInfos) {
+		// extraction des éléments depuis les formules des points
+		allElements = getAllElementsFromPoints(allPoints);
+	} else {
+		// récupération de tous les éléments dans la BDD
+		allElements = allDivinities;
+	}
 
 	let filteredElements = allElements;
 
@@ -614,15 +624,28 @@ const getElementOptions = async (
 
 	// formattage des options pour le select
 	const formatedElementOptions: OptionType[] = filteredElements
-		.map((option) => ({
-			value: option.element_id,
-			label: `${option[`element_nom_${language}`]} (${option.etat_absolu})`,
-		}))
+		.map((option) => {
+			if (mapInfos) {
+				return {
+					value: option.element_id,
+					label: `${option[`element_nom_${language}`]} (${option.etat_absolu})`,
+					nom_fr: `${option.element_nom_fr} (${option.etat_absolu})`,
+					nom_en: `${option.element_nom_en} (${option.etat_absolu})`,
+				};
+			}
+			return {
+				value: option.id,
+				label: `${option[`nom_${language}`]} (${option.etat_absolu})`,
+				nom_fr: `${option.nom_fr} (${option.etat_absolu})`,
+				nom_en: `${option.nom_en} (${option.etat_absolu})`,
+			};
+		})
 		.sort((a, b) => a.label.localeCompare(b.label));
 
 	if (isForBackoffice) {
 		return formatedElementOptions;
 	}
+
 	if (filterOptionsStore.hasFilteredPoints) {
 		// si des points sont filtrés, on compare avec les initiaux et on disabled ceux qui sont absents
 		const initialElementOptions = filterOptionsStore.initialElementOptions;

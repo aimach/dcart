@@ -136,7 +136,7 @@ AND localisation_source.longitude IS NOT NULL
 AND attestation.id_etat_fiche = 4 
 ${queryLocalisation} 
 ${queryLanguage} 
-${queryDatation} -- ajouter ici le filtre des dates
+${queryDatation} 
 GROUP BY 
   localisation_source.latitude,
 	localisation_source.longitude, 
@@ -375,7 +375,12 @@ GROUP BY
  * La requête agrège les attestations et leurs éléments, agents et métadonnées correspondants.
  * @returns Une chaîne de caractères contenant la requête SQL.
  */
-export const getAttestationsBySourceId = () => {
+export const getAttestationsBySourceIdWithFilters = (
+	queryLocalisation: string,
+	queryDatation: string,
+	queryIncludedElements: string,
+	queryLanguage: string,
+) => {
 	return `
 -- on récupère toutes les attestations avec les éléments correspondants
 WITH attestation_with_elements AS (
@@ -443,6 +448,7 @@ sources_with_attestations AS (
   JOIN attestation_with_elements ON attestation.id = attestation_with_elements.id_attestation
   JOIN formule ON formule.attestation_id = attestation.id
   LEFT JOIN agent ON agent.id_attestation = attestation.id
+  ${queryIncludedElements}
 )
 
 
@@ -451,7 +457,20 @@ SELECT
   json_agg(DISTINCT sources_with_attestations.attestations) as attestations
   FROM source
 JOIN sources_with_attestations ON source.id = sources_with_attestations.source_id 
+INNER JOIN attestation ON attestation.ID_source = source.ID
+LEFT JOIN localisation AS localisation_source ON
+  (
+    (source.localisation_origine_id = localisation_source.id)
+    OR
+    (source.localisation_decouverte_id = localisation_source.id)
+  )
+INNER JOIN grande_region ON grande_region.ID = localisation_source.grande_region_ID
+LEFT JOIN source_langue ON source_langue.ID_source = attestation.ID_source
+LEFT JOIN datation ON datation.ID = source.datation_ID
 WHERE source.id = $1
+${queryLocalisation} 
+${queryLanguage} 
+${queryDatation} 
 GROUP BY source.id
 `;
 };

@@ -37,8 +37,8 @@
 		"selection": "Sélection",
 		"seeSources": "Voir les sources",
 		"seeAll": "Tout voir",
-		"epithet": "Epithète",
-		"divinity": "Divinité",
+		"epithet": "Qualification",
+		"divinity": "Nom divin",
 		"gender": "Genre",
 		"activity": "Activité",
 		"doughnut": "Donut",
@@ -52,6 +52,7 @@
 		"cancel": "Annuler",
 		"publish": "Publier",
 		"unpublish": "Dépublier",
+		"clean": "Supprimer les points du jeu de points",
 		"editDisabled": "Modifier désactivé",
 		"search": "Rechercher",
 		"copyRequest": "Copier la requête SQL",
@@ -92,7 +93,7 @@
 		"firstContent": "J'aimerais voir les sources de",
 		"secondContent": "sur",
 		"chooseRegion": "la région",
-		"chooseDivinity": "la divinité",
+		"chooseDivinity": "l'élément",
 		"postDate": "date début",
 		"anteDate": "date fin",
 		"yes": "oui",
@@ -105,6 +106,10 @@
 			"yourself": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible !"
 		},
 		"modifyUserStatusText": "Êtes-vous sûr de vouloir modifier le statut de cet utilisateur ?",
+		"cleanPointSetText": {
+			"bdd": "Êtes-vous sûr de vouloir supprimer tous les points de la BDD de ce jeu de points ?",
+			"custom": "Êtes-vous sûr de vouloir supprimer tous les points personnalisés de ce jeu de points ?"
+		},
 		"deleteTagText": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Si une carte ou une storymap est associée à cette seule étiquette, elle ne sera plus visible par les utilisateurs.",
 		"associatedStorymap": "Voir la storymap associée",
 		"associatedMap": "Voir la carte associée"
@@ -129,7 +134,7 @@
 		"aside": {
 			"filters": "Filtres",
 			"sources": "Sources",
-			"epithet": "Epithète",
+			"epithet": "Qualification",
 			"noFilter": "Pas de filtre défini",
 			"location": "Localisation",
 			"element": "Element",
@@ -164,7 +169,7 @@
 			"noAgent": "Pas d'agent",
 			"noDesignation": "non précisé",
 			"noSourceMaterialDefined": "Aucun support de source défini",
-			"introContent": "Ce panneau vous permet d ’explorer en détail les données associée au point que vous avez sélectionné sur la carte. Vous y trouverez des statistiques spécifiques, comme un aperçu chiffré des divinités ou épithètes présents dans les sources ou consulter les données relatives aux agents : genre, activité, etc. Vous pouvez également y trouver la liste complète des sources et attestations associées liées à ce point avec de nombreux détails : date, version originale, traduction, agents...",
+			"introContent": "Ce panneau vous permet d ’explorer en détail les données associée au point que vous avez sélectionné sur la carte. Vous y trouverez des statistiques spécifiques, comme un aperçu chiffré des noms divins ou qualifications présents dans les sources ou consulter les données relatives aux agents : genre, activité, etc. Vous pouvez également y trouver la liste complète des sources et attestations associées liées à ce point avec de nombreux détails : date, version originale, traduction, agents...",
 			"dontShowAgain": "ne plus afficher ce message"
 		}
 	},
@@ -172,6 +177,7 @@
 		"createA": "Créer une",
 		"stillConnected": "Êtes-vous toujours connecté ?",
 		"disconnectInOneMinute": "Déconnexion dans 1 minute...",
+		"noPointInPointSet": "Aucun point chargé dans ce jeu",
 		"managementTable": {
 			"image": "Image",
 			"name": "Nom/Description",
@@ -202,10 +208,10 @@
 				},
 				"divinityInChart": {
 					"label": "Graphique des éléments",
-					"description": "Choisissez si vous souhaitez afficher le nombre des divinités ou le nombre des épithètes dans le graphique.",
+					"description": "Choisissez si vous souhaitez afficher le nombre des nom divins ou le nombre des qualilfications dans le graphique.",
 					"checkbox": {
-						"divinity": "Afficher le nombre de divinités",
-						"epithet": "Afficher le nombre d'épithètes"
+						"divinity": "Afficher le nombre de noms divins",
+						"epithet": "Afficher le nombre de qualifications"
 					}
 				}
 			},
@@ -222,8 +228,8 @@
 				"delete": "Supprimer",
 				"lastActivity": "Dernière modification",
 				"downloadCSV": "Charger le CSV",
-				"downloadBDDCSV": "Charger les points de la BDD",
-				"downloadCustomCSV": "Charger les points personnalisés"
+				"downloadBDDCSV": "Points de la BDD",
+				"downloadCustomCSV": "Points personnalisés"
 			},
 			"pointSetForm": {
 				"addNewPointSet": "Ajouter un nouveau jeu de points",
@@ -267,7 +273,7 @@
 					},
 					"manual": {
 						"label": "Manuelle",
-						"description": "Le filtre 'Elements' se présentera sous la forme de checkboxs à 2 niveaux : un premier niveau avec les théonymes et un second avec les épithètes. Ces deux niveaux sont à construire s sur-mesure ci-dessous"
+						"description": "Le filtre 'Elements' se présentera sous la forme de checkboxs à 2 niveaux : un premier niveau avec un élément et un second avec un ou plusieurs éléments. Ces deux niveaux sont à construire sur-mesure ci-dessous"
 					}
 				},
 				"location": {

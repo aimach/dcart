@@ -24,6 +24,7 @@ import {
 import type { Dispatch, SetStateAction } from "react";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { MultiValue } from "react-select";
+import type { GreatRegionType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./searchFormComponent.module.scss";
 
@@ -62,8 +63,16 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 		const fetchAllDatasForSearchForm = async () => {
 			// récupération des grandes régions
 			const allGreatRegions = await getAllGreatRegions();
+			const allGreatRegionsWithoutEmptyResult: GreatRegionType[] =
+				allGreatRegions.filter(
+					(region: GreatRegionType) =>
+						region.nom_fr !== "Chypre" &&
+						region.nom_fr !== "Iles britanniques" &&
+						region.nom_fr !== "Non pertinent" &&
+						region.nom_fr !== "Indéterminé",
+				);
 			const formatedGreatRegions: OptionType[] = formatDataForReactSelect(
-				allGreatRegions,
+				allGreatRegionsWithoutEmptyResult,
 				language,
 			);
 			setGreatRegions(formatedGreatRegions);

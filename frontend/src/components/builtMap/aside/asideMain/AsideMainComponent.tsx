@@ -47,16 +47,19 @@ const AsideMainComponent = () => {
 	}, [mapInfos?.id]);
 
 	useEffect(() => {
-		getSourceTypeOptions(mapInfos, allPoints, language);
-		getLocationOptions(mapInfos, allPoints, language);
-		getElementOptions(allPoints, language, false);
-		getAgentActivityOptions(mapInfos, allPoints, language);
-		getAgentStatusOptions(mapInfos, allPoints, language);
-		getAgentivityOptions(mapInfos, allPoints, language);
-		getSourceMaterialOptions(mapInfos, allPoints, language);
-		getAgentGenderOptions(mapInfos, allPoints);
-		getMinAndMaxElementNumbers(mapInfos, allPoints);
-		getLanguageOptions(mapInfos, allPoints);
+		const getAllOptionsForFilters = async () => {
+			getSourceTypeOptions(mapInfos, allPoints, language);
+			await getLocationOptions(mapInfos, allPoints, language);
+			getElementOptions(mapInfos, allPoints, language, false);
+			getAgentActivityOptions(mapInfos, allPoints, language);
+			getAgentStatusOptions(mapInfos, allPoints, language);
+			getAgentivityOptions(mapInfos, allPoints, language);
+			getSourceMaterialOptions(mapInfos, allPoints, language);
+			getAgentGenderOptions(mapInfos, allPoints);
+			getMinAndMaxElementNumbers(mapInfos, allPoints);
+			getLanguageOptions(mapInfos, allPoints);
+		};
+		getAllOptionsForFilters();
 	}, [mapInfos, allPoints, language]);
 
 	// définition du composant à rendre

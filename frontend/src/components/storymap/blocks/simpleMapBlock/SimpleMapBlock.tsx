@@ -75,11 +75,12 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	// récupérer les formes et les couleurs des attestations
 	const allColorsAndShapes = useMemo(() => {
 		return (blockContent.attestations ?? []).map(
-			({ name_fr, name_en, color, icon }) => ({
+			({ name_fr, name_en, color, icon, position }) => ({
 				name_fr,
 				name_en,
 				color: (color as MapColorType).code_hex,
 				shape: (icon as MapIconType).name_en,
+				position,
 			}),
 		);
 	}, [blockContent.attestations]);
@@ -167,16 +168,18 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 						</MarkerClusterGroup>
 						{allColorsAndShapes.length > 0 && (
 							<LayersControl position="bottomright" collapsed={false}>
-								{allColorsAndShapes.map((layer) => {
-									const icon =
-										getShapeForLayerName(layer.shape, layer.color) +
-										layer[`name_${language}`];
-									return (
-										<LayersControl.Overlay name={icon} key={icon}>
-											<LayerGroup key={icon} />
-										</LayersControl.Overlay>
-									);
-								})}
+								{allColorsAndShapes
+									.sort((a, b) => a.position - b.position)
+									.map((layer) => {
+										const icon =
+											getShapeForLayerName(layer.shape, layer.color) +
+											layer[`name_${language}`];
+										return (
+											<LayersControl.Overlay name={icon} key={icon}>
+												<LayerGroup key={icon} />
+											</LayersControl.Overlay>
+										);
+									})}
 							</LayersControl>
 						)}
 						<ZoomControl position="topright" />

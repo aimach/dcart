@@ -14,9 +14,10 @@ import {
 	onMultiSelectChange,
 } from "../../../../utils/functions/filter";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
-import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
+// import du style
+import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 
 /**
  * Affiche le filtre des éléments
@@ -183,6 +184,29 @@ const ElementFilterComponent = () => {
 				);
 		}
 	}
+	return (
+		<div>
+			<Select
+				styles={singleSelectInLineStyle}
+				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres
+				options={initialElementOptions}
+				defaultValue={getDefaultValues}
+				delimiter="|"
+				isMulti
+				onChange={(newValue) =>
+					onMultiSelectChange(
+						newValue,
+						"elementId",
+						setUserFilters,
+						userFilters,
+						setElementNameValues,
+					)
+				}
+				placeholder={translation[language].mapPage.aside.searchForElement}
+				isClearable={false}
+			/>
+		</div>
+	);
 };
 
 export default ElementFilterComponent;

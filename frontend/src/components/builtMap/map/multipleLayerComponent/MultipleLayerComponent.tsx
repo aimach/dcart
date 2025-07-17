@@ -44,6 +44,7 @@ const MultipleLayerComponent = ({
 			name_en: string;
 			shape: string | null;
 			color: string | null;
+			position: number;
 		}[] = [];
 
 		allMemoizedPoints.map((result: PointType) => {
@@ -58,18 +59,21 @@ const MultipleLayerComponent = ({
 					name_en: result.layerNameen as string,
 					shape: result.shape ?? null,
 					color: result.color ?? null,
+					position: result.position,
 				});
 			}
 		});
-		return layersArray.map((layer) => {
-			return {
-				...layer,
-				shapeCode: getShapeForLayerName(
-					layer.shape as string,
-					layer.color as string,
-				),
-			};
-		});
+		return layersArray
+			.sort((a, b) => a.position - b.position)
+			.map((layer) => {
+				return {
+					...layer,
+					shapeCode: getShapeForLayerName(
+						layer.shape as string,
+						layer.color as string,
+					),
+				};
+			});
 	}, [allMemoizedPoints, language]);
 
 	const allResultsWithLayerFilter = useMemo(() => {
@@ -82,10 +86,11 @@ const MultipleLayerComponent = ({
 				allLayersWithOnlySVG.some(
 					(layerName) =>
 						layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
-						point[`layerName${language}`],
+						point.layerNamefr,
 				)
-			)
+			) {
 				return point;
+			}
 		});
 	}, [allLayers, allMemoizedPoints, language]);
 

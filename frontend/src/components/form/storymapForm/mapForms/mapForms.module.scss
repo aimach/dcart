@@ -245,3 +245,8 @@
     @include m.flexbox(flex, row, nowrap, space-between, center);
     gap: v.$space-s;
 }
+
+.downloadAndCleanContainer {
+    @include m.flexbox(flex, row, nowrap, space-between, center);
+    gap: v.$space-s;
+}

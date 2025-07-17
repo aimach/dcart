@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useMemo, useState } from "react";
+import { useEffect, useState } from "react";
 import { Link, useNavigate } from "react-router";
 // import des composants
 import ImageWithLink from "../common/ImageWithLink";
@@ -20,6 +20,8 @@ import { ChevronRightCircle, X } from "lucide-react";
 import labexLogo from "../../assets/logo_SMS.png";
 import HNLogo from "../../assets/huma_num_logo.png";
 import mapLogo from "../../assets/map_logo.png";
+import ut2jLogo from "../../assets/ut2j_logo.png";
+import plhLogo from "../../assets/logo-PLH.jpg";
 
 interface AppMenuComponentProps {
 	setMenuIsOpen: Dispatch<SetStateAction<boolean>>;
@@ -119,9 +121,23 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 					/>
 					<ImageWithLink
 						type="link"
-						link="https://map-polytheisms.huma-num.fr/"
+						link="https://base-map-polytheisms.huma-num.fr/"
 						imgSrc={mapLogo}
-						imgAlt="erc map logo"
+						imgAlt="bdd map logo"
+						imgWidth={isDesktop ? 100 : 70}
+					/>
+					<ImageWithLink
+						type="link"
+						link="https://www.univ-tlse2.fr/"
+						imgSrc={ut2jLogo}
+						imgAlt="ut2j logo"
+						imgWidth={isDesktop ? 100 : 70}
+					/>
+					<ImageWithLink
+						type="link"
+						link="https://plh.univ-tlse2.fr/"
+						imgSrc={plhLogo}
+						imgAlt="plh logo"
 						imgWidth={isDesktop ? 100 : 70}
 					/>
 				</section>

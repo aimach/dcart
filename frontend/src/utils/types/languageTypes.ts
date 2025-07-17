@@ -54,6 +54,7 @@ type LanguageObject = {
 		cancel: string;
 		publish: string;
 		unpublish: string;
+		clean: string;
 		editDisabled: string;
 		search: string;
 		copyRequest: string;
@@ -104,6 +105,7 @@ type LanguageObject = {
 		deteleMapText: string;
 		deleteUserText: { another: string };
 		modifyUserStatusText: string;
+		cleanPointSetText: string;
 		deleteTagText: string;
 		associatedStorymap: string;
 		associatedMap: string;
@@ -171,6 +173,7 @@ type LanguageObject = {
 		createA: string;
 		stillConnected: string;
 		disconnectInOneMinute: string;
+		noPointInPointSet: string;
 		managementTable: {
 			image: string;
 			name: string;

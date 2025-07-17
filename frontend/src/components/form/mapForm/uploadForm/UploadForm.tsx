@@ -4,18 +4,22 @@ import { useLocation } from "react-router";
 // import des composants
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import PointSetUploadForm from "../pointSetUploadForm/PointSetUploadForm";
+import ModalComponent from "../../../common/modal/ModalComponent";
+import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
+import TooltipComponent from "../../../common/tooltip/TooltipComponent";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 import { useShallow } from "zustand/shallow";
-import PointSetUploadForm from "../pointSetUploadForm/PointSetUploadForm";
 import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
 import { deletePointSet } from "../../../../utils/api/builtMap/deleteRequests";
 import {
 	updateMap,
 	updatePointSet,
+	updatePointSetPosition,
 } from "../../../../utils/api/builtMap/putRequests";
 import {
 	notifyCreateSuccess,
@@ -33,10 +37,19 @@ import type {
 	MapInfoType,
 	PointSetType,
 } from "../../../../utils/types/mapTypes";
+import { displayBrushCleaningButton } from "../../../../utils/functions/common";
 // import du style
 import style from "../introForm/introForm.module.scss";
-// import des images
-import { CircleHelp, FileDown, Pen, PlusCircle, X } from "lucide-react";
+// import des images et icônes
+import {
+	CircleAlert,
+	CircleHelp,
+	FileDown,
+	Pen,
+	PlusCircle,
+	X,
+} from "lucide-react";
+import { map } from "leaflet";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -48,6 +61,14 @@ const UploadForm = () => {
 	// récupération des données des stores
 	const { mapInfos, setMapInfos, step } = useMapFormStore(
 		useShallow((state) => state),
+	);
+
+	const [reload, setReload] = useState(false);
+
+	// définition de l'état d'affichage de la modale
+	const [isModalOpen, setIsModalOpen] = useState<boolean>(false);
+	const [pointSetIdToClean, setPointSetIdToClean] = useState<string | null>(
+		null,
 	);
 
 	// récupération des données de l'URL
@@ -113,6 +134,17 @@ const UploadForm = () => {
 		}
 	}, [mapInfos]);
 
+	const [positionOptions, setPositionOptions] = useState<number[]>([]);
+	useEffect(() => {
+		if (mapInfos?.attestations) {
+			const positions = mapInfos.attestations.map(
+				(pointSet) => pointSet.position,
+			);
+			const sortedPositions = positions.sort((a, b) => a - b);
+			setPositionOptions(sortedPositions);
+		}
+	}, [mapInfos?.attestations]);
+
 	const handleDeletePointSet = async (pointSetId: string) => {
 		await deletePointSet(pointSetId as string);
 		const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
@@ -158,8 +190,41 @@ const UploadForm = () => {
 		} as MapInfoType);
 	};
 
+	const handlePointSetPosition = async (
+		pointSetId: string,
+		newPosition: string,
+	) => {
+		const response = await updatePointSetPosition(
+			pointSetId,
+			newPosition,
+			mapInfos?.id as string,
+			"map",
+		);
+		if (response?.status === 200) {
+			const newMapInfos = await getOneMapInfosById(mapInfos?.id as string);
+			setMapInfos(newMapInfos);
+			notifyEditSuccess("Position du jeu de points", true);
+		}
+	};
+
 	return (
-		<section className={style.uploadFormContainer}>
+		<section className={style.uploadFormContainer} key={reload.toString()}>
+			{isModalOpen && (
+				<ModalComponent
+					onClose={() => {
+						setIsModalOpen(false);
+					}}
+				>
+					<UpdatePointSetContent
+						idToUpdate={pointSetIdToClean as string}
+						setIsModalOpen={setIsModalOpen}
+						reload={reload}
+						setReload={setReload}
+						mapType="map"
+						pointType="bdd"
+					/>
+				</ModalComponent>
+			)}
 			<div className={style.titleAndHelpContainer}>
 				<h4>{translation[language].backoffice.mapFormPage.addMapPoints}</h4>
 				{isAlreadyAPointSet && (
@@ -202,6 +267,7 @@ const UploadForm = () => {
 					<table className={style.pointSetTable}>
 						<thead>
 							<tr>
+								<th scope="col">Position</th>
 								<th scope="col">
 									{
 										translation[language].backoffice.mapFormPage.pointSetTable
@@ -236,69 +302,129 @@ const UploadForm = () => {
 							</tr>
 						</thead>
 						<tbody>
-							{mapInfos.attestations.map((pointSet) => {
-								const icon = getShapeForLayerName(
-									(pointSet.icon as MapIconType)?.name_en,
-									(pointSet.color as MapColorType)?.code_hex,
-								);
-								return (
-									<tr key={pointSet.id} className={style.pointSetTableRow}>
-										<td>{pointSet.name_fr}</td>
-										<td>{pointSet.name_en}</td>
-										<td>
-											<p
-												// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
-												dangerouslySetInnerHTML={{
-													__html: icon,
-												}}
-											/>
-										</td>
-										<td>
-											<FileDown
-												onClick={() =>
-													handleCSVDownload(
-														pointSet,
-														`${pointSet.name_fr}.csv`,
-														"mapPoints",
-													)
-												}
-												cursor={"pointer"}
-											/>
-										</td>
-										<td>
-											{pointSet.lastActivity
-												? new Date(pointSet.lastActivity).toLocaleDateString(
-														language,
-														{
-															year: "numeric",
-															month: "long",
-															day: "numeric",
-														},
-													)
-												: null}
-										</td>
-										<td>
-											<Pen
-												onClick={() =>
-													handleUpdatePointSet(pointSet.id as string)
-												}
-												onKeyDown={() =>
-													handleUpdatePointSet(pointSet.id as string)
-												}
-											/>
-											<X
-												onClick={() =>
-													handleDeletePointSet(pointSet.id as string)
-												}
-												onKeyDown={() =>
-													handleDeletePointSet(pointSet.id as string)
-												}
-												color="#9d2121"
-											/>
-										</td>
-									</tr>
-								);
-							})}
+							{mapInfos.attestations
+								.sort((a, b) => a.position - b.position)
+								.map((pointSet) => {
+									const icon = getShapeForLayerName(
+										(pointSet.icon as MapIconType)?.name_en,
+										(pointSet.color as MapColorType)?.code_hex,
+									);
+									return (
+										<>
+											<tr key={pointSet.id} className={style.pointSetTableRow}>
+												<td>
+													{/* Sélecteur de position */}
+													<select
+														name="position"
+														id="position"
+														onChange={(event) => {
+															handlePointSetPosition(
+																pointSet.id as string,
+																event.target.value,
+															);
+														}}
+														value={pointSet.position}
+													>
+														{positionOptions.map((position) => (
+															<option key={position} value={position}>
+																{position}
+															</option>
+														))}
+													</select>
+												</td>
+												<td>{pointSet.name_fr}</td>
+												<td>{pointSet.name_en}</td>
+												<td>
+													<p
+														// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
+														dangerouslySetInnerHTML={{
+															__html: icon,
+														}}
+													/>
+												</td>
+												<td>
+													{pointSet?.attestationIds ? (
+														<FileDown
+															onClick={() =>
+																handleCSVDownload(
+																	pointSet,
+																	`${pointSet.name_fr}.csv`,
+																	"mapPoints",
+																)
+															}
+															cursor={
+																pointSet?.attestationIds
+																	? "pointer"
+																	: "not-allowed"
+															}
+															color={
+																pointSet?.attestationIds ? "black" : "grey"
+															}
+														/>
+													) : (
+														<p style={{ textAlign: "center" }}>
+															<CircleAlert color="#9d2121" />{" "}
+															<p style={{ color: "#9d2121" }}>
+																{
+																	translation[language].backoffice
+																		.noPointInPointSet
+																}
+															</p>
+														</p>
+													)}
+												</td>
+												<td>
+													{pointSet.lastActivity
+														? new Date(
+																pointSet.lastActivity,
+															).toLocaleDateString(language, {
+																year: "numeric",
+																month: "long",
+																day: "numeric",
+															})
+														: null}
+												</td>
+												<td>
+													<TooltipComponent
+														text={translation[language].button.clean}
+													>
+														{displayBrushCleaningButton(
+															pointSet.id as string,
+															pointSet.attestationIds === "",
+															setPointSetIdToClean,
+															setIsModalOpen,
+														)}
+													</TooltipComponent>
+													<TooltipComponent
+														text={translation[language].button.edit}
+													>
+														<Pen
+															onClick={() =>
+																handleUpdatePointSet(pointSet.id as string)
+															}
+															onKeyDown={() =>
+																handleUpdatePointSet(pointSet.id as string)
+															}
+														/>
+													</TooltipComponent>
+													<TooltipComponent
+														text={translation[language].button.delete}
+													>
+														<X
+															onClick={() =>
+																handleDeletePointSet(pointSet.id as string)
+															}
+															onKeyDown={() =>
+																handleDeletePointSet(pointSet.id as string)
+															}
+															color="#9d2121"
+														/>
+													</TooltipComponent>
+												</td>
+											</tr>
+										</>
+									);
+								})}
 						</tbody>
 					</table>
 					<div>

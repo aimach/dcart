@@ -23,6 +23,7 @@ import {
 import { getAllAttestationsFromSourceId } from "../../../../utils/api/builtMap/getRequests";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { isSelectedFilterInThisMap } from "../../../../utils/functions/filter";
+import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 // import du style
 import style from "./tabComponent.module.scss";
 // import des icônes
@@ -40,6 +41,8 @@ type SourceDetailsComponentProps = {
 const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 	// récupération des données de traduction
 	const { language, translation } = useTranslation();
+
+	const { userFilters } = useMapFiltersStore();
 
 	// récupération de l'id de la carte en cours
 	const { mapId, mapSlug } = useParams();
@@ -61,6 +64,7 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 		const fetchAllAttestations = async () => {
 			const allAttestations = await getAllAttestationsFromSourceId(
 				source.source_id.toString(),
+				userFilters,
 			);
 			setAttestations(allAttestations);
 		};

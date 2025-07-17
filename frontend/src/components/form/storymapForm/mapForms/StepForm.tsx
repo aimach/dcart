@@ -9,6 +9,9 @@ import SelectOptionsComponent from "../../../common/input/SelectOptionsComponent
 import LabelComponent from "../../inputComponent/LabelComponent";
 import EditorComponent from "../wysiwygBlock/EditorComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import TooltipComponent from "../../../common/tooltip/TooltipComponent";
+import ModalComponent from "../../../common/modal/ModalComponent";
+import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
 // import du contexte
 import { IconOptionsContext } from "../../../../context/IconOptionsContext";
 // import des custom hooks
@@ -28,6 +31,7 @@ import {
 	parseCSVFile,
 } from "../../../../utils/functions/csv";
 import { notifyError } from "../../../../utils/functions/toast";
+import { displayBrushCleaningButton } from "../../../../utils/functions/common";
 // import des types
 import type {
 	allInputsType,
@@ -108,6 +112,11 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 				} as PointSetType)
 			: null,
 	);
+	const [pointSetIdToClean, setPointSetIdToClean] = useState<string | null>(
+		null,
+	);
+	const [pointType, setPointType] = useState<"bdd" | "custom">("bdd");
+	const [isModalOpen, setIsModalOpen] = useState(false);
 
 	const handleBDDPointFileUpload = (event: ChangeEvent) => {
 		parseCSVFile({
@@ -289,6 +298,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 			const defaultPointSet = block?.attestations[0];
 			setPointSet({
 				...pointSet,
+				id: defaultPointSet?.id,
 				attestationIds: defaultPointSet?.attestationIds,
 				color: (defaultPointSet?.color as MapColorType)?.id,
 				icon: (defaultPointSet?.icon as MapIconType)?.id,
@@ -323,6 +333,22 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 	return (
 		<section key={reload.toString()}>
 			{/* Utilisation de reload pour forcer le reset des wysiwyg */}
+			{isModalOpen && (
+				<ModalComponent
+					onClose={() => {
+						setIsModalOpen(false);
+					}}
+				>
+					<UpdatePointSetContent
+						idToUpdate={pointSetIdToClean as string}
+						setIsModalOpen={setIsModalOpen}
+						reload={reload}
+						setReload={setReload}
+						mapType="storymap"
+						pointType={pointType}
+					/>
+				</ModalComponent>
+			)}
 			<FormTitleComponent action={stepAction as string} translationKey="step" />
 			<form
 				onSubmit={handleSubmit(handlePointSubmit)}
@@ -438,15 +464,35 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 							</p>
 
 							{pointSet?.attestationIds && (
-								<FileDown
-									onClick={() =>
-										handleCSVDownload(
-											pointSet as PointSetType,
-											`${pointSet?.name_fr}-bdd.csv`,
-											"mapPoints",
-										)
-									}
-								/>
+								<div className={style.downloadAndCleanContainer}>
+									<TooltipComponent
+										text={
+											translation[language].backoffice.mapFormPage.pointSetTable
+												.downloadCSV
+										}
+									>
+										<FileDown
+											cursor={"pointer"}
+											onClick={() =>
+												handleCSVDownload(
+													pointSet as PointSetType,
+													`${pointSet?.name_fr}-bdd.csv`,
+													"mapPoints",
+												)
+											}
+										/>
+									</TooltipComponent>
+									<TooltipComponent text={translation[language].button.clean}>
+										{displayBrushCleaningButton(
+											pointSet.id as string,
+											false,
+											setPointSetIdToClean,
+											setIsModalOpen,
+											setPointType,
+											"bdd",
+										)}
+									</TooltipComponent>
+								</div>
 							)}
 						</div>
 					</div>
@@ -486,15 +532,35 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
 							</p>
 
 							{(pointSet?.customPointsArray?.length ?? 0) > 0 && (
-								<FileDown
-									onClick={() =>
-										handleCSVDownload(
-											pointSet as PointSetType,
-											`${pointSet?.name_fr}-custom.csv`,
-											"customPoints",
-										)
-									}
-								/>
+								<div className={style.downloadAndCleanContainer}>
+									<TooltipComponent
+										text={
+											translation[language].backoffice.mapFormPage.pointSetTable
+												.downloadCSV
+										}
+									>
+										<FileDown
+											cursor={"pointer"}
+											onClick={() =>
+												handleCSVDownload(
+													pointSet as PointSetType,
+													`${pointSet?.name_fr}-custom.csv`,
+													"customPoints",
+												)
+											}
+										/>
+									</TooltipComponent>
+									<TooltipComponent text={translation[language].button.clean}>
+										{displayBrushCleaningButton(
+											pointSet?.id as string,
+											false,
+											setPointSetIdToClean,
+											setIsModalOpen,
+											setPointType,
+											"custom",
+										)}
+									</TooltipComponent>
+								</div>
 							)}
 						</div>
 					</div>

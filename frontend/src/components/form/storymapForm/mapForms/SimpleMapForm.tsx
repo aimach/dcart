@@ -7,6 +7,9 @@ import ErrorComponent from "../../errorComponent/ErrorComponent";
 import FormTitleComponent from "../common/FormTitleComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import PointSetUploadForm from "../../mapForm/pointSetUploadForm/PointSetUploadForm";
+import TooltipComponent from "../../../common/tooltip/TooltipComponent";
+import ModalComponent from "../../../common/modal/ModalComponent";
+import UpdatePointSetContent from "../../../common/modal/UpdatePointSetContent";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -27,12 +30,16 @@ import {
 	notifyError,
 } from "../../../../utils/functions/toast";
 import { getShapeForLayerName } from "../../../../utils/functions/icons";
-import { updatePointSet } from "../../../../utils/api/builtMap/putRequests";
+import {
+	updatePointSet,
+	updatePointSetPosition,
+} from "../../../../utils/api/builtMap/putRequests";
 import {
 	addLangageBetweenBrackets,
 	removeLang2Inputs,
 } from "../../../../utils/functions/storymap";
 import { handleCSVDownload } from "../../../../utils/functions/csv";
+import { displayBrushCleaningButton } from "../../../../utils/functions/common";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -87,6 +94,12 @@ const SimpleMapForm = () => {
 	// gestion de l'upload du fichier csv
 	const [pointSet, setPointSet] = useState<PointSetType | null>(null);
 	const [isAlreadyAPointSet, setIsAlreadyAPointSet] = useState(false);
+
+	const [pointSetIdToClean, setPointSetIdToClean] = useState<string | null>(
+		null,
+	);
+	const [isModalOpen, setIsModalOpen] = useState(false);
+	const [pointType, setPointType] = useState<"bdd" | "custom">("bdd");
 
 	useEffect(() => {
 		if (block?.attestations) {
@@ -155,6 +168,9 @@ const SimpleMapForm = () => {
 			pointSet?.customPointsArray &&
 			pointSet?.customPointsArray?.length > 0) ||
 		(pointSet?.attestationIds && !pointSet?.customPointsArray) ||
+		(pointSet?.attestationIds &&
+			pointSet?.customPointsArray &&
+			pointSet?.customPointsArray.length === 0) ||
 		(pointSet?.attestationIds &&
 			pointSet?.customPointsArray &&
 			pointSet?.customPointsArray.length > 0);
@@ -250,8 +266,50 @@ const SimpleMapForm = () => {
 		}
 	}, [storymapInfos]);
 
+	const [positionOptions, setPositionOptions] = useState<number[]>([]);
+	useEffect(() => {
+		if (block?.attestations) {
+			const positions = block.attestations.map((pointSet) => pointSet.position);
+			const sortedPositions = positions.sort((a, b) => a - b);
+			setPositionOptions(sortedPositions);
+		}
+	}, [block?.attestations]);
+
+	const handlePointSetPosition = async (
+		pointSetId: string,
+		newPosition: string,
+	) => {
+		const response = await updatePointSetPosition(
+			pointSetId,
+			newPosition,
+			block?.id as string,
+			"block",
+		);
+		if (response?.status === 200) {
+			const newBlockInfos = await getBlockInfos(block?.id as string);
+			updateBlockContent(newBlockInfos);
+			notifyEditSuccess("Position du jeu de points", true);
+		}
+	};
+
 	return (
 		<>
+			{isModalOpen && (
+				<ModalComponent
+					onClose={() => {
+						setIsModalOpen(false);
+					}}
+				>
+					<UpdatePointSetContent
+						idToUpdate={pointSetIdToClean as string}
+						setIsModalOpen={setIsModalOpen}
+						reload={reload}
+						setReload={setReload}
+						mapType="storymap"
+						pointType={pointType}
+					/>
+				</ModalComponent>
+			)}
 			<FormTitleComponent
 				action={action as string}
 				translationKey="simple_map"
@@ -423,6 +481,7 @@ const SimpleMapForm = () => {
 							<table className={style.pointSetTable}>
 								<thead>
 									<tr>
+										<th scope="col">Position</th>
 										<th scope="col">
 											{`${
 												translation[language].backoffice.mapFormPage
@@ -465,93 +524,164 @@ const SimpleMapForm = () => {
 									</tr>
 								</thead>
 								<tbody>
-									{block.attestations.map((pointSet) => {
-										const icon = getShapeForLayerName(
-											(pointSet.icon as MapIconType)?.name_en,
-											(pointSet.color as MapColorType)?.code_hex,
-										);
-										const isCustomPointSet =
-											pointSet.customPointsArray &&
-											pointSet.customPointsArray.length > 0;
-										const isBDDPointSet =
-											pointSet.attestationIds && pointSet.attestationIds !== "";
-										return (
-											<tr key={pointSet.id} className={style.pointSetTableRow}>
-												<td>{pointSet.name_fr}</td>
-												{storymapInfos?.lang2 && <td>{pointSet.name_en}</td>}
-												<td>
-													<p
-														// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
-														dangerouslySetInnerHTML={{
-															__html: icon,
-														}}
-													/>
-												</td>
-												<td>
-													{isBDDPointSet ? (
-														<FileDown
-															onClick={() =>
-																handleCSVDownload(
-																	pointSet,
-																	`${pointSet.name_fr}-bdd.csv`,
-																	"mapPoints",
-																)
-															}
-															cursor={"pointer"}
+									{block.attestations
+										.sort((a, b) => a.position - b.position)
+										.map((pointSet) => {
+											const icon = getShapeForLayerName(
+												(pointSet.icon as MapIconType)?.name_en,
+												(pointSet.color as MapColorType)?.code_hex,
+											);
+											const isCustomPointSet =
+												pointSet.customPointsArray &&
+												pointSet.customPointsArray.length > 0;
+											const isBDDPointSet =
+												pointSet.attestationIds &&
+												pointSet.attestationIds !== "";
+											return (
+												<tr
+													key={pointSet.id}
+													className={style.pointSetTableRow}
+												>
+													<td>
+														{/* Sélecteur de position */}
+														<select
+															name="position"
+															id="position"
+															onChange={(event) => {
+																handlePointSetPosition(
+																	pointSet.id as string,
+																	event.target.value,
+																);
+															}}
+															value={pointSet.position}
+														>
+															{positionOptions.map((position) => (
+																<option key={position} value={position}>
+																	{position}
+																</option>
+															))}
+														</select>
+													</td>
+
+													<td>{pointSet.name_fr}</td>
+													{storymapInfos?.lang2 && <td>{pointSet.name_en}</td>}
+													<td>
+														<p
+															// biome-ignore lint/security/noDangerouslySetInnerHtml: le HTML est généré par le code
+															dangerouslySetInnerHTML={{
+																__html: icon,
+															}}
 														/>
-													) : (
-														<FileDown color="#a1afc4" />
-													)}
-												</td>
-												<td>
-													{isCustomPointSet ? (
-														<FileDown
-															onClick={() =>
-																handleCSVDownload(
-																	pointSet,
-																	`${pointSet.name_fr}-custom.csv`,
-																	"customPoints",
-																)
+													</td>
+													<td>
+														<TooltipComponent
+															text={
+																translation[language].backoffice.mapFormPage
+																	.pointSetTable.downloadCSV
 															}
-															cursor={"pointer"}
+														>
+															{isBDDPointSet ? (
+																<FileDown
+																	onClick={() =>
+																		handleCSVDownload(
+																			pointSet,
+																			`${pointSet.name_fr}-bdd.csv`,
+																			"mapPoints",
+																		)
+																	}
+																	cursor={"pointer"}
+																/>
+															) : (
+																<FileDown
+																	color="#a1afc4"
+																	cursor={"not-allowed"}
+																/>
+															)}
+														</TooltipComponent>
+														<TooltipComponent
+															text={translation[language].button.clean}
+														>
+															{displayBrushCleaningButton(
+																pointSet.id as string,
+																!isBDDPointSet,
+																setPointSetIdToClean,
+																setIsModalOpen,
+																setPointType,
+																"bdd",
+															)}
+														</TooltipComponent>
+													</td>
+													<td>
+														<TooltipComponent
+															text={
+																translation[language].backoffice.mapFormPage
+																	.pointSetTable.downloadCSV
+															}
+														>
+															{isCustomPointSet ? (
+																<FileDown
+																	onClick={() =>
+																		handleCSVDownload(
+																			pointSet,
+																			`${pointSet.name_fr}-custom.csv`,
+																			"customPoints",
+																		)
+																	}
+																	cursor={"pointer"}
+																/>
+															) : (
+																<FileDown
+																	color="#a1afc4"
+																	cursor={"not-allowed"}
+																/>
+															)}
+														</TooltipComponent>
+														<TooltipComponent
+															text={translation[language].button.clean}
+														>
+															{displayBrushCleaningButton(
+																pointSet.id as string,
+																!isCustomPointSet,
+																setPointSetIdToClean,
+																setIsModalOpen,
+																setPointType,
+																"custom",
+															)}
+														</TooltipComponent>
+													</td>
+													<td>
+														{pointSet.lastActivity
+															? new Date(
+																	pointSet.lastActivity,
+																).toLocaleDateString(language, {
+																	year: "numeric",
+																	month: "long",
+																	day: "numeric",
+																})
+															: null}
+													</td>
+													<td>
+														<Pen
+															onClick={() =>
+																handleUpdatePointSet(pointSet.id as string)
+															}
+															onKeyDown={() =>
+																handleUpdatePointSet(pointSet.id as string)
+															}
 														/>
-													) : (
-														<FileDown color="#a1afc4" />
-													)}
-												</td>
-												<td>
-													{pointSet.lastActivity
-														? new Date(
-																pointSet.lastActivity,
-															).toLocaleDateString(language, {
-																year: "numeric",
-																month: "long",
-																day: "numeric",
-															})
-														: null}
-												</td>
-												<td>
-													<Pen
-														onClick={() =>
-															handleUpdatePointSet(pointSet.id as string)
-														}
-														onKeyDown={() =>
-															handleUpdatePointSet(pointSet.id as string)
-														}
-													/>
-													<X
-														onClick={() =>
-															handleDeletePointSet(pointSet.id as string)
-														}
-														onKeyDown={() =>
-															handleDeletePointSet(pointSet.id as string)
-														}
-														color="#9d2121"
-													/>
-												</td>
-											</tr>
-										);
-									})}
+														<X
+															onClick={() =>
+																handleDeletePointSet(pointSet.id as string)
+															}
+															onKeyDown={() =>
+																handleDeletePointSet(pointSet.id as string)
+															}
+															color="#9d2121"
+														/>
+													</td>
+												</tr>
+											);
+										})}
 								</tbody>
 							</table>
 							<ButtonComponent

@@ -13,6 +13,8 @@ import { authRoutes } from "./routes/authRoutes";
 import { storymapRoutes } from "./routes/storymap";
 import { sessionRoutes } from "./routes/sessionRoutes";
 import { translationRoutes } from "./routes/translationRoutes";
+// import des types
+import "./utils/types/userTypes"; // pour étendre Request avec user
 
 // on charge les variables d'environnement
 const envFile =

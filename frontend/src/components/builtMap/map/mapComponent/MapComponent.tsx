@@ -8,7 +8,6 @@ import {
 } from "react-leaflet";
 import { Link, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
-
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
 import ModalComponent from "../../../common/modal/ModalComponent";
@@ -40,13 +39,13 @@ import {
 import { getMapAttribution } from "../../../../utils/functions/map";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
+import { MapPageHelmetContent } from "../../../helmet/HelmetContent";
 // import des types
 import type { LatLngTuple } from "leaflet";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
-import { MapPageHelmetContent } from "../../../helmet/HelmetContent";
 
 /**
  * Composant de la carte
@@ -161,6 +160,7 @@ const MapComponent = () => {
 			mapId,
 			type === "filter" ? userFilters : null,
 		);
+
 		setAllPoints(points);
 		setAllResults(points);
 		setMapReady(true);
@@ -216,7 +216,7 @@ const MapComponent = () => {
 	return (
 		<>
 			<MapPageHelmetContent
-				mapName={mapInfos?.[`title_${language}`] ?? "Carte d'exploration"}
+				mapName={mapInfos?.[`title_${language}`] ?? " Exploration"}
 			/>
 			{!mapReady && <LoaderComponent size={50} />}
 			<div className={mapContainerClassName} id="built-map">

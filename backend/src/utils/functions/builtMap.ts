@@ -4,6 +4,7 @@ import type { AttestationType, SourceType } from "../types/mapTypes";
 import type { MapContent } from "../../entities/builtMap/MapContent";
 import type { Storymap } from "../../entities/storymap/Storymap";
 import type { Tag } from "../../entities/common/Tag";
+import type { Attestation } from "../../entities";
 
 /**
  * Fonction pour trier les sources par date (post quem puis ante quem)
@@ -75,9 +76,28 @@ const generateUniqueSlug = async (
 	return slug;
 };
 
+/**
+ * Fonction pour déplacer un élément dans un tableau
+ * @param array - Le tableau dans lequel déplacer l'élément
+ * @param from - L'index de l'élément à déplacer
+ * @param to  - L'index de la nouvelle position de l'élément
+ * @returns {Array} - Le tableau mis à jour avec l'élément déplacé
+ */
+function arrayMove(
+	array: Attestation[],
+	from: number,
+	to: number,
+): Attestation[] {
+	const updated = [...array];
+	const [moved] = updated.splice(from, 1);
+	updated.splice(to, 0, moved);
+	return updated;
+}
+
 export {
 	sortSourcesByDate,
 	attestationMatchesLot,
 	slugify,
 	generateUniqueSlug,
+	arrayMove,
 };

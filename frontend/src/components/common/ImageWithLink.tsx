@@ -41,8 +41,13 @@ const ImageWithLink = ({
 			/>
 		</Link>
 	) : (
-		<a href={link}>
-			<button type="button" aria-label={ariaLabel} className={buttonClassName}>
+		<a href={link} target="_blank" rel="noopener noreferrer">
+			<button
+				type="button"
+				aria-label={ariaLabel}
+				className={buttonClassName}
+				style={{ cursor: "pointer" }}
+			>
 				<img
 					src={imgSrc}
 					alt={imgAlt}

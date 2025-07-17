@@ -10,10 +10,14 @@ import type { MultiValue } from "react-select";
  * @param {string} sourceId - L'id de la source
  * @returns {Promise} - Toutes les attestations de la source
  */
-const getAllAttestationsFromSourceId = async (sourceId: string) => {
+const getAllAttestationsFromSourceId = async (
+	sourceId: string,
+	userFilters: UserFilterType,
+) => {
 	try {
-		const response = await apiClient.get(
+		const response = await apiClient.post(
 			`/map/sources/${sourceId}/attestations`,
+			JSON.stringify(userFilters),
 		);
 		return response.data;
 	} catch (error) {
@@ -195,7 +199,7 @@ const getAllPointsByBlockId = async (blockId: string, side?: string) => {
  */
 const getAllPointsForDemoMap = async (attestationIds: string) => {
 	try {
-		const response = await apiClient("map/sources/demo/attestations", {
+		const response = await apiClient("map/sources/attestations", {
 			method: "POST",
 			data: JSON.stringify({ attestationIds }),
 		});

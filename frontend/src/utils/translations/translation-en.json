@@ -37,8 +37,8 @@
 		"selection": "Selection",
 		"seeSources": "Explore sources",
 		"seeAll": "Explore all",
-		"epithet": "Epithet",
-		"divinity": "Divinity",
+		"epithet": "Qualification",
+		"divinity": "Divine name",
 		"gender": "Gender",
 		"activity": "Activity",
 		"doughnut": "Doughnut",
@@ -52,6 +52,7 @@
 		"cancel": "Cancel",
 		"publish": "Publish",
 		"unpublish": "Unpublish",
+		"clean": "Remove points from point set",
 		"editDisabled": "Edit disabled",
 		"search": "Search",
 		"copyRequest": "Copy SQL request",
@@ -92,7 +93,7 @@
 		"firstContent": "I would like to see sources from",
 		"secondContent": "on",
 		"chooseRegion": "a region",
-		"chooseDivinity": "a divinity",
+		"chooseDivinity": "an element",
 		"postDate": "start date",
 		"anteDate": "end date",
 		"yes": "yes",
@@ -105,6 +106,10 @@
 			"yourself": "Are you sure you want to delete your account? This action is irreversible."
 		},
 		"modifyUserStatusText": "Are you sure you want to change the status of this user?",
+		"cleanPointSetText": {
+			"bdd": "Are you sure you want to delete all DB points in this point set?",
+			"custom": "Are you sure you want to delete all custom points in this point set?"
+		},
 		"deleteTagText": "Are you sure you want to delete this tag? If this tag only is used in a map or a storymap, it will be removed from the home page or tag page.",
 		"associatedStorymap": "See associated storymap",
 		"associatedMap": "See associated map"
@@ -129,7 +134,7 @@
 		"aside": {
 			"filters": "Filters",
 			"sources": "Sources",
-			"epithet": "Epithet",
+			"epithet": "Qualification",
 			"noFilter": "No filter defined",
 			"location": "Location",
 			"element": "Element",
@@ -164,7 +169,7 @@
 			"noAgent": "No agent",
 			"noDesignation": "unspecified",
 			"noSourceMaterialDefined": "No source material defined",
-			"introContent": "This panel allows you to explore in detail the data associated with the point you selected on the map. You will find specific statistics, such as a numerical overview of the divinities or epithets present in the sources, or consult data related to agents, such as their names, activities, and designations. You can also view the sources associated with the selected point, which will be displayed in a table format. This table includes information such as the title of the source, its type, and its date.",
+			"introContent": "This panel allows you to explore in detail the data associated with the point you selected on the map. You will find specific statistics, such as a numerical overview of the divine names or qualifications present in the sources, or consult data related to agents, such as their names, activities, and designations. You can also view the sources associated with the selected point, which will be displayed in a table format. This table includes information such as the title of the source, its type, and its date.",
 			"dontShowAgain": "don't show this message again"
 		}
 	},
@@ -172,6 +177,7 @@
 		"createA": "Create a",
 		"stillConnected": "Are you still connected ?",
 		"disconnectInOneMinute": "Deconnexion in 1 minute...",
+		"noPointInPointSet": "No point loaded in this point set",
 		"managementTable": {
 			"image": "Image",
 			"name": "Name/Description",
@@ -202,10 +208,10 @@
 				},
 				"divinityInChart": {
 					"label": "Element chart",
-					"description": "Choose if you want to display the divinities or the epithets number in the chart.",
+					"description": "Choose if you want to display the divine names or the qualifications number in the chart.",
 					"checkbox": {
-						"divinity": "Display the number of divinities",
-						"epithet": "Display the number of epithets"
+						"divinity": "Display the number of divine names",
+						"epithet": "Display the number of qualifications"
 					}
 				}
 			},
@@ -222,8 +228,8 @@
 				"delete": "Delete",
 				"lastActivity": "Last activity",
 				"downloadCSV": "Download CSV",
-				"downloadBDDCSV": "Download BDD CSV",
-				"downloadCustomCSV": "Download custom CSV"
+				"downloadBDDCSV": "BDD points set",
+				"downloadCustomCSV": "Custom points set"
 			},
 			"pointSetForm": {
 				"addNewPointSet": "Add new point set",
@@ -301,7 +307,7 @@
 			},
 			"epithetFilter": {
 				"label": "Elements filter",
-				"description": "Two options : displays a select/options element with the list of epithets from all elements of the displayed attestations or displays two levels of checkboxes: a first level with the theonyms and a second level with the epithets. These two levels are to be built on demand."
+				"description": "Two options : displays a select/options element with the list of qualifications from all elements of the displayed attestations or displays two levels of checkboxes: a first level with the divine names and a second level with the qualifications. These two levels are to be built on demand."
 			},
 			"divinityNbFilter": {
 				"label": "Divinity number filter",

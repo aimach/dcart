@@ -11,8 +11,13 @@ import {
 	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { getAllGreatRegions } from "../../../../utils/api/builtMap/getRequests";
 // import des types
-import type { MapInfoType, PointType } from "../../../../utils/types/mapTypes";
+import type {
+	GreatRegionType,
+	MapInfoType,
+	PointType,
+} from "../../../../utils/types/mapTypes";
 import type { Language } from "../../../../utils/types/languageTypes";
 
 const getSourceTypeOptions = (
@@ -28,21 +33,21 @@ const getSourceTypeOptions = (
 	return [];
 };
 
-const getLocationOptions = (
+const getLocationOptions = async (
 	mapInfos: MapInfoType | null,
 	allPoints: PointType[],
 	language: Language,
 ) => {
 	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const locationFilter = isSelectedFilterInThisMap(mapInfos, "location");
-	if (locationFilter) {
+	if (locationFilter || !mapInfos) {
 		// récupération de toutes les localités depuis la liste des points
 		let value = "grande_region_id";
 		let label = `grande_region_${language}`;
-		if (locationFilter.options?.solution === "subRegion") {
+		if (locationFilter?.options?.solution === "subRegion") {
 			value = "sous_region_id";
 			label = `sous_region_${language}`;
-		} else if (locationFilter.options?.solution === "location") {
+		} else if (locationFilter?.options?.solution === "location") {
 			value = "nom_ville";
 			label = "nom_ville";
 		}
@@ -86,6 +91,23 @@ const getLocationOptions = (
 		} else {
 			filterOptionsStore.setInitialLocationOptions(sortedAllLocationsOptions);
 		}
+	}
+	if (!mapInfos) {
+		const allGreatRegions = await getAllGreatRegions();
+		const allGreatRegionsOptions = allGreatRegions
+			.filter(
+				(region: GreatRegionType) =>
+					region.nom_fr !== "Chypre" &&
+					region.nom_fr !== "Iles britanniques" &&
+					region.nom_fr !== "Non pertinent" &&
+					region.nom_fr !== "Indéterminé",
+			)
+			.map((region: GreatRegionType) => ({
+				value: region.id,
+				label: region[`nom_${language}`],
+			}));
+		filterOptionsStore.setInitialLocationOptions(allGreatRegionsOptions);
+		filterOptionsStore.setFilteredLocationOptions(allGreatRegionsOptions);
 	}
 	return [];
 };
