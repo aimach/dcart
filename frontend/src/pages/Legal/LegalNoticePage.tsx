@@ -207,7 +207,7 @@ const LegalNoticePage = () => {
 						), a research project funded by LabEx SMS (Sociétés, Milieux,
 						Santé). The aim of this project is to disseminate the data and
 						knowledge produced within the{" "}
-						<a href="https://base-map-polytheisms.huma-num.fr/">ERC MAP</a>
+						<a href="https://base-map-polytheisms.huma-num.fr/">ERC MAP</a>{" "}
 						research project to a non-specialist audience. It harnesses the
 						possibilities of the web to share engaging content (Digital Atlas of
 						Divine Names in the Mediterranean).
