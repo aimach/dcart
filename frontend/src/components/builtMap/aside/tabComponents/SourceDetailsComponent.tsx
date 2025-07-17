@@ -43,7 +43,6 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 	const { language, translation } = useTranslation();
 
 	const { userFilters } = useMapFiltersStore();
-	console.log("userFilters", userFilters);
 
 	// récupération de l'id de la carte en cours
 	const { mapId, mapSlug } = useParams();

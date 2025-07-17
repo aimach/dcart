@@ -94,7 +94,6 @@ const getLocationOptions = async (
 	}
 	if (!mapInfos) {
 		const allGreatRegions = await getAllGreatRegions();
-		console.log(allGreatRegions);
 		const allGreatRegionsOptions = allGreatRegions
 			.filter(
 				(region: GreatRegionType) =>
