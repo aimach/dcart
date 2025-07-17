@@ -129,6 +129,7 @@ const SimpleLayerComponent = ({
 				maxClusterRadius={1}
 				iconCreateFunction={createClusterCustomIcon}
 				spiderfyShapePositions={handleSpiderfyPosition}
+				key={hasGrayScale.toString()}
 			>
 				{allMemoizedPoints.map((point: PointType) => (
 					<MarkerComponent
@@ -156,7 +157,7 @@ const SimpleLayerComponent = ({
 	) : (
 		<>
 			{allMemoizedPoints.map((point: PointType) => (
-				<MarkerComponent key={point.key} point={point} />
+				<MarkerComponent key={point.key} point={point} {...{ hasGrayScale }} />
 			))}
 		</>
 	);

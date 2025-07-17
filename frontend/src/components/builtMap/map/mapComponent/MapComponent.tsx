@@ -280,8 +280,6 @@ const MapComponent = () => {
 							maxZoom={11}
 							ref={setMap}
 						>
-							{/* Injection de motifs */}
-							<SvgPatternDefs />
 							{location.hash.includes("maps/preview/") && (
 								<div
 									style={{

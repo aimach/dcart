@@ -157,6 +157,7 @@ const MultipleLayerComponent = ({
 				maxClusterRadius={1}
 				iconCreateFunction={createClusterCustomIcon}
 				spiderfyShapePositions={handleSpiderfyPosition}
+				key={hasGrayScale.toString()}
 			>
 				{allResultsWithLayerFilter.map((point, index) => {
 					const pointKey = `${point.latitude}-${point.longitude}-${index}`;

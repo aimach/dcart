@@ -154,6 +154,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 							maxClusterRadius={1}
 							disableSpiderfy={true}
 							iconCreateFunction={createClusterCustomIcon}
+							key={hasGrayScale.toString()}
 						>
 							{points.length > 0 ? (
 								points.map((point: PointType) => {
