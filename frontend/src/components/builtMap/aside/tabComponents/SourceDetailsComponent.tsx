@@ -23,11 +23,11 @@ import {
 import { getAllAttestationsFromSourceId } from "../../../../utils/api/builtMap/getRequests";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { isSelectedFilterInThisMap } from "../../../../utils/functions/filter";
+import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 // import du style
 import style from "./tabComponent.module.scss";
 // import des icônes
 import { ChevronRight, SquareArrowOutUpRight } from "lucide-react";
-import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;

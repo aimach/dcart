@@ -24,9 +24,9 @@ import {
 import type { Dispatch, SetStateAction } from "react";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { MultiValue } from "react-select";
+import type { GreatRegionType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./searchFormComponent.module.scss";
-import { GreatRegionType } from "../../../../utils/types/mapTypes";
 
 interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;

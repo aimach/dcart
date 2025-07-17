@@ -11,6 +11,7 @@ import {
 	isSelectedFilterInThisMap,
 } from "../../../../utils/functions/filter";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
+import { getAllGreatRegions } from "../../../../utils/api/builtMap/getRequests";
 // import des types
 import type {
 	GreatRegionType,
@@ -18,7 +19,6 @@ import type {
 	PointType,
 } from "../../../../utils/types/mapTypes";
 import type { Language } from "../../../../utils/types/languageTypes";
-import { getAllGreatRegions } from "../../../../utils/api/builtMap/getRequests";
 
 const getSourceTypeOptions = (
 	mapInfos: MapInfoType | null,
