@@ -3,6 +3,7 @@ import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import du style
 import style from "./tileLayerChoiceComponent.module.scss";
+import { useMap } from "react-leaflet";
 
 /**
  * Composant de choix du fond de carte
@@ -34,9 +35,8 @@ const TileLayerChoiceComponent = () => {
 	];
 
 	// récuépration des données du store
-	const { tileLayerURL, setTileLayerURL } = useMapStore(
-		useShallow((state) => state),
-	);
+	const { tileLayerURL, setTileLayerURL, hasGrayScale, setHasGrayScale } =
+		useMapStore(useShallow((state) => state));
 
 	return (
 		<div className={style.tileLayerChoiceContainer}>
@@ -62,6 +62,23 @@ const TileLayerChoiceComponent = () => {
 					</button>
 				);
 			})}
+			<button
+				type="button"
+				className={`${style.tileLayerChoice} ${hasGrayScale ? style.selected : ""}`}
+				onClick={() => setHasGrayScale(!hasGrayScale)}
+				onKeyUp={() => setHasGrayScale(true)}
+				aria-label={"Choisir le fond de carte en niveaux de gris"}
+			>
+				<img
+					src={tileLayers[0].urlMini}
+					alt="Fond de carte en niveaux de gris"
+					title="Fond de carte en niveaux de gris"
+					loading="lazy"
+					width="100%"
+					height="100%"
+					style={{ filter: "grayscale(100%)" }}
+				/>
+			</button>
 		</div>
 	);
 };

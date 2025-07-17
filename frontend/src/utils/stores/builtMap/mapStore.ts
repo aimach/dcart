@@ -17,6 +17,7 @@ type State = {
 	isTutorialOpen: boolean;
 	tutorialStep: number;
 	mapIsDownloading: boolean;
+	hasGrayScale: boolean;
 };
 
 type Action = {
@@ -39,6 +40,7 @@ type Action = {
 	decrementTutorialStep: (step: number) => void;
 	resetTutorialStep: () => void;
 	setMapIsDownloading: (mapIsDownloading: boolean) => void;
+	setHasGrayScale: (hasGrayScale: boolean) => void;
 };
 
 export const useMapStore = create<State & Action>((set) => ({
@@ -83,4 +85,6 @@ export const useMapStore = create<State & Action>((set) => ({
 	resetTutorialStep: () => set(() => ({ tutorialStep: 1 })),
 	mapIsDownloading: false,
 	setMapIsDownloading: (mapIsDownloading) => set(() => ({ mapIsDownloading })),
+	hasGrayScale: false,
+	setHasGrayScale: (hasGrayScale) => set(() => ({ hasGrayScale })),
 }));
