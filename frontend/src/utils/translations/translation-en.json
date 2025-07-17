@@ -59,7 +59,8 @@
 		"myCreations": "My creations",
 		"allCreations": "See all creations",
 		"leftSide": "Left panel",
-		"rightSide": "Right panel"
+		"rightSide": "Right panel",
+		"grey": "Greyed out"
 	},
 	"common": {
 		"between": "between",

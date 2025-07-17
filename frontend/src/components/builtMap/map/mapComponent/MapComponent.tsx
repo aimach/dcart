@@ -78,6 +78,7 @@ const MapComponent = () => {
 		isTutorialOpen,
 		closeTutorial,
 		resetTutorialStep,
+		hasGrayScale,
 	} = useMapStore(useShallow((state) => state));
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(useShallow((state) => state));
@@ -268,6 +269,7 @@ const MapComponent = () => {
 					{/* enveloppé dans une section pour l'accessibilité */}
 					<section
 						aria-label={`Carte interactive ${mapInfos?.[`title_${language}`] ?? `Carte d'exploration`}`}
+						style={{ filter: hasGrayScale ? "grayscale(100%)" : "none" }}
 					>
 						<MapContainer
 							center={mapCenter}

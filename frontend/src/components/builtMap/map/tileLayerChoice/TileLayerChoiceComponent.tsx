@@ -1,9 +1,10 @@
+// import des hooks personnalisés
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import du style
 import style from "./tileLayerChoiceComponent.module.scss";
-import { useMap } from "react-leaflet";
 
 /**
  * Composant de choix du fond de carte
@@ -38,6 +39,8 @@ const TileLayerChoiceComponent = () => {
 	const { tileLayerURL, setTileLayerURL, hasGrayScale, setHasGrayScale } =
 		useMapStore(useShallow((state) => state));
 
+	const { translation, language } = useTranslation();
+
 	return (
 		<div className={style.tileLayerChoiceContainer}>
 			{tileLayers.map((tileLayer) => {
@@ -64,20 +67,18 @@ const TileLayerChoiceComponent = () => {
 			})}
 			<button
 				type="button"
-				className={`${style.tileLayerChoice} ${hasGrayScale ? style.selected : ""}`}
+				className={`${style.tileLayerChoice} ${hasGrayScale ? style.selected : ""} ${style.grayScale}`}
 				onClick={() => setHasGrayScale(!hasGrayScale)}
 				onKeyUp={() => setHasGrayScale(true)}
 				aria-label={"Choisir le fond de carte en niveaux de gris"}
+				style={{
+					backgroundImage: `url(${tileLayers[0].urlMini})`,
+					backgroundRepeat: "no-repeat",
+					backgroundSize: "cover",
+					backgroundPosition: "center",
+				}}
 			>
-				<img
-					src={tileLayers[0].urlMini}
-					alt="Fond de carte en niveaux de gris"
-					title="Fond de carte en niveaux de gris"
-					loading="lazy"
-					width="100%"
-					height="100%"
-					style={{ filter: "grayscale(100%)" }}
-				/>
+				<p>{translation[language].button.grey}</p>
 			</button>
 		</div>
 	);
