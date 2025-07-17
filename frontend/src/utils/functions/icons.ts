@@ -25,11 +25,14 @@ const getLittleIcon = (
 	style: CSSModuleClasses,
 	customClassName: string | null,
 	content: string,
+	hasGrayScale: boolean,
 	backgroundColor?: string,
 	shape?: string,
 ) => {
 	let backgroundColorStyle = "";
-	if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
+	if (hasGrayScale) {
+		backgroundColorStyle = `fillColor: 'url(#pattern-stripes)'`;
+	} else if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
 		backgroundColorStyle = `background-color: ${backgroundColor};`;
 	}
 	let shapeStyle = "";
@@ -65,12 +68,15 @@ const getMediumIcon = (
 	style: CSSModuleClasses,
 	customClassName: string | null,
 	content: string,
+	hasGrayScale: boolean,
 	backgroundColor?: string,
 	shape?: string,
 ) => {
 	let backgroundColorStyle = "";
 	let shapeStyle = "";
-	if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
+	if (hasGrayScale) {
+		backgroundColorStyle = `fillColor: 'url(#pattern-stripes)'`;
+	} else if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
 		backgroundColorStyle = `background-color: ${backgroundColor};`;
 	}
 	if (shape === "circle") {
@@ -105,12 +111,15 @@ const getDarkIcon = (
 	style: CSSModuleClasses,
 	customClassName: string | null,
 	content: string,
+	hasGrayScale: boolean,
 	backgroundColor?: string,
 	shape?: string,
 ) => {
 	let backgroundColorStyle = "";
 	let shapeStyle = "";
-	if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
+	if (hasGrayScale) {
+		backgroundColorStyle = `fillColor: 'url(#pattern-stripes)'`;
+	} else if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
 		backgroundColorStyle = `background-color: ${backgroundColor};`;
 	}
 	if (shape === "circle") {
@@ -147,6 +156,7 @@ const getDefaultIcon = (
 	style: CSSModuleClasses,
 	customClassName: string | null,
 	content: string,
+	hasGrayScale: boolean,
 	backgroundColor?: string,
 	shape?: string,
 ) => {
@@ -155,6 +165,7 @@ const getDefaultIcon = (
 			style,
 			customClassName,
 			content,
+			hasGrayScale,
 			backgroundColor,
 			shape,
 		);
@@ -164,14 +175,29 @@ const getDefaultIcon = (
 			style,
 			customClassName,
 			content,
+			hasGrayScale,
 			backgroundColor,
 			shape,
 		);
 	}
 	if (sourcesNb >= 50) {
-		return getDarkIcon(style, customClassName, content, backgroundColor, shape);
+		return getDarkIcon(
+			style,
+			customClassName,
+			content,
+			hasGrayScale,
+			backgroundColor,
+			shape,
+		);
 	}
-	return getLittleIcon(style, customClassName, content, backgroundColor, shape);
+	return getLittleIcon(
+		style,
+		customClassName,
+		content,
+		hasGrayScale,
+		backgroundColor,
+		shape,
+	);
 };
 
 const getLittleCircleIcon = (style: CSSModuleClasses) => {
@@ -202,8 +228,14 @@ const getCircleIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
+	color: string,
 	content?: string,
 ) => {
+	const accessibleFillAndStroke = hasGrayScale
+		? `fill="url(#pattern-${color})" stroke="black"`
+		: customFillAndStroke;
+	const accessibleTextColor = hasGrayScale ? "black" : customTextColor;
 	const iconContent = isNbDisplayed
 		? sourcesNb.toString()
 		: content
@@ -211,9 +243,10 @@ const getCircleIcon = (
 			: "";
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="45" ${customFillAndStroke} stroke-width="5" />
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${customTextColor} >
-        ${iconContent}
+	${hasGrayScale ? getPatternByColor(color) : ""}
+      <circle cx="50" cy="50" r="45" ${accessibleFillAndStroke} stroke-width="5" />
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${accessibleTextColor} >
+        ${hasGrayScale ? "" : iconContent}
       </text>
     </svg>
   `;
@@ -353,6 +386,7 @@ const getShapedDivContent = (
 	sourcesNb: number,
 	isSelected: boolean,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
 	content?: string,
 ) => {
 	let customSize = getShapeDependingOnNb(sourcesNb);
@@ -374,6 +408,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 		case "square":
@@ -420,6 +456,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 	}
@@ -430,6 +468,7 @@ const getIcon = (
 	style: CSSModuleClasses,
 	isSelected: boolean,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
 	content?: string,
 ) => {
 	let customIcon = getDefaultIcon(
@@ -437,6 +476,7 @@ const getIcon = (
 		style,
 		getBackGroundColorClassName(point.sources.length),
 		point.sources.length.toString(),
+		hasGrayScale,
 	);
 	if (point.shape && point.color) {
 		customIcon = L.divIcon({
@@ -446,6 +486,7 @@ const getIcon = (
 				point.sources.length,
 				isSelected,
 				isNbDisplayed,
+				hasGrayScale,
 				content,
 			),
 			className: "",
@@ -462,6 +503,7 @@ const getIcon = (
 				point.sources.length,
 				isSelected,
 				isNbDisplayed,
+				hasGrayScale,
 				content,
 			),
 			className: "",
@@ -663,6 +705,42 @@ const getUniqueMarkersByIcon = (markers: Marker[]) => {
 		seen.add(iconHtml);
 		return true;
 	});
+};
+
+/**
+ * Fonction pour obtenir un pattern en fonction de la couleur de l'icône
+ * @param color - La couleur de l'icône
+ * @returns - le code SVG du pattern
+ */
+const getPatternByColor = (color: string) => {
+	switch (color) {
+		case "#9F196B": // purple
+			// diagonales
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M0,0 l25,25" stroke="black" stroke-width="3"/></pattern>`;
+		case "#6BBADB": // blue
+			// diagonales croisées
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M0,0 l25,25 M25,0 l-25,25" stroke="black" stroke-width="2"/></pattern>`;
+		case "#7EB356": // green
+			// petits cercles
+			return `  <pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><circle cx="12" cy="12" r="5" fill="black"/></pattern>`;
+		case "#FADF0F": // yellow
+			// cadrillage
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M0,0H25V25H0Z" fill="none" stroke="black" stroke-width="2"/></pattern>`;
+		case "#F3722C": // orange
+			// petit cadrillage
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="6" height="6"><rect width="25" height="25" fill="white"/><path d="M0,3h6M3,0v6" stroke="black" stroke-width="1"/></pattern>`;
+		case "#AC2020": // red
+			// "bulles"
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><circle cx="5" cy="5" r="8" fill="none" stroke="black" stroke-width="3"/></pattern>`;
+		case "#525252": // gray
+			// lignes horizontales
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M0,3h25" stroke="black" stroke-width="3"/></pattern>`;
+		case "#AD9A85": // brown
+			// lignes verticales
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M3,0v25" stroke="black" stroke-width="3"/></pattern>`;
+		default:
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M3,0v25" stroke="black" stroke-width="3"/></pattern>`;
+	}
 };
 
 export {

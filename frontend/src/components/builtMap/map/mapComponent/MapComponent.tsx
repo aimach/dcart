@@ -5,6 +5,7 @@ import {
 	TileLayer,
 	ScaleControl,
 	ZoomControl,
+	CircleMarker,
 } from "react-leaflet";
 import { Link, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
@@ -46,6 +47,7 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
+import SvgPatternDefs from "./SvgPatternDefs";
 
 /**
  * Composant de la carte
@@ -278,6 +280,8 @@ const MapComponent = () => {
 							maxZoom={11}
 							ref={setMap}
 						>
+							{/* Injection de motifs */}
+							<SvgPatternDefs />
 							{location.hash.includes("maps/preview/") && (
 								<div
 									style={{
