@@ -27,6 +27,7 @@ import { isSelectedFilterInThisMap } from "../../../../utils/functions/filter";
 import style from "./tabComponent.module.scss";
 // import des icônes
 import { ChevronRight, SquareArrowOutUpRight } from "lucide-react";
+import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFiltersStore";
 
 type SourceDetailsComponentProps = {
 	source: SourceType;
@@ -40,6 +41,9 @@ type SourceDetailsComponentProps = {
 const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 	// récupération des données de traduction
 	const { language, translation } = useTranslation();
+
+	const { userFilters } = useMapFiltersStore();
+	console.log("userFilters", userFilters);
 
 	// récupération de l'id de la carte en cours
 	const { mapId, mapSlug } = useParams();
@@ -61,6 +65,7 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 		const fetchAllAttestations = async () => {
 			const allAttestations = await getAllAttestationsFromSourceId(
 				source.source_id.toString(),
+				userFilters,
 			);
 			setAttestations(allAttestations);
 		};
