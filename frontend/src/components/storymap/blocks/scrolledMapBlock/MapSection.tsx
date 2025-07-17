@@ -21,6 +21,7 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./scrolledMapBlock.module.scss";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 
 interface MapSectionProps {
 	blockContent: BlockContentType;
@@ -40,6 +41,8 @@ const MapSection = ({
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
 	const { isMobile, isDesktop } = useWindowSize();
+
+	const { hasGrayScale } = useMapStore();
 
 	// on récupère les informations du context
 	const [map, setMap] = useState<LeafletMap | null>(null);
@@ -102,7 +105,11 @@ const MapSection = ({
 	}, []);
 
 	return (
-		<div id={mapName} className={style.mapSection}>
+		<div
+			id={mapName}
+			className={style.mapSection}
+			style={{ filter: hasGrayScale ? "grayscale(100%)" : "none" }}
+		>
 			<MapContainer
 				center={mapCenter}
 				scrollWheelZoom={false}
@@ -125,7 +132,7 @@ const MapSection = ({
 
 					{points.length ? (
 						points.map((point: PointType & { blockId: string }) => {
-							const bigIcon = getIcon(point, style, false, true);
+							const bigIcon = getIcon(point, style, false, true, hasGrayScale);
 
 							return (
 								currentPoint === point.blockId && (

@@ -35,6 +35,7 @@ import type {
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
 import { StorymapPageHelmetContent } from "../../../../components/helmet/HelmetContent";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -96,6 +97,7 @@ const StorymapPage = () => {
 	const location = useLocation();
 
 	// récupération des données des stores
+	const { hasGrayScale, setHasGrayScale } = useMapStore();
 	const { selectedLanguage, setSelectedLanguage } = useStorymapLanguageStore();
 
 	// déclaration d'un état pour stocker les informations de la storymap
@@ -166,6 +168,16 @@ const StorymapPage = () => {
 								</li>
 							</ul>
 						)}
+					</div>
+					<div>
+						<input
+							type="checkbox"
+							id="grayScaleToggle"
+							onChange={() => setHasGrayScale(!hasGrayScale)}
+						/>
+						<label htmlFor="grayScaleToggle">
+							{translation[language].button.grey}
+						</label>
 					</div>
 				</div>
 				<section className={style.storymapContainer}>
