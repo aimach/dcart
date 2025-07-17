@@ -18,6 +18,7 @@ import style from "./comparisonMapBloc.module.scss";
 import "./comparisonMapBloc.css";
 import "leaflet/dist/leaflet.css";
 import "leaflet-side-by-side";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 
 interface ComparisonMapBlockProps {
 	blockContent: BlockContentType;
@@ -30,6 +31,7 @@ const ComparisonMapBlock = ({
 }: ComparisonMapBlockProps) => {
 	// récupération des données des stores
 	const { selectedLanguage } = useStorymapLanguageStore();
+	const { hasGrayScale } = useMapStore();
 
 	const [leftPoints, setLeftPoints] = useState<PointType[]>([]);
 	const [rightPoints, setRightPoints] = useState<PointType[]>([]);
@@ -85,7 +87,7 @@ const ComparisonMapBlock = ({
 		// on créé les points sur chaque pane
 		leftPoints.map((point) => {
 			// on créé une icone adaptée au nombre de sources
-			const icon = getIcon(point, style, false, true);
+			const icon = getIcon(point, style, false, true, hasGrayScale);
 
 			const popupContent = point.nom_ville;
 			L.marker([point.latitude, point.longitude], {
@@ -98,7 +100,7 @@ const ComparisonMapBlock = ({
 		});
 		rightPoints.map((point) => {
 			// on créé une icone adaptée au nombre de sources
-			const icon = getIcon(point, style, false, true);
+			const icon = getIcon(point, style, false, true, hasGrayScale);
 
 			const popupContent = point.nom_ville;
 			L.marker([point.latitude, point.longitude], {
@@ -144,7 +146,10 @@ const ComparisonMapBlock = ({
 
 	return (
 		<>
-			<div id={mapName} />
+			<div
+				id={mapName}
+				style={{ filter: hasGrayScale ? "grayscale(100%)" : "none" }}
+			/>
 			{blockContent[`content1_${selectedLanguage}`] && (
 				<p>{blockContent[`content1_${selectedLanguage}`]}</p>
 			)}
