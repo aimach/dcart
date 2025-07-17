@@ -36,9 +36,8 @@ const FilterComponent = () => {
 	const { isMobile } = useWindowSize();
 
 	// récupération des données depuis les stores
-	const { mapInfos, setAllPoints, setAllResults, setMapReady } = useMapStore(
-		useShallow((state) => state),
-	);
+	const { mapInfos, allPoints, setAllPoints, setAllResults, setMapReady } =
+		useMapStore(useShallow((state) => state));
 
 	const { mapFilters, setIsPanelDisplayed } = useMapAsideMenuStore();
 	const { userFilters, resetUserFilters, isReset, setIsReset } =

@@ -40,7 +40,7 @@ const getLocationOptions = async (
 ) => {
 	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const locationFilter = isSelectedFilterInThisMap(mapInfos, "location");
-	if (locationFilter) {
+	if (locationFilter || !mapInfos) {
 		// récupération de toutes les localités depuis la liste des points
 		let value = "grande_region_id";
 		let label = `grande_region_${language}`;
