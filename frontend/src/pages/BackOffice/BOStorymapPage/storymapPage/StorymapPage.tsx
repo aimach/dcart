@@ -174,6 +174,7 @@ const StorymapPage = () => {
 							type="checkbox"
 							id="grayScaleToggle"
 							onChange={() => setHasGrayScale(!hasGrayScale)}
+							checked={hasGrayScale}
 						/>
 						<label htmlFor="grayScaleToggle">
 							{translation[language].button.grey}
