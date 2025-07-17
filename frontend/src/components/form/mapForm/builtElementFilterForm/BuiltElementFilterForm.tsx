@@ -31,14 +31,18 @@ const BuiltElementFilterForm = () => {
 
 	const { mapInfos, setMapInfos } = useMapFormStore();
 
+	const noPointsInMap = mapInfos?.attestations.every(
+		(attestation) => attestation.attestationIds.length === 0,
+	);
+
 	// biome-ignore lint/correctness/useExhaustiveDependencies: forcer le rechargement des options d'éléments
 	useEffect(() => {
 		const elementFilter = isSelectedFilterInThisMap(mapInfos, "element");
 		if (elementFilter?.options?.solution === "manual") {
 			const getElementsOptionsByAttestationIds = async () => {
-				const attestationIdsArray = mapInfos?.attestations.map(
-					(attestation) => attestation.attestationIds,
-				);
+				const attestationIdsArray = mapInfos?.attestations
+					.filter((attestation) => attestation.attestationIds !== "")
+					.map((attestation) => attestation.attestationIds);
 
 				const allAttestationsIds = attestationIdsArray?.join(",").split(",");
 				const uniqueAttestationIds = new Set(allAttestationsIds);
@@ -89,7 +93,7 @@ const BuiltElementFilterForm = () => {
 			<h4>
 				{translation[language].backoffice.mapFormPage.filterForm.element.title}
 			</h4>
-			{elementOptions.length === 0 && (
+			{noPointsInMap && (
 				<div className={style.alertContainer}>
 					<CircleAlert color="#9d2121" />
 					<p>
@@ -144,16 +148,16 @@ const BuiltElementFilterForm = () => {
 					/>
 				</div>
 			</div>
-			{elementOptions.length > 0 ? (
-				selectedOption === "manual" ? (
+			{selectedOption === "manual" ? (
+				noPointsInMap ? (
+					<div className={style.alertContainer}>
+						<CircleAlert color="#9d2121" />
+						<p>Pas d'élément disponible pour construire le filtre.</p>
+					</div>
+				) : (
 					<SelectElementForm elementOptions={elementOptions} />
-				) : null
-			) : (
-				<div className={style.alertContainer}>
-					<CircleAlert color="#9d2121" />
-					<p>Pas d'élément disponible pour construire le filtre.</p>
-				</div>
-			)}
+				)
+			) : null}
 		</form>
 	);
 };

@@ -199,7 +199,7 @@ const getAllPointsByBlockId = async (blockId: string, side?: string) => {
  */
 const getAllPointsForDemoMap = async (attestationIds: string) => {
 	try {
-		const response = await apiClient("map/sources/demo/attestations", {
+		const response = await apiClient("map/sources/attestations", {
 			method: "POST",
 			data: JSON.stringify({ attestationIds }),
 		});
