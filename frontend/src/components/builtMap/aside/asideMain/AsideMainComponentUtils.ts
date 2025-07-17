@@ -12,8 +12,13 @@ import {
 } from "../../../../utils/functions/filter";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 // import des types
-import type { MapInfoType, PointType } from "../../../../utils/types/mapTypes";
+import type {
+	GreatRegionType,
+	MapInfoType,
+	PointType,
+} from "../../../../utils/types/mapTypes";
 import type { Language } from "../../../../utils/types/languageTypes";
+import { getAllGreatRegions } from "../../../../utils/api/builtMap/getRequests";
 
 const getSourceTypeOptions = (
 	mapInfos: MapInfoType | null,
@@ -28,14 +33,14 @@ const getSourceTypeOptions = (
 	return [];
 };
 
-const getLocationOptions = (
+const getLocationOptions = async (
 	mapInfos: MapInfoType | null,
 	allPoints: PointType[],
 	language: Language,
 ) => {
 	const filterOptionsStore = useMapFilterOptionsStore.getState();
 	const locationFilter = isSelectedFilterInThisMap(mapInfos, "location");
-	if (locationFilter || !mapInfos) {
+	if (locationFilter) {
 		// récupération de toutes les localités depuis la liste des points
 		let value = "grande_region_id";
 		let label = `grande_region_${language}`;
@@ -86,6 +91,24 @@ const getLocationOptions = (
 		} else {
 			filterOptionsStore.setInitialLocationOptions(sortedAllLocationsOptions);
 		}
+	}
+	if (!mapInfos) {
+		const allGreatRegions = await getAllGreatRegions();
+		console.log(allGreatRegions);
+		const allGreatRegionsOptions = allGreatRegions
+			.filter(
+				(region: GreatRegionType) =>
+					region.nom_fr !== "Chypre" &&
+					region.nom_fr !== "Iles britanniques" &&
+					region.nom_fr !== "Non pertinent" &&
+					region.nom_fr !== "Indéterminé",
+			)
+			.map((region: GreatRegionType) => ({
+				value: region.id,
+				label: region[`nom_${language}`],
+			}));
+		filterOptionsStore.setInitialLocationOptions(allGreatRegionsOptions);
+		filterOptionsStore.setFilteredLocationOptions(allGreatRegionsOptions);
 	}
 	return [];
 };
