@@ -129,7 +129,10 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 
 	return (
 		<>
-			<div id={mapName}>
+			<div
+				id={mapName}
+				style={{ filter: hasGrayScale ? "grayscale(100%)" : "none" }}
+			>
 				<MapContainer
 					center={mapCenter}
 					scrollWheelZoom={false}
