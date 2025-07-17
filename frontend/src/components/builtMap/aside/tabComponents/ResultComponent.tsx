@@ -22,16 +22,23 @@ const ResultComponent = () => {
 	const { language } = useTranslation();
 
 	// récupération des données des stores
-	const { mapInfos, allResults, allLayers, selectedMarker, setSelectedMarker } =
-		useMapStore(
-			useShallow((state) => ({
-				mapInfos: state.mapInfos,
-				allResults: state.allResults,
-				allLayers: state.allLayers,
-				selectedMarker: state.selectedMarker,
-				setSelectedMarker: state.setSelectedMarker,
-			})),
-		);
+	const {
+		mapInfos,
+		allResults,
+		allLayers,
+		selectedMarker,
+		setSelectedMarker,
+		hasGrayScale,
+	} = useMapStore(
+		useShallow((state) => ({
+			mapInfos: state.mapInfos,
+			allResults: state.allResults,
+			allLayers: state.allLayers,
+			selectedMarker: state.selectedMarker,
+			setSelectedMarker: state.setSelectedMarker,
+			hasGrayScale: state.hasGrayScale,
+		})),
+	);
 	const { setSelectedTabMenu } = useMapAsideMenuStore(
 		useShallow((state) => ({
 			setSelectedTabMenu: state.setSelectedTabMenu,
@@ -67,7 +74,11 @@ const ResultComponent = () => {
 					isSelected,
 					selectedClassName: isSelected ? style.isSelected : undefined,
 					shapeCode: DOMPurify.sanitize(
-						getShapeForLayerName(point.shape as string, point.color),
+						getShapeForLayerName(
+							point.shape as string,
+							point.color,
+							hasGrayScale,
+						),
 					),
 				};
 			},
@@ -88,7 +99,7 @@ const ResultComponent = () => {
 			return 0;
 		});
 		return allResultsInAlphaOrder;
-	}, [allResults, selectedMarker, allLayers, mapInfos, language]);
+	}, [allResults, selectedMarker, allLayers, mapInfos, language, hasGrayScale]);
 
 	// zoom sur le point sélectionné
 	const isSelectedRef = useRef<HTMLDivElement | null>(null);

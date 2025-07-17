@@ -34,8 +34,14 @@ const MultipleLayerComponent = ({
 }: MultipleLayerComponentProps) => {
 	const { language } = useTranslation();
 
-	const { mapInfos, allLayers, map, selectedMarker, setSelectedMarker } =
-		useMapStore();
+	const {
+		mapInfos,
+		allLayers,
+		map,
+		selectedMarker,
+		setSelectedMarker,
+		hasGrayScale,
+	} = useMapStore();
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const layersArrayForControl = useMemo(() => {
@@ -71,10 +77,11 @@ const MultipleLayerComponent = ({
 					shapeCode: getShapeForLayerName(
 						layer.shape as string,
 						layer.color as string,
+						hasGrayScale,
 					),
 				};
 			});
-	}, [allMemoizedPoints, language]);
+	}, [allMemoizedPoints, language, hasGrayScale]);
 
 	const allResultsWithLayerFilter = useMemo(() => {
 		const allLayersWithOnlySVG = allLayers.filter((layerName) =>
@@ -153,7 +160,13 @@ const MultipleLayerComponent = ({
 			>
 				{allResultsWithLayerFilter.map((point, index) => {
 					const pointKey = `${point.latitude}-${point.longitude}-${index}`;
-					return <MarkerComponent key={pointKey} point={point} />;
+					return (
+						<MarkerComponent
+							key={pointKey}
+							point={point}
+							{...{ hasGrayScale }}
+						/>
+					);
 				})}
 			</MarkerClusterGroup>
 			{layersArrayForControl.map((layer) => {

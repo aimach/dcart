@@ -24,6 +24,7 @@ import {
 	getMapAttribution,
 	handleClusterMouseOver,
 } from "../../../../utils/functions/map";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { L, LatLngTuple, Map as LeafletMap } from "leaflet";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
@@ -48,6 +49,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const { language } = useTranslation();
 	// récupération des données des stores
 	const { selectedLanguage } = useStorymapLanguageStore();
+	const { hasGrayScale } = useMapStore();
 
 	const [map, setMap] = useState<LeafletMap | null>(null);
 	const [points, setPoints] = useState<PointType[]>([]);
@@ -159,6 +161,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 										<MarkerComponent
 											key={`${point.latitude}-${point.longitude}-${point.color}-${point.shape}`}
 											point={point}
+											{...{ hasGrayScale }}
 										/>
 									);
 								})
@@ -172,8 +175,11 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 									.sort((a, b) => a.position - b.position)
 									.map((layer) => {
 										const icon =
-											getShapeForLayerName(layer.shape, layer.color) +
-											layer[`name_${language}`];
+											getShapeForLayerName(
+												layer.shape,
+												layer.color,
+												hasGrayScale,
+											) + layer[`name_${language}`];
 										return (
 											<LayersControl.Overlay name={icon} key={icon}>
 												<LayerGroup key={icon} />

@@ -10,6 +10,7 @@ interface CustomMarkerOptions extends MarkerOptions {
 		color: string;
 		shape: string;
 	};
+	hasGrayScale?: boolean;
 }
 
 /**
@@ -419,7 +420,7 @@ const getShapedDivContent = (
 ) => {
 	let customSize = getShapeDependingOnNb(sourcesNb);
 	const customColor = getColorDependingOnNb(sourcesNb, color);
-	let customFillAndStroke = `fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}`;
+	let customFillAndStroke = `fill=${customColor} stroke=${hasGrayScale ? "black" : tinycolor(customColor).darken(10).toString()}`;
 	let customTextColor = tinycolor(customColor).isDark() ? "white" : "black";
 
 	if (isSelected) {
@@ -573,6 +574,7 @@ const getShapeDependingOnNb = (sourcesNb: number): number => {
 const getShapeForLayerName = (
 	shape: string | undefined,
 	color: string | undefined,
+	hasGrayScale: boolean,
 	xAndY: string | undefined = "",
 	isAddingWidthAndHeight = true,
 ) => {
@@ -582,16 +584,35 @@ const getShapeForLayerName = (
 	}
 	const size = isAddingWidthAndHeight ? 'width="20" height="20"' : "";
 	switch (shape) {
-		case "circle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
-		case "square":
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg>`;
-		case "triangle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
-		case "diamond":
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg>`;
-		case "star":
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><defs><filter id="blur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/></filter></defs><path d="
+		case "circle": {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100">${hasGrayScale && getPatternByColor(color as string)}<circle cx="50" cy="50" r="45" ${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5" /></svg>`;
+		}
+		case "square": {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" ${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5"/>${hasGrayScale && getPatternByColor(color as string)}</svg>`;
+		}
+		case "triangle": {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" ${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5" />${hasGrayScale && getPatternByColor(color as string)}</svg>`;
+		}
+		case "diamond": {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" ${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5"/>${hasGrayScale && getPatternByColor(color as string)}</svg>`;
+		}
+		case "star": {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100">${hasGrayScale && getPatternByColor(color as string)}<defs><filter id="blur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/></filter></defs><path d="
 			M60,10 
 			L71,42 
 			L105,45 
@@ -603,13 +624,21 @@ const getShapeForLayerName = (
 			L15,45 
 			L49,42 
 			Z"
-			fill=${defaultColor} stroke="lightgrey" stroke-width="5"  filter="url(#blur)" stroke-linejoin="round"/></svg>`;
-		default:
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
+			${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5"  filter="url(#blur)" stroke-linejoin="round"/></svg>`;
+		}
+		default: {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100">${hasGrayScale && getPatternByColor(color as string)}<circle cx="50" cy="50" r="45" ${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5" /></svg>`;
+		}
 	}
 };
 
-const getBlendIconHTML = (markers: Marker[]): string | undefined => {
+const getBlendIconHTML = (
+	markers: Marker[],
+	hasGrayScale: boolean,
+): string | undefined => {
 	const markersColorsAndShapes = markers.map((marker) => {
 		return (marker.options as CustomMarkerOptions).colorAndShape;
 	});
@@ -631,7 +660,7 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 
 	if (markers.length === 2 || uniqueMarkersColorsAndShapes.length === 2) {
 		const uniqueMarkers = getUniqueMarkersByIcon(markers);
-		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" stroke="lightgrey" stroke-width="1"><clipPath id="left-half">
+		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="1"><clipPath id="left-half">
 		<rect x="0" y="0" width="20" height="40" /></clipPath><clipPath id="right-half"><rect x="20" y="0" width="20" height="40" /></clipPath>`;
 		for (let i = 0; i < 2; i++) {
 			const side = i === 0 ? "left-half" : "right-half";
@@ -639,7 +668,13 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 				.colorAndShape?.color;
 			const shape = (uniqueMarkers[i].options as CustomMarkerOptions)
 				.colorAndShape?.shape;
-			const customIcon = getShapeForLayerName(shape, color, "", false);
+			const customIcon = getShapeForLayerName(
+				shape,
+				color,
+				hasGrayScale,
+				"",
+				false,
+			);
 			blendIcon += `<g clip-path="url(#${side})">${customIcon}</g>`;
 		}
 		return `${blendIcon}</svg>`;
@@ -653,6 +688,7 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 		return generateCamembertSVG(
 			uniqueColors,
 			uniqueMarkersColorsAndShapes as { color: string; shape: string }[],
+			hasGrayScale,
 		);
 	}
 };
@@ -664,8 +700,11 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
  */
 const createClusterCustomIcon = (cluster: MarkerCluster) => {
 	const markers = cluster.getAllChildMarkers();
+	const hasGrayScale = markers.some(
+		(marker) => (marker.options as CustomMarkerOptions).hasGrayScale,
+	);
 
-	const blendIcon = getBlendIconHTML(markers);
+	const blendIcon = getBlendIconHTML(markers, hasGrayScale);
 	return L.divIcon({
 		html: `${blendIcon} `,
 		className: "",
@@ -685,6 +724,7 @@ function generateCamembertSVG(
 		color: string;
 		shape: string;
 	}[],
+	hasGrayScale: boolean,
 	size = 35,
 ) {
 	const cx = size / 2;
@@ -720,7 +760,7 @@ function generateCamembertSVG(
 	}
 
 	return `
-    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" stroke="lightgrey" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" stroke=${hasGrayScale ? "black" : "lighgrey"} stroke-width="1" xmlns="http://www.w3.org/2000/svg">
       ${paths}
     </svg>
   `;

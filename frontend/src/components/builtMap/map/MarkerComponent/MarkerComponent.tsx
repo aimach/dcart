@@ -62,7 +62,10 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 			key={keyPoint}
 			position={position}
 			icon={customIcon}
-			{...{ colorAndShape: { color: point.color, shape: point.shape } }}
+			{...{
+				colorAndShape: { color: point.color, shape: point.shape },
+				hasGrayScale,
+			}}
 			eventHandlers={{
 				click: () => handleMarkerOnClick(point),
 			}}
