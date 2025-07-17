@@ -258,8 +258,14 @@ const getSquareIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
+	color: string,
 	content?: string,
 ) => {
+	const accessibleFillAndStroke = hasGrayScale
+		? `fill="url(#pattern-${color})" stroke="black"`
+		: customFillAndStroke;
+	const accessibleTextColor = hasGrayScale ? "black" : customTextColor;
 	const iconContent = isNbDisplayed
 		? sourcesNb.toString()
 		: content
@@ -267,10 +273,11 @@ const getSquareIcon = (
 			: "";
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
-      <rect x="5" y="5" width="90" height="90" ${customFillAndStroke}
+		${hasGrayScale ? getPatternByColor(color) : ""}
+      <rect x="5" y="5" width="90" height="90" ${accessibleFillAndStroke}
  stroke-width="5"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${customTextColor} >
-        ${iconContent}
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${accessibleTextColor} >
+        ${hasGrayScale ? "" : iconContent}
       </text>
     </svg>
   `;
@@ -282,18 +289,25 @@ const getTriangleIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
+	color: string,
 	content?: string,
 ) => {
+	const accessibleFillAndStroke = hasGrayScale
+		? `fill="url(#pattern-${color})" stroke="black"`
+		: customFillAndStroke;
+	const accessibleTextColor = hasGrayScale ? "black" : customTextColor;
 	const iconContent = isNbDisplayed
 		? sourcesNb.toString()
 		: content
 			? content
 			: "";
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize}  height=${customSize}  viewBox="0 0 100 100">
-      <polygon points="50,10 90,90 10,90" ${customFillAndStroke}
+		${hasGrayScale ? getPatternByColor(color) : ""}
+      <polygon points="50,10 90,90 10,90" ${accessibleFillAndStroke}
  stroke-width="5" />
-      <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="50" fill=${customTextColor} >
-        ${iconContent}
+      <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="50" fill=${accessibleTextColor}>
+        ${hasGrayScale ? "" : iconContent}
       </text>
     </svg>
   `;
@@ -305,17 +319,24 @@ const getDiamondIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
+	color: string,
 	content?: string,
 ) => {
+	const accessibleFillAndStroke = hasGrayScale
+		? `fill="url(#pattern-${color})" stroke="black"`
+		: customFillAndStroke;
+	const accessibleTextColor = hasGrayScale ? "black" : customTextColor;
 	const iconContent = isNbDisplayed
 		? sourcesNb.toString()
 		: content
 			? content
 			: "";
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
+		${hasGrayScale ? getPatternByColor(color) : ""}
       <polygon 
         points="50,5 95,50 50,95 5,50" 
-        ${customFillAndStroke}
+        ${accessibleFillAndStroke}
         stroke-width="5"
       />
       <text 
@@ -324,9 +345,9 @@ const getDiamondIcon = (
         dominant-baseline="middle" 
         text-anchor="middle" 
         font-size="50" 
-        fill=${customTextColor} 
+        fill=${accessibleTextColor} 
       >
-        ${iconContent}
+	  	${hasGrayScale ? "" : iconContent}
       </text>
     </svg>
   `;
@@ -338,14 +359,21 @@ const getStarIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
+	color: string,
 	content?: string,
 ) => {
+	const accessibleFillAndStroke = hasGrayScale
+		? `fill="url(#pattern-${color})" stroke="black"`
+		: customFillAndStroke;
+	const accessibleTextColor = hasGrayScale ? "black" : customTextColor;
 	const iconContent = isNbDisplayed
 		? sourcesNb.toString()
 		: content
 			? content
 			: "";
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
+	${hasGrayScale ? getPatternByColor(color) : ""}
 	<defs>
 		<filter id="blur" x="-5%" y = "-5%" width="110%" height="110%" >
 			<feGaussianBlur in="SourceGraphic" stdDeviation = "0.5" />
@@ -363,7 +391,7 @@ const getStarIcon = (
 				L15, 45
 				L49, 42 
 				Z"
-        ${customFillAndStroke}
+        ${accessibleFillAndStroke}
         stroke-width="5"
       />
       <text 
@@ -372,9 +400,9 @@ const getStarIcon = (
         dominant-baseline="middle" 
         text-anchor="middle" 
         font-size="50" 
-        fill=${customTextColor}
+        fill=${accessibleTextColor}
       >
-        ${iconContent}
+	  ${hasGrayScale ? "" : iconContent}
       </text>
     </svg>
   `;
@@ -419,6 +447,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 		case "triangle":
@@ -428,6 +458,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 		case "diamond":
@@ -437,6 +469,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 		case "star":
@@ -446,6 +480,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 
