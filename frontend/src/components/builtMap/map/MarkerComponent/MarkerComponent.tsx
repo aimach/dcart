@@ -71,7 +71,9 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 			}}
 		>
 			<Tooltip direction="top" offset={[0, -10]}>
-				{point.nom_ville}
+				{hasGrayScale
+					? `${point.sources.length} sources - ${point.nom_ville}`
+					: point.nom_ville}
 			</Tooltip>
 		</Marker>
 	);

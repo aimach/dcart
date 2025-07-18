@@ -113,7 +113,7 @@ const SimpleLayerComponent = ({
 				(input as HTMLElement).style.display = "none";
 			}
 		}
-	}, [allColorsAndShapes, language]);
+	}, [allColorsAndShapes, language, hasGrayScale]);
 
 	// si c'est la carte 'exploration', ne pas utiliser le clustering
 	return mapInfos ? (

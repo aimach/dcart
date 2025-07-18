@@ -95,7 +95,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		for (const input of inputs) {
 			(input as HTMLInputElement).style.display = "none";
 		}
-	}, [points]);
+	}, [points, hasGrayScale]);
 
 	const tileAttribution = getMapAttribution(blockContent.content2_lang1);
 
