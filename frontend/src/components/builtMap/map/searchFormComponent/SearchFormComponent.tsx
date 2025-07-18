@@ -20,16 +20,15 @@ import {
 	createTimeOptions,
 	handleMultiSelectChange,
 } from "../../../../utils/functions/filter";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { OptionType } from "../../../../utils/types/commonTypes";
 import type { MultiValue } from "react-select";
 import type { GreatRegionType } from "../../../../utils/types/mapTypes";
+import type { UserFilterType } from "../../../../utils/types/filterTypes";
 // import du style
 import style from "./searchFormComponent.module.scss";
-import { User } from "../../../../utils/types/userTypes";
-import { UserFilterType } from "../../../../utils/types/filterTypes";
-import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
