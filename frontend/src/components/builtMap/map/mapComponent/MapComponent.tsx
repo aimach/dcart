@@ -78,6 +78,7 @@ const MapComponent = () => {
 		isTutorialOpen,
 		closeTutorial,
 		resetTutorialStep,
+		hasGrayScale,
 	} = useMapStore(useShallow((state) => state));
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(useShallow((state) => state));
@@ -204,6 +205,15 @@ const MapComponent = () => {
 
 	const tileAttribution = getMapAttribution(tileLayerURL);
 
+	// au montage, ajout d'un label aux boutons de zoom pour l'accessibilité
+	useEffect(() => {
+		const zoomIn = document.querySelector(".leaflet-control-zoom-in");
+		const zoomOut = document.querySelector(".leaflet-control-zoom-out");
+
+		if (zoomIn) zoomIn.setAttribute("aria-label", "Zoomer");
+		if (zoomOut) zoomOut.setAttribute("aria-label", "Dézoomer");
+	}, []);
+
 	return (
 		<>
 			<MapPageHelmetContent
@@ -256,67 +266,76 @@ const MapComponent = () => {
 							)}
 						</ModalComponent>
 					)}
-					<MapContainer
-						center={mapCenter}
-						zoomControl={false}
-						minZoom={4}
-						maxZoom={11}
-						ref={setMap}
+					{/* enveloppé dans une section pour l'accessibilité */}
+					<section
+						aria-label={`Carte interactive ${mapInfos?.[`title_${language}`] ?? `Carte d'exploration`}`}
+						style={{ filter: hasGrayScale ? "grayscale(100%)" : "none" }}
 					>
-						{location.hash.includes("maps/preview/") && (
-							<div
-								style={{
-									position: "absolute",
-									top: 10,
-									left: 10,
-									zIndex: 400,
-								}}
-							>
-								<Link
-									to={`/backoffice/maps/edit/${mapId}`}
-									state={{ from: location.pathname }}
+						<MapContainer
+							center={mapCenter}
+							zoomControl={false}
+							minZoom={4}
+							maxZoom={11}
+							keyboard={true} // accessibilité
+							ref={setMap}
+						>
+							{location.hash.includes("maps/preview/") && (
+								<div
+									style={{
+										position: "absolute",
+										top: 10,
+										left: 10,
+										zIndex: 400,
+									}}
 								>
-									<ButtonComponent
-										type="button"
-										textContent={
-											translation[language].backoffice.storymapFormPage
-												.backToEdit
-										}
-										color="brown"
-										onClickFunction={() => {
-											fetchMapInfos();
-										}}
+									<Link
+										to={`/backoffice/maps/edit/${mapId}`}
+										state={{ from: location.pathname }}
+									>
+										<ButtonComponent
+											type="button"
+											textContent={
+												translation[language].backoffice.storymapFormPage
+													.backToEdit
+											}
+											color="brown"
+											onClickFunction={() => {
+												fetchMapInfos();
+											}}
+										/>
+									</Link>
+								</div>
+							)}
+							<MapTitleComponent
+								setIsModalOpen={setIsModalOpen}
+								mapBounds={bounds}
+								fetchAllPoints={fetchAllPoints}
+							/>
+							{mapReady && (
+								<>
+									<TileLayer
+										opacity={0.6}
+										attribution={`dCART | &copy; ${tileAttribution}`}
+										url={tileLayerURL}
 									/>
-								</Link>
-							</div>
-						)}
-						<MapTitleComponent
-							setIsModalOpen={setIsModalOpen}
-							mapBounds={bounds}
-							fetchAllPoints={fetchAllPoints}
-						/>
-						{mapReady && (
-							<>
-								<TileLayer
-									opacity={0.6}
-									attribution={`dCART | &copy; ${tileAttribution}`}
-									url={tileLayerURL}
-								/>
-								{!mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
-									<SimpleLayerComponent allMemoizedPoints={allMemoizedPoints} />
-								)}
-								{mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
-									<MultipleLayerComponent
-										allMemoizedPoints={allMemoizedPoints}
-									/>
-								)}
-								<ZoomControl position="bottomleft" />
-								<ScaleControl position="bottomright" />
-								<OrientationControl />
-								<MapClickHandler deselectFunction={resetSelectedMarker} />
-							</>
-						)}
-					</MapContainer>
+									{!mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
+										<SimpleLayerComponent
+											allMemoizedPoints={allMemoizedPoints}
+										/>
+									)}
+									{mapInfos?.isLayered && allMemoizedPoints.length > 0 && (
+										<MultipleLayerComponent
+											allMemoizedPoints={allMemoizedPoints}
+										/>
+									)}
+									<ZoomControl position="bottomleft" />
+									<ScaleControl position="bottomright" />
+									<OrientationControl />
+									<MapClickHandler deselectFunction={resetSelectedMarker} />
+								</>
+							)}
+						</MapContainer>
+					</section>
 				</section>
 				{mapReady && !isMobile && (
 					<section

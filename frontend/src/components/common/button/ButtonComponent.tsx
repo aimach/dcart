@@ -53,6 +53,7 @@ const ButtonComponent = ({
 				disabled={isDisabled}
 				onClick={onClickFunction}
 				className={`${style.simpleButton} ${isSelected ? style[color] : style.unselected}`}
+				aria-label={textContent}
 			>
 				{icon ?? ""} {textContent}
 			</button>
@@ -66,6 +67,7 @@ const ButtonComponent = ({
 				disabled={isDisabled}
 				onClick={onClickFunction}
 				className={`${style.simpleButton} ${isSelected ? style[color] : style.unselected}`}
+				aria-label={textContent}
 			>
 				{icon ?? ""} {textContent}
 			</button>

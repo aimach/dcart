@@ -37,7 +37,12 @@ const ModalComponent = ({ onClose, children }: ModalComponentProps) => {
 						: style.modalContent
 				}
 			>
-				<button type="button" className={style.modalClose} onClick={onClose}>
+				<button
+					type="button"
+					className={style.modalClose}
+					onClick={onClose}
+					aria-label="Fermer la modale"
+				>
 					<CircleX />
 				</button>
 				{children}

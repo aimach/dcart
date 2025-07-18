@@ -50,9 +50,8 @@ const ChartComponent = () => {
 	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
-	const { mapInfos, includedElementId, selectedMarker } = useMapStore(
-		(state) => state,
-	);
+	const { mapInfos, includedElementId, selectedMarker, hasGrayScale } =
+		useMapStore((state) => state);
 
 	// déclaration d'un état pour le type de données à afficher
 	const [dataType, setDataType] = useState<string>("epithet");
@@ -126,6 +125,17 @@ const ChartComponent = () => {
 		};
 		fetchAllColors();
 	}, []);
+	const accessibleColors = [
+		"#377eb8", // blue
+		"#4daf4a", // green
+		"#984ea3", // purple
+		"#ff7f00", // orange
+		"#e41a1c", // red
+		"#ffff33", // yellow
+		"#a65628", // brown
+		"#f781bf", // pink
+		"#999999", // gray
+	];
 
 	// options pour le graphique en barres
 	const barOptions = {
@@ -180,7 +190,7 @@ const ChartComponent = () => {
 		datasets: [
 			{
 				data: dataSets,
-				backgroundColor: colors,
+				backgroundColor: hasGrayScale ? accessibleColors : colors,
 			},
 		],
 	};

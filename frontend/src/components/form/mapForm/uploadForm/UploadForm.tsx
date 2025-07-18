@@ -12,6 +12,7 @@ import TooltipComponent from "../../../common/tooltip/TooltipComponent";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useShallow } from "zustand/shallow";
 import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 import { createPointSet } from "../../../../utils/api/builtMap/postRequests";
@@ -49,7 +50,6 @@ import {
 	PlusCircle,
 	X,
 } from "lucide-react";
-import { map } from "leaflet";
 
 /**
  * Formulaire de la deuxième étape : upload de points sur la carte
@@ -59,6 +59,7 @@ const UploadForm = () => {
 	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
+	const { hasGrayScale } = useMapStore();
 	const { mapInfos, setMapInfos, step } = useMapFormStore(
 		useShallow((state) => state),
 	);
@@ -308,6 +309,7 @@ const UploadForm = () => {
 									const icon = getShapeForLayerName(
 										(pointSet.icon as MapIconType)?.name_en,
 										(pointSet.color as MapColorType)?.code_hex,
+										hasGrayScale,
 									);
 									return (
 										<>

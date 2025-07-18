@@ -18,9 +18,11 @@ import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableB
 import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 import ItemLinkBlock from "../../../../components/storymap/blocks/itemLinkBlock/ItemLinkBlock";
 import StorymapConclusion from "../../../../components/storymap/blocks/storymapConclusion/StorymapConclusion";
+import { StorymapPageHelmetContent } from "../../../../components/helmet/HelmetContent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import {
 	getStorymapInfosAndBlocksById,
@@ -34,7 +36,6 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
-import { StorymapPageHelmetContent } from "../../../../components/helmet/HelmetContent";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -96,6 +97,7 @@ const StorymapPage = () => {
 	const location = useLocation();
 
 	// récupération des données des stores
+	const { hasGrayScale, setHasGrayScale } = useMapStore();
 	const { selectedLanguage, setSelectedLanguage } = useStorymapLanguageStore();
 
 	// déclaration d'un état pour stocker les informations de la storymap
@@ -166,6 +168,17 @@ const StorymapPage = () => {
 								</li>
 							</ul>
 						)}
+					</div>
+					<div className={style.grayScaleToggleContainer}>
+						<input
+							type="checkbox"
+							id="grayScaleToggle"
+							onChange={() => setHasGrayScale(!hasGrayScale)}
+							checked={hasGrayScale}
+						/>
+						<label htmlFor="grayScaleToggle">
+							{translation[language].button.grey}
+						</label>
 					</div>
 				</div>
 				<section className={style.storymapContainer}>

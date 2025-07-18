@@ -41,8 +41,8 @@ const NavComponent = ({
 	const { isAdmin } = useContext(AuthContext);
 	if (type === "route") {
 		return (
-			<nav className={navClassName}>
-				<ul >
+			<nav className={navClassName} tabIndex={-1}>
+				<ul>
 					{list.map((element) => {
 						if (!element.adminOnly || (element.adminOnly && isAdmin))
 							return (
@@ -55,7 +55,7 @@ const NavComponent = ({
 								>
 									{element.title as string}
 								</NavLink>
-							)
+							);
 					})}
 				</ul>
 			</nav>
@@ -64,7 +64,7 @@ const NavComponent = ({
 
 	if (type === "list") {
 		return (
-			<nav className={navClassName}>
+			<nav className={navClassName} tabIndex={-1}>
 				<ul>
 					{list.map((element) => (
 						<li
@@ -87,7 +87,7 @@ const NavComponent = ({
 
 	if (type === "augmented") {
 		return (
-			<nav className={navClassName}>
+			<nav className={navClassName} tabIndex={-1}>
 				<ul>
 					{list.map((element) => (
 						<li

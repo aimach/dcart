@@ -24,6 +24,7 @@ import {
 	getMapAttribution,
 	handleClusterMouseOver,
 } from "../../../../utils/functions/map";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { L, LatLngTuple, Map as LeafletMap } from "leaflet";
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
@@ -48,6 +49,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const { language } = useTranslation();
 	// récupération des données des stores
 	const { selectedLanguage } = useStorymapLanguageStore();
+	const { hasGrayScale } = useMapStore();
 
 	const [map, setMap] = useState<LeafletMap | null>(null);
 	const [points, setPoints] = useState<PointType[]>([]);
@@ -93,7 +95,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		for (const input of inputs) {
 			(input as HTMLInputElement).style.display = "none";
 		}
-	}, [points]);
+	}, [points, hasGrayScale]);
 
 	const tileAttribution = getMapAttribution(blockContent.content2_lang1);
 
@@ -116,9 +118,21 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 		};
 	}, [map]);
 
+	// au montage, ajout d'un label aux boutons de zoom pour l'accessibilité
+	useEffect(() => {
+		const zoomIn = document.querySelector(".leaflet-control-zoom-in");
+		const zoomOut = document.querySelector(".leaflet-control-zoom-out");
+
+		if (zoomIn) zoomIn.setAttribute("aria-label", "Zoomer");
+		if (zoomOut) zoomOut.setAttribute("aria-label", "Dézoomer");
+	}, []);
+
 	return (
 		<>
-			<div id={mapName}>
+			<div
+				id={mapName}
+				style={{ filter: hasGrayScale ? "grayscale(100%)" : "none" }}
+			>
 				<MapContainer
 					center={mapCenter}
 					scrollWheelZoom={false}
@@ -126,6 +140,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 					maxZoom={11}
 					zoomControl={false}
 					ref={setMap}
+					keyboard={true} // accessibilité
 				>
 					<>
 						<TileLayer
@@ -143,6 +158,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 							maxClusterRadius={1}
 							disableSpiderfy={true}
 							iconCreateFunction={createClusterCustomIcon}
+							key={hasGrayScale.toString()}
 						>
 							{points.length > 0 ? (
 								points.map((point: PointType) => {
@@ -150,6 +166,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 										<MarkerComponent
 											key={`${point.latitude}-${point.longitude}-${point.color}-${point.shape}`}
 											point={point}
+											{...{ hasGrayScale }}
 										/>
 									);
 								})
@@ -163,8 +180,11 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 									.sort((a, b) => a.position - b.position)
 									.map((layer) => {
 										const icon =
-											getShapeForLayerName(layer.shape, layer.color) +
-											layer[`name_${language}`];
+											getShapeForLayerName(
+												layer.shape,
+												layer.color,
+												hasGrayScale,
+											) + layer[`name_${language}`];
 										return (
 											<LayersControl.Overlay name={icon} key={icon}>
 												<LayerGroup key={icon} />

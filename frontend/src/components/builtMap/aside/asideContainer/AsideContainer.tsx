@@ -1,3 +1,5 @@
+// import des bibliothèques
+import { useEffect, useRef } from "react";
 // import des composants
 import AsideMainComponent from "../asideMain/AsideMainComponent";
 import AsideHeader from "../asideHeader/AsideHeader";
@@ -18,7 +20,7 @@ import { ChevronLeft } from "lucide-react";
  */
 const AsideContainer = () => {
 	const { isPanelDisplayed, setIsPanelDisplayed } = useMapAsideMenuStore();
-	const { tutorialStep } = useMapStore();
+	const { tutorialStep, setPanelRef } = useMapStore();
 
 	// définition des classes CSS en fonction de l'état d'affichage du panel (ouvert ou fermé)
 	let asideClassNames = `${style.aside}`;
@@ -26,8 +28,21 @@ const AsideContainer = () => {
 		? ` ${style.asideOpened}`
 		: ` ${style.asideClosed}`;
 	asideClassNames += tutorialStep > 5 ? ` ${style.asideOpenedWhite}` : "";
+
+	const localRef = useRef<HTMLElement>(null);
+
+	// Enregistre le ref dans le store au montage
+	useEffect(() => {
+		setPanelRef(localRef);
+	}, [setPanelRef]);
+
 	return (
-		<aside className={asideClassNames}>
+		<aside
+			className={asideClassNames}
+			tabIndex={-1}
+			aria-label="Résultats de la carte, filtres et informations"
+			ref={localRef}
+		>
 			<AsideHeader />
 			<div className={style.toggleButtonContainer}>
 				{isPanelDisplayed ? (
@@ -35,6 +50,8 @@ const AsideContainer = () => {
 						type="button"
 						className={style.toggleButton}
 						onClick={() => setIsPanelDisplayed(false)}
+						aria-label="Fermer le panel latéral"
+						aria-keyshortcuts="Escape"
 					>
 						<ChevronLeft />
 					</button>

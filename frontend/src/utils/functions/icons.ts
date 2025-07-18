@@ -10,6 +10,7 @@ interface CustomMarkerOptions extends MarkerOptions {
 		color: string;
 		shape: string;
 	};
+	hasGrayScale?: boolean;
 }
 
 /**
@@ -25,11 +26,14 @@ const getLittleIcon = (
 	style: CSSModuleClasses,
 	customClassName: string | null,
 	content: string,
+	hasGrayScale: boolean,
 	backgroundColor?: string,
 	shape?: string,
 ) => {
 	let backgroundColorStyle = "";
-	if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
+	if (hasGrayScale) {
+		backgroundColorStyle = `fillColor: 'url(#pattern-stripes)'`;
+	} else if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
 		backgroundColorStyle = `background-color: ${backgroundColor};`;
 	}
 	let shapeStyle = "";
@@ -65,12 +69,15 @@ const getMediumIcon = (
 	style: CSSModuleClasses,
 	customClassName: string | null,
 	content: string,
+	hasGrayScale: boolean,
 	backgroundColor?: string,
 	shape?: string,
 ) => {
 	let backgroundColorStyle = "";
 	let shapeStyle = "";
-	if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
+	if (hasGrayScale) {
+		backgroundColorStyle = `fillColor: 'url(#pattern-stripes)'`;
+	} else if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
 		backgroundColorStyle = `background-color: ${backgroundColor};`;
 	}
 	if (shape === "circle") {
@@ -105,12 +112,15 @@ const getDarkIcon = (
 	style: CSSModuleClasses,
 	customClassName: string | null,
 	content: string,
+	hasGrayScale: boolean,
 	backgroundColor?: string,
 	shape?: string,
 ) => {
 	let backgroundColorStyle = "";
 	let shapeStyle = "";
-	if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
+	if (hasGrayScale) {
+		backgroundColorStyle = `fillColor: 'url(#pattern-stripes)'`;
+	} else if (customClassName !== "selectedBackgroundColor" && backgroundColor) {
 		backgroundColorStyle = `background-color: ${backgroundColor};`;
 	}
 	if (shape === "circle") {
@@ -147,6 +157,7 @@ const getDefaultIcon = (
 	style: CSSModuleClasses,
 	customClassName: string | null,
 	content: string,
+	hasGrayScale: boolean,
 	backgroundColor?: string,
 	shape?: string,
 ) => {
@@ -155,6 +166,7 @@ const getDefaultIcon = (
 			style,
 			customClassName,
 			content,
+			hasGrayScale,
 			backgroundColor,
 			shape,
 		);
@@ -164,14 +176,29 @@ const getDefaultIcon = (
 			style,
 			customClassName,
 			content,
+			hasGrayScale,
 			backgroundColor,
 			shape,
 		);
 	}
 	if (sourcesNb >= 50) {
-		return getDarkIcon(style, customClassName, content, backgroundColor, shape);
+		return getDarkIcon(
+			style,
+			customClassName,
+			content,
+			hasGrayScale,
+			backgroundColor,
+			shape,
+		);
 	}
-	return getLittleIcon(style, customClassName, content, backgroundColor, shape);
+	return getLittleIcon(
+		style,
+		customClassName,
+		content,
+		hasGrayScale,
+		backgroundColor,
+		shape,
+	);
 };
 
 const getLittleCircleIcon = (style: CSSModuleClasses) => {
@@ -202,8 +229,14 @@ const getCircleIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
+	color: string,
 	content?: string,
 ) => {
+	const accessibleFillAndStroke = hasGrayScale
+		? `fill="url(#pattern-${color})" stroke="black"`
+		: customFillAndStroke;
+	const accessibleTextColor = hasGrayScale ? "black" : customTextColor;
 	const iconContent = isNbDisplayed
 		? sourcesNb.toString()
 		: content
@@ -211,9 +244,10 @@ const getCircleIcon = (
 			: "";
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
-      <circle cx="50" cy="50" r="45" ${customFillAndStroke} stroke-width="5" />
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${customTextColor} >
-        ${iconContent}
+	${hasGrayScale ? getPatternByColor(color) : ""}
+      <circle cx="50" cy="50" r="45" ${accessibleFillAndStroke} stroke-width="5" />
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${accessibleTextColor} >
+        ${hasGrayScale ? "" : iconContent}
       </text>
     </svg>
   `;
@@ -225,8 +259,14 @@ const getSquareIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
+	color: string,
 	content?: string,
 ) => {
+	const accessibleFillAndStroke = hasGrayScale
+		? `fill="url(#pattern-${color})" stroke="black"`
+		: customFillAndStroke;
+	const accessibleTextColor = hasGrayScale ? "black" : customTextColor;
 	const iconContent = isNbDisplayed
 		? sourcesNb.toString()
 		: content
@@ -234,10 +274,11 @@ const getSquareIcon = (
 			: "";
 	return `
     <svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
-      <rect x="5" y="5" width="90" height="90" ${customFillAndStroke}
+		${hasGrayScale ? getPatternByColor(color) : ""}
+      <rect x="5" y="5" width="90" height="90" ${accessibleFillAndStroke}
  stroke-width="5"/>
-      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${customTextColor} >
-        ${iconContent}
+      <text x="50%" y="50%" dominant-baseline="middle" text-anchor="middle" font-size="50"  fill=${accessibleTextColor} >
+        ${hasGrayScale ? "" : iconContent}
       </text>
     </svg>
   `;
@@ -249,18 +290,25 @@ const getTriangleIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
+	color: string,
 	content?: string,
 ) => {
+	const accessibleFillAndStroke = hasGrayScale
+		? `fill="url(#pattern-${color})" stroke="black"`
+		: customFillAndStroke;
+	const accessibleTextColor = hasGrayScale ? "black" : customTextColor;
 	const iconContent = isNbDisplayed
 		? sourcesNb.toString()
 		: content
 			? content
 			: "";
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize}  height=${customSize}  viewBox="0 0 100 100">
-      <polygon points="50,10 90,90 10,90" ${customFillAndStroke}
+		${hasGrayScale ? getPatternByColor(color) : ""}
+      <polygon points="50,10 90,90 10,90" ${accessibleFillAndStroke}
  stroke-width="5" />
-      <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="50" fill=${customTextColor} >
-        ${iconContent}
+      <text x="50%" y="60%" dominant-baseline="middle" text-anchor="middle" font-size="50" fill=${accessibleTextColor}>
+        ${hasGrayScale ? "" : iconContent}
       </text>
     </svg>
   `;
@@ -272,17 +320,24 @@ const getDiamondIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
+	color: string,
 	content?: string,
 ) => {
+	const accessibleFillAndStroke = hasGrayScale
+		? `fill="url(#pattern-${color})" stroke="black"`
+		: customFillAndStroke;
+	const accessibleTextColor = hasGrayScale ? "black" : customTextColor;
 	const iconContent = isNbDisplayed
 		? sourcesNb.toString()
 		: content
 			? content
 			: "";
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
+		${hasGrayScale ? getPatternByColor(color) : ""}
       <polygon 
         points="50,5 95,50 50,95 5,50" 
-        ${customFillAndStroke}
+        ${accessibleFillAndStroke}
         stroke-width="5"
       />
       <text 
@@ -291,9 +346,9 @@ const getDiamondIcon = (
         dominant-baseline="middle" 
         text-anchor="middle" 
         font-size="50" 
-        fill=${customTextColor} 
+        fill=${accessibleTextColor} 
       >
-        ${iconContent}
+	  	${hasGrayScale ? "" : iconContent}
       </text>
     </svg>
   `;
@@ -305,14 +360,21 @@ const getStarIcon = (
 	customSize: number,
 	customTextColor: string,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
+	color: string,
 	content?: string,
 ) => {
+	const accessibleFillAndStroke = hasGrayScale
+		? `fill="url(#pattern-${color})" stroke="black"`
+		: customFillAndStroke;
+	const accessibleTextColor = hasGrayScale ? "black" : customTextColor;
 	const iconContent = isNbDisplayed
 		? sourcesNb.toString()
 		: content
 			? content
 			: "";
 	return `<svg xmlns="http://www.w3.org/2000/svg" width=${customSize} height=${customSize} viewBox="0 0 100 100">
+	${hasGrayScale ? getPatternByColor(color) : ""}
 	<defs>
 		<filter id="blur" x="-5%" y = "-5%" width="110%" height="110%" >
 			<feGaussianBlur in="SourceGraphic" stdDeviation = "0.5" />
@@ -330,7 +392,7 @@ const getStarIcon = (
 				L15, 45
 				L49, 42 
 				Z"
-        ${customFillAndStroke}
+        ${accessibleFillAndStroke}
         stroke-width="5"
       />
       <text 
@@ -339,9 +401,9 @@ const getStarIcon = (
         dominant-baseline="middle" 
         text-anchor="middle" 
         font-size="50" 
-        fill=${customTextColor}
+        fill=${accessibleTextColor}
       >
-        ${iconContent}
+	  ${hasGrayScale ? "" : iconContent}
       </text>
     </svg>
   `;
@@ -353,11 +415,12 @@ const getShapedDivContent = (
 	sourcesNb: number,
 	isSelected: boolean,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
 	content?: string,
 ) => {
 	let customSize = getShapeDependingOnNb(sourcesNb);
 	const customColor = getColorDependingOnNb(sourcesNb, color);
-	let customFillAndStroke = `fill=${customColor} stroke=${tinycolor(customColor).darken(10).toString()}`;
+	let customFillAndStroke = `fill=${customColor} stroke=${hasGrayScale ? "black" : tinycolor(customColor).darken(10).toString()}`;
 	let customTextColor = tinycolor(customColor).isDark() ? "white" : "black";
 
 	if (isSelected) {
@@ -374,6 +437,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 		case "square":
@@ -383,6 +448,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 		case "triangle":
@@ -392,6 +459,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 		case "diamond":
@@ -401,6 +470,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 		case "star":
@@ -410,6 +481,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 
@@ -420,6 +493,8 @@ const getShapedDivContent = (
 				customSize,
 				customTextColor,
 				isNbDisplayed,
+				hasGrayScale,
+				color,
 				content,
 			);
 	}
@@ -430,6 +505,7 @@ const getIcon = (
 	style: CSSModuleClasses,
 	isSelected: boolean,
 	isNbDisplayed: boolean,
+	hasGrayScale: boolean,
 	content?: string,
 ) => {
 	let customIcon = getDefaultIcon(
@@ -437,6 +513,7 @@ const getIcon = (
 		style,
 		getBackGroundColorClassName(point.sources.length),
 		point.sources.length.toString(),
+		hasGrayScale,
 	);
 	if (point.shape && point.color) {
 		customIcon = L.divIcon({
@@ -446,6 +523,7 @@ const getIcon = (
 				point.sources.length,
 				isSelected,
 				isNbDisplayed,
+				hasGrayScale,
 				content,
 			),
 			className: "",
@@ -462,6 +540,7 @@ const getIcon = (
 				point.sources.length,
 				isSelected,
 				isNbDisplayed,
+				hasGrayScale,
 				content,
 			),
 			className: "",
@@ -495,6 +574,7 @@ const getShapeDependingOnNb = (sourcesNb: number): number => {
 const getShapeForLayerName = (
 	shape: string | undefined,
 	color: string | undefined,
+	hasGrayScale: boolean,
 	xAndY: string | undefined = "",
 	isAddingWidthAndHeight = true,
 ) => {
@@ -504,16 +584,35 @@ const getShapeForLayerName = (
 	}
 	const size = isAddingWidthAndHeight ? 'width="20" height="20"' : "";
 	switch (shape) {
-		case "circle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
-		case "square":
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg>`;
-		case "triangle":
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
-		case "diamond":
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" fill=${defaultColor} stroke="lightgrey" stroke-width="5"/></svg>`;
-		case "star":
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><defs><filter id="blur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/></filter></defs><path d="
+		case "circle": {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100">${hasGrayScale && getPatternByColor(color as string)}<circle cx="50" cy="50" r="45" ${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5" /></svg>`;
+		}
+		case "square": {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><rect x="5" y="5" width="90" height="90" ${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5"/>${hasGrayScale && getPatternByColor(color as string)}</svg>`;
+		}
+		case "triangle": {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,10 90,90 10,90" ${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5" />${hasGrayScale && getPatternByColor(color as string)}</svg>`;
+		}
+		case "diamond": {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><polygon points="50,5 95,50 50,95 5,50" ${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5"/>${hasGrayScale && getPatternByColor(color as string)}</svg>`;
+		}
+		case "star": {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100">${hasGrayScale && getPatternByColor(color as string)}<defs><filter id="blur" x="-5%" y="-5%" width="110%" height="110%"><feGaussianBlur in="SourceGraphic" stdDeviation="0.5"/></filter></defs><path d="
 			M60,10 
 			L71,42 
 			L105,45 
@@ -525,13 +624,21 @@ const getShapeForLayerName = (
 			L15,45 
 			L49,42 
 			Z"
-			fill=${defaultColor} stroke="lightgrey" stroke-width="5"  filter="url(#blur)" stroke-linejoin="round"/></svg>`;
-		default:
-			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100"><circle cx="50" cy="50" r="45" fill=${defaultColor} stroke="lightgrey" stroke-width="5" /></svg>`;
+			${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5"  filter="url(#blur)" stroke-linejoin="round"/></svg>`;
+		}
+		default: {
+			const accessibleColor = hasGrayScale
+				? `fill="url(#pattern-${color})"`
+				: `fill=${defaultColor}`;
+			return `<svg xmlns="http://www.w3.org/2000/svg" ${size} ${xAndY} viewBox="0 0 100 100">${hasGrayScale && getPatternByColor(color as string)}<circle cx="50" cy="50" r="45" ${accessibleColor} stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="5" /></svg>`;
+		}
 	}
 };
 
-const getBlendIconHTML = (markers: Marker[]): string | undefined => {
+const getBlendIconHTML = (
+	markers: Marker[],
+	hasGrayScale: boolean,
+): string | undefined => {
 	const markersColorsAndShapes = markers.map((marker) => {
 		return (marker.options as CustomMarkerOptions).colorAndShape;
 	});
@@ -553,7 +660,7 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 
 	if (markers.length === 2 || uniqueMarkersColorsAndShapes.length === 2) {
 		const uniqueMarkers = getUniqueMarkersByIcon(markers);
-		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" stroke="lightgrey" stroke-width="1"><clipPath id="left-half">
+		let blendIcon = `<svg width="40" height="40" viewBox="0 0 40 40" xmlns="http://www.w3.org/2000/svg" stroke=${hasGrayScale ? "black" : "lightgrey"} stroke-width="1"><clipPath id="left-half">
 		<rect x="0" y="0" width="20" height="40" /></clipPath><clipPath id="right-half"><rect x="20" y="0" width="20" height="40" /></clipPath>`;
 		for (let i = 0; i < 2; i++) {
 			const side = i === 0 ? "left-half" : "right-half";
@@ -561,7 +668,13 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 				.colorAndShape?.color;
 			const shape = (uniqueMarkers[i].options as CustomMarkerOptions)
 				.colorAndShape?.shape;
-			const customIcon = getShapeForLayerName(shape, color, "", false);
+			const customIcon = getShapeForLayerName(
+				shape,
+				color,
+				hasGrayScale,
+				"",
+				false,
+			);
 			blendIcon += `<g clip-path="url(#${side})">${customIcon}</g>`;
 		}
 		return `${blendIcon}</svg>`;
@@ -575,6 +688,7 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
 		return generateCamembertSVG(
 			uniqueColors,
 			uniqueMarkersColorsAndShapes as { color: string; shape: string }[],
+			hasGrayScale,
 		);
 	}
 };
@@ -586,8 +700,11 @@ const getBlendIconHTML = (markers: Marker[]): string | undefined => {
  */
 const createClusterCustomIcon = (cluster: MarkerCluster) => {
 	const markers = cluster.getAllChildMarkers();
+	const hasGrayScale = markers.some(
+		(marker) => (marker.options as CustomMarkerOptions).hasGrayScale,
+	);
 
-	const blendIcon = getBlendIconHTML(markers);
+	const blendIcon = getBlendIconHTML(markers, hasGrayScale);
 	return L.divIcon({
 		html: `${blendIcon} `,
 		className: "",
@@ -607,6 +724,7 @@ function generateCamembertSVG(
 		color: string;
 		shape: string;
 	}[],
+	hasGrayScale: boolean,
 	size = 35,
 ) {
 	const cx = size / 2;
@@ -642,7 +760,7 @@ function generateCamembertSVG(
 	}
 
 	return `
-    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" stroke="lightgrey" stroke-width="1" xmlns="http://www.w3.org/2000/svg">
+    <svg width="${size}" height="${size}" viewBox="0 0 ${size} ${size}" stroke=${hasGrayScale ? "black" : "lighgrey"} stroke-width="1" xmlns="http://www.w3.org/2000/svg">
       ${paths}
     </svg>
   `;
@@ -663,6 +781,42 @@ const getUniqueMarkersByIcon = (markers: Marker[]) => {
 		seen.add(iconHtml);
 		return true;
 	});
+};
+
+/**
+ * Fonction pour obtenir un pattern en fonction de la couleur de l'icône
+ * @param color - La couleur de l'icône
+ * @returns - le code SVG du pattern
+ */
+const getPatternByColor = (color: string) => {
+	switch (color) {
+		case "#9F196B": // purple
+			// diagonales
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M0,0 l25,25" stroke="black" stroke-width="3"/></pattern>`;
+		case "#6BBADB": // blue
+			// diagonales croisées
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M0,0 l25,25 M25,0 l-25,25" stroke="black" stroke-width="2"/></pattern>`;
+		case "#7EB356": // green
+			// petits cercles
+			return `  <pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><circle cx="12" cy="12" r="5" fill="black"/></pattern>`;
+		case "#FADF0F": // yellow
+			// cadrillage
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M0,0H25V25H0Z" fill="none" stroke="black" stroke-width="2"/></pattern>`;
+		case "#F3722C": // orange
+			// petit cadrillage
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="6" height="6"><rect width="25" height="25" fill="white"/><path d="M0,3h6M3,0v6" stroke="black" stroke-width="1"/></pattern>`;
+		case "#AC2020": // red
+			// "bulles"
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><circle cx="5" cy="5" r="8" fill="none" stroke="black" stroke-width="3"/></pattern>`;
+		case "#525252": // gray
+			// lignes horizontales
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M0,3h25" stroke="black" stroke-width="3"/></pattern>`;
+		case "#AD9A85": // brown
+			// lignes verticales
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M3,0v25" stroke="black" stroke-width="3"/></pattern>`;
+		default:
+			return `<pattern id="pattern-${color}" patternUnits="userSpaceOnUse" width="25" height="25"><rect width="25" height="25" fill="white"/><path d="M3,0v25" stroke="black" stroke-width="3"/></pattern>`;
+	}
 };
 
 export {

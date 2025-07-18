@@ -1,3 +1,4 @@
+// import des bibliothèques
 import { Helmet } from "react-helmet-async";
 
 const HomePageHelmetContent = () => {
@@ -17,10 +18,6 @@ const HomePageHelmetContent = () => {
 				property="og:description"
 				content="Bienvenue sur l'Atlas numérique des noms divins en Méditerranée, outil d'exploration de la BDD MAP via des cartes et storymaps."
 			/>
-			{/* <meta
-				property="og:image"
-				content="https://ton-site.com/images/preview.png"
-			/> */}
 			<meta property="og:url" content="https://dcart-map.huma-num.fr/" />
 			<meta property="og:type" content="website" />
 
@@ -34,10 +31,6 @@ const HomePageHelmetContent = () => {
 				name="twitter:description"
 				content="Bienvenue sur l'Atlas numérique des noms divins en Méditerranée, outil d'exploration de la BDD MAP via des cartes et storymaps."
 			/>
-			{/* <meta
-				name="twitter:image"
-				content="https://ton-site.com/images/preview.png"
-			/> */}
 
 			{/* Canonical URL */}
 			<link rel="canonical" href="https://dcart-map.huma-num.fr/" />
@@ -218,7 +211,6 @@ const NotFoundPageHelmetContent = () => {
 			<meta property="og:type" content="website" />
 
 			{/* Twitter Cards */}
-			{/* <meta name="twitter:card" content="summary_large_image" /> */}
 			<meta name="twitter:title" content="Page non trouvée" />
 			<meta
 				name="twitter:description"

@@ -95,6 +95,13 @@ function HomePage() {
 				</section>
 				<section className={style.tagContainer} ref={tagContainerRef}>
 					<div className={style.tagContainerHeader}>
+						{/* label invisible pour l'accessibilité */}
+						<label
+							htmlFor="react-select-2-input"
+							className={style.invisibleLabel}
+						>
+							{translation[language].mapPage.aside.searchForTag}
+						</label>
 						<Select
 							styles={singleSelectInLineStyle}
 							options={allTagsOptions}
@@ -112,10 +119,14 @@ function HomePage() {
 							}
 							placeholder={translation[language].mapPage.aside.searchForTag}
 						/>
+						{/* label invisible pour l'accessibilité */}
+						<label htmlFor="searchText" className={style.invisibleLabel}>
+							{translation[language].button.search}
+						</label>
 						<input
 							type="text"
-							id="searchInput"
 							value={searchText}
+							id="searchText"
 							onChange={(e) =>
 								handleFilterInputs(
 									e.target.value,
@@ -128,7 +139,6 @@ function HomePage() {
 							}
 							placeholder={`${translation[language].button.search}...`}
 						/>
-
 						<ItemFilterComponent
 							itemTypes={itemTypes}
 							setItemTypes={setItemTypes}
@@ -154,7 +164,7 @@ function HomePage() {
 											className={style.tagItemContainer}
 										>
 											<div className={style.tagItemContainerTitle}>
-												<h3>{tagWithItems[`name_${language}`]}</h3>
+												<h2>{tagWithItems[`name_${language}`]}</h2>
 												<Link to={`/tag/${tagWithItems.slug}`}>
 													<div className={style.textButtonContainer}>
 														{translation[language].button.seeAll}{" "}

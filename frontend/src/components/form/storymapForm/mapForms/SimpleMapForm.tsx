@@ -40,6 +40,7 @@ import {
 } from "../../../../utils/functions/storymap";
 import { handleCSVDownload } from "../../../../utils/functions/csv";
 import { displayBrushCleaningButton } from "../../../../utils/functions/common";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { FormEventHandler } from "react";
 import type {
@@ -75,6 +76,8 @@ export type simpleMapInputsType = {
 const SimpleMapForm = () => {
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
+
+	const { hasGrayScale } = useMapStore();
 
 	const {
 		storymapInfos,
@@ -530,6 +533,7 @@ const SimpleMapForm = () => {
 											const icon = getShapeForLayerName(
 												(pointSet.icon as MapIconType)?.name_en,
 												(pointSet.color as MapColorType)?.code_hex,
+												hasGrayScale,
 											);
 											const isCustomPointSet =
 												pointSet.customPointsArray &&

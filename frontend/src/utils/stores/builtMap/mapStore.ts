@@ -3,6 +3,7 @@ import { create } from "zustand";
 // import des types
 import type { Map as LeafletMap } from "leaflet";
 import type { MapInfoType, PointType } from "../../types/mapTypes";
+import type { RefObject } from "react";
 
 type State = {
 	map: LeafletMap | null;
@@ -17,6 +18,8 @@ type State = {
 	isTutorialOpen: boolean;
 	tutorialStep: number;
 	mapIsDownloading: boolean;
+	hasGrayScale: boolean;
+	panelRef: RefObject<HTMLElement> | null;
 };
 
 type Action = {
@@ -39,6 +42,8 @@ type Action = {
 	decrementTutorialStep: (step: number) => void;
 	resetTutorialStep: () => void;
 	setMapIsDownloading: (mapIsDownloading: boolean) => void;
+	setHasGrayScale: (hasGrayScale: boolean) => void;
+	setPanelRef: (panelRef: RefObject<HTMLElement> | null) => void;
 };
 
 export const useMapStore = create<State & Action>((set) => ({
@@ -83,4 +88,8 @@ export const useMapStore = create<State & Action>((set) => ({
 	resetTutorialStep: () => set(() => ({ tutorialStep: 1 })),
 	mapIsDownloading: false,
 	setMapIsDownloading: (mapIsDownloading) => set(() => ({ mapIsDownloading })),
+	hasGrayScale: false,
+	setHasGrayScale: (hasGrayScale) => set(() => ({ hasGrayScale })),
+	panelRef: null,
+	setPanelRef: (panelRef) => set(() => ({ panelRef })),
 }));

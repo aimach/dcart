@@ -1,3 +1,5 @@
+// import des hooks personnalisés
+import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useShallow } from "zustand/shallow";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
@@ -34,9 +36,10 @@ const TileLayerChoiceComponent = () => {
 	];
 
 	// récuépration des données du store
-	const { tileLayerURL, setTileLayerURL } = useMapStore(
-		useShallow((state) => state),
-	);
+	const { tileLayerURL, setTileLayerURL, hasGrayScale, setHasGrayScale } =
+		useMapStore(useShallow((state) => state));
+
+	const { translation, language } = useTranslation();
 
 	return (
 		<div className={style.tileLayerChoiceContainer}>
@@ -49,6 +52,7 @@ const TileLayerChoiceComponent = () => {
 						className={`${style.tileLayerChoice} ${isSelected ? style.selected : ""}`}
 						onClick={() => setTileLayerURL(tileLayer.url)}
 						onKeyUp={() => setTileLayerURL(tileLayer.url)}
+						aria-label={`Choisir le fond de carte ${tileLayer.name}`}
 					>
 						<img
 							src={tileLayer.urlMini}
@@ -61,6 +65,21 @@ const TileLayerChoiceComponent = () => {
 					</button>
 				);
 			})}
+			<button
+				type="button"
+				className={`${style.tileLayerChoice} ${hasGrayScale ? style.selected : ""} ${style.grayScale}`}
+				onClick={() => setHasGrayScale(!hasGrayScale)}
+				onKeyUp={() => setHasGrayScale(true)}
+				aria-label={"Choisir le fond de carte en niveaux de gris"}
+				style={{
+					backgroundImage: `url(${tileLayers[0].urlMini})`,
+					backgroundRepeat: "no-repeat",
+					backgroundSize: "cover",
+					backgroundPosition: "center",
+				}}
+			>
+				<p>{translation[language].button.grey}</p>
+			</button>
 		</div>
 	);
 };

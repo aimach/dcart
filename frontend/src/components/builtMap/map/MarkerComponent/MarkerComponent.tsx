@@ -32,9 +32,13 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 			: "storymap";
 
 	// récupération des données des stores
-	const { selectedMarker, setSelectedMarker, mapInfos } = useMapStore(
-		useShallow((state) => state),
-	);
+	const {
+		selectedMarker,
+		setSelectedMarker,
+		mapInfos,
+		hasGrayScale,
+		panelRef,
+	} = useMapStore(useShallow((state) => state));
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const position: LatLngExpression = [point.latitude, point.longitude];
@@ -47,6 +51,10 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 			setSelectedTabMenu("infos");
 			setIsPanelDisplayed(true);
 			setSelectedMarker(point);
+			// Donne le focus une fois affiché
+			setTimeout(() => {
+				panelRef?.current?.focus();
+			}, 0);
 		}
 	};
 
@@ -55,6 +63,7 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 		style,
 		selectedMarker ? isSelectedMarker(selectedMarker, point) : false,
 		mapInfos ? (mapInfos.isNbDisplayed as boolean) : true,
+		hasGrayScale,
 	);
 
 	return (
@@ -62,13 +71,23 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 			key={keyPoint}
 			position={position}
 			icon={customIcon}
-			{...{ colorAndShape: { color: point.color, shape: point.shape } }}
+			{...{
+				colorAndShape: { color: point.color, shape: point.shape },
+				hasGrayScale,
+			}}
 			eventHandlers={{
 				click: () => handleMarkerOnClick(point),
+				keydown: (e) => {
+					if (e.originalEvent.key === "Enter" || e.originalEvent.key === " ") {
+						handleMarkerOnClick(point);
+					}
+				},
 			}}
 		>
 			<Tooltip direction="top" offset={[0, -10]}>
-				{point.nom_ville}
+				{hasGrayScale
+					? `${point.sources.length} sources - ${point.nom_ville}`
+					: point.nom_ville}
 			</Tooltip>
 		</Marker>
 	);

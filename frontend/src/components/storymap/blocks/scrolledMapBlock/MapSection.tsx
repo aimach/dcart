@@ -13,6 +13,7 @@ import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 import { getIcon } from "../../../../utils/functions/icons";
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 import { getMapAttribution } from "../../../../utils/functions/map";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
@@ -40,6 +41,8 @@ const MapSection = ({
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 
 	const { isMobile, isDesktop } = useWindowSize();
+
+	const { hasGrayScale } = useMapStore();
 
 	// on récupère les informations du context
 	const [map, setMap] = useState<LeafletMap | null>(null);
@@ -92,8 +95,21 @@ const MapSection = ({
 
 	const mapAttribution = getMapAttribution(blockContent.content2_lang1);
 
+	// au montage, ajout d'un label aux boutons de zoom pour l'accessibilité
+	useEffect(() => {
+		const zoomIn = document.querySelector(".leaflet-control-zoom-in");
+		const zoomOut = document.querySelector(".leaflet-control-zoom-out");
+
+		if (zoomIn) zoomIn.setAttribute("aria-label", "Zoomer");
+		if (zoomOut) zoomOut.setAttribute("aria-label", "Dézoomer");
+	}, []);
+
 	return (
-		<div id={mapName} className={style.mapSection}>
+		<div
+			id={mapName}
+			className={style.mapSection}
+			style={{ filter: hasGrayScale ? "grayscale(100%)" : "none" }}
+		>
 			<MapContainer
 				center={mapCenter}
 				scrollWheelZoom={false}
@@ -101,6 +117,7 @@ const MapSection = ({
 				maxZoom={11}
 				zoomControl={!isMobile}
 				ref={setMap}
+				keyboard={true} // accessibilité
 				style={{
 					height: "100dvh",
 					width: isMobile ? "90vwh" : "70vw",
@@ -116,7 +133,7 @@ const MapSection = ({
 
 					{points.length ? (
 						points.map((point: PointType & { blockId: string }) => {
-							const bigIcon = getIcon(point, style, false, true);
+							const bigIcon = getIcon(point, style, false, true, hasGrayScale);
 
 							return (
 								currentPoint === point.blockId && (
@@ -128,6 +145,15 @@ const MapSection = ({
 											click: () => {
 												setCurrentPoint(point.blockId as string);
 												scrollToStep(point.blockId as string);
+											},
+											keydown: (e) => {
+												if (
+													e.originalEvent.key === "Enter" ||
+													e.originalEvent.key === " "
+												) {
+													setCurrentPoint(point.blockId as string);
+													scrollToStep(point.blockId as string);
+												}
 											},
 										}}
 									>

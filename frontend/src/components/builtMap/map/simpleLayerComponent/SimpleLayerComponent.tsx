@@ -38,7 +38,8 @@ const SimpleLayerComponent = ({
 }: SimpleLayerComponentProps) => {
 	const { language } = useTranslation();
 
-	const { map, mapInfos, selectedMarker, setSelectedMarker } = useMapStore();
+	const { map, mapInfos, selectedMarker, setSelectedMarker, hasGrayScale } =
+		useMapStore();
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
@@ -112,7 +113,7 @@ const SimpleLayerComponent = ({
 				(input as HTMLElement).style.display = "none";
 			}
 		}
-	}, [allColorsAndShapes, language]);
+	}, [allColorsAndShapes, language, hasGrayScale]);
 
 	// si c'est la carte 'exploration', ne pas utiliser le clustering
 	return mapInfos ? (
@@ -128,16 +129,21 @@ const SimpleLayerComponent = ({
 				maxClusterRadius={1}
 				iconCreateFunction={createClusterCustomIcon}
 				spiderfyShapePositions={handleSpiderfyPosition}
+				key={hasGrayScale.toString()}
 			>
 				{allMemoizedPoints.map((point: PointType) => (
-					<MarkerComponent key={point.key} point={point} />
+					<MarkerComponent
+						key={point.key}
+						point={point}
+						{...{ hasGrayScale }}
+					/>
 				))}
 			</MarkerClusterGroup>
 			{allColorsAndShapes.length > 0 && (
 				<LayersControl position="bottomright" collapsed={false}>
 					{allColorsAndShapes.map((layer) => {
 						const icon =
-							getShapeForLayerName(layer.shape, layer.color) +
+							getShapeForLayerName(layer.shape, layer.color, hasGrayScale) +
 							layer[`name_${language}`];
 						return (
 							<LayersControl.Overlay name={icon} key={icon}>
@@ -151,7 +157,7 @@ const SimpleLayerComponent = ({
 	) : (
 		<>
 			{allMemoizedPoints.map((point: PointType) => (
-				<MarkerComponent key={point.key} point={point} />
+				<MarkerComponent key={point.key} point={point} {...{ hasGrayScale }} />
 			))}
 		</>
 	);

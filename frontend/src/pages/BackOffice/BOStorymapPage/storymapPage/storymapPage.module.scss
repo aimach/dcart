@@ -41,3 +41,13 @@
 
     }
 }
+
+.grayScaleToggleContainer {
+    @include m.flexbox(flex, row, nowrap, center, center);
+
+
+
+    label {
+        cursor: pointer;
+    }
+}
