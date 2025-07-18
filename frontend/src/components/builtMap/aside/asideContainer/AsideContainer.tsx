@@ -1,3 +1,5 @@
+// import des bibliothèques
+import { useEffect, useRef } from "react";
 // import des composants
 import AsideMainComponent from "../asideMain/AsideMainComponent";
 import AsideHeader from "../asideHeader/AsideHeader";
@@ -8,7 +10,6 @@ import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import style from "./asideContainer.module.scss";
 // import des icônes
 import { ChevronLeft } from "lucide-react";
-import { useEffect, useRef } from "react";
 
 /**
  * Affiche le panel latéral avec la liste des points, les filtres et les informations du point sélectionné

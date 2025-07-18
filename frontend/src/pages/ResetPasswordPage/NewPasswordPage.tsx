@@ -3,6 +3,7 @@ import { useState } from "react";
 import { useNavigate, useSearchParams } from "react-router";
 // import des composants
 import ButtonComponent from "../../components/common/button/ButtonComponent";
+import { ResetPasswordPageHelmetContent } from "../../components/helmet/HelmetContent";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 // import des services
@@ -11,7 +12,6 @@ import { resetPassword } from "../../utils/api/authAPI";
 import style from "./ResetPasswordPage.module.scss";
 // import des icônes
 import { EyeClosed, EyeIcon } from "lucide-react";
-import { ResetPasswordPageHelmetContent } from "../../components/helmet/HelmetContent";
 
 const NewPasswordPage = () => {
 	const { language, translation } = useTranslation();

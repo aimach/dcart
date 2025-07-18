@@ -13,6 +13,7 @@ import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 import { getIcon } from "../../../../utils/functions/icons";
 import { getAllPointsByBlockId } from "../../../../utils/api/builtMap/getRequests";
 import { getMapAttribution } from "../../../../utils/functions/map";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { LatLngTuple, Map as LeafletMap } from "leaflet";
@@ -21,7 +22,6 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 // import du style
 import "leaflet/dist/leaflet.css";
 import style from "./scrolledMapBlock.module.scss";
-import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 
 interface MapSectionProps {
 	blockContent: BlockContentType;
