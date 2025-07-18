@@ -105,3 +105,16 @@
     transform: scaleX(1);
   }
 }
+
+/* Ciblé pour les écrans ≤ 480px (téléphones) */
+@media (max-width: 480px) {
+  .header {
+    &Logo {
+
+      >h1 {
+        font-size: v.$font-size-s;
+        text-align: center
+      }
+    }
+  }
+}

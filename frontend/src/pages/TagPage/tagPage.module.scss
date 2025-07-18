@@ -4,11 +4,12 @@
 .tagPageContainer {
     @include m.flexbox(flex, column, nowrap, center, center);
     padding-bottom: v.$space-xxl;
+    gap: v.$space-l;
 
 
     .tagPageTitleContainer {
-        height: 50vh;
         @include m.flexbox(flex, row, nowrap, center, center);
+        padding-top: v.$space-xxl;
     }
 
     .tagPageItemsContainer {
