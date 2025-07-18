@@ -15,13 +15,14 @@
 
     .heroContainer {
         width: 100%;
-        height: 100dvh;
+        min-height: 100dvh;
         background-image: url('../../assets/home_bg.png');
         background-size: cover;
         background-position: top;
         background-repeat: no-repeat;
         @include m.flexbox(flex, column, nowrap, center, center);
         gap: v.$space-xxl;
+        padding: v.$space-xxl v.$space-l;
 
         >h1 {
             margin: 0 v.$space-xxl;
@@ -92,10 +93,11 @@
         min-height: 100vh;
         @include m.flexbox(flex, column, wrap, flex-start, center);
         gap: v.$space-xxl;
+        padding-bottom: v.$space-xxl;
 
         .tagContainerHeader {
             width: 100%;
-            @include m.flexbox(flex, row, nowrap, space-between, center);
+            @include m.flexbox(flex, row, wrap, space-between, center);
             padding: v.$space-l v.$space-xxl;
 
             >input {
@@ -113,8 +115,10 @@
         }
 
         .tagItemContainer {
-            width: calc(300px * 3) + v.$space-xxl * 2;
+            max-width: calc(300px * 3) + v.$space-xxl * 2;
             // 3x la taille du container + 2x l'espace entre les items
+            margin: 0 auto;
+            width: 100%;
 
             &Title {
                 min-width: 100%;
@@ -165,7 +169,26 @@
                 margin: v.$space-l;
             }
         }
+
+        .tagContainer {
+            .tagContainerHeader {
+                @include m.flexbox(flex, column, wrap, center, center);
+                gap: v.$space-l;
+                padding: v.$space-l v.$space-l;
+
+                >input {
+                    width: 80%;
+
+                }
+            }
+
+            .tagItemContainer {
+                max-width: none;
+                margin: 0;
+            }
+        }
     }
+
 }
 
 .invisibleLabel {
