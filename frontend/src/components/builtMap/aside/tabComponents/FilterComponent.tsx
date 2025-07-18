@@ -154,6 +154,8 @@ const FilterComponent = () => {
 				{mapInfos && (
 					<p>{translation[language].mapPage.aside.filterIntroduction}</p>
 				)}
+				{isMobile && <TimeFilterComponent disabled={false} />}
+
 				{mapFilters.length > 0 &&
 					mapFilters.map((filter) => {
 						if (filter.filter.type === "location") {
@@ -361,7 +363,6 @@ const FilterComponent = () => {
 						</div>
 					</>
 				)}
-				{isMobile && <TimeFilterComponent disabled={false} />}
 			</div>
 			<div className={style.filterButtonContainer}>
 				<ButtonComponent

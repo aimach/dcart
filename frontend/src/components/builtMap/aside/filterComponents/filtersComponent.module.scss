@@ -23,3 +23,15 @@
         padding-left: v.$space-l;
     }
 }
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+    .rangeContainer {
+        padding: v.$space-xl v.$space-l;
+
+        >h4 {
+            margin-top: 0;
+            margin-bottom: v.$space-l;
+        }
+    }
+}

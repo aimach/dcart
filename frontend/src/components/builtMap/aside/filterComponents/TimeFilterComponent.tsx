@@ -90,7 +90,12 @@ const TimeFilterComponent = ({ disabled }: TimeFilterComponentProps) => {
 
 	return (
 		<div className={style.rangeContainer}>
-			{isMobile && <h4>{translation[language].mapPage.aside.timeLimits}</h4>}
+			{isMobile && (
+				<h4>
+					{translation[language].common.filter} :{" "}
+					{translation[language].mapPage.aside.timeLimits}
+				</h4>
+			)}
 			<MultiRangeSlider
 				disabled={disabled}
 				key={isReset.toString()} // permet d'effectuer un re-render au reset des filtres

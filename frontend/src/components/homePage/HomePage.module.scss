@@ -147,12 +147,20 @@
                 @include m.flexbox(flex, row, wrap, center, center);
                 gap: v.$space-xxl;
             }
-
-
         }
     }
+}
 
-
+.invisibleLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
 }
 
 /* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
@@ -189,16 +197,4 @@
         }
     }
 
-}
-
-.invisibleLabel {
-    position: absolute;
-    width: 1px;
-    height: 1px;
-    padding: 0;
-    margin: -1px;
-    overflow: hidden;
-    clip: rect(0 0 0 0);
-    white-space: nowrap;
-    border: 0;
 }
