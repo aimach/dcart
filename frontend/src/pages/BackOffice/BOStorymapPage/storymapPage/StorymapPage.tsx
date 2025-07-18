@@ -18,9 +18,11 @@ import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableB
 import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 import ItemLinkBlock from "../../../../components/storymap/blocks/itemLinkBlock/ItemLinkBlock";
 import StorymapConclusion from "../../../../components/storymap/blocks/storymapConclusion/StorymapConclusion";
+import { StorymapPageHelmetContent } from "../../../../components/helmet/HelmetContent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 import {
 	getStorymapInfosAndBlocksById,
@@ -34,8 +36,6 @@ import type {
 // import du style
 import style from "./storymapPage.module.scss";
 import "quill/dist/quill.snow.css";
-import { StorymapPageHelmetContent } from "../../../../components/helmet/HelmetContent";
-import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 
 export const getBlockComponentFromType = (
 	block: BlockContentType,
@@ -169,7 +169,7 @@ const StorymapPage = () => {
 							</ul>
 						)}
 					</div>
-					<div>
+					<div className={style.grayScaleToggleContainer}>
 						<input
 							type="checkbox"
 							id="grayScaleToggle"
