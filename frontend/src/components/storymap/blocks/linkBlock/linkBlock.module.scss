@@ -13,3 +13,10 @@
         gap: v.$space-s;
     }
 }
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+    .linkBlock {
+        width: 90vw;
+    }
+}

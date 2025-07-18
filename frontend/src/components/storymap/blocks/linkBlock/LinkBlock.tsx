@@ -25,7 +25,7 @@ const LinkBlock = ({ blockContent }: LinkBlockProps) => {
 		>
 			<div className={style.linkBlockContent}>
 				{blockContent[`content1_${selectedLanguage}`]}
-				<SquareArrowOutUpRight />
+				<SquareArrowOutUpRight width={35} />
 			</div>
 		</Link>
 	);
