@@ -24,16 +24,18 @@
         transform: scale(1.1);
     }
 
-}
-
-.grayScale {
-    filter: grayscale(100%);
-
     >p {
         font-size: v.$font-size-s;
         text-align: center;
         text-shadow: 0 0 5px #fff;
     }
+
+}
+
+.grayScale {
+    filter: grayscale(100%);
+
+
 }
 
 .selected {

@@ -60,7 +60,8 @@
 		"allCreations": "See all creations",
 		"leftSide": "Left panel",
 		"rightSide": "Right panel",
-		"grey": "Map greyed out"
+		"grey": "Map greyed out",
+		"noGrey": "Map colored"
 	},
 	"common": {
 		"between": "between",
