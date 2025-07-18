@@ -14,6 +14,12 @@
 	}
 }
 
+@media (max-width: 767px) {
+	.leaflet-control-zoom {
+		margin-bottom: 3rem !important;
+	}
+}
+
 /* Supprimer les checkbox dans la fenêtre des calques */
 .hide-layer-checkboxes input[type="checkbox"] {
 	display: none;
