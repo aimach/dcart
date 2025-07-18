@@ -14,8 +14,15 @@
     }
 }
 
-/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+/* Ciblé pour les écrans ≤ 768px (tablettes) */
 @media (max-width: 768px) {
+    .linkBlock {
+        width: 50vw;
+    }
+}
+
+/* Ciblé pour les écrans ≤ 480px (téléphones) */
+@media (max-width: 480px) {
     .linkBlock {
         width: 90vw;
     }
