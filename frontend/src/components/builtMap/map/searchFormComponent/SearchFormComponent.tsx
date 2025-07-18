@@ -27,6 +27,9 @@ import type { MultiValue } from "react-select";
 import type { GreatRegionType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./searchFormComponent.module.scss";
+import { User } from "../../../../utils/types/userTypes";
+import { UserFilterType } from "../../../../utils/types/filterTypes";
+import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
 
 interface SearchFormComponentProps {
 	setIsModalOpen: Dispatch<SetStateAction<boolean>>;
@@ -47,6 +50,14 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 
 	// récupération des données des stores
 	const { userFilters, setUserFilters } = useMapFiltersStore();
+	const {
+		locationNameValues,
+		elementNameValues,
+		setLocationNameValues,
+		setElementNameValues,
+		setLocationFilterReminders,
+		setElementFilterReminders,
+	} = useMapFilterReminderStore();
 
 	// définition des états pour gérer les données du formulaire
 	const [dataLoaded, setDataLoaded] = useState<boolean>(false);
@@ -126,7 +137,29 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	const { fetchFilteredPoints } = useFilterSearch();
 	const handleSubmit = async (e: React.FormEvent<HTMLFormElement>) => {
 		e.preventDefault();
-		fetchFilteredPoints(mapIdentifier as string, userFilters);
+		// ajout des valeurs des bornes temporelles dans les filtres de l'utilisateur
+		const userFiltersWithTime: UserFilterType = {
+			...userFilters,
+			post: afterValue
+				? Number.parseInt(afterValue.value as string, 10)
+				: undefined,
+			ante: beforeValue
+				? Number.parseInt(beforeValue.value as string, 10)
+				: undefined,
+		};
+		// mise à jour des filtres de l'utilisateur
+		setUserFilters({
+			...userFilters,
+			post: Number.parseInt(afterValue?.value as string, 10),
+			ante: Number.parseInt(beforeValue?.value as string, 10),
+		});
+
+		// mise à jour des reminders pour le titre de la carte
+		setLocationFilterReminders(locationNameValues as string[]);
+		setElementFilterReminders(elementNameValues as string[]);
+
+		// récupération des points filtrés
+		fetchFilteredPoints(mapIdentifier as string, userFiltersWithTime);
 		setIsModalOpen(false);
 	};
 
@@ -139,6 +172,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 			userFilters,
 			setAfterValue,
 			setBeforeValue,
+			key === "locationId" ? setLocationNameValues : setElementNameValues,
 		);
 	};
 
@@ -154,6 +188,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 								selectKey="locationId"
 								placeholder={translation[language].modal.chooseRegion}
 								handleChange={handleChange}
+								isMulti={true}
 							/>
 							{translation[language].modal.secondContent}{" "}
 							<MultiSelectComponent
@@ -161,6 +196,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 								selectKey="elementId"
 								placeholder={translation[language].modal.chooseDivinity}
 								handleChange={handleChange}
+								isMulti={true}
 							/>{" "}
 							{translation[language].common.between}{" "}
 							<MultiSelectComponent
@@ -168,6 +204,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 								selectKey="post"
 								placeholder={translation[language].modal.postDate}
 								handleChange={handleChange}
+								isMulti={false}
 							/>{" "}
 							{translation[language].common.and}{" "}
 							<MultiSelectComponent
@@ -175,6 +212,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 								selectKey="ante"
 								placeholder={translation[language].modal.anteDate}
 								handleChange={handleChange}
+								isMulti={false}
 							/>{" "}
 						</div>
 						<div className={style.searchFormButtonContainer}>

@@ -10,7 +10,7 @@ const useFilterSearch = () => {
 	const [lastUserFilters, setLastUserFilters] = useState<UserFilterType | null>(
 		null,
 	);
-	const { allPoints, setAllPoints } = useMapStore();
+	const { allPoints, setAllPoints, setAllResults } = useMapStore();
 
 	// Fonction pour récupérer les données avec un cache (useMemo)
 	const fetchFilteredPoints = useCallback(
@@ -22,6 +22,7 @@ const useFilterSearch = () => {
 
 			const allPoints = await getAllPointsByMapId(mapId, filters);
 			setAllPoints(allPoints);
+			setAllResults(allPoints);
 			setLastUserFilters(filters);
 		},
 		[lastUserFilters],

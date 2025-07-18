@@ -20,6 +20,8 @@ import type { MultiValue } from "react-select";
 import type { OptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
 import { map } from "leaflet";
+import { set } from "react-hook-form";
+import { Op } from "quill";
 
 /**
  * Fonction qui vérifie si deux filtres sont déjà sélectionnés parmi les inputs
@@ -324,11 +326,12 @@ const getSelectDefaultValues = (
 
 const handleMultiSelectChange = (
 	key: string,
-	selectedOptions: MultiValue<OptionType>,
+	selectedOptions: MultiValue<OptionType> | OptionType,
 	setUserFilters: (filters: UserFilterType) => void,
 	userFilters: UserFilterType,
 	setAfterValue: (value: OptionType) => void,
 	setBeforeValue: (value: OptionType) => void,
+	setReminderValuesFunction: (names: string[]) => void,
 ) => {
 	if (key === "locationId" || key === "elementId") {
 		const newValues = (selectedOptions as MultiValue<OptionType>)
@@ -339,13 +342,17 @@ const handleMultiSelectChange = (
 			...userFilters,
 			[key]: newValues,
 		});
+		const newValuesLabel = (selectedOptions as MultiValue<OptionType>).map(
+			(option) => option.label,
+		);
+		setReminderValuesFunction(newValuesLabel);
 	}
 	if (key === "post") {
-		setAfterValue(selectedOptions[0]);
+		setAfterValue(selectedOptions as OptionType);
 		// on met à jour les userFilters au moment du submit pour éviter de modifier le filtre temporel (qui est visible)
 	}
 	if (key === "ante") {
-		setBeforeValue(selectedOptions[0]);
+		setBeforeValue(selectedOptions as OptionType);
 		// on met à jour les userFilters au moment du submit pour éviter de modifier le filtre temporel (qui est visible)
 	}
 };
