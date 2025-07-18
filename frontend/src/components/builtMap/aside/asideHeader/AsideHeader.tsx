@@ -30,6 +30,7 @@ const AsideHeader = () => {
 
 	return (
 		<NavComponent
+			aria-label="Onglets de navigation du panel latéral"
 			type="list"
 			navClassName={style.asideHeader}
 			list={getAsideNavigationList(

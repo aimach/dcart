@@ -46,7 +46,6 @@ import type { LatLngTuple } from "leaflet";
 import "leaflet/dist/leaflet.css";
 import style from "./mapComponent.module.scss";
 import "./mapComponent.css";
-import SvgPatternDefs from "./SvgPatternDefs";
 
 /**
  * Composant de la carte

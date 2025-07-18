@@ -32,8 +32,13 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 			: "storymap";
 
 	// récupération des données des stores
-	const { selectedMarker, setSelectedMarker, mapInfos, hasGrayScale } =
-		useMapStore(useShallow((state) => state));
+	const {
+		selectedMarker,
+		setSelectedMarker,
+		mapInfos,
+		hasGrayScale,
+		panelRef,
+	} = useMapStore(useShallow((state) => state));
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const position: LatLngExpression = [point.latitude, point.longitude];
@@ -46,6 +51,10 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 			setSelectedTabMenu("infos");
 			setIsPanelDisplayed(true);
 			setSelectedMarker(point);
+			// Donne le focus une fois affiché
+			setTimeout(() => {
+				panelRef?.current?.focus();
+			}, 0);
 		}
 	};
 

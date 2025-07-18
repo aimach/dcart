@@ -116,6 +116,7 @@ const ResultComponent = () => {
 		<div
 			className={style.resultContainer}
 			key={filteredResultsWithSelectedPoint.length}
+			aria-label="Liste des points de la carte"
 		>
 			{filteredResultsWithSelectedPoint.map((result: PointType, index) => {
 				return (
