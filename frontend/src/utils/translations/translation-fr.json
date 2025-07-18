@@ -60,7 +60,8 @@
 		"allCreations": "Voir toutes les créations",
 		"leftSide": "Panneau de gauche",
 		"rightSide": "Panneau de droite",
-		"grey": "Carte grisée"
+		"grey": "Carte grisée",
+		"noGrey": "Carte colorée"
 	},
 	"common": {
 		"between": "entre",

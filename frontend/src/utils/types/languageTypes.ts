@@ -63,6 +63,7 @@ type LanguageObject = {
 		leftSide: string;
 		rightSide: string;
 		grey: string;
+		noGrey: string;
 	};
 	common: {
 		between: string;
