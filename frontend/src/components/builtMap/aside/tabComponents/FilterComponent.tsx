@@ -36,8 +36,9 @@ const FilterComponent = () => {
 	const { isMobile } = useWindowSize();
 
 	// récupération des données depuis les stores
-	const { mapInfos, allPoints, setAllPoints, setAllResults, setMapReady } =
-		useMapStore(useShallow((state) => state));
+	const { mapInfos, setAllPoints, setAllResults, setMapReady } = useMapStore(
+		useShallow((state) => state),
+	);
 
 	const { mapFilters, setIsPanelDisplayed } = useMapAsideMenuStore();
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
@@ -154,6 +155,7 @@ const FilterComponent = () => {
 				{mapInfos && (
 					<p>{translation[language].mapPage.aside.filterIntroduction}</p>
 				)}
+				{isMobile && <TimeFilterComponent disabled={false} />}
 				{mapFilters.length > 0 &&
 					mapFilters.map((filter) => {
 						if (filter.filter.type === "location") {
@@ -361,7 +363,6 @@ const FilterComponent = () => {
 						</div>
 					</>
 				)}
-				{isMobile && <TimeFilterComponent disabled={false} />}
 			</div>
 			<div className={style.filterButtonContainer}>
 				<ButtonComponent

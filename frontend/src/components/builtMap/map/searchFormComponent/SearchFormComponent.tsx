@@ -149,8 +149,14 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 		// mise à jour des filtres de l'utilisateur
 		setUserFilters({
 			...userFilters,
-			post: Number.parseInt(afterValue?.value as string, 10),
-			ante: Number.parseInt(beforeValue?.value as string, 10),
+			post:
+				typeof afterValue?.value === "string"
+					? Number.parseInt(afterValue?.value as string, 10)
+					: undefined,
+			ante:
+				typeof beforeValue?.value === "string"
+					? Number.parseInt(beforeValue?.value as string, 10)
+					: undefined,
 		});
 
 		// mise à jour des reminders pour le titre de la carte

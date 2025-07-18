@@ -73,8 +73,8 @@ const MapSection = ({
 
 	// on met à jour les limites de la carte
 	const bounds: LatLngTuple[] = [];
-	// biome-ignore lint/correctness/useExhaustiveDependencies: recalcule à chaque changement d'étape
 	useEffect(() => {
+		// if (isDesktop) {
 		if (points.length) {
 			for (const point of points) {
 				bounds.push([point.latitude, point.longitude]);
@@ -82,8 +82,10 @@ const MapSection = ({
 			if (map) {
 				map.fitBounds(bounds, { padding: isDesktop ? [100, 100] : [0, 0] });
 			}
+		} else {
+			bounds.push([40.43, 16.52]); // centre par défaut si aucun point
 		}
-	}, [map, points, isDesktop, pointIndex]);
+	}, [map, points, isDesktop]);
 
 	// Fonction pour scroller au click sur le marker
 	const scrollToStep = (id: string) => {
@@ -113,11 +115,15 @@ const MapSection = ({
 			<MapContainer
 				center={mapCenter}
 				scrollWheelZoom={false}
-				minZoom={4}
+				minZoom={isDesktop ? 4 : undefined}
 				maxZoom={11}
 				zoomControl={!isMobile}
 				ref={setMap}
 				keyboard={true} // accessibilité
+				dragging={!isMobile}
+				touchZoom={!isMobile}
+				doubleClickZoom={!isMobile}
+				boxZoom={!isMobile}
 				style={{
 					height: "100dvh",
 					width: isMobile ? "90vwh" : "70vw",

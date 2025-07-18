@@ -96,9 +96,10 @@
 .testimoniesInfo {
   margin: v.$space-s 0;
   margin-left: v.$space-s;
+  @include m.shadow();
 
   >table {
-    border: 1px solid black;
+    border: 1px solid v.$color-neutral-80;
     border-collapse: collapse;
     border-spacing: 1px;
     text-align: left;
@@ -107,8 +108,9 @@
     >tr,
     th,
     td {
-      border: 1px solid black;
+      border: 1px solid v.$color-neutral-80;
       padding: v.$space-xs;
+
     }
 
     >th {
@@ -170,7 +172,7 @@
 
 .filterButtonContainer {
   margin: v.$space-s;
-  @include m.flexbox(flex, row, nowrap, center, center);
+  @include m.flexbox(flex, row, wrap, center, center);
   gap: v.$space-s;
 
   .filterButton:first-of-type {
@@ -197,7 +199,4 @@
     @include m.flexbox(flex, row, nowrap, center, center);
     gap: v.$space-s;
   }
-
-
-
 }

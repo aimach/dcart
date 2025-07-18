@@ -70,7 +70,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 					{translation[language].navigation.website}
 				</button>
 			)}
-			{pathname !== "/" && !pathname.includes("backoffice") && !isMobile && (
+			{pathname !== "/" && !pathname.includes("backoffice") && (
 				<Link to="/" className={style.headerLogo}>
 					<h1>DCART - {translation[language].title as string}</h1>
 				</Link>
@@ -84,18 +84,19 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 				)}
 				{type === "visitor" && (
 					<>
-						<NavComponent
-							type="list"
-							navClassName={style.headerTranslationMenu}
-							list={getTranslationNavigationList(
-								translation,
-								language,
-								setLanguage,
-							)}
-							selectedElement={language}
-							liClasseName={style.languageSelected}
-						/>
-
+						{!isMobile && (
+							<NavComponent
+								type="list"
+								navClassName={style.headerTranslationMenu}
+								list={getTranslationNavigationList(
+									translation,
+									language,
+									setLanguage,
+								)}
+								selectedElement={language}
+								liClasseName={style.languageSelected}
+							/>
+						)}
 						<MenuIcon onClick={() => setMenuIsOpen(true)} />
 					</>
 				)}

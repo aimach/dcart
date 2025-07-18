@@ -36,26 +36,17 @@
         }
 
 
-        .goldenLineLong {
-            width: v.$space-xxl* 5;
-            height: v.$border-width-l;
-            background-color: v.$color-old-gold;
-            transition: width 0.5s ease-in-out;
-        }
-
-        .goldenLineShort {
-            width: v.$space-xxl;
-            height: v.$border-width-l;
-            background-color: v.$color-old-gold;
-            transition: width 0.5s ease-in-out;
-        }
-
-
         &Section {
             min-height: 100dvh;
             width: 60%;
             z-index: 11;
-            background-color: v.$color-grullo-light;
+
+            >svg {
+                position: absolute;
+                right: 15px;
+                top: 15px;
+                cursor: pointer;
+            }
 
             >p {
                 font-size: v.$font-size-l;
@@ -73,11 +64,12 @@
         background-image: url('../../assets/menu_bg.png');
         background-repeat: no-repeat;
         background-size: cover;
+        @include m.shadow();
 
         >svg {
             position: absolute;
-            right: 15px;
-            top: 15px;
+            right: 25px;
+            top: 20px;
             cursor: pointer;
         }
     }
@@ -128,29 +120,19 @@
 
     .menuPageMenu {
         margin-top: v.$font-space-xxxxl;
-        margin-left: v.$font-space-xxxxl * 2;
-
-
-
+        margin-left: v.$font-space-xxxxl;
     }
 
     .menuPageMenuSection {
         width: 100vw;
         height: 100%;
 
-
-
         >p {
             text-align: justify;
             width: 80vw;
+            margin-left: v.$font-space-xxxxl;
         }
 
 
     }
-
-    .menuPageLogoSection {
-        margin-left: v.$font-space-l;
-    }
-
-
 }

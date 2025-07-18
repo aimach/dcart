@@ -16,7 +16,7 @@ import type { Dispatch, SetStateAction } from "react";
 // import du style
 import style from "./appMenuComponent.module.scss";
 // import des icones et images
-import { ChevronRightCircle, X } from "lucide-react";
+import { ChevronRightCircle, CircleX } from "lucide-react";
 import labexLogo from "../../assets/logo_SMS.png";
 import HNLogo from "../../assets/huma_num_logo.png";
 import mapLogo from "../../assets/map_logo.png";
@@ -77,7 +77,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 	return (
 		<main className={style.menuPageContainer}>
 			<section className={style.menuPageMenuSection}>
-				{!isDesktop && <X onClick={() => setMenuIsOpen(false)} />}
+				{!isDesktop && <CircleX onClick={() => setMenuIsOpen(false)} />}
 				<nav className={style.menuPageMenu}>
 					<ul>
 						<li
@@ -153,7 +153,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
 			</section>
 			{isDesktop && (
 				<section className={style.menuPageImageSection}>
-					<X onClick={() => setMenuIsOpen(false)} />
+					<CircleX onClick={() => setMenuIsOpen(false)} />
 				</section>
 			)}
 		</main>
