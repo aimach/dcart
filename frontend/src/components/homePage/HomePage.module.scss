@@ -113,7 +113,8 @@
         }
 
         .tagItemContainer {
-            min-width: 100%;
+            width: calc(300px * 3) + v.$space-xxl * 2;
+            // 3x la taille du container + 2x l'espace entre les items
 
             &Title {
                 min-width: 100%;
@@ -139,10 +140,10 @@
 
             &ItemList {
                 min-width: 100%;
-                @include m.flexbox(flex, row, wrap, flex-start, center);
-                gap: v.$space-l;
-                padding: v.$space-l v.$space-xxl;
+                @include m.flexbox(flex, row, wrap, center, center);
+                gap: v.$space-xxl;
             }
+
 
         }
     }
