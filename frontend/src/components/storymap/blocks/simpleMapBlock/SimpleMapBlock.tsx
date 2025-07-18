@@ -140,6 +140,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 					maxZoom={11}
 					zoomControl={false}
 					ref={setMap}
+					keyboard={true} // accessibilité
 				>
 					<>
 						<TileLayer

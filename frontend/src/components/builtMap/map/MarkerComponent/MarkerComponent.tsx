@@ -68,6 +68,11 @@ const MarkerComponent = ({ point }: MarkerComponentProps) => {
 			}}
 			eventHandlers={{
 				click: () => handleMarkerOnClick(point),
+				keydown: (e) => {
+					if (e.originalEvent.key === "Enter" || e.originalEvent.key === " ") {
+						handleMarkerOnClick(point);
+					}
+				},
 			}}
 		>
 			<Tooltip direction="top" offset={[0, -10]}>

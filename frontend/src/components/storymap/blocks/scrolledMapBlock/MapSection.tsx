@@ -117,6 +117,7 @@ const MapSection = ({
 				maxZoom={11}
 				zoomControl={!isMobile}
 				ref={setMap}
+				keyboard={true} // accessibilité
 				style={{
 					height: "100dvh",
 					width: isMobile ? "90vwh" : "70vw",
@@ -144,6 +145,15 @@ const MapSection = ({
 											click: () => {
 												setCurrentPoint(point.blockId as string);
 												scrollToStep(point.blockId as string);
+											},
+											keydown: (e) => {
+												if (
+													e.originalEvent.key === "Enter" ||
+													e.originalEvent.key === " "
+												) {
+													setCurrentPoint(point.blockId as string);
+													scrollToStep(point.blockId as string);
+												}
 											},
 										}}
 									>

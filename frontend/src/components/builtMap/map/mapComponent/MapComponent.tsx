@@ -5,7 +5,6 @@ import {
 	TileLayer,
 	ScaleControl,
 	ZoomControl,
-	CircleMarker,
 } from "react-leaflet";
 import { Link, useParams } from "react-router";
 import { v4 as uuidv4 } from "uuid";
@@ -278,6 +277,7 @@ const MapComponent = () => {
 							zoomControl={false}
 							minZoom={4}
 							maxZoom={11}
+							keyboard={true} // accessibilité
 							ref={setMap}
 						>
 							{location.hash.includes("maps/preview/") && (
