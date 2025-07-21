@@ -84,10 +84,7 @@ const DivinityManagementPage = () => {
 				<div>
 					<CircleHelp />
 					<p>
-						Cette page permet d'enregister la liste des identifiants des
-						éléments qui sont des divinités. Actuellement, cette liste a été
-						générée par une requête SQL qui récupère tous les ids des éléments
-						qui n'ont pas de catégorie.
+						{translation[language].backoffice.divinityManagement.explanation}
 					</p>
 				</div>
 				<button type="button" onClick={handleCopy}>

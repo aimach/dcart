@@ -392,6 +392,9 @@ type LanguageObject = {
 			title: string;
 			createTag: string;
 		};
+		divinityManagement: {
+			explanation: string;
+		};
 	};
 };
 

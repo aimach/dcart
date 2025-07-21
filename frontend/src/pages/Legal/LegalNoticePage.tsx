@@ -21,8 +21,8 @@ const LegalNoticePage = () => {
 						<a href="https://sms.univ-tlse2.fr/accueil-sms/la-recherche/operations-structurantes/dcart-des-dieux-a-la-carte">
 							lien
 						</a>
-						), un projet de recherche financé par le LabEx SMS (Sociétés,
-						Milieux, Santé). Ce projet vise à diffuser les données et
+						), un projet de recherche financé par le LabEx SMS (Strucutration
+						des Mondes Sociaux). Ce projet vise à diffuser les données et
 						connaissances qui ont été produites dans le cadre du projet de
 						recherche{" "}
 						<a href="https://base-map-polytheisms.huma-num.fr/">ERC MAP</a>, à
@@ -32,8 +32,8 @@ const LegalNoticePage = () => {
 						<br />
 					</p>
 					<p>
-						<h3>Directeur de publication</h3>
-						<p>Corinne Bonnet</p>
+						<h3>Directeurs de publication</h3>
+						<p>Corinne Bonnet, Laurent Jégou, Sylvain Lebreton</p>
 					</p>
 				</div>
 				<div className={style.paragraphContainer}>
@@ -204,8 +204,8 @@ const LegalNoticePage = () => {
 						<a href="https://sms.univ-tlse2.fr/accueil-sms/la-recherche/operations-structurantes/dcart-des-dieux-a-la-carte">
 							link
 						</a>
-						), a research project funded by LabEx SMS (Sociétés, Milieux,
-						Santé). The aim of this project is to disseminate the data and
+						), a research project funded by LabEx SMS (Structuring of Social
+						Worlds). The aim of this project is to disseminate the data and
 						knowledge produced within the{" "}
 						<a href="https://base-map-polytheisms.huma-num.fr/">ERC MAP</a>{" "}
 						research project to a non-specialist audience. It harnesses the
@@ -214,8 +214,8 @@ const LegalNoticePage = () => {
 						<br />
 					</p>
 					<p>
-						<h3>Publication Director</h3>
-						<p>Corinne Bonnet</p>
+						<h3>Publication Directors</h3>
+						<p>Corinne Bonnet, Laurent Jégou, Sylvain Lebreton</p>
 					</p>
 				</div>
 				<div className={style.paragraphContainer}>
