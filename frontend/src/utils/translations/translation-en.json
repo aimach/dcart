@@ -1,6 +1,4 @@
 {
-	"title": "Digital Atlas of divine names in the Mediterranean",
-	"homeDescription": "Nullam quis arcu in magna pulvinar tincidunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam hendrerit nulla ut cursus laoreet. Nullam elementum lorem vel facilisis laoreet. Cras ac turpis vel erat vehicula venenatis.",
 	"en": "EN",
 	"fr": "FR",
 	"noAuthInMobile": "You must log in on a computer to access this page.",
@@ -30,7 +28,7 @@
 		"copied": "Copied to clipboard"
 	},
 	"button": {
-		"freeExploration": "Free exploration",
+		"freeExploration": "Explore freely",
 		"result": "result",
 		"filters": "Filters",
 		"filter": "Filter",
@@ -53,7 +51,6 @@
 		"publish": "Publish",
 		"unpublish": "Unpublish",
 		"clean": "Remove points from point set",
-		"editDisabled": "Edit disabled",
 		"search": "Search",
 		"copyRequest": "Copy SQL request",
 		"myCreations": "My creations",
@@ -112,15 +109,11 @@
 			"bdd": "Are you sure you want to delete all DB points in this point set?",
 			"custom": "Are you sure you want to delete all custom points in this point set?"
 		},
-		"deleteTagText": "Are you sure you want to delete this tag? If this tag only is used in a map or a storymap, it will be removed from the home page or tag page.",
+		"deleteTagText": "Are you sure you want to delete this tag? If this tag only is used in a map or a storymap, it will be removed from the home page.",
 		"associatedStorymap": "See associated storymap",
 		"associatedMap": "See associated map"
 	},
-	"menu": {
-		"content": "Fusce at nisi arcu. Quisque sed dolor nec dui scelerisque dapibus. Sed at purus at sem aliquet luctus. Sed non massa sit amet sapien porttitor ornare. Vivamus pretium, tortor at tempus ullamcorper, diam ligula lobortis quam, at scelerisque libero lectus ut risus. Vivamus lacinia lacus vel neque egestas, vitae volutpat purus dapibus. Nullam nec ultricies erat. Etiam ac urna metus. Sed cursus libero id ullamcorper interdum. Donec non urna et erat vehicula porttitor. Vivamus a sagittis dolor. Nulla facilisi. Cras euismod orci at felis cursus, vel vulputate sapien suscipit. Morbi molestie arcu sit amet libero porttitor, a mollis odio suscipit. Fusce at sapien id justo cursus mollis. Ut non orci in magna pretium consequat. Nam id purus eu velit vulputate elementum. Mauris ac sapien non felis scelerisque tincidunt.Mauris vitae quam in justo dictum sodales. In eget tortor a nunc vehicula tempor. Nam ac tincidunt ipsum, eget accumsan nisi. Praesent porta, magna vitae dapibus pharetra, erat eros efficitur nunc, in mattis lectus libero a velit. Nulla facilisi. Curabitur tincidunt, felis a elementum tincidunt, ex felis fermentum dui, eget pulvinar arcu eros eu eros. Vestibulum sollicitudin pretium velit, eget volutpat justo fermentum sit amet. Pellentesque in nulla in nisi dictum interdum."
-	},
 	"mapPage": {
-		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
 		"noResult": "No result",
 		"enlargeYourSearch": "Expand your search or reset all filters.",
 		"noGreekOrSemitic": "neither in greek, neither in semitic",
@@ -171,13 +164,12 @@
 			"noAgent": "No agent",
 			"noDesignation": "unspecified",
 			"noSourceMaterialDefined": "No source material defined",
-			"introContent": "This panel allows you to explore in detail the data associated with the point you selected on the map. You will find specific statistics, such as a numerical overview of the divine names or qualifications present in the sources, or consult data related to agents, such as their names, activities, and designations. You can also view the sources associated with the selected point, which will be displayed in a table format. This table includes information such as the title of the source, its type, and its date.",
 			"dontShowAgain": "don't show this message again"
 		}
 	},
 	"backoffice": {
 		"createA": "Create a",
-		"stillConnected": "Are you still connected ?",
+		"stillConnected": "Are you still connected?",
 		"disconnectInOneMinute": "Deconnexion in 1 minute...",
 		"noPointInPointSet": "No point loaded in this point set",
 		"managementTable": {
@@ -210,7 +202,7 @@
 				},
 				"divinityInChart": {
 					"label": "Element chart",
-					"description": "Choose if you want to display the divine names or the qualifications number in the chart.",
+					"description": "Choose if you want to display the divine names number or the qualifications number in the chart.",
 					"checkbox": {
 						"divinity": "Display the number of divine names",
 						"epithet": "Display the number of qualifications"
@@ -237,13 +229,13 @@
 				"addNewPointSet": "Add new point set",
 				"pointSetName": {
 					"label_fr": "French point set name",
-					"description_fr": "If you choose to display point sets on different layers, the user will see the point set name in the layer list.",
+					"description_fr": "If you choose to display point sets on different layers, the user will see the point set name in the layer list (legend at bottom right on the map).",
 					"label_en": "English point set name",
-					"description_en": "If you choose to display point sets on different layers, the user will see the point set name in the layer list."
+					"description_en": "If you choose to display point sets on different layers, the user will see the point set name in the layer list (legend at bottom on the map)."
 				},
 				"attestationIds": {
 					"label": "Load points from the MAP database",
-					"description": "Load a CSV file containing the IDs of attestations from the MAP database."
+					"description": "Load a CSV file containing the IDs of testimonies from the MAP database."
 				},
 				"customPointsFile": {
 					"label": "Load custom points",
@@ -251,46 +243,46 @@
 				},
 				"pointColor": {
 					"label": "Point color",
-					"description": "If a color is selected, the points will be displayed in that color. Otherwise, they will appear in brown."
+					"description": "If no color is selected, points will appear in brown."
 				},
 				"pointIcon": {
 					"label": "Point icon shape",
-					"description": "If no shape is selected, the points will be displayed as circles."
+					"description": "If no shape is selected, points will appear round."
 				},
 				"chooseIcon": "Choose an icon",
 				"chooseColor": "Choose a color",
 				"noDefinedColor": "No color defined",
 				"noDefinedIcon": "No icon defined",
-				"isLayeredLabel": "Point must be displayed on a different layer",
-				"isNbDisplayedLabel": "Display the number of sources"
+				"isLayeredLabel": "Display point sets on different layers",
+				"isNbDisplayedLabel": "Display the number of sources in point"
 			},
 			"filterForm": {
 				"element": {
 					"title": "Build 'Elements' filter",
-					"firstLevel": "First level (1 element)",
+					"firstLevel": "First level (one element)",
 					"secondLevel": "Second level (one or more elements)",
 					"basic": {
 						"label": "Basic",
-						"description": "'Elements' filter will be built with the list of all elements from the displayed attestations."
+						"description": "The 'Elements' filter will be built with the list of all elements from the displayed testimonies."
 					},
 					"manual": {
 						"label": "Manual",
-						"description": "'Elements' filter will be built with the list of all elements from the displayed attestations. The user will be able to select one or more elements from the list. The filter will be displayed as a select/options element."
+						"description": "The 'Elements' filter will take the form of 2-level checkboxes: a first level with one element, and a second with one or more elements. These two levels can be custom-built below."
 					}
 				},
 				"location": {
 					"title": "Build 'Location' filter",
 					"greatRegion": {
 						"label": "Great region",
-						"description": "'Location' filter will display a select/options element with the list of great regions from all displayed attestations."
+						"description": "'Location' filter will display a select/options with the list of great regions from all displayed testimonies."
 					},
 					"subRegion": {
 						"label": "Subregion",
-						"description": "'Location' filter will display a select/options element with the list of subregions from all displayed attestations."
+						"description": "'Location' filter will display a select/options with the list of subregions from all displayed testimonies."
 					},
 					"cityName": {
 						"label": "City name",
-						"description": "'Location' filter will display a select/options element with the list of city names from all displayed attestations."
+						"description": "'Location' filter will display a select/options with the list of site names from all displayed testimonies."
 					}
 				}
 			},
@@ -298,10 +290,10 @@
 			"addMapPoints": "Add map points",
 			"uploadPoints": "Upload points",
 			"addFilters": "Add user filters to the map",
-			"filterIntroduction": "It is possible to add up to 2 filters per card, in addition to the time filter which is always displayed.",
+			"filterIntroduction": "Up to 2 filters can be added per map, in addition to the time filter which is always displayed.",
 			"locationFilter": {
 				"label": "Location filter",
-				"description": "Displays a select/options element with the list of sub-regions from all displayed attestations"
+				"description": "Displays a select/options element with the list of locations (great regions, subregions or site names, as desired) from all displayed testimonies"
 			},
 			"languageFilter": {
 				"label": "Language filter (Greek or Semitic)",
@@ -309,23 +301,23 @@
 			},
 			"epithetFilter": {
 				"label": "Elements filter",
-				"description": "Two options : displays a select/options element with the list of qualifications from all elements of the displayed attestations or displays two levels of checkboxes: a first level with the divine names and a second level with the qualifications. These two levels are to be built on demand."
+				"description": "Two options : displays a select/options element with the list of elements of the displayed testimonies or displays two levels of checkboxes: a first level with one element and a second level with one or more elements. These two levels are to be built on demand."
 			},
 			"divinityNbFilter": {
 				"label": "Divinity number filter",
-				"description": "Displays a double slider with a minimum and maximum value, defined by the number of divinities in the set of displayed attestations"
+				"description": "Displays a double slider with a minimum and maximum value, defined by the number of divinities in the set of displayed testimonies"
 			},
 			"sourceTypeFilter": {
 				"label": "Source type filter",
-				"description": "Displays a select/options element with the list of source types from all displayed attestations"
+				"description": "Displays a select/options element with the list of source types from all displayed sources"
 			},
 			"agentActivityFilter": {
 				"label": "Agent activity filter",
-				"description": "Displays a select/options element with the list of agent activities from all displayed attestations"
+				"description": "Displays a select/options element with the list of agent activities from all displayed testimonies"
 			},
 			"agentNameFilter": {
 				"label": "Agent name filter",
-				"description": "Displays a select/options element with the list of agent names from all displayed attestations"
+				"description": "Displays a select/options element with the list of agent names from all displayed testimonies"
 			},
 			"agentGenderFilter": {
 				"label": "Agent gender filter",
@@ -333,15 +325,15 @@
 			},
 			"agentStatusFilter": {
 				"label": "Agent status filter",
-				"description": "Displays a select/options element with the list of agent status from all displayed attestations"
+				"description": "Displays a select/options element with the list of agent status from all displayed testimonies"
 			},
 			"agentivityFilter": {
 				"label": "Agentivity filter",
-				"description": "Displays a select/options element with the list of agentivity from all displayed attestations"
+				"description": "Displays a select/options element with the list of agentivity from all displayed testimonies"
 			},
 			"sourceMaterialFilter": {
 				"label": "Source material filter",
-				"description": "Displays a select/options element with the list of materials from all displayed attestations"
+				"description": "Displays a select/options element with the list of materials from all displayed sources"
 			},
 			"noFilter": {
 				"label": "I don't want to add a filter",
@@ -349,11 +341,11 @@
 			},
 			"create": "Create",
 			"edit": "Edit",
-			"uploadPointsHelp": "Help for create a CSV file"
+			"uploadPointsHelp": "Help for creating a CSV file"
 		},
 		"storymapFormPage": {
 			"preview": "Preview",
-			"chooseBlock": "Choose a block",
+			"chooseBlock": "Select a block",
 			"textContent": "Text content and layout",
 			"mediaContent": "Media content",
 			"mapsContent": "Maps content",
@@ -369,7 +361,7 @@
 				"layout": "Text and image",
 				"simple_map": "Simple map",
 				"comparison_map": "Comparison map",
-				"scroll_map": "Scroll map",
+				"scroll_map": "Scrolling map",
 				"separator": "Separator",
 				"table": "Table"
 			},
@@ -385,10 +377,10 @@
 				"layout": "layout for text and image",
 				"simple_map": "the simple map",
 				"comparison_map": "the comparison map",
-				"scroll_map": "the scroll map",
+				"scroll_map": "the scrolling map",
 				"separator": "the separator",
 				"step": "the step",
-				"csv": "Add a CSV file with map markers",
+				"csv": "Add a CSV file with points",
 				"forLeftPane": "for the left pane",
 				"forRightPane": "for the right pane",
 				"uploadTableFr": "Add a CSV file with a table in language 1",
@@ -398,13 +390,13 @@
 				"headerPositionLeft": "Header at the left",
 				"imageToLeft": "Image on the left",
 				"imageToRight": "Image on the right",
-				"scrollMapStepList": "List of steps for the scroll map",
+				"scrollMapStepList": "List of steps for the scrolling map",
 				"goToSteps": "Go to steps",
 				"addTheStep": "Add the step",
 				"addAStep": "Add a step",
 				"modifyStep": "Modify this step",
-				"modifyTextNow": "Edit the text directly",
-				"modifyImageNow": "Edit the image directly",
+				"modifyTextNow": "Edit text directly",
+				"modifyImageNow": "Edit image directly",
 				"tags": {
 					"label": "Storymap tags",
 					"description": "These tags will be used to filter the storymaps in the list of storymaps. You can choose one or more tags.",
@@ -433,8 +425,8 @@
 		"translationManagement": {
 			"frenchTranslation": "French translation",
 			"englishTranslation": "English translation",
-			"homepage.atitle": "Title of the homepage",
-			"homepage.description": "Description of the homepage",
+			"homepage.atitle": "Home page title",
+			"homepage.description": "Home page description",
 			"menu.description": "Content of the menu",
 			"mapPage.introContent": "Introduction of the selection panel in the map (before charts and sources)"
 		},
@@ -443,7 +435,7 @@
 			"createTag": "Create a tag"
 		},
 		"divinityManagement": {
-			"explanation": "This page allows you to register the list of identifiers of elements that are divinities. Currently, this list has been generated by a SQL query that retrieves all the ids of elements that are of type 'theonym'."
+			"explanation": "This page allows you to register the list of identifiers of elements that are divine names. Currently, this list has been generated by a SQL query that retrieves all the ids of elements that are of type 'theonym'."
 		}
 	}
 }

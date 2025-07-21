@@ -1,8 +1,6 @@
 type Language = "en" | "fr";
 
 type LanguageObject = {
-	title: string;
-	homeDescription: string;
 	en: string;
 	fr: string;
 	noAuthInMobile: string;
@@ -55,7 +53,6 @@ type LanguageObject = {
 		publish: string;
 		unpublish: string;
 		clean: string;
-		editDisabled: string;
 		search: string;
 		copyRequest: string;
 		myCreations: string;
@@ -112,11 +109,7 @@ type LanguageObject = {
 		associatedStorymap: string;
 		associatedMap: string;
 	};
-	menu: {
-		content: string;
-	};
 	mapPage: {
-		introduction: string;
 		noResult: string;
 		enlargeYourSearch: string;
 		noGreekOrSemitic: string;
@@ -167,7 +160,6 @@ type LanguageObject = {
 			noAgent: string;
 			noDesignation: string;
 			noSourceMaterialDefined: string;
-			introContent: string;
 			dontShowAgain: string;
 		};
 	};
