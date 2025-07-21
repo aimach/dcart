@@ -173,9 +173,6 @@ function HomePage() {
 												</Link>
 											</div>
 											<div className={style.tagItemContainerItemList}>
-												{/* <SwiperContainer
-													items={shuffledAndSlicedItemsArray}
-												/> */}
 												{shuffledAndSlicedItemsArray.map((item) => (
 													<ItemContainer key={item.id} item={item} />
 												))}
