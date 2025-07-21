@@ -1,6 +1,4 @@
 {
-	"title": "Atlas numérique des noms divins en Méditerranée",
-	"homeDescription": "Nullam quis arcu in magna pulvinar tincidunt. Lorem ipsum dolor sit amet, consectetur adipiscing elit. Nam hendrerit nulla ut cursus laoreet. Nullam elementum lorem vel facilisis laoreet. Cras ac turpis vel erat vehicula venenatis.",
 	"en": "EN",
 	"fr": "FR",
 	"noAuthInMobile": "Vous devez vous connecter sur un ordinateur pour accéder à cette page.",
@@ -53,7 +51,6 @@
 		"publish": "Publier",
 		"unpublish": "Dépublier",
 		"clean": "Supprimer les points du jeu de points",
-		"editDisabled": "Modifier désactivé",
 		"search": "Rechercher",
 		"copyRequest": "Copier la requête SQL",
 		"myCreations": "Voir mes créations",
@@ -116,11 +113,7 @@
 		"associatedStorymap": "Voir la storymap associée",
 		"associatedMap": "Voir la carte associée"
 	},
-	"menu": {
-		"content": "Fusce at nisi arcu. Quisque sed dolor nec dui scelerisque dapibus. Sed at purus at sem aliquet luctus. Sed non massa sit amet sapien porttitor ornare. Vivamus pretium, tortor at tempus ullamcorper, diam ligula lobortis quam, at scelerisque libero lectus ut risus. Vivamus lacinia lacus vel neque egestas, vitae volutpat purus dapibus. Nullam nec ultricies erat. Etiam ac urna metus. Sed cursus libero id ullamcorper interdum. Donec non urna et erat vehicula porttitor. Vivamus a sagittis dolor. Nulla facilisi. Cras euismod orci at felis cursus, vel vulputate sapien suscipit. Morbi molestie arcu sit amet libero porttitor, a mollis odio suscipit. Fusce at sapien id justo cursus mollis. Ut non orci in magna pretium consequat. Nam id purus eu velit vulputate elementum. Mauris ac sapien non felis scelerisque tincidunt.Mauris vitae quam in justo dictum sodales. In eget tortor a nunc vehicula tempor. Nam ac tincidunt ipsum, eget accumsan nisi. Praesent porta, magna vitae dapibus pharetra, erat eros efficitur nunc, in mattis lectus libero a velit. Nulla facilisi. Curabitur tincidunt, felis a elementum tincidunt, ex felis fermentum dui, eget pulvinar arcu eros eu eros. Vestibulum sollicitudin pretium velit, eget volutpat justo fermentum sit amet. Pellentesque in nulla in nisi dictum interdum."
-	},
 	"mapPage": {
-		"introduction": "Lorem ipsum dolor sit amet consectetur adipisicing elit. Dignissimos, soluta. Commodi tempora inventore totam, necessitatibus, iste maiores fugit ad blanditiis libero corrupti voluptatibus culpa fugiat neque aperiam voluptas, incidunt alias?",
 		"noResult": "Aucun résultat",
 		"enlargeYourSearch": "Elargissez votre recherche ou réinitialisez tous les filtres.",
 		"noGreekOrSemitic": "ni en grec, ni en sémitique",
@@ -171,7 +164,6 @@
 			"noAgent": "Pas d'agent",
 			"noDesignation": "non précisé",
 			"noSourceMaterialDefined": "Aucun support de source défini",
-			"introContent": "Ce panneau vous permet d ’explorer en détail les données associée au point que vous avez sélectionné sur la carte. Vous y trouverez des statistiques spécifiques, comme un aperçu chiffré des noms divins ou qualifications présents dans les sources ou consulter les données relatives aux agents : genre, activité, etc. Vous pouvez également y trouver la liste complète des sources et attestations associées liées à ce point avec de nombreux détails : date, version originale, traduction, agents...",
 			"dontShowAgain": "ne plus afficher ce message"
 		}
 	},
@@ -185,7 +177,7 @@
 			"name": "Nom/Description",
 			"status": "Statut",
 			"createdOn": "Date de création",
-			"createdBy": "Créé par",
+			"createdBy": "Créée par",
 			"updatedOn": "Date de modification",
 			"lastUploadBy": "Dernière modification par",
 			"links": "Liens rapides"
@@ -210,7 +202,7 @@
 				},
 				"divinityInChart": {
 					"label": "Graphique des éléments",
-					"description": "Choisissez si vous souhaitez afficher le nombre des nom divins ou le nombre des qualilfications dans le graphique.",
+					"description": "Choisissez si vous souhaitez afficher le nombre de noms divins ou le nombre de qualilfications dans le graphique.",
 					"checkbox": {
 						"divinity": "Afficher le nombre de noms divins",
 						"epithet": "Afficher le nombre de qualifications"
@@ -237,9 +229,9 @@
 				"addNewPointSet": "Ajouter un nouveau jeu de points",
 				"pointSetName": {
 					"label_fr": "Nom français du jeu de points",
-					"description_fr": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques.",
+					"description_fr": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques (légende en bas à droite de la carte).",
 					"label_en": "Nom anglais du jeu de points",
-					"description_en": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques."
+					"description_en": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques (légende en bas à droite de la carte)."
 				},
 				"attestationIds": {
 					"label": "Charger les points de la BDD MAP",
@@ -255,42 +247,42 @@
 				},
 				"pointIcon": {
 					"label": "Forme de l'icône des points",
-					"description": "Si aucune forme n'est sélectionnée, les points s'afficheront sous la forme de cercles."
+					"description": "Si aucune forme n'est sélectionnée, les points s'afficheront avec une icône ronde."
 				},
 				"chooseIcon": "Choisissez une icône",
 				"chooseColor": "Choisissez une couleur",
 				"noDefinedColor": "Pas de couleur définie",
 				"noDefinedIcon": "Pas d'icône définie",
-				"isLayeredLabel": "Les points doivent être affichés sur un calque différent",
+				"isLayeredLabel": "Afficher les jeux de points sur différents calques",
 				"isNbDisplayedLabel": "Afficher le nombre de sources dans le point"
 			},
 			"filterForm": {
 				"element": {
-					"title": "Construction du filtre 'Elements'",
+					"title": "Construction du filtre 'Éléments'",
 					"firstLevel": "Premier niveau (1 élément)",
 					"secondLevel": "Second niveau (un ou plusieurs éléments)",
 					"basic": {
 						"label": "Basique",
-						"description": "Le filtre 'Elements' se présentera sous la forme d'un select/options où l'utilisateur pourra parcourir la liste des options et en choisir une ou plusieurs."
+						"description": "Le filtre 'Éléments' se présentera sous la forme d'un select/options où l'utilisateur pourra parcourir la liste des options et en choisir une ou plusieurs."
 					},
 					"manual": {
 						"label": "Manuelle",
-						"description": "Le filtre 'Elements' se présentera sous la forme de checkboxs à 2 niveaux : un premier niveau avec un élément et un second avec un ou plusieurs éléments. Ces deux niveaux sont à construire sur-mesure ci-dessous"
+						"description": "Le filtre 'Éléments' se présentera sous la forme de checkboxs à 2 niveaux : un premier niveau avec un élément et un second avec un ou plusieurs éléments. Ces deux niveaux sont à construire sur-mesure ci-dessous."
 					}
 				},
 				"location": {
 					"title": "Construire le filtre 'Lieu'",
 					"greatRegion": {
 						"label": "Grande région",
-						"description": "Le filtre 'Lieu' affichera toutes les grandes régions de la carte."
+						"description": "Le filtre 'Lieu' affichera un select/options avec toutes les grandes régions des attestations affichées sur la carte."
 					},
 					"subRegion": {
 						"label": "Sous région",
-						"description": "Le filtre 'Lieu' affichera toutes les sous régions de la carte."
+						"description": "Le filtre 'Lieu' affichera un select/options avec toutes les sous régions des attestations affichées sur la carte."
 					},
 					"cityName": {
 						"label": "Nom de site",
-						"description": "Le filtre 'Lieu' affichera tous les noms de sites de la carte."
+						"description": "Le filtre 'Lieu' affichera un select/options avec tous les noms de sites des attestations affichées sur la carte."
 					}
 				}
 			},
@@ -306,19 +298,19 @@
 			},
 			"languageFilter": {
 				"label": "Filtre de la langue (grec ou sémitique)",
-				"description": "Affiche deux checkbox avec un choix 'grec' et un choix 'sémitique'."
+				"description": "Affiche deux checkboxs avec un choix 'grec' et un choix 'sémitique'."
 			},
 			"epithetFilter": {
 				"label": "Filtre avec les éléments",
-				"description": "Deux options possibles : soit affiche un select/options avec la liste des éléments de l'ensemble des éléments des attestations affichées, soit affiche deux niveaux de checkbox : un premier niveau avec un seul élément et un second niveau avec un ou plusieurs éléments. Ces deux niveaux sont à construire sur-mesure."
+				"description": "Deux options possibles : soit affiche un select/options avec la liste des éléments de l'ensemble des éléments des attestations affichées, soit affiche deux niveaux de checkboxs : un premier niveau avec un seul élément et un second niveau avec un ou plusieurs éléments. Ces deux niveaux sont à construire sur-mesure."
 			},
 			"divinityNbFilter": {
 				"label": "Filtre du nombre d'éléments",
-				"description": "Affiche un curseur avec un minimum et un maximum, définis par le nombre d'éléments dans l'ensemble des attestations affichées"
+				"description": "Affiche un curseur avec un minimum et un maximum, définis par le nombre d'éléments de l'ensemble des attestations affichées."
 			},
 			"sourceTypeFilter": {
 				"label": "Filtre du type de source",
-				"description": "Affiche un select/options avec la liste des types de sources de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des types de sources de l'ensemble des sources affichées"
 			},
 			"agentActivityFilter": {
 				"label": "Filtre de l'activité des agents",
@@ -330,7 +322,7 @@
 			},
 			"agentGenderFilter": {
 				"label": "Filtre du genre des agents",
-				"description": "Affiche trois checkbox avec un choix 'masculin', un choix 'féminin' et un choix 'non binaire'."
+				"description": "Affiche trois checkboxs avec un choix 'masculin', un choix 'féminin' et un choix 'non binaire'."
 			},
 			"agentStatusFilter": {
 				"label": "Filtre du statut des agents",
@@ -342,7 +334,7 @@
 			},
 			"sourceMaterialFilter": {
 				"label": "Filtre du support de la source",
-				"description": "Affiche un select/options avec la liste des supports de source de l'ensemble des attestations affichées"
+				"description": "Affiche un select/options avec la liste des supports de source de l'ensemble des sourcées affichées"
 			},
 			"noFilter": {
 				"label": "Je ne souhaite pas ajouter de filtre",
@@ -429,7 +421,7 @@
 			"toAdmin": "Devenir administrateur",
 			"admin": "Administrateur",
 			"writer": "Auteur",
-			"addUser": "Ajout un nouvel utilisateur",
+			"addUser": "Ajouter un nouvel utilisateur",
 			"passwordManagementMessage": "Le mot de passe sera défini par l'utilisateur lors de la première connexion."
 		},
 		"translationManagement": {
@@ -445,7 +437,7 @@
 			"createTag": "Créer une étiquette"
 		},
 		"divinityManagement": {
-			"explanation": "Cette page permet d'enregister la liste des identifiants des éléments qui sont des divinités. Actuellement, cette liste a été générée par une requête SQL qui récupère tous les ids des éléments qui sont de type 'theonyme'."
+			"explanation": "Cette page permet d'enregister la liste des identifiants des éléments qui sont des noms divins. Actuellement, cette liste a été générée par une requête SQL qui récupère tous les ids des éléments qui sont de type 'theonyme'."
 		}
 	}
 }

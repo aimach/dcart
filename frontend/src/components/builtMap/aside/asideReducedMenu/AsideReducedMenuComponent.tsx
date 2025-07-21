@@ -33,7 +33,6 @@ const AsideReducedMenuComponent = () => {
 	// récupération des données des stores
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 	const {
-		map,
 		mapInfos,
 		mapReady,
 		openTutorial,

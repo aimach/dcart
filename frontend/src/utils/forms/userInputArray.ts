@@ -5,9 +5,9 @@ const userInputArray: InputType[] = [
 		label_fr: "Nom d'utilisateur",
 		label_en: "Username",
 		description_fr:
-			"Le nom qui sera affiché dans les champs création et modification",
+			"Le nom qui est affiché dans les champs 'création' et 'modification'",
 		description_en:
-			"The name that will be displayed in the creation and modification fields",
+			"The name that is displayed in the 'creation' and 'modification' fields",
 		name: "username",
 		type: "text",
 		required: {
@@ -21,8 +21,8 @@ const userInputArray: InputType[] = [
 	{
 		label_fr: "Pseudo",
 		label_en: "pseudo",
-		description_fr: "Le nom qui sera utilisé pour se connecter",
-		description_en: "The name that will be used to connect",
+		description_fr: "Le nom qui est utilisé pour se connecter",
+		description_en: "The name that is used to connect",
 		name: "pseudo",
 		type: "text",
 		required: {
@@ -37,9 +37,9 @@ const userInputArray: InputType[] = [
 		label_fr: "Adresse mail",
 		label_en: "Email address",
 		description_fr:
-			"L'adresse mail sera uniquement utilisée pour définir et réinitialiser le mot de passe",
+			"L'adresse mail est uniquement utilisée pour définir et réinitialiser le mot de passe",
 		description_en:
-			"The email adresse will only be used to set and reset the password",
+			"The email adresse is only used to set and reset the password",
 		name: "email",
 		type: "email",
 		required: {

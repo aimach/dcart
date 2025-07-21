@@ -1,5 +1,6 @@
 // import des types
 import type { OptionType } from "./commonTypes";
+import type { StorymapType } from "./storymapTypes";
 
 type AgentType = {
 	genres: [
@@ -105,7 +106,6 @@ type MapType = {
 	description_fr: string;
 	description_en: string;
 	elementNb: number;
-	elementOperator: string;
 	divinityNb: number;
 	divinityOperator: string;
 	locationType: string;
@@ -243,7 +243,7 @@ type FilterMapContentType = {
  * @param {MapType | StorymapType} item - L'élément à vérifier
  * @returns boolean - true si l'élément est de type MapType, false sinon
  */
-const isMapType = (item): item is MapType => {
+const isMapType = (item: MapType | StorymapType): item is MapType => {
 	return (item as MapType).title_fr !== undefined;
 };
 

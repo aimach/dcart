@@ -76,9 +76,9 @@ const storymapInputs: InputType[] = [
 		label_fr: "Sous-titre en langue 1",
 		label_en: "Subtitle in language 1",
 		description_fr:
-			"Ligne d'introduction de la storymap qui seront affichées dans le premier bloc",
+			"Ligne d'introduction de la storymap qui est affichée dans le premier bloc",
 		description_en:
-			"Introduction line of the storymap that will be displayed in the first block",
+			"Introduction line of the storymap that is displayed in the first block",
 		name: "description_lang1",
 		type: "text",
 		required: {
@@ -89,9 +89,9 @@ const storymapInputs: InputType[] = [
 		label_fr: "Sous-titre en langue 2",
 		label_en: "Subtitle in language 2",
 		description_fr:
-			"Ligne d'introduction de la storymap qui seront affichées dans le premier bloc",
+			"Ligne d'introduction de la storymap qui est affichée dans le premier bloc",
 		description_en:
-			"Introduction line of the storymap that will be displayed in the first block",
+			"Introduction line of the storymap that is displayed in the first block",
 		name: "description_lang2",
 		type: "text",
 		required: {
@@ -128,9 +128,9 @@ const storymapInputs: InputType[] = [
 		label_fr: "Auteur",
 		label_en: "Author",
 		description_fr:
-			"L'auteur de la storymap, visible dans le premier bloc de la storymap (peut être différent du compteur auteur de la storymap)",
+			"L'auteur de la storymap, affiché dans les blocs d'introduction et de conclusion de la storymap (peut être différent du compteur auteur de la storymap)",
 		description_en:
-			"The author of the storymap visible in the first block of the storymap (can be different from the storymap author)",
+			"The author of the storymap visible in the introduction and conclusion blocks of the storymap (can be different from the storymap author)",
 		name: "author",
 		type: "text",
 		required: {
@@ -138,7 +138,7 @@ const storymapInputs: InputType[] = [
 		},
 	},
 	{
-		label_fr: "Détails de l'auteur",
+		label_fr: "Détails sur l'auteur",
 		label_en: "Author details",
 		description_fr:
 			"Détails sur l'auteur de la storymap, comme son statut, son institution, etc. Cette information est affichée dans le bloc d'introduction et de conclusion de la storymap",
@@ -167,9 +167,9 @@ const storymapInputs: InputType[] = [
 		label_fr: "Date de publication",
 		label_en: "Publication date",
 		description_fr:
-			"La date de publicatione est affichée, avec le nom de l'ateur, dans le premier bloc de la storymap",
+			"La date de publication est affichée dans le bloc d'introduction de la storymap",
 		description_en:
-			"The publication date is displayed, with the name of the author, in the first block of the storymap",
+			"The publication date is displayed in the introduction block of the storymap",
 		name: "publishedAt",
 		type: "text",
 		required: {
@@ -209,28 +209,28 @@ const titleInput: InputType[] = [
 
 const subtitleInputs: InputType[] = [
 	{
-		label_fr: "Titre en langue 1",
-		label_en: "Title in language 1",
+		label_fr: "Sous-titre en langue 1",
+		label_en: "Subtitle in language 1",
 		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en langue 1 est requis",
-				en: "The title in language 1 is required",
+				fr: "Le sous-titre en langue 1 est requis",
+				en: "The subtitle in language 1 is required",
 			},
 		},
 	},
 	{
-		label_fr: "Titre en langue 2",
-		label_en: "Title in language 2",
+		label_fr: "Sous-titre en langue 2",
+		label_en: "Subtitle in language 2",
 		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le titre en langue 2 est requis",
-				en: "The title in language 2 is required",
+				fr: "Le sous-titre en langue 2 est requis",
+				en: "The subtitle in language 2 is required",
 			},
 		},
 	},
@@ -268,27 +268,27 @@ const textInputs: InputType[] = [
 const linkInputs: InputType[] = [
 	{
 		label_fr: "Texte du lien en langue 1",
-		label_en: "Text of the link in language 1",
+		label_en: "Link text in language 1",
 		name: "content1_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le texte du lien est requis",
-				en: "The link text is required",
+				fr: "Le texte du lien en langue 1 est requis",
+				en: "The link text in language 1 is required",
 			},
 		},
 	},
 	{
 		label_fr: "Texte du lien en langue 2",
-		label_en: "Text of the link in language 2",
+		label_en: "Link text in language 2",
 		name: "content1_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
-				fr: "Le texte du lien est requis",
-				en: "The link text is required",
+				fr: "Le texte du lien en langue 2 est requis",
+				en: "The link text in language 2 is required",
 			},
 		},
 	},
@@ -375,27 +375,27 @@ const imageInputs: InputType[] = [
 	},
 	{
 		label_fr: "Légende de l'image en langue 1",
-		label_en: "Image legend in language 1",
+		label_en: "Image caption in language 1",
 		name: "content2_lang1",
 		type: "text",
 		required: {
 			value: true,
 			message: {
 				fr: "La légende de l'image en langue 1 est requise",
-				en: "The image legend in language 1 is required",
+				en: "The image caption in language 1 is required",
 			},
 		},
 	},
 	{
 		label_fr: "Légende de l'image en langue 2",
-		label_en: "Image legend in language 2",
+		label_en: "Image caption in language 2",
 		name: "content2_lang2",
 		type: "text",
 		required: {
 			value: true,
 			message: {
 				fr: "La légende de l'image en langue 2 est requise",
-				en: "The image legend in language 2 is required",
+				en: "The image caption in language 2 is required",
 			},
 		},
 	},
@@ -550,9 +550,9 @@ const stepInputs: InputType[] = [
 		label_en: "Title in language 1",
 		name: "content1_lang1",
 		description_fr:
-			"Le titre de l'étape sera automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
+			"Le titre de l'étape est automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
 		description_en:
-			"The title of the step will be automatically preceded by the step number. It is not necessary to add it.",
+			"The title of the step is automatically preceded by the step number. It is not necessary to add it.",
 		type: "text",
 		required: {
 			value: true,
@@ -567,9 +567,9 @@ const stepInputs: InputType[] = [
 		label_en: "Title in language 2",
 		name: "content1_lang2",
 		description_fr:
-			"Le titre de l'étape sera automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
+			"Le titre de l'étape est automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
 		description_en:
-			"The title of the step will be automatically preceded by the step number. It is not necessary to add it.",
+			"The title of the step is automatically preceded by the step number. It is not necessary to add it.",
 		type: "text",
 		required: {
 			value: true,
