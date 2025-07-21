@@ -1,9 +1,7 @@
 const divinityRequest = `
 SELECT 
-    DISTINCT string_agg(element.id::text, ',')
+   STRING_AGG(id::text, ',' ORDER BY id) AS ids
 FROM element
-LEFT JOIN element_categorie 
-ON element_categorie.id_element = element.id
-WHERE element_categorie.id_element IS NULL`;
+WHERE type = 'theonym'`;
 
 export { divinityRequest };
