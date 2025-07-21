@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useEffect, useMemo, useRef } from "react";
-import { LayerGroup, LayersControl, Tooltip } from "react-leaflet";
+import { LayerGroup, LayersControl } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
@@ -24,7 +24,6 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 import type L from "leaflet";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
-import { svg } from "leaflet";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];

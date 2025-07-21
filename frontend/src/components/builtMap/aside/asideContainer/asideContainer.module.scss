@@ -48,6 +48,16 @@
   }
 }
 
+/* Ciblé pour les écrans ≤ 1024px (petits ordinateurs portables) */
+@media (max-width: 1024px) {
+  .aside {
+    &Opened {
+      min-width: 30vw;
+      max-width: 30vw;
+    }
+  }
+}
+
 /* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
 @media (max-width: 768px) {
   .aside {
@@ -57,6 +67,7 @@
     }
   }
 }
+
 
 /* Ciblé pour les téléphones ≤ 480px */
 @media (max-width: 480px) {
