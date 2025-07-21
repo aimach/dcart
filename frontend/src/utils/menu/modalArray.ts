@@ -2,66 +2,66 @@ const modalContentArray = [
 	{
 		title_fr: "Bienvenue sur le tutoriel de la carte",
 		content_fr:
-			"L'objectif de ce tutoriel est de vous montrer les fonctionnalités de la carte. Vous pouvez passer les étapes avec les boutons de navigation et quitter le tutoriel dès que vous le souhaitez.",
+			"Ce tutoriel vous présente les principales fonctionnalités de la carte. Utilisez les boutons de navigation pour passer d'une étape à l'autre, et quittez le tutoriel à tout moment si vous le souhaitez.",
 		title_en: "Welcome to the map tutorial",
 		content_en:
-			"The goal of this tutorial is to show you the features of the map. You can go through the steps using the navigation buttons and exit the tutorial at any time.",
+			"This tutorial introduces the main features of the map. Use the navigation buttons to move through the steps, and feel free to exit the tutorial at any time.",
 	},
 	{
 		title_fr: "La section carte",
 		content_fr:
-			"Cette section vous présente les localités où se trouvent des sources relatives au sujet de la carte. Vous pouvez cliquer sur les points pour obtenir plus d'informations : accès au détail des sources, statistiques... Si des points d'un jeu de données se superposent, vous pouvez les sélectionner pour voir les informations de chaque point.",
+			"Cette section affiche les localités contenant des sources en lien avec le sujet de la carte. Cliquez sur les points pour accéder aux détails (statistiques, informations sur les sources). Si plusieurs points se superposent, vous pouvez les sélectionner pour consulter les données de chacun.",
 		title_en: "The map section",
 		content_en:
-			"This section shows you the localities where sources related to the topic of the map are located. You can click on the points to get more information: access to source details, statistics, and more. If multiple data points overlap, you can select them to view information for each point.",
+			"This section displays the localities that contain sources related to the topic of the map. Click on the points to access more details (source information, statistics). If multiple points overlap, you can select them to view the data for each one.",
 	},
 	{
 		title_fr: "Informations de la carte en cours",
 		content_fr:
-			"Dans cet encart, vous trouverez le nom de la carte et un bouton pour accéder aux informations détaillées présentées en introduction. La liste des filtres seront également affichés ici.",
+			"Dans cet encart figurent le nom de la carte actuelle, un bouton d’accès aux informations d’introduction, un bouton pour revenir à l'état d'origine de la carte ainsi que la liste des filtres actuellement appliqués.",
 		title_en: "Current map information",
 		content_en:
-			"This panel displays the name of the current map and includes a button to access detailed introductory information. The list of active filters will also appear here.",
+			"This panel displays the name of the current map and includes a button to access detailed introductory information and a button to revert to the original state of the map. The list of active filters will also appear here.",
 	},
 	{
-		title_fr: "Filtre du temps et fonds de carte",
+		title_fr: "Filtre temporel, fonds de carte et accessibilité",
 		content_fr:
-			"La partie inférieure de la carte deux outils : un filtre temporel et une liste de fonds de carte disponbiles. Faites glisser les points sur la règle pour réduire la fenêtre temporelle. Vous pouvez choisir un fond de carte différent pour explorer les données sous différents angles.",
-		title_en: "Time filter and basemaps",
+			"En bas de la carte, vous trouverez trois outils : un filtre temporel, une sélection de fonds de carte et la possibilité d'ajouter un filtre gris. Déplacez les curseurs sur la frise pour ajuster la période affichée. Changez de fond de carte pour varier la présentation des données.",
+		title_en: "Time filter, basemaps, and accessibility",
 		content_en:
-			"The bottom of the map provides two tools: a time filter and a list of available basemaps. Drag the markers on the timeline to narrow the time window. You can also switch basemaps to explore the data from different perspectives.",
+			"At the bottom of the map, three tools are available: a time filter, a list of basemaps, and the option to add a gray filter. Drag the sliders on the timeline to adjust the displayed period. Change the basemap to vary the presentation of the data.",
 	},
 	{
 		title_fr: "Le menu réduit",
 		content_fr:
-			"Lorsque le menu est réduit, vous pouvez accéder rapidement aux fonctions principales via les icônes, ainsi qu'à ce tutoriel.",
+			"Lorsque le menu est replié, vous pouvez accéder rapidement aux fonctionnalités principales via les icônes, à ce tutoriel, ainsi qu'à l'impression de la carte.",
 		title_en: "Collapsed menu",
 		content_en:
-			"When the menu is collapsed, you can quickly access the main features through the icons, as well as this tutorial.",
+			"When the menu is collapsed, you can quickly access the main features through the icons, this tutorial, as well as the map printing.",
 	},
 	{
 		title_fr: "La liste des points affichés",
 		content_fr:
-			"L'onglet 'Résultats' vous permet de visualiser les points affichés sur la carte. Ils sont classés par ordre alphabétique de sous-région puis de lieu. Vous pouvez voir le nombre de sources associées à chaque point. Cliquez sur un point pour le sélectionner sur la carte.",
+			"L’onglet « Résultats » présente les points actuellement visibles sur la carte, classés par sous-région puis par lieu. Vous pouvez consulter le nombre de sources associées à chaque point, et cliquer dessus pour le localiser sur la carte.",
 		title_en: "List of displayed points",
 		content_en:
-			"The 'Results' tab allows you to view the points displayed on the map. They are sorted alphabetically by sub-region and then by place. You can see the number of sources associated with each point. Click on a point to select it on the map.",
+			"The 'Results' tab displays the points currently visible on the map, sorted by sub-region and then by place. You can see the number of sources associated with each point, and click on a point to locate it on the map.",
 	},
 	{
-		title_fr: "La sélection d'un point",
+		title_fr: "Sélection d'un point",
 		content_fr:
-			"Lorsque vous cliquez sur un point dans la liste des résultats ou sur la carte, l'onglet 'Sélection' s'ouvre avec deux types de données : les statistiques et les sources associées au point sélectionné. Les sources sont classées par ordre chronologique. Pour chaque source, vous aurez accès à la liste des attestations.",
+			"En cliquant sur un point (depuis la liste des résultats ou directement sur la carte), l’onglet « Sélection » s’ouvre. Il présente deux types d’informations : les statistiques et les sources liées à ce point, classées chronologiquement. Cliquer sur une source pour en voir les attestations.",
 		title_en: "Point selection",
 		content_en:
-			"When you click on a point in the results list or on the map, the 'Selection' tab opens with two types of data: statistics and the sources associated with the selected point. The sources are listed in chronological order, and for each source, you can access the list of attestations.",
+			"When you click on a point (either in the results list or on the map), the 'Selection' tab opens. It displays two types of data: statistics and the sources linked to that point, listed in chronological order. Click on a source to view its attestations.",
 	},
 	{
 		title_fr: "Les filtres",
 		content_fr:
-			"Utilisez les filtres pour affiner les données affichées sur la carte selon vos critères. Il existe plusieurs types de filtre : par langue, par localité, par épithète...",
+			"Utilisez les filtres pour affiner les données affichées selon vos critères. Une fois appliqués, le rappel des filtres est visible dans l'encart d'informations de la carte. A savoir qu'une attestation est affichée si elle correspond à au moins une option de chaque filtre. Une fois les filtres appliqués, les filtres se mettent à jour selon les attestations visibles (les filtres qui ne donnent pas de résultats sont grisés).",
 		title_en: "Filters",
 		content_en:
-			"Use the filters to refine the data displayed on the map according to your criteria. Several types of filters are available: by language, locality, epithet, and more.",
+			"Use filters to refine the displayed data according to your criteria. Once applied, the active filters are visible in the map information panel. Note that an attestation is displayed if it matches at least one option from each filter. After applying the filters, they will update based on the visible attestations (filters that do not give results are grayed out).",
 	},
 ];
 
@@ -69,9 +69,10 @@ const mobileTutorialContent = {
 	title_fr: "Bienvenue sur le tutoriel de la carte",
 	title_en: "Welcome to the map tutorial",
 	content_fr:
-		"Ce court tutoriel vous présente les fonctionnalités de la carte : en version mobile, vous pouvez visualiser les points sur la carte, zoomer et cliquer sur un point pour voir le détail des informations. Pour ouvrir le panel latéral, cliquer sur l'icône entre l'icône d'information et celle du tutorial. Vous accéderez aux onglets 'Résultats', 'Filtres' et 'Sélection'. ",
+		"Cette carte interactive vous permet d’explorer les sources liées à la thématique de la carte. Vous pouvez zoomer, vous déplacer sur la carte et appuyer sur un point pour afficher ses informations détaillées dans un panneau latéral. Ce panneau comporte trois onglets : l'onglet 'Résultats' avec la liste des points affichés, classés par sous-région et lieu ; l'onglet 'Filtres' avec la possibilité d'ajouter des critères de tri et l'onglet 'Sélection' qui affiche les détails du point sélectionné (statistiques, sources, attestations liées). La fenêtre en haut à droite vous permet d'afficher l'introduction de la carte, de retourner à l'état initial de la carte, d'ouvrir le panneau latéral ou d'afficher ce tutoriel. Vous pouvez explorer librement la carte, filtrer les résultats, ou revenir à tout moment à cette aide depuis le menu.",
+
 	content_en:
-		"This short tutorial presents the features of the map : in mobile versino, you can view the points on the mpa, zoom in and click on a point to see the details. To open the lateral panel, click on icon between the information icon and the tutorial icon. You will access the 'Results', 'Filters' and 'Selection' tabs.",
+		"This interactive map allows you to explore sources related to the map's theme. You can zoom in, move around the map, and tap on a point to display its detailed information in a side panel. This panel has three tabs: the 'Results' tab with the list of displayed points, sorted by sub-region and place; the 'Filters' tab with the option to add sorting criteria; and the 'Selection' tab that shows the details of the selected point (statistics, sources, related attestations). The window in the top right allows you to display the map introduction, return to the initial state of the map, open the side panel, or display this tutorial. You can freely explore the map, filter the results, or return to this help at any time from the menu.",
 };
 
 export { modalContentArray, mobileTutorialContent };
