@@ -179,7 +179,7 @@
 			"createdOn": "Creation date",
 			"createdBy": "Created by",
 			"updatedOn": "Modification date",
-			"lastUploadBy": "Last upload by",
+			"lastUploadBy": "Last modified by",
 			"links": "Quick links"
 		},
 		"authPage": {
