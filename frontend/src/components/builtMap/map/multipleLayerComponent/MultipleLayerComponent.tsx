@@ -1,6 +1,6 @@
 // import des bibliothèques
 import { useEffect, useMemo, useRef } from "react";
-import { LayerGroup, LayersControl } from "react-leaflet";
+import { LayerGroup, LayersControl, Tooltip } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 // import des composants
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
@@ -24,6 +24,7 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 import type L from "leaflet";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
+import { svg } from "leaflet";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
@@ -52,7 +53,6 @@ const MultipleLayerComponent = ({
 			color: string | null;
 			position: number;
 		}[] = [];
-
 		allMemoizedPoints.map((result: PointType) => {
 			if (
 				!layersArray.some(
@@ -72,38 +72,44 @@ const MultipleLayerComponent = ({
 		return layersArray
 			.sort((a, b) => a.position - b.position)
 			.map((layer) => {
+				const shapeCodeWithColors = getShapeForLayerName(
+					layer.shape as string,
+					layer.color as string,
+					false,
+				);
 				return {
 					...layer,
-					shapeCode: getShapeForLayerName(
+					shapeCode: shapeCodeWithColors,
+					shapeCodeGrayScale: getShapeForLayerName(
 						layer.shape as string,
 						layer.color as string,
-						hasGrayScale,
+						true,
 					),
 				};
 			});
 	}, [allMemoizedPoints, language, hasGrayScale]);
 
+	// biome-ignore lint/correctness/useExhaustiveDependencies: recharger pour afficher la traduction des noms des layers
 	const allResultsWithLayerFilter = useMemo(() => {
 		const allLayersWithOnlySVG = allLayers.filter((layerName) =>
 			layerName?.includes("svg"),
 		);
 
 		return allMemoizedPoints.filter((point) => {
-			if (
-				allLayersWithOnlySVG.some(
-					(layerName) =>
-						layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
-						point.layerNamefr,
-				)
-			) {
+			const isLayerDisplayed = allLayersWithOnlySVG.some(
+				(layerName) =>
+					layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
+					point.layerNamefr,
+			);
+			if (isLayerDisplayed) {
 				return point;
 			}
 		});
-	}, [allLayers, allMemoizedPoints, language]);
+	}, [allLayers, allMemoizedPoints, language, hasGrayScale]);
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies:<
+	// biome-ignore lint/correctness/useExhaustiveDependencies: recharger pour afficher la traduction des noms des layers
 	useEffect(() => {
 		if (!map) return;
 
@@ -144,8 +150,30 @@ const MultipleLayerComponent = ({
 		}
 	}, [map, selectedMarker, mapInfos]);
 
+	// modification du name des layers sans recharger le composant
+	useEffect(() => {
+		const svgs = document.querySelectorAll(
+			"div.leaflet-control-layers-overlays svg",
+		);
+		svgs.forEach((oldSVG, id) => {
+			const wrapper = document.createElement("div");
+			wrapper.innerHTML =
+				layersArrayForControl[id][
+					hasGrayScale ? "shapeCodeGrayScale" : "shapeCode"
+				];
+			const newSVG = wrapper.firstChild as SVGElement;
+			if (newSVG) {
+				oldSVG.replaceWith(newSVG);
+			}
+		});
+	}, [hasGrayScale, layersArrayForControl]);
+
 	return (
-		<LayersControl position="bottomright" collapsed={false}>
+		<LayersControl
+			position="bottomright"
+			collapsed={false}
+			// pas de key={hasGrayScale.toString()} car le composant recharge et casse le tableau des layers
+		>
 			<MarkerClusterGroup
 				ref={clusterRef}
 				zoomToBoundsOnClick={false}
@@ -173,7 +201,7 @@ const MultipleLayerComponent = ({
 			{layersArrayForControl.map((layer) => {
 				return (
 					<LayersControl.Overlay
-						name={`${layer.shapeCode} ${layer[`name_${language}`]}`}
+						name={`${layer[hasGrayScale ? "shapeCodeGrayScale" : "shapeCode"]} ${layer[`name_${language}`]}`}
 						key={layer[`name_${language}`]}
 						checked
 					>
