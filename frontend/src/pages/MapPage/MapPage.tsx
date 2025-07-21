@@ -61,13 +61,13 @@ const MapPage = () => {
 			}
 			// si la carte est une carte d'exploration, on réinitialise les filtres
 			if (mapIdentifier === "exploration") {
-				mapStore.setIncludedElementId(undefined);
+				// mapStore.setIncludedElementId(undefined);
 				mapStore.setMapInfos(null);
 				setMapFilters([]);
 				fetchAllPoints("exploration");
 			} else {
 				// sinon on charge les informations de la carte
-				mapStore.setIncludedElementId(mapInfos.divinityIds);
+				// mapStore.setIncludedElementId(mapInfos.divinityIds);
 				mapStore.setMapInfos(mapInfos);
 				mapStore.setAllLayers(
 					mapInfos.attestations.map(
