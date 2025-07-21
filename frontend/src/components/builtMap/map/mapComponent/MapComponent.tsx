@@ -227,6 +227,7 @@ const MapComponent = () => {
 							onClose={() => {
 								setIsModalOpen(false);
 							}}
+							isOverflowed={mapInfos !== null}
 						>
 							<MapIntroductionContent setIsModalOpen={setIsModalOpen} />
 						</ModalComponent>
