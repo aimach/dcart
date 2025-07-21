@@ -8,6 +8,7 @@ import { AuthContext } from "../../context/AuthContext";
 // import des custom hooks
 import { useTranslation } from "../../utils/hooks/useTranslation";
 import { useWindowSize } from "../../utils/hooks/useWindowSize";
+import useHomePageTranslations from "../../utils/hooks/useHomepageTranslations";
 // import des services
 import { getTranslationNavigationList } from "../../utils/menu/menuListArrays";
 // import des types
@@ -35,6 +36,8 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 
 	// récupération des données de traduction
 	const { language, translation, setLanguage } = useTranslation();
+
+	const { translationTitle } = useHomePageTranslations();
 
 	const { isMobile } = useWindowSize();
 
@@ -72,7 +75,7 @@ const HeaderComponent = ({ type, setMenuIsOpen }: HeaderComponentProps) => {
 			)}
 			{pathname !== "/" && !pathname.includes("backoffice") && (
 				<Link to="/" className={style.headerLogo}>
-					<h1>DCART - {translation[language].title as string}</h1>
+					<h1>DCART - {translationTitle}</h1>
 				</Link>
 			)}
 
