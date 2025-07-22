@@ -1,5 +1,5 @@
 // import des types
-import type { Language } from "../types/languageTypes";
+import type { Language, TranslationType } from "../types/languageTypes";
 import type {
 	SourceType,
 	PointType,
@@ -11,9 +11,14 @@ import type {
  * Fonction qui renvoie la liste des activités (labels et quantités) des agents d'un point donné
  * @param {PointType} point
  * @param {Language} language
+ * @param {TranslationType} translation
  * @returns {{ labels: string[], dataSets: number[]}} - Un tableau de labels et un tableau de données
  */
-const getAgentActivityLabelsAndNb = (point: PointType, language: Language) => {
+const getAgentActivityLabelsAndNb = (
+	point: PointType,
+	language: Language,
+	translation: TranslationType,
+) => {
 	// en premier lieu, on stocke tous les agents dans un tableau
 	const allAgentsActivityOfPoint: {
 		activite_en: string;
@@ -72,6 +77,14 @@ const getAgentActivityLabelsAndNb = (point: PointType, language: Language) => {
 		(data) => Object.values(data)[0],
 	);
 
+	if (labels.length === 0) {
+		const translationObject = translation[language].button;
+		labels.push(
+			`${language === "fr" ? "Pas d'" : "No"} ${translationObject.activity}`,
+		);
+		dataSets.push(1);
+	}
+
 	return { labels, dataSets };
 };
 
@@ -79,9 +92,14 @@ const getAgentActivityLabelsAndNb = (point: PointType, language: Language) => {
  * Fonction qui renvoie la liste des genres (labels et quantités) des agents d'un point donné
  * @param {PointType} point
  * @param {Language} language
+ * @param {TranslationType} translation
  * @returns {{ labels: string[], dataSets: number[]}} - Un tableau de labels et un tableau de données
  */
-const getAgentGenderLabelsAndNb = (point: PointType, language: Language) => {
+const getAgentGenderLabelsAndNb = (
+	point: PointType,
+	language: Language,
+	translation: TranslationType,
+) => {
 	// en premier lieu, on stocke tous les agents dans un tableau
 	const allAgentsGenderOfPoint: { nom_en: string; nom_fr: string }[] = [];
 	point.sources.map((source: SourceType) => {
@@ -144,6 +162,14 @@ const getAgentGenderLabelsAndNb = (point: PointType, language: Language) => {
 		(data) => Object.values(data)[0],
 	);
 
+	if (labels.length === 0) {
+		const translationObject = translation[language].button;
+		labels.push(
+			`${language === "fr" ? "Pas de" : "No"} ${translationObject.gender}`,
+		);
+		dataSets.push(1);
+	}
+
 	return { labels, dataSets };
 };
 
@@ -155,8 +181,8 @@ const getAgentGenderLabelsAndNb = (point: PointType, language: Language) => {
  * @returns {{ labels: string[], dataSets: number[]}} - Un tableau de labels et un tableau de données
  */
 const getEpithetLabelsAndNb = (
-	selectedDivinityId: string,
 	point: PointType,
+	translation: TranslationType,
 	language: Language,
 	allDivinityIds: string,
 	isDivinityInChart: boolean,
@@ -166,15 +192,13 @@ const getEpithetLabelsAndNb = (
 	point.sources.map((source: SourceType) => {
 		source.attestations.map((attestation: AttestationType) => {
 			for (const element of attestation.elements) {
-				if (element.element_id !== Number.parseInt(selectedDivinityId, 10)) {
-					allElementsOfPoint.push(element);
-				}
+				allElementsOfPoint.push(element);
 			}
 		});
 	});
 
-	// en second lieu, on filtre les éléments pour ne garder que ceux qui ne sont pas des divinités
-	const allDivinityIdsArray = allDivinityIds.split(", ");
+	// en second lieu, on filtre les éléments pour ne garder que ceux qui ne sont pas des divinités ou des épithètes
+	const allDivinityIdsArray = allDivinityIds.split(",");
 	const filteredElementsOfPoint = allElementsOfPoint.filter((element) =>
 		isDivinityInChart
 			? allDivinityIdsArray.includes(element.element_id.toString())
@@ -219,6 +243,14 @@ const getEpithetLabelsAndNb = (
 	const dataSets: number[] = sortedDatasAndLabelsArray.map(
 		(data) => data[1] as number,
 	);
+
+	if (labels.length === 0) {
+		const translationObject = translation[language].button;
+		labels.push(
+			`${language === "fr" ? "Pas de" : "No"} ${isDivinityInChart ? translationObject.divinity : translationObject.epithet}`,
+		);
+		dataSets.push(1);
+	}
 
 	return { labels, dataSets };
 };

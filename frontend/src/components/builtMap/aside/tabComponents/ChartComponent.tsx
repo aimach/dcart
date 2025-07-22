@@ -50,8 +50,9 @@ const ChartComponent = () => {
 	const { translation, language } = useTranslation();
 
 	// récupération des données des stores
-	const { mapInfos, includedElementId, selectedMarker, hasGrayScale } =
-		useMapStore((state) => state);
+	const { mapInfos, selectedMarker, hasGrayScale } = useMapStore(
+		(state) => state,
+	);
 
 	// déclaration d'un état pour le type de données à afficher
 	const [dataType, setDataType] = useState<string>("epithet");
@@ -80,8 +81,8 @@ const ChartComponent = () => {
 		switch (dataType) {
 			case "epithet":
 				({ labels, dataSets } = getEpithetLabelsAndNb(
-					includedElementId as string,
 					selectedMarker as PointType,
+					translation,
 					language,
 					allDivinityIds,
 					mapInfos?.divinity_in_chart ?? false,
@@ -91,12 +92,14 @@ const ChartComponent = () => {
 				({ labels, dataSets } = getAgentGenderLabelsAndNb(
 					selectedMarker as PointType,
 					language,
+					translation,
 				));
 				break;
 			case "activity":
 				({ labels, dataSets } = getAgentActivityLabelsAndNb(
 					selectedMarker as PointType,
 					language,
+					translation,
 				));
 				break;
 			default:
@@ -109,7 +112,7 @@ const ChartComponent = () => {
 		dataType,
 		selectedMarker,
 		language,
-		includedElementId,
+		translation,
 		allDivinityIds,
 		mapInfos?.divinity_in_chart,
 	]);
