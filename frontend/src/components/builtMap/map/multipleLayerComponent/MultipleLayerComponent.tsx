@@ -168,11 +168,7 @@ const MultipleLayerComponent = ({
 	}, [hasGrayScale, layersArrayForControl]);
 
 	return (
-		<LayersControl
-			position="bottomright"
-			collapsed={false}
-			// pas de key={hasGrayScale.toString()} car le composant recharge et casse le tableau des layers
-		>
+		<LayersControl position="bottomright" collapsed={false}>
 			<MarkerClusterGroup
 				ref={clusterRef}
 				zoomToBoundsOnClick={false}
