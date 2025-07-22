@@ -21,6 +21,8 @@ import { useShallow } from "zustand/shallow";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 import { singleSelectInLineStyle } from "../../../../styles/inLineStyle";
 import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
+// import des types
+import type { PointSetType } from "../../../../utils/types/mapTypes";
 // import du style
 import style from "./tabComponent.module.scss";
 
@@ -36,10 +38,14 @@ const FilterComponent = () => {
 	const { isMobile } = useWindowSize();
 
 	// récupération des données depuis les stores
-	const { mapInfos, setAllPoints, setAllResults, setMapReady } = useMapStore(
-		useShallow((state) => state),
-	);
-
+	const {
+		mapInfos,
+		setAllPoints,
+		setAllResults,
+		setMapReady,
+		allLayers,
+		setAllLayers,
+	} = useMapStore(useShallow((state) => state));
 	const { mapFilters, setIsPanelDisplayed } = useMapAsideMenuStore();
 	const { userFilters, resetUserFilters, isReset, setIsReset } =
 		useMapFiltersStore(useShallow((state) => state));
@@ -98,7 +104,6 @@ const FilterComponent = () => {
 				mapId,
 				type === "filter" ? userFilters : null,
 			);
-
 			setAllPoints(points);
 			setAllResults(points);
 			setMapReady(true);
@@ -145,6 +150,7 @@ const FilterComponent = () => {
 		setIsReset(!isReset);
 		// on recharge les points de la carte
 		fetchAllPoints("reset");
+		setAllLayers([]);
 	}, [fetchAllPoints, resetUserFilters, setIsReset]);
 
 	const filterTitlePrefix = `${translation[language].common.filter} : `;

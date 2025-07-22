@@ -26,7 +26,7 @@ const AsideHeader = () => {
 			setSelectedTabMenu: state.setSelectedTabMenu,
 		})),
 	);
-	const { mapInfos, allPoints, allLayers } = useMapStore();
+	const { mapInfos, allPoints, allResults } = useMapStore();
 
 	return (
 		<NavComponent
@@ -37,7 +37,7 @@ const AsideHeader = () => {
 				translation,
 				language,
 				allPoints,
-				allLayers,
+				allResults,
 				setSelectedTabMenu,
 				mapInfos,
 			)}

@@ -1,4 +1,5 @@
 // import des types
+import { useMemo } from "react";
 import type { Language, TranslationType } from "../types/languageTypes";
 import type { MapInfoType, MenuTabType, PointType } from "../types/mapTypes";
 
@@ -136,15 +137,13 @@ const getAsideNavigationList = (
 	translation: TranslationType,
 	language: Language,
 	allPoints: PointType[],
-	allLayers: string[],
+	allResults: PointType[],
 	setSelectedTabMenu: (setSelectedTabMenu: MenuTabType) => void,
 	mapInfos: MapInfoType | null,
 ) => {
-	const allPointsLength = mapInfos
-		? allPoints.filter((point) =>
-				allLayers.includes(point.layerNamefr as string),
-			).length
-		: allPoints.length;
+	const allPointsLength = useMemo(() => {
+		return mapInfos ? allResults.length : allPoints.length;
+	}, [mapInfos, allPoints, allResults]);
 	return [
 		{
 			id: "results",

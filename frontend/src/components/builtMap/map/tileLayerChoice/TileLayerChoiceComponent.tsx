@@ -69,7 +69,7 @@ const TileLayerChoiceComponent = () => {
 				type="button"
 				className={`${style.tileLayerChoice} ${hasGrayScale ? style.selected : ""} ${hasGrayScale ? "" : style.grayScale}`}
 				onClick={() => setHasGrayScale(!hasGrayScale)}
-				onKeyUp={() => setHasGrayScale(true)}
+				onKeyUp={() => setHasGrayScale(!hasGrayScale)}
 				aria-label={"Choisir le fond de carte en niveaux de gris"}
 				style={{
 					backgroundImage: `url(${tileLayers[0].urlMini})`,

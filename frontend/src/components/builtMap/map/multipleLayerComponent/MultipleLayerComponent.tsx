@@ -24,6 +24,7 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 import type L from "leaflet";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
@@ -33,7 +34,6 @@ const MultipleLayerComponent = ({
 	allMemoizedPoints,
 }: MultipleLayerComponentProps) => {
 	const { language } = useTranslation();
-
 	const {
 		mapInfos,
 		allLayers,
@@ -41,8 +41,11 @@ const MultipleLayerComponent = ({
 		selectedMarker,
 		setSelectedMarker,
 		hasGrayScale,
+		allResults,
+		setAllResults,
 	} = useMapStore();
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
+	const { hasFilteredPoints } = useMapFilterOptionsStore();
 
 	const layersArrayForControl = useMemo(() => {
 		const layersArray: {
@@ -86,16 +89,19 @@ const MultipleLayerComponent = ({
 					),
 				};
 			});
-	}, [allMemoizedPoints, language, hasGrayScale]);
+	}, [allMemoizedPoints, language]);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: recharger pour afficher la traduction des noms des layers
 	const allResultsWithLayerFilter = useMemo(() => {
 		const allLayersWithOnlySVG = allLayers.filter((layerName) =>
 			layerName?.includes("svg"),
 		);
+		const allLayersWithoutSVGWithoutDuplicates = [
+			...new Set(allLayersWithOnlySVG),
+		];
 
-		return allMemoizedPoints.filter((point) => {
-			const isLayerDisplayed = allLayersWithOnlySVG.some(
+		const filteredPoints = allMemoizedPoints.filter((point) => {
+			const isLayerDisplayed = allLayersWithoutSVGWithoutDuplicates.some(
 				(layerName) =>
 					layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
 					point.layerNamefr,
@@ -104,7 +110,12 @@ const MultipleLayerComponent = ({
 				return point;
 			}
 		});
-	}, [allLayers, allMemoizedPoints, language, hasGrayScale]);
+		return filteredPoints;
+	}, [allLayers, allMemoizedPoints, language]);
+
+	useEffect(() => {
+		setAllResults(allResultsWithLayerFilter);
+	}, [allResultsWithLayerFilter]);
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
 
@@ -167,6 +178,13 @@ const MultipleLayerComponent = ({
 		});
 	}, [hasGrayScale, layersArrayForControl]);
 
+	const allMarkers = useMemo(() => {
+		return allResultsWithLayerFilter.map((point, index) => {
+			const pointKey = `${point.latitude}-${point.longitude}-${index}`;
+			return <MarkerComponent key={pointKey} point={point} />;
+		});
+	}, [allResultsWithLayerFilter, language]);
+
 	return (
 		<LayersControl position="bottomright" collapsed={false}>
 			<MarkerClusterGroup
@@ -180,25 +198,24 @@ const MultipleLayerComponent = ({
 				maxClusterRadius={1}
 				iconCreateFunction={createClusterCustomIcon}
 				spiderfyShapePositions={handleSpiderfyPosition}
-				key={hasGrayScale.toString()}
+				key={`${hasGrayScale.toString()}-${allResults.length}`}
 			>
-				{allResultsWithLayerFilter.map((point, index) => {
-					const pointKey = `${point.latitude}-${point.longitude}-${index}`;
-					return (
-						<MarkerComponent
-							key={pointKey}
-							point={point}
-							{...{ hasGrayScale }}
-						/>
-					);
-				})}
+				{allMarkers}
 			</MarkerClusterGroup>
 			{layersArrayForControl.map((layer) => {
 				return (
 					<LayersControl.Overlay
 						name={`${layer[hasGrayScale ? "shapeCodeGrayScale" : "shapeCode"]} ${layer[`name_${language}`]}`}
 						key={layer[`name_${language}`]}
-						checked
+						checked={
+							hasFilteredPoints
+								? allLayers.some(
+										(layerName) =>
+											layerName ===
+											`${layer[hasGrayScale ? "shapeCodeGrayScale" : "shapeCode"]} ${layer[`name_${language}`]}`,
+									)
+								: true
+						}
 					>
 						<LayerGroup key={layer[`name_${language}`]} />
 					</LayersControl.Overlay>
