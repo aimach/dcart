@@ -1,0 +1,144 @@
+@use "../../../../styles/mixin" as m;
+@use "../../../../styles/variable" as v;
+
+
+.mapContainer {
+    margin-top: 5rem;
+    width: 100%;
+    @include m.flexbox(flex, row, nowrap, center, flex-start);
+}
+
+.mapSection {
+    position: sticky;
+    top: 10px;
+}
+
+.spaceBottom {
+    height: 80vh;
+}
+
+.bigCircle {
+    background-color: v.$color-umber;
+    border-radius: 50%;
+    border: 2px solid v.$color-dark-lava;
+}
+
+.littleCircle {
+    background-color: v.$color-black-chocolate;
+    border-radius: 50%;
+}
+
+.circleBrownIcon {
+    width: 10px;
+    height: 10px;
+    color: v.$color-neutral-100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 50%;
+    border: 2px solid v.$color-grullo;
+    font-size: 12px;
+    opacity: 0.9;
+
+}
+
+.lightBackgroundColor {
+    background-color: v.$color-umber;
+}
+
+.mediumBackgroundColor {
+    background-color: v.$color-dark-lava;
+}
+
+.darkBackgroundColor {
+    background-color: v.$color-black-chocolate;
+}
+
+.invisibleIcon {
+    display: none;
+}
+
+.red {
+    background-color: #ff5733;
+}
+
+.blue {
+    background-color: #337dff;
+}
+
+.infoElement {
+    margin: 0 v.$space-xl;
+    margin-bottom: v.$space-xxxl;
+    padding: v.$space-m;
+    background-color: $background-color-soft;
+    border-radius: v.$border-radius-base;
+    color: v.$color-black-chocolate;
+    @include m.shadow();
+
+    >h4 {
+        margin-bottom: v.$space-s;
+        font-size: v.$font-size-xl;
+        font-weight: v.$font-weight-bold;
+    }
+
+    >p {
+        font-size: v.$font-size-m;
+        line-height: 1.5;
+        text-align: justify;
+    }
+
+}
+
+.mapTitle {
+    text-align: center;
+    font-style: italic;
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+    .infoElement {
+        margin: 0 v.$space-s;
+        margin-bottom: v.$space-xxxl;
+
+        >h4 {
+            font-size: v.$font-size-l;
+        }
+
+        >p {
+            font-size: v.$font-size-s;
+            line-height: 1.2;
+            text-align: justify;
+        }
+
+    }
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .mapContainer {
+        display: block;
+        width: 80vw;
+    }
+
+    .infoElement {
+        margin: 0 v.$space-s;
+        margin-top: v.$space-xxxl * 4;
+
+        >h4 {
+            font-size: v.$font-size-l;
+        }
+
+        >p {
+            font-size: v.$font-size-s;
+            line-height: 1.2;
+            text-align: justify;
+        }
+
+    }
+
+    .scrolledSection {
+        z-index: 10;
+        position: relative;
+    }
+}

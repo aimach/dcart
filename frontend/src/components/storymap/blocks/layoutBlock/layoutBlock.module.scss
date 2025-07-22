@@ -1,0 +1,67 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.layoutSection {
+    width: 70vw;
+
+    >div {
+        p {
+            text-align: justify;
+            margin: v.$font-space-xxxxl 0;
+            line-height: v.$font-space-xxxl;
+            font-size: v.$font-size-l;
+        }
+    }
+}
+
+.left {
+    >figure {
+        float: left;
+        margin-right: v.$space-s;
+        margin-bottom: v.$space-s;
+        @include m.flexbox(flex, column, nowrap, center, center);
+        max-width: 50%;
+
+        >img {
+            width: 80%;
+            border-radius: v.$border-radius-base;
+        }
+
+        >figcaption {
+            padding-top: v.$space-xs;
+            font-style: italic;
+        }
+    }
+}
+
+.right {
+    >figure {
+        float: right;
+        margin-left: v.$space-s;
+        margin-bottom: v.$space-s;
+        @include m.flexbox(flex, column, nowrap, center, center);
+        max-width: 50%;
+
+        >img {
+            width: 80%;
+            border-radius: v.$border-radius-base;
+        }
+
+        >figcaption {
+            padding-top: v.$space-xs;
+            font-style: italic;
+        }
+    }
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .layoutSection {
+        width: 90vw;
+
+        >img {
+            width: 100%;
+            border-radius: v.$border-radius-base;
+        }
+    }
+}

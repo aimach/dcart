@@ -1,0 +1,17 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.buttonContainer {
+    width: 100%;
+    margin-bottom: v.$space-s;
+
+    .previewButton {
+        @include m.buttonStyle(v.$color-dark-lava, v.$color-neutral-100);
+    }
+
+}
+
+.panelSectionContainer {
+    @include m.flexbox(flex, column, nowrap, center, center);
+
+}

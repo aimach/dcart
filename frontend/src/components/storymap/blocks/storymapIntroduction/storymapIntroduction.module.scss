@@ -1,0 +1,51 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.introductionContainer {
+    @include m.flexbox(flex, row, nowrap, center, center);
+    width: 100%;
+    height: 80vh;
+    background-repeat: no-repeat;
+    background-size: cover;
+    background-position: center;
+
+
+    .contentContainer {
+        text-align: center;
+        line-height: v.$font-space-xxxl;
+        background-color: v.$color-neutral-100;
+        padding: v.$font-space-xl;
+        width: 50vw;
+        border-radius: v.$border-radius-rounded;
+
+        h2 {
+            font-size: v.$font-size-xxxxl;
+            margin: v.$font-space-xxxxl;
+        }
+
+        >p:first-of-type {
+            font-size: v.$font-size-xxl;
+            margin: v.$font-space-xxxxl;
+            font-style: italic;
+        }
+
+        .authorAndDateContainer {
+            @include m.flexbox(flex, column, nowrap, center, center);
+            gap: v.$space-s;
+        }
+
+
+    }
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .introductionContainer {
+
+
+
+        .contentContainer {
+            width: 80vw;
+        }
+    }
+}

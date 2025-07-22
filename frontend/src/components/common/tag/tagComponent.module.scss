@@ -1,0 +1,22 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+@use "sass:color";
+
+.color_red {
+    width: fit-content;
+    background-color: color.adjust(v.$color-error, $lightness: 60%);
+    color: v.$color-error;
+    border: v.$border-width-m solid v.$color-error;
+    border-radius: calc(v.$border-radius-rounded*2);
+    padding: calc(v.$space-xs / 2);
+}
+
+.color_green {
+    width: fit-content;
+    background-color: color.adjust(v.$color-validation, $lightness: 60%);
+    color: v.$color-validation;
+    border: v.$border-width-m solid v.$color-validation;
+    border-radius: calc(v.$border-radius-rounded*2);
+    padding: calc(v.$space-xs / 2);
+}

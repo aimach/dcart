@@ -1,0 +1,44 @@
+@use "../../../styles/mixin" as m;
+@use "../../../styles/variable" as v;
+
+.homeNav {
+
+    ul {
+        list-style: none;
+        padding: 0;
+        margin: 0;
+        gap: 10px;
+        list-style-type: none;
+        padding-left: 0;
+        margin: 0;
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-template-rows: repeat(2, 1fr);
+        column-gap: v.$space-xl;
+        row-gap: v.$space-xl;
+
+        li {
+            @include m.flexbox(flex, column, nowrap, center, center);
+            gap: v.$space-m;
+            min-width: 200px;
+            height: 200px;
+            background-color: $background-color-base;
+            border-radius: v.$border-radius-base;
+            @include m.shadow();
+            cursor: pointer;
+            transition: transform 0.2s ease-in-out;
+            font-size: v.$font-size-l;
+
+            &:hover {
+                transform: scale(1.05);
+            }
+        }
+    }
+
+    &Container {
+        width: 100vw;
+        height: calc(100dvh - v.$main-header-height);
+        @include m.flexbox(flex, row, nowrap, center, center);
+        background-color: v.$background-color-soft;
+    }
+}

@@ -1,0 +1,53 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.storymapContainer {
+    @include m.flexbox(flex, column, nowrap, center, center);
+    gap: v.$font-space-xxxl;
+}
+
+.storymapHeaderContainer {
+    @include m.flexbox(flex, row, nowrap, space-between, center);
+    margin: 0 v.$space-xl;
+    height: 100px;
+}
+
+.linkAndLanguageContainer {
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$space-l;
+
+    .mapLinkContainer {
+        @include m.flexbox(flex, row, nowrap, center, center);
+        gap: v.$space-xs;
+
+    }
+}
+
+.languageSelectionContainer {
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$space-s;
+
+    >li {
+        cursor: pointer;
+    }
+
+    .languageSelected {
+        padding: v.$space-xs;
+        border: v.$border-width-m solid v.$color-grullo;
+        border-radius: v.$border-radius-base;
+
+    }
+}
+
+.grayScaleToggleContainer {
+    @include m.flexbox(flex, row, nowrap, center, center);
+
+
+
+    label {
+        cursor: pointer;
+    }
+}

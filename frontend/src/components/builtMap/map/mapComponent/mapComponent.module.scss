@@ -1,0 +1,48 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.modal {
+    &Content {
+        >p {
+            font-size: v.$font-size-m;
+        }
+    }
+
+    &TitleSection {
+        @include m.flexbox(flex, row, nowrap, center, center);
+
+        >h3 {
+            font-size: v.$font-size-xxxxl;
+        }
+
+
+        >img:first-of-type {
+            rotate: 90deg;
+        }
+
+        >img:last-of-type {
+            rotate: -90deg;
+        }
+
+    }
+}
+
+.noResultContainer {
+    font-size: v.$font-size-l;
+    @include m.flexbox(flex, column, nowrap, flex-start, center);
+    gap: v.$space-s;
+}
+
+.mapBottomSection {
+    @include m.flexbox(flex, row, nowrap, flex-start, center);
+    background-color: v.$color-neutral-100;
+
+    >div:first-of-type {
+        width: 70%;
+    }
+
+    &White {
+        z-index: 10000;
+        position: relative;
+    }
+}

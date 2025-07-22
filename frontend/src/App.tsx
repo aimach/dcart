@@ -1,19 +1,14 @@
-// import du style
-import { useContext } from "react";
-import "./App.scss";
 // import des composants
-import MapComponent from "./components/mapComponent/MapComponent";
-// import du context
-import { TranslationContext } from "./context/TranslationContext";
+import HomePage from "./components/homePage/HomePage";
+// import du style
+import "./App.scss";
 
+/**
+ * Page d'accueil : titre, description et barre de navigation
+ * @returns NavComponent
+ */
 function App() {
-	const { language, translation } = useContext(TranslationContext);
-	return (
-		<div className="app">
-			<h1>{translation[language].title}</h1>
-			<MapComponent />
-		</div>
-	);
+	return <HomePage />;
 }
 
 export default App;

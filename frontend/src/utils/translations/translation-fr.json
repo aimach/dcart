@@ -1,0 +1,443 @@
+{
+	"en": "EN",
+	"fr": "FR",
+	"noAuthInMobile": "Vous devez vous connecter sur un ordinateur pour accéder à cette page.",
+	"invalidAuth": "Identifiants invalides",
+	"seeAlso": "Voir aussi",
+	"allRightsReserved": "Tous droits réservés",
+	"noPageFound": "Cette page est introuvable",
+	"navigation": {
+		"home": "ACCUEIL",
+		"maps": "CARTES",
+		"storymaps": "STORYMAPS",
+		"backoffice": "TABLEAU DE BORD",
+		"texts": "TEXTES",
+		"back": "RETOUR",
+		"discover": "DECOUVRIR",
+		"explore": "EXPLORER",
+		"users": "UTILISATEURS",
+		"tags": "ÉTIQUETTES",
+		"divinities": "DIVINITÉS",
+		"website": "RETOUR AU SITE",
+		"legalNotice": "MENTIONS LÉGALES"
+	},
+	"alert": {
+		"maxReached": "Nombre maximum de filtres atteint",
+		"noTagAssociated": "Etiquette manquante",
+		"missingTranslation": "Traduction manquante",
+		"copied": "Copié dans le presse-papier"
+	},
+	"button": {
+		"freeExploration": "Exploration libre",
+		"result": "résultat",
+		"filters": "Filtres",
+		"filter": "Filtrer",
+		"selection": "Sélection",
+		"seeSources": "Voir les sources",
+		"seeAll": "Tout voir",
+		"epithet": "Qualification",
+		"divinity": "Nom divin",
+		"gender": "Genre",
+		"activity": "Activité",
+		"doughnut": "Donut",
+		"bar": "Barre",
+		"resetFilter": "Réinitialiser les filtres",
+		"discover": "Découvrir",
+		"add": "Ajouter",
+		"save": "Sauvegarder",
+		"delete": "Supprimer",
+		"edit": "Modifier",
+		"cancel": "Annuler",
+		"publish": "Publier",
+		"unpublish": "Dépublier",
+		"clean": "Supprimer les points du jeu de points",
+		"search": "Rechercher",
+		"copyRequest": "Copier la requête SQL",
+		"myCreations": "Voir mes créations",
+		"allCreations": "Voir toutes les créations",
+		"leftSide": "Panneau de gauche",
+		"rightSide": "Panneau de droite",
+		"grey": "Carte grisée",
+		"noGrey": "Carte colorée"
+	},
+	"common": {
+		"between": "entre",
+		"and": "et",
+		"or": "OU",
+		"to": "à",
+		"unknownDate": "sans date",
+		"greek": "Grec",
+		"semitic": "Sémitique",
+		"previous": "Précédent",
+		"next": "Suivant",
+		"back": "Retour",
+		"createdOn": "Créé le",
+		"updatedOn": "Modifié le",
+		"lastUpdloadOn": "Dernière mise à jour des points le",
+		"by": "par",
+		"after": "après",
+		"before": "avant",
+		"in": "en",
+		"map": "carte",
+		"storymap": "storymap",
+		"published": "publiée",
+		"noPublished": "non publiée",
+		"close": "Fermer",
+		"typeOf": "de type",
+		"noData": "Aucune donnée",
+		"no": "pas de",
+		"filter": "Filtre"
+	},
+	"modal": {
+		"firstContent": "J'aimerais voir les sources de",
+		"secondContent": "sur",
+		"chooseRegion": "la région",
+		"chooseDivinity": "l'élément",
+		"postDate": "date début",
+		"anteDate": "date fin",
+		"yes": "oui",
+		"no": "non",
+		"deleteBlockText": "Êtes-vous sûr de vouloir supprimer ce bloc ?",
+		"deteleStorymapText": "Êtes-vous sûr de vouloir supprimer cette storymap ?",
+		"deteleMapText": "Êtes-vous sûr de vouloir supprimer cette carte ?",
+		"deleteUserText": {
+			"another": "Êtes-vous sûr de vouloir supprimer cet utilisateur ? Cette action est irréversible !",
+			"yourself": "Êtes-vous sûr de vouloir supprimer votre compte ? Cette action est irréversible !"
+		},
+		"modifyUserStatusText": "Êtes-vous sûr de vouloir modifier le statut de cet utilisateur ?",
+		"cleanPointSetText": {
+			"bdd": "Êtes-vous sûr de vouloir supprimer tous les points de la BDD de ce jeu de points ?",
+			"custom": "Êtes-vous sûr de vouloir supprimer tous les points personnalisés de ce jeu de points ?"
+		},
+		"deleteTagText": "Êtes-vous sûr de vouloir supprimer cette étiquette ? Si une carte ou une storymap est associée à cette seule étiquette, elle ne sera plus visible par les utilisateurs.",
+		"associatedStorymap": "Voir la storymap associée",
+		"associatedMap": "Voir la carte associée"
+	},
+	"mapPage": {
+		"noResult": "Aucun résultat",
+		"enlargeYourSearch": "Elargissez votre recherche ou réinitialisez tous les filtres.",
+		"noGreekOrSemitic": "ni en grec, ni en sémitique",
+		"noGreek": "pas de grec",
+		"noSemitic": "pas de sémitique",
+		"withElements": "avec les éléments",
+		"withElementsNb": "nombre d'éléments",
+		"withStatus": "avec les statuts",
+		"withAgentivities": "avec les agentivités",
+		"withSourceMaterials": "avec les supports",
+		"withAgentActivities": "avec les activités",
+		"gender": "genre",
+		"aside": {
+			"filters": "Filtres",
+			"sources": "Sources",
+			"epithet": "Qualification",
+			"noFilter": "Pas de filtre défini",
+			"location": "Localisation",
+			"element": "Element",
+			"language": "Langues",
+			"divinityNb": "Nombre d'éléments",
+			"sourceType": "Type de source",
+			"agentActivity": "Activité de l'agent",
+			"agentGender": "Genre de l'agent",
+			"agentStatus": "Statut de l'agent",
+			"agentivity": "Agentivité",
+			"sourceMaterial": "Support de la source",
+			"timeLimits": "Bornes temporelles",
+			"male": "Masculin",
+			"female": "Féminin",
+			"nonBinary": "Non-binaire",
+			"seeStat": "Voir les statistiques",
+			"seeSources": "Voir les sources",
+			"filterIntroduction": "Une attestation est affichée si elle correspond à au moins une option de chaque filtre. Une fois les filtres appliqués, les filtres se mettent à jour selon les attestations visibles.",
+			"searchForLocation": "Rechercher un lieu...",
+			"searchForElement": "Rechercher un element...",
+			"searchForSourceType": "Rechercher un type de source...",
+			"searchForAgentActivity": "Rechercher une activité d'agent...",
+			"searchForAgentStatus": "Rechercher un statut d'agent...",
+			"searchForSourceMaterial": "Rechercher un support de source...",
+			"searchForAgentivity": "Rechercher une agentivité...",
+			"searchForAgentName": "Rechercher un nom d'agent...",
+			"searchForTag": "Rechercher une étiquette...",
+			"noSelectedMarker": "Sélectionner un point pour voir les détails",
+			"traduction": "Traduction",
+			"originalVersion": "Version originale",
+			"agents": "Agents",
+			"noAgent": "Pas d'agent",
+			"noDesignation": "non précisé",
+			"noSourceMaterialDefined": "Aucun support de source défini",
+			"dontShowAgain": "ne plus afficher ce message"
+		}
+	},
+	"backoffice": {
+		"createA": "Créer une",
+		"stillConnected": "Êtes-vous toujours connecté ?",
+		"disconnectInOneMinute": "Déconnexion dans 1 minute...",
+		"noPointInPointSet": "Aucun point chargé dans ce jeu",
+		"managementTable": {
+			"image": "Image",
+			"name": "Nom/Description",
+			"status": "Statut",
+			"createdOn": "Date de création",
+			"createdBy": "Créée par",
+			"updatedOn": "Date de modification",
+			"lastUploadBy": "Dernière modification par",
+			"links": "Liens rapides"
+		},
+		"authPage": {
+			"login": "Se connecter",
+			"username": "Nom d'utilisateur",
+			"password": "Mot de passe",
+			"requiredField": "Ce champ est requis",
+			"forgotPassword": "Mot de passe oublié ?",
+			"enterEmail": "Entrez votre adresse e-mail",
+			"sendResetLink": "Envoyer le lien de réinitialisation",
+			"newPassword": "Nouveau mot de passe",
+			"saveNewPassword": "Enregistrer le nouveau mot de passe"
+		},
+		"mapFormPage": {
+			"intro": {
+				"tags": {
+					"label": "Etiquettes de la carte",
+					"description": "Les étiquettes permettent de classer les cartes et de les retrouver plus facilement.",
+					"placeholder": "Choisir une ou plusieurs étiquettes"
+				},
+				"divinityInChart": {
+					"label": "Graphique des éléments",
+					"description": "Choisissez si vous souhaitez afficher le nombre de noms divins ou le nombre de qualilfications dans le graphique.",
+					"checkbox": {
+						"divinity": "Afficher le nombre de noms divins",
+						"epithet": "Afficher le nombre de qualifications"
+					}
+				}
+			},
+			"aside": {
+				"informations": "Informations",
+				"pointSets": "Jeu de points",
+				"filters": "Filtres associés"
+			},
+			"pointSetTable": {
+				"nameLang1": "Nom du jeu en langue 1",
+				"nameLang2": "Nom du jeu en langue 2",
+				"color": "Couleur",
+				"icon": "Icône",
+				"delete": "Supprimer",
+				"lastActivity": "Dernière modification",
+				"downloadCSV": "Charger le CSV",
+				"downloadBDDCSV": "Points de la BDD",
+				"downloadCustomCSV": "Points personnalisés"
+			},
+			"pointSetForm": {
+				"addNewPointSet": "Ajouter un nouveau jeu de points",
+				"pointSetName": {
+					"label_fr": "Nom français du jeu de points",
+					"description_fr": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques (légende en bas à droite de la carte).",
+					"label_en": "Nom anglais du jeu de points",
+					"description_en": "Si vous faites le choix d'afficher les jeux de points sur différents calques, l'utilisateur verra le nom du jeu dans la liste des calques (légende en bas à droite de la carte)."
+				},
+				"attestationIds": {
+					"label": "Charger les points de la BDD MAP",
+					"description": "Charger un CSV contenant les identifiants des attestations provenant de la base de données MAP."
+				},
+				"customPointsFile": {
+					"label": "Charger les points personnalisés",
+					"description": "Charger un CSV contenant une liste de points personnalisés."
+				},
+				"pointColor": {
+					"label": "Couleur des points",
+					"description": "Si une couleur est sélectionnée, les points s'afficheront dans cette couleur. Sinon, ils seront affichés en marron."
+				},
+				"pointIcon": {
+					"label": "Forme de l'icône des points",
+					"description": "Si aucune forme n'est sélectionnée, les points s'afficheront avec une icône ronde."
+				},
+				"chooseIcon": "Choisissez une icône",
+				"chooseColor": "Choisissez une couleur",
+				"noDefinedColor": "Pas de couleur définie",
+				"noDefinedIcon": "Pas d'icône définie",
+				"isLayeredLabel": "Afficher les jeux de points sur différents calques",
+				"isNbDisplayedLabel": "Afficher le nombre de sources dans le point"
+			},
+			"filterForm": {
+				"element": {
+					"title": "Construction du filtre 'Éléments'",
+					"firstLevel": "Premier niveau (1 élément)",
+					"secondLevel": "Second niveau (un ou plusieurs éléments)",
+					"basic": {
+						"label": "Basique",
+						"description": "Le filtre 'Éléments' se présentera sous la forme d'un select/options où l'utilisateur pourra parcourir la liste des options et en choisir une ou plusieurs."
+					},
+					"manual": {
+						"label": "Manuelle",
+						"description": "Le filtre 'Éléments' se présentera sous la forme de checkboxs à 2 niveaux : un premier niveau avec un élément et un second avec un ou plusieurs éléments. Ces deux niveaux sont à construire sur-mesure ci-dessous."
+					}
+				},
+				"location": {
+					"title": "Construire le filtre 'Lieu'",
+					"greatRegion": {
+						"label": "Grande région",
+						"description": "Le filtre 'Lieu' affichera un select/options avec toutes les grandes régions des attestations affichées sur la carte."
+					},
+					"subRegion": {
+						"label": "Sous région",
+						"description": "Le filtre 'Lieu' affichera un select/options avec toutes les sous régions des attestations affichées sur la carte."
+					},
+					"cityName": {
+						"label": "Nom de site",
+						"description": "Le filtre 'Lieu' affichera un select/options avec tous les noms de sites des attestations affichées sur la carte."
+					}
+				}
+			},
+			"addMapIntro": "Ajouter les informations de la carte",
+			"addMapPoints": "Ajouter les points de la carte",
+			"uploadPoints": "Charger les points",
+
+			"addFilters": "Ajouter des filtres",
+			"filterIntroduction": "Il est possible d'ajouter jusqu'2 filtres par carte, en plus du filtre temporel toujours affiché.",
+			"locationFilter": {
+				"label": "Filtre du lieu",
+				"description": "Affiche un select/options avec la liste des lieux (grandes régions, sous-régions ou sites, au choix) de l'ensemble des attestations affichées"
+			},
+			"languageFilter": {
+				"label": "Filtre de la langue (grec ou sémitique)",
+				"description": "Affiche deux checkboxs avec un choix 'grec' et un choix 'sémitique'."
+			},
+			"epithetFilter": {
+				"label": "Filtre avec les éléments",
+				"description": "Deux options possibles : soit affiche un select/options avec la liste des éléments de l'ensemble des éléments des attestations affichées, soit affiche deux niveaux de checkboxs : un premier niveau avec un seul élément et un second niveau avec un ou plusieurs éléments. Ces deux niveaux sont à construire sur-mesure."
+			},
+			"divinityNbFilter": {
+				"label": "Filtre du nombre d'éléments",
+				"description": "Affiche un curseur avec un minimum et un maximum, définis par le nombre d'éléments de l'ensemble des attestations affichées."
+			},
+			"sourceTypeFilter": {
+				"label": "Filtre du type de source",
+				"description": "Affiche un select/options avec la liste des types de sources de l'ensemble des sources affichées"
+			},
+			"agentActivityFilter": {
+				"label": "Filtre de l'activité des agents",
+				"description": "Affiche un select/options avec la liste des activités des agents de l'ensemble des attestations affichées"
+			},
+			"agentNameFilter": {
+				"label": "Filtre du nom des agents",
+				"description": "Affiche un select/options avec la liste des noms des agents de l'ensemble des attestations affichées"
+			},
+			"agentGenderFilter": {
+				"label": "Filtre du genre des agents",
+				"description": "Affiche trois checkboxs avec un choix 'masculin', un choix 'féminin' et un choix 'non binaire'."
+			},
+			"agentStatusFilter": {
+				"label": "Filtre du statut des agents",
+				"description": "Affiche un select/options avec la liste des statuts des agents de l'ensemble des attestations affichées"
+			},
+			"agentivityFilter": {
+				"label": "Filtre de l'agentivité",
+				"description": "Affiche un select/options avec la liste des agentivités de l'ensemble des attestations affichées"
+			},
+			"sourceMaterialFilter": {
+				"label": "Filtre du support de la source",
+				"description": "Affiche un select/options avec la liste des supports de source de l'ensemble des sourcées affichées"
+			},
+			"noFilter": {
+				"label": "Je ne souhaite pas ajouter de filtre",
+				"description": "Aucun filtre ne sera ajouté à la carte"
+			},
+			"create": "Créer",
+			"edit": "Modifier",
+			"downloadExample": "Télécharger un exemple de fichier CSV",
+			"uploadPointsHelp": "Aide à la préparation du CSV"
+		},
+		"storymapFormPage": {
+			"preview": "Aperçu",
+			"chooseBlock": "Choisissez un bloc",
+			"textContent": "Contenu textuel et de mise en page",
+			"mediaContent": "Contenu multimédia",
+			"mapsContent": "Contenu cartographique",
+			"backToEdit": "Retour à l'édition",
+			"types": {
+				"title": "Titre",
+				"subtitle": "Sous-titre",
+				"text": "Texte",
+				"image": "Image",
+				"link": "Lien",
+				"itemLink": "Lien carte ou storymap",
+				"quote": "Citation",
+				"layout": "Texte et image",
+				"simple_map": "Carte simple",
+				"comparison_map": "Carte de comparaison",
+				"scroll_map": "Carte déroulante",
+				"separator": "Séparateur",
+				"table": "Tableau"
+			},
+			"form": {
+				"create": "Créer",
+				"edit": "Modifier",
+				"title": "le titre",
+				"subtitle": "le sous-titre",
+				"text": "le texte",
+				"image": "l'image",
+				"link": "le lien",
+				"quote": "la citation",
+				"layout": "un ensemble texte et image",
+				"simple_map": "la carte simple",
+				"comparison_map": "la carte de comparaison",
+				"scroll_map": "la carte déroulante",
+				"separator": "un séparateur",
+				"step": "l'étape",
+				"csv": "Ajouter un CSV avec les points",
+				"forLeftPane": "pour le panel de gauche",
+				"forRightPane": "pour le panel de droite",
+				"uploadTableFr": "Ajouter un CSV avec un tableau en langue 1",
+				"uploadTableEn": "Ajouter un CSV avec un tableau en langue 2",
+				"headerPosition": "Position de l'en-tête du tableau",
+				"headerPositionTop": "En-tête en haut",
+				"headerPositionLeft": "En-tête à gauche",
+				"imageToLeft": "Image à gauche",
+				"imageToRight": "Image à droite",
+				"scrollMapStepList": "Liste des étapes de la carte déroulante",
+				"goToSteps": "Aller aux étapes",
+				"addTheStep": "Ajouter l'étape",
+				"addAStep": "Ajouter une étape",
+				"modifyStep": "Modifier cette étape",
+				"modifyTextNow": "Modifier le texte directement",
+				"modifyImageNow": "Modifier l'image directement",
+				"tags": {
+					"label": "Etiquettes de la storymap",
+					"description": "Les étiquettes permettent de classer les storymaps et de les retrouver plus facilement.",
+					"placeholder": "Choisir une ou plusieurs étiquettes"
+				},
+				"fileStatus": {
+					"loadedFile": "Fichier chargé",
+					"noFile": "Aucun fichier chargé",
+					"fileAlreadyLoaded": "Un fichier est déjà chargé"
+				}
+			}
+		},
+		"userManagement": {
+			"title": "Gestion des utilisateurs",
+			"username": "Nom d'utilisateur",
+			"pseudo": "Pseudo",
+			"status": "Statut",
+			"links": "Liens rapides",
+			"toAuthor": "Devenir auteur",
+			"toAdmin": "Devenir administrateur",
+			"admin": "Administrateur",
+			"writer": "Auteur",
+			"addUser": "Ajouter un nouvel utilisateur",
+			"passwordManagementMessage": "Le mot de passe sera défini par l'utilisateur lors de la première connexion."
+		},
+		"translationManagement": {
+			"frenchTranslation": "Traduction en français",
+			"englishTranslation": "Traduction en anglais",
+			"homepage.atitle": "Titre de la page d'accueil",
+			"homepage.description": "Description de la page d'accueil",
+			"menu.description": "Contenu de la page de menu",
+			"mapPage.introContent": "Introduction du point sélectionné dans la carte (avant statistiques et sources)"
+		},
+		"tagManagement": {
+			"title": "Gestion des étiquettes",
+			"createTag": "Créer une étiquette"
+		},
+		"divinityManagement": {
+			"explanation": "Cette page permet d'enregister la liste des identifiants des éléments qui sont des noms divins. Actuellement, cette liste a été générée par une requête SQL qui récupère tous les ids des éléments qui sont de type 'theonyme'."
+		}
+	}
+}

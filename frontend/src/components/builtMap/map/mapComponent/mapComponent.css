@@ -1,0 +1,31 @@
+/* cette classe est INDISPENSABLE pour afficher la carte (avoir au minmum la height de défini) */
+
+/* Spécifier l'id de la carte permet de s'assurer que ça ne s'applique que container leaflet de cette carte */
+#built-map .leaflet-container {
+	height: calc(100dvh - 60px - 50px - 20px);
+	/* hauteur totale - 60px de mainHeader - 50px de mapHeader - 20px pour laisser la place au filtre du temps */
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+	#built-map .leaflet-container {
+		height: calc(100dvh - 60px);
+		/* hauteur totale - 60px de mainHeader  */
+	}
+}
+
+@media (max-width: 767px) {
+	.leaflet-control-zoom {
+		margin-bottom: 3rem !important;
+	}
+}
+
+/* Supprimer les checkbox dans la fenêtre des calques */
+.hide-layer-checkboxes input[type="checkbox"] {
+	display: none;
+	background-color: red;
+}
+
+.shadowed {
+	box-shadow: rgb(0 0 0 / 69%) 0px 1px 0px 100px;
+}

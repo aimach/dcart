@@ -1,0 +1,150 @@
+@use "./variable" as v;
+
+@use "sass:color";
+
+// SOURCES
+// https://dev.to/alemesa/10-awesome-sass-scss-mixins-5ci2
+// https://www.barrage.net/blog/technology/top-8-sass-mixins
+
+// SIZE
+
+@mixin box($width, $height: $width) {
+  width: $width;
+  height: $height;
+}
+
+// FLEXBOX
+
+@mixin flexbox($display: flex,
+  $direction: row,
+  $wrap: nowrap,
+  $justifyContent: null,
+  $alignItems: null,
+) {
+  display: $display;
+  flex-direction: $direction;
+
+
+  @if $alignItems {
+    align-items: $alignItems;
+  }
+
+  @if $justifyContent {
+    justify-content: $justifyContent;
+  }
+
+  flex-wrap: $wrap;
+}
+
+
+// POSITION
+
+@mixin position($position: absolute,
+  $top: null,
+  $right: null,
+  $bottom: null,
+  $left: null,
+  $z-index: initial) {
+  position: $position;
+  top: $top;
+  right: $right;
+  bottom: $bottom;
+  left: $left;
+  z-index: $z-index;
+}
+
+// BACKGROUND
+
+@mixin cover-background {
+  background-repeat: no-repeat;
+  background-size: cover;
+  background-position: center;
+}
+
+// MEDIA QUERIES
+
+$tablet: 768;
+$large: 1024;
+$desktop: 1280;
+
+@mixin tablet {
+  @media only screen and (min-width: ($tablet * 1px)) {
+    @content;
+  }
+}
+
+@mixin large {
+  @media only screen and (min-width: ($large * 1px)) {
+    @content;
+  }
+}
+
+@mixin desktop {
+  @media only screen and (min-width: ($desktop * 1px)) {
+    @content;
+  }
+}
+
+// VISIBILITY
+
+@mixin fade($type) {
+  @if $type=="hide" {
+    visibility: hidden;
+    opacity: 0;
+    transition: visibility 1s, opacity 1s;
+  }
+
+  @else if $type=="show" {
+    visibility: visible;
+    opacity: 1;
+    transition: visibility 1s, opacity 1s;
+  }
+}
+
+// RESET
+// supprimer le style par défaut des boutons
+@mixin unbuttonize {
+  background-color: transparent;
+  border: none;
+  margin: 0;
+  padding: 0;
+  text-align: inherit;
+  font: inherit;
+  border-radius: 0;
+  appearance: none;
+}
+
+// ELEMENTS
+
+@mixin buttonStyle($bg-color, $text-color, $padding: 10px, $radius: 5px) {
+  background-color: $bg-color;
+  color: $text-color;
+  padding: $padding;
+  border: none;
+  border-radius: $radius;
+  font-size: v.$font-size-m;
+  font-weight: v.$font-weight-bold;
+  line-height: 1.75;
+  cursor: pointer;
+  box-shadow:
+    0px 3px 1px -2px rgba(0, 0, 0, 0.2),
+    0px 2px 2px 0px rgba(0, 0, 0, 0.14),
+    0px 1px 5px 0px rgba(0, 0, 0, 0.12);
+  transition: background-color 250ms, box-shadow 250ms;
+
+  &:hover {
+    background-color: color.adjust($bg-color, $lightness: 10%);
+    box-shadow:
+      0px 2px 4px -1px rgba(0, 0, 0, 0.2),
+      0px 4px 5px 0px rgba(0, 0, 0, 0.14),
+      0px 1px 10px 0px rgba(0, 0, 0, 0.12);
+  }
+}
+
+// SHADING
+
+@mixin shadow() {
+  box-shadow: 0px 1px 3px rgba(0, 0, 0, 0.2),
+    0px 1px 1px rgba(0, 0, 0, 0.14),
+    0px 2px 1px rgba(0, 0, 0, 0.12);
+}

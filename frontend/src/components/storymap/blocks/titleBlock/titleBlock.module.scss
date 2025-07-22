@@ -1,0 +1,22 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.titleSection {
+    width: 70vw;
+
+    .titleStyle {
+        font-size: v.$font-size-xxxl;
+        font-weight: v.$font-weight-semi-bold;
+    }
+
+    .subtitleStyle {
+        font-size: v.$font-size-xl;
+    }
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .titleSection {
+        width: 90vw;
+    }
+}

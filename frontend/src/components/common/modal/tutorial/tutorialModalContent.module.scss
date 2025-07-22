@@ -1,0 +1,42 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.tutorialModalContent {
+
+
+    .contentContainer {
+        margin-bottom: v.$space-l;
+
+        >p {
+            font-size: v.$font-size-m;
+            margin-top: v.$space-m;
+        }
+
+        .modalTitleSection {
+            @include m.flexbox(flex, row, nowrap, center, center);
+
+            >h4 {
+                font-size: v.$font-size-xxl;
+            }
+
+            >img:first-of-type {
+                padding-top: v.$space-s;
+                rotate: 90deg;
+            }
+
+            >img:last-of-type {
+                padding-top: v.$space-s;
+                rotate: -90deg;
+            }
+        }
+    }
+
+    .buttonContainer {
+        @include m.flexbox(flex, row, nowrap, center, center);
+        gap: v.$space-s;
+
+        >button {
+            @include m.buttonStyle(v.$color-umber, v.$color-neutral-100, v.$space-s);
+        }
+    }
+}

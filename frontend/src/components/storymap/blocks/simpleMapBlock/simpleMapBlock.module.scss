@@ -1,0 +1,47 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.mapTitle {
+    text-align: center;
+    font-style: italic;
+}
+
+.circleBrownIcon {
+    width: 10px;
+    height: 10px;
+    color: v.$color-neutral-100;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    text-align: center;
+    border-radius: 50%;
+    border: 2px solid v.$color-grullo;
+    font-size: 12px;
+    opacity: 0.9;
+
+}
+
+.lightBackgroundColor {
+    background-color: v.$color-umber;
+}
+
+.mediumBackgroundColor {
+    background-color: v.$color-dark-lava;
+}
+
+.darkBackgroundColor {
+    background-color: v.$color-black-chocolate;
+}
+
+.invisibleIcon {
+    display: none;
+}
+
+
+.red {
+    background-color: #ff5733;
+}
+
+.blue {
+    background-color: #337dff;
+}

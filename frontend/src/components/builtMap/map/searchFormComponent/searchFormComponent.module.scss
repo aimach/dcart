@@ -1,0 +1,33 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.searchFormContainer {
+    font-size: v.$font-size-m;
+
+    .searchFormTextContainer {
+        @include m.flexbox(flex, row, wrap, center, center);
+        gap: v.$space-s;
+        margin-bottom: v.$space-m;
+    }
+
+    .searchFormButtonContainer {
+        @include m.flexbox(flex, row, nowrap, center, center);
+        gap: v.$space-s;
+    }
+
+    button {
+        @include m.buttonStyle(v.$color-umber, v.$color-neutral-100);
+    }
+
+    .invisibleLabel {
+        position: absolute;
+        width: 1px;
+        height: 1px;
+        padding: 0;
+        margin: -1px;
+        overflow: hidden;
+        clip: rect(0 0 0 0);
+        white-space: nowrap;
+        border: 0;
+    }
+}

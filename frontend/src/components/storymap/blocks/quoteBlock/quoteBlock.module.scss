@@ -1,0 +1,30 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.quoteBlockContainer {
+    width: 70vw;
+    background-color: v.$color-grullo-light;
+    border-radius: v.$border-radius-base;
+
+    p:first-child {
+        font-style: italic;
+        font-size: v.$font-size-l;
+    }
+
+    p:last-child {
+        text-align: right;
+    }
+
+    p {
+        text-align: justify;
+        margin: v.$font-space-xxxxl;
+        line-height: v.$font-space-xxxl;
+    }
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .quoteBlockContainer {
+        width: 90vw;
+    }
+}

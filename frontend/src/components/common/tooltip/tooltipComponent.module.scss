@@ -1,0 +1,29 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+// Tooltip.scss
+.tooltipContainer {
+    position: relative;
+    display: inline-block;
+
+    &:hover .tooltipText {
+        opacity: 0.8;
+        visibility: visible;
+        // transform: translateY(0);
+    }
+}
+
+.tooltipText {
+    position: absolute;
+    bottom: 125%; // positionne au-dessus de l'élément
+    left: 50%;
+    transform: translateX(-55%) translateY(5px);
+    background-color: v.$color-umber;
+    color: #fff;
+    padding: 6px 10px;
+    border-radius: 4px;
+    white-space: nowrap;
+    font-size: 0.8rem;
+    opacity: 0;
+    visibility: hidden;
+}

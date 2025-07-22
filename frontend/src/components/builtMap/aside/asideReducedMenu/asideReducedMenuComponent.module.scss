@@ -1,0 +1,53 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.reducedAsideNav {
+  width: v.$space-xxl;
+  height: 100%;
+  background-color: v.$color-grullo-light;
+  @include m.flexbox(flex, column, nowrap, center, center);
+  padding-top: v.$space-l;
+
+  border-right: 1px solid v.$color-grullo;
+
+  >ul {
+    height: 100%;
+    @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+    gap: v.$font-space-xxxl;
+    list-style-type: none;
+    padding-left: 0;
+    margin: 0;
+
+    >li {
+      cursor: pointer;
+
+      >svg {
+        color: v.$color-black-chocolate;
+
+        &:hover {
+          transform: scale(1.1);
+          transition: transform 0.3s;
+        }
+      }
+    }
+  }
+
+  &White {
+    z-index: 10000;
+  }
+}
+
+.liActive {
+  background-color: v.$color-black-chocolate;
+  color: white;
+}
+
+.spin {
+  animation: spin 2s linear infinite;
+}
+
+@keyframes spin {
+  100% {
+    transform: rotate(360deg);
+  }
+}

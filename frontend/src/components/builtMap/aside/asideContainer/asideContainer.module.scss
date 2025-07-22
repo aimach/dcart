@@ -1,0 +1,80 @@
+@use '../../../../styles/variable' as v;
+@use '../../../../styles/mixin' as m;
+
+.aside {
+  border-right: 1px solid v.$color-grullo;
+  background-color: v.$color-neutral-100;
+  height: calc(100dvh - v.$main-header-height);
+
+  &Opened {
+    min-width: 25vw;
+    max-width: 25vw;
+
+    >p {
+      margin: v.$space-s;
+    }
+
+    &White {
+      z-index: 10000;
+      position: relative;
+    }
+  }
+
+  &Closed {
+    flex: 0.1;
+  }
+}
+
+.toggleButtonContainer {
+  position: relative;
+}
+
+.toggleButton {
+  position: absolute;
+  top: 0;
+  width: 40px;
+  height: 50px;
+  cursor: pointer;
+  right: -40px;
+  z-index: 1000;
+  background-color: v.$color-dark-lava;
+  color: v.$color-grullo-light ;
+  border-top-right-radius: v.$border-radius-rounded;
+  border-bottom-right-radius: v.$border-radius-rounded;
+  @include m.flexbox(flex, column, nowrap, center, center);
+
+  >svg {
+    color: v.$color-grullo-light;
+  }
+}
+
+/* Ciblé pour les écrans ≤ 1024px (petits ordinateurs portables) */
+@media (max-width: 1024px) {
+  .aside {
+    &Opened {
+      min-width: 30vw;
+      max-width: 30vw;
+    }
+  }
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+  .aside {
+    &Opened {
+      min-width: 40vw;
+      max-width: 40vw;
+    }
+  }
+}
+
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+  .aside {
+    &Opened {
+      min-width: 90vw;
+      max-width: 90vw;
+    }
+  }
+}

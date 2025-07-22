@@ -1,0 +1,64 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+
+
+.itemIcon {
+    position: relative;
+    width: 35px;
+    height: 35px;
+    top: 45px;
+    left: 10px;
+    border-radius: v.$border-radius-circle;
+    background-color: v.$color-neutral-100;
+    @include m.flexbox(flex, column, wrap, center, center);
+}
+
+.itemSwiper {
+    width: 300px;
+    height: 300px;
+    @include m.flexbox(flex, column, wrap, flex-end, center);
+    background-color: white;
+    border-radius: v.$border-radius-base;
+    background-size: cover;
+    background-position: center;
+    background-repeat: no-repeat;
+    @include m.shadow();
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
+
+    &:hover {
+        box-shadow: 0 6px 20px rgba(0, 0, 0, 0.2);
+        cursor: pointer;
+    }
+
+
+    .itemText {
+        width: 100%;
+        background-color: v.$color-neutral-100;
+        border-bottom-left-radius: v.$border-radius-base;
+        border-bottom-right-radius: v.$border-radius-base;
+
+        >h3 {
+            font-size: v.$font-size-xxl;
+            text-align: center;
+            margin-top: v.$space-xs;
+        }
+
+    }
+
+
+}
+
+/* Ciblé pour les téléphones ≤ 480px */
+@media (max-width: 480px) {
+    .itemSwiper {
+        width: 70vw;
+
+
+
+        .itemText {
+            height: 100px;
+
+        }
+    }
+}

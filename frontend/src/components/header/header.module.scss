@@ -1,11 +1,120 @@
-header {
-  nav {
-    ul {
-      display: flex;
-      flex-direction: row;
-      justify-content: flex-end;
-      gap: 1rem;
+@use '../../styles/mixin' as m;
+@use '../../styles/variable' as v;
+
+.header {
+  height: v.$space-xxl;
+  padding: 0 v.$font-space-xl;
+  @include m.flexbox(flex, row, nowrap, space-between, center);
+  border-bottom: v.$border-width-l solid v.$color-umber;
+  width: 100%; // ajusté à cause de la scrollbar
+
+
+
+  &Logo {
+    cursor: pointer;
+
+    >h1 {
+      font-size: v.$font-size-l;
+    }
+  }
+
+  &NavMenu {
+    >ul {
+
+      @include m.flexbox(flex, row, nowrap, space-between, center);
+      gap: v.$space-xxl;
       list-style-type: none;
+      padding-left: 0;
+      margin: 0;
+
+      >a {
+        font-size: v.$font-size-l;
+      }
+    }
+
+    &NotActive {
+      opacity: 0.4;
+    }
+
+    &Active {
+      opacity: 1;
+    }
+  }
+
+  &LastSection {
+    @include m.flexbox(flex, row, nowrap, space-between, center);
+    gap: 1rem;
+
+    >svg {
+      cursor: pointer;
+    }
+  }
+
+  &BackButton {
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$font-space-l;
+    cursor: pointer;
+  }
+
+
+  &TranslationMenu {
+    ul {
+      @include m.flexbox(flex, row, nowrap, flex-end);
+      gap: v.$font-space-l;
+      list-style-type: none;
+      padding-left: 0;
+    }
+  }
+
+  li {
+    cursor: pointer;
+  }
+}
+
+
+.languageSelected {
+  font-weight: v.$font-weight-extrabold;
+}
+
+.headerBackofficeMenu {
+  @include m.flexbox(flex, row, nowrap, flex-end);
+  gap: v.$font-space-l;
+  list-style-type: none;
+
+  >a {
+    position: relative;
+    display: inline-block;
+    cursor: pointer;
+    color: #000;
+  }
+
+  a::after {
+    content: "";
+    position: absolute;
+    left: 0;
+    bottom: 0;
+    height: 1px;
+    width: 100%;
+    background: v.$color-umber;
+    transform: scaleX(0);
+    transform-origin: center;
+    transition: transform 0.3s ease;
+  }
+
+  a:hover::after {
+    transform: scaleX(1);
+  }
+}
+
+/* Ciblé pour les écrans ≤ 480px (téléphones) */
+@media (max-width: 480px) {
+  .header {
+    &Logo {
+
+      >h1 {
+        font-size: v.$font-size-s;
+        text-align: center
+      }
     }
   }
 }

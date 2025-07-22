@@ -1,0 +1,101 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+@use "sass:color";
+
+.commonFormContainer {
+    @include m.flexbox(flex, column, nowrap, center, flex-start);
+    gap: v.$space-l;
+    margin: v.$space-xxl;
+
+    >h4 {
+        font-size: v.$font-size-xl;
+        font-weight: v.$font-weight-bold;
+    }
+
+    &Button {
+        @include m.flexbox(flex, row, nowrap, center, flex-start);
+        gap: v.$space-s;
+
+        >button {
+            @include m.buttonStyle(v.$color-umber, v.$color-neutral-100, (v.$space-s v.$space-l));
+            @include m.flexbox(flex, row, nowrap, space-evenly, center);
+            gap: v.$space-s;
+        }
+    }
+
+}
+
+.commonFormInputContainer {
+    @include m.flexbox(flex, row, nowrap, center, flex-start);
+    gap: v.$space-s;
+    width: 100%;
+    padding-bottom: v.$space-s;
+    border-bottom: v.$border-width-m solid v.$color-grullo-light;
+
+    >h4 {
+        font-size: v.$font-size-l;
+        font-weight: v.$font-weight-bold;
+    }
+
+    .labelContainer {
+        width: 50%;
+
+        >label {
+            font-size: v.$font-size-l;
+            font-weight: v.$font-weight-bold;
+        }
+
+        >p {
+            width: 80%;
+            padding-top: v.$space-xs;
+            font-size: v.$font-size-m;
+            font-weight: v.$font-weight-light;
+            color: v.$color-grullo;
+        }
+    }
+
+    .inputContainer {
+        width: 50%;
+        @include m.flexbox(flex, column, nowrap, space-between, flex-start);
+        gap: v.$space-s;
+
+        >input,
+        textarea,
+        select {
+            width: 100%;
+            padding: v.$space-s;
+            border: v.$border-width-m solid v.$color-grullo-light;
+            border-radius: v.$border-radius-rounded;
+            font-size: v.$font-size-m;
+            font-family: "Vollkorn";
+
+            &:focus {
+                outline: v.$border-width-m solid v.$color-umber;
+            }
+        }
+
+        >input[type="color"] {
+            width: 40px;
+            height: 40px;
+            padding: 0;
+        }
+    }
+
+}
+
+.alertContainer {
+    color: v.$color-error;
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$space-s;
+    background-color: color.adjust(v.$color-error, $lightness: 60%);
+    padding: v.$space-l;
+    border-radius: v.$border-radius-rounded;
+}
+
+.errorMessage {
+    color: v.$color-error;
+    font-size: v.$font-size-s;
+    @include m.flexbox(flex, row, nowrap, center, center);
+    gap: v.$space-xs;
+}

@@ -1,0 +1,441 @@
+{
+	"en": "EN",
+	"fr": "FR",
+	"noAuthInMobile": "You must log in on a computer to access this page.",
+	"invalidAuth": "Invalid username or password.",
+	"seeAlso": "See also",
+	"allRightsReserved": "All rights reserved",
+	"noPageFound": "Page not found",
+	"navigation": {
+		"home": "HOME",
+		"maps": "MAPS",
+		"storymaps": "STORYMAPS",
+		"backoffice": "BACKOFFICE",
+		"texts": "TEXTS",
+		"back": "BACK",
+		"discover": "DISCOVER",
+		"explore": "EXPLORE",
+		"users": "USERS",
+		"tags": "TAGS",
+		"divinities": "DIVINITIES",
+		"website": "BACK TO WEBSITE",
+		"legalNotice": "LEGAL NOTICE"
+	},
+	"alert": {
+		"maxReached": "Maximum number of filters reached",
+		"noTagAssociated": "No tag associated",
+		"missingTranslation": "Missing translation",
+		"copied": "Copied to clipboard"
+	},
+	"button": {
+		"freeExploration": "Explore freely",
+		"result": "result",
+		"filters": "Filters",
+		"filter": "Filter",
+		"selection": "Selection",
+		"seeSources": "Explore sources",
+		"seeAll": "Explore all",
+		"epithet": "Qualification",
+		"divinity": "Divine name",
+		"gender": "Gender",
+		"activity": "Activity",
+		"doughnut": "Doughnut",
+		"bar": "Bar",
+		"resetFilter": "Reset filters",
+		"discover": "Discover",
+		"add": "Add",
+		"save": "Save",
+		"delete": "Delete",
+		"edit": "Edit",
+		"cancel": "Cancel",
+		"publish": "Publish",
+		"unpublish": "Unpublish",
+		"clean": "Remove points from point set",
+		"search": "Search",
+		"copyRequest": "Copy SQL request",
+		"myCreations": "My creations",
+		"allCreations": "See all creations",
+		"leftSide": "Left panel",
+		"rightSide": "Right panel",
+		"grey": "Map greyed out",
+		"noGrey": "Map colored"
+	},
+	"common": {
+		"between": "between",
+		"and": "and",
+		"or": "OR",
+		"to": "to",
+		"unknownDate": "no date",
+		"greek": "Greek",
+		"semitic": "Semitic",
+		"previous": "Previous",
+		"next": "Next",
+		"back": "Back",
+		"createdOn": "Created on",
+		"updatedOn": "Updated on",
+		"lastUpdloadOn": "Last upload of points on",
+		"by": "by",
+		"after": "after",
+		"before": "before",
+		"in": "in",
+		"map": "map",
+		"storymap": "storymap",
+		"published": "published",
+		"noPublished": "not published",
+		"close": "Close",
+		"typeOf": "type of",
+		"noData": "No data",
+		"no": "no",
+		"filter": "Filter"
+	},
+	"modal": {
+		"firstContent": "I would like to see sources from",
+		"secondContent": "on",
+		"chooseRegion": "a region",
+		"chooseDivinity": "an element",
+		"postDate": "start date",
+		"anteDate": "end date",
+		"yes": "yes",
+		"no": "no",
+		"deleteBlockText": "Are you sure you want to delete this block?",
+		"deteleStorymapText": "Are you sure you want to delete this storymap?",
+		"deteleMapText": "Are you sure you want to delete this map?",
+		"deleteUserText": {
+			"another": "Are you sure you want to delete this user? This action is irreversible.",
+			"yourself": "Are you sure you want to delete your account? This action is irreversible."
+		},
+		"modifyUserStatusText": "Are you sure you want to change the status of this user?",
+		"cleanPointSetText": {
+			"bdd": "Are you sure you want to delete all DB points in this point set?",
+			"custom": "Are you sure you want to delete all custom points in this point set?"
+		},
+		"deleteTagText": "Are you sure you want to delete this tag? If this tag only is used in a map or a storymap, it will be removed from the home page.",
+		"associatedStorymap": "See associated storymap",
+		"associatedMap": "See associated map"
+	},
+	"mapPage": {
+		"noResult": "No result",
+		"enlargeYourSearch": "Expand your search or reset all filters.",
+		"noGreekOrSemitic": "neither in greek, neither in semitic",
+		"noGreek": "no greek",
+		"noSemitic": "no semitic",
+		"withElements": "with elements",
+		"withElementsNb": "elements number",
+		"withStatus": "with status",
+		"withAgentivities": "with agentivities",
+		"withSourceMaterials": "with source materials",
+		"withAgentActivities": "with agent activities",
+		"gender": "gender",
+		"aside": {
+			"filters": "Filters",
+			"sources": "Sources",
+			"epithet": "Qualification",
+			"noFilter": "No filter defined",
+			"location": "Location",
+			"element": "Element",
+			"language": "Language",
+			"divinityNb": "Element number",
+			"sourceType": "Source type",
+			"agentActivity": "Agent activity",
+			"agentGender": "Agent gender",
+			"agentStatus": "Agent status",
+			"agentivity": "Agentivity",
+			"sourceMaterial": "Source material",
+			"timeLimits": "Time limits",
+			"male": "Male",
+			"female": "Female",
+			"nonBinary": "Non-binary",
+			"seeStat": "See statistics",
+			"seeSources": "See sources",
+			"filterIntroduction": "A testimony is displayed if it matches at least one option from each filter. Once the filters are applied, the filters update according to the visible testimonies.",
+			"searchForLocation": "Search for a location...",
+			"searchForElement": "Search for an element...",
+			"searchForSourceType": "Search for a source type...",
+			"searchForAgentActivity": "Search for an agent activity...",
+			"searchForAgentStatus": "Search for an agent status...",
+			"searchForSourceMaterial": "Search for a source material...",
+			"searchForAgentivity": "Search for an agentivity...",
+			"searchForAgentName": "Search for an agent name...",
+			"searchForTag": "Search for a tag...",
+			"noSelectedMarker": "Select a marker to see details",
+			"traduction": "Traduction",
+			"originalVersion": "Original version",
+			"agents": "Agents",
+			"noAgent": "No agent",
+			"noDesignation": "unspecified",
+			"noSourceMaterialDefined": "No source material defined",
+			"dontShowAgain": "don't show this message again"
+		}
+	},
+	"backoffice": {
+		"createA": "Create a",
+		"stillConnected": "Are you still connected?",
+		"disconnectInOneMinute": "Deconnexion in 1 minute...",
+		"noPointInPointSet": "No point loaded in this point set",
+		"managementTable": {
+			"image": "Image",
+			"name": "Name/Description",
+			"status": "Status",
+			"createdOn": "Creation date",
+			"createdBy": "Created by",
+			"updatedOn": "Modification date",
+			"lastUploadBy": "Last modified by",
+			"links": "Quick links"
+		},
+		"authPage": {
+			"login": "Log in",
+			"username": "Username",
+			"password": "Password",
+			"requiredField": "Required field",
+			"forgotPassword": "Forgot password?",
+			"enterEmail": "Enter your email address",
+			"sendResetLink": "Send reset link",
+			"newPassword": "New password",
+			"saveNewPassword": "Save new password"
+		},
+		"mapFormPage": {
+			"intro": {
+				"tags": {
+					"label": "Map tags",
+					"description": "These tags will be used to filter the maps in the list of maps. You can choose one or more tags.",
+					"placeholder": "Choose one or more tags"
+				},
+				"divinityInChart": {
+					"label": "Element chart",
+					"description": "Choose if you want to display the divine names number or the qualifications number in the chart.",
+					"checkbox": {
+						"divinity": "Display the number of divine names",
+						"epithet": "Display the number of qualifications"
+					}
+				}
+			},
+			"aside": {
+				"informations": "Informations",
+				"pointSets": "Point sets",
+				"filters": "Associated filters"
+			},
+			"pointSetTable": {
+				"nameLang1": "Name of the set in language 1",
+				"nameLang2": "Name of the set in language 2",
+				"color": "Color",
+				"icon": "Icon",
+				"delete": "Delete",
+				"lastActivity": "Last activity",
+				"downloadCSV": "Download CSV",
+				"downloadBDDCSV": "BDD points set",
+				"downloadCustomCSV": "Custom points set"
+			},
+			"pointSetForm": {
+				"addNewPointSet": "Add new point set",
+				"pointSetName": {
+					"label_fr": "French point set name",
+					"description_fr": "If you choose to display point sets on different layers, the user will see the point set name in the layer list (legend at bottom right on the map).",
+					"label_en": "English point set name",
+					"description_en": "If you choose to display point sets on different layers, the user will see the point set name in the layer list (legend at bottom on the map)."
+				},
+				"attestationIds": {
+					"label": "Load points from the MAP database",
+					"description": "Load a CSV file containing the IDs of testimonies from the MAP database."
+				},
+				"customPointsFile": {
+					"label": "Load custom points",
+					"description": "Load a CSV file containing a list of custom points."
+				},
+				"pointColor": {
+					"label": "Point color",
+					"description": "If no color is selected, points will appear in brown."
+				},
+				"pointIcon": {
+					"label": "Point icon shape",
+					"description": "If no shape is selected, points will appear round."
+				},
+				"chooseIcon": "Choose an icon",
+				"chooseColor": "Choose a color",
+				"noDefinedColor": "No color defined",
+				"noDefinedIcon": "No icon defined",
+				"isLayeredLabel": "Display point sets on different layers",
+				"isNbDisplayedLabel": "Display the number of sources in point"
+			},
+			"filterForm": {
+				"element": {
+					"title": "Build 'Elements' filter",
+					"firstLevel": "First level (one element)",
+					"secondLevel": "Second level (one or more elements)",
+					"basic": {
+						"label": "Basic",
+						"description": "The 'Elements' filter will be built with the list of all elements from the displayed testimonies."
+					},
+					"manual": {
+						"label": "Manual",
+						"description": "The 'Elements' filter will take the form of 2-level checkboxes: a first level with one element, and a second with one or more elements. These two levels can be custom-built below."
+					}
+				},
+				"location": {
+					"title": "Build 'Location' filter",
+					"greatRegion": {
+						"label": "Great region",
+						"description": "'Location' filter will display a select/options with the list of great regions from all displayed testimonies."
+					},
+					"subRegion": {
+						"label": "Subregion",
+						"description": "'Location' filter will display a select/options with the list of subregions from all displayed testimonies."
+					},
+					"cityName": {
+						"label": "City name",
+						"description": "'Location' filter will display a select/options with the list of site names from all displayed testimonies."
+					}
+				}
+			},
+			"addMapIntro": "Add map information",
+			"addMapPoints": "Add map points",
+			"uploadPoints": "Upload points",
+			"addFilters": "Add user filters to the map",
+			"filterIntroduction": "Up to 2 filters can be added per map, in addition to the time filter which is always displayed.",
+			"locationFilter": {
+				"label": "Location filter",
+				"description": "Displays a select/options element with the list of locations (great regions, subregions or site names, as desired) from all displayed testimonies"
+			},
+			"languageFilter": {
+				"label": "Language filter (Greek or Semitic)",
+				"description": "Displays two checkboxes with the options 'Greek' and 'Semitic'."
+			},
+			"epithetFilter": {
+				"label": "Elements filter",
+				"description": "Two options : displays a select/options element with the list of elements of the displayed testimonies or displays two levels of checkboxes: a first level with one element and a second level with one or more elements. These two levels are to be built on demand."
+			},
+			"divinityNbFilter": {
+				"label": "Divinity number filter",
+				"description": "Displays a double slider with a minimum and maximum value, defined by the number of divinities in the set of displayed testimonies"
+			},
+			"sourceTypeFilter": {
+				"label": "Source type filter",
+				"description": "Displays a select/options element with the list of source types from all displayed sources"
+			},
+			"agentActivityFilter": {
+				"label": "Agent activity filter",
+				"description": "Displays a select/options element with the list of agent activities from all displayed testimonies"
+			},
+			"agentNameFilter": {
+				"label": "Agent name filter",
+				"description": "Displays a select/options element with the list of agent names from all displayed testimonies"
+			},
+			"agentGenderFilter": {
+				"label": "Agent gender filter",
+				"description": "Displays checkboxes with male, female or nonbinary options"
+			},
+			"agentStatusFilter": {
+				"label": "Agent status filter",
+				"description": "Displays a select/options element with the list of agent status from all displayed testimonies"
+			},
+			"agentivityFilter": {
+				"label": "Agentivity filter",
+				"description": "Displays a select/options element with the list of agentivity from all displayed testimonies"
+			},
+			"sourceMaterialFilter": {
+				"label": "Source material filter",
+				"description": "Displays a select/options element with the list of materials from all displayed sources"
+			},
+			"noFilter": {
+				"label": "I don't want to add a filter",
+				"description": "No filter will be added to the map."
+			},
+			"create": "Create",
+			"edit": "Edit",
+			"uploadPointsHelp": "Help for creating a CSV file"
+		},
+		"storymapFormPage": {
+			"preview": "Preview",
+			"chooseBlock": "Select a block",
+			"textContent": "Text content and layout",
+			"mediaContent": "Media content",
+			"mapsContent": "Maps content",
+			"backToEdit": "Back to edit",
+			"types": {
+				"title": "Title",
+				"subtitle": "Subtitle",
+				"text": "Text",
+				"image": "Image",
+				"link": "Link",
+				"itemLink": "Link to map or storymap",
+				"quote": "Quote",
+				"layout": "Text and image",
+				"simple_map": "Simple map",
+				"comparison_map": "Comparison map",
+				"scroll_map": "Scrolling map",
+				"separator": "Separator",
+				"table": "Table"
+			},
+			"form": {
+				"create": "Create",
+				"edit": "Edit",
+				"title": "the title",
+				"subtitle": "the subtitle",
+				"text": "the text",
+				"image": "the image",
+				"link": "the link",
+				"quote": "the quote",
+				"layout": "layout for text and image",
+				"simple_map": "the simple map",
+				"comparison_map": "the comparison map",
+				"scroll_map": "the scrolling map",
+				"separator": "the separator",
+				"step": "the step",
+				"csv": "Add a CSV file with points",
+				"forLeftPane": "for the left pane",
+				"forRightPane": "for the right pane",
+				"uploadTableFr": "Add a CSV file with a table in language 1",
+				"uploadTableEn": "Add a CSV file with a table in language 2",
+				"headerPosition": "Header position",
+				"headerPositionTop": "Header at the top",
+				"headerPositionLeft": "Header at the left",
+				"imageToLeft": "Image on the left",
+				"imageToRight": "Image on the right",
+				"scrollMapStepList": "List of steps for the scrolling map",
+				"goToSteps": "Go to steps",
+				"addTheStep": "Add the step",
+				"addAStep": "Add a step",
+				"modifyStep": "Modify this step",
+				"modifyTextNow": "Edit text directly",
+				"modifyImageNow": "Edit image directly",
+				"tags": {
+					"label": "Storymap tags",
+					"description": "These tags will be used to filter the storymaps in the list of storymaps. You can choose one or more tags.",
+					"placeholder": "Choose one or more tags"
+				},
+				"fileStatus": {
+					"loadedFile": "File loaded",
+					"noFile": "No file loaded",
+					"fileAlreadyLoaded": "A file is already loaded"
+				}
+			}
+		},
+		"userManagement": {
+			"title": "Users management",
+			"username": "Username",
+			"pseudo": "Pseudo",
+			"status": "Status",
+			"links": "Actions",
+			"toAuthor": "Become writer",
+			"toAdmin": "Become admin",
+			"admin": "Admin",
+			"writer": "Writer",
+			"addUser": "Add a new user",
+			"passwordManagementMessage": "The password will be set by the user when he first logs in."
+		},
+		"translationManagement": {
+			"frenchTranslation": "French translation",
+			"englishTranslation": "English translation",
+			"homepage.atitle": "Home page title",
+			"homepage.description": "Home page description",
+			"menu.description": "Content of the menu",
+			"mapPage.introContent": "Introduction of the selection panel in the map (before charts and sources)"
+		},
+		"tagManagement": {
+			"title": "Tags management",
+			"createTag": "Create a tag"
+		},
+		"divinityManagement": {
+			"explanation": "This page allows you to register the list of identifiers of elements that are divine names. Currently, this list has been generated by a SQL query that retrieves all the ids of elements that are of type 'theonym'."
+		}
+	}
+}

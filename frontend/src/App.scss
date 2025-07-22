@@ -1,43 +1,191 @@
-#root {
-  max-width: 1280px;
-  margin: 0 auto;
-  padding: 2rem;
-  text-align: center;
+/* http://meyerweb.com/eric/tools/css/reset/ 
+   v2.0 | 20110126
+   License: none (public domain)
+*/
+
+@use './styles/mixin' as m;
+@use './styles/variable' as v;
+
+html,
+body,
+div,
+span,
+applet,
+object,
+iframe,
+h1,
+h2,
+h3,
+h4,
+h5,
+h6,
+p,
+blockquote,
+pre,
+a,
+abbr,
+acronym,
+address,
+big,
+cite,
+code,
+del,
+dfn,
+// em, // commenté pour le WYSIWYG
+img,
+ins,
+kbd,
+q,
+// s, // commenté pour le WYSIWYG
+samp,
+small,
+strike,
+// strong, // commenté pour le WYSIWYG
+// sub, // commenté pour le WYSIWYG
+// sup, // commenté pour le WYSIWYG
+tt,
+var,
+b,
+u,
+i,
+center,
+dl,
+dt,
+dd,
+// ol, // commenté pour le WYSIWYG
+// ul, // commenté pour le WYSIWYG
+// li, // commenté pour le WYSIWYG
+fieldset,
+form,
+label,
+legend,
+table,
+caption,
+tbody,
+tfoot,
+thead,
+tr,
+th,
+td,
+article,
+aside,
+canvas,
+details,
+embed,
+figure,
+figcaption,
+footer,
+header,
+hgroup,
+menu,
+nav,
+output,
+ruby,
+section,
+summary,
+time,
+mark,
+audio,
+video {
+	margin: 0;
+	padding: 0;
+	border: 0;
+	font-size: 100%;
+	font: inherit;
+	vertical-align: baseline;
+	box-sizing: border-box;
+	font-family: "Vollkorn";
+	color: $color-black-chocolate;
 }
 
-.logo {
-  height: 6em;
-  padding: 1.5em;
-  will-change: filter;
-  transition: filter 300ms;
-}
-.logo:hover {
-  filter: drop-shadow(0 0 2em #646cffaa);
-}
-.logo.react:hover {
-  filter: drop-shadow(0 0 2em #61dafbaa);
+/* HTML5 display-role reset for older browsers */
+a {
+	text-decoration: none;
+	color: inherit;
 }
 
-@keyframes logo-spin {
-  from {
-    transform: rotate(0deg);
-  }
-  to {
-    transform: rotate(360deg);
-  }
+
+
+article,
+aside,
+details,
+figcaption,
+figure,
+footer,
+header,
+hgroup,
+menu,
+nav,
+section {
+	display: block;
 }
 
-@media (prefers-reduced-motion: no-preference) {
-  a:nth-of-type(2) .logo {
-    animation: logo-spin infinite 20s linear;
-  }
+body {
+	line-height: 1;
 }
 
-.card {
-  padding: 2em;
+// résolution du problème de quill de réduire la taille de la police sur les li
+.textBlockLi li {
+	font-size: v.$font-size-l !important;
+	font-family: "Vollkorn", serif !important;
 }
 
-.read-the-docs {
-  color: #888;
+blockquote,
+q {
+	quotes: none;
 }
 
+blockquote:before,
+blockquote:after,
+q:before,
+q:after {
+	content: '';
+	content: none;
+}
+
+table {
+	border-collapse: collapse;
+	border-spacing: 0;
+}
+
+
+button {
+	@include m.unbuttonize;
+}
+
+input[type="checkbox"] {
+	appearance: none;
+	width: 20px;
+	height: 20px;
+	border: 2px solid #999;
+	border-radius: 4px;
+	cursor: pointer;
+	position: relative;
+	background-color: transparent;
+}
+
+input[type="checkbox"]:checked {
+	background-color: white;
+	border-color: #AD9A85;
+}
+
+input[type="checkbox"]:checked::after {
+	content: "✔";
+	color: #4A3E31;
+	position: absolute;
+	top: 0;
+	left: 3px;
+	font-size: 16px;
+}
+
+/* État désactivé (non coché) */
+input[type="checkbox"]:disabled {
+	background-color: #f0f0f0;
+	border-color: #ccc;
+	cursor: not-allowed;
+	opacity: 0.6;
+}
+
+input[type="radio"] {
+	accent-color: #4A3E31;
+}

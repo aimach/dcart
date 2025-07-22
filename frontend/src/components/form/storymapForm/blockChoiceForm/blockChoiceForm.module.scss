@@ -1,0 +1,58 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.blockChoiceForm {
+    &Container {
+        height: 100%;
+        @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+        gap: v.$space-xl;
+        margin-left: v.$space-xxl;
+
+        >h3 {
+            font-size: v.$font-size-xxl;
+            margin: v.$space-xl 0;
+        }
+
+        >div {
+            width: 50%;
+            @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+            gap: v.$space-s;
+        }
+    }
+
+    &List {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        grid-column-gap: v.$font-space-xxxxl;
+        grid-row-gap: v.$font-space-xxxxl;
+
+
+
+        >li {
+            border: v.$border-width-m solid v.$color-umber;
+            border-radius: v.$border-radius-rounded;
+            width: 200px;
+            min-height: 100px;
+            max-height: 150px;
+            padding: v.$font-space-xxl;
+            @include m.flexbox(flex, row, nowrap, space-evenly, center);
+            word-wrap: normal;
+            gap: v.$space-m;
+            cursor: pointer;
+            transition: transform 0.3s ease-in-out, background-color 0.3s ease-in-out;
+            box-shadow: rgba(0, 0, 0, 0.15) 1.95px 1.95px 2.6px;
+
+            >svg {
+                width: 40px;
+                height: 40px;
+                color: v.$color-dark-lava;
+            }
+        }
+
+        >li:hover {
+            transform: scale(1.05);
+            background-color: v.$color-grullo-light;
+        }
+
+    }
+}

@@ -1,0 +1,200 @@
+@use '../../styles/mixin' as m;
+@use '../../styles/variable' as v;
+
+
+
+
+
+.mainPage {
+    width: 100%;
+    @include m.flexbox(flex, column, nowrap, flex-start, center);
+    gap: v.$space-xxl;
+    background-position-y: 43%;
+    background-repeat: no-repeat;
+    background-size: cover;
+
+    .heroContainer {
+        width: 100%;
+        min-height: 100dvh;
+        background-image: url('../../assets/home_bg.png');
+        background-size: cover;
+        background-position: top;
+        background-repeat: no-repeat;
+        @include m.flexbox(flex, column, nowrap, center, center);
+        gap: v.$space-xxl;
+        padding: v.$space-xxl v.$space-l;
+
+        >h1 {
+            margin: 0 v.$space-xxl;
+            font-size: v.$font-size-xxxxxl;
+            text-align: center;
+        }
+
+        >p {
+            text-align: justify;
+            line-height: v.$space-l;
+            font-size: v.$font-size-l;
+            width: 70vw;
+        }
+
+    }
+
+
+    >p {
+        width: 50vw;
+        font-size: v.$font-size-l;
+        text-align: justify;
+        line-height: v.$font-space-xxxl;
+    }
+
+    .verticalSeparator {
+        width: v.$border-width-m;
+        height: 15vh;
+        background-color: $color-black-chocolate;
+    }
+
+    .homeMenu {
+        >ul {
+            @include m.flexbox(flex, row, nowrap, flex-start, center);
+            gap: v.$space-xxl;
+            list-style-type: none;
+            padding-left: 0;
+            margin: 0;
+            margin: 0;
+
+            >a {
+                font-size: v.$font-size-xxl;
+
+                &:hover {
+                    border-bottom: 1px solid v.$color-yellow-pantone;
+                }
+            }
+        }
+    }
+
+    .heroButtonContainer {
+        @include m.flexbox(flex, row, nowrap, flex-start, center);
+        gap: v.$space-l;
+
+        >button,
+        a {
+            font-size: v.$font-size-l;
+        }
+    }
+
+    .tagItemList {
+        width: 80vw;
+        @include m.flexbox(flex, column, wrap, flex-start, center);
+        gap: v.$space-xxl;
+    }
+
+    .tagContainer {
+        width: 100%;
+        min-height: 100vh;
+        @include m.flexbox(flex, column, wrap, flex-start, center);
+        gap: v.$space-xxl;
+        padding-bottom: v.$space-xxl;
+
+        .tagContainerHeader {
+            width: 100%;
+            @include m.flexbox(flex, row, wrap, space-between, center);
+            padding: v.$space-l v.$space-xxl;
+
+            >input {
+                width: 50%;
+                padding: v.$space-xs;
+                border: v.$border-width-m solid v.$color-grullo-light;
+                border-radius: v.$border-radius-rounded;
+                font-size: v.$font-size-l;
+                font-family: "Vollkorn";
+
+                &:focus {
+                    outline: v.$border-width-m solid v.$color-umber;
+                }
+            }
+        }
+
+        .tagItemContainer {
+            max-width: calc(300px * 3) + v.$space-xxl * 2;
+            // 3x la taille du container + 2x l'espace entre les items
+            margin: 0 auto;
+            width: 100%;
+
+            &Title {
+                min-width: 100%;
+                padding-bottom: v.$space-s;
+                margin-bottom: v.$space-s;
+                border-bottom: v.$border-width-m solid v.$color-black-chocolate;
+                @include m.flexbox(flex, row, wrap, space-between, center);
+                font-size: v.$font-size-l;
+
+                >h2 {
+                    font-size: v.$font-size-xxxl;
+                }
+
+                .textButtonContainer {
+                    @include m.flexbox(flex, row, wrap, space-between, center);
+                    transition: transform 0.2s ease;
+                }
+
+                .textButtonContainer:hover {
+                    transform: scale(1.05);
+                }
+            }
+
+            &ItemList {
+                min-width: 100%;
+                @include m.flexbox(flex, row, wrap, center, center);
+                gap: v.$space-xxl;
+            }
+        }
+    }
+}
+
+.invisibleLabel {
+    position: absolute;
+    width: 1px;
+    height: 1px;
+    padding: 0;
+    margin: -1px;
+    overflow: hidden;
+    clip: rect(0 0 0 0);
+    white-space: nowrap;
+    border: 0;
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+    .mainPage {
+        .heroContainer {
+            gap: 0;
+
+            >h1 {
+                font-size: v.$font-size-xxxxl;
+            }
+
+            >p {
+                margin: v.$space-l;
+            }
+        }
+
+        .tagContainer {
+            .tagContainerHeader {
+                @include m.flexbox(flex, column, wrap, center, center);
+                gap: v.$space-l;
+                padding: v.$space-l v.$space-l;
+
+                >input {
+                    width: 80%;
+
+                }
+            }
+
+            .tagItemContainer {
+                max-width: none;
+                margin: 0;
+            }
+        }
+    }
+
+}

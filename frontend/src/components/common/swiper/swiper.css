@@ -1,0 +1,4 @@
+.swiper-wrapper {
+	padding-left: 5px;
+	box-sizing: content-box; /* important pour que Swiper ne le supprime pas */
+}

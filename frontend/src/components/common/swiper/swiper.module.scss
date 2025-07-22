@@ -1,0 +1,16 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+
+
+.itemSwiperContainer {
+    width: 70vw;
+    height: 410px;
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) and (min-width: 481px) {
+    .itemSwiperContainer {
+        width: 85vw;
+    }
+}

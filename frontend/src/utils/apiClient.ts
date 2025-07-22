@@ -1,8 +1,0 @@
-import axios from "axios";
-
-export const apiClient = axios.create({
-	baseURL: `http://localhost:${import.meta.env.VITE_BACKEND_PORT}`,
-	headers: {
-		"Content-Type": "application/json",
-	},
-});

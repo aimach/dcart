@@ -1,0 +1,7 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+.backofficeManagementPageContainer {
+    @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+    background-color: v.$background-color-soft;
+}

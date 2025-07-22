@@ -1,0 +1,29 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.linkBlock {
+    background-color: v.$color-grullo-light;
+    font-size: v.$font-size-xl;
+    padding: v.$space-l;
+    border-radius: v.$border-radius-base;
+    cursor: pointer;
+
+    &Content {
+        @include m.flexbox(flex, row, nowrap, space-between, center);
+        gap: v.$space-s;
+    }
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes) */
+@media (max-width: 768px) {
+    .linkBlock {
+        width: 50vw;
+    }
+}
+
+/* Ciblé pour les écrans ≤ 480px (téléphones) */
+@media (max-width: 480px) {
+    .linkBlock {
+        width: 90vw;
+    }
+}

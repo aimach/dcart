@@ -1,0 +1,43 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.tileLayerChoiceContainer {
+    width: 30%;
+    @include m.flexbox(flex, row, nowrap, flex-end, center);
+    gap: v.$space-s;
+    margin-right: v.$space-s;
+}
+
+.tileLayerChoice {
+    width: 70px;
+    height: 50px;
+    cursor: pointer;
+    transition: transform 0.2s;
+    border-radius: v.$border-radius-rounded;
+
+    >img {
+        border: 1px solid v.$color-neutral-80;
+        border-radius: v.$border-radius-rounded;
+    }
+
+    &:hover {
+        transform: scale(1.1);
+    }
+
+    >p {
+        font-size: v.$font-size-s;
+        text-align: center;
+        text-shadow: 0 0 5px #fff;
+    }
+
+}
+
+.grayScale {
+    filter: grayscale(100%);
+
+
+}
+
+.selected {
+    border: v.$border-width-m solid v.$color-umber;
+}

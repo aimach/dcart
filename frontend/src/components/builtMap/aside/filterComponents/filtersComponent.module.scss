@@ -1,0 +1,37 @@
+@use '../../../../styles/mixin' as m;
+@use '../../../../styles/variable' as v;
+
+.rangeContainer {
+    display: flex;
+    flex-direction: column;
+    padding: 0 v.$space-xxl;
+
+    >h4 {
+        font-size: v.$font-size-l;
+        margin: v.$space-m 0;
+    }
+}
+
+.elementCheckboxContainer {
+    .checkboxLabel {
+        display: flex;
+        align-items: center;
+        gap: v.$space-xs;
+    }
+
+    .checkboxGroup {
+        padding-left: v.$space-l;
+    }
+}
+
+/* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
+@media (max-width: 768px) {
+    .rangeContainer {
+        padding: v.$space-xl v.$space-l;
+
+        >h4 {
+            margin-top: 0;
+            margin-bottom: v.$space-l;
+        }
+    }
+}
