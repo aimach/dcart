@@ -24,6 +24,7 @@ import type { PointType } from "../../../../utils/types/mapTypes";
 import type L from "leaflet";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
+import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];
@@ -33,7 +34,6 @@ const MultipleLayerComponent = ({
 	allMemoizedPoints,
 }: MultipleLayerComponentProps) => {
 	const { language } = useTranslation();
-
 	const {
 		mapInfos,
 		allLayers,
@@ -45,6 +45,7 @@ const MultipleLayerComponent = ({
 		setAllResults,
 	} = useMapStore();
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
+	const { hasFilteredPoints } = useMapFilterOptionsStore();
 
 	const layersArrayForControl = useMemo(() => {
 		const layersArray: {
@@ -203,7 +204,15 @@ const MultipleLayerComponent = ({
 					<LayersControl.Overlay
 						name={`${layer[hasGrayScale ? "shapeCodeGrayScale" : "shapeCode"]} ${layer[`name_${language}`]}`}
 						key={layer[`name_${language}`]}
-						checked
+						checked={
+							hasFilteredPoints
+								? allLayers.some(
+										(layerName) =>
+											layerName ===
+											`${layer[hasGrayScale ? "shapeCodeGrayScale" : "shapeCode"]} ${layer[`name_${language}`]}`,
+									)
+								: true
+						}
 					>
 						<LayerGroup key={layer[`name_${language}`]} />
 					</LayersControl.Overlay>
