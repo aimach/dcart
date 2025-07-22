@@ -40,8 +40,14 @@ const MapTitleComponent = ({
 	const { isMobile } = useWindowSize();
 
 	// récupération des données du store
-	const { map, mapInfos, tutorialStep, openTutorial, resetTutorialStep } =
-		useMapStore();
+	const {
+		map,
+		mapInfos,
+		tutorialStep,
+		openTutorial,
+		resetTutorialStep,
+		setAllLayers,
+	} = useMapStore();
 	const { setIsPanelDisplayed } = useMapAsideMenuStore();
 	const { resetInitialOptions, resetFilteredOptions } =
 		useMapFilterOptionsStore();
@@ -89,6 +95,8 @@ const MapTitleComponent = ({
 		resetTemporaryReminderValues();
 		setIsReset(!isReset);
 		fetchAllPoints("reset");
+		// réinitialisation des layers (indispensable ! sinon les layers s'accumulent)
+		setAllLayers([]);
 	};
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
