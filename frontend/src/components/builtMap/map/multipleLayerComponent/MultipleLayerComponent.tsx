@@ -110,9 +110,12 @@ const MultipleLayerComponent = ({
 				return point;
 			}
 		});
-		setAllResults(filteredPoints);
 		return filteredPoints;
 	}, [allLayers, allMemoizedPoints, language]);
+
+	useEffect(() => {
+		setAllResults(allResultsWithLayerFilter);
+	}, [allResultsWithLayerFilter]);
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
 
