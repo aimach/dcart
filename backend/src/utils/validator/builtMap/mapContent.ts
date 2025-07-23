@@ -32,7 +32,6 @@ const updateMapContentSchema = newMapContentSchema.keys({
 	slug: Joi.string().optional().allow(null).messages({
 		"string.base": "Le slug doit être une chaîne de caractères",
 	}),
-	divinityIds: Joi.string().optional().allow(null),
 	isActive: Joi.boolean().required(),
 	createdAt: Joi.date().required(),
 	updatedAt: Joi.date().required(),

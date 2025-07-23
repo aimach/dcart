@@ -103,7 +103,9 @@ const MultipleLayerComponent = ({
 			const isLayerDisplayed = allLayersWithoutSVGWithoutDuplicates.some(
 				(layerName) =>
 					layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
-						point.layerNamefr || point.layerNameen,
+						point.layerNamefr ||
+					layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
+						point.layerNameen,
 			);
 			if (isLayerDisplayed) {
 				return point;
