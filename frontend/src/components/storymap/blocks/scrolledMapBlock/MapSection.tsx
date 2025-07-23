@@ -28,7 +28,6 @@ interface MapSectionProps {
 	mapName: string;
 	currentPoint: string | number;
 	setCurrentPoint: Dispatch<SetStateAction<string>>;
-	pointIndex: number;
 }
 
 const MapSection = ({
@@ -36,7 +35,6 @@ const MapSection = ({
 	mapName,
 	currentPoint,
 	setCurrentPoint,
-	pointIndex,
 }: MapSectionProps) => {
 	const mapCenter: LatLngTuple = [40.43, 16.52];
 

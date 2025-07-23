@@ -141,7 +141,7 @@ const DivinityManagementPage = () => {
 			</div>
 		</section>
 	) : (
-		<LoaderComponent size={40} />
+		<LoaderComponent />
 	);
 };
 

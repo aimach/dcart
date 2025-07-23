@@ -106,7 +106,7 @@ const BlockChoiceForm = () => {
 			</div>
 		</section>
 	) : (
-		<LoaderComponent size={50} />
+		<LoaderComponent />
 	);
 };
 

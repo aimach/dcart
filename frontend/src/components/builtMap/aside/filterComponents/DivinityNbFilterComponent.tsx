@@ -66,7 +66,7 @@ const DivinityNbComponent = ({
 			/>
 		</div>
 	) : (
-		<LoaderComponent size={40} />
+		<LoaderComponent />
 	);
 };
 
