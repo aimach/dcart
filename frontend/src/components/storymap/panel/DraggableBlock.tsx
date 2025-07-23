@@ -34,6 +34,7 @@ type DraggableBlockProps = {
 	block: BlockContentType;
 	type: string;
 	index?: number;
+	isDragging?: boolean;
 };
 
 /**
@@ -42,8 +43,15 @@ type DraggableBlockProps = {
  * @param block - le bloc à afficher
  * @param type - le type de bloc
  * @param index - l'index du bloc (facultatif)
+ * @param isDragging - indique si le bloc est en cours de drag and drop (facultatif)
  */
-const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
+const DraggableBlock = ({
+	block,
+	type,
+	index,
+	isDragging,
+}: DraggableBlockProps) => {
+
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
@@ -96,6 +104,7 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 		useSortable({
 			id: block.id,
 		});
+
 	const style = {
 		transform: CSS.Transform.toString(transform),
 		transition,
@@ -115,7 +124,22 @@ const DraggableBlock = ({ block, type, index }: DraggableBlockProps) => {
 
 	return (
 		<>
-			<div ref={setNodeRef} style={style} {...listeners} {...attributes}>
+			<div
+				ref={setNodeRef}
+				style={{
+					...style,
+					...(isDragging && {
+						border: "2px dashed #bbb",
+						backgroundColor: "#f9f9f9",
+						justifyContent: "center",
+						alignItems: "center",
+						color: "#999",
+						fontStyle: "italic",
+					}),
+				}}
+				{...listeners}
+				{...attributes}
+			>
 				<div style={draggableBlockTitleStyle}>
 					{icon}
 					<div style={draggableBlockTextContainerStyle}>

@@ -67,6 +67,7 @@ const NotFoundPage = lazy(
 	() => import("./pages/NotFoundPage/NotFoundPage.tsx"),
 );
 import ScrollToTop from "./components/common/scroll/ScrollToTop.tsx";
+import LoaderComponent from "./components/common/loader/LoaderComponent.tsx";
 // import du contexte
 import { AuthProvider } from "./context/AuthContext.tsx";
 import { TranslationProvider } from "./context/TranslationContext.tsx";
@@ -75,7 +76,6 @@ import { TagOptionsProvider } from "./context/TagContext.tsx";
 import { SessionProvider } from "./context/SessionContext.tsx";
 // import du style
 import "./index.css";
-import LoaderComponent from "./components/common/loader/LoaderComponent.tsx";
 
 const rootElement = document.getElementById("root");
 if (rootElement) {
@@ -89,7 +89,7 @@ if (rootElement) {
 						<IconOptionsProvider>
 							<TagOptionsProvider>
 								<HelmetProvider>
-									<Suspense fallback={<LoaderComponent size={50} />}>
+									<Suspense fallback={<LoaderComponent />}>
 										{/* Routes de l'application */}
 										<Routes>
 											<Route element={<NavigationLayout />}>

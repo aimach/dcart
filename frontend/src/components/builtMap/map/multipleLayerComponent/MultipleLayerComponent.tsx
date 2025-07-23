@@ -91,7 +91,6 @@ const MultipleLayerComponent = ({
 			});
 	}, [allMemoizedPoints, language]);
 
-	// biome-ignore lint/correctness/useExhaustiveDependencies: recharger pour afficher la traduction des noms des layers
 	const allResultsWithLayerFilter = useMemo(() => {
 		const allLayersWithOnlySVG = allLayers.filter((layerName) =>
 			layerName?.includes("svg"),
@@ -104,7 +103,7 @@ const MultipleLayerComponent = ({
 			const isLayerDisplayed = allLayersWithoutSVGWithoutDuplicates.some(
 				(layerName) =>
 					layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
-					point.layerNamefr,
+					point[`layerName${language}`],
 			);
 			if (isLayerDisplayed) {
 				return point;

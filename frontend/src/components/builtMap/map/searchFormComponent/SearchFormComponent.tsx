@@ -281,7 +281,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 					</form>
 				</>
 			) : (
-				<LoaderComponent size={40} />
+				<LoaderComponent />
 			)}
 		</div>
 	);

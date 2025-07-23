@@ -232,11 +232,7 @@ const SourceDetailsComponent = ({ source }: SourceDetailsComponentProps) => {
 				<ChevronRight />
 				Source #{source.source_id} {datationSentence}
 			</summary>
-			{attestations?.length ? (
-				formattedAttestations
-			) : (
-				<LoaderComponent size={40} />
-			)}
+			{attestations?.length ? formattedAttestations : <LoaderComponent />}
 		</details>
 	);
 };

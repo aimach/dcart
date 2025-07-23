@@ -219,7 +219,7 @@ const MapComponent = () => {
 			<MapPageHelmetContent
 				mapName={mapInfos?.[`title_${language}`] ?? " Exploration"}
 			/>
-			{!mapReady && <LoaderComponent size={50} />}
+			{!mapReady && <LoaderComponent />}
 			<div className={mapContainerClassName} id="built-map">
 				<section className="leaflet-container">
 					{isModalOpen && allMemoizedPoints.length > 0 && (

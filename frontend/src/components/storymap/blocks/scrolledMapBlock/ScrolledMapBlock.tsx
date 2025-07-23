@@ -18,13 +18,9 @@ interface SimpleMapBlockProps {
 const ScrolledMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const { selectedLanguage } = useStorymapLanguageStore();
 	const [currentPoint, setCurrentPoint] = useState("");
-	const [pointIndex, setPointIndex] = useState(0);
-
 	const onStepEnter = ({ data }: { data: string }) => {
 		const pointId = data.split("|")[0];
-		const pointIndex = data.split("|")[1];
 		setCurrentPoint(pointId);
-		setPointIndex(Number.parseInt(pointIndex, 10) + 1);
 	};
 
 	const reversedChildren = [
@@ -39,7 +35,6 @@ const ScrolledMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 					mapName={mapName}
 					currentPoint={currentPoint}
 					setCurrentPoint={setCurrentPoint}
-					pointIndex={pointIndex}
 				/>
 				<div className={style.scrolledSection}>
 					<ScrolledSection

@@ -17,15 +17,21 @@ import style from "./panelSection.module.scss";
 interface PanelSectionProps {
 	blockList: BlockContentType[];
 	setBlockList: Dispatch<SetStateAction<BlockContentType[]>>;
+	activeId: string | null;
 }
 
 /**
  * Affiche la liste des blocs de la storymap
  * @param blockList - Liste des blocs de la storymap
  * @param setBlockList - fonction de mise à jour de la liste des blocs de la storymap
+ * @param activeId - ID du bloc actif
  * @returns DraggableBlock
  */
-const PanelSection = ({ blockList, setBlockList }: PanelSectionProps) => {
+const PanelSection = ({
+	blockList,
+	setBlockList,
+	activeId,
+}: PanelSectionProps) => {
 	// récupération des données des stores
 	const { formType, reload, storymapInfos, setStorymapInfos } = useBuilderStore(
 		useShallow((state) => state),
@@ -60,6 +66,7 @@ const PanelSection = ({ blockList, setBlockList }: PanelSectionProps) => {
 						key={block.id}
 						block={block}
 						type={block.type.name === "layout" ? "layout" : "block"}
+						isDragging={block.id === activeId}
 					/>
 				))}
 			</div>
