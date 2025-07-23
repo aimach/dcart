@@ -35,7 +35,7 @@ git clone https://github.com/ton-utilisateur/dcart.git
 cd dcart
 ```
 
-### BACKEND
+### Backend
 ```bash
 cd backend
 npm install
@@ -44,7 +44,7 @@ cp .env.sample .env
 npm run dev
 ```
 
-### FRONTEND
+### Frontend
 ```bash
 cd frontend
 npm install
@@ -62,7 +62,7 @@ Un fichier `docker-compose.dev.yml` est fourni à la racine du projet pour lance
 docker compose up -f docker-compose.dev.yml --build
 ```
 
-### PATCHES
+### Patches
 Ajout d'un patch pour la librairie leaflet-side-by-side dans "src/utils/patch-library/leaflet-side-by-side.js" : modification de getContainer() par getPane().
 
 
@@ -101,7 +101,7 @@ git clone https://github.com/your-username/dcart.git
 cd dcart
 ```
 
-### BACKEND
+### Backend
 ```bash
 cd backend
 npm install
@@ -110,7 +110,7 @@ cp .env.sample .env
 npm run dev
 ```
 
-### FRONTEND
+### Frontend
 ```bash
 cd frontend
 npm install
@@ -128,5 +128,5 @@ A `docker-compose.dev.yml` file is provided at the root of the project to launch
 docker compose up -f docker-compose.dev.yml --build
 ```
 
-### PATCHES
+### Patches
 A patch was added to the leaflet-side-by-side library in src/utils/patch-library/leaflet-side-by-side.js: getContainer() was replaced with getPane().
