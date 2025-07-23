@@ -12,9 +12,9 @@ const LoaderComponent = () => {
 				<text
 					x="50%"
 					y="40%"
-					dominant-baseline="middle"
-					text-anchor="middle"
-					font-size="42"
+					dominantBaseline="middle"
+					textAnchor="middle"
+					fontSize="42"
 					fill="#DED6CE"
 				>
 					Δ
