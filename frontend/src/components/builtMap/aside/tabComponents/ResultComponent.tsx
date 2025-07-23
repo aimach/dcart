@@ -59,8 +59,10 @@ const ResultComponent = () => {
 		const allResultsFiltered = mapInfos?.isLayered
 			? allResults.filter((point: PointType) =>
 					mapInfos
-						? allLayers.some((string) =>
-								string.includes(`svg> ${point.layerNamefr}`),
+						? allLayers.some(
+								(string) =>
+									string.includes(`svg> ${point.layerNamefr}`) ||
+									string.includes(`svg> ${point.layerNameen}`),
 							)
 						: point,
 				)

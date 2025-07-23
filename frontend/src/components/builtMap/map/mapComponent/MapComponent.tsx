@@ -279,7 +279,7 @@ const MapComponent = () => {
 							maxZoom={11}
 							keyboard={true} // accessibilité
 							ref={setMap}
-							key={isReset.toString()} // pour forcer le rechargement de la carte lors du reset
+							key={`${isReset.toString()} - ${language}`} // pour forcer le rechargement de la carte lors du reset et du changement de langue
 						>
 							{location.hash.includes("maps/preview/") && (
 								<div

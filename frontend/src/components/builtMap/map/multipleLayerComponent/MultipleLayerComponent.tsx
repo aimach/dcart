@@ -95,6 +95,7 @@ const MultipleLayerComponent = ({
 		const allLayersWithOnlySVG = allLayers.filter((layerName) =>
 			layerName?.includes("svg"),
 		);
+
 		const allLayersWithoutSVGWithoutDuplicates = [
 			...new Set(allLayersWithOnlySVG),
 		];
@@ -103,9 +104,7 @@ const MultipleLayerComponent = ({
 			const isLayerDisplayed = allLayersWithoutSVGWithoutDuplicates.some(
 				(layerName) =>
 					layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
-						point.layerNamefr ||
-					layerName.replace(/<svg[\s\S]*?<\/svg>/, "").trim() ===
-						point.layerNameen,
+					point[`layerName${language}`],
 			);
 			if (isLayerDisplayed) {
 				return point;
@@ -218,7 +217,7 @@ const MultipleLayerComponent = ({
 								: true
 						}
 					>
-						<LayerGroup key={layer[`name_${language}`]} />
+						<LayerGroup />
 					</LayersControl.Overlay>
 				);
 			})}
