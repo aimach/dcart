@@ -2,6 +2,10 @@
 import express from "express";
 // import des controllers
 import { dcartControllers } from "../../controllers/builtMap/dcartControllers";
+import {
+	authenticateAdmin,
+	authenticateUser,
+} from "../../middlewares/authenticate";
 
 export const divinityRoutes = express.Router();
 
@@ -9,4 +13,9 @@ export const divinityRoutes = express.Router();
 divinityRoutes.get("/all", dcartControllers.getAllDivinityIds);
 
 // modifier la liste des divinités
-divinityRoutes.put("/", dcartControllers.updateDivinityIds);
+divinityRoutes.put(
+	"/",
+	authenticateUser,
+	authenticateAdmin,
+	dcartControllers.updateDivinityIds,
+);
