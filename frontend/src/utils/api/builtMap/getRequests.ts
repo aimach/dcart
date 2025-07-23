@@ -347,7 +347,6 @@ export {
 	getAllDivinities,
 	getAllGreatRegions,
 	getAllMapsInfos,
-	getAllMapsInfosFromtagId,
 	getAllPointsByMapId,
 	getAllPointsForDemoMap,
 	getAllStorymapsInfos,
@@ -360,6 +359,5 @@ export {
 	getAllPointsByBlockId,
 	getAllTagsWithMapsAndStorymaps,
 	getTagWithMapsAndStorymaps,
-	getAllSourceTypes,
 	getDivinityIdsList,
 };
