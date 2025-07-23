@@ -92,7 +92,7 @@ const MapPage = () => {
 		mapStore.setMapReady(false);
 		mapStore.resetTileLayerURL();
 		setIsPanelDisplayed(false);
-	}, [mapSlug, mapId]);
+	}, [mapSlug, mapId, language]);
 
 	return (
 		<section className={style.mapSection}>
