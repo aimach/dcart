@@ -18,7 +18,6 @@ interface SimpleMapBlockProps {
 const ScrolledMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 	const { selectedLanguage } = useStorymapLanguageStore();
 	const [currentPoint, setCurrentPoint] = useState("");
-
 	const onStepEnter = ({ data }: { data: string }) => {
 		const pointId = data.split("|")[0];
 		setCurrentPoint(pointId);

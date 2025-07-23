@@ -25,7 +25,6 @@ import type L from "leaflet";
 // import du style
 import "../simpleLayerComponent/simpleLayerChoice.css";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
-import { all } from "axios";
 
 type MultipleLayerComponentProps = {
 	allMemoizedPoints: PointType[];

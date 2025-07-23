@@ -51,6 +51,7 @@ const DraggableBlock = ({
 	index,
 	isDragging,
 }: DraggableBlockProps) => {
+
 	// récupération des données de traduction
 	const { translation, language } = useTranslation();
 
