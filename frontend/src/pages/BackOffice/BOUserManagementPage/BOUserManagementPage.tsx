@@ -207,7 +207,7 @@ const UserManagementPage = () => {
 			</div>
 		</section>
 	) : (
-		<LoaderComponent size={40} />
+		<LoaderComponent />
 	);
 };
 

@@ -7,6 +7,7 @@ import {
 	useSensor,
 	useSensors,
 	closestCenter,
+	DragOverlay,
 } from "@dnd-kit/core";
 import {
 	SortableContext,
@@ -32,6 +33,7 @@ import TableForm from "../../../../components/form/storymapForm/tableForm/TableF
 import BlockChoiceForm from "../../../../components/form/storymapForm/blockChoiceForm/BlockChoiceForm";
 import ButtonComponent from "../../../../components/common/button/ButtonComponent";
 import ItemLinkForm from "../../../../components/form/storymapForm/itemLinkForm/ItemLinkForm";
+import DraggableBlockOverlay from "../../../../components/storymap/panel/DraggableBlockOverlay";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -123,11 +125,15 @@ const StorymapIntroPage = () => {
 
 	// -- DRAG AND DROP --
 	const [blockList, setBlockList] = useState<BlockContentType[]>([]);
+	const [activeId, setActiveId] = useState<string | null>(null);
 
 	const sensors = useSensors(useSensor(PointerSensor));
 
+	const activeBlock = blockList.find((b) => b.id === activeId);
+
 	const handleDragEnd = (event: DragEndEvent) => {
 		try {
+			setActiveId(null);
 			const { active, over } = event;
 			if (!over || active.id === over.id) return; // Si l'élément n'a pas été déplacé
 
@@ -192,13 +198,26 @@ const StorymapIntroPage = () => {
 						sensors={sensors}
 						collisionDetection={closestCenter}
 						onDragEnd={handleDragEnd}
+						onDragStart={({ active }) => setActiveId(active.id as string)}
 					>
 						<SortableContext
 							items={blockList.map((b) => b.id)}
 							strategy={verticalListSortingStrategy}
 						>
-							<PanelSection blockList={blockList} setBlockList={setBlockList} />
+							<PanelSection
+								blockList={blockList}
+								setBlockList={setBlockList}
+								activeId={activeId}
+							/>
 						</SortableContext>
+						<DragOverlay>
+							{activeBlock ? (
+								<DraggableBlockOverlay
+									block={activeBlock}
+									type={activeBlock.type.name === "layout" ? "layout" : "block"}
+								/>
+							) : null}
+						</DragOverlay>
 					</DndContext>
 				)}
 			</aside>

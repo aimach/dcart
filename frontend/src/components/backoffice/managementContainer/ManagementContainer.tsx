@@ -182,7 +182,7 @@ const ManagementContainer = ({ type }: ManagementContainerProps) => {
 				<table className={style.managementTable}>
 					{!isLoaded ? (
 						<div className={style.loaderContainer}>
-							<LoaderComponent size={50} />
+							<LoaderComponent />
 						</div>
 					) : (
 						<>

@@ -185,7 +185,7 @@ const TagManagementPage = () => {
 			</div>
 		</section>
 	) : (
-		<LoaderComponent size={40} />
+		<LoaderComponent />
 	);
 };
 

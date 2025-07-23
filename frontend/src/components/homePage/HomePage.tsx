@@ -82,13 +82,13 @@ function HomePage() {
 						<ButtonComponent
 							type="route"
 							color="brown"
-							textContent="Explorer"
+							textContent={translation[language].navigation.explore}
 							link="/map/exploration"
 						/>
 						<ButtonComponent
 							type="button"
 							color="brown"
-							textContent="Découvrir"
+							textContent={translation[language].navigation.discover}
 							onClickFunction={() => scrollToTagContainer(tagContainerRef)}
 						/>
 					</div>
