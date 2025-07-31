@@ -5,5 +5,5 @@ import { mapController } from "../../../controllers/builtMap/mapControllers";
 
 export const elementRoutes = express.Router();
 
-// récupérer les divinités
-elementRoutes.get("/divinities/all", mapController.getAllDivinities);
+// récupérer les divinités via une requête POST car on récupère la liste des identifiants définies dans la backoffice
+elementRoutes.post("/divinities/all", mapController.getAllDivinities);

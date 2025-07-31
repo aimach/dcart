@@ -70,24 +70,6 @@ const getRelatedMapId = async (storymapId: string) => {
 	}
 };
 
-// ----------- TAGS
-
-/**
- * Fonction pour récupérer toutes les catégories des storymaps
- * @returns Un tableau de catégories
- */
-const getAllStorymapTags = async () => {
-	try {
-		const response = await apiClient.get("/storymap/tags/all");
-		return response.data;
-	} catch (error) {
-		console.error(
-			"Erreur lors du chargement des catégories des storymaps :",
-			error,
-		);
-	}
-};
-
 // ----------- BLOCKS
 
 /**
@@ -169,7 +151,6 @@ const allStorymapsFromTag = async (tagId: string) => {
 export {
 	getStorymapInfosAndBlocksById,
 	getStorymapInfosAndBlocksBySlug,
-	getAllStorymapTags,
 	getAllBlockTypes,
 	updateBlocksPosition,
 	getBlockInfos,

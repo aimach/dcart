@@ -5,8 +5,5 @@ import { tagController } from "../../controllers/storymap/tagController";
 
 export const tagRoutes = express.Router();
 
-// récupère toutes les catégories ou une catégorie en particulier
-tagRoutes.get("/:id", tagController.getTags);
-
 // récupère toutes les storymaps associées à une catégorie
 tagRoutes.get("/:id/storymaps", tagController.getStorymapsByTag);
