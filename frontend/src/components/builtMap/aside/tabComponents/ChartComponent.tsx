@@ -67,8 +67,8 @@ const ChartComponent = () => {
 	const [allDivinityIds, setAllDivinityIds] = useState<string>("");
 	useEffect(() => {
 		const fetchDivinityIdsList = async () => {
-			const dinvityIdsList = await getDivinityIdsList();
-			setAllDivinityIds(dinvityIdsList);
+			const divinityList = await getDivinityIdsList();
+			setAllDivinityIds(divinityList);
 		};
 		fetchDivinityIdsList();
 	}, []);

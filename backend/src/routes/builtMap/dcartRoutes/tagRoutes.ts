@@ -13,9 +13,6 @@ export const tagRoutes = express.Router();
 // récupère toutes les catégories ou une catégorie en particulier
 tagRoutes.get("/:tagSlug", dcartControllers.getTags);
 
-// récupère toutes les catégories avec les cartes associées
-tagRoutes.get("/:tagId/maps", dcartControllers.getAllTagsWithMaps);
-
 // créée une nouvelle étiquette
 tagRoutes.post(
 	"/",

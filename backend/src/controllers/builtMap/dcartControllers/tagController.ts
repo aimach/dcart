@@ -53,7 +53,6 @@ export const tagController = {
 						searchText: `%${searchText}%`,
 					})
 					.leftJoinAndSelect("map.tags", "mapTag");
-				// .orderBy("GREATEST(map.createdAt, map.updatedAt)", "DESC");
 				selectArray.push(
 					"map.id",
 					"map.title_fr",
@@ -77,7 +76,6 @@ export const tagController = {
 						searchText: `%${searchText}%`,
 					})
 					.leftJoinAndSelect("storymap.tags", "storymapTag");
-				// .orderBy("GREATEST(storymap.createdAt, storymap.updatedAt)", "DESC");
 				selectArray.push(
 					"storymap.id",
 					"storymap.title_lang1",
