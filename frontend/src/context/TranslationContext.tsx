@@ -37,6 +37,7 @@ interface TranslationProviderProps {
 export const TranslationProvider = ({ children }: TranslationProviderProps) => {
   const [language, setLanguage] = useState<Language>("en");
 
+
   useEffect(() => {
     const browserLanguage = getBrowserLanguage();
     if (browserLanguage) {
