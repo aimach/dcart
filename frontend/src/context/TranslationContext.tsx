@@ -25,7 +25,7 @@ const translation = {
 };
 
 export const TranslationContext = createContext<I18nContextType>({
-  language: "fr",
+  language: "en",
   setLanguage: () => {},
   translation: translation,
 });
@@ -35,12 +35,7 @@ interface TranslationProviderProps {
 }
 
 export const TranslationProvider = ({ children }: TranslationProviderProps) => {
-  const navigatorLanguage = navigator.language.slice(0, 2) as Language;
-  const [language, setLanguage] = useState<Language>(
-    navigatorLanguage === "fr" || navigatorLanguage === "en"
-      ? navigatorLanguage
-      : "en"
-  );
+  const [language, setLanguage] = useState<Language>("en");
 
   useEffect(() => {
     const browserLanguage = getBrowserLanguage();
