@@ -1,1 +1,0 @@
-import{b as g}from"./index-BxFqVAtU.js";const n=g(e=>({selectedLanguage:"lang1",setSelectedLanguage:a=>e(()=>({selectedLanguage:a})),resetSelectedLanguage:()=>e(()=>({selectedLanguage:"lang1"}))}));export{n as u};

@@ -1,6 +1,0 @@
-User-agent: *
-Allow: /
-Disallow: /#/authentification
-Disallow: /#/forgot-password
-Disallow: /#/reset-password
-Sitemap: https://dcart-map.huma-num.fr/sitemap.xml
