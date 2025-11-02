@@ -4,13 +4,14 @@ import { Link } from "react-router";
 import Select from "react-select";
 // import des composants
 import ButtonComponent from "../common/button/ButtonComponent";
-import ItemFilterComponent from "../common/itemFilter/ItemFilterComponent";
 import ItemContainer from "../common/itemContainer/ItemContainer";
+import ItemFilterComponent from "../common/itemFilter/ItemFilterComponent";
 import { HomePageHelmetContent } from "../helmet/HelmetContent";
 // import des custom hooks
-import { useTranslation } from "../../utils/hooks/useTranslation";
 import useHomePageTranslations from "../../utils/hooks/useHomepageTranslations";
+import { useTranslation } from "../../utils/hooks/useTranslation";
 // import des services
+import { shuffleArray } from "../../utils/functions/common";
 import {
   fetchAllTagsForSelectOption,
   fetchAllTagsWithMapsAndStorymaps,
@@ -19,19 +20,19 @@ import {
   isEmptyResult,
   scrollToTagContainer,
 } from "../../utils/functions/homePage";
-import { shuffleArray } from "../../utils/functions/common";
 // import des types
+import type { MultiValue } from "react-select";
 import type {
   OptionType,
   TagWithItemsType,
 } from "../../utils/types/commonTypes";
-import type { MultiValue } from "react-select";
 // import du style
 import "../../App.scss";
-import style from "./HomePage.module.scss";
 import { singleSelectInLineStyle } from "../../styles/inLineStyle";
+import style from "./HomePage.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
+import HomePageDescription from "./HomePageDescription";
 
 type CheckboxType = { map: boolean; storymap: boolean };
 
@@ -42,8 +43,7 @@ type CheckboxType = { map: boolean; storymap: boolean };
 function HomePage() {
   // récupération des données de traduction
   const { language, translation } = useTranslation();
-  const { translationTitle, translationDescription } =
-    useHomePageTranslations();
+  const { translationTitle } = useHomePageTranslations();
 
   const tagContainerRef = useRef<HTMLDivElement | null>(null);
 
@@ -77,7 +77,7 @@ function HomePage() {
       <section className={style.mainPage}>
         <section className={style.heroContainer}>
           <h1>{translationTitle}</h1>
-          <p>{translationDescription}</p>
+          <HomePageDescription />
           <div className={style.heroButtonContainer}>
             <ButtonComponent
               type="route"
