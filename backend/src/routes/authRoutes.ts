@@ -6,6 +6,7 @@ import { dcartControllers } from "../controllers/builtMap/dcartControllers";
 import {
   authenticateAdmin,
   authenticateUser,
+  loginLimiter,
 } from "../middlewares/authenticate";
 import { validateLoginBody, validatePassword } from "../utils/validator/auth";
 
@@ -17,7 +18,7 @@ authRoutes.post("/register", dcartControllers.register);
 // connexion
 authRoutes.post(
   "/login",
-  // loginLimiter,
+  loginLimiter,
   validateLoginBody,
   dcartControllers.login
 );
