@@ -1,26 +1,26 @@
-@use '../../../../styles/mixin' as m;
-@use '../../../../styles/variable' as v;
+@use "../../../../styles/mixin" as m;
+@use "../../../../styles/variable" as v;
 
 .imageSection {
-    @include m.flexbox(flex, column, nowrap, center, center);
-    gap: v.$font-space-l;
+  @include m.flexbox(flex, column, nowrap, center, center);
+  gap: v.$font-space-l;
 
-    img {
-        max-height: 70vh;
-        max-width: 40vw;
-        border-radius: v.$border-radius-base;
-    }
+  img {
+    max-height: 70vh;
+    max-width: 40vw;
+    border-radius: v.$border-radius-base;
+  }
 
-    p {
-        font-style: italic;
-    }
+  p {
+    font-style: italic;
+  }
 }
 
 /* Ciblé pour les téléphones ≤ 480px */
 @media (max-width: 480px) {
-    .imageSection {
-        img {
-            max-width: 70vw;
-        }
+  .imageSection {
+    img {
+      max-width: 70vw;
     }
+  }
 }
