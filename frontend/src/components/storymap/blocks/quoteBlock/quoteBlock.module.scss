@@ -1,30 +1,31 @@
-@use '../../../../styles/mixin' as m;
-@use '../../../../styles/variable' as v;
+@use "../../../../styles/mixin" as m;
+@use "../../../../styles/variable" as v;
 
 .quoteBlockContainer {
-    width: 70vw;
-    background-color: v.$color-grullo-light;
-    border-radius: v.$border-radius-base;
+  width: 70vw;
+  background-color: v.$color-grullo-light;
+  border-radius: v.$border-radius-base;
 
-    p:first-child {
-        font-style: italic;
-        font-size: v.$font-size-l;
-    }
+  p:first-child {
+    font-style: italic;
+    font-size: v.$font-size-l;
+    padding: v.$font-space-xxxxl;
+  }
 
-    p:last-child {
-        text-align: right;
-    }
+  p:last-child {
+    text-align: right;
+    padding: v.$font-space-l v.$font-space-xxxxl;
+  }
 
-    p {
-        text-align: justify;
-        margin: v.$font-space-xxxxl;
-        line-height: v.$font-space-xxxl;
-    }
+  p {
+    text-align: justify;
+    line-height: v.$font-space-xxxl;
+  }
 }
 
 /* Ciblé pour les téléphones ≤ 480px */
 @media (max-width: 480px) {
-    .quoteBlockContainer {
-        width: 90vw;
-    }
+  .quoteBlockContainer {
+    width: 90vw;
+  }
 }

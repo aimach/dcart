@@ -9,26 +9,26 @@ import style from "./linkBlock.module.scss";
 import { SquareArrowOutUpRight } from "lucide-react";
 
 interface LinkBlockProps {
-	blockContent: BlockContentType;
+  blockContent: BlockContentType;
 }
 
 const LinkBlock = ({ blockContent }: LinkBlockProps) => {
-	// récupération des données des stores
-	const { selectedLanguage } = useStorymapLanguageStore();
+  // récupération des données des stores
+  const { selectedLanguage } = useStorymapLanguageStore();
 
-	return (
-		<Link
-			to={blockContent[`content2_${selectedLanguage}`]}
-			className={style.linkBlock}
-			target="_blank"
-			rel="noopener noreferrer"
-		>
-			<div className={style.linkBlockContent}>
-				{blockContent[`content1_${selectedLanguage}`]}
-				<SquareArrowOutUpRight width={35} />
-			</div>
-		</Link>
-	);
+  return (
+    <div className={style.linkBlockContent}>
+      <Link
+        to={blockContent[`content2_${selectedLanguage}`]}
+        className={style.linkBlock}
+        target="_blank"
+        rel="noopener noreferrer"
+      >
+        {blockContent[`content1_${selectedLanguage}`]}
+        <SquareArrowOutUpRight width={35} />
+      </Link>
+    </div>
+  );
 };
 
 export default LinkBlock;

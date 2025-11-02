@@ -30,10 +30,7 @@ const EditableBlockWrapper = ({
     <div className={style.editableBlockContainer}>
       {children}
       <Link
-        to={{
-          pathname: `/backoffice/storymaps/${storymapId}`,
-          search: "action=edit",
-        }}
+        to={`/backoffice/storymaps/${storymapId}?action=edit`}
         state={{ from: location.pathname, block: block }}
         className={style.editButton}
       >

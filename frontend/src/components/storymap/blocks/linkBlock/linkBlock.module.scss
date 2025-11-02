@@ -1,29 +1,29 @@
-@use '../../../../styles/mixin' as m;
-@use '../../../../styles/variable' as v;
+@use "../../../../styles/mixin" as m;
+@use "../../../../styles/variable" as v;
+
+.linkBlockContent {
+  @include m.flexbox(flex, row, nowrap, space-between, center);
+  gap: v.$space-s;
+}
 
 .linkBlock {
-    background-color: v.$color-grullo-light;
-    font-size: v.$font-size-xl;
-    padding: v.$space-l;
-    border-radius: v.$border-radius-base;
-    cursor: pointer;
-
-    &Content {
-        @include m.flexbox(flex, row, nowrap, space-between, center);
-        gap: v.$space-s;
-    }
+  background-color: v.$color-grullo-light;
+  font-size: v.$font-size-xl;
+  padding: v.$space-l;
+  border-radius: v.$border-radius-base;
+  cursor: pointer;
 }
 
 /* Ciblé pour les écrans ≤ 768px (tablettes) */
 @media (max-width: 768px) {
-    .linkBlock {
-        width: 50vw;
-    }
+  .linkBlock {
+    width: 50vw;
+  }
 }
 
 /* Ciblé pour les écrans ≤ 480px (téléphones) */
 @media (max-width: 480px) {
-    .linkBlock {
-        width: 90vw;
-    }
+  .linkBlock {
+    width: 90vw;
+  }
 }
