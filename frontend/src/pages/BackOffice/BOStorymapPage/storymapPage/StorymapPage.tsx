@@ -106,7 +106,7 @@ export const getBlockComponentFromType = (
         <EditableBlockWrapper
           key={key}
           block={block}
-          storymapId={`${storymapId}?action=edit`}
+          storymapId={`${storymapId}`}
           isPreview={isPreview}
         >
           <ItemLinkBlock blockContent={block} />
@@ -130,7 +130,7 @@ export const getBlockComponentFromType = (
         <EditableBlockWrapper
           key={key}
           block={block}
-          storymapId={`${storymapId}?action=edit`}
+          storymapId={`${storymapId}`}
           isPreview={isPreview}
         >
           <LayoutBlock blockContent={block} />
@@ -141,7 +141,7 @@ export const getBlockComponentFromType = (
         <EditableBlockWrapper
           key={key}
           block={block}
-          storymapId={`${storymapId}?action=edit`}
+          storymapId={`${storymapId}`}
           isPreview={isPreview}
         >
           <TableBlock blockContent={block} />
