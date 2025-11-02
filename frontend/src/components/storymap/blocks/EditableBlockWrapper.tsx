@@ -22,6 +22,17 @@ const EditableBlockWrapper = ({
 }: EditableBlockWrapperProps) => {
   const location = useLocation();
 
+  const handleEditClick = () => {
+    if (storymapId) {
+      const scrollPosition = window.scrollY;
+      const cleanStorymapId = storymapId.split("?")[0];
+      sessionStorage.setItem(
+        `storymap_scroll_position_${cleanStorymapId}`,
+        scrollPosition.toString()
+      );
+    }
+  };
+
   if (!isPreview) {
     return <>{children}</>;
   }
@@ -33,6 +44,7 @@ const EditableBlockWrapper = ({
         to={`/backoffice/storymaps/${storymapId}?action=edit`}
         state={{ from: location.pathname, block: block }}
         className={style.editButton}
+        onClick={handleEditClick}
       >
         <Pen size={20} />
       </Link>

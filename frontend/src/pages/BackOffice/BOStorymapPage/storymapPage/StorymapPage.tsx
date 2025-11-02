@@ -230,6 +230,27 @@ const StorymapPage = () => {
     fetchStorymapInfos();
   }, [storymapSlug, storymapId]);
 
+  // restauration de la position de scroll au retour depuis le backoffice
+  useEffect(() => {
+    if (storymapInfos && isPreview) {
+      const savedPosition = sessionStorage.getItem(
+        `storymap_scroll_position_${storymapInfos.id}`
+      );
+      if (savedPosition) {
+        // Petit délai pour s'assurer que tout le contenu est rendu
+        setTimeout(() => {
+          window.scrollTo({
+            top: parseInt(savedPosition),
+            behavior: "smooth",
+          });
+          sessionStorage.removeItem(
+            `storymap_scroll_position_${storymapInfos.id}`
+          );
+        }, 150);
+      }
+    }
+  }, [storymapInfos, isPreview]);
+
   return (
     storymapInfos && (
       <>
