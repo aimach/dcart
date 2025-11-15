@@ -187,7 +187,7 @@ const titleInput: InputType[] = [
     label_fr: "Titre en langue 1",
     label_en: "Title in language 1",
     name: "content1_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -200,7 +200,7 @@ const titleInput: InputType[] = [
     label_fr: "Titre en langue 2",
     label_en: "Title in language 2",
     name: "content1_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -216,7 +216,7 @@ const subtitleInputs: InputType[] = [
     label_fr: "Sous-titre en langue 1",
     label_en: "Subtitle in language 1",
     name: "content1_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -229,7 +229,7 @@ const subtitleInputs: InputType[] = [
     label_fr: "Sous-titre en langue 2",
     label_en: "Subtitle in language 2",
     name: "content1_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -274,7 +274,7 @@ const linkInputs: InputType[] = [
     label_fr: "Texte du lien en langue 1",
     label_en: "Link text in language 1",
     name: "content1_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -287,7 +287,7 @@ const linkInputs: InputType[] = [
     label_fr: "Texte du lien en langue 2",
     label_en: "Link text in language 2",
     name: "content1_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -300,7 +300,7 @@ const linkInputs: InputType[] = [
     label_fr: "Lien",
     label_en: "Link",
     name: "content2_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: { fr: "Le lien est requis", en: "The link is required" },
@@ -313,7 +313,7 @@ const quoteInputs: InputType[] = [
     label_fr: "Citation en langue 1",
     label_en: "Quote in language 1",
     name: "content1_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -326,7 +326,7 @@ const quoteInputs: InputType[] = [
     label_fr: "Citation en langue 2",
     label_en: "Quote in language 2",
     name: "content1_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -339,7 +339,7 @@ const quoteInputs: InputType[] = [
     label_fr: "Source en langue 1",
     label_en: "Source in language 1",
     name: "content2_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -352,7 +352,7 @@ const quoteInputs: InputType[] = [
     label_fr: "Source en langue 2",
     label_en: "Source in language 2",
     name: "content2_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -410,7 +410,7 @@ const simpleMapInputs: InputType[] = [
     label_fr: "Nom de la carte en langue 1",
     label_en: "Map name in language 1",
     name: "content1_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -423,7 +423,7 @@ const simpleMapInputs: InputType[] = [
     label_fr: "Nom de la carte en langue 2",
     label_en: "Map name in language 2",
     name: "content1_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -453,7 +453,7 @@ const comparisonMapInputs: InputType[] = [
     label_fr: "Nom de la carte en langue 1",
     label_en: "Map name in language 1",
     name: "content1_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -466,7 +466,7 @@ const comparisonMapInputs: InputType[] = [
     label_fr: "Nom de la carte en langue 2",
     label_en: "Map name in language 2",
     name: "content1_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -510,7 +510,7 @@ const scrollMapInputs: InputType[] = [
     label_fr: "Nom de la carte en langue 1",
     label_en: "Map name in language 1",
     name: "content1_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -523,7 +523,7 @@ const scrollMapInputs: InputType[] = [
     label_fr: "Nom de la carte en langue 2",
     label_en: "Map name in language 2",
     name: "content1_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -557,7 +557,7 @@ const stepInputs: InputType[] = [
       "Le titre de l'étape est automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
     description_en:
       "The title of the step is automatically preceded by the step number. It is not necessary to add it.",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -574,7 +574,7 @@ const stepInputs: InputType[] = [
       "Le titre de l'étape est automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
     description_en:
       "The title of the step is automatically preceded by the step number. It is not necessary to add it.",
-    type: "text",
+    type: "wysiwyga",
     required: {
       value: true,
       message: {
@@ -608,7 +608,7 @@ const tableInputs: InputType[] = [
     label_fr: "Titre du tableau en langue 1",
     label_en: "Table title in language 1",
     name: "content1_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -621,7 +621,7 @@ const tableInputs: InputType[] = [
     label_fr: "Titre du tableau en langue 2",
     label_en: "Table title in language 2",
     name: "content1_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
