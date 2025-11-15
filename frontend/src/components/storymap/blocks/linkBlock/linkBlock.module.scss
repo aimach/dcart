@@ -8,10 +8,13 @@
 
 .linkBlock {
   background-color: v.$color-grullo-light;
-  font-size: v.$font-size-xl;
   padding: v.$space-l;
   border-radius: v.$border-radius-base;
   cursor: pointer;
+  min-width: 250px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
 }
 
 /* Ciblé pour les écrans ≤ 768px (tablettes) */

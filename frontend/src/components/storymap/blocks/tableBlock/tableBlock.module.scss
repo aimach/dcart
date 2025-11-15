@@ -1,36 +1,34 @@
-@use '../../../../styles/mixin' as m;
-@use '../../../../styles/variable' as v;
+@use "../../../../styles/mixin" as m;
+@use "../../../../styles/variable" as v;
 
 .tableSection {
-    margin: 0 auto;
+  margin: 0 auto;
 
-    >p {
-        font-style: italic;
-        margin: v.$space-s 0;
-        text-align: center;
-    }
+  > p {
+    margin: v.$space-s 0;
+    text-align: center;
+  }
 }
 
 .tableBlock {
+  border: 1px solid v.$color-black-chocolate;
+
+  td {
     border: 1px solid v.$color-black-chocolate;
+    padding: v.$space-s;
+  }
 
-    td {
-        border: 1px solid v.$color-black-chocolate;
-        padding: v.$space-s;
+  &left {
+    > tbody > tr > td:first-child {
+      background-color: v.$color-grullo-light;
+      padding: v.$space-s;
     }
+  }
 
-    &left {
-        >tbody>tr>td:first-child {
-            background-color: v.$color-grullo-light;
-            padding: v.$space-s;
-        }
+  &top {
+    > tbody > tr:first-child > td {
+      background-color: v.$color-grullo-light;
+      padding: v.$space-s;
     }
-
-    &top {
-        >tbody>tr:first-child>td {
-            background-color: v.$color-grullo-light;
-            padding: v.$space-s;
-        }
-    }
-
+  }
 }

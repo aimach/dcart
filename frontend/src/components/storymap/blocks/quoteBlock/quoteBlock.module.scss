@@ -9,16 +9,15 @@
   p:first-child {
     font-style: italic;
     font-size: v.$font-size-l;
+    text-align: left;
     padding: v.$font-space-xxxxl;
   }
 
   p:last-child {
-    text-align: right;
     padding: v.$font-space-l v.$font-space-xxxxl;
   }
 
   p {
-    text-align: justify;
     line-height: v.$font-space-xxxl;
   }
 }
