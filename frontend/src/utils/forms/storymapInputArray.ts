@@ -52,7 +52,7 @@ const storymapInputs: InputType[] = [
     description_fr: "",
     description_en: "",
     name: "title_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -67,7 +67,7 @@ const storymapInputs: InputType[] = [
     description_fr: "",
     description_en: "",
     name: "title_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -84,7 +84,7 @@ const storymapInputs: InputType[] = [
     description_en:
       "Introduction line of the storymap that is displayed in the first block",
     name: "description_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: false,
     },
@@ -97,7 +97,7 @@ const storymapInputs: InputType[] = [
     description_en:
       "Introduction line of the storymap that is displayed in the first block",
     name: "description_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: false,
     },
@@ -136,7 +136,7 @@ const storymapInputs: InputType[] = [
     description_en:
       "The author of the storymap visible in the introduction and conclusion blocks of the storymap (can be different from the storymap author)",
     name: "author",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: false,
     },
@@ -149,7 +149,7 @@ const storymapInputs: InputType[] = [
     description_en:
       "Details about the author of the storymap, such as their status, institution, etc. This information is displayed in the introduction and conclusion blocks of the storymap",
     name: "author_status",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: false,
     },
@@ -162,7 +162,7 @@ const storymapInputs: InputType[] = [
     description_en:
       "Email of the author of the storymap. This information is displayed in the conclusion block of the storymap",
     name: "author_email",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: false,
     },
@@ -175,7 +175,7 @@ const storymapInputs: InputType[] = [
     description_en:
       "The publication date is displayed in the introduction block of the storymap",
     name: "publishedAt",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: false,
     },
