@@ -1,6 +1,6 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
-import { useForm } from "react-hook-form";
+import { useEffect, useRef, useState } from "react";
+import { Controller, useForm } from "react-hook-form";
 import { useParams, useSearchParams } from "react-router";
 // import des composants
 import ButtonComponent from "../../../common/button/ButtonComponent";
@@ -10,6 +10,7 @@ import TooltipComponent from "../../../common/tooltip/TooltipComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
 import PointSetUploadForm from "../../mapForm/pointSetUploadForm/PointSetUploadForm";
 import FormTitleComponent from "../common/FormTitleComponent";
+import EditorComponent from "../wysiwygBlock/EditorComponent";
 // import du context
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -42,6 +43,7 @@ import {
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 // import des types
+import type Quill from "quill";
 import type { FormEventHandler } from "react";
 import type {
   MapColorType,
@@ -93,6 +95,8 @@ const SimpleMapForm = () => {
   const { storymapId } = useParams();
 
   const [step, setStep] = useState(1);
+
+  const quillRef = useRef<Quill | null>(null);
 
   // gestion de l'upload du fichier csv
   const [pointSet, setPointSet] = useState<PointSetType | null>(null);
@@ -226,6 +230,7 @@ const SimpleMapForm = () => {
 
   // récupération des fonctions de gestion du formulaire
   const {
+    control,
     register,
     handleSubmit,
     setValue,
@@ -323,6 +328,45 @@ const SimpleMapForm = () => {
           className={style.mapFormContainer}
         >
           {inputs.map((input) => {
+            if (input.type === "wysiwyg") {
+              return (
+                <div key={input.name} className={style.mapFormInputContainer}>
+                  <div className={style.labelContainer}>
+                    <label htmlFor={input.name}>
+                      {input[`label_${language}`]}{" "}
+                      {input.required.value && (
+                        <span style={{ color: "#9d2121" }}>*</span>
+                      )}
+                    </label>
+                  </div>
+                  <div className={style.inputContainer}>
+                    <Controller
+                      name={input.name as keyof simpleMapInputsType}
+                      control={control}
+                      render={({ field: { onChange } }) => (
+                        <EditorComponent
+                          ref={quillRef}
+                          onChange={onChange}
+                          defaultValue={
+                            block
+                              ? (block[
+                                  `${input.name}` as keyof BlockContentType
+                                ] as string)
+                              : null
+                          }
+                        />
+                      )}
+                    />
+                    {input.required.value &&
+                      errors[input.name as keyof simpleMapInputsType] && (
+                        <ErrorComponent
+                          message={input.required.message?.[language] as string}
+                        />
+                      )}
+                  </div>
+                </div>
+              );
+            }
             if (input.type === "text") {
               return (
                 <div key={input.name} className={style.mapFormInputContainer}>
