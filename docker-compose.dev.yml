@@ -6,11 +6,11 @@ services:
     ports:
       - "3000:3000" # Port local mappé sur le port exposé par le conteneur
     environment:
-      - NODE_ENV=development 
+      - NODE_ENV=development
     volumes:
-      - ./frontend:/app 
-      - /app/node_modules 
-    command: ["npm", "run", "dev"] 
+      - ./frontend:/app
+      - /app/node_modules
+    command: ["npm", "run", "dev"]
 
   backend:
     build:
@@ -29,7 +29,7 @@ services:
       DB_NAME: ${DB_NAME}
 
   db:
-    image: postgres
+    image: postgres:17
     ports:
       - "5432:5432"
     environment:
