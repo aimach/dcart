@@ -381,7 +381,7 @@ const imageInputs: InputType[] = [
     label_fr: "Légende de l'image en langue 1",
     label_en: "Image caption in language 1",
     name: "content2_lang1",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -394,7 +394,7 @@ const imageInputs: InputType[] = [
     label_fr: "Légende de l'image en langue 2",
     label_en: "Image caption in language 2",
     name: "content2_lang2",
-    type: "text",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
@@ -574,7 +574,7 @@ const stepInputs: InputType[] = [
       "Le titre de l'étape est automatiquement précédé du numéro de l'étape, il n'est pas nécessaire de le rajouter.",
     description_en:
       "The title of the step is automatically preceded by the step number. It is not necessary to add it.",
-    type: "wysiwyga",
+    type: "wysiwyg",
     required: {
       value: true,
       message: {
