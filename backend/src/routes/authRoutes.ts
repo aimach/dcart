@@ -6,8 +6,9 @@ import { dcartControllers } from "../controllers/builtMap/dcartControllers";
 import {
   authenticateAdmin,
   authenticateUser,
+  loginLimiter,
 } from "../middlewares/authenticate";
-import { validatePassword } from "../utils/validator/auth";
+import { validateLoginBody, validatePassword } from "../utils/validator/auth";
 
 export const authRoutes = express.Router();
 
@@ -17,8 +18,8 @@ authRoutes.post("/register", dcartControllers.register);
 // connexion
 authRoutes.post(
   "/login",
-  // loginLimiter,
-  // validateLoginBody,
+  loginLimiter,
+  validateLoginBody,
   dcartControllers.login
 );
 
