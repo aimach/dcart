@@ -76,16 +76,3 @@
 .ql-editor .ql-font-open-sans {
   font-family: "Open Sans", sans-serif;
 }
-
-/* Gestion des listes - forcer le bon type */
-.ql-editor ul {
-  list-style-type: disc !important;
-}
-
-.ql-editor ol {
-  list-style-type: decimal !important;
-}
-
-.ql-editor li {
-  display: list-item !important;
-}
