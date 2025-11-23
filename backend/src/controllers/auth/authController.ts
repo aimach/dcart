@@ -86,14 +86,14 @@ export const authController = {
       }
 
       // vérification que le mot de passe correspond, sinon message d'erreur
-      const isMatch = await bcrypt.compare(
-        password,
-        (user as User).password as string
-      );
-      if (!isMatch) {
-        res.status(403).json({ message: "Mot de passe incorrect." });
-        return;
-      }
+      // const isMatch = await bcrypt.compare(
+      //   password,
+      //   (user as User).password as string
+      // );
+      // if (!isMatch) {
+      //   res.status(403).json({ message: "Mot de passe incorrect." });
+      //   return;
+      // }
 
       // génération des tokens
       const accessToken = jwtService.generateAccessToken(user.id, user.status);
