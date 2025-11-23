@@ -7,6 +7,7 @@ import ButtonComponent from "../common/button/ButtonComponent";
 import ItemContainer from "../common/itemContainer/ItemContainer";
 import ItemFilterComponent from "../common/itemFilter/ItemFilterComponent";
 import { HomePageHelmetContent } from "../helmet/HelmetContent";
+import HomePageDescription from "./HomePageDescription";
 // import des custom hooks
 import useHomePageTranslations from "../../utils/hooks/useHomepageTranslations";
 import { useTranslation } from "../../utils/hooks/useTranslation";
@@ -32,7 +33,6 @@ import { singleSelectInLineStyle } from "../../styles/inLineStyle";
 import style from "./HomePage.module.scss";
 // import des icônes
 import { ChevronRight } from "lucide-react";
-import HomePageDescription from "./HomePageDescription";
 
 type CheckboxType = { map: boolean; storymap: boolean };
 
