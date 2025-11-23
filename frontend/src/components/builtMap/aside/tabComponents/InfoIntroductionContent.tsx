@@ -44,6 +44,7 @@ const InfoIntroductionContent = ({
       <p
         // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
         dangerouslySetInnerHTML={{ __html: sanitizedTextContent }}
+        className="ql-editor"
       />
       <div className={style.checkboxContainer}>
         <input type="checkbox" id="showIntro" onChange={handleCheckbox} />

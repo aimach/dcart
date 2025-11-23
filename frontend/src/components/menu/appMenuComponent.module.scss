@@ -1,138 +1,128 @@
-@use '../../styles/mixin' as m;
-@use '../../styles/variable' as v;
+@use "../../styles/mixin" as m;
+@use "../../styles/variable" as v;
 
 .menuPage {
-    &Container {
-        @include m.flexbox(flex, row, nowrap, flex-start, stretch);
-        min-height: 100dvh;
-        height: 100%;
-        position: relative;
+  &Container {
+    @include m.flexbox(flex, row, nowrap, flex-start, stretch);
+    min-height: 100dvh;
+    height: 100%;
+    position: relative;
+  }
+
+  &Menu {
+    margin-top: v.$space-xxxl;
+    margin-left: v.$font-space-xxxxl * 2;
+
+    > ul {
+      @include m.flexbox(flex, column, wrap, flex-start, flex-start);
+      gap: v.$space-xl;
+      list-style-type: none;
+      padding-left: 0;
+      max-height: 20vh;
+
+      > li {
+        @include m.flexbox(flex, row, nowrap, flex-start, center);
+        gap: v.$space-m;
+        cursor: pointer;
+        font-size: v.$font-size-l;
+
+        > a {
+          font-size: v.$font-size-xxxxl * 1.5;
+        }
+      }
     }
 
-    &Menu {
-        margin-top: v.$space-xxxl;
-        margin-left: v.$font-space-xxxxl * 2;
+    &Section {
+      min-height: 100dvh;
+      width: 60%;
+      z-index: 11;
 
+      > svg {
+        position: absolute;
+        right: 15px;
+        top: 15px;
+        cursor: pointer;
+      }
 
-        >ul {
-            @include m.flexbox(flex, column, wrap, flex-start, flex-start);
-            gap: v.$space-xl;
-            list-style-type: none;
-            padding-left: 0;
-            max-height: 20vh;
-
-
-            >li {
-                @include m.flexbox(flex, row, nowrap, flex-start, center);
-                gap: v.$space-m;
-                cursor: pointer;
-                font-size: v.$font-size-l;
-
-                >a {
-                    font-size: v.$font-size-xxxxl * 1.5;
-                }
-            }
-
-        }
-
-
-        &Section {
-            min-height: 100dvh;
-            width: 60%;
-            z-index: 11;
-
-            >svg {
-                position: absolute;
-                right: 15px;
-                top: 15px;
-                cursor: pointer;
-            }
-
-            >p {
-                font-size: v.$font-size-l;
-                margin: v.$font-space-xxxxl * 2;
-                text-align: justify;
-
-            }
-
-        }
+      > p {
+        font-size: v.$font-size-l;
+        margin: v.$font-space-xxxxl * 2;
+        text-align: justify;
+        max-height: 100vh;
+      }
     }
+  }
 
-    &ImageSection {
-        min-height: 100dvh;
-        width: 40%;
-        background-image: url('../../assets/menu_bg.png');
-        background-repeat: no-repeat;
-        background-size: cover;
-        @include m.shadow();
+  &ImageSection {
+    min-height: 100dvh;
+    width: 40%;
+    background-image: url("../../assets/menu_bg.png");
+    background-repeat: no-repeat;
+    background-size: cover;
+    @include m.shadow();
 
-        >svg {
-            position: absolute;
-            right: 25px;
-            top: 20px;
-            cursor: pointer;
-        }
+    > svg {
+      position: absolute;
+      right: 25px;
+      top: 20px;
+      cursor: pointer;
     }
+  }
 
-    &LogoSection {
-        margin: 0 v.$space-l;
-        @include m.flexbox(flex, row, wrap, center, flex-end);
-        gap: v.$space-xxl;
+  &LogoSection {
+    margin: 0 v.$space-l;
+    @include m.flexbox(flex, row, wrap, center, flex-end);
+    gap: v.$space-xxl;
 
-        >a {
-            cursor: pointer;
-        }
+    > a {
+      cursor: pointer;
     }
-
+  }
 }
 
 .legalPageSection {
-    @include m.flexbox(flex, row, nowrap, center, center);
-    gap: v.$space-xxl;
-    margin: v.$font-space-xxxl 0;
+  @include m.flexbox(flex, row, nowrap, center, center);
+  gap: v.$space-xxl;
+  margin: v.$font-space-xxxl 0;
 
-    >a {
-        text-decoration: underline;
-        color: v.$color-dark-lava;
-    }
+  > a {
+    text-decoration: underline;
+    color: v.$color-dark-lava;
+  }
 }
 
 /* Ciblé pour les téléphones ≤ 480px */
 @media (max-width: 480px) {
-    .menuPageMenu {
-        margin-top: v.$font-space-l;
-        margin-left: v.$font-space-l * 2;
+  .menuPageMenu {
+    margin-top: v.$font-space-l;
+    margin-left: v.$font-space-l * 2;
 
-        >ul {
-            @include m.flexbox(flex, column, wrap, flex-start, flex-start);
-            max-height: none;
-        }
+    > ul {
+      @include m.flexbox(flex, column, wrap, flex-start, flex-start);
+      max-height: none;
     }
+  }
 }
-
 
 /* Ciblé pour les écrans ≤ 768px (tablettes et téléphones) */
 @media (max-width: 768px) {
+  .menuPageContainer {
+    height: 100%;
+  }
 
-    .menuPageContainer {
-        height: 100%;
+  .menuPageMenu {
+    margin-top: v.$font-space-xxxxl;
+    margin-left: v.$font-space-xxxxl;
+  }
+
+  .menuPageMenuSection {
+    width: 100vw;
+    height: 100%;
+
+    > p {
+      text-align: justify;
+      width: 80vw;
+      margin-left: v.$font-space-xxxxl;
     }
-
-    .menuPageMenu {
-        margin-top: v.$font-space-xxxxl;
-        margin-left: v.$font-space-xxxxl;
-    }
-
-    .menuPageMenuSection {
-        width: 100vw;
-        height: 100%;
-
-        >p {
-            text-align: justify;
-            width: 80vw;
-            margin-left: v.$font-space-xxxxl;
-        }
-
-
-    }
+  }
 }

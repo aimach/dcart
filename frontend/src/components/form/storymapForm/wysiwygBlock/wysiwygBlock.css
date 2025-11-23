@@ -39,8 +39,7 @@
 
 /* Gestion des polices */
 .ql-editor {
-  font-family: initial !important;
-  font-size: 1.2em !important;
+  font-size: 1em !important;
 }
 
 .ql-snow .ql-picker.ql-font .ql-picker-item[data-value="arial"]::before,

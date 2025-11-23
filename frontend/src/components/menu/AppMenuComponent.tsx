@@ -111,6 +111,7 @@ const AppMenuComponent = ({ setMenuIsOpen }: AppMenuComponentProps) => {
         <p
           // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
           dangerouslySetInnerHTML={{ __html: sanitizedTextContent }}
+          className="ql-editor"
         />
         <section className={style.menuPageLogoSection}>
           <ImageWithLink
