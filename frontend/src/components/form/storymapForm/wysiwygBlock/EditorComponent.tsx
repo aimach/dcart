@@ -1,5 +1,5 @@
-import { forwardRef, useEffect, useRef } from "react";
 import Quill from "quill";
+import { forwardRef, useEffect, useRef } from "react";
 // import des types
 import type { MutableRefObject } from "react";
 // import du style
@@ -10,8 +10,8 @@ import "./wysiwygBlock.css";
 type QuillEditorRef = MutableRefObject<Quill | null>;
 
 interface EditorComponentProps {
-	onChange: (content: string) => void;
-	defaultValue: string | null;
+  onChange: (content: string) => void;
+  defaultValue: string | null;
 }
 
 /**
@@ -20,79 +20,79 @@ interface EditorComponentProps {
  * @param defaultValue Valeur par défaut de l'éditeur
  */
 const EditorComponent = forwardRef(
-	({ onChange, defaultValue }: EditorComponentProps, ref) => {
-		const containerRef = useRef<HTMLDivElement | null>(null);
+  ({ onChange, defaultValue }: EditorComponentProps, ref) => {
+    const containerRef = useRef<HTMLDivElement | null>(null);
 
-		// biome-ignore lint/correctness/useExhaustiveDependencies:
-		useEffect(() => {
-			const container = containerRef.current as HTMLDivElement;
-			if (!container) return;
+    // biome-ignore lint/correctness/useExhaustiveDependencies:
+    useEffect(() => {
+      const container = containerRef.current as HTMLDivElement;
+      if (!container) return;
 
-			const editorContainer = container.appendChild(
-				container.ownerDocument.createElement("div"),
-			);
+      const editorContainer = container.appendChild(
+        container.ownerDocument.createElement("div")
+      );
 
-			// enregistrement des tailles
-			const Size = Quill.import("formats/size") as { whitelist: string[] };
-			Size.whitelist = ["small", "normal", "large", "huge"];
-			// @ts-ignore
-			Quill.register(Size, true);
+      // enregistrement des tailles
+      const Size = Quill.import("formats/size") as { whitelist: string[] };
+      Size.whitelist = ["small", "normal", "large", "huge"];
+      // @ts-ignore
+      Quill.register(Size, true);
 
-			// enregistrement des polices disponibles
-			const Font = Quill.import("formats/font") as { whitelist: string[] };
-			Font.whitelist = ["arial", "georgia", "courier", "times", "monospace"];
-			// @ts-ignore
-			Quill.register(Font, true);
+      // enregistrement des polices disponibles
+      const Font = Quill.import("formats/font") as { whitelist: string[] };
+      Font.whitelist = ["arial", "georgia", "courier", "times", "monospace"];
+      // @ts-ignore
+      Quill.register(Font, true);
 
-			// Définition de la toolbar personnalisée
-			const toolbarOptions = [
-				["bold", "italic", "underline", "strike"], // Gras, italique, souligné, barré
-				[{ size: ["small", false, "large", "huge"] }], // Taille du texte
-				[{ font: ["arial", "georgia", "courier", "times", "monospace"] }], // Polices
-				[{ list: "ordered" }, { list: "bullet" }], // Listes numérotées et à puces
-				[{ script: "sub" }, { script: "super" }], // Indice / exposant
-				[{ indent: "-1" }, { indent: "+1" }], // Indentation
-				[{ direction: "rtl" }], // Texte de droite à gauche
-				[{ color: [] }, { background: [] }], // Couleur du texte et de fond
-				[{ align: [] }], // Alignement du texte
-				["link"], // Ajout de liens, images, vidéos
-				["clean"], // Bouton pour supprimer le formatage
-			];
+      // Définition de la toolbar personnalisée
+      const toolbarOptions = [
+        ["bold", "italic", "underline", "strike"], // Gras, italique, souligné, barré
+        [{ size: ["small", false, "large", "huge"] }], // Taille du texte
+        [{ font: ["arial", "georgia", "courier", "times", "monospace"] }], // Polices
+        [{ list: "ordered" }, { list: "bullet" }], // Listes numérotées et à puces
+        [{ script: "sub" }, { script: "super" }], // Indice / exposant
+        [{ indent: "-1" }, { indent: "+1" }], // Indentation
+        [{ direction: "rtl" }], // Texte de droite à gauche
+        [{ color: [] }, { background: [] }], // Couleur du texte et de fond
+        [{ align: [] }], // Alignement du texte
+        ["link"], // Ajout de liens, images, vidéos
+        ["clean"], // Bouton pour supprimer le formatage
+      ];
 
-			const quill = new Quill(editorContainer, {
-				theme: "snow",
-				modules: {
-					toolbar: toolbarOptions,
-				},
-			});
+      const quill = new Quill(editorContainer, {
+        theme: "snow",
+        modules: {
+          toolbar: toolbarOptions,
+        },
+      });
 
-			if (ref && typeof ref === "object") {
-				(ref as QuillEditorRef).current = quill;
-			}
+      if (ref && typeof ref === "object") {
+        (ref as QuillEditorRef).current = quill;
+      }
 
-			if (defaultValue) {
-				quill.root.innerHTML = defaultValue;
-			}
+      if (defaultValue) {
+        quill.root.innerHTML = defaultValue;
+      }
 
-			quill.on("text-change", () => {
-				onChange(quill.root.innerHTML);
-			});
+      quill.on("text-change", () => {
+        onChange(quill.root.innerHTML);
+      });
 
-			return () => {
-				if (ref && typeof ref === "object") {
-					(ref as QuillEditorRef).current = null;
-				}
-				container.innerHTML = "";
-			};
-		}, [ref]);
+      return () => {
+        if (ref && typeof ref === "object") {
+          (ref as QuillEditorRef).current = null;
+        }
+        container.innerHTML = "";
+      };
+    }, [ref]);
 
-		return (
-			<>
-				<div ref={containerRef} />
-				<div id="counter" />
-			</>
-		);
-	},
+    return (
+      <>
+        <div ref={containerRef} />
+        <div id="counter" />
+      </>
+    );
+  }
 );
 
 EditorComponent.displayName = "Editor";

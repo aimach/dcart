@@ -67,7 +67,6 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 
   // définition de la fonction de soumission du formulaire (ajout des données au store et passage à l'étape suivante)
   const onSubmit: SubmitHandler<MapInfoType> = async (data) => {
-    console.log(data);
     if (pathname.includes("create")) {
       const newMapResponse = await createNewMap({
         ...mapInfos,

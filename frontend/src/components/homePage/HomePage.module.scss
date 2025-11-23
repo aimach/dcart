@@ -39,6 +39,23 @@
           color: v.$color-grullo;
         }
       }
+
+      // Styles pour les listes
+      ul {
+        list-style-type: disc;
+        padding-left: v.$space-xl;
+        margin: v.$space-m 0;
+      }
+
+      ol {
+        list-style-type: decimal;
+        padding-left: v.$space-xl;
+        margin: v.$space-m 0;
+      }
+
+      li {
+        margin: v.$space-xs 0;
+      }
     }
 
     > a {
