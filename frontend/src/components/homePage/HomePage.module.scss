@@ -26,12 +26,11 @@
       text-align: center;
     }
 
-    > p {
+    .homePageDescription {
       text-align: justify;
       line-height: v.$space-l;
       font-size: v.$font-size-l;
       width: 70vw;
-
       a {
         color: v.$color-umber;
         font-weight: v.$font-weight-semi-bold;
