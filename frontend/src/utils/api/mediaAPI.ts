@@ -13,7 +13,7 @@ export const uploadImage = async (
     const formData = new FormData();
     formData.append("file", file);
 
-    const response = await apiClient.post("/media/upload", formData, {
+    const response = await apiClient.post("/dcart/media/upload", formData, {
       headers: {
         "Content-Type": "multipart/form-data",
       },
@@ -40,7 +40,7 @@ export const deleteImage = async (filename: string): Promise<boolean> => {
 
     if (!cleanFilename) return false;
 
-    const response = await apiClient.delete(`/media/${cleanFilename}`);
+    const response = await apiClient.delete(`/dcart/media/${cleanFilename}`);
 
     return response.status === 200;
   } catch (error) {
