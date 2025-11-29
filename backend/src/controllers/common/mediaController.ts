@@ -12,10 +12,10 @@ export const mediaController = {
 
       const processedImages = await processImage(req.file.buffer);
 
-      // Construire les URLs complètes
-      const protocol = req.protocol;
-      const host = req.get("host");
-      const baseUrl = `${protocol}://${host}`;
+      // EN PROD : On utilise l'URL définie dans le .env (ex: https://monsite.com)
+      // EN LOCAL : On continue d'utiliser req.protocol + host
+      const baseUrl =
+        process.env.MEDIA_PUBLIC_URL || `${req.protocol}://${req.get("host")}`;
 
       const response = {
         original: `${baseUrl}${processedImages.original}`,
