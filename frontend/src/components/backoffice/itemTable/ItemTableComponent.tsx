@@ -114,6 +114,10 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
     setReload(!reload);
   };
 
+  const imgUrl = itemInfos.image_url?.includes("/media/original/")
+    ? itemInfos.image_url.replace("/media/original/", "/media/thumb/")
+    : itemInfos.image_url;
+
   return (
     <tr key={itemInfos.id} className={style.itemTableRow}>
       <td
@@ -123,7 +127,7 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
         <div>
           {(itemInfos as StorymapType).image_url ? (
             <img
-              src={(itemInfos as StorymapType).image_url}
+              src={imgUrl}
               alt={(itemInfos as StorymapType)[`title_${selectedLanguage}`]}
               width={100}
               height="auto"

@@ -262,7 +262,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
                   render={({ field: { onChange, value } }) => (
                     <InputFileComponent
                       onChange={onChange}
-                      defaultValue={value as string}
+                      defaultValue={value as string | File | null | undefined}
                     />
                   )}
                 />

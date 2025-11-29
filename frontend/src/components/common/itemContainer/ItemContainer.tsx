@@ -28,11 +28,10 @@ type ItemContainerProps = {
 const ItemContainer = ({ item }: ItemContainerProps) => {
   const { language } = useTranslation();
   const isMap = isMapType(item);
-  const backgroudImage = item.image_url
-    ? item.image_url
-    : isMap
-    ? mapPinBG
-    : bookOpenBG;
+  const imageUrl = (item.image_url as string)?.includes("/media/original/")
+    ? (item.image_url as string).replace("/media/original/", "/media/thumb/")
+    : (item.image_url as string);
+  const backgroudImage = imageUrl ? imageUrl : isMap ? mapPinBG : bookOpenBG;
 
   const sanitizedTitle = useMemo(() => {
     const title = isMap

@@ -12,7 +12,18 @@ const InputFileComponent = ({
   onChange,
   defaultValue,
 }: InputFileComponentProps) => {
-  const [preview, setPreview] = useState<string | null>(defaultValue || null);
+  const getThumbnailUrl = (value: string | File | null | undefined) => {
+    if (typeof value === "string" && value.includes("/media/original/")) {
+      return value.replace("/media/original/", "/media/thumb/");
+    }
+    if (typeof value === "string") {
+      return value;
+    }
+    return null;
+  };
+
+  const thumbnailUrl = getThumbnailUrl(defaultValue);
+  const [preview, setPreview] = useState<string | null>(thumbnailUrl);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Nettoyage des URLs locales pour éviter les fuites de mémoire
