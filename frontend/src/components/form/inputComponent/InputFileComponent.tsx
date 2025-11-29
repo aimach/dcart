@@ -13,6 +13,10 @@ const InputFileComponent = ({
   defaultValue,
 }: InputFileComponentProps) => {
   const getThumbnailUrl = (value: string | File | null | undefined) => {
+    if (typeof value === "string" && value.includes("/dcart/media/original/")) {
+      return value.replace("/dcart/media/original/", "/dcart/media/thumb/");
+    }
+    // Fallback pour la rétrocompatibilité ou si le chemin est différent
     if (typeof value === "string" && value.includes("/media/original/")) {
       return value.replace("/media/original/", "/media/thumb/");
     }

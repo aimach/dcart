@@ -28,7 +28,14 @@ type ItemContainerProps = {
 const ItemContainer = ({ item }: ItemContainerProps) => {
   const { language } = useTranslation();
   const isMap = isMapType(item);
-  const imageUrl = (item.image_url as string)?.includes("/media/original/")
+  const imageUrl = (item.image_url as string)?.includes(
+    "/dcart/media/original/"
+  )
+    ? (item.image_url as string).replace(
+        "/dcart/media/original/",
+        "/dcart/media/thumb/"
+      )
+    : (item.image_url as string)?.includes("/media/original/")
     ? (item.image_url as string).replace("/media/original/", "/media/thumb/")
     : (item.image_url as string);
   const backgroudImage = imageUrl ? imageUrl : isMap ? mapPinBG : bookOpenBG;

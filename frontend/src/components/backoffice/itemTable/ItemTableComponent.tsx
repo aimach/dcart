@@ -114,7 +114,12 @@ const ItemTableComponent = ({ itemInfos, type }: ItemTableComponentProps) => {
     setReload(!reload);
   };
 
-  const imgUrl = itemInfos.image_url?.includes("/media/original/")
+  const imgUrl = itemInfos.image_url?.includes("/dcart/media/original/")
+    ? itemInfos.image_url.replace(
+        "/dcart/media/original/",
+        "/dcart/media/thumb/"
+      )
+    : itemInfos.image_url?.includes("/media/original/")
     ? itemInfos.image_url.replace("/media/original/", "/media/thumb/")
     : itemInfos.image_url;
 
