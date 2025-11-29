@@ -1,6 +1,7 @@
 import { Router } from "express";
 import multer from "multer";
 import { mediaController } from "../../controllers/common/mediaController";
+import { authenticateUser } from "../../middlewares/authenticate";
 
 const router = Router();
 
@@ -21,9 +22,11 @@ const upload = multer({
 
 router.post(
   "/upload",
-  //   authenticateUser,
+  authenticateUser,
   upload.single("file"),
   mediaController.uploadImage
 );
+
+router.delete("/:filename", authenticateUser, mediaController.deleteImage);
 
 export { router as mediaRoutes };

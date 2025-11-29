@@ -1,0 +1,91 @@
+.inputFileContainer {
+  width: 100%;
+  display: flex;
+  justify-content: flex-start;
+  align-items: center;
+  margin-top: 0.5rem;
+}
+
+.previewContainer {
+  position: relative;
+  display: inline-block;
+
+  .previewImage {
+    max-width: 200px;
+    max-height: 200px;
+    border-radius: 8px;
+    border: 1px solid #ddd;
+    object-fit: cover;
+  }
+
+  .deleteButton {
+    position: absolute;
+    top: -10px;
+    right: -10px;
+    background: white;
+    border: 1px solid #ddd;
+    border-radius: 50%;
+    padding: 5px;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    justify-content: center;
+    box-shadow: 0 2px 4px rgba(0, 0, 0, 0.1);
+    color: #d32f2f;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background: #fdecea;
+      transform: scale(1.1);
+    }
+  }
+}
+
+.uploadContainer {
+  width: 100%;
+}
+
+.hiddenInput {
+  display: none;
+}
+
+.uploadLabel {
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+  justify-content: center;
+  gap: 0.5rem;
+  padding: 1.5rem;
+  border: 2px dashed #ccc;
+  border-radius: 8px;
+  cursor: pointer;
+  background-color: #f9f9f9;
+  transition: all 0.2s ease;
+  color: #666;
+  font-size: 0.9rem;
+
+  &:hover {
+    background-color: #f0f0f0;
+    border-color: #999;
+    color: #333;
+  }
+
+  &.loading {
+    opacity: 0.7;
+    cursor: not-allowed;
+  }
+
+  .spinner {
+    animation: spin 1s linear infinite;
+  }
+}
+
+@keyframes spin {
+  from {
+    transform: rotate(0deg);
+  }
+  to {
+    transform: rotate(360deg);
+  }
+}
+

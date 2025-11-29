@@ -78,7 +78,7 @@ const firstStepInputs: InputType[] = [
     description_en:
       "The image is displayed in the introduction modal when the user opens the map.",
     name: "image_url",
-    type: "text",
+    type: "file",
     required: {
       value: false,
     },

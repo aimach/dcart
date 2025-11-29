@@ -5,6 +5,7 @@ import { useLocation, useParams } from "react-router";
 import Select from "react-select";
 // import des composants
 import ErrorComponent from "../../errorComponent/ErrorComponent";
+import InputFileComponent from "../../inputComponent/InputFileComponent";
 import LabelComponent from "../../inputComponent/LabelComponent";
 import EditorComponent from "../../storymapForm/wysiwygBlock/EditorComponent";
 import NavigationButtonComponent from "../navigationButton/NavigationButtonComponent";
@@ -17,6 +18,7 @@ import { useShallow } from "zustand/shallow";
 import { getOneMapInfosById } from "../../../../utils/api/builtMap/getRequests";
 import { createNewMap } from "../../../../utils/api/builtMap/postRequests";
 import { updateMap } from "../../../../utils/api/builtMap/putRequests";
+import { uploadImage } from "../../../../utils/api/mediaAPI";
 import { notifyCreateSuccess } from "../../../../utils/functions/toast";
 import { useMapFormStore } from "../../../../utils/stores/builtMap/mapFormStore";
 // import des types
@@ -67,10 +69,28 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
 
   // définition de la fonction de soumission du formulaire (ajout des données au store et passage à l'étape suivante)
   const onSubmit: SubmitHandler<MapInfoType> = async (data) => {
+    // Gestion de l'upload d'image si présente
+    const formData = { ...data };
+    if (formData.image_url && formData.image_url instanceof File) {
+      const uploaded = await uploadImage(formData.image_url);
+      if (uploaded) {
+        // On remplace le fichier par l'URL renvoyée par le serveur
+        formData.image_url = uploaded.original;
+      } else {
+        // En cas d'erreur d'upload, on arrête ou on gère l'erreur
+        console.error("Échec de l'upload de l'image");
+        return;
+      }
+    } else if (formData.image_url === "") {
+      // Si le champ est une chaîne vide, cela signifie que l'utilisateur a supprimé l'image
+      // On s'assure que la valeur envoyée au backend est bien vide pour déclencher la suppression
+      formData.image_url = "";
+    }
+
     if (pathname.includes("create")) {
       const newMapResponse = await createNewMap({
         ...mapInfos,
-        ...data,
+        ...formData,
       });
       if (newMapResponse?.status === 201) {
         setMapInfos(newMapResponse.data);
@@ -80,7 +100,10 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
       }
     } else if (pathname.includes("edit")) {
       // mise à jour de la carte
-      const updatedMapResponse = await updateMap(mapInfos as MapInfoType);
+      const updatedMapResponse = await updateMap({
+        ...(mapInfos as MapInfoType),
+        ...formData,
+      });
       if (updatedMapResponse?.status === 200) {
         setMapInfos(updatedMapResponse.data);
         incrementStep(step);
@@ -114,6 +137,8 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
   // biome-ignore lint/correctness/useExhaustiveDependencies:
   useEffect(() => {
     const subscription = watch((value) => {
+      // Attention: value peut contenir un objet File pour image_url temporairement
+      // Le store doit être capable de le gérer ou on doit l'exclure si nécessaire
       setMapInfos(value as MapInfoType);
     });
     return () => subscription.unsubscribe();
@@ -218,6 +243,43 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
             </div>
           );
         }
+        if (input.type === "file") {
+          return (
+            <div key={input.name} className={style.commonFormInputContainer}>
+              <LabelComponent
+                htmlFor={input.name}
+                label={input[`label_${language}`]}
+                description={input[`description_${language}`] ?? ""}
+                isRequired={input.required.value}
+              />
+              <div className={style.inputContainer}>
+                <Controller
+                  name={input.name as keyof MapInfoType}
+                  control={control}
+                  rules={{
+                    required: input.required.value,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <InputFileComponent
+                      onChange={onChange}
+                      defaultValue={value as string}
+                    />
+                  )}
+                />
+                {input.required.value &&
+                  errors[input.name as keyof FieldErrors<MapInfoType>] && (
+                    <ErrorComponent
+                      message={
+                        input.required.message?.[
+                          language as keyof TranslationType
+                        ] as string
+                      }
+                    />
+                  )}
+              </div>
+            </div>
+          );
+        }
         if (input.type === "wysiwyg") {
           return (
             <div key={input.name} className={style.commonFormInputContainer}>
@@ -276,6 +338,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
         <div className={style.inputContainer}>
           <Select
             styles={singleSelectInLineStyle}
+            // @ts-expect-error : react-select a du mal avec le typage strict de OptionType
             options={tagOptions}
             defaultValue={mapInfos ? defaultTagValues : []}
             delimiter="|"

@@ -1,11 +1,10 @@
 import type { Request, Response } from "express";
 import { handleError } from "../../utils/errorHandler/errorHandler";
-import { processImage } from "../../utils/media/imageProcessor";
+import { deleteImage, processImage } from "../../utils/media/imageProcessor";
 
 export const mediaController = {
   uploadImage: async (req: Request, res: Response): Promise<void> => {
     try {
-      console.log(req.user);
       if (!req.file) {
         res.status(400).json({ message: "Aucun fichier fourni." });
         return;
@@ -26,6 +25,25 @@ export const mediaController = {
 
       res.status(201).json(response);
     } catch (error) {
+      handleError(res, error as Error);
+    }
+  },
+
+  deleteImage: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { filename } = req.params;
+      console.log(`Demande de suppression pour : ${filename}`);
+
+      if (!filename) {
+        res.status(400).json({ message: "Nom de fichier manquant." });
+        return;
+      }
+
+      await deleteImage(filename);
+
+      res.status(200).json({ message: "Image supprimée avec succès." });
+    } catch (error) {
+      console.error("Erreur controller deleteImage:", error);
       handleError(res, error as Error);
     }
   },
