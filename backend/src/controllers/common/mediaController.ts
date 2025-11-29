@@ -32,7 +32,6 @@ export const mediaController = {
   deleteImage: async (req: Request, res: Response): Promise<void> => {
     try {
       const { filename } = req.params;
-      console.log(`Demande de suppression pour : ${filename}`);
 
       if (!filename) {
         res.status(400).json({ message: "Nom de fichier manquant." });

@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useContext, useEffect, useMemo, useRef } from "react";
+import { useContext, useEffect, useMemo, useRef, useState } from "react";
 import { Controller, useForm } from "react-hook-form";
 import { useLocation, useParams } from "react-router";
 import Select from "react-select";
@@ -61,6 +61,9 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
     useShallow((state) => state)
   );
 
+  // État pour gérer les erreurs de taille de fichier
+  const [fileSizeError, setFileSizeError] = useState<string | null>(null);
+
   const handleSelectTagsChange = (value: MultiValue<OptionType>) => {
     const tagIds = value.map((tag) => tag.value as string).join("|");
     const newMapInfos = { ...mapInfos, tags: tagIds };
@@ -86,6 +89,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
       // On s'assure que la valeur envoyée au backend est bien vide pour déclencher la suppression
       formData.image_url = "";
     }
+    // Si image_url est une string (URL) qui n'est pas vide et n'est pas un File, on la garde telle quelle
 
     if (pathname.includes("create")) {
       const newMapResponse = await createNewMap({
@@ -262,10 +266,14 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
                   render={({ field: { onChange, value } }) => (
                     <InputFileComponent
                       onChange={onChange}
-                      defaultValue={value as string | File | null | undefined}
+                      onError={setFileSizeError}
+                      defaultValue={
+                        value && typeof value === "string" ? value : undefined
+                      }
                     />
                   )}
                 />
+                {fileSizeError && <ErrorComponent message={fileSizeError} />}
                 {input.required.value &&
                   errors[input.name as keyof FieldErrors<MapInfoType>] && (
                     <ErrorComponent

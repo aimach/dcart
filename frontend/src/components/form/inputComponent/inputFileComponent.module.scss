@@ -1,9 +1,11 @@
+@use "../../../styles/mixin" as m;
+@use "../../../styles/variable" as v;
+
 .inputFileContainer {
   width: 100%;
   display: flex;
-  justify-content: flex-start;
-  align-items: center;
-  margin-top: 0.5rem;
+  flex-direction: column;
+  gap: v.$space-s;
 }
 
 .previewContainer {
@@ -80,6 +82,53 @@
   }
 }
 
+.urlContainer {
+  width: 100%;
+
+  .urlInput {
+    width: 100%;
+    padding: v.$space-s;
+    border: v.$border-width-m solid v.$color-grullo-light;
+    border-radius: v.$border-radius-rounded;
+    font-size: v.$font-size-m;
+    font-family: "Vollkorn";
+
+    &:focus {
+      outline: v.$border-width-m solid v.$color-umber;
+    }
+  }
+}
+
+.modeToggle {
+  display: flex;
+  justify-content: flex-end;
+  margin-top: v.$space-xs;
+
+  .toggleButton {
+    background: none;
+    border: none;
+    color: v.$color-umber;
+    cursor: pointer;
+    display: flex;
+    align-items: center;
+    gap: v.$space-xs;
+    font-size: v.$font-size-s;
+    font-family: "Vollkorn";
+    padding: v.$space-xs v.$space-s;
+    border-radius: v.$border-radius-base;
+    transition: all 0.2s ease;
+
+    &:hover {
+      background-color: rgba(v.$color-umber, 0.1);
+      text-decoration: underline;
+    }
+
+    &:active {
+      transform: scale(0.98);
+    }
+  }
+}
+
 @keyframes spin {
   from {
     transform: rotate(0deg);
@@ -88,4 +137,3 @@
     transform: rotate(360deg);
   }
 }
-

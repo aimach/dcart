@@ -31,7 +31,7 @@ const origin =
     : `http://${process.env.APP_HOST}:${process.env.FRONTEND_PORT}`;
 
 // middleware
-app.use(express.json({ limit: "10mb" }));
+app.use(express.json({ limit: "2mb" }));
 app.use(cookieParser());
 app.use(
   cors({
