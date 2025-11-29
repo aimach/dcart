@@ -13,6 +13,7 @@ import { authRoutes } from "./routes/authRoutes";
 import { storymapRoutes } from "./routes/storymap";
 import { sessionRoutes } from "./routes/sessionRoutes";
 import { translationRoutes } from "./routes/translationRoutes";
+import { mediaRoutes } from "./routes/common/mediaRoutes";
 // import des types
 import "./utils/types/userTypes"; // pour étendre Request avec user
 
@@ -62,6 +63,8 @@ app.use("/dcart", dcartRoutes);
 app.use("/map", mapRoutes);
 app.use("/storymap", storymapRoutes);
 app.use("/translation", translationRoutes);
+app.use("/media", express.static(path.join(__dirname, "../media")));
+app.use("/media", mediaRoutes);
 
 // Démarrage du serveur
 // app.listen(6001, "0.0.0.0", () =>
