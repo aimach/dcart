@@ -27,8 +27,8 @@ export class Storymap extends BaseEntity {
   @Column({ type: "text", nullable: true })
   title_lang2?: string | null;
 
-  @Column({ type: "text", nullable: false })
-  description_lang1!: string;
+  @Column({ type: "text", nullable: true })
+  description_lang1?: string | null;
 
   @Column({ type: "text", nullable: true })
   description_lang2?: string | null;

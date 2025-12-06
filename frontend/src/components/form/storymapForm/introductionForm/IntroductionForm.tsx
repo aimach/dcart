@@ -61,18 +61,18 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
   const [inputs, setInputs] = useState<InputType[]>(storymapInputs);
 
   // au montage du composant, récupération des catégories et des langues pour les select/options
-  // biome-ignore lint/correctness/useExhaustiveDependencies:
   useEffect(() => {
     const fetchAllLanguagesAndCreateOptions = async () => {
       const allLanguages: StorymapLanguageType[] =
         await getAllStorymapLanguages();
       // création des options pour le select des catégories
-      const newInputs = createLanguageOptions(allLanguages, inputs);
+      // Utiliser storymapInputs directement pour éviter la boucle infinie
+      const newInputs = createLanguageOptions(allLanguages, storymapInputs);
       setInputs(newInputs);
     };
 
     fetchAllLanguagesAndCreateOptions();
-  }, [language, inputs]);
+  }, [language]);
 
   // -- MODE MODIFICATION --
   const { storymapId } = useParams();
@@ -125,6 +125,11 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
         lang2: formData.lang2 === "0" ? null : formData.lang2,
         tags: selectedTags,
       });
+      console.log("newStorymap", newStorymap);
+      if (!newStorymap || !newStorymap.id) {
+        console.error("Erreur: la storymap n'a pas été créée correctement");
+        return;
+      }
       setStorymapInfos(newStorymap);
       navigate(`/backoffice/storymaps/${newStorymap.id}`);
     } else {
