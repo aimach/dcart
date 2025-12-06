@@ -22,6 +22,11 @@ const LayoutBlock = ({ blockContent }: LayoutBlockProps) => {
   const { isMobile } = useWindowSize();
 
   const imageSide = blockContent.content1_lang1;
+  const imageSize =
+    (blockContent[`content2_${selectedLanguage}`] as string) || "medium";
+  const imageSizeClass = `image${
+    imageSize.charAt(0).toUpperCase() + imageSize.slice(1)
+  }`;
 
   const textAndImageBlockInOrder: BlockContentType[] = useMemo(() => {
     const textBlock = blockContent.children.find(
@@ -39,11 +44,23 @@ const LayoutBlock = ({ blockContent }: LayoutBlockProps) => {
 
   return isMobile ? (
     <section className={style.layoutSection}>
-      <img
-        src={textAndImageBlockInOrder[0][`content1_${selectedLanguage}`]}
-        alt={textAndImageBlockInOrder[0][`content2_${selectedLanguage}`]}
-        loading="lazy"
-      />
+      <figure className={style[imageSizeClass]}>
+        <img
+          src={textAndImageBlockInOrder[0][`content1_${selectedLanguage}`]}
+          alt={textAndImageBlockInOrder[0][`content2_${selectedLanguage}`]}
+          loading="lazy"
+        />
+        <figcaption
+          // biome-ignore lint/security/noDangerouslySetInnerHtml: le texte est nettoyé avec DOMPurify
+          dangerouslySetInnerHTML={{
+            __html: DOMPurify.sanitize(
+              textAndImageBlockInOrder[0][`content2_${selectedLanguage}`],
+              getAllowedTags()
+            ),
+          }}
+          className="ql-editor"
+        />
+      </figure>
       <div
         // biome-ignore lint/security/noDangerouslySetInnerHtml: le texte est nettoyé avec DOMPurify
         dangerouslySetInnerHTML={{
@@ -73,14 +90,22 @@ const LayoutBlock = ({ blockContent }: LayoutBlockProps) => {
           );
         }
         if (child.type.name === "image") {
+          const sanitizedCaption = DOMPurify.sanitize(
+            child[`content2_${selectedLanguage}`],
+            getAllowedTags()
+          );
           return (
-            <figure key={child.id}>
+            <figure key={child.id} className={style[imageSizeClass]}>
               <img
                 src={child[`content1_${selectedLanguage}`]}
                 alt={child[`content2_${selectedLanguage}`]}
                 loading="lazy"
               />
-              <figcaption>{child[`content2_${selectedLanguage}`]}</figcaption>
+              <figcaption
+                // biome-ignore lint/security/noDangerouslySetInnerHtml: le texte est nettoyé avec DOMPurify
+                dangerouslySetInnerHTML={{ __html: sanitizedCaption }}
+                className="ql-editor"
+              />
             </figure>
           );
         }

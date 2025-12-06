@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router";
 // import des composants
 import EditorComponent from "../wysiwygBlock/EditorComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
+import InputFileComponent from "../../inputComponent/InputFileComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
@@ -73,6 +74,9 @@ const CommonForm = ({
 	const [_, setSearchParams] = useSearchParams();
 
 	const [formInputs, setFormInputs] = useState<InputType[]>(inputs);
+
+	// État pour gérer les erreurs de taille de fichier
+	const [fileSizeError, setFileSizeError] = useState<string | null>(null);
 
 	// import des sevice de formulaire
 	const {
@@ -222,6 +226,48 @@ const CommonForm = ({
 										/>
 									)}
 							</div>{" "}
+						</div>
+					);
+				}
+				if (input.type === "file") {
+					return (
+						<div key={input.name} className={style.commonFormInputContainer}>
+							<div className={style.labelContainer}>
+								<label htmlFor={input.name}>
+									{input[`label_${language}`]}{" "}
+									{input.required.value && (
+										<span style={{ color: "#9d2121" }}>*</span>
+									)}
+								</label>
+								<p>{input[`description_${language}`] ?? ""}</p>
+							</div>
+							<div className={style.inputContainer}>
+								<Controller
+									name={input.name as keyof allInputsType}
+									control={control}
+									rules={{
+										required: input.required.value,
+									}}
+									render={({ field: { onChange, value } }) => (
+										<InputFileComponent
+											onChange={onChange}
+											onError={setFileSizeError}
+											defaultValue={
+												value && typeof value === "string"
+													? value
+													: undefined
+											}
+										/>
+									)}
+								/>
+								{fileSizeError && <ErrorComponent message={fileSizeError} />}
+								{input.required.value &&
+									errors[input.name as keyof allInputsType] && (
+										<ErrorComponent
+											message={input.required.message?.[language] as string}
+										/>
+									)}
+							</div>
 						</div>
 					);
 				}

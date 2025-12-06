@@ -10,6 +10,7 @@ import { Storymap } from "../../entities/storymap/Storymap";
 import { handleError } from "../../utils/errorHandler/errorHandler";
 import { generateUniqueSlug } from "../../utils/functions/builtMap";
 import { jwtService } from "../../utils/jwt";
+import { deleteImage } from "../../utils/media/imageProcessor";
 // import des types
 import type { Request, Response } from "express";
 
@@ -227,7 +228,7 @@ export const storymapContentControllers = {
 	updateStorymap: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { storymapId } = req.params;
-			const { tags } = req.body;
+			const { tags, image_url } = req.body;
 
 			const storymapToUpdate = await dcartDataSource
 				.getRepository(Storymap)
@@ -238,6 +239,22 @@ export const storymapContentControllers = {
 			if (!storymapToUpdate) {
 				res.status(404).send("Storymap non trouvée.");
 				return;
+			}
+
+			// Gestion de la suppression de l'ancienne image
+			// Si une nouvelle URL est fournie et qu'elle est différente de l'ancienne
+			// OU si l'image est vide (suppression explicite par l'utilisateur)
+			if (
+				storymapToUpdate.image_url &&
+				image_url !== undefined && // Le champ a été envoyé dans la requête
+				storymapToUpdate.image_url !== image_url // Et il est différent de ce qu'on a en base
+			) {
+				try {
+					await deleteImage(storymapToUpdate.image_url);
+				} catch (err) {
+					console.error("Erreur lors de la suppression de l'ancienne image", err);
+					// On continue quand même la mise à jour, ce n'est pas bloquant
+				}
 			}
 
 			const { userId } = req.user as jwt.JwtPayload;

@@ -1,37 +1,71 @@
-@use '../../../../styles/mixin' as m;
-@use '../../../../styles/variable' as v;
+@use "../../../../styles/mixin" as m;
+@use "../../../../styles/variable" as v;
 
-.layoutFormButtonContainer {
-    width: 100%;
-    height: 100px;
+.formInputsContainer {
+  @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+  gap: 0;
+  width: 100%;
+  margin: v.$space-xxl 0;
+  padding: 0 v.$space-xxl;
+}
 
-    @include m.flexbox(flex, row, nowrap, space-evenly, center);
+.commonFormInputContainer {
+  @include m.flexbox(flex, row, nowrap, center, flex-start);
+  gap: v.$space-s;
+  width: 100%;
+  padding-bottom: v.$space-s;
+  margin-bottom: v.$space-s;
+  border-bottom: v.$border-width-m solid v.$color-grullo-light;
 
-    >button {
-        @include m.flexbox(flex, row, nowrap, space-evenly, center);
-        gap: v.$space-s;
-        height: 100px;
+  .labelContainer {
+    width: 50%;
 
-        @include m.buttonStyle(v.$color-neutral-100, v.$color-dark-lava);
-        border: 1px solid v.$color-dark-lava;
+    > label {
+      font-size: v.$font-size-l;
+      font-weight: v.$font-weight-bold;
     }
 
-    // on retourne l'icône pour l'avoir dans l'autre sens
-    >button:last-child {
-        >svg {
-            transform: rotate(180deg);
-        }
+    > p {
+      width: 80%;
+      padding-top: v.$space-xs;
+      font-size: v.$font-size-m;
+      font-weight: v.$font-weight-light;
+      color: v.$color-grullo;
     }
+  }
+
+  .inputContainer {
+    width: 50%;
+    @include m.flexbox(flex, column, nowrap, space-between, flex-start);
+    gap: v.$space-s;
+
+    > select {
+      width: 100%;
+      padding: v.$space-s;
+      border: v.$border-width-m solid v.$color-grullo-light;
+      border-radius: v.$border-radius-rounded;
+      font-size: v.$font-size-m;
+      font-family: "Vollkorn";
+
+      &:focus {
+        outline: v.$border-width-m solid v.$color-umber;
+      }
+    }
+  }
 }
 
 .navigationButtonContainer {
-    @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
-    margin: v.$space-s;
-    gap: v.$space-s;
+  @include m.flexbox(flex, row, nowrap, flex-start, flex-start);
+  margin: v.$space-xxl;
+  gap: v.$space-s;
 
-    >button {
-        @include m.buttonStyle(v.$color-umber, v.$color-neutral-100, (v.$space-s v.$space-l));
-        @include m.flexbox(flex, row, nowrap, space-evenly, center);
-        gap: v.$space-s;
-    }
+  > button {
+    @include m.buttonStyle(
+      v.$color-umber,
+      v.$color-neutral-100,
+      (v.$space-s v.$space-l)
+    );
+    @include m.flexbox(flex, row, nowrap, space-evenly, center);
+    gap: v.$space-s;
+  }
 }

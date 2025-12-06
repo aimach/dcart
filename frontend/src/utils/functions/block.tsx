@@ -52,7 +52,6 @@ const getPreviewText = (
     "quote",
     "table",
     "link",
-    "image",
     "simple_map",
     "comparison_map",
     "scroll_map",
@@ -70,6 +69,19 @@ const getPreviewText = (
         // biome-ignore lint/security/noDangerouslySetInnerHtml: texte est nettoyé avec DOMPurify
         dangerouslySetInnerHTML={{ __html: `${sanitizedText}...` }}
         style={{ fontSize: "13px" }}
+      />
+    );
+  }
+  if (block.type.name === "image") {
+    const thumbnailUrl = block[`content1_lang1`].replace(
+      "/dcart/media/original/",
+      "/dcart/media/thumb/"
+    );
+    return (
+      <img
+        src={thumbnailUrl}
+        alt={block[`content2_lang1`]}
+        style={{ height: "100px", width: "auto" }}
       />
     );
   }
