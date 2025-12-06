@@ -1,261 +1,323 @@
 // import des entités
+import { User } from "../../entities/auth/User";
 import { Block } from "../../entities/storymap/Block";
 import { Storymap } from "../../entities/storymap/Storymap";
 import { Type } from "../../entities/storymap/Type";
-import { User } from "../../entities/auth/User";
 // import des services
 import { dcartDataSource } from "../../dataSource/dataSource";
 import { handleError } from "../../utils/errorHandler/errorHandler";
+import { deleteImage, isLocalImageUrl } from "../../utils/media/imageProcessor";
 // import des types
 import type { Request, Response } from "express";
 
 export const blockController = {
-	// récupère tous les blocs ou un bloc en particulier
-	getBlockInfos: async (req: Request, res: Response): Promise<void> => {
-		try {
-			const { blockId } = req.params;
-			if (!blockId) {
-				res.status(400).send("Aucun identifiant de block reçu.");
-				return;
-			}
+  // récupère tous les blocs ou un bloc en particulier
+  getBlockInfos: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { blockId } = req.params;
+      if (!blockId) {
+        res.status(400).send("Aucun identifiant de block reçu.");
+        return;
+      }
 
-			if (blockId === "all") {
-				const blocks = await dcartDataSource.getRepository(Block).find();
+      if (blockId === "all") {
+        const blocks = await dcartDataSource.getRepository(Block).find();
 
-				res.status(200).send(blocks);
-				return;
-			}
+        res.status(200).send(blocks);
+        return;
+      }
 
-			const block = await dcartDataSource
-				.getRepository(Block)
-				.createQueryBuilder("block")
-				.leftJoinAndSelect("block.children", "blocks")
-				.leftJoinAndSelect("block.type", "type")
-				.leftJoinAndSelect("blocks.type", "childrenType")
-				.leftJoinAndSelect("block.attestations", "attestations")
-				.leftJoinAndSelect("attestations.icon", "icon")
-				.leftJoinAndSelect("attestations.color", "color")
-				.leftJoinAndSelect(
-					"attestations.customPointsArray",
-					"customPointsArray",
-				)
-				.leftJoinAndSelect("blocks.attestations", "childrenAttestations")
-				.leftJoinAndSelect("childrenAttestations.icon", "childrenIcon")
-				.leftJoinAndSelect("childrenAttestations.color", "childrenColor")
-				.leftJoinAndSelect(
-					"childrenAttestations.customPointsArray",
-					"childrenCustomPointsArray",
-				)
-				.orderBy("blocks.position", "ASC")
-				.where("block.id = :blockId", { blockId })
-				.getOne();
+      const block = await dcartDataSource
+        .getRepository(Block)
+        .createQueryBuilder("block")
+        .leftJoinAndSelect("block.children", "blocks")
+        .leftJoinAndSelect("block.type", "type")
+        .leftJoinAndSelect("blocks.type", "childrenType")
+        .leftJoinAndSelect("block.attestations", "attestations")
+        .leftJoinAndSelect("attestations.icon", "icon")
+        .leftJoinAndSelect("attestations.color", "color")
+        .leftJoinAndSelect(
+          "attestations.customPointsArray",
+          "customPointsArray"
+        )
+        .leftJoinAndSelect("blocks.attestations", "childrenAttestations")
+        .leftJoinAndSelect("childrenAttestations.icon", "childrenIcon")
+        .leftJoinAndSelect("childrenAttestations.color", "childrenColor")
+        .leftJoinAndSelect(
+          "childrenAttestations.customPointsArray",
+          "childrenCustomPointsArray"
+        )
+        .orderBy("blocks.position", "ASC")
+        .where("block.id = :blockId", { blockId })
+        .getOne();
 
-			if (!block) {
-				res.status(404).send("Block non trouvé.");
-				return;
-			}
+      if (!block) {
+        res.status(404).send("Block non trouvé.");
+        return;
+      }
 
-			res.status(200).send(block);
-		} catch (error) {
-			handleError(res, error as Error);
-		}
-	},
+      res.status(200).send(block);
+    } catch (error) {
+      handleError(res, error as Error);
+    }
+  },
 
-	// crée un nouveau bloc
-	createNewBlock: async (req: Request, res: Response): Promise<void> => {
-		try {
-			const {
-				content1_lang1,
-				content1_lang2,
-				content2_lang1,
-				content2_lang2,
-				content3,
-				parentId,
-				storymapId,
-				typeName,
-			} = req.body;
+  // crée un nouveau bloc
+  createNewBlock: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const {
+        content1_lang1,
+        content1_lang2,
+        content2_lang1,
+        content2_lang2,
+        content3,
+        parentId,
+        storymapId,
+        typeName,
+      } = req.body;
 
-			// on vérifie que la storymap existe
-			const storymap = await dcartDataSource.getRepository(Storymap).findOne({
-				where: { id: storymapId },
-			});
+      // on vérifie que la storymap existe
+      const storymap = await dcartDataSource.getRepository(Storymap).findOne({
+        where: { id: storymapId },
+      });
 
-			if (!storymap) {
-				res.status(404).send("Storymap non trouvée.");
-				return;
-			}
+      if (!storymap) {
+        res.status(404).send("Storymap non trouvée.");
+        return;
+      }
 
-			// on récupère l'id du type
-			const blockType = await dcartDataSource.getRepository(Type).findOne({
-				where: { name: typeName },
-			});
+      // on récupère l'id du type
+      const blockType = await dcartDataSource.getRepository(Type).findOne({
+        where: { name: typeName },
+      });
 
-			if (!blockType) {
-				res.status(404).send("Type de block non trouvé.");
-				return;
-			}
+      if (!blockType) {
+        res.status(404).send("Type de block non trouvé.");
+        return;
+      }
 
-			// on récupère le nombre de blocks pour déterminer la position
-			const query = dcartDataSource.createQueryBuilder(Block, "block");
-			query
-				.select("MAX(block.position)", "max")
-				.where("block.storymap = :storymapId", { storymapId });
-			const position = await query.getRawOne();
+      // on récupère le nombre de blocks pour déterminer la position
+      const query = dcartDataSource.createQueryBuilder(Block, "block");
+      query
+        .select("MAX(block.position)", "max")
+        .where("block.storymap = :storymapId", { storymapId });
+      const position = await query.getRawOne();
 
-			const isLayoutChild =
-				(blockType.name === "image" || blockType.name === "text") && parentId;
+      const isLayoutChild =
+        (blockType.name === "image" || blockType.name === "text") && parentId;
 
-			const newBlock = dcartDataSource.getRepository(Block).create({
-				content1_lang1,
-				content1_lang2,
-				content2_lang1,
-				content2_lang2,
-				content3: content3 || null,
-				position: isLayoutChild ? null : position.max + 1,
-				parent: parentId,
-				storymap: storymapId,
-				type: blockType,
-			});
+      const newBlock = dcartDataSource.getRepository(Block).create({
+        content1_lang1,
+        content1_lang2,
+        content2_lang1,
+        content2_lang2,
+        content3: content3 || null,
+        position: isLayoutChild ? null : position.max + 1,
+        parent: parentId,
+        storymap: storymapId,
+        type: blockType,
+      });
 
-			await dcartDataSource.getRepository(Block).save(newBlock);
+      await dcartDataSource.getRepository(Block).save(newBlock);
 
-			// mise à jour de la date de modification de la storymap
+      // mise à jour de la date de modification de la storymap
 
-			const user = await dcartDataSource.getRepository(User).findOneBy({
-				id: req.user?.userId || "",
-			});
-			await dcartDataSource.getRepository(Storymap).update(storymapId, {
-				updatedAt: new Date(),
-				modifier: user || null,
-			});
+      const user = await dcartDataSource.getRepository(User).findOneBy({
+        id: req.user?.userId || "",
+      });
+      await dcartDataSource.getRepository(Storymap).update(storymapId, {
+        updatedAt: new Date(),
+        modifier: user || null,
+      });
 
-			res.status(201).send(newBlock);
-		} catch (error) {
-			handleError(res, error as Error);
-		}
-	},
+      res.status(201).send(newBlock);
+    } catch (error) {
+      handleError(res, error as Error);
+    }
+  },
 
-	// met à jour un bloc
-	updateBlock: async (req: Request, res: Response): Promise<void> => {
-		try {
-			const { blockId } = req.params;
+  // met à jour un bloc
+  updateBlock: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { blockId } = req.params;
 
-			if (blockId === "position") {
-				const { blocks } = req.body;
+      if (blockId === "position") {
+        const { blocks } = req.body;
 
-				if (!blocks || blocks.length === 0) {
-					res.status(400).send("Aucune donnée reçue");
-					return;
-				}
+        if (!blocks || blocks.length === 0) {
+          res.status(400).send("Aucune donnée reçue");
+          return;
+        }
 
-				for (const [index, block] of blocks.entries()) {
-					dcartDataSource.getRepository(Block).update(
-						{ id: block.id },
-						{
-							position: index + 1,
-						},
-					);
-				}
+        for (const [index, block] of blocks.entries()) {
+          dcartDataSource.getRepository(Block).update(
+            { id: block.id },
+            {
+              position: index + 1,
+            }
+          );
+        }
 
-				res.status(200).send("Position des blocs mise à jour.");
-				return;
-			}
+        res.status(200).send("Position des blocs mise à jour.");
+        return;
+      }
 
-			const blockToUpdate = await dcartDataSource.getRepository(Block).findOne({
-				where: { id: blockId },
-				relations: {
-					storymap: true,
-				},
-			});
+      const blockToUpdate = await dcartDataSource.getRepository(Block).findOne({
+        where: { id: blockId },
+        relations: {
+          storymap: true,
+        },
+      });
 
-			if (!blockToUpdate) {
-				res.status(404).send("Block non trouvé.");
-				return;
-			}
+      if (!blockToUpdate) {
+        res.status(404).send("Block non trouvé.");
+        return;
+      }
 
-			const {
-				content1_lang1,
-				content1_lang2,
-				content2_lang1,
-				content2_lang2,
-				content3,
-				parentId,
-			} = req.body;
+      const {
+        content1_lang1,
+        content1_lang2,
+        content2_lang1,
+        content2_lang2,
+        content3,
+        parentId,
+      } = req.body;
 
-			const updatedBlock = await dcartDataSource.getRepository(Block).create({
-				...blockToUpdate,
-				content1_lang1,
-				content1_lang2,
-				content2_lang1,
-				content2_lang2,
-				content3,
-				parent: parentId,
-			});
+      const updatedBlock = await dcartDataSource.getRepository(Block).create({
+        ...blockToUpdate,
+        content1_lang1,
+        content1_lang2,
+        content2_lang1,
+        content2_lang2,
+        content3,
+        parent: parentId,
+      });
 
-			const newBlock = await dcartDataSource
-				.getRepository(Block)
-				.save(updatedBlock);
+      const newBlock = await dcartDataSource
+        .getRepository(Block)
+        .save(updatedBlock);
 
-			const savedBlock = await dcartDataSource.getRepository(Block).findOne({
-				where: { id: newBlock.id },
-				relations: {
-					attestations: {
-						icon: true,
-						color: true,
-					},
-				},
-			});
+      const savedBlock = await dcartDataSource.getRepository(Block).findOne({
+        where: { id: newBlock.id },
+        relations: {
+          attestations: {
+            icon: true,
+            color: true,
+          },
+        },
+      });
 
-			const user = await dcartDataSource.getRepository(User).findOneBy({
-				id: req.user?.userId || "",
-			});
-			// mise à jour de la date de modification de la storymap
-			await dcartDataSource
-				.getRepository(Storymap)
-				.update(updatedBlock.storymap.id, {
-					updatedAt: new Date(),
-					modifier: user || null,
-				});
+      const user = await dcartDataSource.getRepository(User).findOneBy({
+        id: req.user?.userId || "",
+      });
+      // mise à jour de la date de modification de la storymap
+      await dcartDataSource
+        .getRepository(Storymap)
+        .update(updatedBlock.storymap.id, {
+          updatedAt: new Date(),
+          modifier: user || null,
+        });
 
-			res.status(200).send(savedBlock);
-		} catch (error) {
-			handleError(res, error as Error);
-		}
-	},
+      res.status(200).send(savedBlock);
+    } catch (error) {
+      handleError(res, error as Error);
+    }
+  },
 
-	// supprime un bloc
-	deleteBlock: async (req: Request, res: Response): Promise<void> => {
-		try {
-			const { blockId } = req.params;
+  // supprime un bloc
+  deleteBlock: async (req: Request, res: Response): Promise<void> => {
+    try {
+      const { blockId } = req.params;
 
-			const blockToDelete = await dcartDataSource.getRepository(Block).findOne({
-				where: { id: blockId },
-				relations: {
-					storymap: true,
-				},
-			});
+      // Récupérer le bloc avec ses relations (type, children, child.type)
+      const blockToDelete = await dcartDataSource.getRepository(Block).findOne({
+        where: { id: blockId },
+        relations: {
+          storymap: true,
+          type: true,
+          children: {
+            type: true,
+          },
+        },
+      });
 
-			if (!blockToDelete) {
-				res.status(404).send("Bloc non trouvé.");
-				return;
-			}
+      if (!blockToDelete) {
+        res.status(404).send("Bloc non trouvé.");
+        return;
+      }
 
-			await dcartDataSource.getRepository(Block).delete(blockId);
+      // Ensemble pour stocker les URLs d'images uniques à supprimer
+      const imageUrlsToDelete = new Set<string>();
 
-			const user = await dcartDataSource.getRepository(User).findOneBy({
-				id: req.user?.userId || "",
-			});
-			// mise à jour de la date de modification de la storymap
-			await dcartDataSource
-				.getRepository(Storymap)
-				.update(blockToDelete.storymap.id, {
-					updatedAt: new Date(),
-					modifier: user || null,
-				});
+      // Si le bloc est de type "image", supprimer son image
+      if (blockToDelete.type?.name === "image") {
+        // Ajouter content1_lang1 si c'est une URL locale
+        if (
+          blockToDelete.content1_lang1 &&
+          isLocalImageUrl(blockToDelete.content1_lang1)
+        ) {
+          imageUrlsToDelete.add(blockToDelete.content1_lang1);
+        }
+        // Ajouter content1_lang2 si c'est une URL locale différente de content1_lang1
+        if (
+          blockToDelete.content1_lang2 &&
+          isLocalImageUrl(blockToDelete.content1_lang2) &&
+          blockToDelete.content1_lang2 !== blockToDelete.content1_lang1
+        ) {
+          imageUrlsToDelete.add(blockToDelete.content1_lang2);
+        }
+      }
 
-			res.status(200).send("Block supprimé.");
-		} catch (error) {
-			handleError(res, error as Error);
-		}
-	},
+      // Si le bloc est de type "layout", parcourir ses enfants
+      if (blockToDelete.type?.name === "layout" && blockToDelete.children) {
+        for (const child of blockToDelete.children) {
+          // Si l'enfant est de type "image", supprimer son image
+          if (child.type?.name === "image") {
+            if (child.content1_lang1 && isLocalImageUrl(child.content1_lang1)) {
+              imageUrlsToDelete.add(child.content1_lang1);
+            }
+            // Ajouter content1_lang2 si c'est une URL locale différente
+            if (
+              child.content1_lang2 &&
+              isLocalImageUrl(child.content1_lang2) &&
+              child.content1_lang2 !== child.content1_lang1
+            ) {
+              imageUrlsToDelete.add(child.content1_lang2);
+            }
+          }
+        }
+      }
+
+      // Supprimer toutes les images identifiées (avec gestion d'erreur individuelle)
+      for (const imageUrl of imageUrlsToDelete) {
+        try {
+          await deleteImage(imageUrl);
+        } catch (err) {
+          console.error(
+            `Erreur lors de la suppression de l'image ${imageUrl}:`,
+            err
+          );
+          // On continue même si une image ne peut pas être supprimée
+        }
+      }
+
+      // Supprimer le bloc de la base de données
+      await dcartDataSource.getRepository(Block).delete(blockId);
+
+      const user = await dcartDataSource.getRepository(User).findOneBy({
+        id: req.user?.userId || "",
+      });
+      // mise à jour de la date de modification de la storymap
+      await dcartDataSource
+        .getRepository(Storymap)
+        .update(blockToDelete.storymap.id, {
+          updatedAt: new Date(),
+          modifier: user || null,
+        });
+
+      res.status(200).send("Block supprimé.");
+    } catch (error) {
+      handleError(res, error as Error);
+    }
+  },
 };
