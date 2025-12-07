@@ -255,7 +255,7 @@ const CommonForm = ({
                       defaultValue={
                         value && typeof value === "string" ? value : undefined
                       }
-                      allowUrlPreview={action !== "create"}
+                      allowUrlPreview={false}
                     />
                   )}
                 />
