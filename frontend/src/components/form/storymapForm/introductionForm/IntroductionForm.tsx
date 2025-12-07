@@ -125,7 +125,6 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
         lang2: formData.lang2 === "0" ? null : formData.lang2,
         tags: selectedTags,
       });
-      console.log("newStorymap", newStorymap);
       if (!newStorymap || !newStorymap.id) {
         console.error("Erreur: la storymap n'a pas été créée correctement");
         return;

@@ -270,6 +270,7 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
                       defaultValue={
                         value && typeof value === "string" ? value : undefined
                       }
+                      allowUrlPreview={!pathname.includes("create")}
                     />
                   )}
                 />

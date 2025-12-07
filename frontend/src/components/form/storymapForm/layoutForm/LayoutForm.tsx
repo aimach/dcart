@@ -106,7 +106,6 @@ const LayoutForm = () => {
 
   // fonction pour mettre à jour la position et la taille de l'image
   const handleLayoutUpdate = async () => {
-    console.log(imageSize);
     if (action === "edit" && block && selectedPosition) {
       await updateBlock(
         {

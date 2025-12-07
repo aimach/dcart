@@ -106,9 +106,9 @@ const storymapInputs: InputType[] = [
     label_fr: "Image de couverture",
     label_en: "Cover image",
     description_fr:
-      "L'image de couverture de la storymap est affichée en arrière plan du titre. Vous pouvez soit uploader un fichier image, soit saisir une URL d'image externe. L'image ne doit pas dépasser 2MB.",
+      "L'image de couverture de la storymap est affichée en arrière plan du titre. Vous pouvez soit uploader un fichier image, soit saisir une URL d'image externe. L'image ne doit pas dépasser 2MB. En création, la prévisualisation est disponible pour les fichiers uploadés mais pas pour les URL externes.",
     description_en:
-      "The cover image of the storymap is displayed in the background of the title. You can either upload an image file or enter an external image URL. The image must not exceed 2MB.",
+      "The cover image of the storymap is displayed in the background of the title. You can either upload an image file or enter an external image URL. The image must not exceed 2MB. In creation, the preview is available for uploaded files but not for external URLs.",
     name: "image_url",
     type: "file",
     required: {

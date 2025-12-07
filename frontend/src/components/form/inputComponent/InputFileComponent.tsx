@@ -7,6 +7,7 @@ type InputFileComponentProps = {
   onError?: (error: string | null) => void;
   defaultValue?: string;
   label?: string;
+  allowUrlPreview?: boolean;
 };
 
 type InputMode = "file" | "url";
@@ -17,6 +18,7 @@ const InputFileComponent = ({
   onChange,
   onError,
   defaultValue,
+  allowUrlPreview = true,
 }: InputFileComponentProps) => {
   const [mode, setMode] = useState<InputMode>("file");
   const [urlValue, setUrlValue] = useState<string>("");
@@ -36,7 +38,14 @@ const InputFileComponent = ({
   };
 
   const thumbnailUrl = getThumbnailUrl(defaultValue);
-  const [preview, setPreview] = useState<string | null>(thumbnailUrl);
+  // Ne pas afficher le preview pour les URLs externes si allowUrlPreview est false
+  // Mais toujours afficher pour les URLs internes (/media/)
+  const initialPreview = thumbnailUrl
+    ? thumbnailUrl.includes("/media/") || allowUrlPreview
+      ? thumbnailUrl
+      : null
+    : null;
+  const [preview, setPreview] = useState<string | null>(initialPreview);
   const inputRef = useRef<HTMLInputElement>(null);
 
   // Initialisation du mode et de la valeur URL si defaultValue est une URL externe
@@ -48,8 +57,12 @@ const InputFileComponent = ({
     ) {
       setMode("url");
       setUrlValue(defaultValue);
+      // Ne pas afficher le preview pour les URLs externes si allowUrlPreview est false
+      if (!allowUrlPreview) {
+        setPreview(null);
+      }
     }
-  }, [defaultValue]);
+  }, [defaultValue, allowUrlPreview]);
 
   // Nettoyage des URLs locales pour éviter les fuites de mémoire
   useEffect(() => {
@@ -90,12 +103,39 @@ const InputFileComponent = ({
     }
   };
 
+  const isValidUrl = (urlString: string): boolean => {
+    if (!urlString || urlString.trim() === "") {
+      return false;
+    }
+    // Si c'est une URL interne (media), on la considère comme valide
+    if (urlString.includes("/media/")) {
+      return true;
+    }
+    try {
+      const url = new URL(urlString);
+      // Vérifier que le protocole est http ou https
+      if (url.protocol !== "http:" && url.protocol !== "https:") {
+        return false;
+      }
+      // Vérifier qu'il y a un hostname (pas juste "http://" ou "https://")
+      return url.hostname.length > 0;
+    } catch {
+      // Si la création de l'URL échoue, l'URL n'est pas valide
+      return false;
+    }
+  };
+
   const handleUrlChange = (e: ChangeEvent<HTMLInputElement>) => {
     const url = e.target.value;
     setUrlValue(url);
-    setPreview(url);
+    if (url.includes("/media/")) {
+      setPreview(url);
+    } else if (allowUrlPreview && isValidUrl(url)) {
+      setPreview(url);
+    } else {
+      setPreview(null);
+    }
     onChange(url);
-    // Effacer l'erreur si on passe en mode URL
     if (onError) {
       onError(null);
     }

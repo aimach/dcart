@@ -80,8 +80,8 @@
 
     // Classes de taille d'image
     &.imageLarge {
-      max-width: 100%;
-      width: 100%;
+      max-width: 50%;
+      width: 50%;
 
       > img {
         width: 100%;
@@ -89,7 +89,8 @@
     }
 
     &.imageMedium {
-      max-width: 70%;
+      max-width: 30%;
+      width: 30%;
 
       > img {
         width: 90%;
@@ -97,7 +98,8 @@
     }
 
     &.imageSmall {
-      max-width: 50%;
+      max-width: 20%;
+      width: 20%;
 
       > img {
         width: 80%;
@@ -110,7 +112,7 @@
 .layoutSection {
   > figure {
     &.imageLarge {
-      width: 100%;
+      width: 50%;
 
       > img {
         width: 100%;
@@ -118,18 +120,18 @@
     }
 
     &.imageMedium {
-      width: 80%;
+      width: 30%;
 
       > img {
-        width: 100%;
+        width: 90%;
       }
     }
 
     &.imageSmall {
-      width: 60%;
+      width: 20%;
 
       > img {
-        width: 100%;
+        width: 80%;
       }
     }
   }
