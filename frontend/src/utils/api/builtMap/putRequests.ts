@@ -1,5 +1,7 @@
 // import des services
+import { isAxiosError } from "axios";
 import { apiClient } from "../apiClient";
+import { getAxiosErrorMessage } from "../getAxiosErrorMessage";
 import {
 	notifyEditSuccess,
 	notifyError,
@@ -112,6 +114,12 @@ const updatePointSet = async (body: PointSetType) => {
 		});
 		return newPointSet;
 	} catch (error) {
+		const detail = getAxiosErrorMessage(error);
+		if (isAxiosError(error) && error.response?.status === 400 && detail) {
+			notifyError(detail);
+		} else {
+			notifyError("Erreur lors de la modification du jeu d'attestations.");
+		}
 		console.error(
 			"Erreur lors de la modification du jeu d'attestations :",
 			error,
