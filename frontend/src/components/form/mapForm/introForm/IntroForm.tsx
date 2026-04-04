@@ -84,13 +84,9 @@ const IntroForm = ({ inputs, setIsMapCreated }: IntroFormProps) => {
         console.error("Échec de l'upload de l'image");
         return;
       }
-    } else if (formData.image_url === "") {
-      // Si le champ est une chaîne vide, cela signifie que l'utilisateur a supprimé l'image
-      // On s'assure que la valeur envoyée au backend est bien vide pour déclencher la suppression
-      formData.image_url = "";
     } else if (!formData.image_url || formData.image_url === undefined) {
-      // Si image_url n'est pas défini, on supprime la propriété pour ne pas l'envoyer au backend
-      delete formData.image_url;
+      // Si image_url n'est pas défini, on envoie une chaîne vide
+      formData.image_url = "";
     }
     // Si image_url est une string (URL) qui n'est pas vide et n'est pas un File, on la garde telle quelle
 
