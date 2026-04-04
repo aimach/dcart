@@ -69,7 +69,6 @@ type storymapInputsType = {
   author_status: string | null;
   author_email: string | null;
   publishedAt: string;
-  category_id: string;
   lang1: string;
   lang2: string;
   relatedMap: string;

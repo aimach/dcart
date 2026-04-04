@@ -84,7 +84,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
     const fetchStorymapInfos = async (storymapId: string) => {
       setIsLoaded(false);
       const response = await getStorymapInfosAndBlocksById(
-        storymapId as string
+        storymapId as string,
       );
       setStorymapInfos({ ...response });
       setIsLoaded(true);
@@ -110,9 +110,8 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
         console.error("Échec de l'upload de l'image");
         return;
       }
-    } else if (formData.image_url === "") {
-      // Si le champ est une chaîne vide, cela signifie que l'utilisateur a supprimé l'image
-      // On s'assure que la valeur envoyée au backend est bien vide pour déclencher la suppression
+    } else if (!formData.image_url || formData.image_url === undefined) {
+      // Si image_url n'est pas défini, on envoie une chaîne vide
       formData.image_url = "";
     }
     // Si image_url est une string (URL) qui n'est pas vide et n'est pas un File, on la garde telle quelle
@@ -120,9 +119,19 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
     if (storymapId === "create") {
       const newStorymap = await createStorymap({
         ...formData,
-        image_url:
-          typeof formData.image_url === "string" ? formData.image_url : "",
-        lang2: formData.lang2 === "0" ? null : formData.lang2,
+        title_lang2: formData.title_lang2 ?? "",
+        description_lang1: formData.description_lang1 ?? "",
+        description_lang2: formData.description_lang2 ?? "",
+        image_url: formData.image_url as string,
+        background_color: formData.background_color ?? "",
+        author: formData.author ?? "",
+        author_status: formData.author_status ?? "",
+        author_email: formData.author_email ?? "",
+        publishedAt: formData.publishedAt ?? "",
+        lang2:
+          formData.lang2 === "0" || formData.lang2 === "" || !formData.lang2
+            ? null
+            : formData.lang2,
         tags: selectedTags,
       });
       if (!newStorymap || !newStorymap.id) {
@@ -135,21 +144,22 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
       const bodyWithoutUselessData: StorymapBodyType = {
         id: storymapInfos?.id as string,
         title_lang1: formData.title_lang1,
-        title_lang2: formData.title_lang2,
-        description_lang1: formData.description_lang1,
-        description_lang2: formData.description_lang2,
-        category_id: formData.category_id,
-        image_url:
-          typeof formData.image_url === "string" ? formData.image_url : "",
+        title_lang2: formData.title_lang2 ?? "",
+        description_lang1: formData.description_lang1 ?? "",
+        description_lang2: formData.description_lang2 ?? "",
+        image_url: formData.image_url as string,
         background_color: formData.background_color
           ? tinycolor(formData.background_color).toHexString()
           : "",
-        author: formData.author,
+        author: formData.author ?? "",
         author_status: formData.author_status ?? "",
         author_email: formData.author_email ?? "",
         lang1: formData.lang1,
-        lang2: formData.lang2 === "0" ? null : formData.lang2,
-        publishedAt: formData.publishedAt,
+        lang2:
+          formData.lang2 === "0" || formData.lang2 === "" || !formData.lang2
+            ? null
+            : formData.lang2,
+        publishedAt: formData.publishedAt ?? "",
         tags: selectedTags
           ? selectedTags
           : (storymapInfos?.tags as TagType[])

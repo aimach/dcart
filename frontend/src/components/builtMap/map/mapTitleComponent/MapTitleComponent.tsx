@@ -1,10 +1,10 @@
+// import des bibliothèques
+import DOMPurify from "dompurify";
 // import des custom hooks
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des services
-import DOMPurify from "dompurify";
-import { getAllowedTags } from "../../../../utils/functions/block";
 import { displayFiltersTags } from "../../../../utils/functions/filter";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
@@ -71,6 +71,11 @@ const MapTitleComponent = ({
     resetTemporaryReminderValues,
   } = useMapFilterReminderStore();
 
+  const sanitizedTitle = useMemo(() => {
+    if (!mapInfos) return "";
+    return DOMPurify.sanitize(mapInfos[`title_${language}`] ?? "");
+  }, [mapInfos, language]);
+
   const filtersDetails = displayFiltersTags(
     userFilters,
     locationFilterReminders,
@@ -83,7 +88,7 @@ const MapTitleComponent = ({
     sourceMaterialFilterReminders,
     languageFilterReminders,
     genderFilterReminders,
-    translation[language]
+    translation[language],
   );
 
   const handleResetButton = async () => {
@@ -107,9 +112,6 @@ const MapTitleComponent = ({
     resetFilterReminders();
   }, []);
 
-  const title = mapInfos ? mapInfos[`title_${language}`] : "Exploration";
-  const sanitizedTitle = DOMPurify.sanitize(title, getAllowedTags());
-
   return (
     <div
       className={
@@ -119,12 +121,15 @@ const MapTitleComponent = ({
       }
     >
       <div className={style.titleAndInfoContainer}>
-        {!isMobile && (
-          <h2
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: le texte est nettoyé avec DOMPurify
-            dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
-          />
-        )}
+        {!isMobile &&
+          (mapInfos ? (
+            <h2
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: titre nettoyé avec DOMPurify
+              dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
+            />
+          ) : (
+            <h2>Exploration</h2>
+          ))}
 
         <Info onClick={() => setIsModalOpen(true)} />
         <RotateCcw onClick={handleResetButton} />

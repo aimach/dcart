@@ -96,7 +96,7 @@ const CommonForm = ({
     if (defaultValues) {
       setValue(
         "category_id",
-        (defaultValues as storymapInputsType).category_id as string
+        (defaultValues as storymapInputsType).category_id as string,
       );
       if ((defaultValues as StorymapType).lang1)
         setValue("lang1", (defaultValues as StorymapType).lang1.id as string);
@@ -107,7 +107,7 @@ const CommonForm = ({
           "relatedMap",
           (defaultValues as StorymapType).relatedMap !== ""
             ? ((defaultValues as StorymapType).relatedMap as string)
-            : "0"
+            : "0",
         );
     }
   }, [defaultValues]);

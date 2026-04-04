@@ -103,7 +103,7 @@ const SimpleMapForm = () => {
   const [isAlreadyAPointSet, setIsAlreadyAPointSet] = useState(false);
 
   const [pointSetIdToClean, setPointSetIdToClean] = useState<string | null>(
-    null
+    null,
   );
   const [isModalOpen, setIsModalOpen] = useState(false);
   const [pointType, setPointType] = useState<"bdd" | "custom">("bdd");
@@ -148,7 +148,7 @@ const SimpleMapForm = () => {
           storymapId,
           typeName: "simple_map",
         },
-        (block as BlockContentType).id
+        (block as BlockContentType).id,
       );
 
       if (updatedBlockInfos?.id) {
@@ -183,12 +183,12 @@ const SimpleMapForm = () => {
       pointSet?.customPointsArray.length > 0);
 
   const handleSubmitPointSet: FormEventHandler<HTMLFormElement> = async (
-    event
+    event,
   ) => {
     event.preventDefault();
     if (!atLeastOneFileLoaded) {
       notifyError(
-        "Veuillez charger au moins un fichier de points avant de soumettre le formulaire."
+        "Veuillez charger au moins un fichier de points avant de soumettre le formulaire.",
       );
       return;
     }
@@ -197,7 +197,7 @@ const SimpleMapForm = () => {
       !isPointSetFormValidWith1Lang
     ) {
       notifyError(
-        "Veuillez remplir tous les champs obligatoires du formulaire."
+        "Veuillez remplir tous les champs obligatoires du formulaire.",
       );
       return;
     }
@@ -248,7 +248,7 @@ const SimpleMapForm = () => {
 
   const handleUpdatePointSet = async (pointSetId: string) => {
     const pointSetToUpdate = block?.attestations?.find(
-      (pointSet) => pointSet.id === pointSetId
+      (pointSet) => pointSet.id === pointSetId,
     ) as PointSetType;
     if (pointSetToUpdate) {
       setPointSetFormAction("edit");
@@ -268,7 +268,7 @@ const SimpleMapForm = () => {
       const newInputs = removeLang2Inputs(simpleMapInputs);
       const newInputsWithLangInLabel = addLangageBetweenBrackets(
         newInputs,
-        storymapInfos as StorymapType
+        storymapInfos as StorymapType,
       );
       setInputs(newInputsWithLangInLabel);
     }
@@ -285,13 +285,13 @@ const SimpleMapForm = () => {
 
   const handlePointSetPosition = async (
     pointSetId: string,
-    newPosition: string
+    newPosition: string,
   ) => {
     const response = await updatePointSetPosition(
       pointSetId,
       newPosition,
       block?.id as string,
-      "block"
+      "block",
     );
     if (response?.status === 200) {
       const newBlockInfos = await getBlockInfos(block?.id as string);
@@ -520,6 +520,17 @@ const SimpleMapForm = () => {
                   setIsAlreadyAPointSet(true);
                   setPointSetFormAction("create");
                 }}
+                customPointsHeaderMapping={{
+                  Latitude: "latitude",
+                  latitude: "latitude",
+                  Longitude: "longitude",
+                  longitude: "longitude",
+                  Lieu: "location",
+                  location: "location",
+                  source_nb: "source_nb",
+                  sourceNb: "source_nb",
+                }}
+                customPointsSkipLines={2}
               />
             </>
           )}
@@ -577,7 +588,7 @@ const SimpleMapForm = () => {
                       const icon = getShapeForLayerName(
                         (pointSet.icon as MapIconType)?.name_en,
                         (pointSet.color as MapColorType)?.code_hex,
-                        hasGrayScale
+                        hasGrayScale,
                       );
                       const isCustomPointSet =
                         pointSet.customPointsArray &&
@@ -598,7 +609,7 @@ const SimpleMapForm = () => {
                               onChange={(event) => {
                                 handlePointSetPosition(
                                   pointSet.id as string,
-                                  event.target.value
+                                  event.target.value,
                                 );
                               }}
                               value={pointSet.position}
@@ -634,7 +645,7 @@ const SimpleMapForm = () => {
                                     handleCSVDownload(
                                       pointSet,
                                       `${pointSet.name_fr}-bdd.csv`,
-                                      "mapPoints"
+                                      "mapPoints",
                                     )
                                   }
                                   cursor={"pointer"}
@@ -655,7 +666,7 @@ const SimpleMapForm = () => {
                                 setPointSetIdToClean,
                                 setIsModalOpen,
                                 setPointType,
-                                "bdd"
+                                "bdd",
                               )}
                             </TooltipComponent>
                           </td>
@@ -672,7 +683,7 @@ const SimpleMapForm = () => {
                                     handleCSVDownload(
                                       pointSet,
                                       `${pointSet.name_fr}-custom.csv`,
-                                      "customPoints"
+                                      "customPoints",
                                     )
                                   }
                                   cursor={"pointer"}
@@ -693,14 +704,14 @@ const SimpleMapForm = () => {
                                 setPointSetIdToClean,
                                 setIsModalOpen,
                                 setPointType,
-                                "custom"
+                                "custom",
                               )}
                             </TooltipComponent>
                           </td>
                           <td>
                             {pointSet.lastActivity
                               ? new Date(
-                                  pointSet.lastActivity
+                                  pointSet.lastActivity,
                                 ).toLocaleDateString(language, {
                                   year: "numeric",
                                   month: "long",
