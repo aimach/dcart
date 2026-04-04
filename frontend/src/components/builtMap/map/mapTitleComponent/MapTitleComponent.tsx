@@ -2,12 +2,9 @@
 import DOMPurify from "dompurify";
 // import des custom hooks
 import { useEffect, useMemo } from "react";
-import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des services
-import DOMPurify from "dompurify";
-import { getAllowedTags } from "../../../../utils/functions/block";
 import { displayFiltersTags } from "../../../../utils/functions/filter";
 import { useMapAsideMenuStore } from "../../../../utils/stores/builtMap/mapAsideMenuStore";
 import { useMapFilterOptionsStore } from "../../../../utils/stores/builtMap/mapFilterOptionsStore";
@@ -74,25 +71,25 @@ const MapTitleComponent = ({
     resetTemporaryReminderValues,
   } = useMapFilterReminderStore();
 
-	const sanitizedTitle = useMemo(() => {
-		if (!mapInfos) return "";
-		return DOMPurify.sanitize(mapInfos[`title_${language}`] ?? "");
-	}, [mapInfos, language]);
+  const sanitizedTitle = useMemo(() => {
+    if (!mapInfos) return "";
+    return DOMPurify.sanitize(mapInfos[`title_${language}`] ?? "");
+  }, [mapInfos, language]);
 
-	const filtersDetails = displayFiltersTags(
-		userFilters,
-		locationFilterReminders,
-		elementFilterReminders,
-		elementNbFilterReminders,
-		sourceTypeFilterReminders,
-		agentStatusFilterReminders,
-		agentivityFilterReminders,
-		agentActivityFilterReminders,
-		sourceMaterialFilterReminders,
-		languageFilterReminders,
-		genderFilterReminders,
-		translation[language],
-	);
+  const filtersDetails = displayFiltersTags(
+    userFilters,
+    locationFilterReminders,
+    elementFilterReminders,
+    elementNbFilterReminders,
+    sourceTypeFilterReminders,
+    agentStatusFilterReminders,
+    agentivityFilterReminders,
+    agentActivityFilterReminders,
+    sourceMaterialFilterReminders,
+    languageFilterReminders,
+    genderFilterReminders,
+    translation[language],
+  );
 
   const handleResetButton = async () => {
     if (mapBounds.length > 0) {
@@ -115,25 +112,6 @@ const MapTitleComponent = ({
     resetFilterReminders();
   }, []);
 
-	return (
-		<div
-			className={
-				tutorialStep === 3
-					? `${style.mapTitleContainer} ${style.shadowed}`
-					: style.mapTitleContainer
-			}
-		>
-			<div className={style.titleAndInfoContainer}>
-				{!isMobile &&
-					(mapInfos ? (
-						<h2
-							// biome-ignore lint/security/noDangerouslySetInnerHtml: titre nettoyé avec DOMPurify
-							dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
-						/>
-					) : (
-						<h2>Exploration</h2>
-					))}
-
   return (
     <div
       className={
@@ -143,12 +121,15 @@ const MapTitleComponent = ({
       }
     >
       <div className={style.titleAndInfoContainer}>
-        {!isMobile && (
-          <h2
-            // biome-ignore lint/security/noDangerouslySetInnerHtml: le texte est nettoyé avec DOMPurify
-            dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
-          />
-        )}
+        {!isMobile &&
+          (mapInfos ? (
+            <h2
+              // biome-ignore lint/security/noDangerouslySetInnerHtml: titre nettoyé avec DOMPurify
+              dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
+            />
+          ) : (
+            <h2>Exploration</h2>
+          ))}
 
         <Info onClick={() => setIsModalOpen(true)} />
         <RotateCcw onClick={handleResetButton} />
