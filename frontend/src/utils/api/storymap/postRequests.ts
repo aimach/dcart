@@ -1,5 +1,7 @@
 // import des services
+import { isAxiosError } from "axios";
 import { apiClient } from "../apiClient";
+import { getAxiosErrorMessage } from "../getAxiosErrorMessage";
 import { normalizeBody, requiredBlockKeys } from "../../functions/block";
 import {
 	notifyCreateSuccess,
@@ -128,7 +130,10 @@ const uploadParsedPointsForSimpleMap = async (
 			};
 
 			// chargement des points
-			await createPointSet(pointSetWithBlockId);
+			const createdPointSet = await createPointSet(pointSetWithBlockId);
+			if (!createdPointSet || createdPointSet.status !== 201) {
+				return;
+			}
 
 			notifyCreateSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
 		}
@@ -157,11 +162,21 @@ const uploadParsedPointsForSimpleMap = async (
 				});
 
 				// chargement des nouveaux points
-				await createPointSet(pointSetWithBlockId);
+				const recreatedPointSet = await createPointSet(pointSetWithBlockId);
+				if (!recreatedPointSet || recreatedPointSet.status !== 201) {
+					return;
+				}
 			}
 			notifyEditSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
 		}
 	} catch (error) {
+		if (
+			isAxiosError(error) &&
+			error.response?.status === 400 &&
+			getAxiosErrorMessage(error)
+		) {
+			return;
+		}
 		notifyError("Erreur lors de la création d'une carte simple");
 	}
 };
@@ -196,7 +211,10 @@ const uploadParsedPointsForComparisonMap = async (
 			for (const panelSide in pointsSets) {
 				pointsSets[panelSide].blockId = mapId;
 
-				await createPointSet(pointsSets[panelSide]);
+				const created = await createPointSet(pointsSets[panelSide]);
+				if (!created || created.status !== 201) {
+					return;
+				}
 			}
 			notifyCreateSuccess("Carte de comparaison", true);
 		}
@@ -226,12 +244,22 @@ const uploadParsedPointsForComparisonMap = async (
 					pointsSets[panelSide].blockId = updatedBlock.id;
 
 					// chargement des nouveaux points
-					await createPointSet(pointsSets[panelSide]);
+					const recreated = await createPointSet(pointsSets[panelSide]);
+					if (!recreated || recreated.status !== 201) {
+						return;
+					}
 				}
 			}
 			notifyEditSuccess("Carte de comparaison", true);
 		}
 	} catch (error) {
+		if (
+			isAxiosError(error) &&
+			error.response?.status === 400 &&
+			getAxiosErrorMessage(error)
+		) {
+			return;
+		}
 		notifyError("Erreur lors de la création d'une carte de comparaison");
 	}
 };

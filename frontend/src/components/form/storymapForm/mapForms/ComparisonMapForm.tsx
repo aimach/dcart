@@ -107,7 +107,7 @@ const ComparisonMapForm = () => {
   });
 
   const [pointSetIdToClean, setPointSetIdToClean] = useState<string | null>(
-    null
+    null,
   );
   const [pointType, setPointType] = useState<"bdd" | "custom">("bdd");
   const [isModalOpen, setIsModalOpen] = useState(false);
@@ -117,14 +117,14 @@ const ComparisonMapForm = () => {
       event,
       onComplete: (
         result: ParseResult<{ id: string } | CustomPointType>,
-        panelSide = ""
+        panelSide = "",
       ) => {
         if (result.data.length === 0) {
           notifyError("Le fichier est vide ou mal formaté");
           return;
         }
         const allAttestationsIds = getAllAttestationsIdsFromParsedPoints(
-          result.data as { id: string }[]
+          result.data as { id: string }[],
         );
         setPointsSets((prev) => ({
           ...prev,
@@ -150,7 +150,7 @@ const ComparisonMapForm = () => {
       event,
       onComplete: (
         result: ParseResult<{ id: string } | CustomPointType>,
-        panelSide = ""
+        panelSide = "",
       ) => {
         setPointsSets((prev) => ({
           ...prev,
@@ -170,7 +170,7 @@ const ComparisonMapForm = () => {
       },
       onError: () => {
         notifyError(
-          "Erreur lors du chargement du fichier. Vérifier le format."
+          "Erreur lors du chargement du fichier. Vérifier le format.",
         );
       },
       headerMapping: {
@@ -188,10 +188,10 @@ const ComparisonMapForm = () => {
   // biome-ignore lint/correctness/useExhaustiveDependencies:
   useEffect(() => {
     const leftPointsSet = block?.attestations?.find(
-      (pointSet) => pointSet[`name_${language}`] === "left"
+      (pointSet) => pointSet[`name_${language}`] === "left",
     );
     const rightPointsSet = block?.attestations?.find(
-      (pointSet) => pointSet[`name_${language}`] === "right"
+      (pointSet) => pointSet[`name_${language}`] === "right",
     );
 
     setPointsSets({
@@ -257,7 +257,7 @@ const ComparisonMapForm = () => {
       !atLeastOneFileLoadedInRightPanel
     ) {
       notifyError(
-        "Veuillez remplir tous les champs obligatoires du formulaire."
+        "Veuillez remplir tous les champs obligatoires du formulaire.",
       );
       return;
     }
@@ -266,7 +266,7 @@ const ComparisonMapForm = () => {
       pointSets as Record<string, PointSetType>,
       storymapId as string,
       "comparison_map",
-      action as string
+      action as string,
     );
     // réinitialisation du choix du formulaire
     setReload(!reload);
@@ -296,11 +296,11 @@ const ComparisonMapForm = () => {
   useEffect(() => {
     if (!storymapInfos?.lang2) {
       const newInputs = comparisonMapInputs.filter(
-        (input) => input.name !== "content1_lang2"
+        (input) => input.name !== "content1_lang2",
       );
       const newInputsWithLangInLabel = addLangageBetweenBrackets(
         newInputs,
-        storymapInfos as StorymapType
+        storymapInfos as StorymapType,
       );
       setInputs(newInputsWithLangInLabel);
     }
@@ -390,7 +390,7 @@ const ComparisonMapForm = () => {
                         input.name as keyof comparisonMapInputsType,
                         {
                           required: input.required.value,
-                        }
+                        },
                       )}
                     />
                     {errors[input.name as keyof comparisonMapInputsType] && (
@@ -419,7 +419,7 @@ const ComparisonMapForm = () => {
                         input.name as keyof comparisonMapInputsType,
                         {
                           required: input.required.value,
-                        }
+                        },
                       )}
                     >
                       {input.options?.map((option) => (
@@ -506,8 +506,8 @@ const ComparisonMapForm = () => {
                     {selectedFiles[formSide].db
                       ? `${fileStatusTranslationObject.loadedFile} : ${selectedFiles[formSide]?.db.name}`
                       : pointSets[formSide]?.attestationIds
-                      ? fileStatusTranslationObject.fileAlreadyLoaded
-                      : fileStatusTranslationObject.noFile}
+                        ? fileStatusTranslationObject.fileAlreadyLoaded
+                        : fileStatusTranslationObject.noFile}
                   </p>
                   {pointSets[formSide]?.attestationIds && (
                     <div className={style.downloadAndCleanContainer}>
@@ -523,7 +523,7 @@ const ComparisonMapForm = () => {
                             handleCSVDownload(
                               pointSets[formSide],
                               `${block?.content1_lang1}-${formSide}-bdd.csv`,
-                              "mapPoints"
+                              "mapPoints",
                             )
                           }
                         />
@@ -537,7 +537,7 @@ const ComparisonMapForm = () => {
                           setPointSetIdToClean,
                           setIsModalOpen,
                           setPointType,
-                          "bdd"
+                          "bdd",
                         )}
                       </TooltipComponent>
                     </div>
@@ -587,9 +587,9 @@ const ComparisonMapForm = () => {
                     {selectedFiles[formSide].custom
                       ? `${fileStatusTranslationObject.loadedFile} : ${selectedFiles[formSide]?.custom.name}`
                       : (pointSets[formSide]?.customPointsArray?.length ?? 0) >
-                        0
-                      ? fileStatusTranslationObject.fileAlreadyLoaded
-                      : fileStatusTranslationObject.noFile}
+                          0
+                        ? fileStatusTranslationObject.fileAlreadyLoaded
+                        : fileStatusTranslationObject.noFile}
                   </p>
                   {(pointSets[formSide]?.customPointsArray?.length ?? 0) >
                     0 && (
@@ -606,7 +606,7 @@ const ComparisonMapForm = () => {
                             handleCSVDownload(
                               pointSets[formSide],
                               `${block?.content1_lang1}-${formSide}-custom.csv`,
-                              "customPoints"
+                              "customPoints",
                             )
                           }
                         />
@@ -620,7 +620,7 @@ const ComparisonMapForm = () => {
                           setPointSetIdToClean,
                           setIsModalOpen,
                           setPointType,
-                          "custom"
+                          "custom",
                         )}
                       </TooltipComponent>
                     </div>

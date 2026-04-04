@@ -6,9 +6,8 @@ import { dcartControllers } from "../controllers/builtMap/dcartControllers";
 import {
   authenticateAdmin,
   authenticateUser,
-  loginLimiter,
 } from "../middlewares/authenticate";
-import { validateLoginBody, validatePassword } from "../utils/validator/auth";
+import { validatePassword } from "../utils/validator/auth";
 
 export const authRoutes = express.Router();
 
@@ -18,9 +17,9 @@ authRoutes.post("/register", dcartControllers.register);
 // connexion
 authRoutes.post(
   "/login",
-  loginLimiter,
-  validateLoginBody,
-  dcartControllers.login
+  // loginLimiter,
+  // validateLoginBody,
+  dcartControllers.login,
 );
 
 // déconnexion de l'utilisateur
@@ -34,7 +33,7 @@ authRoutes.get(
   "/users/:userId",
   authenticateUser,
   authenticateAdmin,
-  dcartControllers.getProfile
+  dcartControllers.getProfile,
 );
 
 // modification du statut d'un utilisateur
@@ -42,14 +41,14 @@ authRoutes.put(
   "/users/:userId/status",
   authenticateUser,
   authenticateAdmin,
-  dcartControllers.updateUserStatus
+  dcartControllers.updateUserStatus,
 );
 
 // modification du profile de l'utilisateur
 authRoutes.put(
   "/users/:userId/profile",
   authenticateUser,
-  dcartControllers.updateUserProfile
+  dcartControllers.updateUserProfile,
 );
 
 // suppression d'un utilisateur
@@ -57,18 +56,18 @@ authRoutes.delete(
   "/users/:userId",
   authenticateUser,
   authenticateAdmin,
-  dcartControllers.deleteUser
+  dcartControllers.deleteUser,
 );
 
 // gestion de la demande de reste du mot de passe
 authRoutes.post(
   "/request-reset-password",
-  dcartControllers.resetPasswordRequest
+  dcartControllers.resetPasswordRequest,
 );
 
 // reset du mot de passe
 authRoutes.post(
   "/reset-password",
   validatePassword,
-  dcartControllers.resetPassword
+  dcartControllers.resetPassword,
 );

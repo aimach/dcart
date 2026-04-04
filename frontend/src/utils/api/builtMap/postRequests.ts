@@ -1,5 +1,7 @@
 // import des serivces
+import { isAxiosError } from "axios";
 import { apiClient } from "../apiClient";
+import { getAxiosErrorMessage } from "../getAxiosErrorMessage";
 // import des types
 import type { MapInfoType, PointSetType, TagType } from "../../types/mapTypes";
 import { notifyError } from "../../functions/toast";
@@ -63,6 +65,12 @@ const createPointSet = async (body: PointSetType) => {
 		});
 		return newPointSet;
 	} catch (error) {
+		const detail = getAxiosErrorMessage(error);
+		if (isAxiosError(error) && error.response?.status === 400 && detail) {
+			notifyError(detail);
+		} else {
+			notifyError("Erreur lors de la création du jeu d'attestations.");
+		}
 		console.error("Erreur lors de la création du jeu d'attestations :", error);
 	}
 };
