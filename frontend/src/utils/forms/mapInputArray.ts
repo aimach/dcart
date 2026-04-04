@@ -74,11 +74,11 @@ const firstStepInputs: InputType[] = [
     label_fr: "Image accompagnant la description",
     label_en: "Image accompanying the description",
     description_fr:
-      "L'image est affichée dans la modale d'introduction lorsque l'utilisateur ouvre la carte.",
+      "L'image est affichée dans la modale d'introduction lorsque l'utilisateur ouvre la carte. Vous pouvez soit uploader un fichier image, soit saisir une URL d'image externe. L'image ne doit pas dépasser 2MB. La prévisualisation est disponible pour les fichiers uploadés mais pas pour les URL externes.",
     description_en:
-      "The image is displayed in the introduction modal when the user opens the map.",
+      "The image is displayed in the introduction modal when the user opens the map. You can either upload an image file or enter an external image URL. The image must not exceed 2MB. The preview is available for uploaded files but not for external URLs.",
     name: "image_url",
-    type: "text",
+    type: "file",
     required: {
       value: false,
     },

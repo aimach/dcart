@@ -1,30 +1,31 @@
 // import des bibliothèques
 import React, { useEffect, useMemo, useRef, useState } from "react";
-import { useForm, Controller } from "react-hook-form";
+import { Controller, useForm } from "react-hook-form";
 import { useSearchParams } from "react-router";
 // import des composants
-import EditorComponent from "../wysiwygBlock/EditorComponent";
-import ErrorComponent from "../../errorComponent/ErrorComponent";
 import ButtonComponent from "../../../common/button/ButtonComponent";
+import ErrorComponent from "../../errorComponent/ErrorComponent";
+import InputFileComponent from "../../inputComponent/InputFileComponent";
+import EditorComponent from "../wysiwygBlock/EditorComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
-import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 import {
-	addLangageBetweenBrackets,
-	removeLang2Inputs,
+  addLangageBetweenBrackets,
+  removeLang2Inputs,
 } from "../../../../utils/functions/storymap";
+import { useBuilderStore } from "../../../../utils/stores/storymap/builderStore";
 // import des types
+import type Quill from "quill";
 import type { SubmitHandler } from "react-hook-form";
 import type {
-	allInputsType,
-	InputType,
-	storymapInputsType,
+  allInputsType,
+  InputType,
+  storymapInputsType,
 } from "../../../../utils/types/formTypes";
-import type Quill from "quill";
 import type {
-	BlockContentType,
-	StorymapType,
+  BlockContentType,
+  StorymapType,
 } from "../../../../utils/types/storymapTypes";
 // import du style
 import style from "./commonForm.module.scss";
@@ -32,20 +33,20 @@ import style from "./commonForm.module.scss";
 import { ChevronLeft, ChevronRight } from "lucide-react";
 
 type CommonFormProps = {
-	onSubmit: SubmitHandler<allInputsType>;
-	inputs: InputType[];
-	defaultValues?:
-		| storymapInputsType
-		| BlockContentType
-		| undefined
-		| StorymapType;
-	action?: string;
-	children?: React.ReactNode;
-	childrenLabelContent?: {
-		htmlFor: string;
-		label: string;
-		description: string;
-	};
+  onSubmit: SubmitHandler<allInputsType>;
+  inputs: InputType[];
+  defaultValues?:
+    | storymapInputsType
+    | BlockContentType
+    | undefined
+    | StorymapType;
+  action?: string;
+  children?: React.ReactNode;
+  childrenLabelContent?: {
+    htmlFor: string;
+    label: string;
+    description: string;
+  };
 };
 
 /**
@@ -59,240 +60,284 @@ type CommonFormProps = {
  * @returns ErrorComponent | EditorComponent
  */
 const CommonForm = ({
-	onSubmit,
-	inputs,
-	defaultValues,
-	action,
-	children,
+  onSubmit,
+  inputs,
+  defaultValues,
+  action,
+  children,
 }: CommonFormProps) => {
-	// récupération des données de traduction
-	const { translation, language } = useTranslation();
+  // récupération des données de traduction
+  const { translation, language } = useTranslation();
 
-	const { storymapInfos, updateFormType } = useBuilderStore();
+  const { storymapInfos, updateFormType } = useBuilderStore();
 
-	const [_, setSearchParams] = useSearchParams();
+  const [_, setSearchParams] = useSearchParams();
 
-	const [formInputs, setFormInputs] = useState<InputType[]>(inputs);
+  const [formInputs, setFormInputs] = useState<InputType[]>(inputs);
 
-	// import des sevice de formulaire
-	const {
-		control,
-		register,
-		handleSubmit,
-		setValue,
-		formState: { errors },
-		watch,
-	} = useForm<allInputsType>({
-		defaultValues: defaultValues ?? {},
-	});
+  // État pour gérer les erreurs de taille de fichier
+  const [fileSizeError, setFileSizeError] = useState<string | null>(null);
 
-	// si des valeurs par défaut sont passées, injection dans l'input des catégories
-	// biome-ignore lint/correctness/useExhaustiveDependencies:
-	useEffect(() => {
-		if (defaultValues) {
-			setValue(
-				"category_id",
-				(defaultValues as storymapInputsType).category_id as string,
-			);
-			if ((defaultValues as StorymapType).lang1)
-				setValue("lang1", (defaultValues as StorymapType).lang1.id as string);
-			if ((defaultValues as StorymapType).lang2)
-				setValue("lang2", (defaultValues as StorymapType).lang2.id as string);
-			if ((defaultValues as StorymapType).relatedMap)
-				setValue(
-					"relatedMap",
-					(defaultValues as StorymapType).relatedMap !== ""
-						? ((defaultValues as StorymapType).relatedMap as string)
-						: "0",
-				);
-		}
-	}, [defaultValues]);
+  // import des sevice de formulaire
+  const {
+    control,
+    register,
+    handleSubmit,
+    setValue,
+    formState: { errors },
+    watch,
+  } = useForm<allInputsType>({
+    defaultValues: defaultValues ?? {},
+  });
 
-	const lang2Value = watch("lang2");
-	useEffect(() => {
-		if (lang2Value === null || lang2Value === "0") {
-			const newFormInputs = removeLang2Inputs(inputs);
-			setFormInputs(newFormInputs);
-		} else {
-			setFormInputs(inputs);
-		}
-	}, [lang2Value, inputs]);
+  // si des valeurs par défaut sont passées, injection dans l'input des catégories
+  // biome-ignore lint/correctness/useExhaustiveDependencies:
+  useEffect(() => {
+    if (defaultValues) {
+      setValue(
+        "category_id",
+        (defaultValues as storymapInputsType).category_id as string
+      );
+      if ((defaultValues as StorymapType).lang1)
+        setValue("lang1", (defaultValues as StorymapType).lang1.id as string);
+      if ((defaultValues as StorymapType).lang2)
+        setValue("lang2", (defaultValues as StorymapType).lang2.id as string);
+      if ((defaultValues as StorymapType).relatedMap)
+        setValue(
+          "relatedMap",
+          (defaultValues as StorymapType).relatedMap !== ""
+            ? ((defaultValues as StorymapType).relatedMap as string)
+            : "0"
+        );
+    }
+  }, [defaultValues]);
 
-	const quillRef = useRef<Quill | null>(null);
+  const lang2Value = watch("lang2");
+  useEffect(() => {
+    if (lang2Value === null || lang2Value === "0") {
+      const newFormInputs = removeLang2Inputs(inputs);
+      setFormInputs(newFormInputs);
+    } else {
+      setFormInputs(inputs);
+    }
+  }, [lang2Value, inputs]);
 
-	const inputsWithLangInLabel = useMemo(() => {
-		return addLangageBetweenBrackets(formInputs, storymapInfos as StorymapType);
-	}, [formInputs, storymapInfos]);
+  const quillRef = useRef<Quill | null>(null);
 
-	return (
-		<form
-			onSubmit={handleSubmit(onSubmit)}
-			className={style.commonFormContainer}
-		>
-			{inputsWithLangInLabel.map((input) => {
-				if (input.type === "select") {
-					return (
-						<div key={input.name} className={style.commonFormInputContainer}>
-							<div className={style.labelContainer}>
-								<label htmlFor={input.name}>
-									{input[`label_${language}`]}{" "}
-									{input.required.value && (
-										<span style={{ color: "#9d2121" }}>*</span>
-									)}
-								</label>
-								<p>{input[`description_${language}`] ?? ""}</p>
-							</div>
-							<div className={style.inputContainer}>
-								<select
-									{...register(input.name as keyof allInputsType, {
-										required: input.required.value,
-									})}
-								>
-									{input.options?.map((option) => (
-										<option key={option.value} value={option.value}>
-											{option.label}
-										</option>
-									))}
-								</select>
+  const inputsWithLangInLabel = useMemo(() => {
+    return addLangageBetweenBrackets(formInputs, storymapInfos as StorymapType);
+  }, [formInputs, storymapInfos]);
 
-								{errors[input.name as keyof allInputsType] && (
-									<ErrorComponent
-										message={input.required.message?.[language] as string}
-									/>
-								)}
-							</div>
-						</div>
-					);
-				}
-				if (input.type === "text") {
-					return (
-						<div key={input.name} className={style.commonFormInputContainer}>
-							<div className={style.labelContainer}>
-								<label htmlFor={input.name}>
-									{input[`label_${language}`]}{" "}
-									{input.required.value && (
-										<span style={{ color: "#9d2121" }}>*</span>
-									)}
-								</label>
-								<p>{input[`description_${language}`] ?? ""}</p>
-							</div>
-							<div className={style.inputContainer}>
-								<input
-									type="text"
-									{...register(input.name as keyof storymapInputsType, {
-										required: input.required.value,
-									})}
-								/>
+  return (
+    <form
+      onSubmit={handleSubmit(onSubmit)}
+      className={style.commonFormContainer}
+    >
+      {inputsWithLangInLabel.map((input) => {
+        if (input.type === "select") {
+          return (
+            <div key={input.name} className={style.commonFormInputContainer}>
+              <div className={style.labelContainer}>
+                <label htmlFor={input.name}>
+                  {input[`label_${language}`]}{" "}
+                  {input.required.value && (
+                    <span style={{ color: "#9d2121" }}>*</span>
+                  )}
+                </label>
+                <p>{input[`description_${language}`] ?? ""}</p>
+              </div>
+              <div className={style.inputContainer}>
+                <select
+                  {...register(input.name as keyof allInputsType, {
+                    required: input.required.value,
+                  })}
+                >
+                  {input.options?.map((option) => (
+                    <option key={option.value} value={option.value}>
+                      {option.label}
+                    </option>
+                  ))}
+                </select>
 
-								{input.required.value &&
-									errors[input.name as keyof allInputsType] && (
-										<ErrorComponent
-											message={input.required.message?.[language] as string}
-										/>
-									)}
-							</div>
-						</div>
-					);
-				}
-				if (input.type === "color") {
-					return (
-						<div key={input.name} className={style.commonFormInputContainer}>
-							<div className={style.labelContainer}>
-								<label htmlFor={input.name}>
-									{input[`label_${language}`]}{" "}
-									{input.required.value && (
-										<span style={{ color: "#9d2121" }}>*</span>
-									)}
-								</label>
-								<p>{input[`description_${language}`] ?? ""}</p>
-							</div>
-							<div className={style.inputContainer}>
-								<input
-									type="color"
-									defaultValue="#AD9A85"
-									{...register(input.name as keyof storymapInputsType, {
-										required: input.required.value,
-									})}
-								/>
+                {errors[input.name as keyof allInputsType] && (
+                  <ErrorComponent
+                    message={input.required.message?.[language] as string}
+                  />
+                )}
+              </div>
+            </div>
+          );
+        }
+        if (input.type === "text") {
+          return (
+            <div key={input.name} className={style.commonFormInputContainer}>
+              <div className={style.labelContainer}>
+                <label htmlFor={input.name}>
+                  {input[`label_${language}`]}{" "}
+                  {input.required.value && (
+                    <span style={{ color: "#9d2121" }}>*</span>
+                  )}
+                </label>
+                <p>{input[`description_${language}`] ?? ""}</p>
+              </div>
+              <div className={style.inputContainer}>
+                <input
+                  type="text"
+                  {...register(input.name as keyof storymapInputsType, {
+                    required: input.required.value,
+                  })}
+                />
 
-								{input.required.value &&
-									errors[input.name as keyof allInputsType] && (
-										<ErrorComponent
-											message={input.required.message?.[language] as string}
-										/>
-									)}
-							</div>{" "}
-						</div>
-					);
-				}
-				if (input.type === "wysiwyg") {
-					return (
-						<div key={input.name} className={style.commonFormInputContainer}>
-							<div className={style.labelContainer}>
-								<label htmlFor={input.name}>
-									{input[`label_${language}`]}{" "}
-									{input.required.value && (
-										<span style={{ color: "#9d2121" }}>*</span>
-									)}
-								</label>
-								<p>{input[`description_${language}`] ?? ""}</p>
-							</div>
-							<div className={style.inputContainer}>
-								<Controller
-									name={input.name as keyof allInputsType}
-									control={control}
-									render={({ field: { onChange } }) => (
-										<EditorComponent
-											ref={quillRef}
-											onChange={onChange}
-											defaultValue={
-												defaultValues
-													? defaultValues[
-															`${input.name}` as keyof typeof defaultValues
-														]
-													: null
-											}
-										/>
-									)}
-								/>
-								{input.required.value &&
-									errors[input.name as keyof allInputsType] && (
-										<ErrorComponent
-											message={input.required.message?.[language] as string}
-										/>
-									)}
-							</div>
-						</div>
-					);
-				}
-			})}
-			{React.Children.map(children, (child, index) => (
-				<>{child}</>
-			))}
-			<div className={style.commonFormContainerButton}>
-				<ButtonComponent
-					type="button"
-					color="brown"
-					textContent={translation[language].common.back}
-					onClickFunction={() => {
-						updateFormType("blockChoice");
-						setSearchParams(undefined);
-					}}
-					icon={<ChevronLeft />}
-				/>
-				<ButtonComponent
-					type="submit"
-					color="brown"
-					textContent={
-						action === "create"
-							? translation[language].backoffice.storymapFormPage.form.create
-							: translation[language].backoffice.storymapFormPage.form.edit
-					}
-					icon={<ChevronRight />}
-				/>
-			</div>
-		</form>
-	);
+                {input.required.value &&
+                  errors[input.name as keyof allInputsType] && (
+                    <ErrorComponent
+                      message={input.required.message?.[language] as string}
+                    />
+                  )}
+              </div>
+            </div>
+          );
+        }
+        if (input.type === "color") {
+          return (
+            <div key={input.name} className={style.commonFormInputContainer}>
+              <div className={style.labelContainer}>
+                <label htmlFor={input.name}>
+                  {input[`label_${language}`]}{" "}
+                  {input.required.value && (
+                    <span style={{ color: "#9d2121" }}>*</span>
+                  )}
+                </label>
+                <p>{input[`description_${language}`] ?? ""}</p>
+              </div>
+              <div className={style.inputContainer}>
+                <input
+                  type="color"
+                  defaultValue="#AD9A85"
+                  {...register(input.name as keyof storymapInputsType, {
+                    required: input.required.value,
+                  })}
+                />
+
+                {input.required.value &&
+                  errors[input.name as keyof allInputsType] && (
+                    <ErrorComponent
+                      message={input.required.message?.[language] as string}
+                    />
+                  )}
+              </div>{" "}
+            </div>
+          );
+        }
+        if (input.type === "file") {
+          return (
+            <div key={input.name} className={style.commonFormInputContainer}>
+              <div className={style.labelContainer}>
+                <label htmlFor={input.name}>
+                  {input[`label_${language}`]}{" "}
+                  {input.required.value && (
+                    <span style={{ color: "#9d2121" }}>*</span>
+                  )}
+                </label>
+                <p>{input[`description_${language}`] ?? ""}</p>
+              </div>
+              <div className={style.inputContainer}>
+                <Controller
+                  name={input.name as keyof allInputsType}
+                  control={control}
+                  rules={{
+                    required: input.required.value,
+                  }}
+                  render={({ field: { onChange, value } }) => (
+                    <InputFileComponent
+                      onChange={onChange}
+                      onError={setFileSizeError}
+                      defaultValue={
+                        value && typeof value === "string" ? value : undefined
+                      }
+                      allowUrlPreview={false}
+                    />
+                  )}
+                />
+                {fileSizeError && <ErrorComponent message={fileSizeError} />}
+                {input.required.value &&
+                  errors[input.name as keyof allInputsType] && (
+                    <ErrorComponent
+                      message={input.required.message?.[language] as string}
+                    />
+                  )}
+              </div>
+            </div>
+          );
+        }
+        if (input.type === "wysiwyg") {
+          return (
+            <div key={input.name} className={style.commonFormInputContainer}>
+              <div className={style.labelContainer}>
+                <label htmlFor={input.name}>
+                  {input[`label_${language}`]}{" "}
+                  {input.required.value && (
+                    <span style={{ color: "#9d2121" }}>*</span>
+                  )}
+                </label>
+                <p>{input[`description_${language}`] ?? ""}</p>
+              </div>
+              <div className={style.inputContainer}>
+                <Controller
+                  name={input.name as keyof allInputsType}
+                  control={control}
+                  render={({ field: { onChange } }) => (
+                    <EditorComponent
+                      ref={quillRef}
+                      onChange={onChange}
+                      defaultValue={
+                        defaultValues
+                          ? defaultValues[
+                              `${input.name}` as keyof typeof defaultValues
+                            ]
+                          : null
+                      }
+                    />
+                  )}
+                />
+                {input.required.value &&
+                  errors[input.name as keyof allInputsType] && (
+                    <ErrorComponent
+                      message={input.required.message?.[language] as string}
+                    />
+                  )}
+              </div>
+            </div>
+          );
+        }
+      })}
+      {React.Children.map(children, (child) => (
+        <>{child}</>
+      ))}
+      <div className={style.commonFormContainerButton}>
+        <ButtonComponent
+          type="button"
+          color="brown"
+          textContent={translation[language].common.back}
+          onClickFunction={() => {
+            updateFormType("blockChoice");
+            setSearchParams(undefined);
+          }}
+          icon={<ChevronLeft />}
+        />
+        <ButtonComponent
+          type="submit"
+          color="brown"
+          textContent={
+            action === "create"
+              ? translation[language].backoffice.storymapFormPage.form.create
+              : translation[language].backoffice.storymapFormPage.form.edit
+          }
+          icon={<ChevronRight />}
+        />
+      </div>
+    </form>
+  );
 };
 
 export default CommonForm;

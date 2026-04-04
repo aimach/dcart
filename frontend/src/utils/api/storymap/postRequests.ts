@@ -1,11 +1,11 @@
 // import des services
-import { apiClient } from "../apiClient";
 import { normalizeBody, requiredBlockKeys } from "../../functions/block";
 import {
-	notifyCreateSuccess,
-	notifyEditSuccess,
-	notifyError,
+  notifyCreateSuccess,
+  notifyEditSuccess,
+  notifyError,
 } from "../../functions/toast";
+import { apiClient } from "../apiClient";
 import { createPointSet } from "../builtMap/postRequests";
 // import des types
 import type { blockType } from "../../types/formTypes";
@@ -18,22 +18,24 @@ import type { StorymapBodyType } from "../../types/storymapTypes";
  * @returns - l'id de la storymap
  */
 const createStorymap = async (body: StorymapBodyType) => {
-	try {
-		const response = await apiClient("/storymap/storymap", {
-			method: "POST",
-			data: JSON.stringify(body),
-		});
-		notifyCreateSuccess("Storymap", true);
-		return response.data;
-	} catch (error) {
-		if ((error as Error).message === "Request failed with status code 422") {
-			notifyError(
-				"Une étiquette au moins est nécessaire pour créer une storymap.",
-			);
-		} else {
-			notifyError("Erreur lors de la création de la storymap");
-		}
-	}
+  try {
+    const response = await apiClient.post("/storymap/storymap", body);
+    if (response.data && response.status === 201) {
+      notifyCreateSuccess("Storymap", true);
+      return response.data;
+    }
+    notifyError("Erreur lors de la création de la storymap");
+    return undefined;
+  } catch (error) {
+    if ((error as Error).message === "Request failed with status code 422") {
+      notifyError(
+        "Une étiquette au moins est nécessaire pour créer une storymap."
+      );
+    } else {
+      notifyError("Erreur lors de la création de la storymap");
+    }
+    return undefined;
+  }
 };
 
 /**
@@ -43,16 +45,16 @@ const createStorymap = async (body: StorymapBodyType) => {
  * @returns
  */
 const updateStorymap = async (body: StorymapBodyType, storymapId: string) => {
-	try {
-		const response = await apiClient(`/storymap/storymap/${storymapId}`, {
-			method: "PUT",
-			data: JSON.stringify(body),
-		});
-		notifyEditSuccess("Storymap", true);
-		return response.data.id;
-	} catch (error) {
-		notifyError("Erreur lors de la mise à jour de la storymap");
-	}
+  try {
+    const response = await apiClient(`/storymap/storymap/${storymapId}`, {
+      method: "PUT",
+      data: JSON.stringify(body),
+    });
+    notifyEditSuccess("Storymap", true);
+    return response.data.id;
+  } catch {
+    notifyError("Erreur lors de la mise à jour de la storymap");
+  }
 };
 
 /**
@@ -61,18 +63,18 @@ const updateStorymap = async (body: StorymapBodyType, storymapId: string) => {
  * @returns - les informations du bloc inséré
  */
 const createBlock = async (body: blockType) => {
-	try {
-		// ajout des clés manquantes avec une valeur null si elles ne sont pas complétées
-		const newBody = normalizeBody(body, requiredBlockKeys);
+  try {
+    // ajout des clés manquantes avec une valeur null si elles ne sont pas complétées
+    const newBody = normalizeBody(body, requiredBlockKeys);
 
-		const response = await apiClient("/storymap/blocks", {
-			method: "POST",
-			data: JSON.stringify(newBody),
-		});
-		return response.data;
-	} catch (error) {
-		notifyError("Erreur lors de la création du bloc");
-	}
+    const response = await apiClient("/storymap/blocks", {
+      method: "POST",
+      data: JSON.stringify(newBody),
+    });
+    return response.data;
+  } catch {
+    notifyError("Erreur lors de la création du bloc");
+  }
 };
 
 /**
@@ -82,15 +84,15 @@ const createBlock = async (body: blockType) => {
  * @returns - les informations du bloc inséré
  */
 const updateBlock = async (body: blockType, blockId: string) => {
-	try {
-		const response = await apiClient(`/storymap/blocks/${blockId}`, {
-			method: "PUT",
-			data: JSON.stringify(body),
-		});
-		return response.data;
-	} catch (error) {
-		notifyError("Erreur lors de la mise à jour du bloc");
-	}
+  try {
+    const response = await apiClient(`/storymap/blocks/${blockId}`, {
+      method: "PUT",
+      data: JSON.stringify(body),
+    });
+    return response.data;
+  } catch {
+    notifyError("Erreur lors de la mise à jour du bloc");
+  }
 };
 
 /**
@@ -103,67 +105,67 @@ const updateBlock = async (body: blockType, blockId: string) => {
  * @param parentId - l'id du bloc parent (si la carte est un bloc enfant)
  */
 const uploadParsedPointsForSimpleMap = async (
-	simpleMapInfos: blockType,
-	pointSet: PointSetType,
-	storymapId: string,
-	typeName: string,
-	action: string,
-	parentId?: string,
+  simpleMapInfos: blockType,
+  pointSet: PointSetType,
+  storymapId: string,
+  typeName: string,
+  action: string,
+  parentId?: string
 ) => {
-	try {
-		let blockId = simpleMapInfos.id ?? "";
-		if (action === "create") {
-			// création du bloc de la carte
-			const newMapInfos = await createBlock({
-				...simpleMapInfos,
-				storymapId,
-				typeName,
-				parentId,
-			});
-			blockId = newMapInfos?.id;
+  try {
+    let blockId = simpleMapInfos.id ?? "";
+    if (action === "create") {
+      // création du bloc de la carte
+      const newMapInfos = await createBlock({
+        ...simpleMapInfos,
+        storymapId,
+        typeName,
+        parentId,
+      });
+      blockId = newMapInfos?.id;
 
-			const pointSetWithBlockId = {
-				...pointSet,
-				blockId,
-			};
+      const pointSetWithBlockId = {
+        ...pointSet,
+        blockId,
+      };
 
-			// chargement des points
-			await createPointSet(pointSetWithBlockId);
+      // chargement des points
+      await createPointSet(pointSetWithBlockId);
 
-			notifyCreateSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
-		}
-		if (action === "edit") {
-			// mise à jour du bloc de la carte
-			const updatedBlock = await updateBlock(
-				{
-					...simpleMapInfos,
-					storymapId,
-					typeName,
-					parentId,
-				},
-				blockId,
-			);
-			// si l'utilisateur a chargé des points
-			if (pointSet) {
-				const pointSetWithBlockId = {
-					...pointSet,
-					name: updatedBlock.content1_lang1,
-					blockId,
-				};
-				const initialPointSetId = updatedBlock.attestations[0]?.id;
+      notifyCreateSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
+    }
+    if (action === "edit") {
+      // mise à jour du bloc de la carte
+      const updatedBlock = await updateBlock(
+        {
+          ...simpleMapInfos,
+          storymapId,
+          typeName,
+          parentId,
+        },
+        blockId
+      );
+      // si l'utilisateur a chargé des points
+      if (pointSet) {
+        const pointSetWithBlockId = {
+          ...pointSet,
+          name: updatedBlock.content1_lang1,
+          blockId,
+        };
+        const initialPointSetId = updatedBlock.attestations[0]?.id;
 
-				await apiClient(`/dcart/attestations/${initialPointSetId}`, {
-					method: "DELETE",
-				});
+        await apiClient(`/dcart/attestations/${initialPointSetId}`, {
+          method: "DELETE",
+        });
 
-				// chargement des nouveaux points
-				await createPointSet(pointSetWithBlockId);
-			}
-			notifyEditSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
-		}
-	} catch (error) {
-		notifyError("Erreur lors de la création d'une carte simple");
-	}
+        // chargement des nouveaux points
+        await createPointSet(pointSetWithBlockId);
+      }
+      notifyEditSuccess(typeName === "step" ? "Etape" : "Carte simple", true);
+    }
+  } catch {
+    notifyError("Erreur lors de la création d'une carte simple");
+  }
 };
 
 /**
@@ -175,72 +177,72 @@ const uploadParsedPointsForSimpleMap = async (
  * @param action - l'action à effectuer (création ou édition)
  */
 const uploadParsedPointsForComparisonMap = async (
-	blockParent: blockType,
-	pointsSets: Record<string, PointSetType>,
-	storymapId: string,
-	typeName: string,
-	action: string,
+  blockParent: blockType,
+  pointsSets: Record<string, PointSetType>,
+  storymapId: string,
+  typeName: string,
+  action: string
 ) => {
-	try {
-		let mapId = blockParent.id ?? "";
-		if (action === "create") {
-			// création du bloc de la carte
-			const newMapInfos = await createBlock({
-				...blockParent,
-				storymapId,
-				typeName,
-			});
-			mapId = newMapInfos?.id;
+  try {
+    let mapId = blockParent.id ?? "";
+    if (action === "create") {
+      // création du bloc de la carte
+      const newMapInfos = await createBlock({
+        ...blockParent,
+        storymapId,
+        typeName,
+      });
+      mapId = newMapInfos?.id;
 
-			// chargement des points pour les 2 panels
-			for (const panelSide in pointsSets) {
-				pointsSets[panelSide].blockId = mapId;
+      // chargement des points pour les 2 panels
+      for (const panelSide in pointsSets) {
+        pointsSets[panelSide].blockId = mapId;
 
-				await createPointSet(pointsSets[panelSide]);
-			}
-			notifyCreateSuccess("Carte de comparaison", true);
-		}
+        await createPointSet(pointsSets[panelSide]);
+      }
+      notifyCreateSuccess("Carte de comparaison", true);
+    }
 
-		if (action === "edit") {
-			// mise à jour du bloc de la carte
-			const updatedBlock = await updateBlock(
-				{
-					...blockParent,
-					storymapId,
-					typeName,
-				},
-				mapId,
-			);
+    if (action === "edit") {
+      // mise à jour du bloc de la carte
+      const updatedBlock = await updateBlock(
+        {
+          ...blockParent,
+          storymapId,
+          typeName,
+        },
+        mapId
+      );
 
-			// chargement des points pour les 2 panels
-			for (const panelSide in pointsSets) {
-				const pointSetFromPanelSide = updatedBlock.attestations.find(
-					(attestation: PointSetType) => attestation.name_fr === panelSide,
-				);
+      // chargement des points pour les 2 panels
+      for (const panelSide in pointsSets) {
+        const pointSetFromPanelSide = updatedBlock.attestations.find(
+          (attestation: PointSetType) => attestation.name_fr === panelSide
+        );
 
-				// s'il y a des points chargés, supression des anciens
-				if (pointsSets[panelSide]) {
-					await apiClient(`dcart/attestations/${pointSetFromPanelSide.id}`, {
-						method: "DELETE",
-					});
-					pointsSets[panelSide].blockId = updatedBlock.id;
+        // s'il y a des points chargés, supression des anciens
+        if (pointsSets[panelSide]) {
+          await apiClient(`dcart/attestations/${pointSetFromPanelSide.id}`, {
+            method: "DELETE",
+          });
+          pointsSets[panelSide].blockId = updatedBlock.id;
 
-					// chargement des nouveaux points
-					await createPointSet(pointsSets[panelSide]);
-				}
-			}
-			notifyEditSuccess("Carte de comparaison", true);
-		}
-	} catch (error) {
-		notifyError("Erreur lors de la création d'une carte de comparaison");
-	}
+          // chargement des nouveaux points
+          await createPointSet(pointsSets[panelSide]);
+        }
+      }
+      notifyEditSuccess("Carte de comparaison", true);
+    }
+  } catch {
+    notifyError("Erreur lors de la création d'une carte de comparaison");
+  }
 };
 
 export {
-	createStorymap,
-	updateStorymap,
-	createBlock,
-	updateBlock,
-	uploadParsedPointsForSimpleMap,
-	uploadParsedPointsForComparisonMap,
+  createBlock,
+  createStorymap,
+  updateBlock,
+  updateStorymap,
+  uploadParsedPointsForComparisonMap,
+  uploadParsedPointsForSimpleMap,
 };

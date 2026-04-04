@@ -1,13 +1,13 @@
 // import des bibliothèques
 import express from "express";
 // import des routes
-import { tagRoutes } from "./tagRoutes";
-import { mapRoutes } from "./mapRoutes";
-import { filterRoutes } from "./filterRoutes";
-import { iconRoutes } from "../../common/iconRoutes";
 import { attestationRoutes } from "../../common/attestationRoutes";
 import { colorRoutes } from "../../common/colorRoutes";
 import { divinityRoutes } from "../../common/divinityRoutes";
+import { iconRoutes } from "../../common/iconRoutes";
+import { filterRoutes } from "./filterRoutes";
+import { mapRoutes } from "./mapRoutes";
+import { tagRoutes } from "./tagRoutes";
 
 const dcartRoutes = express.Router();
 

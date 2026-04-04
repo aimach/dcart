@@ -9,6 +9,7 @@ import { User } from "../../../entities/auth/User";
 import { dcartDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
 import { generateUniqueSlug } from "../../../utils/functions/builtMap";
+import { deleteImage } from "../../../utils/media/imageProcessor";
 import { jwtService } from "../../../utils/jwt";
 // import des types
 import type { Request, Response } from "express";
@@ -226,7 +227,7 @@ export const mapContentController = {
 		try {
 			const { mapId } = req.params;
 			const { userId } = req.user as jwt.JwtPayload;
-			const { tags } = req.body;
+			const { tags, image_url } = req.body;
 
 			const mapToSave = { ...req.body };
 
@@ -240,6 +241,22 @@ export const mapContentController = {
 			if (!mapToUpdate) {
 				res.status(404).send("Carte non trouvée.");
 				return;
+			}
+
+			// Gestion de la suppression de l'ancienne image
+			// Si une nouvelle URL est fournie et qu'elle est différente de l'ancienne
+			// OU si l'image est vide (suppression explicite par l'utilisateur)
+			if (
+				mapToUpdate.image_url &&
+				image_url !== undefined && // Le champ a été envoyé dans la requête
+				mapToUpdate.image_url !== image_url // Et il est différent de ce qu'on a en base
+			) {
+				try {
+					await deleteImage(mapToUpdate.image_url);
+				} catch (err) {
+					console.error("Erreur lors de la suppression de l'ancienne image", err);
+					// On continue quand même la mise à jour, ce n'est pas bloquant
+				}
 			}
 
 			// ajout de l'id du modificateur
@@ -320,6 +337,18 @@ export const mapContentController = {
 			if (!mapToDelete) {
 				res.status(404).send("Carte non trouvée.");
 				return;
+			}
+
+			// Suppression de l'image associée si elle existe
+			if (mapToDelete.image_url) {
+				try {
+					await deleteImage(mapToDelete.image_url);
+				} catch (err) {
+					console.error(
+						"Erreur lors de la suppression de l'image associée à la carte",
+						err,
+					);
+				}
 			}
 
 			await dcartDataSource.getRepository(MapContent).delete(mapId);

@@ -29,3 +29,8 @@ dist/
 # Docker
 docker-compose.override.yml
 script/initDbUser.sql
+
+
+
+# Media
+media/

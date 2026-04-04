@@ -103,14 +103,14 @@ const storymapInputs: InputType[] = [
     },
   },
   {
-    label_fr: "URL de l'image",
-    label_en: "Image URL",
+    label_fr: "Image de couverture",
+    label_en: "Cover image",
     description_fr:
-      "L'image de couverture de la storymap est affichée en arrière plan du titre'",
+      "L'image de couverture de la storymap est affichée en arrière plan du titre. Vous pouvez soit uploader un fichier image, soit saisir une URL d'image externe. L'image ne doit pas dépasser 2MB. La prévisualisation est disponible pour les fichiers uploadés mais pas pour les URL externes.",
     description_en:
-      "The cover image of the storymap is displayed in the background of the title",
+      "The cover image of the storymap is displayed in the background of the title. You can either upload an image file or enter an external image URL. The image must not exceed 2MB. The preview is available for uploaded files but not for external URLs.",
     name: "image_url",
-    type: "text",
+    type: "file",
     required: {
       value: false,
     },
@@ -365,15 +365,19 @@ const quoteInputs: InputType[] = [
 
 const imageInputs: InputType[] = [
   {
-    label_fr: "Lien de l'image",
-    label_en: "Link of the image",
+    label_fr: "Image",
+    label_en: "Image",
+    description_fr:
+      "Vous pouvez soit uploader un fichier image, soit saisir une URL d'image externe. L'image ne doit pas dépasser 2MB.",
+    description_en:
+      "You can either upload an image file or enter an external image URL. The image must not exceed 2MB.",
     name: "content1_lang1",
-    type: "text",
+    type: "file",
     required: {
       value: true,
       message: {
-        fr: "Le lien de l'image est requis",
-        en: "The link of the image is required",
+        fr: "L'image est requise",
+        en: "The image is required",
       },
     },
   },

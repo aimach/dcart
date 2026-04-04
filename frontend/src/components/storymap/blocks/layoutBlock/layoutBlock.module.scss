@@ -1,67 +1,150 @@
-@use '../../../../styles/mixin' as m;
-@use '../../../../styles/variable' as v;
+@use "../../../../styles/mixin" as m;
+@use "../../../../styles/variable" as v;
 
 .layoutSection {
-    width: 70vw;
+  width: 70vw;
 
-    >div {
-        p {
-            text-align: justify;
-            margin: v.$font-space-xxxxl 0;
-            line-height: v.$font-space-xxxl;
-            font-size: v.$font-size-l;
-        }
+  > div {
+    p {
+      text-align: justify;
+      margin: v.$font-space-xxxxl 0;
+      line-height: v.$font-space-xxxl;
+      font-size: v.$font-size-l;
     }
+  }
 }
 
 .left {
-    >figure {
-        float: left;
-        margin-right: v.$space-s;
-        margin-bottom: v.$space-s;
-        @include m.flexbox(flex, column, nowrap, center, center);
-        max-width: 50%;
+  > figure {
+    float: left;
+    margin-right: v.$space-s;
+    margin-bottom: v.$space-s;
+    @include m.flexbox(flex, column, nowrap, center, center);
+    max-width: 50%;
 
-        >img {
-            width: 80%;
-            border-radius: v.$border-radius-base;
-        }
-
-        >figcaption {
-            padding-top: v.$space-xs;
-            font-style: italic;
-        }
+    > img {
+      width: 80%;
+      border-radius: v.$border-radius-base;
     }
+
+    > figcaption {
+      padding-top: v.$space-xs;
+      font-style: italic;
+    }
+
+    // Classes de taille d'image
+    &.imageLarge {
+      max-width: 50%;
+      width: 50%;
+
+      > img {
+        width: 100%;
+      }
+    }
+
+    &.imageMedium {
+      max-width: 30%;
+
+      > img {
+        width: 90%;
+      }
+    }
+
+    &.imageSmall {
+      max-width: 20%;
+
+      > img {
+        width: 80%;
+      }
+    }
+  }
 }
 
 .right {
-    >figure {
-        float: right;
-        margin-left: v.$space-s;
-        margin-bottom: v.$space-s;
-        @include m.flexbox(flex, column, nowrap, center, center);
-        max-width: 50%;
+  > figure {
+    float: right;
+    margin-left: v.$space-s;
+    margin-bottom: v.$space-s;
+    @include m.flexbox(flex, column, nowrap, center, center);
+    max-width: 50%;
 
-        >img {
-            width: 80%;
-            border-radius: v.$border-radius-base;
-        }
-
-        >figcaption {
-            padding-top: v.$space-xs;
-            font-style: italic;
-        }
+    > img {
+      width: 80%;
+      border-radius: v.$border-radius-base;
     }
+
+    > figcaption {
+      padding-top: v.$space-xs;
+      font-style: italic;
+    }
+
+    // Classes de taille d'image
+    &.imageLarge {
+      max-width: 50%;
+      width: 50%;
+
+      > img {
+        width: 100%;
+      }
+    }
+
+    &.imageMedium {
+      max-width: 30%;
+      width: 30%;
+
+      > img {
+        width: 90%;
+      }
+    }
+
+    &.imageSmall {
+      max-width: 20%;
+      width: 20%;
+
+      > img {
+        width: 80%;
+      }
+    }
+  }
+}
+
+/* Classes de taille d'image pour la version mobile */
+.layoutSection {
+  > figure {
+    &.imageLarge {
+      width: 50%;
+
+      > img {
+        width: 100%;
+      }
+    }
+
+    &.imageMedium {
+      width: 30%;
+
+      > img {
+        width: 90%;
+      }
+    }
+
+    &.imageSmall {
+      width: 20%;
+
+      > img {
+        width: 80%;
+      }
+    }
+  }
 }
 
 /* Ciblé pour les téléphones ≤ 480px */
 @media (max-width: 480px) {
-    .layoutSection {
-        width: 90vw;
+  .layoutSection {
+    width: 90vw;
 
-        >img {
-            width: 100%;
-            border-radius: v.$border-radius-base;
-        }
+    > img {
+      width: 100%;
+      border-radius: v.$border-radius-base;
     }
+  }
 }
