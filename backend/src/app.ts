@@ -10,6 +10,7 @@ import { dcartDataSource, mapDataSource } from "./dataSource/dataSource";
 import { authRoutes } from "./routes/authRoutes";
 import { dcartRoutes } from "./routes/builtMap/dcartRoutes";
 import { mapRoutes } from "./routes/builtMap/mapRoutes";
+import { mediaRoutes } from "./routes/common/mediaRoutes";
 import { sessionRoutes } from "./routes/sessionRoutes";
 import { storymapRoutes } from "./routes/storymap";
 import { translationRoutes } from "./routes/translationRoutes";
@@ -40,6 +41,10 @@ app.use(
   }),
 );
 app.set("trust proxy", 1);
+
+const mediaPath = process.env.MEDIA_STORAGE_PATH
+  ? path.resolve(process.env.MEDIA_STORAGE_PATH)
+  : path.join(__dirname, "../media");
 
 // Définition des préfixes des routes
 app.use("/auth", authRoutes);
