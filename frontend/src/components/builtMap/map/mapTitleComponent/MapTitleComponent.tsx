@@ -1,5 +1,8 @@
+// import des bibliothèques
+import DOMPurify from "dompurify";
 // import des custom hooks
-import { useEffect } from "react";
+import { useEffect, useMemo } from "react";
+import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des services
@@ -71,20 +74,25 @@ const MapTitleComponent = ({
     resetTemporaryReminderValues,
   } = useMapFilterReminderStore();
 
-  const filtersDetails = displayFiltersTags(
-    userFilters,
-    locationFilterReminders,
-    elementFilterReminders,
-    elementNbFilterReminders,
-    sourceTypeFilterReminders,
-    agentStatusFilterReminders,
-    agentivityFilterReminders,
-    agentActivityFilterReminders,
-    sourceMaterialFilterReminders,
-    languageFilterReminders,
-    genderFilterReminders,
-    translation[language]
-  );
+	const sanitizedTitle = useMemo(() => {
+		if (!mapInfos) return "";
+		return DOMPurify.sanitize(mapInfos[`title_${language}`] ?? "");
+	}, [mapInfos, language]);
+
+	const filtersDetails = displayFiltersTags(
+		userFilters,
+		locationFilterReminders,
+		elementFilterReminders,
+		elementNbFilterReminders,
+		sourceTypeFilterReminders,
+		agentStatusFilterReminders,
+		agentivityFilterReminders,
+		agentActivityFilterReminders,
+		sourceMaterialFilterReminders,
+		languageFilterReminders,
+		genderFilterReminders,
+		translation[language],
+	);
 
   const handleResetButton = async () => {
     if (mapBounds.length > 0) {
@@ -107,8 +115,24 @@ const MapTitleComponent = ({
     resetFilterReminders();
   }, []);
 
-  const title = mapInfos ? mapInfos[`title_${language}`] : "Exploration";
-  const sanitizedTitle = DOMPurify.sanitize(title, getAllowedTags());
+	return (
+		<div
+			className={
+				tutorialStep === 3
+					? `${style.mapTitleContainer} ${style.shadowed}`
+					: style.mapTitleContainer
+			}
+		>
+			<div className={style.titleAndInfoContainer}>
+				{!isMobile &&
+					(mapInfos ? (
+						<h2
+							// biome-ignore lint/security/noDangerouslySetInnerHtml: titre nettoyé avec DOMPurify
+							dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
+						/>
+					) : (
+						<h2>Exploration</h2>
+					))}
 
   return (
     <div
