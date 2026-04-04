@@ -290,6 +290,7 @@ const getAllIcons = async () => {
     return response.data;
   } catch (error) {
     console.error("Erreur lors du chargement des icônes :", error);
+    return [];
   }
 };
 
@@ -303,6 +304,7 @@ const getAllColors = async () => {
     return response.data;
   } catch (error) {
     console.error("Erreur lors du chargement des couleurs :", error);
+    return [];
   }
 };
 

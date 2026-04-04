@@ -7,40 +7,39 @@ import type { MapColorType, MapIconType } from "../utils/types/mapTypes";
 import { getAllColors, getAllIcons } from "../utils/api/builtMap/getRequests";
 
 type IconOptionsContextType = {
-	icons: MapIconType[];
-	colors: MapColorType[];
-}
-
+  icons: MapIconType[];
+  colors: MapColorType[];
+};
 
 export const IconOptionsContext = createContext<IconOptionsContextType>({
-	icons: [],
-	colors: [],
+  icons: [],
+  colors: [],
 });
 
 interface IconOptionsProviderProps {
-	children: ReactNode;
+  children: ReactNode;
 }
 
 export const IconOptionsProvider = ({ children }: IconOptionsProviderProps) => {
-	const [icons, setIcons] = useState<MapIconType[]>([]);
-	const [colors, setColors] = useState<MapColorType[]>([]);
+  const [icons, setIcons] = useState<MapIconType[]>([]);
+  const [colors, setColors] = useState<MapColorType[]>([]);
 
-	useEffect(() => {
-		const fetchAllIcons = async () => {
-			const fetchedIcons = await getAllIcons();
-			setIcons(fetchedIcons);
-		};
-		const fetchAllColors = async () => {
-			const fetchedColors = await getAllColors();
-			setColors(fetchedColors);
-		}
-		fetchAllIcons();
-		fetchAllColors();
-	}, []);
+  useEffect(() => {
+    const fetchAllIcons = async () => {
+      const fetchedIcons = await getAllIcons();
+      setIcons(Array.isArray(fetchedIcons) ? fetchedIcons : []);
+    };
+    const fetchAllColors = async () => {
+      const fetchedColors = await getAllColors();
+      setColors(Array.isArray(fetchedColors) ? fetchedColors : []);
+    };
+    fetchAllIcons();
+    fetchAllColors();
+  }, []);
 
-	return (
-		<IconOptionsContext.Provider value={{ icons, colors }}>
-			{children}
-		</IconOptionsContext.Provider>
-	);
+  return (
+    <IconOptionsContext.Provider value={{ icons, colors }}>
+      {children}
+    </IconOptionsContext.Provider>
+  );
 };
