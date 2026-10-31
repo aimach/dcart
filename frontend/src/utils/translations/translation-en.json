@@ -86,7 +86,8 @@
     "typeOf": "type of",
     "noData": "No data",
     "no": "no",
-    "filter": "Filter"
+    "filter": "Filter",
+    "tableOfContents": "Contents"
   },
   "modal": {
     "firstContent": "I would like to see sources from",

@@ -1,0 +1,74 @@
+@use '../../../styles/mixin' as m;
+@use '../../../styles/variable' as v;
+
+// sommaire placé dans la marge gauche (les blocs font 70vw de large et sont centrés)
+.tableOfContents {
+    display: none;
+}
+
+@include m.desktop {
+    .tableOfContents {
+        display: block;
+        position: fixed;
+        top: 50%;
+        transform: translateY(-50%);
+        left: v.$space-m;
+        width: calc(15vw - #{v.$space-m * 2});
+        max-height: 70vh;
+        overflow-y: auto;
+        padding-left: v.$space-xs;
+        border-left: v.$border-width-m solid v.$color-grullo-light;
+        font-size: v.$font-size-s;
+        z-index: 1;
+        @include m.fade("show");
+        transition: visibility 0.3s, opacity 0.3s;
+
+        &.hidden {
+            @include m.fade("hide");
+            transition: visibility 0.3s, opacity 0.3s;
+        }
+
+        .tableOfContentsTitle {
+            margin: 0 0 v.$space-xs;
+            font-weight: v.$font-weight-semi-bold;
+            color: v.$color-umber;
+            text-transform: uppercase;
+            letter-spacing: 0.05em;
+        }
+
+        ul {
+            list-style-type: none;
+            margin: 0;
+            padding: 0;
+        }
+
+        li {
+            margin-bottom: v.$space-xxs;
+
+            &.subtitle {
+                padding-left: v.$space-s;
+            }
+
+            button {
+                @include m.unbuttonize;
+                cursor: pointer;
+                text-align: left;
+                font: inherit;
+                line-height: 1.3;
+                color: v.$color-dark-lava;
+                opacity: 0.7;
+
+                &:hover {
+                    opacity: 1;
+                    text-decoration: underline;
+                }
+            }
+
+            &.active button {
+                opacity: 1;
+                font-weight: v.$font-weight-semi-bold;
+                color: v.$color-umber;
+            }
+        }
+    }
+}

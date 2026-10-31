@@ -36,7 +36,11 @@ const ScrolledMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
 
   return (
     <>
-      <div className={style.mapContainer}>
+      <div
+        className={style.mapContainer}
+        // bloc pleine largeur : le sommaire est masqué par-dessus
+        data-storymap-full-width
+      >
         <MapSection
           blockContent={blockContent}
           mapName={mapName}

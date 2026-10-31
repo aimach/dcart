@@ -3,6 +3,7 @@
 
 .titleSection {
     width: 70vw;
+    scroll-margin-top: v.$space-m; // marge au clic dans le sommaire
 
     .titleStyle {
         font-size: v.$font-size-xxxl;

@@ -57,7 +57,12 @@ const StorymapIntroduction = ({
       };
 
   return (
-    <section className={style.introductionContainer} style={backgroundStyle}>
+    <section
+      className={style.introductionContainer}
+      style={backgroundStyle}
+      // bloc pleine largeur : le sommaire est masqué par-dessus
+      data-storymap-full-width
+    >
       {introductionContent.image_url && (
         <div
           className={style.coverImage}

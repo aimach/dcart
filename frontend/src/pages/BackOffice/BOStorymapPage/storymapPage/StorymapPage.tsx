@@ -20,6 +20,7 @@ import StorymapIntroduction from "../../../../components/storymap/blocks/storyma
 import TableBlock from "../../../../components/storymap/blocks/tableBlock/TableBlock";
 import TextBlock from "../../../../components/storymap/blocks/textBlock/TextBlock";
 import TitleBlock from "../../../../components/storymap/blocks/titleBlock/TitleBlock";
+import StorymapTableOfContents from "../../../../components/storymap/tableOfContents/StorymapTableOfContents";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -310,6 +311,11 @@ const StorymapPage = () => {
             </label>
           </div>
         </div>
+        {storymapInfos.blocks && (
+          <StorymapTableOfContents
+            blocks={storymapInfos.blocks as BlockContentType[]}
+          />
+        )}
         <section className={style.storymapContainer}>
           <StorymapIntroduction
             introductionContent={storymapInfos as StorymapType}

@@ -89,6 +89,7 @@ type LanguageObject = {
     noData: string;
     no: string;
     filter: string;
+    tableOfContents: string;
   };
   modal: {
     firstContent: string;
