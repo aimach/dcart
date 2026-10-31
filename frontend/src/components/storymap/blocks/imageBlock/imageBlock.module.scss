@@ -1,6 +1,13 @@
 @use '../../../../styles/mixin' as m;
 @use '../../../../styles/variable' as v;
 
+// largeur d'une image de taille choisie : la largeur demandée, sauf si l'image
+// dépasserait alors la hauteur maximale (--image-ratio est défini au chargement)
+@mixin image-width($width) {
+    width: min(#{$width}, calc(70vh * var(--image-ratio, 100)));
+    max-width: $width;
+}
+
 .imageSection {
     @include m.flexbox(flex, column, nowrap, center, center);
     gap: v.$font-space-l;
@@ -14,6 +21,19 @@
     p {
         font-style: italic;
     }
+
+    // tailles choisies dans le formulaire du bloc
+    &.imageSmall img {
+        @include image-width(25vw);
+    }
+
+    &.imageMedium img {
+        @include image-width(40vw);
+    }
+
+    &.imageLarge img {
+        @include image-width(70vw);
+    }
 }
 
 /* Ciblé pour les téléphones ≤ 480px */
@@ -21,6 +41,18 @@
     .imageSection {
         img {
             max-width: 70vw;
+        }
+
+        &.imageSmall img {
+            @include image-width(50vw);
+        }
+
+        &.imageMedium img {
+            @include image-width(70vw);
+        }
+
+        &.imageLarge img {
+            @include image-width(90vw);
         }
     }
 }

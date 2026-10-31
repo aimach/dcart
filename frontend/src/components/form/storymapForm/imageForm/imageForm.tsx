@@ -29,6 +29,7 @@ export type imageInputsType = {
   content1_lang2: string | File | null | undefined;
   content2_lang1: string;
   content2_lang2: string;
+  content3?: string;
 };
 
 interface ImageFormProps {
@@ -104,13 +105,26 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
     setSearchParams(undefined);
   };
 
-  const [inputs, setInputs] = useState(imageInputs);
+  // dans un bloc "texte et image" (parentId), la taille est gérée par le bloc parent
+  const [inputs, setInputs] = useState(
+    parentId
+      ? imageInputs.filter((input) => input.name !== "content3")
+      : imageInputs
+  );
   useEffect(() => {
     if (!storymapInfos?.lang2) {
-      const newInputs = removeLang2Inputs(imageInputs);
-      setInputs(newInputs);
+      setInputs((currentInputs) => removeLang2Inputs(currentInputs));
     }
   }, [storymapInfos]);
+
+  // taille "moyenne" par défaut (nouveau bloc ou bloc créé avant l'option de taille)
+  const blockDefaultValues = (defaultValues ?? block) as BlockContentType;
+  const formDefaultValues = parentId
+    ? blockDefaultValues
+    : ({
+        ...blockDefaultValues,
+        content3: blockDefaultValues?.content3 || "medium",
+      } as BlockContentType);
 
   return (
     <>
@@ -119,7 +133,7 @@ const ImageForm = ({ parentId, defaultValues }: ImageFormProps) => {
         key={block ? block.id : "image"}
         onSubmit={onSubmit as SubmitHandler<allInputsType>}
         inputs={inputs}
-        defaultValues={(defaultValues ?? block) as BlockContentType}
+        defaultValues={formDefaultValues}
         action={action as string}
       />
     </>
