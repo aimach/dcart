@@ -53,7 +53,8 @@ const TagManagementPage = () => {
   // biome-ignore lint/correctness/useExhaustiveDependencies: force le re-render pour le rafraîchissement de la liste
   useEffect(() => {
     const fetchAllTags = async () => {
-      const fetchedTags = await getAllTags();
+      // avec les storymaps associées, pour le choix de la storymap introductive
+      const fetchedTags = await getAllTags(true);
       setTags(fetchedTags);
     };
     fetchAllTags();

@@ -47,11 +47,14 @@ const getDivinityIdsList = async () => {
 
 /**
  * Récupère la liste des étiquettes
+ * @param withStorymaps - Ajoute les storymaps associées à chaque étiquette
  * @returns {Promise} - Toutes les catégories
  */
-const getAllTags = async () => {
+const getAllTags = async (withStorymaps = false) => {
   try {
-    const response = await apiClient.get("/dcart/tags/all");
+    const response = await apiClient.get(
+      `/dcart/tags/all${withStorymaps ? "?withStorymaps=true" : ""}`
+    );
     return response.data;
   } catch (error) {
     console.error("Erreur lors du chargement des tags :", error);

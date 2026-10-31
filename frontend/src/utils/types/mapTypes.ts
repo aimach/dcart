@@ -47,6 +47,14 @@ type TagType = {
     title_en: string;
     locationType: string;
   }[];
+  // storymap introductive, affichée en premier sur la page du tag
+  intro_storymap_id?: string | null;
+  // storymaps associées (récupérées pour le backoffice)
+  storymaps?: {
+    id: string;
+    title_lang1: string;
+    isActive: boolean;
+  }[];
 };
 
 type DivinityListType = { divinity_list: string };
