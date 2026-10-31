@@ -1,0 +1,46 @@
+@use '../../../../../styles/mixin' as m;
+@use '../../../../../styles/variable' as v;
+
+// même apparence que le control de calques Leaflet utilisé auparavant
+.legendControl {
+    background-color: v.$color-neutral-100;
+    border-radius: v.$border-radius-base;
+    box-shadow: 0 1px 5px rgba(0, 0, 0, 0.4);
+    padding: v.$space-xxs v.$space-xs;
+    max-width: 300px;
+
+    .legendToggle {
+        @include m.unbuttonize;
+        @include m.flexbox(flex, row, nowrap, space-between, center);
+        gap: v.$space-xs;
+        width: 100%;
+        cursor: pointer;
+        font: inherit;
+        font-weight: v.$font-weight-semi-bold;
+        color: v.$color-dark-lava;
+    }
+
+    .legendItems {
+        list-style-type: none;
+        margin: v.$space-xxs 0 0;
+        padding: 0;
+        max-height: 40vh;
+        overflow-y: auto;
+
+        li {
+            @include m.flexbox(flex, row, nowrap, flex-start, center);
+            gap: v.$space-xxs;
+            margin-bottom: v.$space-xxxs;
+
+            // pictogramme
+            span:first-child {
+                @include m.flexbox(flex, row, nowrap, center, center);
+                flex-shrink: 0;
+            }
+
+            p {
+                margin: 0;
+            }
+        }
+    }
+}

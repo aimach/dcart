@@ -87,7 +87,10 @@
     "noData": "Aucune donnée",
     "no": "pas de",
     "filter": "Filtre",
-    "tableOfContents": "Sommaire"
+    "tableOfContents": "Sommaire",
+    "legend": "Légende",
+    "showLegend": "Afficher la légende",
+    "hideLegend": "Masquer la légende"
   },
   "modal": {
     "firstContent": "J'aimerais voir les sources de",

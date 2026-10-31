@@ -70,6 +70,7 @@ export type simpleMapInputsType = {
   content1_lang1: string;
   content1_lang2: string;
   content2_lang1: string;
+  content3?: string;
 };
 
 /**

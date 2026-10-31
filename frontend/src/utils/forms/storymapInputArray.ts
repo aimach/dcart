@@ -494,6 +494,21 @@ const simpleMapInputs: InputType[] = [
       },
     },
   },
+  {
+    label_fr: "Position de la légende",
+    label_en: "Legend position",
+    name: "content3",
+    type: "select",
+    options: [
+      { value: "bottomright", label: "En bas à droite" },
+      { value: "bottomleft", label: "En bas à gauche" },
+      { value: "topright", label: "En haut à droite" },
+      { value: "topleft", label: "En haut à gauche" },
+    ],
+    required: {
+      value: false,
+    },
+  },
 ];
 
 const comparisonMapInputs: InputType[] = [

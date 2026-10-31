@@ -1,17 +1,12 @@
 // import des bibliothèques
 import DOMPurify from "dompurify";
 import { useCallback, useEffect, useMemo, useRef, useState } from "react";
-import {
-  LayerGroup,
-  LayersControl,
-  MapContainer,
-  ScaleControl,
-  ZoomControl,
-} from "react-leaflet";
+import { MapContainer, ScaleControl, ZoomControl } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import TileLayerWithFallback from "../../../builtMap/map/tileLayerWithFallback/TileLayerWithFallback";
 // import des composants
 import MarkerComponent from "../../../builtMap/map/MarkerComponent/MarkerComponent";
+import MapLegendControl from "./mapLegend/MapLegendControl";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
@@ -27,7 +22,12 @@ import {
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
-import type { L, LatLngTuple, Map as LeafletMap } from "leaflet";
+import type {
+  ControlPosition,
+  L,
+  LatLngTuple,
+  Map as LeafletMap,
+} from "leaflet";
 import type {
   MapColorType,
   MapIconType,
@@ -93,16 +93,6 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
       blockContent[`content1_${selectedLanguage}`] || ""
     );
   }, [blockContent, selectedLanguage]);
-
-  // biome-ignore lint/correctness/useExhaustiveDependencies: volontaire, sinon s'exécute trop tôt
-  useEffect(() => {
-    const inputs = document.querySelectorAll(
-      ".leaflet-control-layers-selector"
-    );
-    for (const input of inputs) {
-      (input as HTMLInputElement).style.display = "none";
-    }
-  }, [points, hasGrayScale]);
 
   const tileAttribution = getMapAttribution(blockContent.content2_lang1);
 
@@ -182,23 +172,24 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
               )}
             </MarkerClusterGroup>
             {allColorsAndShapes.length > 0 && (
-              <LayersControl position="bottomright" collapsed={false}>
-                {allColorsAndShapes
+              <MapLegendControl
+                // position choisie dans le formulaire de la carte
+                position={
+                  (blockContent.content3 ?? undefined) as
+                    | ControlPosition
+                    | undefined
+                }
+                items={allColorsAndShapes
                   .sort((a, b) => a.position - b.position)
-                  .map((layer) => {
-                    const icon =
-                      getShapeForLayerName(
-                        layer.shape,
-                        layer.color,
-                        hasGrayScale
-                      ) + layer[`name_${language}`];
-                    return (
-                      <LayersControl.Overlay name={icon} key={icon}>
-                        <LayerGroup key={icon} />
-                      </LayersControl.Overlay>
-                    );
-                  })}
-              </LayersControl>
+                  .map((layer) => ({
+                    icon: getShapeForLayerName(
+                      layer.shape,
+                      layer.color,
+                      hasGrayScale
+                    ),
+                    name: layer[`name_${language}`],
+                  }))}
+              />
             )}
             <ZoomControl position="topright" />
             <ScaleControl position="bottomright" />
