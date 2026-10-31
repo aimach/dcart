@@ -44,6 +44,11 @@
     @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
   }
 
+  // curseurs aux couleurs du site (bleu du navigateur par défaut)
+  input[type="range"] {
+    accent-color: v.$color-umber;
+  }
+
   .resetButton {
     cursor: pointer;
   }
