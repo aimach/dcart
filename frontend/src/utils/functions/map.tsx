@@ -464,6 +464,63 @@ const getMapAttribution = (tileLayerURL: string): string => {
   }
 };
 
+// fond de carte utilisé si celui choisi ne répond pas
+const FALLBACK_TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
+
+/**
+ * Fonction qui bascule un fond de carte vers OpenStreetMap s'il ne répond pas :
+ * aucune tuile chargée après un délai (serveur qui ne répond pas) ou plusieurs
+ * erreurs de chargement (serveur qui refuse la connexion)
+ * @param {LeafletMap} map - La carte Leaflet
+ * @param {L.TileLayer} tileLayer - Le fond de carte à surveiller
+ * @param {string} tileLayerURL - L'URL du fond de carte
+ * @returns {() => void} - Fonction qui retire la surveillance
+ */
+const enableTileLayerFallback = (
+  map: LeafletMap,
+  tileLayer: L.TileLayer,
+  tileLayerURL: string
+): (() => void) => {
+  if (!tileLayerURL || tileLayerURL === FALLBACK_TILE_URL) return () => {};
+
+  const ERROR_THRESHOLD = 5; // nombre d'erreurs avant basculement
+  const LOAD_TIMEOUT = 8000; // délai (ms) sans tuile chargée avant basculement
+  let errorCount = 0;
+
+  const stop = () => {
+    clearTimeout(timeout);
+    tileLayer.off("tileload", handleTileLoad);
+    tileLayer.off("tileerror", handleTileError);
+  };
+
+  const fallBack = () => {
+    stop();
+    console.warn("Fond de carte indisponible, basculement vers OpenStreetMap");
+    const fallbackAttribution = `dCART | &copy; ${getMapAttribution(
+      FALLBACK_TILE_URL
+    )}`;
+    map.attributionControl?.removeAttribution(
+      tileLayer.getAttribution?.() ?? ""
+    );
+    tileLayer.options.attribution = fallbackAttribution;
+    map.attributionControl?.addAttribution(fallbackAttribution);
+    tileLayer.setUrl(FALLBACK_TILE_URL);
+  };
+
+  // dès qu'une tuile se charge, le fond de carte est considéré comme disponible
+  const handleTileLoad = () => stop();
+  const handleTileError = () => {
+    errorCount += 1;
+    if (errorCount >= ERROR_THRESHOLD) fallBack();
+  };
+
+  const timeout = setTimeout(fallBack, LOAD_TIMEOUT);
+  tileLayer.on("tileload", handleTileLoad);
+  tileLayer.on("tileerror", handleTileError);
+
+  return stop;
+};
+
 const getOptionalCellValue = (
   attestation: AttestationType,
   key: string,
@@ -528,6 +585,7 @@ const getOptionalCellValue = (
 
 export {
   createLucideString,
+  enableTileLayerFallback,
   getAgentsArrayWithoutDuplicates,
   getAllAttestationsIdsFromParsedPoints,
   getBackGroundColorClassName,

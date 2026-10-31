@@ -6,10 +6,10 @@ import {
   LayersControl,
   MapContainer,
   ScaleControl,
-  TileLayer,
   ZoomControl,
 } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
+import TileLayerWithFallback from "../../../builtMap/map/tileLayerWithFallback/TileLayerWithFallback";
 // import des composants
 import MarkerComponent from "../../../builtMap/map/MarkerComponent/MarkerComponent";
 // import des custom hooks
@@ -150,7 +150,7 @@ const SimpleMapBlock = ({ blockContent, mapName }: SimpleMapBlockProps) => {
           keyboard={true} // accessibilité
         >
           <>
-            <TileLayer
+            <TileLayerWithFallback
               opacity={0.6}
               attribution={`dCART | &copy; ${tileAttribution}`}
               url={blockContent.content2_lang1}

@@ -8,7 +8,10 @@ import {
   getIcon,
   getLittleCircleIcon,
 } from "../../../../utils/functions/icons";
-import { getMapAttribution } from "../../../../utils/functions/map";
+import {
+  enableTileLayerFallback,
+  getMapAttribution,
+} from "../../../../utils/functions/map";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { LatLngTuple } from "leaflet";
@@ -139,7 +142,21 @@ const ComparisonMapBlock = ({
 
     L.control.sideBySide(leftLayer, rightLayer).addTo(comparisonMap);
 
+    // bascule vers OpenStreetMap si un des fonds de carte ne répond pas
+    const stopRightFallback = enableTileLayerFallback(
+      comparisonMap,
+      rightLayer,
+      blockContent.content2_lang2
+    );
+    const stopLeftFallback = enableTileLayerFallback(
+      comparisonMap,
+      leftLayer,
+      blockContent.content2_lang1
+    );
+
     return () => {
+      stopRightFallback();
+      stopLeftFallback();
       comparisonMap.remove();
     };
   }, [blockContent, leftPoints, rightPoints, mapName, bothSidesPoints]);
