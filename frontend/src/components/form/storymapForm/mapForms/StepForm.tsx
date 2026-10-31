@@ -25,6 +25,7 @@ import {
   handleCSVDownload,
   parseCSVFile,
 } from "../../../../utils/functions/csv";
+import { isRichTextEmpty } from "../../../../utils/functions/block";
 import { getAllAttestationsIdsFromParsedPoints } from "../../../../utils/functions/map";
 import {
   addLangageBetweenBrackets,
@@ -260,8 +261,8 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
         return;
       }
       if (
-        !data.content2_lang1?.includes("<p>") ||
-        (storymapInfos?.lang2 && !data.content2_lang2?.includes("<p>"))
+        isRichTextEmpty(data.content2_lang1) ||
+        (storymapInfos?.lang2 && isRichTextEmpty(data.content2_lang2))
       ) {
         notifyError(
           "Veuillez remplir tous les champs obligatoires du formulaire.",
