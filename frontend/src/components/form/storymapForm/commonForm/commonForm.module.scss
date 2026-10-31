@@ -60,7 +60,8 @@
         @include m.flexbox(flex, column, nowrap, space-between, flex-start);
         gap: v.$space-s;
 
-        >input,
+        // les cases à cocher gardent le style global défini dans App.scss
+        >input:not([type="checkbox"]),
         textarea,
         select {
             width: 100%;
