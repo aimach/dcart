@@ -593,7 +593,11 @@ const stepInputs: InputType[] = [
     name: "content2_lang1",
     type: "wysiwyg",
     required: {
-      value: false,
+      value: true,
+      message: {
+        fr: "La description en langue 1 est requise",
+        en: "The description in language 1 is required",
+      },
     },
   },
   {
@@ -602,7 +606,11 @@ const stepInputs: InputType[] = [
     name: "content2_lang2",
     type: "wysiwyg",
     required: {
-      value: false,
+      value: true,
+      message: {
+        fr: "La description en langue 2 est requise",
+        en: "The description in language 2 is required",
+      },
     },
   },
 ];

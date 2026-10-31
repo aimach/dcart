@@ -260,9 +260,13 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
         );
         return;
       }
+      // titre et description obligatoires en langue 1, et en langue 2 si la storymap en a une
       if (
+        isRichTextEmpty(data.content1_lang1) ||
         isRichTextEmpty(data.content2_lang1) ||
-        (storymapInfos?.lang2 && isRichTextEmpty(data.content2_lang2))
+        (storymapInfos?.lang2 &&
+          (isRichTextEmpty(data.content1_lang2) ||
+            isRichTextEmpty(data.content2_lang2)))
       ) {
         notifyError(
           "Veuillez remplir tous les champs obligatoires du formulaire.",
@@ -421,6 +425,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
                   htmlFor={input.name}
                   label={input[`label_${language}`]}
                   description={input[`description_${language}`] ?? ""}
+                  isRequired={input.required.value}
                 />
                 <div className={style.inputContainer}>
                   <input
@@ -446,6 +451,7 @@ const StepForm = ({ scrollMapContent }: StepFormProps) => {
                   htmlFor={input.name}
                   label={input[`label_${language}`]}
                   description={input[`description_${language}`] ?? ""}
+                  isRequired={input.required.value}
                 />
                 <div className={style.inputContainer}>
                   <Controller
