@@ -36,6 +36,16 @@ export class Storymap extends BaseEntity {
   @Column({ type: "text", nullable: true })
   image_url!: string | null;
 
+  // cadrage de l'image de couverture : zoom (en %) et point focal (en % de la largeur et de la hauteur)
+  @Column({ type: "integer", default: 100 })
+  image_zoom!: number;
+
+  @Column({ type: "integer", default: 50 })
+  image_position_x!: number;
+
+  @Column({ type: "integer", default: 50 })
+  image_position_y!: number;
+
   @Column({ type: "varchar", nullable: true })
   background_color!: string | null;
 
