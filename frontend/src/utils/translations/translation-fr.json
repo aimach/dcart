@@ -86,7 +86,8 @@
     "typeOf": "de type",
     "noData": "Aucune donnée",
     "no": "pas de",
-    "filter": "Filtre"
+    "filter": "Filtre",
+    "tableOfContents": "Sommaire"
   },
   "modal": {
     "firstContent": "J'aimerais voir les sources de",

@@ -5,6 +5,8 @@ import { useMemo } from "react";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
 import type { BlockContentType } from "../../../../utils/types/storymapTypes";
+// import des fonctions
+import { getTitleAnchorId } from "../../tableOfContents/StorymapTableOfContents";
 // import du style
 import style from "./titleBlock.module.scss";
 
@@ -23,7 +25,11 @@ const TitleBlock = ({ blockContent }: TitleBlockProps) => {
   }, [blockContent, selectedLanguage]);
 
   return (
-    <section className={style.titleSection}>
+    <section
+      className={style.titleSection}
+      // ancre utilisée par le sommaire
+      id={getTitleAnchorId(blockContent.id)}
+    >
       {blockContent.type.name === "title" ? (
         <h3 // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
           className={style.titleStyle}
