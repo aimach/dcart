@@ -255,12 +255,25 @@ const hasRequiredKeys = (
   return false;
 };
 
+/**
+ * Fonction qui indique si un contenu wysiwyg est vide
+ * (Quill renvoie par exemple "<p><br></p>" pour un éditeur vide)
+ * @param content - le contenu HTML ou texte à vérifier
+ * @returns {boolean} - true si le contenu ne contient aucun texte, false sinon
+ */
+const isRichTextEmpty = (content: string | null | undefined): boolean => {
+  if (!content) return true;
+  const doc = new DOMParser().parseFromString(content, "text/html");
+  return !doc.body.textContent?.trim();
+};
+
 export {
   addPanelToPoints,
   getAllowedTags,
   getPreviewText,
   getTypeIcon,
   hasRequiredKeys,
+  isRichTextEmpty,
   normalizeBody,
   requiredBlockKeys,
 };
