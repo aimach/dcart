@@ -1,8 +1,9 @@
 // import des bibliothèques
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 import { LayerGroup, LayersControl } from "react-leaflet";
 // import des composants
+import LayersControlToggle from "../../../common/mapLegend/LayersControlToggle";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
@@ -43,6 +44,9 @@ const SimpleLayerComponent = ({
 	const { setSelectedTabMenu, setIsPanelDisplayed } = useMapAsideMenuStore();
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
+	// control de calques utilisé comme légende, pour y ajouter le bouton ouvrir/fermer
+	const [layersControl, setLayersControl] =
+		useState<L.Control.Layers | null>(null);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies:
 	useEffect(() => {
@@ -140,7 +144,11 @@ const SimpleLayerComponent = ({
 				))}
 			</MarkerClusterGroup>
 			{allColorsAndShapes.length > 0 && (
-				<LayersControl position="bottomright" collapsed={false}>
+				<LayersControl
+					position="bottomright"
+					collapsed={false}
+					ref={setLayersControl}
+				>
 					{allColorsAndShapes.map((layer) => {
 						const icon =
 							getShapeForLayerName(layer.shape, layer.color, hasGrayScale) +
@@ -152,6 +160,9 @@ const SimpleLayerComponent = ({
 						);
 					})}
 				</LayersControl>
+			)}
+			{allColorsAndShapes.length > 0 && (
+				<LayersControlToggle control={layersControl} />
 			)}
 		</>
 	) : (

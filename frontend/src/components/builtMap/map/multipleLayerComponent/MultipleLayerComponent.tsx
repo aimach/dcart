@@ -1,8 +1,9 @@
 // import des bibliothèques
-import { useEffect, useMemo, useRef } from "react";
+import { useEffect, useMemo, useRef, useState } from "react";
 import { LayerGroup, LayersControl } from "react-leaflet";
 import MarkerClusterGroup from "react-leaflet-markercluster";
 // import des composants
+import LayersControlToggle from "../../../common/mapLegend/LayersControlToggle";
 import MarkerComponent from "../MarkerComponent/MarkerComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
@@ -118,6 +119,9 @@ const MultipleLayerComponent = ({
 	}, [allResultsWithLayerFilter]);
 
 	const clusterRef = useRef<L.MarkerClusterGroup | null>(null);
+	// control de calques utilisé comme légende, pour y ajouter le bouton ouvrir/fermer
+	const [layersControl, setLayersControl] =
+		useState<L.Control.Layers | null>(null);
 
 	// biome-ignore lint/correctness/useExhaustiveDependencies: recharger pour afficher la traduction des noms des layers
 	useEffect(() => {
@@ -186,7 +190,12 @@ const MultipleLayerComponent = ({
 	}, [allResultsWithLayerFilter, language]);
 
 	return (
-		<LayersControl position="bottomright" collapsed={false}>
+		<LayersControl
+			position="bottomright"
+			collapsed={false}
+			ref={setLayersControl}
+		>
+			<LayersControlToggle control={layersControl} />
 			<MarkerClusterGroup
 				ref={clusterRef}
 				zoomToBoundsOnClick={false}

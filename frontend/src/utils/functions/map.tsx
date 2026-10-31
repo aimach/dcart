@@ -404,31 +404,55 @@ const uploadMapImage = (
       input.style.display = "none";
     }
 
+    // on ouvre la légende si elle est fermée et on cache son bouton ouvrir/fermer
+    const legendToggles = Array.from(
+      document.querySelectorAll<HTMLButtonElement>("[data-legend-toggle]")
+    );
+    const closedLegendToggles = legendToggles.filter(
+      (toggle) => toggle.getAttribute("aria-expanded") === "false"
+    );
+    for (const toggle of closedLegendToggles) {
+      toggle.click();
+    }
+    for (const toggle of legendToggles) {
+      toggle.style.display = "none";
+    }
+
     const mapElement = document.getElementsByClassName(
       "leaflet-container"
     )[0] as HTMLElement; // le premier élément de la classe leaflet-container
 
-    html2canvas(mapElement, { useCORS: true, allowTaint: true }).then(
-      (canvas) => {
-        const imgData = canvas.toDataURL("image/png");
+    // capture à la frame suivante, une fois la légende ouverte
+    requestAnimationFrame(() =>
+      html2canvas(mapElement, { useCORS: true, allowTaint: true }).then(
+        (canvas) => {
+          const imgData = canvas.toDataURL("image/png");
 
-        // Télécharger l'image
-        const link = document.createElement("a");
-        link.href = imgData;
-        link.download = `carte-${slugify(mapInfos[`title_${language}`])}.png`;
-        link.click();
-        setMapIsDownloading(false);
-        // on remet le control zoom
-        for (const element of controlZoomElements) {
-          element.style.display = "block";
-        }
-        // on remet les checkbox de la légende
-        if (mapInfos.isLayered) {
-          for (const checkbox of legendCheckboxs) {
-            checkbox.style.display = "inline-block";
+          // Télécharger l'image
+          const link = document.createElement("a");
+          link.href = imgData;
+          link.download = `carte-${slugify(mapInfos[`title_${language}`])}.png`;
+          link.click();
+          setMapIsDownloading(false);
+          // on remet le control zoom
+          for (const element of controlZoomElements) {
+            element.style.display = "block";
+          }
+          // on remet les checkbox de la légende
+          if (mapInfos.isLayered) {
+            for (const checkbox of legendCheckboxs) {
+              checkbox.style.display = "inline-block";
+            }
+          }
+          // on remet le bouton de la légende et son état fermé
+          for (const toggle of legendToggles) {
+            toggle.style.display = "";
+          }
+          for (const toggle of closedLegendToggles) {
+            toggle.click();
           }
         }
-      }
+      )
     );
   }
 };

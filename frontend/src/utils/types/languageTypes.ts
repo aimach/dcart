@@ -90,6 +90,9 @@ type LanguageObject = {
     no: string;
     filter: string;
     tableOfContents: string;
+    legend: string;
+    showLegend: string;
+    hideLegend: string;
   };
   modal: {
     firstContent: string;
