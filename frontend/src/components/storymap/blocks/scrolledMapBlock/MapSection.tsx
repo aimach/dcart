@@ -2,11 +2,11 @@
 import { useEffect, useState } from "react";
 import {
 	MapContainer,
-	TileLayer,
 	ScaleControl,
 	Marker,
 	Popup,
 } from "react-leaflet";
+import TileLayerWithFallback from "../../../builtMap/map/tileLayerWithFallback/TileLayerWithFallback";
 // import des custom hooks
 import { useWindowSize } from "../../../../utils/hooks/useWindowSize";
 // import des services
@@ -129,7 +129,7 @@ const MapSection = ({
 				}}
 			>
 				<>
-					<TileLayer
+					<TileLayerWithFallback
 						opacity={0.6}
 						attribution={`dCART | &copy; ${mapAttribution}`}
 						url={blockContent.content2_lang1}
