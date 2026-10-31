@@ -6,14 +6,15 @@
   background-color: v.$color-grullo-light;
   border-radius: v.$border-radius-base;
 
-  p:first-child {
+  // les styles sont posés sur les conteneurs et non sur les <p> pour que
+  // les classes de Quill (alignement, taille, police) restent prioritaires
+  .quote {
     font-style: italic;
     font-size: v.$font-size-l;
-    text-align: left;
     padding: v.$font-space-xxxxl;
   }
 
-  p:last-child {
+  .source {
     padding: v.$font-space-l v.$font-space-xxxxl;
   }
 
