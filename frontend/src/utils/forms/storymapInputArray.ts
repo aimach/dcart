@@ -129,6 +129,19 @@ const storymapInputs: InputType[] = [
     },
   },
   {
+    label_fr: "Bloc de titre semi-transparent",
+    label_en: "Semi-transparent title block",
+    description_fr:
+      "Le bloc contenant le titre laisse apparaître l'image ou la couleur de fond (opacité de 75 %)",
+    description_en:
+      "The block containing the title lets the background image or color show through (75% opacity)",
+    name: "transparent_title_block",
+    type: "checkbox",
+    required: {
+      value: false,
+    },
+  },
+  {
     label_fr: "Auteur",
     label_en: "Author",
     description_fr:

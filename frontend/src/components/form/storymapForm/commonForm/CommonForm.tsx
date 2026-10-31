@@ -229,6 +229,23 @@ const CommonForm = ({
             </div>
           );
         }
+        if (input.type === "checkbox") {
+          return (
+            <div key={input.name} className={style.commonFormInputContainer}>
+              <div className={style.labelContainer}>
+                <label htmlFor={input.name}>{input[`label_${language}`]}</label>
+                <p>{input[`description_${language}`] ?? ""}</p>
+              </div>
+              <div className={style.inputContainer}>
+                <input
+                  type="checkbox"
+                  id={input.name}
+                  {...register(input.name as keyof storymapInputsType)}
+                />
+              </div>
+            </div>
+          );
+        }
         if (input.type === "file") {
           return (
             <div key={input.name} className={style.commonFormInputContainer}>

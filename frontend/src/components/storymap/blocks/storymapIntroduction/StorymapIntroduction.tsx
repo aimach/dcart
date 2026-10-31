@@ -60,7 +60,11 @@ const StorymapIntroduction = ({
 
   return (
     <section className={style.introductionContainer} style={backgroundStyle}>
-      <div className={style.contentContainer}>
+      <div
+        className={`${style.contentContainer} ${
+          introductionContent.transparent_title_block ? style.transparent : ""
+        }`}
+      >
         <h2 // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized
           dangerouslySetInnerHTML={{ __html: sanitizedTitle }}
         />

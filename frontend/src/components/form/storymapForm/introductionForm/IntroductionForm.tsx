@@ -124,6 +124,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
         description_lang2: formData.description_lang2 ?? "",
         image_url: formData.image_url as string,
         background_color: formData.background_color ?? "",
+        transparent_title_block: !!formData.transparent_title_block,
         author: formData.author ?? "",
         author_status: formData.author_status ?? "",
         author_email: formData.author_email ?? "",
@@ -151,6 +152,7 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
         background_color: formData.background_color
           ? tinycolor(formData.background_color).toHexString()
           : "",
+        transparent_title_block: !!formData.transparent_title_block,
         author: formData.author ?? "",
         author_status: formData.author_status ?? "",
         author_email: formData.author_email ?? "",

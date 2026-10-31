@@ -39,6 +39,10 @@ export class Storymap extends BaseEntity {
   @Column({ type: "varchar", nullable: true })
   background_color!: string | null;
 
+  // booléen si le bloc de titre de l'introduction est semi-transparent
+  @Column({ type: "boolean", default: false })
+  transparent_title_block!: boolean;
+
   @Column({ type: "text", nullable: true })
   slug!: string | null;
 
