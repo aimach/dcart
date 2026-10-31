@@ -3,6 +3,7 @@ import DOMPurify from "dompurify";
 import { useMemo } from "react";
 // import des services
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
+import { getCoverImageStyle } from "../../../../utils/functions/storymap";
 // import des types
 import type { StorymapType } from "../../../../utils/types/storymapTypes";
 // import du style
@@ -48,18 +49,26 @@ const StorymapIntroduction = ({
       : null;
   }, [introductionContent.publishedAt]);
 
+  // sans image, la couleur de fond est appliquée au bloc
   const backgroundStyle = introductionContent.image_url
-    ? {
-        backgroundImage: `url(${introductionContent.image_url})`,
-        backgroundSize: "cover",
-        backgroundPosition: "center",
-      }
+    ? {}
     : {
         backgroundColor: introductionContent.background_color || "#f0f0f0",
       };
 
   return (
     <section className={style.introductionContainer} style={backgroundStyle}>
+      {introductionContent.image_url && (
+        <div
+          className={style.coverImage}
+          style={getCoverImageStyle(
+            introductionContent.image_url,
+            introductionContent.image_zoom,
+            introductionContent.image_position_x,
+            introductionContent.image_position_y
+          )}
+        />
+      )}
       <div
         className={`${style.contentContainer} ${
           introductionContent.transparent_title_block ? style.transparent : ""

@@ -5,6 +5,7 @@ import { useSearchParams } from "react-router";
 // import des composants
 import ButtonComponent from "../../../common/button/ButtonComponent";
 import ErrorComponent from "../../errorComponent/ErrorComponent";
+import CoverImageFramingComponent from "../../inputComponent/CoverImageFramingComponent";
 import InputFileComponent from "../../inputComponent/InputFileComponent";
 import EditorComponent from "../wysiwygBlock/EditorComponent";
 // import des custom hooks
@@ -226,6 +227,24 @@ const CommonForm = ({
                     />
                   )}
               </div>{" "}
+            </div>
+          );
+        }
+        if (input.type === "image_framing") {
+          return (
+            <div key={input.name} className={style.commonFormInputContainer}>
+              <div className={style.labelContainer}>
+                <label htmlFor={input.name}>{input[`label_${language}`]}</label>
+                <p>{input[`description_${language}`] ?? ""}</p>
+              </div>
+              <div className={style.inputContainer}>
+                <CoverImageFramingComponent
+                  control={control}
+                  imageValue={
+                    watch("image_url") as string | File | null | undefined
+                  }
+                />
+              </div>
             </div>
           );
         }

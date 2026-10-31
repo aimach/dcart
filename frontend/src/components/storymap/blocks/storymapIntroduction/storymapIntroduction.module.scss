@@ -4,13 +4,18 @@
 .introductionContainer {
     @include m.flexbox(flex, row, nowrap, center, center);
     width: 100%;
+    position: relative;
+    overflow: hidden; // l'image zoomée ne déborde pas du bloc
     height: 80vh;
-    background-repeat: no-repeat;
-    background-size: cover;
-    background-position: center;
 
+    // calque de l'image de couverture, recadré par getCoverImageStyle
+    .coverImage {
+        position: absolute;
+        inset: 0;
+    }
 
     .contentContainer {
+        position: relative; // au-dessus du calque de l'image
         text-align: center;
         line-height: v.$font-space-xxxl;
         background-color: v.$color-neutral-100;

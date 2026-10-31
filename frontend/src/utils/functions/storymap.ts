@@ -1,3 +1,4 @@
+import type { CSSProperties } from "react";
 import type { OptionType } from "../types/commonTypes";
 import type { InputType } from "../types/formTypes";
 import type { Language } from "../types/languageTypes";
@@ -168,8 +169,32 @@ const addLangageBetweenBrackets = (
 	});
 };
 
+/**
+ * Fonction qui retourne le style du calque de l'image de couverture d'une storymap
+ * L'image couvre toujours le bloc : le zoom l'agrandit autour du point focal
+ * @param imageUrl - l'URL de l'image de couverture
+ * @param zoom - le zoom en % (100 = sans zoom)
+ * @param positionX - la position horizontale du point focal en % (0 = gauche)
+ * @param positionY - la position verticale du point focal en % (0 = haut)
+ * @returns le style à appliquer au calque de l'image
+ */
+const getCoverImageStyle = (
+	imageUrl: string,
+	zoom = 100,
+	positionX = 50,
+	positionY = 50,
+): CSSProperties => ({
+	backgroundImage: `url("${imageUrl}")`,
+	backgroundSize: "cover",
+	backgroundRepeat: "no-repeat",
+	backgroundPosition: `${positionX}% ${positionY}%`,
+	transform: `scale(${zoom / 100})`,
+	transformOrigin: `${positionX}% ${positionY}%`,
+});
+
 export {
 	createTagOptions,
+	getCoverImageStyle,
 	createLanguageOptions,
 	getFlagEmoji,
 	createMapOptions,

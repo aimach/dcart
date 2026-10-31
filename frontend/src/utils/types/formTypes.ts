@@ -64,6 +64,9 @@ type storymapInputsType = {
   description_lang1: string;
   description_lang2: string;
   image_url: string | File | null | undefined;
+  image_zoom: number;
+  image_position_x: number;
+  image_position_y: number;
   background_color: string;
   transparent_title_block: boolean;
   author: string;

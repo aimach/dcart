@@ -116,6 +116,19 @@ const storymapInputs: InputType[] = [
     },
   },
   {
+    label_fr: "Cadrage de l'image de couverture",
+    label_en: "Cover image framing",
+    description_fr:
+      "Zoomez sur l'image et cliquez sur l'aperçu pour choisir la partie de l'image qui reste visible. Le cadrage exact dépend de la taille de l'écran.",
+    description_en:
+      "Zoom into the image and click on the preview to choose the part of the image that stays visible. The exact framing depends on the screen size.",
+    name: "image_framing",
+    type: "image_framing",
+    required: {
+      value: false,
+    },
+  },
+  {
     label_fr: "Couleur de fond (si aucune image fournie)",
     label_en: "Background color (if no image provided)",
     description_fr:

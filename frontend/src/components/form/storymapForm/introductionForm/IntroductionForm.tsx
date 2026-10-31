@@ -124,6 +124,9 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
         description_lang2: formData.description_lang2 ?? "",
         image_url: formData.image_url as string,
         background_color: formData.background_color ?? "",
+        image_zoom: Number(formData.image_zoom ?? 100),
+        image_position_x: Number(formData.image_position_x ?? 50),
+        image_position_y: Number(formData.image_position_y ?? 50),
         transparent_title_block: !!formData.transparent_title_block,
         author: formData.author ?? "",
         author_status: formData.author_status ?? "",
@@ -152,6 +155,9 @@ const IntroductionForm = ({ setStep }: IntroductionFormProps) => {
         background_color: formData.background_color
           ? tinycolor(formData.background_color).toHexString()
           : "",
+        image_zoom: Number(formData.image_zoom ?? 100),
+        image_position_x: Number(formData.image_position_x ?? 50),
+        image_position_y: Number(formData.image_position_y ?? 50),
         transparent_title_block: !!formData.transparent_title_block,
         author: formData.author ?? "",
         author_status: formData.author_status ?? "",

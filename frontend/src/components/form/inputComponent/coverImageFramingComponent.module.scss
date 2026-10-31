@@ -1,0 +1,59 @@
+@use "../../../styles/mixin" as m;
+@use "../../../styles/variable" as v;
+
+.framingContainer {
+  @include m.flexbox(flex, row, wrap, flex-start, flex-start);
+  gap: v.$space-s;
+}
+
+// aperçu au format approximatif du bloc d'introduction (pleine largeur, 80vh)
+.preview {
+  position: relative;
+  width: 360px;
+  max-width: 100%;
+  aspect-ratio: 16 / 9;
+  padding: 0;
+  overflow: hidden;
+  border: 1px solid #ddd;
+  border-radius: 8px;
+  cursor: crosshair;
+
+  .previewImage {
+    position: absolute;
+    inset: 0;
+  }
+
+  .focalPoint {
+    position: absolute;
+    width: 14px;
+    height: 14px;
+    border: 2px solid v.$color-neutral-100;
+    border-radius: 50%;
+    background-color: v.$color-error;
+    box-shadow: 0 0 2px rgba(0, 0, 0, 0.6);
+    transform: translate(-50%, -50%);
+    pointer-events: none;
+  }
+}
+
+.controls {
+  @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+  gap: v.$space-s;
+
+  label {
+    @include m.flexbox(flex, column, nowrap, flex-start, flex-start);
+  }
+
+  // curseurs aux couleurs du site (bleu du navigateur par défaut)
+  input[type="range"] {
+    accent-color: v.$color-umber;
+  }
+
+  .resetButton {
+    cursor: pointer;
+  }
+}
+
+.noImage {
+  font-style: italic;
+}
