@@ -9,6 +9,7 @@ type StorymapType = {
   description_lang1: string;
   image_url?: string;
   background_color?: string;
+  transparent_title_block?: boolean;
   author?: string;
   author_status?: string;
   author_email?: string;
@@ -40,6 +41,7 @@ type StorymapBodyType = {
   description_lang2: string;
   image_url: string;
   background_color: string;
+  transparent_title_block: boolean;
   author: string;
   author_status: string;
   author_email: string;
