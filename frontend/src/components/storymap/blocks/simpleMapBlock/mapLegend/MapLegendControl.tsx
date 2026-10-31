@@ -1,12 +1,12 @@
 // import des bibliothèques
 import DOMPurify from "dompurify";
 import L, { type ControlPosition } from "leaflet";
-import { ChevronDown, ChevronUp } from "lucide-react";
 import { useEffect, useState } from "react";
 import { createPortal } from "react-dom";
 import { useMap } from "react-leaflet";
+// import des composants
+import LegendToggleButton from "../../../../common/mapLegend/LegendToggleButton";
 // import des custom hooks
-import { useTranslation } from "../../../../../utils/hooks/useTranslation";
 import { useWindowSize } from "../../../../../utils/hooks/useWindowSize";
 // import du style
 import style from "./mapLegendControl.module.scss";
@@ -37,7 +37,6 @@ const MapLegendControl = ({
   items,
   position = "bottomright",
 }: MapLegendControlProps) => {
-  const { translation, language } = useTranslation();
   const { isMobile } = useWindowSize();
   const map = useMap();
 
@@ -72,20 +71,10 @@ const MapLegendControl = ({
 
   return createPortal(
     <>
-      <button
-        type="button"
-        className={style.legendToggle}
-        onClick={() => setIsOpen(!isOpen)}
-        aria-expanded={isOpen}
-        aria-label={
-          isOpen
-            ? translation[language].common.hideLegend
-            : translation[language].common.showLegend
-        }
-      >
-        {translation[language].common.legend}
-        {isOpen ? <ChevronDown size={16} /> : <ChevronUp size={16} />}
-      </button>
+      <LegendToggleButton
+        isOpen={isOpen}
+        onToggle={() => setIsOpen(!isOpen)}
+      />
       {isOpen && (
         <ul className={style.legendItems}>
           {items.map((item) => (

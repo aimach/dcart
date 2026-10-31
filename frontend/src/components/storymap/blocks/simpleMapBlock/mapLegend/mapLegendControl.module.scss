@@ -9,17 +9,6 @@
     padding: v.$space-xxs v.$space-xs;
     max-width: 300px;
 
-    .legendToggle {
-        @include m.unbuttonize;
-        @include m.flexbox(flex, row, nowrap, space-between, center);
-        gap: v.$space-xs;
-        width: 100%;
-        cursor: pointer;
-        font: inherit;
-        font-weight: v.$font-weight-semi-bold;
-        color: v.$color-dark-lava;
-    }
-
     .legendItems {
         list-style-type: none;
         margin: v.$space-xxs 0 0;

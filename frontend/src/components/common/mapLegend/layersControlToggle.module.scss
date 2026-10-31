@@ -1,0 +1,17 @@
+@use '../../../styles/variable' as v;
+
+.layersControlHeader {
+    margin-bottom: v.$space-xxs;
+}
+
+// légende fermée : seul l'en-tête reste visible
+// (sélecteur renforcé pour passer devant .leaflet-control-layers-expanded de leaflet.css)
+.closed:global(.leaflet-control-layers) {
+    :global(.leaflet-control-layers-list) {
+        display: none;
+    }
+
+    .layersControlHeader {
+        margin-bottom: 0;
+    }
+}
