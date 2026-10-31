@@ -300,7 +300,7 @@ const linkInputs: InputType[] = [
     label_fr: "Lien",
     label_en: "Link",
     name: "content2_lang1",
-    type: "wysiwyg",
+    type: "text",
     required: {
       value: true,
       message: { fr: "Le lien est requis", en: "The link is required" },
