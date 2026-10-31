@@ -1,7 +1,10 @@
 import type { TileLayer as LeafletTileLayer } from "leaflet";
 import { useEffect, useRef } from "react";
 import { TileLayer, useMap } from "react-leaflet";
-import { enableTileLayerFallback } from "../../../../utils/functions/map";
+import {
+  enableTileLayerFallback,
+  getTileLayerRequestURL,
+} from "../../../../utils/functions/map";
 
 interface TileLayerWithFallbackProps {
   url: string;
@@ -32,7 +35,8 @@ const TileLayerWithFallback = ({
       // la key recrée le calque si l'URL change, après un éventuel basculement vers OSM
       key={url}
       ref={tileLayerRef}
-      url={url}
+      // avec la clé d'API pour les fonds qui en demandent une (CARTO)
+      url={getTileLayerRequestURL(url)}
       attribution={attribution}
       opacity={opacity}
     />

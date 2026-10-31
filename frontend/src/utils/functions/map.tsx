@@ -488,6 +488,29 @@ const getMapAttribution = (tileLayerURL: string): string => {
   }
 };
 
+// clé d'API CARTO (fond de carte noir), définie dans les fichiers .env du frontend
+const CARTO_API_KEY = import.meta.env.VITE_CARTO_API_KEY as string | undefined;
+
+/**
+ * Renvoie l'URL à utiliser pour charger les tuiles d'un fond de carte.
+ * L'URL enregistrée en base reste sans clé : la clé CARTO n'est ajoutée qu'ici,
+ * au format de l'API CARTO (https://basemaps.cartocdn.com/rastertiles/<style>/...?key=...)
+ * @param {string} tileLayerURL - L'URL du fond de carte (modèle Leaflet ou URL d'une tuile)
+ * @returns {string} - L'URL avec la clé pour CARTO, l'URL d'origine sinon
+ */
+const getTileLayerRequestURL = (tileLayerURL: string): string => {
+  const match = tileLayerURL?.match(
+    /^https:\/\/(?:\{s\}\.|[a-d]\.)?basemaps\.cartocdn\.com\/(?:rastertiles\/)?(.+)$/
+  );
+  if (!CARTO_API_KEY || !match) return tileLayerURL;
+
+  const path = match[1];
+  const separator = path.includes("?") ? "&" : "?";
+  return `https://basemaps.cartocdn.com/rastertiles/${path}${separator}key=${encodeURIComponent(
+    CARTO_API_KEY
+  )}`;
+};
+
 // fond de carte utilisé si celui choisi ne répond pas
 const FALLBACK_TILE_URL = "https://{s}.tile.openstreetmap.org/{z}/{x}/{y}.png";
 
@@ -618,6 +641,7 @@ export {
   getMapAttribution,
   getOptionalCellValue,
   getSanitizedAgent,
+  getTileLayerRequestURL,
   handleClusterClick,
   handleClusterMouseOver,
   handleSpiderfyPosition,
