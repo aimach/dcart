@@ -49,12 +49,26 @@ const ImageBlock = ({ blockContent }: ImageBlockProps) => {
     );
   }, [blockContent, selectedLanguage]);
 
+  // taille choisie dans le formulaire (aucune pour les blocs créés avant l'option)
+  const imageSize = blockContent.content3;
+  const imageSizeClass = imageSize
+    ? style[`image${imageSize.charAt(0).toUpperCase() + imageSize.slice(1)}`]
+    : "";
+
   return (
-    <section className={style.imageSection}>
+    <section className={`${style.imageSection} ${imageSizeClass ?? ""}`}>
       <img
         src={imageUrl}
         alt={blockContent[`content2_${selectedLanguage}`] || ""}
         loading="lazy"
+        // ratio de l'image, utilisé en CSS pour respecter la hauteur maximale sans la déformer
+        onLoad={(e) => {
+          const img = e.currentTarget;
+          img.style.setProperty(
+            "--image-ratio",
+            String(img.naturalWidth / img.naturalHeight)
+          );
+        }}
       />
       {sanitizedCaption && (
         <p // biome-ignore lint/security/noDangerouslySetInnerHtml: sanitized

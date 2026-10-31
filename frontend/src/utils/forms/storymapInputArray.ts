@@ -433,6 +433,24 @@ const imageInputs: InputType[] = [
       },
     },
   },
+  {
+    label_fr: "Taille de l'image",
+    label_en: "Image size",
+    description_fr:
+      "Une image 'petite' fera 25% de la largeur de la page, une image 'moyenne' 40% et une image 'grande' 70% (comme un bloc de texte).",
+    description_en:
+      "A 'small' image will be 25% of the page width, a 'medium' image 40% and a 'large' image 70% (like a text block).",
+    name: "content3",
+    type: "select",
+    options: [
+      { value: "small", label: "Petite" },
+      { value: "medium", label: "Moyenne" },
+      { value: "large", label: "Grande" },
+    ],
+    required: {
+      value: false,
+    },
+  },
 ];
 
 const simpleMapInputs: InputType[] = [
