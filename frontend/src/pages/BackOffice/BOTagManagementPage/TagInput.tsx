@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useRef } from "react";
+import { useMemo, useRef } from "react";
 import { Controller, useForm } from "react-hook-form";
 // import des composants
 import ButtonComponent from "../../../components/common/button/ButtonComponent";
@@ -29,6 +29,22 @@ const TagInput = ({ tag }: TagInputProps) => {
 
   const quillRef = useRef<Quill | null>(null);
 
+  // storymaps du tag proposées comme storymap introductive (titres stockés en html)
+  const introStorymapOptions = useMemo(
+    () =>
+      (tag.storymaps ?? [])
+        .map((storymap) => ({
+          id: storymap.id,
+          title:
+            new DOMParser()
+              .parseFromString(storymap.title_lang1 || "", "text/html")
+              .body.textContent?.trim() || storymap.id,
+          isActive: storymap.isActive,
+        }))
+        .sort((a, b) => a.title.localeCompare(b.title)),
+    [tag.storymaps]
+  );
+
   // import des sevice de formulaire
   const {
     control,
@@ -36,11 +52,14 @@ const TagInput = ({ tag }: TagInputProps) => {
     handleSubmit,
     formState: { errors },
   } = useForm<TagType>({
-    defaultValues: tag ?? {},
+    defaultValues: { ...tag, intro_storymap_id: tag.intro_storymap_id ?? "" },
   });
 
   const handleTagUpdate = async (data: TagType) => {
-    const statusResponse = await updateTag(data);
+    const statusResponse = await updateTag({
+      ...data,
+      intro_storymap_id: data.intro_storymap_id || null,
+    });
     if (statusResponse === 200) {
       notifyEditSuccess("Etiquette", true);
       setReload(!reload);
@@ -125,6 +144,28 @@ const TagInput = ({ tag }: TagInputProps) => {
                 />
               )}
             />
+          </div>
+        </div>
+        <div className={style.tagManagementRow}>
+          <div className={style.tagInputContainer}>
+            <LabelComponent
+              htmlFor={`intro_storymap_id-${tag.id}`}
+              label="Storymap introductive :"
+              description="Affichée en premier dans la liste des cartes et storymaps de la page de l'étiquette. Seules les storymaps associées à l'étiquette sont proposées."
+              isRequired={false}
+            />
+            <select
+              id={`intro_storymap_id-${tag.id}`}
+              {...register("intro_storymap_id")}
+            >
+              <option value="">Aucune</option>
+              {introStorymapOptions.map((storymap) => (
+                <option key={storymap.id} value={storymap.id}>
+                  {storymap.title}
+                  {!storymap.isActive && " (non publiée)"}
+                </option>
+              ))}
+            </select>
           </div>
         </div>
         {Object.keys(errors).length > 0 && (

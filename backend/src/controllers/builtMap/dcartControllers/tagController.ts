@@ -12,13 +12,28 @@ export const tagController = {
 	getTags: async (req: Request, res: Response): Promise<void> => {
 		try {
 			const { tagSlug } = req.params;
-			const { map, storymap, searchText, tags } = req.query;
+			const { map, storymap, searchText, tags, withStorymaps } = req.query;
 			const page = Number.parseInt(req.query.page as string, 10) || null;
 			const limit = Number.parseInt(req.query.limit as string, 10) || null;
 
 			let results = null;
 			if (tagSlug === "all") {
+				// avec les storymaps associées (choix de la storymap introductive dans le backoffice)
 				results = await dcartDataSource.getRepository(Tag).find({
+					relations: withStorymaps === "true" ? { storymaps: true } : {},
+					select:
+						withStorymaps === "true"
+							? {
+									id: true,
+									name_fr: true,
+									name_en: true,
+									slug: true,
+									description_fr: true,
+									description_en: true,
+									intro_storymap_id: true,
+									storymaps: { id: true, title_lang1: true, isActive: true },
+								}
+							: undefined,
 					order: {
 						name_fr: "ASC",
 						name_en: "ASC",
@@ -39,6 +54,7 @@ export const tagController = {
 				"tag.description_fr",
 				"tag.description_en",
 				"tag.slug",
+				"tag.intro_storymap_id",
 			];
 
 			if (map === "true" || map === undefined) {
@@ -238,17 +254,39 @@ export const tagController = {
 				return;
 			}
 
+			// seuls les champs du formulaire sont modifiables (pas les relations)
+			const {
+				name_fr,
+				name_en,
+				description_fr,
+				description_en,
+				intro_storymap_id,
+			} = req.body;
+			const tagData: Partial<Tag> = Object.fromEntries(
+				Object.entries({
+					name_fr,
+					name_en,
+					description_fr,
+					description_en,
+					// "" (aucune storymap choisie) est enregistré comme null
+					intro_storymap_id:
+						intro_storymap_id === undefined
+							? undefined
+							: intro_storymap_id || null,
+				}).filter(([, value]) => value !== undefined),
+			);
+
 			if (tagToUpdate.name_fr !== req.body.name_fr) {
 				const newSlug = await generateUniqueSlug(
 					req.body.name_fr,
 					dcartDataSource.getRepository(Tag),
 				);
-				req.body.slug = newSlug;
+				tagData.slug = newSlug;
 			}
 
 			const updatedTag = await dcartDataSource
 				.getRepository(Tag)
-				.merge(tagToUpdate, req.body);
+				.merge(tagToUpdate, tagData);
 
 			await dcartDataSource.getRepository(Tag).save(updatedTag);
 

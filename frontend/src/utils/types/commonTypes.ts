@@ -31,6 +31,7 @@ type TagWithItemsType = {
 	description_fr: string;
 	description_en: string;
 	slug: string;
+	intro_storymap_id?: string | null;
 	maps: {
 		id: string;
 		title_fr: string;

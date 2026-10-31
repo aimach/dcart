@@ -5,7 +5,9 @@ import {
 	Column,
 	BaseEntity,
 	ManyToMany,
+	ManyToOne,
 	JoinTable,
+	JoinColumn,
 } from "typeorm";
 // import des entités
 import { MapContent } from "../builtMap/MapContent";
@@ -44,4 +46,12 @@ export class Tag extends BaseEntity {
 	)
 	@JoinTable()
 	storymaps!: Storymap[];
+
+	// storymap introductive, affichée en premier sur la page du tag
+	@Column({ type: "uuid", nullable: true })
+	intro_storymap_id: string | null | undefined;
+
+	@ManyToOne(() => Storymap, { nullable: true, onDelete: "SET NULL" })
+	@JoinColumn({ name: "intro_storymap_id" })
+	intro_storymap: Storymap | null | undefined;
 }

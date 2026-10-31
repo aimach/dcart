@@ -49,6 +49,13 @@ const TagPage = () => {
         fetchedTag.maps && fetchedTag.storymaps
           ? fetchedTag.maps.concat(fetchedTag.storymaps)
           : fetchedTag.maps || fetchedTag.storymaps || [];
+      // la storymap introductive du tag est affichée en premier
+      const introIndex = itemsArray.findIndex(
+        (item: { id: string }) => item.id === fetchedTag.intro_storymap_id
+      );
+      if (introIndex > 0) {
+        itemsArray.unshift(itemsArray.splice(introIndex, 1)[0]);
+      }
       setTagItems(itemsArray);
     };
 
