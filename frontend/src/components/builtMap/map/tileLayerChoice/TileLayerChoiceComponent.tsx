@@ -2,6 +2,7 @@
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 // import des services
 import { useShallow } from "zustand/shallow";
+import { getTileLayerRequestURL } from "../../../../utils/functions/map";
 import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import du style
 import style from "./tileLayerChoiceComponent.module.scss";
@@ -62,7 +63,7 @@ const TileLayerChoiceComponent = () => {
             aria-label={`Choisir le fond de carte ${tileLayer.name}`}
           >
             <img
-              src={tileLayer.urlMini}
+              src={getTileLayerRequestURL(tileLayer.urlMini)}
               alt={tileLayer.name}
               title={tileLayer.name}
               loading="lazy"

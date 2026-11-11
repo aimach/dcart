@@ -11,6 +11,7 @@ import {
 import {
   enableTileLayerFallback,
   getMapAttribution,
+  getTileLayerRequestURL,
 } from "../../../../utils/functions/map";
 import { useStorymapLanguageStore } from "../../../../utils/stores/storymap/storymapLanguageStore";
 // import des types
@@ -84,13 +85,13 @@ const ComparisonMapBlock = ({
       blockContent.content2_lang2
     )}`;
 
-    const rightLayer = L.tileLayer(blockContent.content2_lang2, {
+    const rightLayer = L.tileLayer(getTileLayerRequestURL(blockContent.content2_lang2), {
       pane: "right",
       attribution,
       opacity: 0.6,
     }).addTo(comparisonMap);
 
-    const leftLayer = L.tileLayer(blockContent.content2_lang1, {
+    const leftLayer = L.tileLayer(getTileLayerRequestURL(blockContent.content2_lang1), {
       pane: "left",
       attribution,
       opacity: 0.6,
