@@ -1,6 +1,7 @@
 // import des services
 import { mapDataSource } from "../../../dataSource/dataSource";
 import { handleError } from "../../../utils/errorHandler/errorHandler";
+import { toIdList } from "../../../utils/query/filtersQueryString";
 // import des types
 import type { Request, Response } from "express";
 
@@ -8,9 +9,9 @@ export const elementController = {
   getAllDivinities: async (req: Request, res: Response): Promise<void> => {
     try {
       const { divinityIds } = req.body;
-      const divinityFilter = divinityIds
-        ? `AND element.id IN (${divinityIds})`
-        : "";
+      // les ids sont passés en paramètre SQL ($1)
+      const queryParams: unknown[] = divinityIds ? [toIdList(divinityIds)] : [];
+      const divinityFilter = divinityIds ? "AND element.id = ANY($1::int[])" : "";
 
       // ajouter un filtre pour ne récupérer que les divinités dont les identifiants sont dans la liste
       const query = `SELECT
@@ -27,7 +28,7 @@ export const elementController = {
 			${divinityFilter}
 			ORDER BY traduction.nom_fr ASC, traduction.nom_en ASC
 			`;
-      const results = await mapDataSource.query(query);
+      const results = await mapDataSource.query(query, queryParams);
 
       res.status(200).json(results);
     } catch (error) {

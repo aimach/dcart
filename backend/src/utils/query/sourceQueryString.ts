@@ -154,7 +154,7 @@ ORDER BY grande_region_fr, sous_region_fr, localisation_source.nom_ville`;
  * Génère un requête SQL pour récupérer les sources avec toutes les attestations (pour toutes les cartes).
  * La requête agrège les attestations et leurs éléments, agents et métadonnées correspondants,
  * et groupe les sources par localité.
- * @param attestationIds - Une chaîne de caractères permettant de filtrer les attestations par identifiants.
+ * @param attestationIdsPlaceholder - Le paramètre SQL ($n) qui contient le tableau des ids des attestations.
  * @param queryLocalisation - Une chaîne de caractères permettant de filtrer par la localisation.
  * @param queryDatation - Une chaîne de caractères permettant de filtrer par la date.
  * @param queryLanguage - Une chaîne de caractères permettant de filtrer par la langue.
@@ -168,7 +168,7 @@ ORDER BY grande_region_fr, sous_region_fr, localisation_source.nom_ville`;
  * @returns Une chaîne de caractères contenant la requête SQL.
  */
 export const getSourcesQueryWithDetails = (
-	attestationIds: string,
+	attestationIdsPlaceholder: string,
 	queryLocalisation: string,
 	queryDatation: string,
 	queryLanguage: string,
@@ -263,7 +263,7 @@ sources_with_attestations AS (
   JOIN attestation_with_elements ON attestation.id = attestation_with_elements.id_attestation
   JOIN formule ON formule.attestation_id = attestation.id
   LEFT JOIN agent ON agent.id_attestation = attestation.id
-  WHERE attestation.id IN (${attestationIds})
+  WHERE attestation.id = ANY(${attestationIdsPlaceholder}::int[])
   ${queryDivinityNb}
   ${queryIncludedElements}
 ),
