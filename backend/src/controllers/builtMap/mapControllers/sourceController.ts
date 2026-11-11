@@ -10,6 +10,10 @@ import {
 	getSourcesQueryWithoutDetails,
 } from "../../../utils/query/sourceQueryString";
 import {
+	addParam,
+	parseIntegerList,
+	getQueryStringForDivinityNb,
+	getQueryStringForSourceType,
 	getQueryStringForLocalisationFilter,
 	getQueryStringForPlaceFilter,
 	getQueryStringForDateFilter,
@@ -59,42 +63,40 @@ export const sourceController = {
 			let results = null;
 
 			if (mapId === "exploration") {
-				// on prépare les query des filtres
-				let queryLocalisation = "";
-				const maxValue = null;
-				const minValue = null;
-				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
-				let queryIncludedElements = "";
 				// valeurs des filtres passées en paramètres SQL ($1, $2...)
 				const queryParams: unknown[] = [];
+				// on prépare les query des filtres
+				let queryLocalisation = "";
+				let queryIncludedElements = "";
 
 				if (typeof locationId === "string" && locationId !== "") {
-					const { query, param } = getQueryStringForLocalisationFilter(
+					queryLocalisation += getQueryStringForLocalisationFilter(
 						locationId,
 						"greatRegion",
-						queryParams.length + 1,
+						queryParams,
 					);
-					queryParams.push(param);
-					queryLocalisation += query;
 				}
 
 				// filtre par lieu (localité d'origine ou de découverte)
 				if (typeof placeId === "string" && placeId !== "") {
-					queryParams.push(placeId.split("|"));
-					queryLocalisation += getQueryStringForPlaceFilter(queryParams.length);
+					queryLocalisation += getQueryStringForPlaceFilter(
+						placeId,
+						queryParams,
+					);
 				}
 
-				if (ante !== undefined || post !== undefined) {
-					const maxValue = ante !== undefined ? ante.toString() : null;
-					const minValue = post !== undefined ? post.toString() : null;
-					queryDatation = getQueryStringForDateFilter(maxValue, minValue);
-				}
+				const queryDatation = getQueryStringForDateFilter(
+					ante,
+					post,
+					queryParams,
+				);
 
 				if (elementId) {
 					// ici se fait la récupération des épithètes
 					queryIncludedElements = getQueryStringForIncludedElements(
 						mapId,
 						elementId as string,
+						queryParams,
 					);
 				}
 
@@ -128,16 +130,13 @@ export const sourceController = {
 					.getOne();
 				if (!mapInfos) {
 					res.status(404).send({ Erreur: "Carte non trouvée" });
+					return;
 				}
 
+				// valeurs des filtres passées en paramètres SQL ($1, $2...)
+				const queryParams: unknown[] = [];
 				// on prépare les query des filtres
 				let queryLocalisation = "";
-				const maxDateValue = null;
-				const minDateValue = null;
-				let queryDatation = getQueryStringForDateFilter(
-					maxDateValue,
-					minDateValue,
-				);
 				let queryIncludedElements = "";
 				let queryDivinityNb = "";
 				let querySourceType = "";
@@ -145,41 +144,33 @@ export const sourceController = {
 				let queryAgentStatus = "";
 				let queryAgentivityName = "";
 				let querySourceMaterialName = "";
-				// valeurs des filtres passées en paramètres SQL ($1, $2...)
-				const queryParams: unknown[] = [];
 
 				// s'il existe des params, on remplace les valeurs par celles des params
-				if (locationId) {
-					const locationFilter = mapInfos?.filterMapContent?.find(
+				if (typeof locationId === "string" && locationId !== "") {
+					const locationFilter = mapInfos.filterMapContent?.find(
 						(filter) => filter.filter?.type === "location",
 					);
 					const locationLevel =
 						locationFilter?.options?.solution ?? "greatRegion";
-					if (typeof locationId === "string" && locationId !== "") {
-						const { query, param } = getQueryStringForLocalisationFilter(
-							locationId,
-							locationLevel,
-							queryParams.length + 1,
-						);
-						queryParams.push(param);
-						queryLocalisation = query;
-					}
-				}
-
-				if (ante !== undefined || post !== undefined) {
-					const maxDateValue = ante !== undefined ? ante.toString() : null;
-					const minDateValue = post !== undefined ? post.toString() : null;
-					queryDatation = getQueryStringForDateFilter(
-						maxDateValue,
-						minDateValue,
+					queryLocalisation = getQueryStringForLocalisationFilter(
+						locationId,
+						locationLevel,
+						queryParams,
 					);
 				}
+
+				const queryDatation = getQueryStringForDateFilter(
+					ante,
+					post,
+					queryParams,
+				);
 
 				// ici se fait la récupération des épithètes
 				if (elementId) {
 					queryIncludedElements = getQueryStringForIncludedElements(
 						mapId,
 						elementId as string,
+						queryParams,
 					);
 				}
 
@@ -192,15 +183,18 @@ export const sourceController = {
 				}
 
 				if (minDivinityNb && maxDivinityNb) {
-					queryDivinityNb = `AND json_array_length(attestation_with_elements.elements) BETWEEN ${minDivinityNb} AND ${maxDivinityNb}`;
+					queryDivinityNb = getQueryStringForDivinityNb(
+						minDivinityNb,
+						maxDivinityNb,
+						queryParams,
+					);
 				}
 
 				if (sourceTypeId) {
-					const sourceTypeIds = sourceTypeId
-						.split("|")
-						.map((sourceTypeName: string) => `'${sourceTypeName}'`) // ajout des quotes
-						.join(", ");
-					querySourceType = `WHERE type_source.nom_fr IN (${sourceTypeIds})`;
+					querySourceType = getQueryStringForSourceType(
+						sourceTypeId,
+						queryParams,
+					);
 				}
 
 				if (agentGender) {
@@ -208,28 +202,41 @@ export const sourceController = {
 				}
 
 				if (agentStatusName) {
-					queryAgentStatus = getQueryStringForAgentStatus(agentStatusName);
+					queryAgentStatus = getQueryStringForAgentStatus(
+						agentStatusName,
+						queryParams,
+					);
 				}
 
 				if (agentivityName) {
-					queryAgentivityName = getQueryStringForAgentivity(agentivityName);
+					queryAgentivityName = getQueryStringForAgentivity(
+						agentivityName,
+						queryParams,
+					);
 				}
 
 				if (sourceMaterialName) {
 					querySourceMaterialName = getQueryStringForSourceMaterial(
 						sourceMaterialName,
 						querySourceType,
+						queryParams,
 					);
 				}
 
-				const { attestations } = mapInfos as MapContent;
+				const { attestations } = mapInfos;
 				results = await Promise.all(
 					attestations.map(async (attestation: Attestation) => {
 						if (!attestation.attestationIds) {
 							return [];
 						}
+						// chaque requête a son propre tableau de paramètres (les requêtes tournent en parallèle)
+						const attestationParams = [...queryParams];
+						const attestationIdsPlaceholder = addParam(
+							attestationParams,
+							parseIntegerList(attestation.attestationIds),
+						);
 						const sqlQuery = getSourcesQueryWithDetails(
-							attestation.attestationIds,
+							attestationIdsPlaceholder,
 							queryLocalisation,
 							queryDatation,
 							queryLanguage,
@@ -244,7 +251,7 @@ export const sourceController = {
 
 						const queryResults = await mapDataSource.query(
 							sqlQuery,
-							queryParams,
+							attestationParams,
 						);
 
 						// on trie les sources si lotIds est présent
@@ -551,7 +558,7 @@ export const sourceController = {
 						return [];
 					}
 					const sqlQuery = getSourcesQueryWithDetails(
-						attestation.attestationIds,
+						"$1",
 						"",
 						"",
 						"",
@@ -564,7 +571,9 @@ export const sourceController = {
 						"",
 					);
 
-					const queryResults = await mapDataSource.query(sqlQuery);
+					const queryResults = await mapDataSource.query(sqlQuery, [
+						parseIntegerList(attestation.attestationIds),
+					]);
 
 					// on trie les sources de chaque point par date
 					const sortedResults = queryResults.map((point: PointType) => {
@@ -619,7 +628,7 @@ export const sourceController = {
 
 			// on récupère le texte de la requête SQL
 			const sqlQuery = getSourcesQueryWithDetails(
-				attestationIds,
+				"$1",
 				"",
 				"",
 				"",
@@ -632,7 +641,9 @@ export const sourceController = {
 				"",
 			);
 
-			const results = await mapDataSource.query(sqlQuery);
+			const results = await mapDataSource.query(sqlQuery, [
+				parseIntegerList(attestationIds),
+			]);
 
 			res.status(200).json(results);
 		} catch (error) {
@@ -650,36 +661,32 @@ export const sourceController = {
 			const { sourceId } = req.params;
 			const { locationId, elementId, greek, semitic, ante, post } = req.body;
 
-			// on prépare les query des filtres
-			let queryLocalisation = "";
-			const maxValue = null;
-			const minValue = null;
-			let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
-			let queryIncludedElements = "";
 			// $1 est réservé à l'id de la source
 			const queryParams: unknown[] = [sourceId];
+			// on prépare les query des filtres
+			let queryLocalisation = "";
+			let queryIncludedElements = "";
 
 			if (typeof locationId === "string" && locationId !== "") {
-				const { query, param } = getQueryStringForLocalisationFilter(
+				queryLocalisation = getQueryStringForLocalisationFilter(
 					locationId,
 					"greatRegion",
-					queryParams.length + 1,
+					queryParams,
 				);
-				queryParams.push(param);
-				queryLocalisation = query;
 			}
 
-			if (ante !== undefined || post !== undefined) {
-				const maxValue = ante !== undefined ? ante.toString() : null;
-				const minValue = post !== undefined ? post.toString() : null;
-				queryDatation = getQueryStringForDateFilter(maxValue, minValue);
-			}
+			const queryDatation = getQueryStringForDateFilter(
+				ante,
+				post,
+				queryParams,
+			);
 
 			if (elementId) {
 				// ici se fait la récupération des épithètes
 				queryIncludedElements = getQueryStringForIncludedElements(
 					"exploration",
 					elementId as string,
+					queryParams,
 				);
 			}
 
