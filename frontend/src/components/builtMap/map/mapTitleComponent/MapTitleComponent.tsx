@@ -58,6 +58,7 @@ const MapTitleComponent = ({
 
   const {
     locationFilterReminders,
+    placeFilterReminders,
     elementFilterReminders,
     elementNbFilterReminders,
     languageFilterReminders,
@@ -79,6 +80,7 @@ const MapTitleComponent = ({
   const filtersDetails = displayFiltersTags(
     userFilters,
     locationFilterReminders,
+    placeFilterReminders,
     elementFilterReminders,
     elementNbFilterReminders,
     sourceTypeFilterReminders,

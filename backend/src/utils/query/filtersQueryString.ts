@@ -173,7 +173,18 @@ const getQueryStringForLocalisationFilter = (
 	return `AND ${tableName}.${fieldName} IN (${locationIds})`;
 };
 
+/**
+ * Fonction qui renvoie la query string pour filtrer par lieu (nom de la localité d'origine ou de découverte de la source)
+ * Les noms ne sont pas insérés dans la requête : ils sont passés en paramètre SQL (tableau de textes)
+ * @param {number} paramIndex - l'index du paramètre SQL ($n) qui contient le tableau des noms de lieux
+ * @returns {string} - la query string
+ */
+const getQueryStringForPlaceFilter = (paramIndex: number) => {
+	return ` AND localisation_source.nom_ville = ANY($${paramIndex}::text[]) `;
+};
+
 export {
+	getQueryStringForPlaceFilter,
 	getQueryStringForDateFilter,
 	getQueryStringForExcludedElements,
 	getQueryStringForIncludedElements,

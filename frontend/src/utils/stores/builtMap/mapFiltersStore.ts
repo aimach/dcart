@@ -23,6 +23,7 @@ const emptyUserFilters: UserFilterType = {
 	elementId: undefined,
 	lotIds: [],
 	locationId: undefined,
+	placeId: undefined,
 	greek: false,
 	semitic: false,
 	minDivinityNb: undefined,

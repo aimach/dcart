@@ -4,6 +4,7 @@ import { create } from "zustand";
 type State = {
 	// stockage temporaire des reminders
 	locationNameValues: string[];
+	placeNameValues: string[];
 	elementNameValues: string[];
 	elementNbValues: {
 		min: number;
@@ -17,6 +18,7 @@ type State = {
 
 	// reminders pour le titre de la carte
 	locationFilterReminders: string[];
+	placeFilterReminders: string[];
 	elementFilterReminders: string[];
 	elementNbFilterReminders: {
 		min: number;
@@ -37,6 +39,7 @@ type Action = {
 
 	// setters pour les valeurs temporaires
 	setLocationNameValues: (locationNameValues: string[]) => void;
+	setPlaceNameValues: (placeNameValues: string[]) => void;
 	setElementNameValues: (elementNameValues: string[]) => void;
 	setElementNbValues: (
 		elementNbValues: {
@@ -52,6 +55,7 @@ type Action = {
 
 	// setters pour les reminders du titre de la carte
 	setLocationFilterReminders: (locationFilterReminders: string[]) => void;
+	setPlaceFilterReminders: (placeFilterReminders: string[]) => void;
 	setElementFilterReminders: (elementFilterReminders: string[]) => void;
 	setElementNbFilterReminders: (
 		elementNbFilterReminders: {
@@ -80,6 +84,7 @@ export const useMapFilterReminderStore = create<State & Action>((set, get) => ({
 	resetTemporaryReminderValues: () => {
 		set(() => ({
 			locationNameValues: [],
+			placeNameValues: [],
 			elementNameValues: [],
 			elementNbValues: null,
 			sourceTypeValues: [],
@@ -92,6 +97,8 @@ export const useMapFilterReminderStore = create<State & Action>((set, get) => ({
 	locationNameValues: [],
 	setLocationNameValues: (locationNameValues) =>
 		set(() => ({ locationNameValues })),
+	placeNameValues: [],
+	setPlaceNameValues: (placeNameValues) => set(() => ({ placeNameValues })),
 	elementNameValues: [],
 	setElementNameValues: (elementNameValues) =>
 		set(() => ({ elementNameValues })),
@@ -114,6 +121,7 @@ export const useMapFilterReminderStore = create<State & Action>((set, get) => ({
 	// reminders pour le titre de la carte
 	resetFilterReminders: () => {
 		get().setLocationFilterReminders([]);
+		get().setPlaceFilterReminders([]);
 		get().setElementFilterReminders([]);
 		get().setElementNbFilterReminders(null);
 		get().setAgentActivityFilterReminders([]);
@@ -132,6 +140,9 @@ export const useMapFilterReminderStore = create<State & Action>((set, get) => ({
 	locationFilterReminders: [],
 	setLocationFilterReminders: (locationFilterReminders) =>
 		set(() => ({ locationFilterReminders })),
+	placeFilterReminders: [],
+	setPlaceFilterReminders: (placeFilterReminders) =>
+		set(() => ({ placeFilterReminders })),
 	elementFilterReminders: [],
 	setElementFilterReminders: (elementFilterReminders) =>
 		set(() => ({ elementFilterReminders })),

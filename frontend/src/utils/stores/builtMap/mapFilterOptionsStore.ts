@@ -1,12 +1,13 @@
 // import des bibliothèques
 import { create } from "zustand";
 // import des types
-import type { OptionType } from "../../types/commonTypes";
+import type { OptionType, PlaceOptionType } from "../../types/commonTypes";
 
 type State = {
 	hasFilteredPoints: boolean;
 	// initial state
 	initialLocationOptions: OptionType[];
+	initialPlaceOptions: PlaceOptionType[];
 	initialElementOptions: OptionType[];
 	initialElementNbOptions: { min: number; max: number } | null;
 	initialAgentActivityOptions: OptionType[];
@@ -18,6 +19,7 @@ type State = {
 	initialSourceLanguageOptions: { greek: boolean; semitic: boolean };
 	// filtered state
 	filteredLocationOptions: OptionType[];
+	filteredPlaceOptions: PlaceOptionType[];
 	filteredElementOptions: OptionType[];
 	filteredElementNbOptions: { min: number; max: number } | null;
 	filteredAgentActivityOptions: OptionType[];
@@ -33,6 +35,7 @@ type Action = {
 	setHasFilteredPoints: (hasFiltered: boolean) => void;
 	// initial state setters
 	setInitialLocationOptions: (options: OptionType[]) => void;
+	setInitialPlaceOptions: (options: PlaceOptionType[]) => void;
 	setInitialElementOptions: (options: OptionType[]) => void;
 	setInitialElementNbOptions: (options: { min: number; max: number }) => void;
 	setInitialAgentActivityOptions: (options: OptionType[]) => void;
@@ -47,6 +50,7 @@ type Action = {
 	}) => void;
 	// filtered state setters
 	setFilteredLocationOptions: (options: OptionType[]) => void;
+	setFilteredPlaceOptions: (options: PlaceOptionType[]) => void;
 	setFilteredElementOptions: (options: OptionType[]) => void;
 	setFilteredElementNbOptions: (options: { min: number; max: number }) => void;
 	setFilteredAgentActivityOptions: (options: OptionType[]) => void;
@@ -70,6 +74,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 		set({ hasFilteredPoints: hasFilteredPoints }),
 
 	initialLocationOptions: [],
+	initialPlaceOptions: [],
 	initialElementOptions: [],
 	initialElementNbOptions: null,
 	initialAgentActivityOptions: [],
@@ -80,6 +85,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 	initialSourceTypeOptions: [],
 	initialSourceLanguageOptions: { greek: false, semitic: false },
 	filteredLocationOptions: [],
+	filteredPlaceOptions: [],
 	filteredElementOptions: [],
 	filteredElementNbOptions: null,
 	filteredAgentActivityOptions: [],
@@ -92,6 +98,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 
 	setInitialLocationOptions: (options) =>
 		set({ initialLocationOptions: options }),
+	setInitialPlaceOptions: (options) => set({ initialPlaceOptions: options }),
 	setInitialElementOptions: (options) =>
 		set({ initialElementOptions: options }),
 	setInitialElementNbOptions: (options) =>
@@ -113,6 +120,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 
 	setFilteredLocationOptions: (options) =>
 		set({ filteredLocationOptions: options }),
+	setFilteredPlaceOptions: (options) => set({ filteredPlaceOptions: options }),
 	setFilteredElementOptions: (options) =>
 		set({ filteredElementOptions: options }),
 	setFilteredElementNbOptions: (options) =>
@@ -135,6 +143,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 	resetFilteredOptions: () =>
 		set((state) => ({
 			filteredLocationOptions: state.initialLocationOptions,
+			filteredPlaceOptions: state.initialPlaceOptions,
 			filteredElementOptions: state.initialElementOptions,
 			filteredElementNbOptions: state.initialElementNbOptions,
 			filteredAgentActivityOptions: state.initialAgentActivityOptions,
@@ -149,6 +158,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 	resetInitialOptions: () =>
 		set(() => ({
 			initialLocationOptions: [],
+			initialPlaceOptions: [],
 			initialElementOptions: [],
 			initialElementNbOptions: null,
 			initialAgentActivityOptions: [],
@@ -159,6 +169,7 @@ export const useMapFilterOptionsStore = create<State & Action>((set) => ({
 			initialSourceTypeOptions: [],
 			initialSourceLanguageOptions: { greek: false, semitic: false },
 			filteredLocationOptions: [],
+			filteredPlaceOptions: [],
 			filteredElementOptions: [],
 			filteredElementNbOptions: null,
 			filteredAgentActivityOptions: [],

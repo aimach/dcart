@@ -17,7 +17,7 @@ import type {
   MapInfoType,
 } from "../types/mapTypes";
 import type { MultiValue } from "react-select";
-import type { OptionType } from "../types/commonTypes";
+import type { OptionType, PlaceOptionType } from "../types/commonTypes";
 import type { UserFilterType } from "../types/filterTypes";
 
 /**
@@ -151,6 +151,49 @@ const getAllLocationsFromPoints = (
     });
   });
   return allLocations;
+};
+
+/**
+ * Fonction qui renvoie les options (triées et sans doublon) des lieux présents dans les points
+ * Un lieu correspond à la localité d'origine ou de découverte de la source (nom_ville)
+ * Chaque option garde la liste des grandes régions du lieu (un même nom peut exister dans plusieurs régions)
+ * @param {PointType[]} points - Les points de la carte
+ * @returns {PlaceOptionType[]} - Les options pour le select des lieux
+ */
+const getPlaceOptionsFromPoints = (points: PointType[]): PlaceOptionType[] => {
+  const placeRegions = new Map<string, Set<string>>();
+  for (const point of points) {
+    if (!point.nom_ville) continue;
+    const regions = placeRegions.get(point.nom_ville) ?? new Set<string>();
+    if (point.grande_region_id !== null && point.grande_region_id !== undefined) {
+      regions.add(String(point.grande_region_id));
+    }
+    placeRegions.set(point.nom_ville, regions);
+  }
+  return Array.from(placeRegions.entries())
+    .sort(([a], [b]) => a.localeCompare(b))
+    .map(([placeName, regions]) => ({
+      value: placeName,
+      label: placeName,
+      greatRegionIds: Array.from(regions),
+    }));
+};
+
+/**
+ * Fonction qui garde uniquement les lieux situés dans les grandes régions sélectionnées
+ * @param {PlaceOptionType[]} placeOptions - Les options des lieux
+ * @param {string | undefined} greatRegionIds - Les ids des grandes régions sélectionnées (séparés par des "|")
+ * @returns {PlaceOptionType[]} - Toutes les options si aucune région n'est choisie, sinon les options filtrées
+ */
+const filterPlaceOptionsByGreatRegions = (
+  placeOptions: PlaceOptionType[],
+  greatRegionIds: string | undefined
+): PlaceOptionType[] => {
+  if (!greatRegionIds) return placeOptions;
+  const selectedRegions = new Set(greatRegionIds.split("|"));
+  return placeOptions.filter((option) =>
+    option.greatRegionIds.some((regionId) => selectedRegions.has(regionId))
+  );
 };
 
 /**
@@ -332,7 +375,7 @@ const handleMultiSelectChange = (
   setBeforeValue: (value: OptionType) => void,
   setReminderValuesFunction: (names: string[]) => void
 ) => {
-  if (key === "locationId" || key === "elementId") {
+  if (key === "locationId" || key === "placeId" || key === "elementId") {
     const newValues = (selectedOptions as MultiValue<OptionType>)
       .map((option) => option.value)
       .join("|");
@@ -438,6 +481,7 @@ const noUserFilterChecked = (userFilters: UserFilterType) => {
 const displayFiltersTags = (
   userFilters: UserFilterType,
   locationFilterReminders: string[],
+  placeFilterReminders: string[],
   elementFilterReminders: string[],
   elementNbFilterReminders: { min: number; max: number } | null,
   sourceTypeFilterReminders: string[],
@@ -474,6 +518,11 @@ const displayFiltersTags = (
   if (locationFilterReminders.length)
     stringArray.push(
       `${translationObject.common.in} ${locationFilterReminders.join(", ")}`
+    );
+  // affichage des lieux (localité d'origine ou de découverte)
+  if (placeFilterReminders.length)
+    stringArray.push(
+      `${translationObject.mapPage.aside.place} : ${placeFilterReminders.join(", ")}`
     );
   // affichage des éléments
   if (elementFilterReminders.length)
@@ -1214,6 +1263,8 @@ export {
   getAllDatationLabels,
   getAllElementsFromPoints,
   getAllLocationsFromPoints,
+  getPlaceOptionsFromPoints,
+  filterPlaceOptionsByGreatRegions,
   getFilterLabel,
   getPointsTimeMarkers,
   getSelectDefaultValues,

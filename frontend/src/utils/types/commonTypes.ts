@@ -15,6 +15,11 @@ type OptionType = {
 	isDisabled?: boolean;
 };
 
+// option du filtre "lieu" : on garde les grandes régions du lieu pour pouvoir filtrer la liste par région
+type PlaceOptionType = OptionType & {
+	greatRegionIds: string[];
+};
+
 type TagWithItemsAndPagination = {
 	items: TagWithItemsType[];
 	pagination: {
@@ -66,6 +71,7 @@ type PaginationObjectType = {
 export type {
 	NavList,
 	OptionType,
+	PlaceOptionType,
 	TagWithItemsType,
 	TagWithItemsAndPagination,
 	ItemTypeCheckboxType,

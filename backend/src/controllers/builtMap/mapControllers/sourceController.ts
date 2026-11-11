@@ -11,6 +11,7 @@ import {
 } from "../../../utils/query/sourceQueryString";
 import {
 	getQueryStringForLocalisationFilter,
+	getQueryStringForPlaceFilter,
 	getQueryStringForDateFilter,
 	getQueryStringForIncludedElements,
 	getQueryStringForLanguage,
@@ -38,6 +39,7 @@ export const sourceController = {
 				greek,
 				semitic,
 				locationId,
+				placeId,
 				lotIds,
 				ante,
 				post,
@@ -74,6 +76,13 @@ export const sourceController = {
 						: queryLocalisation;
 				}
 
+				// filtre par lieu (localité d'origine ou de découverte), valeurs passées en paramètre SQL
+				const queryParams: unknown[] = [];
+				if (typeof placeId === "string" && placeId !== "") {
+					queryParams.push(placeId.split("|"));
+					queryLocalisation += getQueryStringForPlaceFilter(queryParams.length);
+				}
+
 				if (ante !== undefined || post !== undefined) {
 					const maxValue = ante !== undefined ? ante.toString() : null;
 					const minValue = post !== undefined ? post.toString() : null;
@@ -103,7 +112,7 @@ export const sourceController = {
 					queryIncludedElements,
 					queryLanguage,
 				);
-				results = await mapDataSource.query(sqlQuery);
+				results = await mapDataSource.query(sqlQuery, queryParams);
 			} else {
 				// on récupère les informations de la carte
 				const mapInfos = await dcartDataSource

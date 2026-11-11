@@ -12,6 +12,7 @@ type MultiSelectComponentProps = {
 	placeholder: string;
 	handleChange: (key: string, value: MultiValue<OptionType>) => void;
 	isMulti?: boolean;
+	value?: OptionType[];
 };
 
 /**
@@ -21,6 +22,7 @@ type MultiSelectComponentProps = {
  * @param {string} placeholder - Le placeholder du selecteur
  * @param {(key: string, value: MultiValue<OptionType>) => void} handleChange - La fonction de changement de valeur
  * @param {boolean} [isMulti=true] - Indique si le selecteur est multiple ou non
+ * @param {OptionType[]} [value] - Les valeurs sélectionnées (si fourni, le selecteur est contrôlé)
  * @returns Select (react-select)
  */
 const MultiSelectComponent = ({
@@ -29,14 +31,17 @@ const MultiSelectComponent = ({
 	placeholder,
 	handleChange,
 	isMulti = true,
+	value,
 }: MultiSelectComponentProps) => {
 	return (
 		<Select
 			styles={multiSelectInLineStyle}
 			options={options}
+			value={value}
 			delimiter="|"
 			isMulti={isMulti ? true : undefined}
 			placeholder={placeholder}
+			aria-label={placeholder}
 			onChange={(newValue) =>
 				handleChange(selectKey, newValue as MultiValue<OptionType>)
 			}
