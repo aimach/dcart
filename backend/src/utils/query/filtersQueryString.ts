@@ -1,57 +1,144 @@
 /**
- * Fonction qui renvoie la query string pour les filtres de date
+ * Fonction qui convertit une valeur en entier, ou renvoie null si ce n'est pas un entier
+ * @param {unknown} value - la valeur à convertir (nombre ou chaîne)
+ * @returns {number | null} - l'entier, ou null
+ */
+const toInteger = (value: unknown): number | null => {
+	if (typeof value === "number") {
+		return Number.isInteger(value) ? value : null;
+	}
+	if (typeof value !== "string" || value.trim() === "") {
+		return null;
+	}
+	const number = Number(value.trim());
+	return Number.isInteger(number) ? number : null;
+};
+
+/**
+ * Fonction qui convertit une liste d'ids séparés par des "|" en tableau d'entiers (les valeurs non numériques sont ignorées)
+ * @param {string} ids - la liste des ids séparés par des "|"
+ * @returns {number[]} - le tableau d'entiers
+ */
+const toIntegerArray = (ids: string): number[] =>
+	ids
+		.split("|")
+		.map(toInteger)
+		.filter((id): id is number => id !== null);
+
+/**
+ * Fonction qui renvoie la query string pour les filtres de date, et les valeurs à passer en paramètres SQL
+ * Les dates ne sont pas insérées dans la requête : elles sont passées en paramètres SQL ($n), après validation en entiers
+ * (une date qui n'est pas un entier est ignorée)
  * @param {string | null} ante - la date "avant"
  * @param {string | null} post - la date "après"
- * @returns {string} - la query string
+ * @param {number} paramIndex - l'index du premier paramètre SQL ($n) disponible
+ * @returns {{ query: string, params: number[] }} - la query string et les valeurs des paramètres (dans l'ordre des $n)
  */
 const getQueryStringForDateFilter = (
 	ante: string | null,
 	post: string | null,
-) => {
-	if (!ante && !post) {
-		return "";
+	paramIndex: number,
+): { query: string; params: number[] } => {
+	const anteValue = toInteger(ante);
+	const postValue = toInteger(post);
+	let query = "";
+	const params: number[] = [];
+	if (anteValue !== null) {
+		params.push(anteValue);
+		query += ` and datation.post_quem <= $${paramIndex + params.length - 1}::int `;
 	}
-	if (!ante) {
-		return ` and datation.ante_quem >= ${post} `;
+	if (postValue !== null) {
+		params.push(postValue);
+		query += ` and datation.ante_quem >= $${paramIndex + params.length - 1}::int `;
 	}
-	if (!post) {
-		return ` and datation.post_quem <= ${ante} `;
-	}
-	return ` and datation.post_quem <= ${ante} and datation.ante_quem >= ${post} `;
+	return { query, params };
 };
 
 /**
- * Fonction qui renvoie la query string pour filtrer les éléments exclus
- * @param {string} excludedElements - la liste des ids des éléments à exclure (séparés par des "|")
- * @returns {string} - la query string
+ * Fonction qui transforme une liste d'ids d'éléments en motifs LIKE ('%{id}%')
+ * @param {string} elements - la liste des ids des éléments (séparés par des "|")
+ * @returns {string[]} - les motifs LIKE (les ids non numériques sont ignorés)
  */
-const getQueryStringForExcludedElements = (excludedElements: string) => {
-	const excludedElementsArray = excludedElements.split("|");
-	const excludedElementsArrayWithBrackets = excludedElementsArray.map(
-		(element) => `'%{${element}}%'`,
-	);
-	return ` AND NOT (formule.formule LIKE ANY(ARRAY[${excludedElementsArrayWithBrackets}])) `;
+const getElementsLikePatterns = (elements: string): string[] =>
+	toIntegerArray(elements).map((id) => `%{${id}}%`);
+
+/**
+ * Fonction qui renvoie la query string pour filtrer les éléments exclus, et la valeur à passer en paramètre SQL
+ * Les motifs ne sont pas insérés dans la requête : ils sont passés en paramètre SQL (tableau de textes)
+ * @param {string} excludedElements - la liste des ids des éléments à exclure (séparés par des "|")
+ * @param {number} paramIndex - l'index du paramètre SQL ($n) qui contiendra le tableau des motifs
+ * @returns {{ query: string, param: string[] }} - la query string et la valeur du paramètre
+ */
+const getQueryStringForExcludedElements = (
+	excludedElements: string,
+	paramIndex: number,
+): { query: string; param: string[] } => {
+	return {
+		query: ` AND NOT (formule.formule LIKE ANY($${paramIndex}::text[])) `,
+		param: getElementsLikePatterns(excludedElements),
+	};
 };
 
 /**
- * Fonction qui renvoie la query string pour filtrer les éléments inclus
+ * Fonction qui renvoie la query string pour filtrer les éléments inclus, et la valeur à passer en paramètre SQL
+ * Les motifs ne sont pas insérés dans la requête : ils sont passés en paramètre SQL (tableau de textes)
  * @param {string} mapId - l'id de la carte (exploration ou un uuid)
  * @param {string} queryElements - la liste des ids des éléments à inclure (séparés par des "|")
- * @returns {string} - la query string
+ * @param {number} paramIndex - l'index du paramètre SQL ($n) qui contiendra le tableau des motifs
+ * @returns {{ query: string, param: string[] | null }} - la query string et la valeur du paramètre (null si aucun élément : rien à pousser dans les paramètres)
  */
 const getQueryStringForIncludedElements = (
 	mapId: string,
 	queryElements: string,
-) => {
-	const queryElementsArray = queryElements.split("|");
-	const queryElementsArrayWithBrackets = queryElementsArray.map(
-		(element) => `'%{${element}}%'`,
-	);
+	paramIndex: number,
+): { query: string; param: string[] | null } => {
 	let query = mapId === "exploration" ? "WHERE" : "AND";
-	if (queryElements) {
-		query += ` formule.formule LIKE ANY(ARRAY[${queryElementsArrayWithBrackets}]) `;
+	if (!queryElements) {
+		return { query, param: null };
 	}
-	return query;
+	query += ` formule.formule LIKE ANY($${paramIndex}::text[]) `;
+	return { query, param: getElementsLikePatterns(queryElements) };
+};
+
+/**
+ * Fonction qui renvoie la query string pour filtrer par nombre de divinités, et les valeurs à passer en paramètres SQL
+ * Les bornes sont validées en entiers et passées en paramètres SQL ($n)
+ * @param {unknown} minDivinityNb - le nombre minimum de divinités
+ * @param {unknown} maxDivinityNb - le nombre maximum de divinités
+ * @param {number} paramIndex - l'index du premier paramètre SQL ($n) disponible
+ * @returns {{ query: string, params: number[] }} - la query string et les valeurs des paramètres (vides si une borne n'est pas un entier)
+ */
+const getQueryStringForDivinityNb = (
+	minDivinityNb: unknown,
+	maxDivinityNb: unknown,
+	paramIndex: number,
+): { query: string; params: number[] } => {
+	const min = toInteger(minDivinityNb);
+	const max = toInteger(maxDivinityNb);
+	if (min === null || max === null) {
+		return { query: "", params: [] };
+	}
+	return {
+		query: `AND json_array_length(attestation_with_elements.elements) BETWEEN $${paramIndex}::int AND $${paramIndex + 1}::int`,
+		params: [min, max],
+	};
+};
+
+/**
+ * Fonction qui renvoie la query string pour les filtres du type de source, et la valeur à passer en paramètre SQL
+ * Les noms ne sont pas insérés dans la requête : ils sont passés en paramètre SQL (tableau de textes)
+ * @param {string} sourceTypeName - la liste des types de source à appliquer (séparés par des "|")
+ * @param {number} paramIndex - l'index du paramètre SQL ($n) qui contiendra le tableau des noms
+ * @returns {{ query: string, param: string[] }} - la query string et la valeur du paramètre
+ */
+const getQueryStringForSourceType = (
+	sourceTypeName: string,
+	paramIndex: number,
+): { query: string; param: string[] } => {
+	return {
+		query: `WHERE type_source.nom_fr = ANY($${paramIndex}::text[])`,
+		param: sourceTypeName.split("|"),
+	};
 };
 
 /**
@@ -95,50 +182,60 @@ const getQueryStringForAgentGender = (
 };
 
 /**
- * Fonction qui renvoie la query string pour les filtres du statut des agents
+ * Fonction qui renvoie la query string pour les filtres du statut des agents, et la valeur à passer en paramètre SQL
+ * Les noms ne sont pas insérés dans la requête : ils sont passés en paramètre SQL (tableau de textes)
  * @param {string} agentStatusName - la liste des statuts des agents à appliquer (séparés par des "|")
- * @returns {string} - la query string
+ * @param {number} paramIndex - l'index du paramètre SQL ($n) qui contiendra le tableau des statuts
+ * @returns {{ query: string, param: string[] }} - la query string et la valeur du paramètre
  */
-const getQueryStringForAgentStatus = (agentStatusName: string) => {
-	const statusString = agentStatusName
-		.split("|")
-		.map((status) => `'${status}'`) // ajout des quotes
-		.join(", ");
-	return `AND statut_affiche.nom_fr IN (${statusString})`;
+const getQueryStringForAgentStatus = (
+	agentStatusName: string,
+	paramIndex: number,
+): { query: string; param: string[] } => {
+	return {
+		query: `AND statut_affiche.nom_fr = ANY($${paramIndex}::text[])`,
+		param: agentStatusName.split("|"),
+	};
 };
 
 /**
- * Fonction qui renvoie la query string pour les filtres de l'agentivité
+ * Fonction qui renvoie la query string pour les filtres de l'agentivité, et la valeur à passer en paramètre SQL
+ * Les noms ne sont pas insérés dans la requête : ils sont passés en paramètre SQL (tableau de textes)
  * @param {string} agentivityName - la liste des agentivités à appliquer (séparés par des "|")
- * @returns {string} - la query string
+ * @param {number} paramIndex - l'index du paramètre SQL ($n) qui contiendra le tableau des agentivités
+ * @returns {{ query: string, param: string[] }} - la query string et la valeur du paramètre
  */
-const getQueryStringForAgentivity = (agentivityName: string) => {
-	const agentivitiesString = agentivityName
-		.split("|")
-		.map((agentivity) => `'${agentivity}'`) // ajout des quotes
-		.join(", ");
-	return `AND agentivite.nom_fr IN (${agentivitiesString})`;
+const getQueryStringForAgentivity = (
+	agentivityName: string,
+	paramIndex: number,
+): { query: string; param: string[] } => {
+	return {
+		query: `AND agentivite.nom_fr = ANY($${paramIndex}::text[])`,
+		param: agentivityName.split("|"),
+	};
 };
 
 /**
- * Fonction qui renvoie la query string pour les filtres du support de sources
+ * Fonction qui renvoie la query string pour les filtres du support de sources, et la valeur à passer en paramètre SQL
+ * Les noms ne sont pas insérés dans la requête : ils sont passés en paramètre SQL (tableau de textes)
  * @param {string} sourceMaterialName - la liste des support à appliquer (séparés par des "|")
  * @param {string} querySourceType - la string de la query pour le type de source (mettre WHERE ou AND en fonction de la présence d'autres filtres)
- * @returns {string} - la query string
+ * @param {number} paramIndex - l'index du paramètre SQL ($n) qui contiendra le tableau des supports
+ * @returns {{ query: string, param: string[] }} - la query string et la valeur du paramètre
  */
 const getQueryStringForSourceMaterial = (
 	sourceMaterialName: string,
 	querySourceType: string,
-) => {
-	const sourceMaterialString = sourceMaterialName
-		.split("|")
-		.map((material) => `'${material}'`) // ajout des quotes
-		.join(", ");
+	paramIndex: number,
+): { query: string; param: string[] } => {
 	let operator = "WHERE";
 	if (querySourceType !== "") {
 		operator = " AND ";
 	}
-	return `${operator} type_support.nom_fr IN (${sourceMaterialString})`;
+	return {
+		query: `${operator} type_support.nom_fr = ANY($${paramIndex}::text[])`,
+		param: sourceMaterialName.split("|"),
+	};
 };
 
 /**
@@ -199,4 +296,6 @@ export {
 	getQueryStringForAgentStatus,
 	getQueryStringForAgentivity,
 	getQueryStringForSourceMaterial,
+	getQueryStringForDivinityNb,
+	getQueryStringForSourceType,
 };
