@@ -142,35 +142,40 @@ const getQueryStringForSourceMaterial = (
 };
 
 /**
- * Fonction qui renvoie la query string pour filtrer par localisation
- * @param {string} mapId - l'id de la carte (exploration ou un uuid)
- * @param {string} locationId - l'id de la localisation
- * @returns {string} - la query string
+ * Fonction qui renvoie la query string pour filtrer par localisation, et la valeur à passer en paramètre SQL
+ * Les valeurs ne sont pas insérées dans la requête : elles sont passées en paramètre SQL ($n)
+ * - grande région / sous-région : tableau d'ids entiers (les valeurs non numériques sont ignorées)
+ * - localité : tableau de noms de villes
+ * @param {string} locationId - les ids (ou noms de villes) des localisations, séparés par des "|"
+ * @param {string} locationLevel - le niveau de localisation (greatRegion, subRegion ou location)
+ * @param {number} paramIndex - l'index du paramètre SQL ($n) qui contiendra le tableau des valeurs
+ * @returns {{ query: string, param: number[] | string[] }} - la query string et la valeur du paramètre
  */
 const getQueryStringForLocalisationFilter = (
 	locationId: string,
 	locationLevel: string,
-) => {
-	let tableName = "grande_region";
-	let fieldName = "id";
-	if (locationLevel === "subRegion") {
-		tableName = "sous_region";
-	}
-	if (locationLevel === "location") {
-		tableName = "localisation_source";
-		fieldName = "nom_ville";
-	}
+	paramIndex: number,
+): { query: string; param: number[] | string[] } => {
+	const values = locationId.split("|");
 
 	if (locationLevel === "location") {
-		const locationIds = locationId
-			.split("|")
-			.map((locationName) => `'${locationName}'`) // ajout des quotes
-			.join(", ");
-		return `AND ${tableName}.${fieldName} IN (${locationIds})`;
+		return {
+			query: ` AND localisation_source.nom_ville = ANY($${paramIndex}::text[]) `,
+			param: values,
+		};
 	}
 
-	const locationIds = locationId.split("|").join(", ");
-	return `AND ${tableName}.${fieldName} IN (${locationIds})`;
+	const tableName =
+		locationLevel === "subRegion" ? "sous_region" : "grande_region";
+	const ids = values
+		.map((value) => value.trim())
+		.filter((value) => value !== "")
+		.map(Number)
+		.filter((id) => Number.isInteger(id));
+	return {
+		query: ` AND ${tableName}.id = ANY($${paramIndex}::int[]) `,
+		param: ids,
+	};
 };
 
 /**

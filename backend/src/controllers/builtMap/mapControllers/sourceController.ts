@@ -65,19 +65,20 @@ export const sourceController = {
 				const minValue = null;
 				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
 				let queryIncludedElements = "";
+				// valeurs des filtres passées en paramètres SQL ($1, $2...)
+				const queryParams: unknown[] = [];
 
-				if (locationId) {
-					// s'il existe des params, on remplace les valeurs par celles des params
-					queryLocalisation = locationId
-						? getQueryStringForLocalisationFilter(
-								locationId as string,
-								"greatRegion",
-							)
-						: queryLocalisation;
+				if (typeof locationId === "string" && locationId !== "") {
+					const { query, param } = getQueryStringForLocalisationFilter(
+						locationId,
+						"greatRegion",
+						queryParams.length + 1,
+					);
+					queryParams.push(param);
+					queryLocalisation += query;
 				}
 
-				// filtre par lieu (localité d'origine ou de découverte), valeurs passées en paramètre SQL
-				const queryParams: unknown[] = [];
+				// filtre par lieu (localité d'origine ou de découverte)
 				if (typeof placeId === "string" && placeId !== "") {
 					queryParams.push(placeId.split("|"));
 					queryLocalisation += getQueryStringForPlaceFilter(queryParams.length);
@@ -144,6 +145,8 @@ export const sourceController = {
 				let queryAgentStatus = "";
 				let queryAgentivityName = "";
 				let querySourceMaterialName = "";
+				// valeurs des filtres passées en paramètres SQL ($1, $2...)
+				const queryParams: unknown[] = [];
 
 				// s'il existe des params, on remplace les valeurs par celles des params
 				if (locationId) {
@@ -152,12 +155,15 @@ export const sourceController = {
 					);
 					const locationLevel =
 						locationFilter?.options?.solution ?? "greatRegion";
-					queryLocalisation = locationId
-						? getQueryStringForLocalisationFilter(
-								locationId as string,
-								locationLevel,
-							)
-						: queryLocalisation;
+					if (typeof locationId === "string" && locationId !== "") {
+						const { query, param } = getQueryStringForLocalisationFilter(
+							locationId,
+							locationLevel,
+							queryParams.length + 1,
+						);
+						queryParams.push(param);
+						queryLocalisation = query;
+					}
 				}
 
 				if (ante !== undefined || post !== undefined) {
@@ -236,7 +242,10 @@ export const sourceController = {
 							querySourceMaterialName,
 						);
 
-						const queryResults = await mapDataSource.query(sqlQuery);
+						const queryResults = await mapDataSource.query(
+							sqlQuery,
+							queryParams,
+						);
 
 						// on trie les sources si lotIds est présent
 						let filteredResults = [];
@@ -647,15 +656,17 @@ export const sourceController = {
 			const minValue = null;
 			let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
 			let queryIncludedElements = "";
+			// $1 est réservé à l'id de la source
+			const queryParams: unknown[] = [sourceId];
 
-			if (locationId) {
-				// s'il existe des params, on remplace les valeurs par celles des params
-				queryLocalisation = locationId
-					? getQueryStringForLocalisationFilter(
-							locationId as string,
-							"greatRegion",
-						)
-					: queryLocalisation;
+			if (typeof locationId === "string" && locationId !== "") {
+				const { query, param } = getQueryStringForLocalisationFilter(
+					locationId,
+					"greatRegion",
+					queryParams.length + 1,
+				);
+				queryParams.push(param);
+				queryLocalisation = query;
 			}
 
 			if (ante !== undefined || post !== undefined) {
@@ -687,9 +698,10 @@ export const sourceController = {
 				queryIncludedElements,
 				queryLanguage,
 			);
-			const sourceWithAttestations = await mapDataSource.query(sqlQuery, [
-				sourceId,
-			]);
+			const sourceWithAttestations = await mapDataSource.query(
+				sqlQuery,
+				queryParams,
+			);
 
 			if (sourceWithAttestations.length === 0) {
 				res.status(404).send({ Erreur: "Source non trouvée" });
