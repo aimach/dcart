@@ -26,6 +26,23 @@ const toIntegerArray = (ids: string): number[] =>
 		.filter((id): id is number => id !== null);
 
 /**
+ * Fonction qui convertit une liste d'ids séparés par des "," ou des "|" (chaîne ou tableau) en tableau d'entiers
+ * Utilisée pour les listes d'ids d'attestations et de divinités (les valeurs non numériques sont ignorées)
+ * @param {unknown} ids - la liste des ids
+ * @returns {number[]} - le tableau d'entiers
+ */
+const toIdList = (ids: unknown): number[] => {
+	const values = Array.isArray(ids)
+		? ids
+		: typeof ids === "string"
+			? ids.split(/[,|]/)
+			: typeof ids === "number"
+				? [ids]
+				: [];
+	return values.map(toInteger).filter((id): id is number => id !== null);
+};
+
+/**
  * Fonction qui renvoie la query string pour les filtres de date, et les valeurs à passer en paramètres SQL
  * Les dates ne sont pas insérées dans la requête : elles sont passées en paramètres SQL ($n), après validation en entiers
  * (une date qui n'est pas un entier est ignorée)
@@ -286,6 +303,7 @@ const getQueryStringForPlaceFilter = (paramIndex: number) => {
 };
 
 export {
+	toIdList,
 	getQueryStringForPlaceFilter,
 	getQueryStringForDateFilter,
 	getQueryStringForExcludedElements,

@@ -10,6 +10,7 @@ import {
 	getSourcesQueryWithoutDetails,
 } from "../../../utils/query/sourceQueryString";
 import {
+	toIdList,
 	getQueryStringForLocalisationFilter,
 	getQueryStringForPlaceFilter,
 	getQueryStringForDateFilter,
@@ -137,6 +138,7 @@ export const sourceController = {
 					.getOne();
 				if (!mapInfos) {
 					res.status(404).send({ Erreur: "Carte non trouvée" });
+					return;
 				}
 
 				// on prépare les query des filtres
@@ -261,8 +263,13 @@ export const sourceController = {
 						if (!attestation.attestationIds) {
 							return [];
 						}
+						// chaque requête a son propre tableau de paramètres (les requêtes tournent en parallèle)
+						const attestationParams = [
+							...queryParams,
+							toIdList(attestation.attestationIds),
+						];
 						const sqlQuery = getSourcesQueryWithDetails(
-							attestation.attestationIds,
+							`$${attestationParams.length}`,
 							queryLocalisation,
 							queryDatation,
 							queryLanguage,
@@ -277,7 +284,7 @@ export const sourceController = {
 
 						const queryResults = await mapDataSource.query(
 							sqlQuery,
-							queryParams,
+							attestationParams,
 						);
 
 						// on trie les sources si lotIds est présent
@@ -584,7 +591,7 @@ export const sourceController = {
 						return [];
 					}
 					const sqlQuery = getSourcesQueryWithDetails(
-						attestation.attestationIds,
+						"$1",
 						"",
 						"",
 						"",
@@ -597,7 +604,9 @@ export const sourceController = {
 						"",
 					);
 
-					const queryResults = await mapDataSource.query(sqlQuery);
+					const queryResults = await mapDataSource.query(sqlQuery, [
+						toIdList(attestation.attestationIds),
+					]);
 
 					// on trie les sources de chaque point par date
 					const sortedResults = queryResults.map((point: PointType) => {
@@ -652,7 +661,7 @@ export const sourceController = {
 
 			// on récupère le texte de la requête SQL
 			const sqlQuery = getSourcesQueryWithDetails(
-				attestationIds,
+				"$1",
 				"",
 				"",
 				"",
@@ -665,7 +674,9 @@ export const sourceController = {
 				"",
 			);
 
-			const results = await mapDataSource.query(sqlQuery);
+			const results = await mapDataSource.query(sqlQuery, [
+				toIdList(attestationIds),
+			]);
 
 			res.status(200).json(results);
 		} catch (error) {
