@@ -5,6 +5,7 @@ import {
 	getAllAgentivityFromPoints,
 	getAllAgentStatusFromPoints,
 	getAllLocationsFromPoints,
+	getPlaceOptionsFromPoints,
 	getAllSourceMaterialFromPoints,
 	getAllSourceTypeFromPoints,
 	getMinAndMaxElementNb,
@@ -110,6 +111,36 @@ const getLocationOptions = async (
 		filterOptionsStore.setFilteredLocationOptions(allGreatRegionsOptions);
 	}
 	return [];
+};
+
+/**
+ * Calcule les options du filtre "lieu" (carte exploration uniquement) à partir des points
+ * Les options initiales ne sont calculées qu'une fois, sur la liste complète des points (avant filtrage)
+ */
+const getPlaceOptions = (
+	mapInfos: MapInfoType | null,
+	allPoints: PointType[],
+) => {
+	if (mapInfos) return;
+	const filterOptionsStore = useMapFilterOptionsStore.getState();
+	const placeOptions = getPlaceOptionsFromPoints(allPoints);
+
+	if (filterOptionsStore.hasFilteredPoints) {
+		// si des points sont filtrés, on désactive les lieux absents des résultats
+		const availablePlaces = new Set(placeOptions.map((option) => option.value));
+		filterOptionsStore.setFilteredPlaceOptions(
+			filterOptionsStore.initialPlaceOptions.map((option) => ({
+				...option,
+				isDisabled: !availablePlaces.has(option.value),
+			})),
+		);
+		return;
+	}
+	// les options initiales ne sont pas écrasées par un filtrage effectué depuis la modale
+	if (filterOptionsStore.initialPlaceOptions.length === 0) {
+		filterOptionsStore.setInitialPlaceOptions(placeOptions);
+		filterOptionsStore.setFilteredPlaceOptions(placeOptions);
+	}
 };
 
 const getAgentActivityOptions = (
@@ -257,6 +288,7 @@ const getLanguageOptions = (
 export {
 	getSourceTypeOptions,
 	getLocationOptions,
+	getPlaceOptions,
 	getAgentActivityOptions,
 	getAgentStatusOptions,
 	getAgentivityOptions,

@@ -98,6 +98,8 @@ type LanguageObject = {
     firstContent: string;
     secondContent: string;
     chooseRegion: string;
+    placeContent: string;
+    choosePlace: string;
     chooseDivinity: string;
     postDate: string;
     anteDate: string;
@@ -132,6 +134,8 @@ type LanguageObject = {
       epithet: string;
       noFilter: string;
       location: string;
+      greatRegion: string;
+      place: string;
       element: string;
       language: string;
       divinityNb: string;
@@ -149,6 +153,7 @@ type LanguageObject = {
       seeSources: string;
       filterIntroduction: string;
       searchForLocation: string;
+      searchForPlace: string;
       searchForElement: string;
       searchForSourceType: string;
       searchForAgentActivity: string;

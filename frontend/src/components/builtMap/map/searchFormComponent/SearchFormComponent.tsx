@@ -1,5 +1,5 @@
 // import des bibliothèques
-import { useEffect, useState } from "react";
+import { useEffect, useMemo, useState } from "react";
 import { useParams } from "react-router";
 // import des composants
 import LoaderComponent from "../../../common/loader/LoaderComponent";
@@ -8,6 +8,7 @@ import ButtonComponent from "../../../common/button/ButtonComponent";
 // import des custom hooks
 import { useTranslation } from "../../../../utils/hooks/useTranslation";
 import useFilterSearch from "../../../../utils/hooks/useFilterSearch";
+import usePlaceOptionsByRegion from "../../../../utils/hooks/usePlaceOptionsByRegion";
 // import des services
 import {
 	getAllGreatRegions,
@@ -18,9 +19,11 @@ import { useMapFiltersStore } from "../../../../utils/stores/builtMap/mapFilters
 import {
 	formatDataForReactSelect,
 	createTimeOptions,
+	getPlaceOptionsFromPoints,
 	handleMultiSelectChange,
 } from "../../../../utils/functions/filter";
 import { useMapFilterReminderStore } from "../../../../utils/stores/builtMap/mapFilterReminderStore";
+import { useMapStore } from "../../../../utils/stores/builtMap/mapStore";
 // import des types
 import type { Dispatch, SetStateAction } from "react";
 import type { OptionType } from "../../../../utils/types/commonTypes";
@@ -51,12 +54,25 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 	const { userFilters, setUserFilters } = useMapFiltersStore();
 	const {
 		locationNameValues,
+		placeNameValues,
 		elementNameValues,
 		setLocationNameValues,
+		setPlaceNameValues,
 		setElementNameValues,
 		setLocationFilterReminders,
+		setPlaceFilterReminders,
 		setElementFilterReminders,
 	} = useMapFilterReminderStore();
+
+	// options des lieux (localité d'origine ou de découverte), calculées depuis les points chargés (non filtrés à l'ouverture de la modale)
+	const allPoints = useMapStore((state) => state.allPoints);
+	const allPlaceOptions = useMemo(
+		() => getPlaceOptionsFromPoints(allPoints),
+		[allPoints],
+	);
+	// lieux restreints aux grandes régions choisies dans la modale
+	const { options: placeOptions, selectedOptions: selectedPlaceOptions } =
+		usePlaceOptionsByRegion(allPlaceOptions);
 
 	// définition des états pour gérer les données du formulaire
 	const [dataLoaded, setDataLoaded] = useState<boolean>(false);
@@ -161,6 +177,7 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 
 		// mise à jour des reminders pour le titre de la carte
 		setLocationFilterReminders(locationNameValues as string[]);
+		setPlaceFilterReminders(placeNameValues as string[]);
 		setElementFilterReminders(elementNameValues as string[]);
 
 		// récupération des points filtrés
@@ -177,7 +194,11 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 			userFilters,
 			setAfterValue,
 			setBeforeValue,
-			key === "locationId" ? setLocationNameValues : setElementNameValues,
+			key === "locationId"
+				? setLocationNameValues
+				: key === "placeId"
+					? setPlaceNameValues
+					: setElementNameValues,
 		);
 	};
 
@@ -237,6 +258,15 @@ const SearchFormComponent = ({ setIsModalOpen }: SearchFormComponentProps) => {
 								options={greatRegions}
 								selectKey="locationId"
 								placeholder={translation[language].modal.chooseRegion}
+								handleChange={handleChange}
+								isMulti={true}
+							/>
+							{translation[language].modal.placeContent}{" "}
+							<MultiSelectComponent
+								options={placeOptions}
+								value={selectedPlaceOptions}
+								selectKey="placeId"
+								placeholder={translation[language].modal.choosePlace}
 								handleChange={handleChange}
 								isMulti={true}
 							/>

@@ -19,6 +19,7 @@ import {
 	getAgentStatusOptions,
 	getLanguageOptions,
 	getLocationOptions,
+	getPlaceOptions,
 	getSourceMaterialOptions,
 	getSourceTypeOptions,
 } from "./AsideMainComponentUtils";
@@ -50,6 +51,7 @@ const AsideMainComponent = () => {
 		const getAllOptionsForFilters = async () => {
 			getSourceTypeOptions(mapInfos, allPoints, language);
 			await getLocationOptions(mapInfos, allPoints, language);
+			getPlaceOptions(mapInfos, allPoints);
 			getElementOptions(mapInfos, allPoints, language, false);
 			getAgentActivityOptions(mapInfos, allPoints, language);
 			getAgentStatusOptions(mapInfos, allPoints, language);

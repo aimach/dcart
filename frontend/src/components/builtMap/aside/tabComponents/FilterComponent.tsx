@@ -2,6 +2,7 @@
 import { useCallback } from "react";
 // import des composants
 import LocationFilterComponent from "../filterComponents/LocationFilterComponent";
+import PlaceFilterComponent from "../filterComponents/PlaceFilterComponent";
 import LanguageFilterComponent from "../filterComponents/LanguageFilterComponent";
 import ElementFilterComponent from "../filterComponents/ElementFilterComponent";
 import MultiSelectFilterComponent from "../filterComponents/MultiSelectFilterComponent";
@@ -44,6 +45,7 @@ const FilterComponent = () => {
   const {
     resetTemporaryReminderValues,
     locationNameValues,
+    placeNameValues,
     elementNameValues,
     elementNbValues,
     sourceTypeValues,
@@ -59,6 +61,7 @@ const FilterComponent = () => {
     setElementNbValues,
     resetFilterReminders,
     setLocationFilterReminders,
+    setPlaceFilterReminders,
     setElementFilterReminders,
     setElementNbFilterReminders,
     setLanguageFilterReminders,
@@ -108,6 +111,7 @@ const FilterComponent = () => {
     fetchAllPoints("filter");
     setHasFilteredPoints(true);
     setLocationFilterReminders(locationNameValues);
+    setPlaceFilterReminders(placeNameValues);
     setElementFilterReminders(elementNameValues);
     const sourceTypeWithoutCategory = sourceTypeValues.map(
       (sourceTypeValue) => sourceTypeValue.split(">")[1]
@@ -348,9 +352,16 @@ const FilterComponent = () => {
             <div className={style.filterContainer}>
               <h4>
                 {filterTitlePrefix}
-                {translation[language].mapPage.aside.location}
+                {translation[language].mapPage.aside.greatRegion}
               </h4>
               <LocationFilterComponent />
+            </div>
+            <div className={style.filterContainer}>
+              <h4>
+                {filterTitlePrefix}
+                {translation[language].mapPage.aside.place}
+              </h4>
+              <PlaceFilterComponent />
             </div>
             <div className={style.filterContainer}>
               <h4>
