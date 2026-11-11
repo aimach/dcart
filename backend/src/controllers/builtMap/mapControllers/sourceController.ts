@@ -19,6 +19,8 @@ import {
 	getQueryStringForAgentStatus,
 	getQueryStringForAgentivity,
 	getQueryStringForSourceMaterial,
+	getQueryStringForDivinityNb,
+	getQueryStringForSourceType,
 } from "../../../utils/query/filtersQueryString";
 import {
 	attestationMatchesLot,
@@ -61,9 +63,7 @@ export const sourceController = {
 			if (mapId === "exploration") {
 				// on prépare les query des filtres
 				let queryLocalisation = "";
-				const maxValue = null;
-				const minValue = null;
-				let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+				let queryDatation = "";
 				let queryIncludedElements = "";
 				// valeurs des filtres passées en paramètres SQL ($1, $2...)
 				const queryParams: unknown[] = [];
@@ -87,15 +87,24 @@ export const sourceController = {
 				if (ante !== undefined || post !== undefined) {
 					const maxValue = ante !== undefined ? ante.toString() : null;
 					const minValue = post !== undefined ? post.toString() : null;
-					queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+					const { query, params } = getQueryStringForDateFilter(
+						maxValue,
+						minValue,
+						queryParams.length + 1,
+					);
+					queryParams.push(...params);
+					queryDatation = query;
 				}
 
 				if (elementId) {
 					// ici se fait la récupération des épithètes
-					queryIncludedElements = getQueryStringForIncludedElements(
+					const { query, param } = getQueryStringForIncludedElements(
 						mapId,
 						elementId as string,
+						queryParams.length + 1,
 					);
+					if (param) queryParams.push(param);
+					queryIncludedElements = query;
 				}
 
 				let queryLanguage = "";
@@ -132,12 +141,7 @@ export const sourceController = {
 
 				// on prépare les query des filtres
 				let queryLocalisation = "";
-				const maxDateValue = null;
-				const minDateValue = null;
-				let queryDatation = getQueryStringForDateFilter(
-					maxDateValue,
-					minDateValue,
-				);
+				let queryDatation = "";
 				let queryIncludedElements = "";
 				let queryDivinityNb = "";
 				let querySourceType = "";
@@ -169,18 +173,24 @@ export const sourceController = {
 				if (ante !== undefined || post !== undefined) {
 					const maxDateValue = ante !== undefined ? ante.toString() : null;
 					const minDateValue = post !== undefined ? post.toString() : null;
-					queryDatation = getQueryStringForDateFilter(
+					const { query, params } = getQueryStringForDateFilter(
 						maxDateValue,
 						minDateValue,
+						queryParams.length + 1,
 					);
+					queryParams.push(...params);
+					queryDatation = query;
 				}
 
 				// ici se fait la récupération des épithètes
 				if (elementId) {
-					queryIncludedElements = getQueryStringForIncludedElements(
+					const { query, param } = getQueryStringForIncludedElements(
 						mapId,
 						elementId as string,
+						queryParams.length + 1,
 					);
+					if (param) queryParams.push(param);
+					queryIncludedElements = query;
 				}
 
 				let queryLanguage = "";
@@ -192,34 +202,57 @@ export const sourceController = {
 				}
 
 				if (minDivinityNb && maxDivinityNb) {
-					queryDivinityNb = `AND json_array_length(attestation_with_elements.elements) BETWEEN ${minDivinityNb} AND ${maxDivinityNb}`;
+					const { query, params } = getQueryStringForDivinityNb(
+						minDivinityNb,
+						maxDivinityNb,
+						queryParams.length + 1,
+					);
+					queryParams.push(...params);
+					queryDivinityNb = query;
 				}
 
-				if (sourceTypeId) {
-					const sourceTypeIds = sourceTypeId
-						.split("|")
-						.map((sourceTypeName: string) => `'${sourceTypeName}'`) // ajout des quotes
-						.join(", ");
-					querySourceType = `WHERE type_source.nom_fr IN (${sourceTypeIds})`;
+				if (typeof sourceTypeId === "string" && sourceTypeId !== "") {
+					const { query, param } = getQueryStringForSourceType(
+						sourceTypeId,
+						queryParams.length + 1,
+					);
+					queryParams.push(param);
+					querySourceType = query;
 				}
 
 				if (agentGender) {
 					queryAgentGender = getQueryStringForAgentGender(agentGender);
 				}
 
-				if (agentStatusName) {
-					queryAgentStatus = getQueryStringForAgentStatus(agentStatusName);
+				if (typeof agentStatusName === "string" && agentStatusName !== "") {
+					const { query, param } = getQueryStringForAgentStatus(
+						agentStatusName,
+						queryParams.length + 1,
+					);
+					queryParams.push(param);
+					queryAgentStatus = query;
 				}
 
-				if (agentivityName) {
-					queryAgentivityName = getQueryStringForAgentivity(agentivityName);
+				if (typeof agentivityName === "string" && agentivityName !== "") {
+					const { query, param } = getQueryStringForAgentivity(
+						agentivityName,
+						queryParams.length + 1,
+					);
+					queryParams.push(param);
+					queryAgentivityName = query;
 				}
 
-				if (sourceMaterialName) {
-					querySourceMaterialName = getQueryStringForSourceMaterial(
+				if (
+					typeof sourceMaterialName === "string" &&
+					sourceMaterialName !== ""
+				) {
+					const { query, param } = getQueryStringForSourceMaterial(
 						sourceMaterialName,
 						querySourceType,
+						queryParams.length + 1,
 					);
+					queryParams.push(param);
+					querySourceMaterialName = query;
 				}
 
 				const { attestations } = mapInfos as MapContent;
@@ -652,9 +685,7 @@ export const sourceController = {
 
 			// on prépare les query des filtres
 			let queryLocalisation = "";
-			const maxValue = null;
-			const minValue = null;
-			let queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+			let queryDatation = "";
 			let queryIncludedElements = "";
 			// $1 est réservé à l'id de la source
 			const queryParams: unknown[] = [sourceId];
@@ -672,15 +703,24 @@ export const sourceController = {
 			if (ante !== undefined || post !== undefined) {
 				const maxValue = ante !== undefined ? ante.toString() : null;
 				const minValue = post !== undefined ? post.toString() : null;
-				queryDatation = getQueryStringForDateFilter(maxValue, minValue);
+				const { query, params } = getQueryStringForDateFilter(
+					maxValue,
+					minValue,
+					queryParams.length + 1,
+				);
+				queryParams.push(...params);
+				queryDatation = query;
 			}
 
 			if (elementId) {
 				// ici se fait la récupération des épithètes
-				queryIncludedElements = getQueryStringForIncludedElements(
+				const { query, param } = getQueryStringForIncludedElements(
 					"exploration",
 					elementId as string,
+					queryParams.length + 1,
 				);
+				if (param) queryParams.push(param);
+				queryIncludedElements = query;
 			}
 
 			let queryLanguage = "";
